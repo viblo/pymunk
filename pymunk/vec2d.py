@@ -327,6 +327,8 @@ class vec2d(ctypes.Structure):
     # Extra functions, mainly for chipmunk
     def cpvrotate(self, other):
         return vec2d(self.x*other.x - self.y*other.y, self.x*other.y + self.y*other.x)
+    def cpvunrotate(self, other):
+        return vec2d(self.x*other.x + self.y*other.y, self.y*other.x - self.x*other.y)
     
     # Pickle, does not work atm.
     def __getstate__(self):

@@ -207,7 +207,9 @@ class Body(object):
     def apply_impulse(self, j, r):
         """Apply the impulse j to body with offset r. Both j and r should be in
         world coordinates."""
-        cp.cpBodyApplyImpulse(self._body, j, r)
+        #TODO: Test me
+        self.velocity = self.velocity + j * self._body.contents.m_inv
+        self._body.contents.w += self._body.contents.i_inv* r.cross(j)
     
     def reset_forces(self):
         cp.cpBodyResetForces(self._body)
@@ -230,6 +232,15 @@ class Body(object):
         updateVelocity() you shouldn't normally need to call this yourself."""
         cp.cpBodyUpdatePosition(self._body, dt)
     
+    def local_to_world(self, v):
+        """Convert body local to world coordinates"""
+        #TODO: Test me
+        return self.position + v.cpvrotate(self.rotation_vector)
+        
+    def world_to_local(self, v):
+        """Convert world to body local coordinates"""
+        #TODO: Test me
+        return (v - self.position).cpvunrotate(self.rotation_vector)
 
 def damped_spring(a, b, anchor1, anchor2, rlen, k, dmp, dt):
     """Apply a spring force between bodies a and b at anchors anchr1 and anchr2
