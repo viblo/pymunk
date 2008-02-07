@@ -1,0 +1,8 @@
+
+
+Code:
+Paul Kienzle (ctload)
+Mark Sherry (base of pymunk.py)
+unknown @ pygame (vec2d)
+
+(are you missing? contact me add I will add you)

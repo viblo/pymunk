@@ -407,7 +407,9 @@ class PivotJoint(Joint):
         self._joint = cp.cpPivotJointNew(a._body, b._body, pivot)
 
 class GrooveJoint(Joint):
-    """Does magic
+    """Similar to a pivot joint, but one of the anchors is
+    on a linear slide instead of being fixed.
+    
     a and b are the two bodies to conenct, 
     groove_a and groove_b is two points or vectors or something.
     anchr2 is an anchor point"""

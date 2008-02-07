@@ -1,22 +1,21 @@
-from ctypes import *
 
-###
-from ctypes.util import find_library
-import vec2d
-cpVect = vec2d.vec2d
-###
+from ctypes import * 
+from ctload import load_library
+_lib_debug = False #Set to True to print the Chipmunk path.
+from vec2d import vec2d
+cpVect = vec2d
 
-_libraries = {}
-_libraries['Chipmunk.dll'] = CDLL('Chipmunk.dll')
+chipmunk_lib = load_library("Chipmunk")
+if _lib_debug: print chipmunk_lib
+
 STRING = c_char_p
 
 
 CP_POLY_SHAPE = 2
-CP_SEGMENT_SHAPE = 1
 CP_CIRCLE_SHAPE = 0
-CP_NUM_SHAPES = 3
 # def CP_HASH_PAIR(A,B): return ((unsigned int)(A)*CP_HASH_COEF ^ (unsigned int)(B)*CP_HASH_COEF) # macro
-CP_HASH_COEF = 3344921057L # Variable c_ulong
+CP_SEGMENT_SHAPE = 1
+CP_NUM_SHAPES = 3
 cpFloat = c_float
 class MSVC_EVIL_FLOAT_HACK(Union):
     pass
@@ -24,23 +23,19 @@ MSVC_EVIL_FLOAT_HACK._fields_ = [
     ('Bytes', c_ubyte * 4),
     ('Value', c_float),
 ]
-cpInitChipmunk = _libraries['Chipmunk.dll'].cpInitChipmunk
+cpInitChipmunk = chipmunk_lib.cpInitChipmunk
 cpInitChipmunk.restype = None
 cpInitChipmunk.argtypes = []
-#class cpVect(Structure):
-#    pass
-cpMomentForCircle = _libraries['Chipmunk.dll'].cpMomentForCircle
+#cpVect class def removed
+cpMomentForCircle = chipmunk_lib.cpMomentForCircle
 cpMomentForCircle.restype = cpFloat
 cpMomentForCircle.argtypes = [cpFloat, cpFloat, cpFloat, cpVect]
-cpMomentForPoly = _libraries['Chipmunk.dll'].cpMomentForPoly
+cpMomentForPoly = chipmunk_lib.cpMomentForPoly
 cpMomentForPoly.restype = cpFloat
 cpMomentForPoly.argtypes = [cpFloat, c_int, POINTER(cpVect), cpVect]
 class cpContact(Structure):
     pass
-#cpVect._fields_ = [
-#    ('x', cpFloat),
-#    ('y', cpFloat),
-#]
+#cpVect _fields_ def removed
 cpContact._fields_ = [
     ('p', cpVect),
     ('n', cpVect),
@@ -56,13 +51,13 @@ cpContact._fields_ = [
     ('bias', cpFloat),
     ('hash', c_uint),
 ]
-cpContactInit = _libraries['Chipmunk.dll'].cpContactInit
+cpContactInit = chipmunk_lib.cpContactInit
 cpContactInit.restype = POINTER(cpContact)
 cpContactInit.argtypes = [POINTER(cpContact), cpVect, cpVect, cpFloat, c_uint]
-cpContactsSumImpulses = _libraries['Chipmunk.dll'].cpContactsSumImpulses
+cpContactsSumImpulses = chipmunk_lib.cpContactsSumImpulses
 cpContactsSumImpulses.restype = cpVect
 cpContactsSumImpulses.argtypes = [POINTER(cpContact), c_int]
-cpContactsSumImpulsesWithFriction = _libraries['Chipmunk.dll'].cpContactsSumImpulsesWithFriction
+cpContactsSumImpulsesWithFriction = chipmunk_lib.cpContactsSumImpulsesWithFriction
 cpContactsSumImpulsesWithFriction.restype = cpVect
 cpContactsSumImpulsesWithFriction.argtypes = [POINTER(cpContact), c_int]
 class cpArbiter(Structure):
@@ -79,28 +74,28 @@ cpArbiter._fields_ = [
     ('target_v', cpVect),
     ('stamp', c_int),
 ]
-cpArbiterAlloc = _libraries['Chipmunk.dll'].cpArbiterAlloc
+cpArbiterAlloc = chipmunk_lib.cpArbiterAlloc
 cpArbiterAlloc.restype = POINTER(cpArbiter)
 cpArbiterAlloc.argtypes = []
-cpArbiterInit = _libraries['Chipmunk.dll'].cpArbiterInit
+cpArbiterInit = chipmunk_lib.cpArbiterInit
 cpArbiterInit.restype = POINTER(cpArbiter)
 cpArbiterInit.argtypes = [POINTER(cpArbiter), POINTER(cpShape), POINTER(cpShape), c_int]
-cpArbiterNew = _libraries['Chipmunk.dll'].cpArbiterNew
+cpArbiterNew = chipmunk_lib.cpArbiterNew
 cpArbiterNew.restype = POINTER(cpArbiter)
 cpArbiterNew.argtypes = [POINTER(cpShape), POINTER(cpShape), c_int]
-cpArbiterDestroy = _libraries['Chipmunk.dll'].cpArbiterDestroy
+cpArbiterDestroy = chipmunk_lib.cpArbiterDestroy
 cpArbiterDestroy.restype = None
 cpArbiterDestroy.argtypes = [POINTER(cpArbiter)]
-cpArbiterFree = _libraries['Chipmunk.dll'].cpArbiterFree
+cpArbiterFree = chipmunk_lib.cpArbiterFree
 cpArbiterFree.restype = None
 cpArbiterFree.argtypes = [POINTER(cpArbiter)]
-cpArbiterInject = _libraries['Chipmunk.dll'].cpArbiterInject
+cpArbiterInject = chipmunk_lib.cpArbiterInject
 cpArbiterInject.restype = None
 cpArbiterInject.argtypes = [POINTER(cpArbiter), POINTER(cpContact), c_int]
-cpArbiterPreStep = _libraries['Chipmunk.dll'].cpArbiterPreStep
+cpArbiterPreStep = chipmunk_lib.cpArbiterPreStep
 cpArbiterPreStep.restype = None
 cpArbiterPreStep.argtypes = [POINTER(cpArbiter), cpFloat]
-cpArbiterApplyImpulse = _libraries['Chipmunk.dll'].cpArbiterApplyImpulse
+cpArbiterApplyImpulse = chipmunk_lib.cpArbiterApplyImpulse
 cpArbiterApplyImpulse.restype = None
 cpArbiterApplyImpulse.argtypes = [POINTER(cpArbiter)]
 class cpArray(Structure):
@@ -111,34 +106,34 @@ cpArray._fields_ = [
     ('arr', POINTER(c_void_p)),
 ]
 cpArrayIter = CFUNCTYPE(None, c_void_p, c_void_p)
-cpArrayAlloc = _libraries['Chipmunk.dll'].cpArrayAlloc
+cpArrayAlloc = chipmunk_lib.cpArrayAlloc
 cpArrayAlloc.restype = POINTER(cpArray)
 cpArrayAlloc.argtypes = []
-cpArrayInit = _libraries['Chipmunk.dll'].cpArrayInit
+cpArrayInit = chipmunk_lib.cpArrayInit
 cpArrayInit.restype = POINTER(cpArray)
 cpArrayInit.argtypes = [POINTER(cpArray), c_int]
-cpArrayNew = _libraries['Chipmunk.dll'].cpArrayNew
+cpArrayNew = chipmunk_lib.cpArrayNew
 cpArrayNew.restype = POINTER(cpArray)
 cpArrayNew.argtypes = [c_int]
-cpArrayDestroy = _libraries['Chipmunk.dll'].cpArrayDestroy
+cpArrayDestroy = chipmunk_lib.cpArrayDestroy
 cpArrayDestroy.restype = None
 cpArrayDestroy.argtypes = [POINTER(cpArray)]
-cpArrayFree = _libraries['Chipmunk.dll'].cpArrayFree
+cpArrayFree = chipmunk_lib.cpArrayFree
 cpArrayFree.restype = None
 cpArrayFree.argtypes = [POINTER(cpArray)]
-cpArrayPush = _libraries['Chipmunk.dll'].cpArrayPush
+cpArrayPush = chipmunk_lib.cpArrayPush
 cpArrayPush.restype = None
 cpArrayPush.argtypes = [POINTER(cpArray), c_void_p]
-cpArrayDeleteIndex = _libraries['Chipmunk.dll'].cpArrayDeleteIndex
+cpArrayDeleteIndex = chipmunk_lib.cpArrayDeleteIndex
 cpArrayDeleteIndex.restype = None
 cpArrayDeleteIndex.argtypes = [POINTER(cpArray), c_int]
-cpArrayDeleteObj = _libraries['Chipmunk.dll'].cpArrayDeleteObj
+cpArrayDeleteObj = chipmunk_lib.cpArrayDeleteObj
 cpArrayDeleteObj.restype = None
 cpArrayDeleteObj.argtypes = [POINTER(cpArray), c_void_p]
-cpArrayEach = _libraries['Chipmunk.dll'].cpArrayEach
+cpArrayEach = chipmunk_lib.cpArrayEach
 cpArrayEach.restype = None
 cpArrayEach.argtypes = [POINTER(cpArray), cpArrayIter, c_void_p]
-cpArrayContains = _libraries['Chipmunk.dll'].cpArrayContains
+cpArrayContains = chipmunk_lib.cpArrayContains
 cpArrayContains.restype = c_int
 cpArrayContains.argtypes = [POINTER(cpArray), c_void_p]
 class cpBB(Structure):
@@ -149,10 +144,10 @@ cpBB._fields_ = [
     ('r', cpFloat),
     ('t', cpFloat),
 ]
-cpBBClampVect = _libraries['Chipmunk.dll'].cpBBClampVect
+cpBBClampVect = chipmunk_lib.cpBBClampVect
 cpBBClampVect.restype = cpVect
 cpBBClampVect.argtypes = [cpBB, cpVect]
-cpBBWrapVect = _libraries['Chipmunk.dll'].cpBBWrapVect
+cpBBWrapVect = chipmunk_lib.cpBBWrapVect
 cpBBWrapVect.restype = cpVect
 cpBBWrapVect.argtypes = [cpBB, cpVect]
 class cpBody(Structure):
@@ -172,49 +167,49 @@ cpBody._fields_ = [
     ('w_bias', cpFloat),
     ('rot', cpVect),
 ]
-cpBodyAlloc = _libraries['Chipmunk.dll'].cpBodyAlloc
+cpBodyAlloc = chipmunk_lib.cpBodyAlloc
 cpBodyAlloc.restype = POINTER(cpBody)
 cpBodyAlloc.argtypes = []
-cpBodyInit = _libraries['Chipmunk.dll'].cpBodyInit
+cpBodyInit = chipmunk_lib.cpBodyInit
 cpBodyInit.restype = POINTER(cpBody)
 cpBodyInit.argtypes = [POINTER(cpBody), cpFloat, cpFloat]
-cpBodyNew = _libraries['Chipmunk.dll'].cpBodyNew
+cpBodyNew = chipmunk_lib.cpBodyNew
 cpBodyNew.restype = POINTER(cpBody)
 cpBodyNew.argtypes = [cpFloat, cpFloat]
-cpBodyDestroy = _libraries['Chipmunk.dll'].cpBodyDestroy
+cpBodyDestroy = chipmunk_lib.cpBodyDestroy
 cpBodyDestroy.restype = None
 cpBodyDestroy.argtypes = [POINTER(cpBody)]
-cpBodyFree = _libraries['Chipmunk.dll'].cpBodyFree
+cpBodyFree = chipmunk_lib.cpBodyFree
 cpBodyFree.restype = None
 cpBodyFree.argtypes = [POINTER(cpBody)]
-cpBodySetMass = _libraries['Chipmunk.dll'].cpBodySetMass
+cpBodySetMass = chipmunk_lib.cpBodySetMass
 cpBodySetMass.restype = None
 cpBodySetMass.argtypes = [POINTER(cpBody), cpFloat]
-cpBodySetMoment = _libraries['Chipmunk.dll'].cpBodySetMoment
+cpBodySetMoment = chipmunk_lib.cpBodySetMoment
 cpBodySetMoment.restype = None
 cpBodySetMoment.argtypes = [POINTER(cpBody), cpFloat]
-cpBodySetAngle = _libraries['Chipmunk.dll'].cpBodySetAngle
+cpBodySetAngle = chipmunk_lib.cpBodySetAngle
 cpBodySetAngle.restype = None
 cpBodySetAngle.argtypes = [POINTER(cpBody), cpFloat]
-cpBodySlew = _libraries['Chipmunk.dll'].cpBodySlew
+cpBodySlew = chipmunk_lib.cpBodySlew
 cpBodySlew.restype = None
 cpBodySlew.argtypes = [POINTER(cpBody), cpVect, cpFloat]
-cpBodyUpdateVelocity = _libraries['Chipmunk.dll'].cpBodyUpdateVelocity
+cpBodyUpdateVelocity = chipmunk_lib.cpBodyUpdateVelocity
 cpBodyUpdateVelocity.restype = None
 cpBodyUpdateVelocity.argtypes = [POINTER(cpBody), cpVect, cpFloat, cpFloat]
-cpBodyUpdatePosition = _libraries['Chipmunk.dll'].cpBodyUpdatePosition
+cpBodyUpdatePosition = chipmunk_lib.cpBodyUpdatePosition
 cpBodyUpdatePosition.restype = None
 cpBodyUpdatePosition.argtypes = [POINTER(cpBody), cpFloat]
-cpBodyResetForces = _libraries['Chipmunk.dll'].cpBodyResetForces
+cpBodyResetForces = chipmunk_lib.cpBodyResetForces
 cpBodyResetForces.restype = None
 cpBodyResetForces.argtypes = [POINTER(cpBody)]
-cpBodyApplyForce = _libraries['Chipmunk.dll'].cpBodyApplyForce
+cpBodyApplyForce = chipmunk_lib.cpBodyApplyForce
 cpBodyApplyForce.restype = None
 cpBodyApplyForce.argtypes = [POINTER(cpBody), cpVect, cpVect]
-cpDampedSpring = _libraries['Chipmunk.dll'].cpDampedSpring
+cpDampedSpring = chipmunk_lib.cpDampedSpring
 cpDampedSpring.restype = None
 cpDampedSpring.argtypes = [POINTER(cpBody), POINTER(cpBody), cpVect, cpVect, cpFloat, cpFloat, cpFloat, cpFloat]
-cpCollideShapes = _libraries['Chipmunk.dll'].cpCollideShapes
+cpCollideShapes = chipmunk_lib.cpCollideShapes
 cpCollideShapes.restype = c_int
 cpCollideShapes.argtypes = [POINTER(cpShape), POINTER(cpShape), POINTER(POINTER(cpContact))]
 class cpHashSetBin(Structure):
@@ -238,34 +233,34 @@ cpHashSet._fields_ = [
     ('default_value', c_void_p),
     ('table', POINTER(POINTER(cpHashSetBin))),
 ]
-cpHashSetDestroy = _libraries['Chipmunk.dll'].cpHashSetDestroy
+cpHashSetDestroy = chipmunk_lib.cpHashSetDestroy
 cpHashSetDestroy.restype = None
 cpHashSetDestroy.argtypes = [POINTER(cpHashSet)]
-cpHashSetFree = _libraries['Chipmunk.dll'].cpHashSetFree
+cpHashSetFree = chipmunk_lib.cpHashSetFree
 cpHashSetFree.restype = None
 cpHashSetFree.argtypes = [POINTER(cpHashSet)]
-cpHashSetAlloc = _libraries['Chipmunk.dll'].cpHashSetAlloc
+cpHashSetAlloc = chipmunk_lib.cpHashSetAlloc
 cpHashSetAlloc.restype = POINTER(cpHashSet)
 cpHashSetAlloc.argtypes = []
-cpHashSetInit = _libraries['Chipmunk.dll'].cpHashSetInit
+cpHashSetInit = chipmunk_lib.cpHashSetInit
 cpHashSetInit.restype = POINTER(cpHashSet)
 cpHashSetInit.argtypes = [POINTER(cpHashSet), c_int, cpHashSetEqlFunc, cpHashSetTransFunc]
-cpHashSetNew = _libraries['Chipmunk.dll'].cpHashSetNew
+cpHashSetNew = chipmunk_lib.cpHashSetNew
 cpHashSetNew.restype = POINTER(cpHashSet)
 cpHashSetNew.argtypes = [c_int, cpHashSetEqlFunc, cpHashSetTransFunc]
-cpHashSetInsert = _libraries['Chipmunk.dll'].cpHashSetInsert
+cpHashSetInsert = chipmunk_lib.cpHashSetInsert
 cpHashSetInsert.restype = c_void_p
 cpHashSetInsert.argtypes = [POINTER(cpHashSet), c_uint, c_void_p, c_void_p]
-cpHashSetRemove = _libraries['Chipmunk.dll'].cpHashSetRemove
+cpHashSetRemove = chipmunk_lib.cpHashSetRemove
 cpHashSetRemove.restype = c_void_p
 cpHashSetRemove.argtypes = [POINTER(cpHashSet), c_uint, c_void_p]
-cpHashSetFind = _libraries['Chipmunk.dll'].cpHashSetFind
+cpHashSetFind = chipmunk_lib.cpHashSetFind
 cpHashSetFind.restype = c_void_p
 cpHashSetFind.argtypes = [POINTER(cpHashSet), c_uint, c_void_p]
-cpHashSetEach = _libraries['Chipmunk.dll'].cpHashSetEach
+cpHashSetEach = chipmunk_lib.cpHashSetEach
 cpHashSetEach.restype = None
 cpHashSetEach.argtypes = [POINTER(cpHashSet), cpHashSetIterFunc, c_void_p]
-cpHashSetReject = _libraries['Chipmunk.dll'].cpHashSetReject
+cpHashSetReject = chipmunk_lib.cpHashSetReject
 cpHashSetReject.restype = None
 cpHashSetReject.argtypes = [POINTER(cpHashSet), cpHashSetRejectFunc, c_void_p]
 class cpJoint(Structure):
@@ -276,10 +271,10 @@ cpJoint._fields_ = [
     ('preStep', CFUNCTYPE(None, POINTER(cpJoint), c_float)),
     ('applyImpulse', CFUNCTYPE(None, POINTER(cpJoint))),
 ]
-cpJointDestroy = _libraries['Chipmunk.dll'].cpJointDestroy
+cpJointDestroy = chipmunk_lib.cpJointDestroy
 cpJointDestroy.restype = None
 cpJointDestroy.argtypes = [POINTER(cpJoint)]
-cpJointFree = _libraries['Chipmunk.dll'].cpJointFree
+cpJointFree = chipmunk_lib.cpJointFree
 cpJointFree.restype = None
 cpJointFree.argtypes = [POINTER(cpJoint)]
 class cpPinJoint(Structure):
@@ -297,13 +292,13 @@ cpPinJoint._fields_ = [
     ('jBias', cpFloat),
     ('bias', cpFloat),
 ]
-cpPinJointAlloc = _libraries['Chipmunk.dll'].cpPinJointAlloc
+cpPinJointAlloc = chipmunk_lib.cpPinJointAlloc
 cpPinJointAlloc.restype = POINTER(cpPinJoint)
 cpPinJointAlloc.argtypes = []
-cpPinJointInit = _libraries['Chipmunk.dll'].cpPinJointInit
+cpPinJointInit = chipmunk_lib.cpPinJointInit
 cpPinJointInit.restype = POINTER(cpPinJoint)
 cpPinJointInit.argtypes = [POINTER(cpPinJoint), POINTER(cpBody), POINTER(cpBody), cpVect, cpVect]
-cpPinJointNew = _libraries['Chipmunk.dll'].cpPinJointNew
+cpPinJointNew = chipmunk_lib.cpPinJointNew
 cpPinJointNew.restype = POINTER(cpJoint)
 cpPinJointNew.argtypes = [POINTER(cpBody), POINTER(cpBody), cpVect, cpVect]
 class cpSlideJoint(Structure):
@@ -322,13 +317,13 @@ cpSlideJoint._fields_ = [
     ('jBias', cpFloat),
     ('bias', cpFloat),
 ]
-cpSlideJointAlloc = _libraries['Chipmunk.dll'].cpSlideJointAlloc
+cpSlideJointAlloc = chipmunk_lib.cpSlideJointAlloc
 cpSlideJointAlloc.restype = POINTER(cpSlideJoint)
 cpSlideJointAlloc.argtypes = []
-cpSlideJointInit = _libraries['Chipmunk.dll'].cpSlideJointInit
+cpSlideJointInit = chipmunk_lib.cpSlideJointInit
 cpSlideJointInit.restype = POINTER(cpSlideJoint)
 cpSlideJointInit.argtypes = [POINTER(cpSlideJoint), POINTER(cpBody), POINTER(cpBody), cpVect, cpVect, cpFloat, cpFloat]
-cpSlideJointNew = _libraries['Chipmunk.dll'].cpSlideJointNew
+cpSlideJointNew = chipmunk_lib.cpSlideJointNew
 cpSlideJointNew.restype = POINTER(cpJoint)
 cpSlideJointNew.argtypes = [POINTER(cpBody), POINTER(cpBody), cpVect, cpVect, cpFloat, cpFloat]
 class cpPivotJoint(Structure):
@@ -345,13 +340,13 @@ cpPivotJoint._fields_ = [
     ('jBias', cpVect),
     ('bias', cpVect),
 ]
-cpPivotJointAlloc = _libraries['Chipmunk.dll'].cpPivotJointAlloc
+cpPivotJointAlloc = chipmunk_lib.cpPivotJointAlloc
 cpPivotJointAlloc.restype = POINTER(cpPivotJoint)
 cpPivotJointAlloc.argtypes = []
-cpPivotJointInit = _libraries['Chipmunk.dll'].cpPivotJointInit
+cpPivotJointInit = chipmunk_lib.cpPivotJointInit
 cpPivotJointInit.restype = POINTER(cpPivotJoint)
 cpPivotJointInit.argtypes = [POINTER(cpPivotJoint), POINTER(cpBody), POINTER(cpBody), cpVect]
-cpPivotJointNew = _libraries['Chipmunk.dll'].cpPivotJointNew
+cpPivotJointNew = chipmunk_lib.cpPivotJointNew
 cpPivotJointNew.restype = POINTER(cpJoint)
 cpPivotJointNew.argtypes = [POINTER(cpBody), POINTER(cpBody), cpVect]
 class cpGrooveJoint(Structure):
@@ -372,13 +367,13 @@ cpGrooveJoint._fields_ = [
     ('jBias', cpVect),
     ('bias', cpVect),
 ]
-cpGrooveJointAlloc = _libraries['Chipmunk.dll'].cpGrooveJointAlloc
+cpGrooveJointAlloc = chipmunk_lib.cpGrooveJointAlloc
 cpGrooveJointAlloc.restype = POINTER(cpGrooveJoint)
 cpGrooveJointAlloc.argtypes = []
-cpGrooveJointInit = _libraries['Chipmunk.dll'].cpGrooveJointInit
+cpGrooveJointInit = chipmunk_lib.cpGrooveJointInit
 cpGrooveJointInit.restype = POINTER(cpGrooveJoint)
 cpGrooveJointInit.argtypes = [POINTER(cpGrooveJoint), POINTER(cpBody), POINTER(cpBody), cpVect, cpVect, cpVect]
-cpGrooveJointNew = _libraries['Chipmunk.dll'].cpGrooveJointNew
+cpGrooveJointNew = chipmunk_lib.cpGrooveJointNew
 cpGrooveJointNew.restype = POINTER(cpJoint)
 cpGrooveJointNew.argtypes = [POINTER(cpBody), POINTER(cpBody), cpVect, cpVect, cpVect]
 class cpPolyShapeAxis(Structure):
@@ -415,28 +410,28 @@ cpPolyShape._fields_ = [
     ('tVerts', POINTER(cpVect)),
     ('tAxes', POINTER(cpPolyShapeAxis)),
 ]
-cpPolyShapeAlloc = _libraries['Chipmunk.dll'].cpPolyShapeAlloc
+cpPolyShapeAlloc = chipmunk_lib.cpPolyShapeAlloc
 cpPolyShapeAlloc.restype = POINTER(cpPolyShape)
 cpPolyShapeAlloc.argtypes = []
-cpPolyShapeInit = _libraries['Chipmunk.dll'].cpPolyShapeInit
+cpPolyShapeInit = chipmunk_lib.cpPolyShapeInit
 cpPolyShapeInit.restype = POINTER(cpPolyShape)
 cpPolyShapeInit.argtypes = [POINTER(cpPolyShape), POINTER(cpBody), c_int, POINTER(cpVect), cpVect]
-cpPolyShapeNew = _libraries['Chipmunk.dll'].cpPolyShapeNew
+cpPolyShapeNew = chipmunk_lib.cpPolyShapeNew
 cpPolyShapeNew.restype = POINTER(cpShape)
 cpPolyShapeNew.argtypes = [POINTER(cpBody), c_int, POINTER(cpVect), cpVect]
-cpResetShapeIdCounter = _libraries['Chipmunk.dll'].cpResetShapeIdCounter
+cpResetShapeIdCounter = chipmunk_lib.cpResetShapeIdCounter
 cpResetShapeIdCounter.restype = None
 cpResetShapeIdCounter.argtypes = []
-cpShapeInit = _libraries['Chipmunk.dll'].cpShapeInit
+cpShapeInit = chipmunk_lib.cpShapeInit
 cpShapeInit.restype = POINTER(cpShape)
 cpShapeInit.argtypes = [POINTER(cpShape), cpShapeType, POINTER(cpBody)]
-cpShapeDestroy = _libraries['Chipmunk.dll'].cpShapeDestroy
+cpShapeDestroy = chipmunk_lib.cpShapeDestroy
 cpShapeDestroy.restype = None
 cpShapeDestroy.argtypes = [POINTER(cpShape)]
-cpShapeFree = _libraries['Chipmunk.dll'].cpShapeFree
+cpShapeFree = chipmunk_lib.cpShapeFree
 cpShapeFree.restype = None
 cpShapeFree.argtypes = [POINTER(cpShape)]
-cpShapeCacheBB = _libraries['Chipmunk.dll'].cpShapeCacheBB
+cpShapeCacheBB = chipmunk_lib.cpShapeCacheBB
 cpShapeCacheBB.restype = cpBB
 cpShapeCacheBB.argtypes = [POINTER(cpShape)]
 class cpCircleShape(Structure):
@@ -447,13 +442,13 @@ cpCircleShape._fields_ = [
     ('r', cpFloat),
     ('tc', cpVect),
 ]
-cpCircleShapeAlloc = _libraries['Chipmunk.dll'].cpCircleShapeAlloc
+cpCircleShapeAlloc = chipmunk_lib.cpCircleShapeAlloc
 cpCircleShapeAlloc.restype = POINTER(cpCircleShape)
 cpCircleShapeAlloc.argtypes = []
-cpCircleShapeInit = _libraries['Chipmunk.dll'].cpCircleShapeInit
+cpCircleShapeInit = chipmunk_lib.cpCircleShapeInit
 cpCircleShapeInit.restype = POINTER(cpCircleShape)
 cpCircleShapeInit.argtypes = [POINTER(cpCircleShape), POINTER(cpBody), cpFloat, cpVect]
-cpCircleShapeNew = _libraries['Chipmunk.dll'].cpCircleShapeNew
+cpCircleShapeNew = chipmunk_lib.cpCircleShapeNew
 cpCircleShapeNew.restype = POINTER(cpShape)
 cpCircleShapeNew.argtypes = [POINTER(cpBody), cpFloat, cpVect]
 class cpSegmentShape(Structure):
@@ -468,13 +463,13 @@ cpSegmentShape._fields_ = [
     ('tb', cpVect),
     ('tn', cpVect),
 ]
-cpSegmentShapeAlloc = _libraries['Chipmunk.dll'].cpSegmentShapeAlloc
+cpSegmentShapeAlloc = chipmunk_lib.cpSegmentShapeAlloc
 cpSegmentShapeAlloc.restype = POINTER(cpSegmentShape)
 cpSegmentShapeAlloc.argtypes = []
-cpSegmentShapeInit = _libraries['Chipmunk.dll'].cpSegmentShapeInit
+cpSegmentShapeInit = chipmunk_lib.cpSegmentShapeInit
 cpSegmentShapeInit.restype = POINTER(cpSegmentShape)
 cpSegmentShapeInit.argtypes = [POINTER(cpSegmentShape), POINTER(cpBody), cpVect, cpVect, cpFloat]
-cpSegmentShapeNew = _libraries['Chipmunk.dll'].cpSegmentShapeNew
+cpSegmentShapeNew = chipmunk_lib.cpSegmentShapeNew
 cpSegmentShapeNew.restype = POINTER(cpShape)
 cpSegmentShapeNew.argtypes = [POINTER(cpBody), cpVect, cpVect, cpFloat]
 cpCollFunc = CFUNCTYPE(c_int, POINTER(cpShape), POINTER(cpShape), POINTER(cpContact), c_int, c_float, c_void_p)
@@ -504,71 +499,71 @@ cpSpace._fields_ = [
     ('collFuncSet', POINTER(cpHashSet)),
     ('defaultPairFunc', cpCollPairFunc),
 ]
-cpSpaceAlloc = _libraries['Chipmunk.dll'].cpSpaceAlloc
+cpSpaceAlloc = chipmunk_lib.cpSpaceAlloc
 cpSpaceAlloc.restype = POINTER(cpSpace)
 cpSpaceAlloc.argtypes = []
-cpSpaceInit = _libraries['Chipmunk.dll'].cpSpaceInit
+cpSpaceInit = chipmunk_lib.cpSpaceInit
 cpSpaceInit.restype = POINTER(cpSpace)
 cpSpaceInit.argtypes = [POINTER(cpSpace)]
-cpSpaceNew = _libraries['Chipmunk.dll'].cpSpaceNew
+cpSpaceNew = chipmunk_lib.cpSpaceNew
 cpSpaceNew.restype = POINTER(cpSpace)
 cpSpaceNew.argtypes = []
-cpSpaceDestroy = _libraries['Chipmunk.dll'].cpSpaceDestroy
+cpSpaceDestroy = chipmunk_lib.cpSpaceDestroy
 cpSpaceDestroy.restype = None
 cpSpaceDestroy.argtypes = [POINTER(cpSpace)]
-cpSpaceFree = _libraries['Chipmunk.dll'].cpSpaceFree
+cpSpaceFree = chipmunk_lib.cpSpaceFree
 cpSpaceFree.restype = None
 cpSpaceFree.argtypes = [POINTER(cpSpace)]
-cpSpaceFreeChildren = _libraries['Chipmunk.dll'].cpSpaceFreeChildren
+cpSpaceFreeChildren = chipmunk_lib.cpSpaceFreeChildren
 cpSpaceFreeChildren.restype = None
 cpSpaceFreeChildren.argtypes = [POINTER(cpSpace)]
-cpSpaceAddCollisionPairFunc = _libraries['Chipmunk.dll'].cpSpaceAddCollisionPairFunc
+cpSpaceAddCollisionPairFunc = chipmunk_lib.cpSpaceAddCollisionPairFunc
 cpSpaceAddCollisionPairFunc.restype = None
 cpSpaceAddCollisionPairFunc.argtypes = [POINTER(cpSpace), c_uint, c_uint, cpCollFunc, c_void_p]
-cpSpaceRemoveCollisionPairFunc = _libraries['Chipmunk.dll'].cpSpaceRemoveCollisionPairFunc
+cpSpaceRemoveCollisionPairFunc = chipmunk_lib.cpSpaceRemoveCollisionPairFunc
 cpSpaceRemoveCollisionPairFunc.restype = None
 cpSpaceRemoveCollisionPairFunc.argtypes = [POINTER(cpSpace), c_uint, c_uint]
-cpSpaceSetDefaultCollisionPairFunc = _libraries['Chipmunk.dll'].cpSpaceSetDefaultCollisionPairFunc
+cpSpaceSetDefaultCollisionPairFunc = chipmunk_lib.cpSpaceSetDefaultCollisionPairFunc
 cpSpaceSetDefaultCollisionPairFunc.restype = None
 cpSpaceSetDefaultCollisionPairFunc.argtypes = [POINTER(cpSpace), cpCollFunc, c_void_p]
-cpSpaceAddShape = _libraries['Chipmunk.dll'].cpSpaceAddShape
+cpSpaceAddShape = chipmunk_lib.cpSpaceAddShape
 cpSpaceAddShape.restype = None
 cpSpaceAddShape.argtypes = [POINTER(cpSpace), POINTER(cpShape)]
-cpSpaceAddStaticShape = _libraries['Chipmunk.dll'].cpSpaceAddStaticShape
+cpSpaceAddStaticShape = chipmunk_lib.cpSpaceAddStaticShape
 cpSpaceAddStaticShape.restype = None
 cpSpaceAddStaticShape.argtypes = [POINTER(cpSpace), POINTER(cpShape)]
-cpSpaceAddBody = _libraries['Chipmunk.dll'].cpSpaceAddBody
+cpSpaceAddBody = chipmunk_lib.cpSpaceAddBody
 cpSpaceAddBody.restype = None
 cpSpaceAddBody.argtypes = [POINTER(cpSpace), POINTER(cpBody)]
-cpSpaceAddJoint = _libraries['Chipmunk.dll'].cpSpaceAddJoint
+cpSpaceAddJoint = chipmunk_lib.cpSpaceAddJoint
 cpSpaceAddJoint.restype = None
 cpSpaceAddJoint.argtypes = [POINTER(cpSpace), POINTER(cpJoint)]
-cpSpaceRemoveShape = _libraries['Chipmunk.dll'].cpSpaceRemoveShape
+cpSpaceRemoveShape = chipmunk_lib.cpSpaceRemoveShape
 cpSpaceRemoveShape.restype = None
 cpSpaceRemoveShape.argtypes = [POINTER(cpSpace), POINTER(cpShape)]
-cpSpaceRemoveStaticShape = _libraries['Chipmunk.dll'].cpSpaceRemoveStaticShape
+cpSpaceRemoveStaticShape = chipmunk_lib.cpSpaceRemoveStaticShape
 cpSpaceRemoveStaticShape.restype = None
 cpSpaceRemoveStaticShape.argtypes = [POINTER(cpSpace), POINTER(cpShape)]
-cpSpaceRemoveBody = _libraries['Chipmunk.dll'].cpSpaceRemoveBody
+cpSpaceRemoveBody = chipmunk_lib.cpSpaceRemoveBody
 cpSpaceRemoveBody.restype = None
 cpSpaceRemoveBody.argtypes = [POINTER(cpSpace), POINTER(cpBody)]
-cpSpaceRemoveJoint = _libraries['Chipmunk.dll'].cpSpaceRemoveJoint
+cpSpaceRemoveJoint = chipmunk_lib.cpSpaceRemoveJoint
 cpSpaceRemoveJoint.restype = None
 cpSpaceRemoveJoint.argtypes = [POINTER(cpSpace), POINTER(cpJoint)]
 cpSpaceBodyIterator = CFUNCTYPE(None, POINTER(cpBody), c_void_p)
-cpSpaceEachBody = _libraries['Chipmunk.dll'].cpSpaceEachBody
+cpSpaceEachBody = chipmunk_lib.cpSpaceEachBody
 cpSpaceEachBody.restype = None
 cpSpaceEachBody.argtypes = [POINTER(cpSpace), cpSpaceBodyIterator, c_void_p]
-cpSpaceResizeStaticHash = _libraries['Chipmunk.dll'].cpSpaceResizeStaticHash
+cpSpaceResizeStaticHash = chipmunk_lib.cpSpaceResizeStaticHash
 cpSpaceResizeStaticHash.restype = None
 cpSpaceResizeStaticHash.argtypes = [POINTER(cpSpace), cpFloat, c_int]
-cpSpaceResizeActiveHash = _libraries['Chipmunk.dll'].cpSpaceResizeActiveHash
+cpSpaceResizeActiveHash = chipmunk_lib.cpSpaceResizeActiveHash
 cpSpaceResizeActiveHash.restype = None
 cpSpaceResizeActiveHash.argtypes = [POINTER(cpSpace), cpFloat, c_int]
-cpSpaceRehashStatic = _libraries['Chipmunk.dll'].cpSpaceRehashStatic
+cpSpaceRehashStatic = chipmunk_lib.cpSpaceRehashStatic
 cpSpaceRehashStatic.restype = None
 cpSpaceRehashStatic.argtypes = [POINTER(cpSpace)]
-cpSpaceStep = _libraries['Chipmunk.dll'].cpSpaceStep
+cpSpaceStep = chipmunk_lib.cpSpaceStep
 cpSpaceStep.restype = None
 cpSpaceStep.argtypes = [POINTER(cpSpace), cpFloat]
 class cpHandle(Structure):
@@ -594,65 +589,66 @@ cpSpaceHash._fields_ = [
     ('bins', POINTER(cpSpaceHashBin)),
     ('stamp', c_int),
 ]
-cpSpaceHashAlloc = _libraries['Chipmunk.dll'].cpSpaceHashAlloc
+cpSpaceHashAlloc = chipmunk_lib.cpSpaceHashAlloc
 cpSpaceHashAlloc.restype = POINTER(cpSpaceHash)
 cpSpaceHashAlloc.argtypes = []
-cpSpaceHashInit = _libraries['Chipmunk.dll'].cpSpaceHashInit
+cpSpaceHashInit = chipmunk_lib.cpSpaceHashInit
 cpSpaceHashInit.restype = POINTER(cpSpaceHash)
 cpSpaceHashInit.argtypes = [POINTER(cpSpaceHash), cpFloat, c_int, cpSpaceHashBBFunc]
-cpSpaceHashNew = _libraries['Chipmunk.dll'].cpSpaceHashNew
+cpSpaceHashNew = chipmunk_lib.cpSpaceHashNew
 cpSpaceHashNew.restype = POINTER(cpSpaceHash)
 cpSpaceHashNew.argtypes = [cpFloat, c_int, cpSpaceHashBBFunc]
-cpSpaceHashDestroy = _libraries['Chipmunk.dll'].cpSpaceHashDestroy
+cpSpaceHashDestroy = chipmunk_lib.cpSpaceHashDestroy
 cpSpaceHashDestroy.restype = None
 cpSpaceHashDestroy.argtypes = [POINTER(cpSpaceHash)]
-cpSpaceHashFree = _libraries['Chipmunk.dll'].cpSpaceHashFree
+cpSpaceHashFree = chipmunk_lib.cpSpaceHashFree
 cpSpaceHashFree.restype = None
 cpSpaceHashFree.argtypes = [POINTER(cpSpaceHash)]
-cpSpaceHashResize = _libraries['Chipmunk.dll'].cpSpaceHashResize
+cpSpaceHashResize = chipmunk_lib.cpSpaceHashResize
 cpSpaceHashResize.restype = None
 cpSpaceHashResize.argtypes = [POINTER(cpSpaceHash), cpFloat, c_int]
-cpSpaceHashInsert = _libraries['Chipmunk.dll'].cpSpaceHashInsert
+cpSpaceHashInsert = chipmunk_lib.cpSpaceHashInsert
 cpSpaceHashInsert.restype = None
 cpSpaceHashInsert.argtypes = [POINTER(cpSpaceHash), c_void_p, c_uint, cpBB]
-cpSpaceHashRemove = _libraries['Chipmunk.dll'].cpSpaceHashRemove
+cpSpaceHashRemove = chipmunk_lib.cpSpaceHashRemove
 cpSpaceHashRemove.restype = None
 cpSpaceHashRemove.argtypes = [POINTER(cpSpaceHash), c_void_p, c_uint]
 cpSpaceHashIterator = CFUNCTYPE(None, c_void_p, c_void_p)
-cpSpaceHashEach = _libraries['Chipmunk.dll'].cpSpaceHashEach
+cpSpaceHashEach = chipmunk_lib.cpSpaceHashEach
 cpSpaceHashEach.restype = None
 cpSpaceHashEach.argtypes = [POINTER(cpSpaceHash), cpSpaceHashIterator, c_void_p]
-cpSpaceHashRehash = _libraries['Chipmunk.dll'].cpSpaceHashRehash
+cpSpaceHashRehash = chipmunk_lib.cpSpaceHashRehash
 cpSpaceHashRehash.restype = None
 cpSpaceHashRehash.argtypes = [POINTER(cpSpaceHash)]
-cpSpaceHashRehashObject = _libraries['Chipmunk.dll'].cpSpaceHashRehashObject
+cpSpaceHashRehashObject = chipmunk_lib.cpSpaceHashRehashObject
 cpSpaceHashRehashObject.restype = None
 cpSpaceHashRehashObject.argtypes = [POINTER(cpSpaceHash), c_void_p, c_uint]
 cpSpaceHashQueryFunc = CFUNCTYPE(c_int, c_void_p, c_void_p, c_void_p)
-cpSpaceHashQuery = _libraries['Chipmunk.dll'].cpSpaceHashQuery
+cpSpaceHashQuery = chipmunk_lib.cpSpaceHashQuery
 cpSpaceHashQuery.restype = None
 cpSpaceHashQuery.argtypes = [POINTER(cpSpaceHash), c_void_p, cpBB, cpSpaceHashQueryFunc, c_void_p]
-cpSpaceHashQueryRehash = _libraries['Chipmunk.dll'].cpSpaceHashQueryRehash
+cpSpaceHashQueryRehash = chipmunk_lib.cpSpaceHashQueryRehash
 cpSpaceHashQueryRehash.restype = None
 cpSpaceHashQueryRehash.argtypes = [POINTER(cpSpaceHash), cpSpaceHashQueryFunc, c_void_p]
-cpvlength = _libraries['Chipmunk.dll'].cpvlength
+cpvlength = chipmunk_lib.cpvlength
 cpvlength.restype = cpFloat
 cpvlength.argtypes = [cpVect]
-cpvlengthsq = _libraries['Chipmunk.dll'].cpvlengthsq
+cpvlengthsq = chipmunk_lib.cpvlengthsq
 cpvlengthsq.restype = cpFloat
 cpvlengthsq.argtypes = [cpVect]
-cpvnormalize = _libraries['Chipmunk.dll'].cpvnormalize
+cpvnormalize = chipmunk_lib.cpvnormalize
 cpvnormalize.restype = cpVect
 cpvnormalize.argtypes = [cpVect]
-cpvforangle = _libraries['Chipmunk.dll'].cpvforangle
+cpvforangle = chipmunk_lib.cpvforangle
 cpvforangle.restype = cpVect
 cpvforangle.argtypes = [cpFloat]
-cpvtoangle = _libraries['Chipmunk.dll'].cpvtoangle
+cpvtoangle = chipmunk_lib.cpvtoangle
 cpvtoangle.restype = cpFloat
 cpvtoangle.argtypes = [cpVect]
-cpvstr = _libraries['Chipmunk.dll'].cpvstr
+cpvstr = chipmunk_lib.cpvstr
 cpvstr.restype = STRING
 cpvstr.argtypes = [cpVect]
+CP_HASH_COEF = 3344921057L # Variable c_ulong
 __all__ = ['cpSpaceRehashStatic', 'cpSpaceAddCollisionPairFunc',
            'cpSpaceResizeStaticHash', 'cpHashSetReject',
            'cpBodySetAngle', 'cpSpaceRemoveCollisionPairFunc',
@@ -667,7 +663,7 @@ __all__ = ['cpSpaceRehashStatic', 'cpSpaceAddCollisionPairFunc',
            'cpJointDestroy', 'cpSpaceHashNew', 'cpBodyDestroy',
            'cpArrayPush', 'cpSpaceHashFree', 'CP_SEGMENT_SHAPE',
            'cpHashSetNew', 'cpVect', 'cpSpaceHashRemove',
-           'cpSpaceHashInit', 'cpPivotJointNew', 'cpSegmentShapeNew',
+           'cpSpaceHashInit', 'cpBodySlew', 'cpSegmentShapeNew',
            'cpPolyShapeInit', 'CP_HASH_COEF', 'cpPolyShapeNew',
            'cpArrayContains', 'cpHashSetRejectFunc', 'cpSlideJoint',
            'CP_POLY_SHAPE', 'cpBodyUpdateVelocity', 'cpSpaceAlloc',
@@ -677,7 +673,7 @@ __all__ = ['cpSpaceRehashStatic', 'cpSpaceAddCollisionPairFunc',
            'cpSlideJointAlloc', 'cpArbiter', 'cpSpaceNew',
            'cpGrooveJoint', 'cpCircleShape', 'cpSpaceFree',
            'cpCircleShapeNew', 'cpSpaceInit', 'cpArrayFree',
-           'cpSpaceHashBin', 'cpBBClampVect', 'cpBodySlew',
+           'cpSpaceHashBin', 'cpBBClampVect', 'cpPivotJointNew',
            'cpArrayEach', 'cpBodyFree', 'cpPivotJointInit',
            'cpSpaceRemoveBody', 'cpSpaceHashBBFunc', 'cpHashSetInit',
            'cpArbiterDestroy', 'cpSpaceBodyIterator',
