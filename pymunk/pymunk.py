@@ -10,6 +10,7 @@ class Space(object):
     def __init__(self, iterations=10):
         self._space = cp.cpSpaceNew(iterations)
         self._callbacks = {} # To prevent the gc to collect the callbacks.
+        self._default_callback = None
         self._shapes = {}
         self._static_shapes = {}
         self._bodies = set()
@@ -138,24 +139,10 @@ class Space(object):
         segfault as an earlier collision may already be referencing the shape
         or body. You must wait until after the cpSpaceStep() function returns.
         """
-        def getCF(func):
-            def CF (cpShapeA, cpShapeB, cpContacts, numContacts, normal_coef, _data):
-                ### Translate chipmunk shapes to Shapes.
-                if cpShapeA.contents.id in self._shapes:
-                    shapeA = self._shapes[cpShapeA.contents.id]
-                else:
-                    shapeA = self._static_shapes[cpShapeA.contents.id]
-                if cpShapeB.contents.id in self._shapes:
-                    shapeB = self._shapes[cpShapeB.contents.id]
-                else:
-                    shapeB = self._static_shapes[cpShapeB.contents.id]
-                return func(shapeA, shapeB, [Contact(cpContacts[i]) for i in xrange(numContacts)], normal_coef, data)
-            
-            return CF
         if func is None:
-             cp.cpSpaceAddCollisionPairFunc(self._space, a, b, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
+            cp.cpSpaceAddCollisionPairFunc(self._space, a, b, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
         else:
-            f = cp.cpCollFunc(getCF(func))
+            f = Space._get_CF(func, data)
             self._callbacks[(a,b)] = f
             cp.cpSpaceAddCollisionPairFunc(self._space, a, b, f, None)
             
@@ -166,7 +153,30 @@ class Space(object):
         cp.cpSpaceRemoveCollisionPairFunc(self._space, a, b)
     
     def set_default_collisionpair_func(self, func, data):
-        pass
+        """Sets the default collsion pair function. Passing None as func will reset it to default.. :)"""
+        if func is None:
+            self._default_callback = None
+            cp.cpSpaceSetDefaultCollisionPairFunc(self._space, a, b, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
+        else:
+            f = Space._get_CF(func, data)
+            self._default_callback = f
+            cp.cpSpaceSetDefaultCollisionPairFunc(self._space, f, None)
+    
+    def _get_CF(func, data):
+        def CF (cpShapeA, cpShapeB, cpContacts, numContacts, normal_coef, _data):
+            ### Translate chipmunk shapes to Shapes.
+            if cpShapeA.contents.id in self._shapes:
+                shapeA = self._shapes[cpShapeA.contents.id]
+            else:
+                shapeA = self._static_shapes[cpShapeA.contents.id]
+            if cpShapeB.contents.id in self._shapes:
+                shapeB = self._shapes[cpShapeB.contents.id]
+            else:
+                shapeB = self._static_shapes[cpShapeB.contents.id]
+            return func(shapeA, shapeB, [Contact(cpContacts[i]) for i in xrange(numContacts)], normal_coef, data)
+        
+        return cp.cpCollFunc(CF)
+
     
 class Body(object):
     def __init__(self, mass, inertia):
