@@ -12,7 +12,11 @@ class Space(object):
         self._callbacks = {} # To prevent the gc to collect the callbacks.
         self._shapes = {}
         self._static_shapes = {}
-        self._bodies = {}
+        self._bodies = set()
+        self._joints = set()
+
+    def __del__(self):
+        cp.cpSpaceFree(self._space)
 
     def set_gravity(self, gravvec):
         self._space.contents.gravity = gravvec
@@ -57,22 +61,28 @@ class Space(object):
         cp.cpSpaceAddStaticShape(self._space, static_shape._shape)
     def add_body(self, body):
         """Adds a body to the space"""
+        self._bodies.add(body)
         cp.cpSpaceAddBody(self._space, body._body)
     def add_joint(self, joint):
         """Adds a joint to the space"""
+        self._joints.add(joint)
         cp.cpSpaceAddJoint(self._space, joint._joint)
 
     def remove_shape(self, shape):
         """Removes a shape from the space"""
+        del self._shapes[shape.id]
         cp.cpSpaceRemoveShape(self._space, shape._shape)
-    def remove_static_shape(self, staticshape):
-        """Removes a shape from the space."""
-        cp.cpSpaceRemoveStaticShape(self._space, staticshape._shape)
+    def remove_static_shape(self, static_shape):
+        """Removes a static shape from the space."""
+        del self._static_shapes[static_shape.id]
+        cp.cpSpaceRemoveStaticShape(self._space, static_shape._shape)
     def remove_body(self, body):
         """Removes a body from the space"""
+        self._bodies.remove(body)
         cp.cpSpaceRemoveBody(self._space, body._body)
     def remove_joint(self, joint):
         """Removes a joint from the space"""
+        self._joints.remove(joint)
         cp.cpSpaceRemoveJoint(self._space, joint._joint)
 
     def resize_static_hash(self, dim=100.0, count=1000):
@@ -106,15 +116,7 @@ class Space(object):
         contact persistence, requiring an order of magnitude fewer iterations
         to resolve the collisions in the usual case."""
         cp.cpSpaceStep(self._space, dt)
-
-    def free(self):
-        cp.cpSpaceFree(self._space)
-    
-    def free_children(self):
-        """This function will free all of the shapes, bodies and joints that
-        have been added to space."""
-        cp.cpSpaceFreeChildren(self._space)
-
+   
     def get_stamp(self):
         return self._space.contents.stamp
     stamp = property(get_stamp)
@@ -158,7 +160,7 @@ class Space(object):
             cp.cpSpaceAddCollisionPairFunc(self._space, a, b, f, None)
             
     def remove_collisionpair_func(self, a, b):
-        
+        """Remove the collision pair function between the shapes a and b"""
         if (a,b) in self._callbacks:
             del self._callbacks[(a,b)]
         cp.cpSpaceRemoveCollisionPairFunc(self._space, a, b)
@@ -169,6 +171,9 @@ class Space(object):
 class Body(object):
     def __init__(self, mass, inertia):
         self._body = cp.cpBodyNew(mass, inertia)
+    
+    def __del__(self):
+        cp.cpBodyFree(self._body)
 
     def set_mass(self, mass):
         cp.cpBodySetMass(self._body, mass)
@@ -254,6 +259,9 @@ class Shape(object):
         self._shape = shape
         self._body = shape.body
         self.data = None
+
+    def __del__(self):
+        cp.cpShapeFree(self._shape)
 
     def get_id(self):
         return self._shape.contents.id
@@ -375,7 +383,11 @@ class BB(object):
     top = property(lambda self: self._bb.t)
 
 class Joint(object):
-    pass
+    def __init__(self, joint=None):
+        self._joint = joint
+    
+    def __del__(self):
+        cp.cpJointFree(self._joint)
 
 class PinJoint(Joint):
     def __init__(self, a, b, anchr1, anchr2):
