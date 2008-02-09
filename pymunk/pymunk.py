@@ -142,7 +142,7 @@ class Space(object):
         if func is None:
             cp.cpSpaceAddCollisionPairFunc(self._space, a, b, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
         else:
-            f = Space._get_CF(func, data)
+            f = self._get_CF(func, data)
             self._callbacks[(a,b)] = f
             cp.cpSpaceAddCollisionPairFunc(self._space, a, b, f, None)
             
@@ -158,11 +158,11 @@ class Space(object):
             self._default_callback = None
             cp.cpSpaceSetDefaultCollisionPairFunc(self._space, a, b, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
         else:
-            f = Space._get_CF(func, data)
+            f = self._get_CF(func, data)
             self._default_callback = f
             cp.cpSpaceSetDefaultCollisionPairFunc(self._space, f, None)
     
-    def _get_CF(func, data):
+    def _get_CF(self, func, data):
         def CF (cpShapeA, cpShapeB, cpContacts, numContacts, normal_coef, _data):
             ### Translate chipmunk shapes to Shapes.
             if cpShapeA.contents.id in self._shapes:
