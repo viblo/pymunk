@@ -31,24 +31,50 @@ class Space(object):
         return self._space.contents.damping
     damping = property(get_damping, set_gravity)
 
-    def add(self, o):
-        """Add a shape, body or joint to the space"""
-        if isinstance(o, Body):
-            self.add_body(o)
-        elif isinstance(o, Shape):
-            self.add_shape(o)
-        elif isinstance(o, Joint):
-            self.add_joint(o)
-
-    def remove(self, o):
-        """Remove a shape, body or joint from the space"""
-        if isinstance(o, Body):
-            self.remove_body(o)
-        elif isinstance(o, Shape):
-            self.remove_shape(o)
-        elif isinstance(o, Joint):
-            self.remove_joint(o)
-
+    def add(self, *objs):
+        """Add one or many shapes, bodies or joints to the space"""
+        for o in objs:
+            if isinstance(o, Body):
+                self.add_body(o)
+            elif isinstance(o, Shape):
+                self.add_shape(o)
+            elif isinstance(o, Joint):
+                self.add_joint(o)
+            else:
+                for oo in o:
+                    self.add(oo)
+                    
+    def add_static(self, *objs):
+        """Add one or many static shapes to the space"""
+        for o in objs:
+            if isinstance(o, Shape):
+                self.add_shape(o)
+            else:
+                for oo in o:
+                    self.add_static(oo)
+                    
+    def remove(self, *objs):
+        """Remove one or many shapes, bodies or joints from the space"""
+        for o in objs:
+            if isinstance(o, Body):
+                self.remove_body(o)
+            elif isinstance(o, Shape):
+                self.remove_shape(o)
+            elif isinstance(o, Joint):
+                self.remove_joint(o)
+            else:
+                for oo in o:
+                    self.remove(oo)
+                    
+    def remove_static(self, *os):
+        """Remove one or many static shapes from the space"""
+        for o in os:
+            if isinstance(o, Shape):
+                self.remove_static_shape(o)
+            else:
+                for oo in o:
+                    self.remove_static(oo)
+                    
     def add_shape(self, shape):
         """Adds a shape to the space"""
         self._shapes[shape.id] = shape
@@ -361,13 +387,29 @@ class Poly(Shape):
         is the offset from the body's center of gravity in body local
         coordinates."""
         self._body = body
-        verts = (vec2d * len(vertices))(*vertices)
-#		for (i, vertex) in enumerate(vertices):
-#			verts[i].x = vertex.x
-#			verts[i].y = vertex.y
-        print cp.cpMomentForPoly(body.mass, len(vertices), verts, offset)
-        self._shape = cp.cpPolyShapeNew(body._body, len(vertices), verts, offset)
+        #self.verts = (vec2d * len(vertices))(*vertices)
+        self.verts = (vec2d * len(vertices))
+        self.verts = self.verts(vec2d(0, 0))
+        for (i, vertex) in enumerate(vertices):
+            self.verts[i].x = vertex[0]
+            self.verts[i].y = vertex[1]
+            
+        self._shape = cp.cpPolyShapeNew(body._body, len(vertices), self.verts, offset)
 
+    def get_points(self):
+        #shape = ct.cast(self._shape, ct.POINTER(cp.cpPolyShape))
+        #num = shape.contents.numVerts
+        #verts = shape.contents.verts
+        points = []
+        for i in xrange(len(self.verts)):
+            p = self.verts[i].cpvrotate(self._body.rotation_vector)+self._body.position
+            points.append((p[0], p[1]))
+            
+        return points
+
+def moment_for_poly(mass, verts,  offset):
+    return cp.cpMomentForPoly(mass, len(verts), verts, offset)
+    
 def reset_shapeid_counter():
     cp.cpResetShapeIdCounter()
 
@@ -443,13 +485,25 @@ class Contact(object):
         self._contact = contact
 
     def get_position(self):
-        return self._contact.contents.p
-    position = property(get_position)
+        return self._contact.p
+    position = property(get_position, doc="""Contact position""")
 
     def get_normal(self):
-        return self._contact.contents.n
-    normal = property(get_normal)
+        return self._contact.n
+    normal = property(get_normal, doc="""Contact normal""")
 
     def get_distance(self):
-        return self._contact.contents.dist
-    distance = property(get_distance)
+        return self._contact.dist
+    distance = property(get_distance, doc="""Penetration distance""")
+    
+    # TODO: figure out how this works..
+    def get_jn_acc(self):
+        return self._contact.jnAcc
+    jn_acc = property(get_distance, doc="""The normal component of the accumulated (final) impulse applied to resolve the collision. Will not be valid until after the call to Space.step() returns""")
+
+    def get_jt_acc(self):
+        return self._contact.jtAcc
+    jt_acc = property(get_jt_acc, doc="""The tangential component of the accumulated (final) impulse applied to resolve the collision. Will not be valid until after the call to Space.step() returns""")
+
+    
+    

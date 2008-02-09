@@ -45,10 +45,9 @@ def main():
     
     ### Mouse
     mouse_body = pm.Body(1e100, 1e100)
-    space.add(mouse_body)
     mouse_shape = pm.Circle(mouse_body, 3, vec2d(0,0))
     mouse_shape.collision_type = COLLTYPE_MOUSE
-    space.add(mouse_shape)
+    space.add(mouse_body, mouse_shape)
 
     space.add_collisionpair_func(COLLTYPE_MOUSE, COLLTYPE_DEFAULT, mouse_coll_func, ("hello", "world"))   
     
@@ -69,8 +68,7 @@ def main():
                 body.position = p
                 shape = pm.Circle(body, 10, vec2d(0,0))
                 shape.friction = 0.5
-                space.add(body)
-                space.add(shape)
+                space.add(body, shape)
                 balls.append(shape)
                 
             elif event.type == MOUSEBUTTONDOWN and event.button == 3: 
@@ -78,11 +76,13 @@ def main():
                     line_point1 = vec2d(event.pos[X], flipy(event.pos[Y]))
             elif event.type == MOUSEBUTTONUP and event.button == 3: 
                 if line_point1 is not None:
+                    
                     line_point2 = vec2d(event.pos[X], flipy(event.pos[Y]))
+                    print line_point1, line_point2
                     body = pm.Body(1e100, 1e100)
                     shape= pm.Segment(body, line_point1, line_point2, 0.0)
                     shape.friction = 0.99
-                    space.add_static_shape(shape)
+                    space.add_static(shape)
                     static_lines.append(shape)
                     line_point1 = None
             
@@ -98,8 +98,7 @@ def main():
             body = pm.Body(10, 10)
             body.position = mouse_pos
             shape = pm.Circle(body, 10, vec2d(0,0))
-            space.add(body)
-            space.add(shape)
+            space.add(body, shape)
             balls.append(shape)
        
         ### Update physics
