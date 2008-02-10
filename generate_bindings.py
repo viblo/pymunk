@@ -55,7 +55,7 @@ _lib_debug = False #Set to True to print the Chipmunk path.
 from vec2d import vec2d
 cpVect = vec2d
 
-chipmunk_lib = load_library("Chipmunk")
+chipmunk_lib = load_library("chipmunk")
 if _lib_debug: print chipmunk_lib
 """
 

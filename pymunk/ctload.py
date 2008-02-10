@@ -55,6 +55,7 @@ def load_library(name, path=None):
         else:
             lib = name+'.so'
             ldenv = 'LD_LIBRARY_PATH'
+        lib = 'lib' + lib
         pathlist += [p for p in os.environ.get(ldenv,'').split(':') if p != '']
         pathlist += ['/usr/local/lib','/usr/lib']
 
