@@ -3,6 +3,8 @@ import _chipmunk as cp
 import util as u
 from vec2d import vec2d
 
+inf = 1e100 # Usefull when you for example need a static body with inf mass
+
 def init_pymunk():
     cp.cpInitChipmunk()
 
@@ -16,8 +18,21 @@ class Space(object):
         self._bodies = set()
         self._joints = set()
 
+    def get_shapes(self):
+        return self._shapes.values()
+    shapes = property(get_shapes)
+
+    def get_static_shapes(self):
+        return self._static_shapes.values()
+    static_shapes = property(get_static_shapes)
+
+    def get_bodies(self):
+        return self._bodies
+    bodies = property(get_bodies)
+
     def __del__(self):
         cp.cpSpaceFree(self._space)
+
 
     def set_gravity(self, gravvec):
         self._space.contents.gravity = gravvec
@@ -233,6 +248,12 @@ class Body(object):
         return self._body.contents.rot
     rotation_vector = property(get_rotation_vector)
 
+    def set_torque(self, t):
+        self._body.contents.t = t
+    def get_torque(self):
+        return self._body.contents.t
+    torque = property(get_torque, set_torque)
+
     def set_position(self, pos):
         self._body.contents.p = pos
     def get_position(self):
@@ -244,6 +265,12 @@ class Body(object):
     def get_velocity(self):
         return self._body.contents.v
     velocity = property(get_velocity, set_velocity)
+
+    def set_angular_velocity(self, w):
+        self._body.contents.w = w
+    def get_angular_velocity(self):
+        return self._body.contents.w
+    angular_velocity = property(get_angular_velocity, set_angular_velocity)
 
     def apply_impulse(self, j, r):
         """Apply the impulse j to body with offset r. Both j and r should be in
@@ -283,12 +310,12 @@ class Body(object):
         #TODO: Test me
         return (v - self.position).cpvunrotate(self.rotation_vector)
 
-def damped_spring(a, b, anchor1, anchor2, rlen, k, dmp, dt):
-    """Apply a spring force between bodies a and b at anchors anchr1 and anchr2
-    respectively. k is the spring constant (force/distance), rlen is the rest 
-    length of the spring, dmp is the damping constant (force/velocity), and dt 
-    is the time step to apply the force over."""
-    cp.cpDampedSpring(a._body, b._body, anchor1, anchor2, rlen, k, dmp, dt)
+    def damped_spring(self, b, anchor1, anchor2, rlen, k, dmp, dt):
+        """Apply a spring force between this and body b at anchors anchr1 and anchr2
+        respectively. k is the spring constant (force/distance), rlen is the rest 
+        length of the spring, dmp is the damping constant (force/velocity), and dt 
+        is the time step to apply the force over."""
+        cp.cpDampedSpring(self._body, b._body, anchor1, anchor2, rlen, k, dmp, dt)
 
 class Shape(object):
     def __init__(self, shape=None):
@@ -407,7 +434,16 @@ class Poly(Shape):
             
         return points
 
-def moment_for_poly(mass, verts,  offset):
+def moment_for_circle(mass, inner_radius, outer_radius, offset):
+    """Calculate the moment of inertia for a circle"""
+    return cp.cpMomentForCircle(mass, inner_radius, outer_radius, offset)
+
+def moment_for_poly(mass, vertices,  offset):
+    verts = (vec2d * len(vertices))
+    verts = verts(vec2d(0, 0))
+    for (i, vertex) in enumerate(vertices):
+        verts[i].x = vertex[0]
+        verts[i].y = vertex[1]
     return cp.cpMomentForPoly(mass, len(verts), verts, offset)
     
 def reset_shapeid_counter():
