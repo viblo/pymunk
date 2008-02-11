@@ -1,3 +1,5 @@
+from ez_setup import use_setuptools
+use_setuptools()
 from setuptools import setup, Extension, find_packages
 
 # todo: add/remove/think about this list :)
