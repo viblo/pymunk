@@ -1,3 +1,8 @@
+"""
+Note: This code is a straight conversion of the Moonbuggy tutorial code
+TODO: Add licence text for it, until then see the original Moonbuggy 
+tutorial for licence.
+"""
 
 from pymunk.vec2d import vec2d
 from pymunk.util import *
