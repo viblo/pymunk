@@ -64,8 +64,6 @@ def drawObject(shape):
         drawPolyShape(shape)
 
 def drawCollisions(arb):
-    print arb.a.friction
-    print arb.b.friction
     for contact in arb.contacts:
         glVertex2f(contact.position.x, contact.position.y)
 
