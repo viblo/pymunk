@@ -102,7 +102,7 @@ def main():
         dt = 1.0/60.0
         for x in range(1):
             space.step(dt)
-
+        
         ### Flip screen
         pygame.display.flip()
         clock.tick(50)

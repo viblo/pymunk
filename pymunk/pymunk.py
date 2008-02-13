@@ -161,7 +161,19 @@ class Space(object):
    
     def get_stamp(self):
         return self._space.contents.stamp
-    stamp = property(get_stamp)
+    stamp = property(get_stamp, doc="""Time stamp. Is incremented on every call to step()""")
+    
+    def get_arbiters(self):        
+        num = self._space.contents.arbiters.contents.num
+        arr = self._space.contents.arbiters.contents.arr
+        arbs = []
+        for i in xrange(num):
+            arb = ct.cast(arr[i], ct.POINTER(cp.cpArbiter))
+            arbs.append(Arbiter(arb, self._shapes, self._static_shapes))
+        return arbs
+    arbiters = property(get_arbiters, doc="""List of active arbiters for the impulse solver.""")
+    
+    #TODO: add contactset, joints, collfuncs? iterations?
     
     def add_collisionpair_func(self, a, b, func, data):
         """Register func to be called when a collision is found between a 
@@ -387,6 +399,8 @@ class Circle(Shape):
         return ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.r
     radius = property(get_radius, set_radius)
         
+    center = property(lambda self: ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.c
+        , doc="""Center. (body space coordinates)""")
 
 class Segment(Shape):
     def __init__(self, body, a, b, radius):
@@ -541,5 +555,54 @@ class Contact(object):
         return self._contact.jtAcc
     jt_acc = property(get_jt_acc, doc="""The tangential component of the accumulated (final) impulse applied to resolve the collision. Will not be valid until after the call to Space.step() returns""")
 
+
+class Arbiter(object):
+    """Class for tracking collisions between shapes."""
+    def __init__(self, arbiter, shapes, static_shapes):
+        self._arbiter = arbiter
+        self._shapes = shapes
+        self._static_shapes = static_shapes
     
+    def get_contacts(self):
+        cs = [Contact(self._arbiter.contents.contacts[i]) for i in xrange(self._arbiter.contents.numContacts)]
+        return cs
+    contacts = property(get_contacts, doc="""Information on the contact points between the objects.""")
+        
+    def get_a(self):
+        a = self._arbiter.contents.a
+        if a.contents.id in self._shapes:
+            shapeA = self._shapes[a.contents.id]
+        elif a.contents.id in self._static_shapes:
+            shapeA = self._static_shapes[a.contents.id]
+        else:
+            shapeA = None # What to do here, the shape has been removed from the space.
+        return shapeA
+    a = property(get_a, doc="""The first shape involved in the collision""")    
+    
+    def get_b(self):
+        b = self._arbiter.contents.b
+        if b.contents.id in self._shapes:
+            shapeB = self._shapes[b.contents.id]
+        elif b.contents.id in self._static_shapes:
+            shapeB = self._static_shapes[b.contents.id]
+        else:
+            shapeB = None # What to do here, the shape has been removed from the space.
+        return shapeB
+    b = property(get_b, doc="""The second shape involved in the collision""")
+
+    def get_elasticity(self):
+        return self._arbiter.contents.e
+    elasticity = property(get_elasticity, doc="""Elasticity""")
+    
+    def get_friction(self):
+        return self._arbiter.contents.u
+    friction = property(get_friction, doc="""Friction""")
+    
+    def get_surface_velocity(self):
+        return self._arbiter.contents.target_v
+    surface_velocity = property(get_surface_velocity, doc="""Surface velocity""")
+
+    def get_stamp(self):
+        return self._arbiter.contents.stamp
+    stamp = property(get_stamp, doc="""Time stamp of the arbiter. (from the space)""")
     

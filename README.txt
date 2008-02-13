@@ -17,7 +17,8 @@ EXAMPLE
 DEPENDENCIES/REQUIREMENTS
 * A dynamic lib of Chipmunk
 * ctypes (included in python 2.5)
-* pygame (optional, you need it to run the demo)
+* pygame (optional, you need it to run most of the demos)
+* pyglet (optional, you need it to run the moon buggy demo)
 * ctypeslib & GCC_XML (optional, you need them to generate new bindings)
 
 A compiled windows dll of Chipmunk compatible with pymunk is available at 
