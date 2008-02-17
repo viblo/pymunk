@@ -67,10 +67,13 @@ def main():
         ticks_to_next_ball -= 1
         if ticks_to_next_ball <= 0:
             ticks_to_next_ball = 100
-            body = pm.Body(10, 100)
+            mass = 10
+            radius = 25
+            inertia = pm.moment_for_circle(mass, 0, radius, vec2d(0,0))
+            body = pm.Body(mass, inertia)
             x = random.randint(115,350)
             body.position = x, 400
-            shape = pm.Circle(body, 25, vec2d(0,0))
+            shape = pm.Circle(body, radius, vec2d(0,0))
             space.add(body, shape)
             balls.append(shape)
         
