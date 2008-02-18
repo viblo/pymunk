@@ -32,12 +32,35 @@ def main():
     ## Balls
     balls = []
        
-    ### walls
-    static_body = pm.Body(1e100, 1e100)
-    static_lines = [pm.Segment(static_body, vec2d(111.0, 280.0), vec2d(407.0, 246.0), 0.0)
-                    ,pm.Segment(static_body, vec2d(407.0, 246.0), vec2d(407.0, 343.0), 0.0)
-                    ]    
-    space.add_static(static_lines)
+    ### static stuff
+    rot_center_body = pm.Body(1e100, 1e100)
+    rot_center_body.position = vec2d(300,300)
+    
+    ### To hold back the L
+    rot_limit_body = pm.Body(1e100, 1e100)
+    rot_limit_body.position = vec2d(200,300)
+       
+    ### The moving L shape
+    l1 = [vec2d(-150, 0), vec2d(255.0, 0.0)]
+    l2 = [vec2d(-150.0, 0), vec2d(-150.0, 50.0)]
+    
+    body = pm.Body(10,10000)
+    body.position = vec2d(300,300)
+    
+    lines = [pm.Segment(body, l1[0], l1[1], 5.0) 
+                ,pm.Segment(body, l2[0], l2[1], 5.0)
+                ]
+    for l in lines:
+        l.collision_type = COLLTYPE_L
+    space.add(body)
+    space.add(lines)
+    
+    ### The L rotates around this
+    rot_center = pm.PinJoint(body, rot_center_body, vec2d(0,0), vec2d(0,0))
+    ### And is constrained by this
+    joint_limit = 25
+    rot_limit = pm.SlideJoint(body, rot_limit_body, vec2d(-100,0), vec2d(0,0), 0, 25)
+    space.add(rot_center, rot_limit)
     
     ticks_to_next_ball = 10
 
@@ -50,14 +73,15 @@ def main():
                 
         ticks_to_next_ball -= 1
         if ticks_to_next_ball <= 0:
-            ticks_to_next_ball = 100
-            mass = 10
-            radius = 25
+            ticks_to_next_ball = 25
+            mass = 1
+            radius = 14
             inertia = pm.moment_for_circle(mass, 0, radius, vec2d(0,0))
             body = pm.Body(mass, inertia)
             x = random.randint(115,350)
-            body.position = x, 400
+            body.position = x, 550
             shape = pm.Circle(body, radius, vec2d(0,0))
+            print shape.friction
             space.add(body, shape)
             balls.append(shape)
         
@@ -67,7 +91,7 @@ def main():
         ### Draw stuff
         balls_to_remove = []
         for ball in balls:
-            if ball.body.position.y < 200: balls_to_remove.append(ball)
+            if ball.body.position.y < 150: balls_to_remove.append(ball)
 
             p = to_pygame(ball.body.position)
             pygame.draw.circle(screen, THECOLORS["blue"], p, int(ball.radius), 2)
@@ -76,24 +100,22 @@ def main():
             space.remove(ball, ball.body)
             balls.remove(ball)
 
-        for line in static_lines:
+        for line in lines:
             body = line.body
             pv1 = body.position + line.a.rotated(math.degrees(body.angle))
             pv2 = body.position + line.b.rotated(math.degrees(body.angle))
             p1 = to_pygame(pv1)
             p2 = to_pygame(pv2)
             pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])
-            
-        for arb in space.arbiters:
-            for c in arb.contacts:
-                r = max( 3, abs(c.distance*5) )
-                r = int(r)
-                p = to_pygame(c.position)
-                pygame.draw.circle(screen, THECOLORS["red"], p, r, 0)
-            
+        
+        ### The rotation center of the L shape        
+        pygame.draw.circle(screen, THECOLORS["red"], rot_center_body.position, 5)
+        ### The limits where it can move.
+        pygame.draw.circle(screen, THECOLORS["green"], rot_limit_body.position, joint_limit, 2)
+
         ### Update physics
-        dt = 1.0/60.0
-        for x in range(1):
+        dt = 1.0/50.0/10.0
+        for x in range(10):
             space.step(dt)
         
         ### Flip screen
