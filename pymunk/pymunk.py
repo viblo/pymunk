@@ -63,7 +63,7 @@ class Space(object):
         """Add one or many static shapes to the space"""
         for o in objs:
             if isinstance(o, Shape):
-                self.add_shape(o)
+                self.add_static_shape(o)
             else:
                 for oo in o:
                     self.add_static(oo)
