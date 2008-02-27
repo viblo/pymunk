@@ -50,7 +50,8 @@ def main(argv=None):
 
     custom_head = """
 from ctypes import * 
-from ctload import load_library
+from libload import load_library
+#from ctload import load_library # try this if libload doesnt work for you..
 _lib_debug = False #Set to True to print the Chipmunk path.
 from vec2d import vec2d
 cpVect = vec2d
