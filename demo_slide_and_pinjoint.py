@@ -18,6 +18,7 @@ def main():
         
     pygame.init()
     screen = pygame.display.set_mode((600, 600))
+    pygame.display.set_caption("Joints. Just wait and the L will tip over")
     clock = pygame.time.Clock()
     running = True
     
@@ -50,8 +51,7 @@ def main():
     lines = [pm.Segment(body, l1[0], l1[1], 5.0) 
                 ,pm.Segment(body, l2[0], l2[1], 5.0)
                 ]
-    for l in lines:
-        l.collision_type = COLLTYPE_L
+
     space.add(body)
     space.add(lines)
     
@@ -78,7 +78,7 @@ def main():
             radius = 14
             inertia = pm.moment_for_circle(mass, 0, radius, vec2d(0,0))
             body = pm.Body(mass, inertia)
-            x = random.randint(115,350)
+            x = random.randint(120,380)
             body.position = x, 550
             shape = pm.Circle(body, radius, vec2d(0,0))
             print shape.friction
@@ -121,7 +121,7 @@ def main():
         ### Flip screen
         pygame.display.flip()
         clock.tick(50)
-        pygame.display.set_caption("fps: " + str(clock.get_fps()))
+        
         
 if __name__ == '__main__':
     sys.exit(main())
