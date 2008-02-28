@@ -5,17 +5,16 @@ import pymunk as pm
 import pymunk.util as u
 from pymunk.vec2d import vec2d
 import math, sys, random
-X,Y,Z = 0,1,2 # Easy indexing
 
-def flipy(y):
+def to_pygame(p):
     """Small hack to convert pymunk to pygame coordinates"""
-    return -y+600
+    return int(p.x), int(-p.y+600)
 
 def coll_func(shapeA, shapeB, contacts, normal_coef, screen):
     """Draw a circle at the contact, with larger radius for greater collisions"""
     for c in contacts:
-        r = max( 3, abs(c.distance*5) )
-        p = c.position.x, flipy(c.position.y)
+        r = int(max( 3, abs(c.distance*5) ))
+        p = to_pygame(c.position)
         pygame.draw.circle(screen, THECOLORS["red"], p, r, 0)
     return True
 
@@ -80,8 +79,8 @@ def main():
         for ball in balls:
             if ball.body.position.y < 200: balls_to_remove.append(ball)
 
-            p = ball.body.position.x, flipy(ball.body.position.y)
-            pygame.draw.circle(screen, THECOLORS["blue"], p, ball.radius, 2)
+            p = to_pygame(ball.body.position)
+            pygame.draw.circle(screen, THECOLORS["blue"], p, int(ball.radius), 2)
     
         for ball in balls_to_remove:
             space.remove(ball, ball.body)
@@ -91,8 +90,8 @@ def main():
             body = line.body
             pv1 = body.position + line.a.rotated(math.degrees(body.angle))
             pv2 = body.position + line.b.rotated(math.degrees(body.angle))
-            p1 = pv1.x, flipy(pv1.y)
-            p2 = pv2.x, flipy(pv2.y)
+            p1 = to_pygame(pv1)
+            p2 = to_pygame(pv2)
             pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])
 
         ### Update physics

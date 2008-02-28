@@ -81,7 +81,6 @@ def main():
             x = random.randint(120,380)
             body.position = x, 550
             shape = pm.Circle(body, radius, vec2d(0,0))
-            print shape.friction
             space.add(body, shape)
             balls.append(shape)
         
@@ -109,9 +108,9 @@ def main():
             pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])
         
         ### The rotation center of the L shape        
-        pygame.draw.circle(screen, THECOLORS["red"], rot_center_body.position, 5)
+        pygame.draw.circle(screen, THECOLORS["red"], to_pygame(rot_center_body.position), 5)
         ### The limits where it can move.
-        pygame.draw.circle(screen, THECOLORS["green"], rot_limit_body.position, joint_limit, 2)
+        pygame.draw.circle(screen, THECOLORS["green"], to_pygame(rot_limit_body.position), joint_limit, 2)
 
         ### Update physics
         dt = 1.0/50.0/10.0

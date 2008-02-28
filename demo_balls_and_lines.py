@@ -5,8 +5,7 @@ import pymunk as pm
 import pymunk.util as u
 from pymunk.vec2d import vec2d
 import math
-X,Y,Z = 0,1,2 # Easy indexing
-
+X,Y = 0,1
 ### Physics collision types
 COLLTYPE_DEFAULT = 0
 COLLTYPE_MOUSE = 1
@@ -126,9 +125,9 @@ Space: Pause physics simulation"""
             r = ball.radius
             v = ball.body.position
             rot = ball.body.rotation_vector
-            p = v.x, flipy(v.y)
+            p = int(v.x), int(flipy(v.y))
             p2 = vec2d(rot.x, -rot.y) * r * 0.9
-            pygame.draw.circle(screen, THECOLORS["blue"], p, r, 2)
+            pygame.draw.circle(screen, THECOLORS["blue"], p, int(r), 2)
             pygame.draw.line(screen, THECOLORS["red"], p, p+p2)
 
         if line_point1 is not None:

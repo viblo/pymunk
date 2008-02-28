@@ -5,7 +5,6 @@ import pymunk as pm
 import pymunk.util as u
 from pymunk.vec2d import vec2d
 import math, sys, random
-X,Y,Z = 0,1,2 # Easy indexing
 
 def to_pygame(p):
     """Small hack to convert pymunk to pygame coordinates"""
