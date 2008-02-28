@@ -1,9 +1,9 @@
-
-
-Code:
+Big thanks to (in no order):
 Paul Kienzle (ctload)
 Mark Sherry (base of pymunk.py)
 unknown @ pygame (vec2d)
 alecthomas (base setup)
+mr Chipmunk himself, Scott Lembcke! (Chipmunk)
+and everyone else that have conrtibuted in any way.
 
 (are you missing? contact me add I will add you)

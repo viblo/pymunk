@@ -50,14 +50,15 @@ def main(argv=None):
 
     custom_head = """
 from ctypes import * 
-from libload import load_library
-#from ctload import load_library # try this if libload doesnt work for you..
-_lib_debug = False #Set to True to print the Chipmunk path.
 from vec2d import vec2d
 cpVect = vec2d
 
-chipmunk_lib = load_library("chipmunk")
-if _lib_debug: print chipmunk_lib
+from libload import load_library
+_lib_debug = False #Set to True to print the Chipmunk path.
+chipmunk_lib = load_library("chipmunk", print_path=_lib_debug)
+
+#from ctload import load_library #uncomment to use ctload instead
+#chipmunk_lib = load_library("chipmunk")
 """
 
     chipmunkpy = open(options.output, 'r').read()

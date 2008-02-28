@@ -1,22 +1,23 @@
 
 from ctypes import * 
-from libload import load_library
-#from ctload import load_library # try this if libload doesnt work for you..
-_lib_debug = False #Set to True to print the Chipmunk path.
 from vec2d import vec2d
 cpVect = vec2d
 
-chipmunk_lib = load_library("chipmunk")
-if _lib_debug: print chipmunk_lib
+from libload import load_library
+_lib_debug = False #Set to True to print the Chipmunk path.
+chipmunk_lib = load_library("chipmunk", print_path=_lib_debug)
+
+#from ctload import load_library #uncomment to use ctload instead
+#chipmunk_lib = load_library("chipmunk")
 
 STRING = c_char_p
 
 
-CP_NUM_SHAPES = 3
-CP_CIRCLE_SHAPE = 0
-# def CP_HASH_PAIR(A,B): return ((unsigned int)(A)*CP_HASH_COEF ^ (unsigned int)(B)*CP_HASH_COEF) # macro
 CP_POLY_SHAPE = 2
 CP_SEGMENT_SHAPE = 1
+CP_CIRCLE_SHAPE = 0
+CP_NUM_SHAPES = 3
+# def CP_HASH_PAIR(A,B): return ((unsigned int)(A)*CP_HASH_COEF ^ (unsigned int)(B)*CP_HASH_COEF) # macro
 cpFloat = c_float
 class MSVC_EVIL_FLOAT_HACK(Union):
     pass

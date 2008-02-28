@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 from pygame.color import *
 import pymunk as pm
-import pymunk.util as u
 from pymunk.vec2d import vec2d
 import math
 X,Y = 0,1
@@ -22,10 +21,7 @@ def mouse_coll_func(s1, s2, cs, normal_coef, data):
     return False
 
 def main():
-    
-    global contact
-    global shape_to_remove
-        
+            
     pygame.init()
     screen = pygame.display.set_mode((600, 600))
     clock = pygame.time.Clock()

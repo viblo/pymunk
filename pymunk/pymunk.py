@@ -172,9 +172,7 @@ class Space(object):
             arbs.append(Arbiter(arb, self._shapes, self._static_shapes))
         return arbs
     arbiters = property(get_arbiters, doc="""List of active arbiters for the impulse solver.""")
-    
-    #TODO: add contactset, joints, collfuncs? iterations?
-    
+        
     def add_collisionpair_func(self, a, b, func, data):
         """Register func to be called when a collision is found between a 
         shapes with collision_type fields that match a and b. Pass None
@@ -234,62 +232,65 @@ class Space(object):
 class Body(object):
     def __init__(self, mass, inertia):
         self._body = cp.cpBodyNew(mass, inertia)
-    
+        self._bodycontents =  self._body.contents 
+        
     def __del__(self):
         cp.cpBodyFree(self._body)
 
     def set_mass(self, mass):
         cp.cpBodySetMass(self._body, mass)
     def get_mass(self):
-        return self._body.contents.m
+        return self._bodycontents.m
     mass = property(get_mass, set_mass)
 
     def set_moment(self, moment):
         cp.cpBodySetMoment(self._body, moment)
     def get_moment(self):
-        return self._body.contents.i
+        return self._bodycontents.i
     moment = property(get_moment, set_moment)
 
     def set_angle(self, angle):
         cp.cpBodySetAngle(self._body, angle)
     def get_angle(self):
-        return self._body.contents.a
+        #return self._bodycontents.a
+        return self._bodycontents.a
     angle = property(get_angle, set_angle)
     
     def get_rotation_vector(self):
-        return self._body.contents.rot
+        return self._bodycontents.rot
     rotation_vector = property(get_rotation_vector)
 
     def set_torque(self, t):
-        self._body.contents.t = t
+        self._bodycontents.t = t
     def get_torque(self):
-        return self._body.contents.t
+        return self._bodycontents.t
     torque = property(get_torque, set_torque)
 
     def set_position(self, pos):
-        self._body.contents.p = pos
+        self._bodycontents.p = pos
     def get_position(self):
-        return self._body.contents.p
+        return self._bodycontents.p
+        return self._bodycontents.p
     position = property(get_position, set_position)
 
     def set_velocity(self, vel):
-        self._body.contents.v = vel
+        self._bodycontents.v = vel
     def get_velocity(self):
-        return self._body.contents.v
+        return self._bodycontents.v
     velocity = property(get_velocity, set_velocity)
 
     def set_angular_velocity(self, w):
-        self._body.contents.w = w
+        self._bodycontents.w = w
     def get_angular_velocity(self):
-        return self._body.contents.w
+        return self._bodycontents.w
     angular_velocity = property(get_angular_velocity, set_angular_velocity)
 
     def apply_impulse(self, j, r):
         """Apply the impulse j to body with offset r. Both j and r should be in
         world coordinates."""
         #TODO: Test me
-        self.velocity = self.velocity + j * self._body.contents.m_inv
-        self._body.contents.w += self._body.contents.i_inv* r.cross(j)
+        self.velocity = self.velocity + j * self._bodycontents.m_inv
+        self._bodycontents.w += self._bodycontents.i_inv* r.cross(j)
     
     def reset_forces(self):
         cp.cpBodyResetForces(self._body)
@@ -332,6 +333,7 @@ class Body(object):
 class Shape(object):
     def __init__(self, shape=None):
         self._shape = shape
+        self._shapecontents = self._shape.contents
         self._body = shape.body
         self.data = None
 
@@ -339,44 +341,44 @@ class Shape(object):
         cp.cpShapeFree(self._shape)
 
     def get_id(self):
-        return self._shape.contents.id
+        return self._shapecontents.id
     id = property(get_id)
 
     def get_collision_type(self):
-        return self._shape.contents.collision_type
+        return self._shapecontents.collision_type
     def set_collision_type(self, t):
-        self._shape.contents.collision_type = t
+        self._shapecontents.collision_type = t
     collision_type = property(get_collision_type, set_collision_type)
 
     def get_group(self):
-        return self._shape.contents.group
+        return self._shapecontents.group
     def set_group(self, group):
-        self._shape.contents.group = group
+        self._shapecontents.group = group
     group = property(get_group, set_group, doc="""Shapes in the same non-zero
  group do not generate collisions. Useful when creating an object out of many shapes that you don't want to self collide. Defaults to 0""")
 
     def get_layers(self):
-        return self._shape.contents.layers
+        return self._shapecontents.layers
     def set_layers(self, layers):
-        self._shape.contents.layers = layers
+        self._shapecontents.layers = layers
     layers = property(get_layers, set_layers, doc="""Shapes only collide if they are in the same bit-planes. i.e. (a->layers & b->layers) != 0 By default, a shape occupies all 32 bit-planes.""")
 
     def get_elasticity(self):
-        return self._shape.contents.e
+        return self._shapecontents.e
     def set_elasticity(self, e):
-        self._shape.contents.e = e
+        self._shapecontents.e = e
     elasticity = property(get_elasticity, set_elasticity, doc="""Elasticity of the shape. A value of 0.0 gives no bounce, while a value of 1.0 will give a 'perfect' bounce. However due to inaccuracies in the simulation using 1.0 or greater is not recommended however.""")
 
     def get_friction(self):
-        return self._shape.contents.u
+        return self._shapecontents.u
     def set_friction(self, u):
-        self._shape.contents.u = u
+        self._shapecontents.u = u
     friction = property(get_friction, set_friction, doc="""Friction coefficient. Chipmunk uses the Coulomb friction model, a value of 0.0 is frictionless.""")
 
     def get_surface_velocity(self):
-        return self._shape.contents.surface_v
+        return self._shapecontents.surface_v
     def set_surface_velocity(self, surface_v):
-        self._shape.contents.surface_v = surface_v
+        self._shapecontents.surface_v = surface_v
     surface_velocity = property(get_surface_velocity, set_surface_velocity, doc="""The surface velocity of the object. Useful for creating conveyor belts or players that move around. This value is only used when calculating friction, not the collision.""")
 
     def get_body(self):
@@ -392,6 +394,7 @@ class Circle(Shape):
         body's center of gravity in body local coordinates."""
         self._body = body
         self._shape = cp.cpCircleShapeNew(body._body, radius, offset)
+        self._shapecontents = self._shape.contents
 
     def set_radius(self, r):
         ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.r = r
@@ -408,6 +411,7 @@ class Segment(Shape):
         endpoints, and radius is the thickness of the segment."""
         self._body = body
         self._shape = cp.cpSegmentShapeNew(body._body, a, b, radius)
+        self._shapecontents = self._shape.contents
     def set_a(self, a):
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a = a
     def get_a(self):
@@ -436,7 +440,8 @@ class Poly(Shape):
             self.verts[i].y = vertex[1]
             
         self._shape = cp.cpPolyShapeNew(body._body, len(vertices), self.verts, offset)
-
+        self._shapecontents = self._shape.contents
+        
     def get_points(self):
         #shape = ct.cast(self._shape, ct.POINTER(cp.cpPolyShape))
         #num = shape.contents.numVerts
@@ -569,22 +574,22 @@ class Arbiter(object):
     contacts = property(get_contacts, doc="""Information on the contact points between the objects.""")
         
     def get_a(self):
-        a = self._arbiter.contents.a
-        if a.contents.id in self._shapes:
-            shapeA = self._shapes[a.contents.id]
-        elif a.contents.id in self._static_shapes:
-            shapeA = self._static_shapes[a.contents.id]
+        a = self._arbiter.contents.a.contents
+        if a.id in self._shapes:
+            shapeA = self._shapes[a.id]
+        elif a.id in self._static_shapes:
+            shapeA = self._static_shapes[a.id]
         else:
             shapeA = None # What to do here, the shape has been removed from the space.
         return shapeA
     a = property(get_a, doc="""The first shape involved in the collision""")    
     
     def get_b(self):
-        b = self._arbiter.contents.b
-        if b.contents.id in self._shapes:
-            shapeB = self._shapes[b.contents.id]
-        elif b.contents.id in self._static_shapes:
-            shapeB = self._static_shapes[b.contents.id]
+        b = self._arbiter.contents.b.contents
+        if b.id in self._shapes:
+            shapeB = self._shapes[b.id]
+        elif b.id in self._static_shapes:
+            shapeB = self._static_shapes[b.id]
         else:
             shapeB = None # What to do here, the shape has been removed from the space.
         return shapeB

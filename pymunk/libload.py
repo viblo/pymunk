@@ -3,7 +3,7 @@ import sys
 import ctypes
 import ctypes.util
 
-def load_library(libname):
+def load_library(libname, print_path=False):
     platform = sys.platform
     
     names = [libname]
@@ -15,6 +15,7 @@ def load_library(libname):
     for name in names:
         try:
             lib = ctypes.cdll.LoadLibrary(name)
+            if print_path: print name
             return lib
         except OSError:
             if platform == "darwin":
@@ -24,6 +25,7 @@ def load_library(libname):
             if path:
                 try:
                     lib = ctypes.cdll.LoadLibrary(path)
+                    if print_path: print path
                 except OSError:
                     pass
     raise ImportError("Library %s could not be found and loaded" % libname[0])

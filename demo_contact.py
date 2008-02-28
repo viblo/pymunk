@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 from pygame.color import *
 import pymunk as pm
-import pymunk.util as u
 from pymunk.vec2d import vec2d
 import math, sys, random
 
