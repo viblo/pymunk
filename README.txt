@@ -1,6 +1,7 @@
 == pymunk ==
 A python wrapper for the 2d physics library Chipmunk
 2007 - 2008, Victor Blomqvist - vb@viblo.se
+http://pymunk.googlecode.com/
 
 ABOUT
 pymunk is a wrapper around the 2d physics library Chipmunk, 
@@ -8,15 +9,18 @@ http://wiki.slembcke.net/main/published/Chipmunk
 
 HOW TO USE
 Currently there are no documentation except this readme, the included
-demo file(s) and the chipmunk documentation found here:
+demo file(s), the chipmunk documentation found here:
 http://files.slembcke.net/chipmunk/chipmunk-docs.html
+and possibly some documentation at:
+http://pymunk.googlecode.com/
 
 EXAMPLE
--
+See the included demos.
 
 DEPENDENCIES/REQUIREMENTS
 * A dynamic lib of Chipmunk
 * ctypes (included in python 2.5)
+* python 2.5 (optional, used by the pymunk.util module)
 * pygame (optional, you need it to run most of the demos)
 * pyglet (optional, you need it to run the moon buggy demo)
 * ctypeslib & GCC_XML (optional, you need them to generate new bindings)
