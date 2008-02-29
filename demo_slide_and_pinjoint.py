@@ -12,9 +12,6 @@ def to_pygame(p):
 
 def main():
     
-    global contact
-    global shape_to_remove
-        
     pygame.init()
     screen = pygame.display.set_mode((600, 600))
     pygame.display.set_caption("Joints. Just wait and the L will tip over")
@@ -58,7 +55,7 @@ def main():
     rot_center = pm.PinJoint(body, rot_center_body, vec2d(0,0), vec2d(0,0))
     ### And is constrained by this
     joint_limit = 25
-    rot_limit = pm.SlideJoint(body, rot_limit_body, vec2d(-100,0), vec2d(0,0), 0, 25)
+    rot_limit = pm.SlideJoint(body, rot_limit_body, vec2d(-100,0), vec2d(0,0), 0, joint_limit)
     space.add(rot_center, rot_limit)
     
     ticks_to_next_ball = 10
