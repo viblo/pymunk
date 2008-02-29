@@ -29,6 +29,9 @@ A compiled windows dll of Chipmunk compatible with pymunk is available at
 http://pymunk.googlecode.com/ 
 You can also compile a dll or *NIX/OSX version of chipmunk on you own.
 Download the source of Chipmunk and follow the instructions. :)
+Place the dll/lib in whatever is standard on your platform. On windows
+it can be the same map as your code (to run the demos, place the dll
+together with them).
 
 OTHER
 
