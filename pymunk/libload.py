@@ -28,7 +28,7 @@ def load_library(libname, print_path=False):
                     if print_path: print path
                 except OSError:
                     pass
-    raise ImportError("Library %s could not be found and loaded" % libname[0])
+    raise ImportError("Library %s could not be found and loaded" % libname)
 
     
 def find_osx(libname): 
