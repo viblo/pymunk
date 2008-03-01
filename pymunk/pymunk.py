@@ -502,6 +502,8 @@ class PinJoint(Joint):
         
         a and b are the two bodies to connect, and anchr1 and anchr2 are the
         anchor points on those bodies."""
+        self._a = a
+        self._b = b
         self._joint = cp.cpPinJointNew(a._body, b._body, anchr1, anchr2)
 
 class SlideJoint(Joint):
@@ -513,6 +515,8 @@ class SlideJoint(Joint):
         a and b are the two bodies to connect, anchr1 and anchr2 are the
         anchor points on those bodies, and min and max define the allowed
         distances of the anchor points."""
+        self._a = a
+        self._b = b
         self._joint = cp.cpSlideJointNew(a._body, b._body, anchr1, anchr2, min, max)
 
 class PivotJoint(Joint):
@@ -523,6 +527,8 @@ class PivotJoint(Joint):
         world coordinates of the pivot. Because the pivot location is given in
         world coordinates, you must have the bodies moved into the correct
         positions already."""
+        self._a = a
+        self._b = b
         self._joint = cp.cpPivotJointNew(a._body, b._body, pivot)
 
 class GrooveJoint(Joint):
@@ -533,6 +539,8 @@ class GrooveJoint(Joint):
         a and b are the two bodies to conenct, 
         groove_a and groove_b is two points or vectors or something.
         anchr2 is an anchor point"""
+        self._a = a 
+        self._b = b
         self._joint = cp.cpGrooveJointNew(a._body, b._body, groove_a, groove_b, anchr2)
 
 class Contact(object):
