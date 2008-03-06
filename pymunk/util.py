@@ -17,7 +17,12 @@ def is_left(p0, p1, p2):
     < 0 for p2 right of the line
     """
     # cast the answer to an int so it can be used directly from sort()
-    return int((p1.x - p0.x)*(p2.y-p0.y) - (p2.x-p0.x)*(p1.y-p0.y))
+    # TODO: cast is not a good idea.. use something else
+    #return int((p1.x - p0.x)*(p2.y-p0.y) - (p2.x-p0.x)*(p1.y-p0.y))
+    sorting = (p1.x - p0.x)*(p2.y-p0.y) - (p2.x-p0.x)*(p1.y-p0.y)
+    if sorting > 0: return 1
+    elif sorting < 0: return -1 
+    else: return 0
     
 def reduce_poly(points, tolerance=500):
     """Remove close points to simplify a polyline

@@ -426,11 +426,13 @@ class Segment(Shape):
 
 
 class Poly(Shape):
-    def __init__(self, body, vertices, offset):
+    def __init__(self, body, vertices, offset, auto_order_vertices=False):
         """body is the body to attach the poly to, verts is an array of
         cpVect's defining a convex hull with a counterclockwise winding, offset
         is the offset from the body's center of gravity in body local
-        coordinates."""
+        coordinates. Set auto_order_vertices to automatically order the
+        vertices"""
+        if auto_order_vertices: raise Exception(NotImplemented)
         self._body = body
         #self.verts = (vec2d * len(vertices))(*vertices)
         self.verts = (vec2d * len(vertices))
@@ -449,7 +451,7 @@ class Poly(Shape):
         points = []
         for i in xrange(len(self.verts)):
             p = self.verts[i].cpvrotate(self._body.rotation_vector)+self._body.position
-            points.append((p[0], p[1]))
+            points.append(vec2d(p))
             
         return points
 

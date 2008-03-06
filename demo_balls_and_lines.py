@@ -32,8 +32,8 @@ def main():
     space = pm.Space()
     space.gravity = vec2d(0.0, -900.0)
     
-    space.resize_static_hash()
-    space.resize_active_hash()
+    #space.resize_static_hash()
+    #space.resize_active_hash()
     
     ## Balls
     balls = []
