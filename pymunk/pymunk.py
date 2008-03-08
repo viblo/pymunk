@@ -1,3 +1,7 @@
+"""Main module of pymunk
+
+This module contain the basic physic classes and functions.
+"""
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
@@ -6,10 +10,14 @@ import _chipmunk as cp
 import util as u
 from vec2d import vec2d
 
+#: Infinity that can be passed as mass or inertia to Body 
+#:
+#: Use this as mass and inertia when you need to create a static body.
 inf = 1e100
-"""Infinity. Usefull when you need a static body with infinite mass and inertia"""
+
 
 def init_pymunk():
+    """Call this method to initialize pymunk"""
     cp.cpInitChipmunk()
 
 class Space(object):

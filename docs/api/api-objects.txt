@@ -2,6 +2,7 @@ pymunk	pymunk-module.html
 pymunk.reset_shapeid_counter	pymunk.pymunk-module.html#reset_shapeid_counter
 pymunk.moment_for_circle	pymunk.pymunk-module.html#moment_for_circle
 pymunk.moment_for_poly	pymunk.pymunk-module.html#moment_for_poly
+pymunk.version	pymunk-module.html#version
 pymunk.convex_hull	pymunk.util-module.html#convex_hull
 pymunk.calc_center	pymunk.util-module.html#calc_center
 pymunk.poly_vectors_around_center	pymunk.util-module.html#poly_vectors_around_center
@@ -14,7 +15,6 @@ pymunk.pymunk.reset_shapeid_counter	pymunk.pymunk-module.html#reset_shapeid_coun
 pymunk.pymunk.moment_for_circle	pymunk.pymunk-module.html#moment_for_circle
 pymunk.pymunk.moment_for_poly	pymunk.pymunk-module.html#moment_for_poly
 pymunk.pymunk.inf	pymunk.pymunk-module.html#inf
-pymunk.pymunk.__version__	pymunk.pymunk-module.html#__version__
 pymunk.pymunk.init_pymunk	pymunk.pymunk-module.html#init_pymunk
 pymunk.util	pymunk.util-module.html
 pymunk.util.calc_center	pymunk.util-module.html#calc_center
