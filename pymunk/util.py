@@ -102,17 +102,17 @@ def calc_center(points):
     return (tot_x/n, tot_y/n)
     
 def poly_vectors_around_center(vec2d_pointlist):
-	"""Change polygon vectors around the center
-	
-	:return: pointlist ([vec2d, vec2d, vec2d, ...])
-	"""
-
-	poly_points_center = []
-	center = cx, cy = calc_center(vec2d_pointlist)
-	
-	for p in vec2d_pointlist:
-		x = p.x - cx
-		y = p.y - cy
-		poly_points_center.append(vec2d((x, y)))
-		
-	return poly_points_center	
+    """Change polygon vectors around the center
+    
+    :return: pointlist ([vec2d, vec2d, vec2d, ...])
+    """
+    
+    poly_points_center = []
+    center = cx, cy = calc_center(vec2d_pointlist)
+    	
+    for p in vec2d_pointlist:
+        x = p.x - cx
+        y = p.y - cy
+        poly_points_center.append(vec2d((x, y)))
+        
+    return poly_points_center	
