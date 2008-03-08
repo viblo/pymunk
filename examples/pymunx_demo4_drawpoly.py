@@ -60,7 +60,7 @@ def main():
 					draw_poly = False
 					points.append(event.pos)
 					if len(points) > 2: 
-						world.add_poly(event.pos, points)
+						world.add_poly(points)
 
 			elif event.type == MOUSEMOTION and draw_poly:
 				points.append(event.pos)

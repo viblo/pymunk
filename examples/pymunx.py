@@ -234,6 +234,14 @@ class pymunx:
 			print "pymunx Error: Please start pygame.init() before loading pymunx"
 			exit(0)
 
+	def is_inside(self, pos):
+		""" Returns True if pos is inside the screen and False if not """
+		x, y = pos
+		if x < 0 or x > self.display_width or y < 0 or y > self.display_height:
+			return False
+		else:
+			return True
+			
 	def get_pymunk_flags(self):
 		""" Find and save flags for functions in the latest pymunk releases, so pymunx can
 		use all pymunk versions starting at 0.6.1"""
@@ -264,11 +272,21 @@ class pymunx:
 				self.space.step(dt)
 
 	def draw(self, surface):
-		""" Draw All Shapes on a given Surface """
+		""" Draw All Shapes on a given Surface, and removes the ones outside """
+		to_remove = []
+
+		# Draw all Shapes
 		for shape in self.space.get_shapes():
-			self.draw_shape(surface, shape)
-		
+			if not self.draw_shape(surface, shape):
+				to_remove.append(shape)
+
+		# Draw Info-Text					
 		surface.blit(self.infostr_surface, (10,10))
+
+		# Remove Outside Shapes
+		for shape in to_remove:
+			self.space.remove(shape)
+			self.element_count -= 1
 			
 	def draw_shape(self, surface, shape):
 		""" shape can be either Circle, Segment or Poly """
@@ -288,10 +306,16 @@ class pymunx:
 			p2 = vec2d(rot.x, -rot.y) * r * 0.9
 			pygame.draw.line(surface, THECOLORS["red"], p, p+p2)
 			
+			# Remove if outside
+			if not self.is_inside(p): return False
+			
 		elif 'pymunk.Segment' in s:
 			a = shape.get_a()
 			b = shape.get_b()
 			pygame.draw.lines(surface, THECOLORS["blue"], False, [(a[0], self.flipy(a[1])), (b[0],self.flipy(b[1]))], 2)
+
+			# Remove if outside
+			if not self.is_inside(a) or not self.is_inside(b): return False
 		
 		elif 'pymunk.Poly' in s:
 			# Correct Poly y-Coordinates
@@ -308,6 +332,11 @@ class pymunx:
 			# Draw Poly
 			pygame.draw.lines(surface, THECOLORS["blue"], False, points, 2)
 
+			# Remove if outside
+			if not self.is_inside(points[0]): return False
+
+		return True
+		
 	def add_wall(self, p1, p2, friction=1.0):
 		""" Adds a fixed Wall """
 		mass = inf
@@ -353,7 +382,7 @@ class pymunx:
 	        self.space.add(body, shape)
 		self.element_count += 1
         
-	def add_poly(self, pos, points, mass=5.0, friction=3.0):
+	def add_poly(self, points, mass=5.0, friction=3.0):
 		# Make vec2d's out of the points
 		poly_points = []
 		for p in points:
@@ -379,7 +408,9 @@ class pymunx:
 
 		# Create Body
 		body = pm.Body(mass, moment)
-		body.position = self.vec2df(pos)
+
+		center = cx, cy = util.calc_center(poly_points)
+		body.position = vec2d((cx, cy))
 
 		# Create Shape
 		shape = pm.Poly(body, poly_points_center, vec2d(0,0))
