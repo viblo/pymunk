@@ -12,7 +12,7 @@ def main():
 
 	# Create the Physical Space Class
 	world = pymunx()
-	world.set_info("LMB: Create Polygon\nRMB: Add Ball\nRMB + Shift: Add Square\nSpace: Pause\n1: Add many balls\n2: Add many squares")
+	world.set_info("LMB: Create Polygon\nRMB: Add Ball\nRMB + Shift: Add Square\nSpace: Pause\n1: Add many balls\n2: Add many squares\n3: Toggle Black/Colors")
 	
 	# Add A Wall
 	world.add_wall((100, 700), (700, 700))
@@ -30,7 +30,7 @@ def main():
 				running = False
 				
 			elif event.type == KEYDOWN:
-				print event
+#				print event
 				if event.key == K_SPACE:	
 					# Pause with SPACE
 					world.run_physics = not world.run_physics
@@ -46,6 +46,12 @@ def main():
 					x, y = pygame.mouse.get_pos()
 					for i in range(5):
 						for j in range(5): world.add_square((x-i,y-j))
+
+				elif event.unicode == "3":
+					if world.fixed_color:
+						world.reset_color()
+					else:
+						world.set_color((0, 0, 0))
 
 			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
 				# Start/Stop Wall-Drawing 

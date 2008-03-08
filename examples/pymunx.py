@@ -1,100 +1,36 @@
 """
    pymunx :: A simplification class for pymunk 0.6.1+
 
-   http://www.linuxuser.at/pymunx
-   http://www.slembcke.net/forums/viewforum.php?f=6
-      
+            Home: http://wiki.laptop.org/go/Pymunx
+   Documentation: http://wiki.laptop.org/go/Pymunx/Documentation
+   
+ Sources & Demos: http://www.linuxuser.at/pymunx
+           Forum: http://www.slembcke.net/forums/viewforum.php?f=6
+           
+             IRC: #pymunk on irc.freenode.net
+   	
+   
    > About <
 
-	   Started by Chris Hager (chris@linuxuser.at) - March 2008 - (please send me feedback :)
-	   I just got started on this, more will come the next days. So check back again :)
-	   License: GPL
+	Pymunx was started by Chris Hager (chris@linuxuser.at) in March 2008.
+	(Please send me feedback :) I just got started on this, more will come
+	frequenty, so check back soon :)
+	   
+	License: GPL, 2008
+
+
+   > How-to get the Sources, Examples & Chipmunk Library <
+   
+   	svn checkout http://pymunk.googlecode.com/svn/trunk pymunk-read-only
       	
 
    > Version <
    
-   	pymunx-0.0.2 (commit: 7. March 2008)
+   	pymunx-0.0.3 (commit: 8. March 2008)
    	   
 
    > Latest Changes <
-   
-	* in update(): remove body.reset_forces()
-	* in update(): split one update into 5 smaller steps for space.step(dt)
 
-   	* backward compatibility: added pymunk_flags to check pymunk version specific things,
-   	  to be able to handle all pymunk versions starting from 0.6.1.
-   	  (For example in svn-48: the change in poly.get_points to vec2d)
-   		   
-
-   > Overview <
-	
-	class pymunx:
-		def __init__(self, gravity=(0.0,-900.0))
-	   		# Init function. Init pymunk, get flags, get screen size, init space
-	   		# Parameters: gravity = (int(x), int(y))
-	   		# Returns: class pymunx
-	   		
-		def set_info(self, txt)
-			# Sets the Info Text which will be blit at the upper left corner each update
-			# Parameters: txt = str (break lines with \n)
-			# Returns: -
-		
-   		def flipy (self, y)
-			# Converts Chipmunk y-coordinate to pyGame (y = -y + self.display_height)
-			# Parameters: y = int
-			# Returns: int(y_new)
-
-		def vec2df(self, pos)
-			# Converts a pygame pos to a vec2d with flipped y coordinate
-			# Parameters: pos = (int(x), int(y))
-			# Returns: class vec2d((pos[0], self.flipy(pos[1])))
-			
-	   	def autoset_screen_size (self)  
-	   		# Gets screensize from pygame. Call this only on resize
-	   		# Returns: -
-
-		def get_pymunk_flags (self)	
-			# Checks pymunk version, adjusts settings and returns new flagset
-			# Returns: class pymunk_flags
-	
-		def update (self, fps=50.0, steps=5)
-			# Updates thy physics. fps is optional and by default set to 50.0 - steps is substeps per update
-			# Returns: -
-			
-		def draw (self, surface)	
-			# Iterates through all elements and calls draw_shape with each
-			# Parameters: surface = pygame.Surface
-			# Returns: -
-			
-		def draw_shape (self, surface, shape)	
-			# Draws a given shape (circle, segment, poly) on the surface
-			# Parameters: surface = pygame.Surface | shape = pymunk.Shape
-			# Returns: -
-	
-		def add_wall (self, p1, p2, friction=10.0)	
-			# Adds a fixed wall between points p1 and p2. friction is a optional parameter
-			# Parameters: p = (int(x), int(y))
-			# Returns: -
-			
-		def add_ball (self, pos, radius=15, mass=10.0, inertia=1000, friction=0.5)	
-			# Adds a ball at pos. Other parameters are optional
-			# Parameters: pos = (int(x), int(y))
-			# Returns: -
-			
-		def add_square (self, pos, a=18, mass=5.0, friction=0.2)	
-			# Adds a square at pos.
-			# Parameters: pos = (int(x), int(y))
-			# Returns: -
-
-		def add_poly(self, points, mass=150.0, friction=10.0)
-			# Adds a polygon from given a given pygame pointlist
-			# Parameters: points = [(int(x), int(y)), (int(x), int(y)), ...]
-			# Returns: -
-
-		def get_element_count(self)
-			# Returns the current element count
-			# Returns: int(n)
-			
 
    > Installation of Chipmunk & PyMunk <
    
@@ -165,6 +101,7 @@ import pymunk.util as util
 from pymunk.vec2d import vec2d
 
 from sys import exit
+from random import shuffle
 
 # infinite ~ 10^100 :)
 inf = 1e100
@@ -175,9 +112,15 @@ class pymunk_flags:
 	version = "0.6.1"
 	poly_return_vec2d = False
 
+def hex2dec(hex): return int(hex, 16);
+def hex2rgb(hex): 
+	if hex[0:1] == '#': hex = hex[1:]; 
+	return (hex2dec(hex[:2]), hex2dec(hex[2:4]), hex2dec(hex[4:6]))
+
 # pymunx Main Class	
 class pymunx:
 	element_count = 0
+	fixed_color = None
 	
 	def __init__(self, gravity=(0.0,-900.0)):
 		self.run_physics = True 
@@ -188,6 +131,9 @@ class pymunx:
 		# Physics Init
 		pm.init_pymunk()
 
+		# Init Colors
+		self.init_colors()
+		
 		# Get PyMunk Flags to be able to handle changes in a backward compatible manner :)
 		self.pymunk_flags = self.get_pymunk_flags()
 				
@@ -204,6 +150,39 @@ class pymunx:
 		self.space.resize_static_hash()
 		self.space.resize_active_hash()
 
+	def init_colors(self):
+		self.cur_color = 0
+		self.colors = [
+		  "#737934", "#729a55", "#040404", "#1d4e29", "#ae5004", "#615c57",
+		  "#6795ce", "#203d61", "#8f932b"
+		]
+		shuffle(self.colors)
+#		for c in THECOLORS:
+#			self.colors.append(THECOLORS[c])
+
+	def set_color(self, clr):
+		""" All Elements will have the color, until reset_color() is called """
+		self.fixed_color = clr
+	
+	def reset_color(self):
+		self.fixed_color = None
+		
+	def get_color(self):
+		if self.fixed_color != None:
+			return self.fixed_color
+			
+		if self.cur_color == len(self.colors): 
+			self.cur_color = 0
+			shuffle(self.colors)
+	
+		clr = self.colors[self.cur_color]
+		if clr[:1] == "#":
+			clr = hex2rgb(clr)
+		
+		self.cur_color += 1
+			
+		return clr
+			
 	def set_info(self, txt):
 		txt = txt.splitlines()
 		self.infostr_surface = pygame.Surface((300, len(txt)*16))
@@ -234,10 +213,10 @@ class pymunx:
 			print "pymunx Error: Please start pygame.init() before loading pymunx"
 			exit(0)
 
-	def is_inside(self, pos):
+	def is_inside(self, pos, tolerance=100):
 		""" Returns True if pos is inside the screen and False if not """
 		x, y = pos
-		if x < 0 or x > self.display_width or y < 0 or y > self.display_height:
+		if x < -tolerance or x > self.display_width+tolerance or y < -tolerance or y > self.display_height+tolerance:
 			return False
 		else:
 			return True
@@ -289,9 +268,10 @@ class pymunx:
 			self.element_count -= 1
 			
 	def draw_shape(self, surface, shape):
-		""" shape can be either Circle, Segment or Poly """
-		s = str(shape.__class__)
-		
+		""" shape can be either Circle, Segment or Poly. 
+		    returns True if shape is inside screen, else False (for removal)"""
+
+		s = str(shape.__class__)		
 		if 'pymunk.Circle' in s:
 			# Get Ball Infos
 			r = shape.radius
@@ -300,11 +280,11 @@ class pymunx:
 		
 			# Draw Ball
 			p = int(v.x), int(self.flipy(v.y))
-			pygame.draw.circle(surface, THECOLORS["blue"], p, int(r), 2)
+			pygame.draw.circle(surface, shape.color, p, int(r), 2)
 	
 			# Draw Rotation Vector
 			p2 = vec2d(rot.x, -rot.y) * r * 0.9
-			pygame.draw.line(surface, THECOLORS["red"], p, p+p2)
+			pygame.draw.line(surface, shape.color2, p, p+p2)
 			
 			# Remove if outside
 			if not self.is_inside(p): return False
@@ -312,7 +292,7 @@ class pymunx:
 		elif 'pymunk.Segment' in s:
 			a = shape.get_a()
 			b = shape.get_b()
-			pygame.draw.lines(surface, THECOLORS["blue"], False, [(a[0], self.flipy(a[1])), (b[0],self.flipy(b[1]))], 2)
+			pygame.draw.lines(surface, shape.color, False, [(a[0], self.flipy(a[1])), (b[0],self.flipy(b[1]))], 2)
 
 			# Remove if outside
 			if not self.is_inside(a) or not self.is_inside(b): return False
@@ -330,21 +310,22 @@ class pymunx:
 				points.append(points[0])
 		
 			# Draw Poly
-			pygame.draw.lines(surface, THECOLORS["blue"], False, points, 2)
+			pygame.draw.lines(surface, shape.color, False, points, 2)
 
 			# Remove if outside
 			if not self.is_inside(points[0]): return False
 
 		return True
 		
-	def add_wall(self, p1, p2, friction=1.0):
+	def add_wall(self, p1, p2, friction=1.0, mass=inf, inertia=inf):
 		""" Adds a fixed Wall """
-		mass = inf
-		inertia = inf
-			
 		body = pm.Body(mass, inertia)
 		shape= pm.Segment(body, self.vec2df(p1), self.vec2df(p2), 2.0)	
 		shape.friction = friction
+
+		shape.color = self.get_color()
+		shape.color2 = self.get_color()
+
 		self.space.add(shape)
 		self.element_count += 1
 
@@ -358,6 +339,9 @@ class pymunx:
 		shape = pm.Circle(body, radius, vec2d(0,0))
 		shape.friction = friction
 		
+		shape.color = self.get_color()
+		shape.color2 = self.get_color()
+
 		# Append to Space
 		self.space.add(body, shape)
 		self.element_count += 1
@@ -377,6 +361,9 @@ class pymunx:
 		# Create Shape
 	        shape = pm.Poly(body, verts, vec2d(0,0))
 	        shape.friction = friction
+
+		shape.color = self.get_color()
+		shape.color2 = self.get_color()
 	        
 	        # Append to Space
 	        self.space.add(body, shape)
@@ -415,6 +402,9 @@ class pymunx:
 		# Create Shape
 		shape = pm.Poly(body, poly_points_center, vec2d(0,0))
 		shape.friction = friction
+
+		shape.color = self.get_color()
+		shape.color2 = self.get_color()
 		
 		# Append to Space
 		self.space.add(body, shape)
