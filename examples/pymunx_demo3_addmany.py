@@ -25,7 +25,7 @@ def main():
 	# Main Loop
 	while running:
 		for event in pygame.event.get():
-			print event
+#			print event
 			if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
 				# Bye Bye
 				running = False
@@ -88,7 +88,7 @@ def main():
 		clock.tick(50)
 		
 		# output framerate in caption
-		pygame.display.set_caption("fps: " + str(clock.get_fps()))
+		pygame.display.set_caption("elements: %i | fps: %s" % (world.element_count, str(int(clock.get_fps()))))
 
 if __name__ == "__main__":
 	main()

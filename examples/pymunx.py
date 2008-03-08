@@ -167,7 +167,9 @@ class pymunk_flags:
 	poly_return_vec2d = False
 
 # pymunx Main Class	
-class pymunx:	
+class pymunx:
+	element_count = 0
+	
 	def __init__(self, gravity=(0.0,-900.0)):
 		self.run_physics = True 
 
@@ -197,6 +199,7 @@ class pymunx:
 		txt = txt.splitlines()
 		self.infostr_surface = pygame.Surface((300, len(txt)*16))
 		self.infostr_surface.fill((255,255,255))
+		self.infostr_surface.set_colorkey((255,255,255))
 		
 	        y = 0
         	for line in txt:
@@ -305,6 +308,7 @@ class pymunx:
 		shape= pm.Segment(body, self.vec2df(p1), self.vec2df(p2), 2.0)	
 		shape.friction = friction
 		self.space.add(shape)
+		self.element_count += 1
 
 	def add_ball(self, pos, radius=15, mass=10.0, inertia=1000, friction=0.5):
 		""" Adds a Ball """
@@ -318,6 +322,7 @@ class pymunx:
 		
 		# Append to Space
 		self.space.add(body, shape)
+		self.element_count += 1
 
 	def add_square(self, pos, a=18, mass=5.0, friction=0.2):
 		""" Adding a Square """
@@ -337,20 +342,21 @@ class pymunx:
 	        
 	        # Append to Space
 	        self.space.add(body, shape)
+		self.element_count += 1
         
 	def add_poly(self, points, mass=5.0, friction=3.0):
-		if len(points) < 3:
-			return
-
 		poly_points = []
 		for p in points:
 			poly_points.append(self.vec2df(p))
 			
 		poly_points = util.reduce_poly(poly_points)
+		if len(poly_points) < 3: 
+			return
+
 		poly_points = util.convex_hull(poly_points)
 		if not util.is_clockwise(poly_points):
 			poly_points.reverse()
-						
+		
 		moment = pm.moment_for_poly(mass, poly_points, vec2d(0,0))
 
 		body = pm.Body(mass, moment)
@@ -359,3 +365,4 @@ class pymunx:
 		shape = pm.Poly(body, poly_points, vec2d(0,0))
 		shape.friction = friction
 		self.space.add(body, shape)
+		self.element_count += 1
