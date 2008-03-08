@@ -13,6 +13,7 @@ def main():
 	# Create the Physical Space Class
 	world = pymunx()
 	world.set_info("LMB: Balls\nRMB: Squares\nSpace: Pause")
+	
 	# Add A Wall
 	world.add_wall((100, 700), (700, 700))
 	

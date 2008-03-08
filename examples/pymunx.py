@@ -43,6 +43,11 @@
 			# Converts Chipmunk y-coordinate to pyGame (y = -y + self.display_height)
 			# Parameters: y = int
 			# Returns: int(y_new)
+
+		def vec2df(self, pos)
+			# Converts a pygame pos to a vec2d with flipped y coordinate
+			# Parameters: pos = (int(x), int(y))
+			# Returns: class vec2d((pos[0], self.flipy(pos[1])))
 			
 	   	def autoset_screen_size (self)  
 	   		# Gets screensize from pygame. Call this only on resize
@@ -85,6 +90,10 @@
 			# Adds a polygon from given a given pygame pointlist
 			# Parameters: points = [(int(x), int(y)), (int(x), int(y)), ...]
 			# Returns: -
+
+		def get_element_count(self)
+			# Returns the current element count
+			# Returns: int(n)
 			
 
    > Installation of Chipmunk & PyMunk <
@@ -151,7 +160,7 @@ import pygame
 from pygame.locals import *
 from pygame.color import *
 
-import pymunk as pm
+import pymunk.pymunk as pm
 import pymunk.util as util
 from pymunk.vec2d import vec2d
 
@@ -344,25 +353,42 @@ class pymunx:
 	        self.space.add(body, shape)
 		self.element_count += 1
         
-	def add_poly(self, points, mass=5.0, friction=3.0):
+	def add_poly(self, pos, points, mass=5.0, friction=3.0):
+		# Make vec2d's out of the points
 		poly_points = []
 		for p in points:
 			poly_points.append(self.vec2df(p))
 			
+		# Reduce polygon points
 		poly_points = util.reduce_poly(poly_points)
 		if len(poly_points) < 3: 
 			return
-
+		
+		# Make a convex hull
 		poly_points = util.convex_hull(poly_points)
+		
+		# Make it counter-clockwise
 		if not util.is_clockwise(poly_points):
 			poly_points.reverse()
 		
-		moment = pm.moment_for_poly(mass, poly_points, vec2d(0,0))
+		# Change vectors to the point of view of the center
+		poly_points_center = util.poly_vectors_around_center(poly_points)
+		
+		# Calculate A Good Momentum
+		moment = pm.moment_for_poly(mass, poly_points_center, vec2d(0,0))
 
+		# Create Body
 		body = pm.Body(mass, moment)
-		body.position = vec2d((0,0))       
+		body.position = self.vec2df(pos)
 
-		shape = pm.Poly(body, poly_points, vec2d(0,0))
+		# Create Shape
+		shape = pm.Poly(body, poly_points_center, vec2d(0,0))
 		shape.friction = friction
+		
+		# Append to Space
 		self.space.add(body, shape)
 		self.element_count += 1
+
+	def get_element_count(self):
+		return self.element_count
+		

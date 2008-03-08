@@ -1,6 +1,7 @@
 """Contains utility functions, mainly to help with polygon creation"""
 __docformat__ = "reStructuredText"
 
+from vec2d import vec2d
 from functools import partial
 
 def is_clockwise(points): 
@@ -100,5 +101,18 @@ def calc_center(points):
     n = len(points)
     return (tot_x/n, tot_y/n)
     
-    
-    
+def poly_vectors_around_center(vec2d_pointlist):
+	"""Change polygon vectors around the center
+	
+	:return: pointlist ([vec2d, vec2d, vec2d, ...])
+	"""
+
+	poly_points_center = []
+	center = cx, cy = calc_center(vec2d_pointlist)
+	
+	for p in vec2d_pointlist:
+		x = p.x - cx
+		y = p.y - cy
+		poly_points_center.append(vec2d((x, y)))
+		
+	return poly_points_center	
