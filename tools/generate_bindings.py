@@ -4,9 +4,9 @@ from optparse import OptionParser
 from ctypeslib import h2xml
 from ctypeslib import xml2py
 
-default_path_to_chipmunk_include = join("..","ChipmunkLatest","Chipmunk-4.0.2","src")
-default_output = join("pymunk", "_chipmunk.py")
-default_path_to_chipmunk_lib = join("pymunk", "Chipmunk.dll")
+default_path_to_chipmunk_include = join("..","chipmunk_src")
+default_output = join("..", "pymunk", "_chipmunk.py")
+default_path_to_chipmunk_lib = join("..", "pymunk", "Chipmunk.dll")
 def main(argv=None):
     """A small script which runs h2xml, xml2py (from ctypeslib) and then does basic replacements"""
     if argv is None:
@@ -54,11 +54,8 @@ from vec2d import vec2d
 cpVect = vec2d
 
 from libload import load_library
-_lib_debug = False #Set to True to print the Chipmunk path.
-chipmunk_lib = load_library("chipmunk", print_path=_lib_debug)
-
-#from ctload import load_library #uncomment to use ctload instead
-#chipmunk_lib = load_library("chipmunk")
+_lib_debug = True #Set to True to print the Chipmunk path.
+chipmunk_lib = load_library("libchipmunk", print_path=_lib_debug)
 """
 
     chipmunkpy = open(options.output, 'r').read()
