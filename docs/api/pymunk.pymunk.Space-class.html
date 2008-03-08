@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>pymunk.pymunk.Space</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar">
+  <tr valign="middle">
+  <!-- Project homepage -->
+      <!--<th class="navbar" 
+            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>-->
+
+  <!-- Tree link -->
+      <th><a
+        href="module-tree.html">Trees</a></th>
+
+  <!-- Index link -->
+      <th><a
+        href="identifier-index.html">Indices</a></th>
+
+  <!-- Breadcrumbs -->
+      <th class="navbar-breadcrumbs">
+        <span class="breadcrumbs">
+          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;<a href="pymunk.pymunk-module.html">pymunk</a>&nbsp;.&nbsp;Space
+        </span>
+      </th>
+
+      <th class="navbar last">
+        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
+      </th>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class pymunk.pymunk.Space</h1>
+<!-- ==================== METHODS ==================== -->
+<a name="section-Methods"></a>
+        <h2>Methods</h2>
+<table class="summary">
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">iterations</span>=<span class="summary-sig-default">10</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="get_shapes"></a><span class="summary-sig-name">get_shapes</span>(<span class="summary-sig-arg">self</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="get_static_shapes"></a><span class="summary-sig-name">get_static_shapes</span>(<span class="summary-sig-arg">self</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="get_bodies"></a><span class="summary-sig-name">get_bodies</span>(<span class="summary-sig-arg">self</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="set_gravity"></a><span class="summary-sig-name">set_gravity</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">gravvec</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="get_gravity"></a><span class="summary-sig-name">get_gravity</span>(<span class="summary-sig-arg">self</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="set_damping"></a><span class="summary-sig-name">set_damping</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">damping</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="get_damping"></a><span class="summary-sig-name">get_damping</span>(<span class="summary-sig-arg">self</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="add"></a><span class="summary-sig-name">add</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*objs</span>)</span>
+<div class="summary-description">Add one or many shapes, bodies or joints to the space</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="add_static"></a><span class="summary-sig-name">add_static</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*objs</span>)</span>
+<div class="summary-description">Add one or many static shapes to the space</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="remove"></a><span class="summary-sig-name">remove</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*objs</span>)</span>
+<div class="summary-description">Remove one or many shapes, bodies or joints from the space</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="remove_static"></a><span class="summary-sig-name">remove_static</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*os</span>)</span>
+<div class="summary-description">Remove one or many static shapes from the space</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="add_shape"></a><span class="summary-sig-name">add_shape</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">shape</span>)</span>
+<div class="summary-description">Adds a shape to the space</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.pymunk.Space-class.html#add_static_shape" class="summary-sig-name">add_static_shape</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">static_shape</span>)</span>
+<div class="summary-description">Adds a shape to the space.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="add_body"></a><span class="summary-sig-name">add_body</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">body</span>)</span>
+<div class="summary-description">Adds a body to the space</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="add_joint"></a><span class="summary-sig-name">add_joint</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">joint</span>)</span>
+<div class="summary-description">Adds a joint to the space</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="remove_shape"></a><span class="summary-sig-name">remove_shape</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">shape</span>)</span>
+<div class="summary-description">Removes a shape from the space</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="remove_static_shape"></a><span class="summary-sig-name">remove_static_shape</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">static_shape</span>)</span>
+<div class="summary-description">Removes a static shape from the space.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="remove_body"></a><span class="summary-sig-name">remove_body</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">body</span>)</span>
+<div class="summary-description">Removes a body from the space</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="remove_joint"></a><span class="summary-sig-name">remove_joint</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">joint</span>)</span>
+<div class="summary-description">Removes a joint from the space</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.pymunk.Space-class.html#resize_static_hash" class="summary-sig-name">resize_static_hash</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dim</span>=<span class="summary-sig-default">100.0</span>,
+        <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">1000</span>)</span>
+<div class="summary-description">The spatial hashes used by Chipmunk's collision detection are fairly
+size sensitive.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.pymunk.Space-class.html#resize_active_hash" class="summary-sig-name">resize_active_hash</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dim</span>=<span class="summary-sig-default">100.0</span>,
+        <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">1000</span>)</span>
+<div class="summary-description">The spatial hashes used by Chipmunk's collision detection are fairly
+size sensitive.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.pymunk.Space-class.html#rehash_static" class="summary-sig-name">rehash_static</a>(<span class="summary-sig-arg">self</span>)</span>
+<div class="summary-description">Rehashes the shapes in the static spatial hash.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.pymunk.Space-class.html#step" class="summary-sig-name">step</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dt</span>)</span>
+<div class="summary-description">Update the space for the given time step.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="get_stamp"></a><span class="summary-sig-name">get_stamp</span>(<span class="summary-sig-arg">self</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="get_arbiters"></a><span class="summary-sig-name">get_arbiters</span>(<span class="summary-sig-arg">self</span>)</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.pymunk.Space-class.html#add_collisionpair_func" class="summary-sig-name">add_collisionpair_func</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">a</span>,
+        <span class="summary-sig-arg">b</span>,
+        <span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">data</span>)</span>
+<div class="summary-description">Register func to be called when a collision is found between a
+shapes with collision_type fields that match a and b.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a name="remove_collisionpair_func"></a><span class="summary-sig-name">remove_collisionpair_func</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">a</span>,
+        <span class="summary-sig-arg">b</span>)</span>
+<div class="summary-description">Remove the collision pair function between the shapes a and b</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.pymunk.Space-class.html#set_default_collisionpair_func" class="summary-sig-name">set_default_collisionpair_func</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">data</span>)</span>
+<div class="summary-description">Sets the default collsion pair function.</div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+        <h2>Properties</h2>
+<table class="summary">
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.pymunk.Space-class.html#shapes" class="summary-name">shapes</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.pymunk.Space-class.html#static_shapes" class="summary-name">static_shapes</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.pymunk.Space-class.html#bodies" class="summary-name">bodies</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.pymunk.Space-class.html#gravity" class="summary-name">gravity</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.pymunk.Space-class.html#damping" class="summary-name">damping</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.pymunk.Space-class.html#stamp" class="summary-name">stamp</a>
+<div class="summary-description">Time stamp.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.pymunk.Space-class.html#arbiters" class="summary-name">arbiters</a>
+<div class="summary-description">List of active arbiters for the impulse solver.</div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+        <h2>Method Details</h2>
+<table class="details">
+</table>
+<a name="add_static_shape"></a>
+<div class=" detail">
+  <h3>add_static_shape</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">add_static_shape</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">static_shape</span>)</span>
+    </div>
+  <div class="detail-description">
+  Adds a shape to the space. Static shapes should be be attached to
+a rigid body with an infinite mass and moment of inertia. Also, don't
+add the rigid body used to the space, as that will cause it to fall
+under the effects of gravity.
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="resize_static_hash"></a>
+<div class=" detail">
+  <h3>resize_static_hash</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">resize_static_hash</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dim</span>=<span class="sig-default">100.0</span>,
+        <span class="sig-arg">count</span>=<span class="sig-default">1000</span>)</span>
+    </div>
+  <div class="detail-description">
+  <p>The spatial hashes used by Chipmunk's collision detection are fairly
+size sensitive. dim is the size of the hash cells. Setting dim to the
+average objects size is likely to give the best performance.</p>
+<p>count is the suggested minimum number of cells in the hash table.
+Bigger is better, but only to a point. Setting count to ~10x the number
+of objects in the hash is probably a good starting point.</p>
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="resize_active_hash"></a>
+<div class=" detail">
+  <h3>resize_active_hash</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">resize_active_hash</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dim</span>=<span class="sig-default">100.0</span>,
+        <span class="sig-arg">count</span>=<span class="sig-default">1000</span>)</span>
+    </div>
+  <div class="detail-description">
+  <p>The spatial hashes used by Chipmunk's collision detection are fairly
+size sensitive. dim is the size of the hash cells. Setting dim to the
+average objects size is likely to give the best performance.</p>
+<p>count is the suggested minimum number of cells in the hash table.
+Bigger is better, but only to a point. Setting count to ~10x the number
+of objects in the hash is probably a good starting point.</p>
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="rehash_static"></a>
+<div class=" detail">
+  <h3>rehash_static</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">rehash_static</span>(<span class="sig-arg">self</span>)</span>
+    </div>
+  <div class="detail-description">
+  Rehashes the shapes in the static spatial hash. You only need to
+call this if you move one of the static shapes.
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="step"></a>
+<div class=" detail">
+  <h3>step</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">step</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dt</span>)</span>
+    </div>
+  <div class="detail-description">
+  Update the space for the given time step. Using a fixed time step is
+highly recommended. Doing so will increase the efficiency of the
+contact persistence, requiring an order of magnitude fewer iterations
+to resolve the collisions in the usual case.
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="add_collisionpair_func"></a>
+<div class=" detail">
+  <h3>add_collisionpair_func</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">add_collisionpair_func</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">a</span>,
+        <span class="sig-arg">b</span>,
+        <span class="sig-arg">func</span>,
+        <span class="sig-arg">data</span>)</span>
+    </div>
+  <div class="detail-description">
+  <p>Register func to be called when a collision is found between a
+shapes with collision_type fields that match a and b. Pass None
+as func to reject any collision with the given collision type pair.</p>
+<p>func(shapeA, shapeB, contacts, normal_coef, data) -&gt; bool</p>
+<p>shapeA, shapeB is the colliding shapes
+contacts is a list of contacts
+normal_coef is a float :)
+data is the data argument sent to the addCollisionPairFunc function</p>
+<p>WARNING: It is not safe for collision pair functions to remove or
+free shapes or bodies from a space. Doing so will likely end in a
+segfault as an earlier collision may already be referencing the shape
+or body. You must wait until after the cpSpaceStep() function returns.</p>
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="set_default_collisionpair_func"></a>
+<div class=" detail">
+  <h3>set_default_collisionpair_func</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">set_default_collisionpair_func</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">func</span>,
+        <span class="sig-arg">data</span>)</span>
+    </div>
+  <div class="detail-description">
+  Sets the default collsion pair function. Passing None as func will reset it to default.. :)
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+        <h2>Property Details</h2>
+<table class="details">
+</table>
+<a name="shapes"></a>
+<div class=" detail">
+  <h3>shapes</h3>
+  <div class="detail-description">
+  
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="static_shapes"></a>
+<div class=" detail">
+  <h3>static_shapes</h3>
+  <div class="detail-description">
+  
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="bodies"></a>
+<div class=" detail">
+  <h3>bodies</h3>
+  <div class="detail-description">
+  
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="gravity"></a>
+<div class=" detail">
+  <h3>gravity</h3>
+  <div class="detail-description">
+  
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="damping"></a>
+<div class=" detail">
+  <h3>damping</h3>
+  <div class="detail-description">
+  
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="stamp"></a>
+<div class=" detail">
+  <h3>stamp</h3>
+  <div class="detail-description">
+  Time stamp. Is incremented on every call to step()
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<a name="arbiters"></a>
+<div class=" detail">
+  <h3>arbiters</h3>
+  <div class="detail-description">
+  List of active arbiters for the impulse solver.
+  <dl class="fields">
+  </dl>
+  </div>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar">
+  <tr valign="middle">
+  <!-- Project homepage -->
+      <!--<th class="navbar" 
+            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>-->
+
+  <!-- Tree link -->
+      <th><a
+        href="module-tree.html">Trees</a></th>
+
+  <!-- Index link -->
+      <th><a
+        href="identifier-index.html">Indices</a></th>
+
+  <!-- Breadcrumbs -->
+      <th class="navbar-breadcrumbs">
+        <span class="breadcrumbs">
+          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;<a href="pymunk.pymunk-module.html">pymunk</a>&nbsp;.&nbsp;Space
+        </span>
+      </th>
+
+      <th class="navbar last">
+        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
+      </th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Sat Mar 08 23:44:57 2008
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

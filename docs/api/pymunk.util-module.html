@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>pymunk.util</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar">
+  <tr valign="middle">
+  <!-- Project homepage -->
+      <!--<th class="navbar" 
+            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>-->
+
+  <!-- Tree link -->
+      <th><a
+        href="module-tree.html">Trees</a></th>
+
+  <!-- Index link -->
+      <th><a
+        href="identifier-index.html">Indices</a></th>
+
+  <!-- Breadcrumbs -->
+      <th class="navbar-breadcrumbs">
+        <span class="breadcrumbs">
+          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;util
+        </span>
+      </th>
+
+      <th class="navbar last">
+        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
+      </th>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module pymunk.util</h1>
+Contains utility functions, mainly to help with polygon creation
+
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+        <h2>Functions</h2>
+<table class="summary">
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.util-module.html#is_clockwise" class="summary-sig-name">is_clockwise</a>(<span class="summary-sig-arg">points</span>)</span>
+<div class="summary-description">Check if the points given forms a clockwise polygon</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.util-module.html#is_left" class="summary-sig-name">is_left</a>(<span class="summary-sig-arg">p0</span>,
+        <span class="summary-sig-arg">p1</span>,
+        <span class="summary-sig-arg">p2</span>)</span>
+<div class="summary-description">Test if p2 is left, on or right of the (infinite) line (p0,p1).</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.util-module.html#reduce_poly" class="summary-sig-name">reduce_poly</a>(<span class="summary-sig-arg">points</span>,
+        <span class="summary-sig-arg">tolerance</span>=<span class="summary-sig-default">500</span>)</span>
+<div class="summary-description">Remove close points to simplify a polyline
+tolerance is the min distance between two points squared.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.util-module.html#convex_hull" class="summary-sig-name">convex_hull</a>(<span class="summary-sig-arg">points</span>)</span>
+<div class="summary-description">Create a convex hull from a list of points.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.util-module.html#calc_center" class="summary-sig-name">calc_center</a>(<span class="summary-sig-arg">points</span>)</span>
+<div class="summary-description">Calculate the center of a polygon</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pymunk.util-module.html#poly_vectors_around_center" class="summary-sig-name">poly_vectors_around_center</a>(<span class="summary-sig-arg">vec2d_pointlist</span>)</span>
+<div class="summary-description">Change polygon vectors around the center</div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+        <h2>Function Details</h2>
+<table class="details">
+</table>
+<a name="is_clockwise"></a>
+<div class=" detail">
+  <h3>is_clockwise</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">is_clockwise</span>(<span class="sig-arg">points</span>)</span>
+    </div>
+  <div class="detail-description">
+  Check if the points given forms a clockwise polygon
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if the points forms a clockwise polygon</dd>
+  </dl>
+  </div>
+</div>
+<a name="is_left"></a>
+<div class=" detail">
+  <h3>is_left</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">is_left</span>(<span class="sig-arg">p0</span>,
+        <span class="sig-arg">p1</span>,
+        <span class="sig-arg">p2</span>)</span>
+    </div>
+  <div class="detail-description">
+  Test if p2 is left, on or right of the (infinite) line (p0,p1).
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>&gt; 0 for p2 left of the line through p0 and p1
+= 0 for p2 on the line
+&lt; 0 for p2 right of the line</dd>
+  </dl>
+  </div>
+</div>
+<a name="reduce_poly"></a>
+<div class=" detail">
+  <h3>reduce_poly</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">reduce_poly</span>(<span class="sig-arg">points</span>,
+        <span class="sig-arg">tolerance</span>=<span class="sig-default">500</span>)</span>
+    </div>
+  <div class="detail-description">
+  Remove close points to simplify a polyline
+tolerance is the min distance between two points squared.
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>The reduced polygon as a list of (x,y)</dd>
+  </dl>
+  </div>
+</div>
+<a name="convex_hull"></a>
+<div class=" detail">
+  <h3>convex_hull</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">convex_hull</span>(<span class="sig-arg">points</span>)</span>
+    </div>
+  <div class="detail-description">
+  Create a convex hull from a list of points.
+This function uses the Graham Scan Algorithm.
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>Convex hull as a list of (x,y)</dd>
+  </dl>
+  </div>
+</div>
+<a name="calc_center"></a>
+<div class=" detail">
+  <h3>calc_center</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">calc_center</span>(<span class="sig-arg">points</span>)</span>
+    </div>
+  <div class="detail-description">
+  Calculate the center of a polygon
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>The center (x,y)</dd>
+  </dl>
+  </div>
+</div>
+<a name="poly_vectors_around_center"></a>
+<div class=" detail">
+  <h3>poly_vectors_around_center</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">poly_vectors_around_center</span>(<span class="sig-arg">vec2d_pointlist</span>)</span>
+    </div>
+  <div class="detail-description">
+  Change polygon vectors around the center
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>pointlist ([vec2d, vec2d, vec2d, ...])</dd>
+  </dl>
+  </div>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar">
+  <tr valign="middle">
+  <!-- Project homepage -->
+      <!--<th class="navbar" 
+            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>-->
+
+  <!-- Tree link -->
+      <th><a
+        href="module-tree.html">Trees</a></th>
+
+  <!-- Index link -->
+      <th><a
+        href="identifier-index.html">Indices</a></th>
+
+  <!-- Breadcrumbs -->
+      <th class="navbar-breadcrumbs">
+        <span class="breadcrumbs">
+          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;util
+        </span>
+      </th>
+
+      <th class="navbar last">
+        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
+      </th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Sat Mar 08 23:44:57 2008
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>
