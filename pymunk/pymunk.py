@@ -1,7 +1,6 @@
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-
 import ctypes as ct
 import _chipmunk as cp
 import util as u
@@ -626,3 +625,7 @@ class Arbiter(object):
         return self._arbiter.contents.stamp
     stamp = property(get_stamp, doc="""Time stamp of the arbiter. (from the space)""")
     
+__all__ ["inf", "init_pymunk", "Space", "Body", "Shape", "Circle", "Poly", "Segment",
+        "moment_for_circle", "moment_for_poly", "reset_shapeid_counter",
+        "Joint", "PinJoint", "SlideJoint", "PivotJoint", "GrooveJoint", 
+        "Contact", "Arbiter"]
