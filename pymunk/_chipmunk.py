@@ -7,17 +7,14 @@ from libload import load_library
 _lib_debug = True #Set to True to print the Chipmunk path.
 chipmunk_lib = load_library("libchipmunk", print_path=_lib_debug)
 
-#from ctload import load_library #uncomment to use ctload instead
-#chipmunk_lib = load_library("chipmunk")
-
 STRING = c_char_p
 
 
-CP_POLY_SHAPE = 2
-CP_SEGMENT_SHAPE = 1
 CP_CIRCLE_SHAPE = 0
 CP_NUM_SHAPES = 3
+CP_POLY_SHAPE = 2
 # def CP_HASH_PAIR(A,B): return ((unsigned int)(A)*CP_HASH_COEF ^ (unsigned int)(B)*CP_HASH_COEF) # macro
+CP_SEGMENT_SHAPE = 1
 cpFloat = c_float
 class MSVC_EVIL_FLOAT_HACK(Union):
     pass
