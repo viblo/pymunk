@@ -1,9 +1,14 @@
+__version__ = "$Id$"
+__docformat__ = "reStructuredText"
+
+
 import ctypes as ct
 import _chipmunk as cp
 import util as u
 from vec2d import vec2d
 
-inf = 1e100 # Usefull when you for example need a static body with inf mass
+inf = 1e100
+"""Infinity. Usefull when you need a static body with infinite mass and inertia"""
 
 def init_pymunk():
     cp.cpInitChipmunk()
