@@ -1,4 +1,6 @@
-########################################################################
+__docformat__ = "restructuredtext"
+__version__ = "$Id$"
+
 import operator
 import math
 import ctypes 
