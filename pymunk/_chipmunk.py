@@ -5,7 +5,7 @@ cpVect = vec2d
 
 from libload import load_library
 _lib_debug = False #Set to True to print the Chipmunk path.
-chipmunk_lib = load_library("chipmunk", print_path=_lib_debug)
+chipmunk_lib = load_library("libchipmunk", print_path=_lib_debug)
 
 #from ctload import load_library #uncomment to use ctload instead
 #chipmunk_lib = load_library("chipmunk")
