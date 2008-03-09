@@ -101,13 +101,13 @@ def main():
 					
 					elif key == 4097 or key == 4098: 	# Shift
 						default_density -= 0.02
-						if default_density < 0:
-							default_density = 0
+						if default_density < 0.02:
+							default_density = 0.02
 
 					else: 
 						default_size -= 2
-						if default_size < 0:
-							default_size = 0
+						if default_size < 2:
+							default_size = 2
 
 				# Update Info-Text
 				world.set_info("LMB: Add Ball, throw Ball or draw Polygon \nRMB: Add Box, or throw one \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares" % (default_size, default_elasticity, default_density))
