@@ -164,7 +164,8 @@ def main():
 						else:
 							# Add Polygon
 							poly = world.add_poly(points, default_density, default_friction, default_elasticity)
-							print "New Polygon: %i kg" % (poly.body.mass)
+							if poly != False:
+								print "New Polygon: %i kg" % (poly.body.mass)
 
 			elif event.type == MOUSEMOTION and (draw_poly or draw_arrow):
 				points.append(event.pos)

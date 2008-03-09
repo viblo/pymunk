@@ -376,7 +376,7 @@ class pymunx:
 		poly_points = util.reduce_poly(poly_points)
 #		print "New Polygon: Points reduced from %i to %i" % (len(points), len(poly_points))
 		if len(poly_points) < 3: 
-			return
+			return False
 		
 		# Make a convex hull
 		poly_points = util.convex_hull(poly_points)
