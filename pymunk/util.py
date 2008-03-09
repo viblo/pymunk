@@ -101,20 +101,28 @@ def calc_center(points):
     n = len(points)
     return (tot_x/n, tot_y/n)
     
-def poly_vectors_around_center(vec2d_pointlist):
-    """Change polygon vectors around the center
+def poly_vectors_around_center(pointlist, points_as_vec2d=True):
+    """Rearranges vectors around the center
+    If points_as_vec2d, then return points are also vec2d, else pos
     
-    :return: pointlist ([vec2d, vec2d, vec2d, ...])
+    :return: pointlist ([vec2d/pos, ...])
     """
     
     poly_points_center = []
-    center = cx, cy = calc_center(vec2d_pointlist)
-    	
-    for p in vec2d_pointlist:
-        x = p.x - cx
-        y = p.y - cy
-        poly_points_center.append(vec2d((x, y)))
-        
+    center = cx, cy = calc_center(pointlist)
+
+    if points_as_vec2d:
+        for p in pointlist:
+            x = p.x - cx
+            y = p.y - cy
+            poly_points_center.append(vec2d((x, y)))
+
+    else:
+        for p in pointlist:
+            x = p[0] - cx
+            y = cy - p[1]
+            poly_points_center.append((x, y))
+    
     return poly_points_center	
 
 __all__ = ["is_clockwise", "is_left", "reduce_poly", "convex_hull",

@@ -32,27 +32,11 @@
    > Latest Changes <
 
 
-   > Installation of Chipmunk & PyMunk <
-   
-   	Chipmunk 4.0.2 is included in pymunk 0.6.1, and will be loaded as a dll (.so). You need the library
-   	compiled for your platform -- you can also do it easily on your own:
-   		
-		Step 1: 'gcc -O3 -std=gnu99 -ffast-math -c *.c' (or 'gcc -O3 -std=gnu99 -ffast-math -fPIC -c *.c')
-		Step 2: 'gcc -shared -o chipmunk.so *.o'
-
-	Pymunk Downloads:
-
-		1. pymunk_0.6.1, demos, chipmunk: http://code.google.com/p/pymunk/downloads/list
-
-		2. Latest pymunk via SVN (update a svn dir with 'svn up'):
-		   2.1. Complete source + demos: svn checkout http://pymunk.googlecode.com/svn/trunk pymunk-read-only
-		   2.2. pymunk bindings - demos: svn checkout http://pymunk.googlecode.com/svn/trunk/pymunk pymunk_dev
-
-
    > How to use pymunx <
 
 	pymunx requires the pymunk bindings (in pymunk/) and the chipmunk library for your platform.
 	You could simply place pymunx.py in the directory with all the other demos (has pymunk/ as subdirectory :)
+	Just make a svn checkout and you'll see :)
 
       
    > Typical example with pygame <
@@ -103,6 +87,9 @@ from pymunk.vec2d import vec2d
 from sys import exit
 from random import shuffle
 
+from math import fabs
+from math import degrees
+
 # infinite ~ 10^100 :)
 inf = 1e100
 
@@ -121,6 +108,8 @@ def hex2rgb(hex):
 class pymunx:
 	element_count = 0
 	fixed_color = None
+	points = []
+	segment1 = False
 	
 	def __init__(self, gravity=(0.0,-900.0)):
 		self.run_physics = True 
@@ -196,11 +185,11 @@ class pymunx:
 	            y += 16
 		
 	def flipy(self, y):
-		""" Converts Chipmunk y-coordinate to pyGame y """
+		""" Convert pygame y-coordinate to chipmunk's """
 		return -y+self.display_height
 	
 	def vec2df(self, pos):
-		""" Returns a vec2d with flipped y """
+		""" Return a vec2d with flipped y """
 		return vec2d(pos[0], self.flipy(pos[1]))
 		
 	def autoset_screen_size(self):
@@ -214,7 +203,7 @@ class pymunx:
 			exit(0)
 
 	def is_inside(self, pos, tolerance=100):
-		""" Returns True if pos is inside the screen and False if not """
+		""" Return True if pos is inside the screen and False if not """
 		x, y = pos
 		if x < -tolerance or x > self.display_width+tolerance or y < -tolerance or y > self.display_height+tolerance:
 			return False
@@ -290,12 +279,15 @@ class pymunx:
 			if not self.is_inside(p): return False
 			
 		elif 'pymunk.Segment' in s:
-			a = shape.get_a()
-			b = shape.get_b()
-			pygame.draw.lines(surface, shape.color, False, [(a[0], self.flipy(a[1])), (b[0],self.flipy(b[1]))], 2)
+			p1 = shape.body.position + shape.a.rotated(degrees(shape.body.angle))
+			p2 = shape.body.position + shape.b.rotated(degrees(shape.body.angle))
+			p1 = (p1[0], self.flipy(p1[1]))
+			p2 = (p2[0], self.flipy(p2[1]))	
+#			print ">",p1, p2		
+			pygame.draw.lines(surface, shape.color, False, [p1, p2], 2)
 
 			# Remove if outside
-			if not self.is_inside(a) or not self.is_inside(b): return False
+			if not self.is_inside(p1) or not self.is_inside(p2): return False
 		
 		elif 'pymunk.Poly' in s:
 			# Correct Poly y-Coordinates
@@ -315,6 +307,8 @@ class pymunx:
 			# Remove if outside
 			if not self.is_inside(points[0]): return False
 
+#		if len(self.points) > 1:
+#			pygame.draw.lines(surface, shape.color, False, self.points, 2)
 		return True
 		
 	def add_wall(self, p1, p2, friction=1.0, mass=inf, inertia=inf):
@@ -369,7 +363,7 @@ class pymunx:
 	        self.space.add(body, shape)
 		self.element_count += 1
         
-	def add_poly(self, points, mass=5.0, friction=3.0):
+	def add_poly(self, points, mass=70.0, friction=2.0):
 		# Make vec2d's out of the points
 		poly_points = []
 		for p in points:
@@ -410,6 +404,88 @@ class pymunx:
 		self.space.add(body, shape)
 		self.element_count += 1
 
+	def reduce_points(self, pointlist, tolerance=25):
+		points_new = []
+		x = 0
+		y = 0
+		for p in pointlist:
+			px, py = p
+			dx = fabs(x - px)
+			dy = fabs(y - py)
+#			print x,y, "-", p, "-", dx, dy
+			
+			if dx > tolerance and dy > tolerance:
+#			if dx > tolerance or dy > tolerance \
+#			or (dx > (tolerance/2) and dx < tolerance and dy > (tolerance/2) and dy < tolerance):
+				x, y = p
+				points_new.append(p)
+		
+		if points_new[-1] != pointlist[-1]:
+			points_new.append(pointlist[-1])
+			
+		return points_new
+
+	def center_segment_points(self, pointlist):
+		pass
+		
+	def add_segment(self, points, inertia=500, mass=50.0, friction=3.0):
+		""" Add A Multi-Line Segment """
+#		body = pm.Body(5.0, 500)
+#		body.position = vec2d(400,700)
+#		a,b = (-100, 0), (100, 0)
+#		segment_shape = pm.Segment(body, vec2d(a), vec2d(b), 2.0)
+#		segment_shape.friction = 3.0
+#		segment_shape.color = self.get_color()
+#		self.space.add(body, segment_shape)
+#		print "added"
+#   		return 
+
+#		print points
+		pointlist = self.reduce_points(points)
+
+#		print pointlist
+#		print 
+		center = cx, cy = util.calc_center(pointlist)
+		pointlist = util.poly_vectors_around_center(pointlist, False)
+
+		print "Reduced Segment Points: %i -> %i" % (len(points), len(pointlist))
+#		print pointlist
+#		print center
+#		return
+
+		# Create Body
+	        body = pm.Body(mass, inertia)	        
+		body.position = self.vec2df(center)
+
+		# Create Shapes
+		a = b = None
+		clr = self.get_color()
+
+		shapes = []
+		for p in pointlist:
+			if a == None:
+				# Starting Point
+				a = p
+				
+			else:
+				# Ending Point
+				b = p
+
+				# add shape beween a and b
+#				print a,b
+				shape = pm.Segment(body, vec2d(a), vec2d(b), 2.0)
+				shape.set_group(1)
+				shape.friction = friction
+				shape.color = clr
+				shapes.append(shape)
+				
+				# Last Ending Point gets next starting Point
+				a = b
+	        
+	        # Append to Space
+	        self.space.add(body, shapes)
+		self.element_count += 1
+		
 	def get_element_count(self):
 		return self.element_count
 		
