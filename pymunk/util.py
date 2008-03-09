@@ -4,6 +4,9 @@ __docformat__ = "reStructuredText"
 from vec2d import vec2d
 from functools import partial
 
+from math import fabs
+from math import sqrt
+
 def is_clockwise(points): 
     """
     Check if the points given forms a clockwise polygon
@@ -123,7 +126,43 @@ def poly_vectors_around_center(pointlist, points_as_vec2d=True):
             y = cy - p[1]
             poly_points_center.append((x, y))
     
-    return poly_points_center	
+    return poly_points_center
 
+def get_poly_UA(pointlist, points_as_vec2d=True):
+    """Calculates the circumference and area of a given polygon
+
+    :return: int(U), int(A)    
+    """
+    p1 = p1 = None
+    U = 0
+    A = 0
+    for p in pointlist:
+        if p1 == None:
+            p1 = p
+            
+        else:
+            p2 = p
+            
+            # Extract x and y
+            if points_as_vec2d:
+                x1, y1 = p1.x, p1.y
+                x2, y2 = p2.x, p2.y
+            else:    
+                x1, y1 = p1
+                x2, y2 = p2
+
+            # Get distance between the two Points
+            dx = fabs(x2 - x1)
+            dy = fabs(y2 - y1)
+            
+            # U += c = sqrt(a^2+b^2) | A += (a*b)/2
+            U += sqrt((dx*dx) + (dy*dy))
+            A += ((dx*dy)/2)
+
+            # Current End Point becomes Next Start Point
+            p1 = p2
+    
+    return int(U), int(A)
+    
 __all__ = ["is_clockwise", "is_left", "reduce_poly", "convex_hull",
-        "calc_center", "poly_vectors_around_center"]
+        "calc_center", "poly_vectors_around_center", "get_poly_UA"]

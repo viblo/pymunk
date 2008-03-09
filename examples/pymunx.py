@@ -323,7 +323,7 @@ class pymunx:
 		self.space.add(shape)
 		self.element_count += 1
 
-	def add_ball(self, pos, radius=15, mass=10.0, inertia=1000, friction=0.5):
+	def add_ball(self, pos, radius=15, mass=70.0, inertia=1000, friction=0.5):
 		""" Adds a Ball """
 		# Create Body
 		body = pm.Body(mass, inertia)
@@ -340,7 +340,7 @@ class pymunx:
 		self.space.add(body, shape)
 		self.element_count += 1
 
-	def add_square(self, pos, a=18, mass=5.0, friction=0.2):
+	def add_square(self, pos, a=18, mass=70.0, friction=0.2):
 		""" Adding a Square """
 		# Square Vectors (Clockwise)
 	        verts = [vec2d(-a,-a), vec2d(-a, a), vec2d(a, a), vec2d(a,-a)]
@@ -363,7 +363,8 @@ class pymunx:
 	        self.space.add(body, shape)
 		self.element_count += 1
         
-	def add_poly(self, points, mass=70.0, friction=2.0):
+	def add_poly(self, points, mass=None, friction=2.0, density=0.1):
+		""" Mass will be calculated out of mass = A * density """
 		# Make vec2d's out of the points
 		poly_points = []
 		for p in points:
@@ -383,6 +384,12 @@ class pymunx:
 		
 		# Change vectors to the point of view of the center
 		poly_points_center = util.poly_vectors_around_center(poly_points)
+		
+		if mass == None:
+			U, A = util.get_poly_UA(poly_points_center)
+			mass = A*density
+#			print "Polygon Mass (m=A*d): %i kg (A=%i, d=%f)" % (mass, A, density)
+			print "Polygon Mass: %i kg" % (mass)
 		
 		# Calculate A Good Momentum
 		moment = pm.moment_for_poly(mass, poly_points_center, vec2d(0,0))
