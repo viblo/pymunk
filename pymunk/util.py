@@ -133,7 +133,7 @@ def get_poly_UA(pointlist, points_as_vec2d=True):
 
     :return: int(U), int(A)    
     """
-    p1 = p1 = None
+    p1 = p2 = None
     U = 0
     A = 0
     for p in pointlist:

@@ -85,19 +85,16 @@ import pymunk.util as util
 from pymunk.vec2d import vec2d
 
 from sys import exit
+
 from random import shuffle
 
+from math import pi
 from math import fabs
+from math import sqrt
 from math import degrees
 
 # infinite ~ 10^100 :)
 inf = 1e100
-
-# Standard Settings for pymunk 0.6.1
-# This will be checked and changed in get_pymunk_flags() to handle other pymunk versions
-class pymunk_flags:
-	version = "0.6.1"
-	poly_return_vec2d = False
 
 def hex2dec(hex): return int(hex, 16);
 def hex2rgb(hex): 
@@ -108,12 +105,12 @@ def hex2rgb(hex):
 class pymunx:
 	element_count = 0
 	fixed_color = None
-	points = []
-	segment1 = False
+#	points = []
 	
 	def __init__(self, gravity=(0.0,-900.0)):
 		self.run_physics = True 
-
+		self.gravity = gravity
+		
 		# Python Stuff
 	        self.font = pygame.font.Font(None, 18)
 		
@@ -123,15 +120,11 @@ class pymunx:
 		# Init Colors
 		self.init_colors()
 		
-		# Get PyMunk Flags to be able to handle changes in a backward compatible manner :)
-		self.pymunk_flags = self.get_pymunk_flags()
-				
 		# This string will be blit in the top left corner at each update
 		self.set_info("")
         
 		# Get Screen Size
 		self.autoset_screen_size()
-		print "detected pymunk version:", self.pymunk_flags.version
 		
 		# Space Init
 		self.space = pm.Space()
@@ -154,9 +147,11 @@ class pymunx:
 		self.fixed_color = clr
 	
 	def reset_color(self):
+		""" All Elements from now on will be drawn in random color """
 		self.fixed_color = None
 		
 	def get_color(self):
+		""" Get a color - either the fixed one or the next from self.colors """
 		if self.fixed_color != None:
 			return self.fixed_color
 			
@@ -169,20 +164,35 @@ class pymunx:
 			clr = hex2rgb(clr)
 		
 		self.cur_color += 1
-			
 		return clr
 			
 	def set_info(self, txt):
+		""" Create the Surface for the Infotext at the Upper Left Corner """
 		txt = txt.splitlines()
 		self.infostr_surface = pygame.Surface((300, len(txt)*16))
 		self.infostr_surface.fill((255,255,255))
 		self.infostr_surface.set_colorkey((255,255,255))
 		
 	        y = 0
-        	for line in txt:
-	            text = self.font.render(line, 1,THECOLORS["black"])
-        	    self.infostr_surface.blit(text, (0,y))
-	            y += 16
+		for line in txt:
+        		if len(line.strip()) == 0:
+        			y += 6
+        		else:
+				text = self.font.render(line, 1,THECOLORS["black"])
+				self.infostr_surface.blit(text, (0,y))
+				y += 16
+	
+	def clear(self):
+		""" Clears the Space """
+		pm.init_pymunk()
+
+		# Space Init
+		self.space = pm.Space()
+		self.space.gravity = vec2d(self.gravity)
+		self.space.resize_static_hash()
+		self.space.resize_active_hash()
+		
+		self.element_count = 0
 		
 	def flipy(self, y):
 		""" Convert pygame y-coordinate to chipmunk's """
@@ -192,8 +202,12 @@ class pymunx:
 		""" Return a vec2d with flipped y """
 		return vec2d(pos[0], self.flipy(pos[1]))
 		
-	def autoset_screen_size(self):
-		""" Gets the current PyGame Screen Size """
+	def autoset_screen_size(self, size=None):
+		""" Get the current PyGame Screen Size, or Sets it Manually to size=(int(width), int(height)) """
+		if size != None:
+			self.display_width, self.display_height = size
+			return
+			
 		try:
 			x,y,w,h = pygame.display.get_surface().get_rect()
 			self.display_width = w
@@ -202,7 +216,7 @@ class pymunx:
 			print "pymunx Error: Please start pygame.init() before loading pymunx"
 			exit(0)
 
-	def is_inside(self, pos, tolerance=100):
+	def is_inside(self, pos, tolerance=3000):
 		""" Return True if pos is inside the screen and False if not """
 		x, y = pos
 		if x < -tolerance or x > self.display_width+tolerance or y < -tolerance or y > self.display_height+tolerance:
@@ -210,27 +224,6 @@ class pymunx:
 		else:
 			return True
 			
-	def get_pymunk_flags(self):
-		""" Find and save flags for functions in the latest pymunk releases, so pymunx can
-		use all pymunk versions starting at 0.6.1"""
-		
-		# Start with the 0.6.1 flags and check newer versions
-		flags = pymunk_flags()
-
-		# Init Classes and Variables to retrieve infos
-		a = 5
-	        verts = [vec2d(-a,-a), vec2d(-a, a), vec2d(a, a), vec2d(a,-a)]
-		body =  pm.Body(0.1, 0.1)
-	        poly = pm.Poly(body, verts, vec2d(0,0))
-		
-		# 0.6.1 -> svn-48: poly.get_get_points() returns vec2d instead of tuple
-		p = poly.get_points()
-		if "vec2d" in str(type(p[0])): 
-			flags.poly_return_vec2d = True
-			flags.version = "svn > 0.6.1"
-		
-		return flags
-				
 	def update(self, fps=50.0, steps=5):
 		""" Update the Physics Space """
 		# Update physics
@@ -292,10 +285,8 @@ class pymunx:
 		elif 'pymunk.Poly' in s:
 			# Correct Poly y-Coordinates
 			points = []
-			if self.pymunk_flags.poly_return_vec2d:
-				for p in shape.get_points(): points.append((p.x, self.flipy(p.y)))					
-			else:
-				for p in shape.get_points(): points.append((p[0], self.flipy(p[1])))
+			for p in shape.get_points(): 
+				points.append((p.x, self.flipy(p.y)))
 
 			# Close the Polygon
 			if points[-1] != points[0]:
@@ -309,29 +300,35 @@ class pymunx:
 
 #		if len(self.points) > 1:
 #			pygame.draw.lines(surface, shape.color, False, self.points, 2)
+
 		return True
 		
-	def add_wall(self, p1, p2, friction=1.0, mass=inf, inertia=inf):
+	def add_wall(self, p1, p2, friction=1.0, elasticity=0.5, mass=inf, inertia=inf):
 		""" Adds a fixed Wall """
 		body = pm.Body(mass, inertia)
 		shape= pm.Segment(body, self.vec2df(p1), self.vec2df(p2), 2.0)	
-		shape.friction = friction
-
+		shape.set_friction(friction)
+		shape.set_elasticity(elasticity)
+		
 		shape.color = self.get_color()
 		shape.color2 = self.get_color()
 
 		self.space.add(shape)
 		self.element_count += 1
-
-	def add_ball(self, pos, radius=15, mass=70.0, inertia=1000, friction=0.5):
+		return shape
+		
+	def add_ball(self, pos, radius=15, density=0.1, inertia=1000, friction=0.5, elasticity=0.3):
 		""" Adds a Ball """
+		mass = density * (radius * radius * pi)
+
 		# Create Body
 		body = pm.Body(mass, inertia)
 		body.position = self.vec2df(pos)
 		
 		# Create Shape
 		shape = pm.Circle(body, radius, vec2d(0,0))
-		shape.friction = friction
+		shape.set_friction(friction)
+		shape.set_elasticity(elasticity)
 		
 		shape.color = self.get_color()
 		shape.color2 = self.get_color()
@@ -339,22 +336,26 @@ class pymunx:
 		# Append to Space
 		self.space.add(body, shape)
 		self.element_count += 1
+		return shape
 
-	def add_square(self, pos, a=18, mass=70.0, friction=0.2):
-		""" Adding a Square """
+	def add_square(self, pos, a=18, density=0.1, friction=0.2, elasticity=0.3):
+		""" Adding a Square | Note that a is actually half a side, due to vector easyness :) """
+		mass = density * (a * a * 4)
+		
 		# Square Vectors (Clockwise)
 	        verts = [vec2d(-a,-a), vec2d(-a, a), vec2d(a, a), vec2d(a,-a)]
 		
 		# Square Physic Settings
-	        moment = pm.moment_for_poly(mass, verts, vec2d(0,0))
+	        inertia = pm.moment_for_poly(mass, verts, vec2d(0,0))
 	
 		# Create Body
-	        body = pm.Body(mass, moment)
+	        body = pm.Body(mass, inertia)
 		body.position = self.vec2df(pos)
 	
 		# Create Shape
 	        shape = pm.Poly(body, verts, vec2d(0,0))
-	        shape.friction = friction
+		shape.set_friction(friction)
+		shape.set_elasticity(elasticity)
 
 		shape.color = self.get_color()
 		shape.color2 = self.get_color()
@@ -362,8 +363,9 @@ class pymunx:
 	        # Append to Space
 	        self.space.add(body, shape)
 		self.element_count += 1
+		return shape
         
-	def add_poly(self, points, mass=None, friction=2.0, density=0.1):
+	def add_poly(self, points, density=0.1, friction=2.0, elasticity=0.3):
 		""" Mass will be calculated out of mass = A * density """
 		# Make vec2d's out of the points
 		poly_points = []
@@ -372,6 +374,7 @@ class pymunx:
 			
 		# Reduce polygon points
 		poly_points = util.reduce_poly(poly_points)
+#		print "New Polygon: Points reduced from %i to %i" % (len(points), len(poly_points))
 		if len(poly_points) < 3: 
 			return
 		
@@ -385,11 +388,9 @@ class pymunx:
 		# Change vectors to the point of view of the center
 		poly_points_center = util.poly_vectors_around_center(poly_points)
 		
-		if mass == None:
-			U, A = util.get_poly_UA(poly_points_center)
-			mass = A*density
-#			print "Polygon Mass (m=A*d): %i kg (A=%i, d=%f)" % (mass, A, density)
-			print "Polygon Mass: %i kg" % (mass)
+		U, A = util.get_poly_UA(poly_points_center)
+		A *= 2.5 	# get_poly_UA is not working properly with the area :)
+		mass = A * density
 		
 		# Calculate A Good Momentum
 		moment = pm.moment_for_poly(mass, poly_points_center, vec2d(0,0))
@@ -402,7 +403,8 @@ class pymunx:
 
 		# Create Shape
 		shape = pm.Poly(body, poly_points_center, vec2d(0,0))
-		shape.friction = friction
+		shape.set_friction(friction)
+		shape.set_elasticity(elasticity)
 
 		shape.color = self.get_color()
 		shape.color2 = self.get_color()
@@ -410,8 +412,21 @@ class pymunx:
 		# Append to Space
 		self.space.add(body, shape)
 		self.element_count += 1
+		return shape
 
+		
+	def apply_impulse(self, shape, impulse_vector):
+		x, y = impulse_vector
+		shape.body.apply_impulse(vec2d(x, self.flipy(y)), vec2d(0,0))
+
+	def get_element_count(self):
+		return self.element_count
+
+#
+# The functions below are only for experimental usage
+#		
 	def reduce_points(self, pointlist, tolerance=25):
+		# Heavily reduce Line Points
 		points_new = []
 		x = 0
 		y = 0
@@ -419,11 +434,8 @@ class pymunx:
 			px, py = p
 			dx = fabs(x - px)
 			dy = fabs(y - py)
-#			print x,y, "-", p, "-", dx, dy
 			
 			if dx > tolerance and dy > tolerance:
-#			if dx > tolerance or dy > tolerance \
-#			or (dx > (tolerance/2) and dx < tolerance and dy > (tolerance/2) and dy < tolerance):
 				x, y = p
 				points_new.append(p)
 		
@@ -431,34 +443,22 @@ class pymunx:
 			points_new.append(pointlist[-1])
 			
 		return points_new
-
-	def center_segment_points(self, pointlist):
-		pass
 		
-	def add_segment(self, points, inertia=500, mass=50.0, friction=3.0):
+	def add_segment(self, points, inertia=500, mass=150.0, friction=3.0):
 		""" Add A Multi-Line Segment """
-#		body = pm.Body(5.0, 500)
-#		body.position = vec2d(400,700)
-#		a,b = (-100, 0), (100, 0)
-#		segment_shape = pm.Segment(body, vec2d(a), vec2d(b), 2.0)
-#		segment_shape.friction = 3.0
-#		segment_shape.color = self.get_color()
-#		self.space.add(body, segment_shape)
-#		print "added"
-#   		return 
 
-#		print points
+		# Reduce Points
 		pointlist = self.reduce_points(points)
+		print "Reduced Segment Points: %i -> %i" % (len(points), len(pointlist))
 
-#		print pointlist
-#		print 
+		# Get the Center of the Segment
 		center = cx, cy = util.calc_center(pointlist)
+		
+		# Arrange vectors around center
 		pointlist = util.poly_vectors_around_center(pointlist, False)
 
-		print "Reduced Segment Points: %i -> %i" % (len(points), len(pointlist))
-#		print pointlist
-#		print center
-#		return
+		# Get Moment of Inertia
+	        moment = pm.moment_for_poly(mass, pointlist, vec2d(0,0))
 
 		# Create Body
 	        body = pm.Body(mass, inertia)	        
@@ -482,7 +482,7 @@ class pymunx:
 #				print a,b
 				shape = pm.Segment(body, vec2d(a), vec2d(b), 2.0)
 				shape.set_group(1)
-				shape.friction = friction
+				shape.set_friction(friction)
 				shape.color = clr
 				shapes.append(shape)
 				
@@ -492,7 +492,3 @@ class pymunx:
 	        # Append to Space
 	        self.space.add(body, shapes)
 		self.element_count += 1
-		
-	def get_element_count(self):
-		return self.element_count
-		

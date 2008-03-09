@@ -16,7 +16,9 @@ def main():
 	world.set_info("LMB: Draw Polygon or Segment\nRMB: Add Ball\nRMB + Shift: Add Square\nSpace: Pause\n1: Add many balls\n2: Add many squares\n3: Toggle Black/Colors")
 	
 	# Add A Wall
+	world.add_wall((70, 660), (100, 700))
 	world.add_wall((100, 700), (700, 700))
+	world.add_wall((700, 700), (730, 660))
 #	world.add_static_L()	
 
 	# Default Settings
