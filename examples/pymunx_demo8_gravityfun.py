@@ -2,18 +2,28 @@ import pygame
 from pygame.locals import *
 from pygame.color import *
 
-from math import fabs
 from pymunx import *
+from math import fabs
+from random import seed
+from random import randint
 
 def blit_arrow(surface, a, b):
-	pygame.draw.line(surface, (237, 248, 247), a, b, 6)
+	xa, ya = a
+	xb, yb = b
+	dx = xb - xa
+	dy = yb - ya
+	l = int(sqrt(sqrt((dx*dx) + (dy*dy)))) * 1.5
+	print l
+	pygame.draw.circle(surface, (l*5, 41, 97), a, 9, 0)
+	pygame.draw.line(surface, (l*6, 41, 97), a, b, int(l)/2)
 
 def main():
 	# PyGame Init
 	pygame.init()
 	screen = pygame.display.set_mode((1200, 900))
 	clock = pygame.time.Clock()
-
+	seed()
+	
 	# Create the Physical Space Class
 	default_size = 18
 	default_elasticity = 0.9
@@ -22,8 +32,8 @@ def main():
 	default_inertia = 10.0
 	
 	world = pymunx()
-	world.set_info("LMB: Add Ball, throw Ball or draw Polygon \nRMB: Add Box, or throw one \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast \nF1: Toggle Help " % (default_size, default_elasticity, default_density))
-	
+	world.set_info("LMB: Add Item, throw Ball or draw Polygon \nRMB: Drag to change Gravity [ (%i, %i) ] \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast\nF1: Toggle Help" % (world.space.gravity[0], world.space.gravity[1], default_size, default_elasticity, default_density))
+
 	# Add A Wall
 	x,y,w,h = pygame.display.get_surface().get_rect()
 	world.add_wall((0, 0), (0, h), default_friction, default_elasticity)
@@ -62,15 +72,15 @@ def main():
 					
 				elif event.unicode == "f":
 					pygame.display.toggle_fullscreen()
-	
-				elif event.unicode == "s":
-					world.screenshot()
 
 				elif event.unicode == ",":
-					world.screencast_start("demo7")
+					world.screencast_start("demo8")
 					
 				elif event.unicode == ".":
 					world.screencast_stop()
+					
+				elif event.unicode == "s":
+					world.screenshot()
 				
 				elif event.unicode == "1":
 					# Add many Balls
@@ -92,7 +102,7 @@ def main():
 					else:
 						world.set_color((0, 0, 0))
 
-
+	
 			elif event.type == MOUSEBUTTONDOWN and (event.button == 4 or event.button == 5):
 				key = pygame.key.get_mods()
 #				print key
@@ -123,7 +133,7 @@ def main():
 						if default_size < 2:
 							default_size = 2
 
-				world.set_info("LMB: Add Ball, throw Ball or draw Polygon \nRMB: Add Box, or throw one \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast \nF1: Toggle Help " % (default_size, default_elasticity, default_density))
+				world.set_info("LMB: Add Item, throw Ball or draw Polygon \nRMB: Drag to change Gravity [ (%i, %i) ] \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast\nF1: Toggle Help" % (world.space.gravity[0], world.space.gravity[1], default_size, default_elasticity, default_density))
 
 			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
 				# Start Wall-Drawing 
@@ -140,20 +150,17 @@ def main():
 
 			elif event.type == MOUSEBUTTONUP and event.button == 3:
 				if draw_arrow:
-					# Throw Box
+					# Change Gravity
 					draw_arrow = False
 					x1, y1 = points[0]
 					x2, y2 = event.pos
 					x = x2 - x1
 					y = y2 - y1
-					l = sqrt((x*x)+(y*y)) * 1.8
-					box = world.add_square(points[0], default_size, default_density, default_friction, default_elasticity)
-					world.apply_impulse(box, (x*l, y*l))
-					
-				else:
-					# Don't Throw, Just Append :)
-					world.add_square(event.pos, default_size, default_density, default_friction, default_elasticity)
-			
+					x *= 1.3
+					y *= 1.3
+					world.set_gravity((x,y*(-1)))
+					world.set_info("LMB: Add Ball, throw Ball or draw Polygon \nRMB: Drag to change Gravity [ (%i, %i) ] \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast \nF1: Toggle Help" % (world.space.gravity[0], world.space.gravity[1], default_size, default_elasticity, default_density))
+								
 			elif event.type == MOUSEBUTTONUP and event.button == 1:
 				if draw_poly:
 					# Create Polygon
@@ -161,7 +168,10 @@ def main():
 					points.append(event.pos)
 
 					if len(points) < 5: 
-						world.add_ball(event.pos, default_size, default_density, default_inertia, default_friction, default_elasticity)
+						i = randint(0,1)
+						if i == 0: world.add_ball(event.pos, default_size, default_density, default_inertia, default_friction, default_elasticity)
+						else: world.add_square(event.pos, default_size, default_density, default_friction, default_elasticity)
+					
 					
 					else:
 						# Draw Poly or Segment

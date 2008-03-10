@@ -5,6 +5,26 @@ from pygame.color import *
 from math import fabs
 from pymunx import *
 
+from time import sleep
+from threading import Thread
+
+class ShowFPS(Thread):
+	def __init__(self, seconds, pygame_clock):
+		Thread.__init__(self)
+		self.running = True
+		self.clock = pygame_clock
+		self.delay = seconds
+		
+	def run(self):
+		i = 0
+		m = 5.0
+		while self.running:
+			sleep(self.delay / m)
+			i += 1
+			if i == m:
+				print "%i FPS" % int(self.clock.get_fps())
+				i = 0
+
 def blit_arrow(surface, a, b):
 	pygame.draw.line(surface, (237, 248, 247), a, b, 6)
 	
@@ -16,25 +36,27 @@ def main():
 
 	# Create the Physical Space Class
 	default_size = 18
-	default_elasticity = 0.7
+	default_elasticity = 0.6
 	default_density = 0.1
 	default_friction = 0.3
 	default_inertia = 10.0
 	
 	world = pymunx()
-	world.set_info("LMB: Add Ball, throw Ball or draw Polygon \nRMB: Add Box, or throw one \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares" % (default_size, default_elasticity, default_density))
+	world.set_info("LMB: Add Ball, throw Ball or draw Polygon \nRMB: Add Box, or throw one \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast \nF1: Toggle Help " % (default_size, default_elasticity, default_density))
+	
+	FPSX = ShowFPS(3.0, clock)
+#	FPSX.start()
 	
 	# Add A Wall
-#	world.add_wall((70, 760), (100, 800))
 	world.add_wall((200, 800), (1000, 800))
-#	world.add_wall((1100, 800), (1130, 760))
 
 	# Default Settings
 	running = True
 	draw_poly = False
 	draw_arrow = False
 	points = []
-		
+	filecounter = 0
+	
 	# Main Loop
 	while running:
 		for event in pygame.event.get():
@@ -42,12 +64,32 @@ def main():
 			if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
 				# Bye Bye
 				running = False
+				FPSX.running = False
 				
 			elif event.type == KEYDOWN:
 #				print event
 				if event.key == K_SPACE:	
 					# Pause with SPACE
 					world.run_physics = not world.run_physics
+					
+				elif event.key == 282:
+					world.toggle_help()
+
+				elif event.unicode == "c": 
+					world.clear()
+					world.add_wall((200, 800), (1000, 800), default_friction, default_elasticity)
+					
+				elif event.unicode == "f":
+					pygame.display.toggle_fullscreen()
+	
+				elif event.unicode == "s":
+					world.screenshot()
+
+				elif event.unicode == ",":
+					world.screencast_start("demo6")
+					
+				elif event.unicode == ".":
+					world.screencast_stop()
 				
 				elif event.unicode == "1":
 					# Add many Balls
@@ -69,13 +111,7 @@ def main():
 					else:
 						world.set_color((0, 0, 0))
 
-				elif event.unicode == "c": 
-					world.clear()
-					world.add_wall((200, 800), (1000, 800), default_friction, default_elasticity)
 					
-				elif event.unicode == "f":
-					pygame.display.toggle_fullscreen()
-	
 			elif event.type == MOUSEBUTTONDOWN and (event.button == 4 or event.button == 5):
 				# Change Settings with the Mouse Wheel
 				key = pygame.key.get_mods()
@@ -83,9 +119,9 @@ def main():
 				if event.button == 4:
 					# MW UP
 					if key == 4160 or key == 4224:	# Ctrl
-						default_elasticity += 0.01
-						if default_elasticity > 2.0:
-							default_elasticity = 2.0
+						default_elasticity += 0.02
+						if default_elasticity > 1.6:
+							default_elasticity = 1.6
 							
 					elif key == 4097 or key == 4098: # Shift
 						default_density += 0.02
@@ -95,7 +131,7 @@ def main():
 				else:
 					# MW DOWN
 					if key == 4160 or key == 4224: 		# Ctrl
-						default_elasticity -= 0.01
+						default_elasticity -= 0.02
 						if default_elasticity < 0.0:
 							default_elasticity = 0.0
 					
@@ -110,7 +146,7 @@ def main():
 							default_size = 2
 
 				# Update Info-Text
-				world.set_info("LMB: Add Ball, throw Ball or draw Polygon \nRMB: Add Box, or throw one \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares" % (default_size, default_elasticity, default_density))
+				world.set_info("LMB: Add Ball, throw Ball or draw Polygon \nRMB: Add Box, or throw one \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast \nF1: Toggle Help " % (default_size, default_elasticity, default_density))
 
 			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
 				# Start/Stop Wall-Drawing 
@@ -184,6 +220,12 @@ def main():
 			elif draw_arrow:
 				blit_arrow(screen, points[0], points[-1])
 		
+#		if world.run_physics:
+#			filecounter += 1
+#			z = "0" * (5-len(str(filecounter)))
+#			fn = "s/mov1_%s%i.tga" % (z, filecounter)
+#			pygame.image.save(screen, fn)
+
 		# Flip Display
 		pygame.display.flip()
 		

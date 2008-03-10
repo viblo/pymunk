@@ -26,7 +26,7 @@
 
    > Version <
    
-   	pymunx-0.4 (commit: 9. March 2008)
+   	pymunx-0.5 (commit: 10. March 2008)
    	   
 
    > Latest Changes <
@@ -84,29 +84,72 @@ import pymunk.pymunk as pm
 import pymunk.util as util
 from pymunk.vec2d import vec2d
 
-from sys import exit
-
-from random import shuffle
+from os import chdir
+from os import system
+from os.path import isfile
 
 from math import pi
 from math import fabs
 from math import sqrt
 from math import degrees
 
+from sys import exit
+from time import sleep
+from random import shuffle
+from threading import Thread
+from traceback import print_exc
+
 # infinite ~ 10^100 :)
 inf = 1e100
-
-def hex2dec(hex): return int(hex, 16);
+		
+# Some Hex Tools
+def hex2dec(hex): return int(hex, 16)
 def hex2rgb(hex): 
 	if hex[0:1] == '#': hex = hex[1:]; 
 	return (hex2dec(hex[:2]), hex2dec(hex[2:4]), hex2dec(hex[4:6]))
 
+# Threaded, delayed function
+class delay_function(Thread):
+	def __init__(self, delay, callback):
+		Thread.__init__(self)
+		self.delay = delay
+		self.callback = callback
+	def run(self):
+		sleep(self.delay)
+		self.callback()
+		
+# Encoding should run in the Background :)
+class avi_encoder(Thread):
+	def __init__(self, dir, fn, callback):
+		Thread.__init__(self)
+		self.callback = callback
+		self.dir = dir
+		self.fn = fn
+	def run(self):
+		print self.dir, self.fn
+		try:
+			chdir(self.dir)
+			print "Writing to %s.avi..." % self.fn
+			self.fn = self.fn.replace("%s/" % self.dir, "")
+			system('mencoder "mf://%s*.tga" -mf fps=30 -o %s.avi -ovc lavc -lavcopts vcodec=msmpeg4v2:vbitrate=800' % (self.fn, self.fn))
+			system("rm %s*.tga" % self.fn)			
+			chdir("..")
+		except:
+			print "Sorry, only working on linux ... and not well tested :/ Error:"
+			print_exc()
+		# Report that encoding (try) is over
+		self.callback()
+
 # pymunx Main Class	
 class pymunx:
-	element_count = 0
-	fixed_color = None
-#	points = []
-	
+	element_count = 0	# Approx. Count of current Elements
+	fixed_color = None	# Fixed Color in Hex or RGB
+	filecounter = 0		# Current Screenshot File Counter
+	capture_to = False	# False if no Screencast, filename if record
+	info_surface = False	# Info Box for the center of the image (Encoding, ...)
+	show_help = True	# Blit Help on Top Left of the Screen	
+
+	print hex2rgb("#8f1919")
 	def __init__(self, gravity=(0.0,-900.0)):
 		""" Init function: init pymunk, get screen size, init space, ...
 		    Parameter: gravity == (int(x), int(y))
@@ -116,7 +159,8 @@ class pymunx:
 		self.gravity = gravity
 		
 		# Python Stuff
-	        self.font = pygame.font.Font(None, 18)
+	        self.font = pygame.font.Font(None, 22)
+	        self.font_xxl = pygame.font.Font(None, 38)
 		
 		# Physics Init
 		pm.init_pymunk()
@@ -177,6 +221,11 @@ class pymunx:
 		self.cur_color += 1
 		return clr
 			
+	def toggle_help(self):
+		""" Toggle Help on and off
+		"""
+		self.show_help = not self.show_help
+
 	def set_info(self, txt):
 		""" Create the Surface for the Infotext at the Upper Left Corner 
 		    Parameter: txt == str()
@@ -195,8 +244,87 @@ class pymunx:
 				self.infostr_surface.blit(text, (0,y))
 				y += 16
 	
+	def messagebox_show(self, txt, delay=None):
+		""" Add a message box at the center on drawing 
+		    Parameter: txt == str()
+		    Optional: delay (in seconds, until box disappears)
+		"""
+		s = self.font_xxl.render(txt, 1, THECOLORS["black"])
+		x,y,w,h = s.get_rect()
+		self.info_surface = pygame.Surface((w+40,h+20))
+		self.info_surface.fill((255,255,255))
+		pygame.draw.rect(self.info_surface, (0,0,0), (x,y,w+40,h+10), 4)
+		self.info_surface.blit(s, (20, 8))
+		if delay != None:
+			x = delay_function(delay, self.messagebox_hide)
+			x.start()
+		
+	def messagebox_hide(self):
+		""" Hide the message box
+		"""
+		self.info_surface = False
+		
+	def screenshot(self, filename='screenshot', ext='tga'):
+		""" Make a Screenshot in .tga format, if there is no screencast running
+		    Optional: filename == str() (no extension), ext == str() (does not work -- always saves as .tga)
+		"""
+		if self.capture_to != False:
+			return
+			
+		if filename[-4:-3] == ".": filename = filename[:-4]
+		elif filename[-3:-2] == ".": filename = filename[:-3]
+
+		# Create Surface to Blit Elements on
+		surface = pygame.Surface((self.display_width, self.display_height))
+		surface.fill((255, 255, 255))
+		self.draw(surface, True)
+		
+		# Save
+		try:
+			fn = self.save_surface(surface, "snapshots/%s" % filename, ext)
+			self.messagebox_show("Saved as: %s" % fn, 2)
+		except: pass
+
+	def screencast_start(self, fn='screencast'):
+		""" Starts saving one image per frame in snapshots/ (as .tga)
+		    Optional: fn == str() (filename without extension)
+		"""
+		self.capture_to = "snapshots/%s" % fn
+		system("rm %s*.tga" % self.capture_to)
+	
+	def screencast_stop(self):
+		""" Stop the image saving and start encoding the images to a .avi video (with mencoder)
+		"""
+		self.run_physics = False
+		self.filecounter = 0
+		self.messagebox_show("Encoding Video [ %s.avi ]..." % self.capture_to)
+		encoder = avi_encoder("snapshots", self.capture_to, self.screencast_encode_callback)
+		encoder.start()
+		self.capture_to = False
+			
+	def screencast_encode_callback(self):
+		""" Callback function when encoding is done -> remove info & resume physics
+		"""
+		self.messagebox_hide()
+		self.run_physics = True
+		
+	def save_surface(self, surface, fn='surface', ext='tga'):
+		""" Saves a surface to a local file
+		    Parameter: surface == pygame.Surface()
+		    Optional: fn == str(fn_without_ext), ext == str()
+		    Returns: fullname == str(full_name_of_file)
+		"""
+		fullname = None
+		while fullname == None or isfile(fullname):
+			self.filecounter += 1
+			z = "0" * (5-len(str(self.filecounter)))
+			fullname = "%s_%s%i.%s" % (fn, z, self.filecounter, ext)
+			
+		pygame.image.save(surface, fullname)
+		return fullname
+	
 	def clear(self):
-		""" Clears the Space 
+		""" Clear & Reset the Physic Space (Remove all Elements)
 		"""
 		pm.init_pymunk()
 
@@ -207,7 +335,8 @@ class pymunx:
 		self.space.resize_active_hash()
 		
 		self.element_count = 0
-		
+		self.filecounter = 0
+
 	def flipy(self, y):
 		""" Convert pygame y-coordinate to chipmunk's 
 		    Parameter: y == int()
@@ -260,9 +389,10 @@ class pymunx:
 			for _ in range(steps): 
 				self.space.step(dt)
 
-	def draw(self, surface):
+	def draw(self, surface, addtext=True):
 		""" Draw All Shapes, and removes the ones outside 
 		    Parameter: surface == pygame.Surface()
+		    Optional: addtext == True/False (if True, also add Info-Text to surface)
 		"""
 		to_remove = []
 
@@ -270,10 +400,21 @@ class pymunx:
 		for shape in self.space.get_shapes():
 			if not self.draw_shape(surface, shape):
 				to_remove.append(shape)
-
-		# Draw Info-Text					
-		surface.blit(self.infostr_surface, (10,10))
-
+		
+		# Maybe only add shapes. If so, return now
+		if not addtext: 
+			return
+		
+		# Screencast?
+		if self.capture_to != False: 
+			self.save_surface(surface, self.capture_to)
+		
+		# Draw Info-Text
+		if self.show_help:
+			surface.blit(self.infostr_surface, (10,10))
+		if self.info_surface != False: 
+			surface.blit(self.info_surface, (300,300))
+		
 		# Remove Outside Shapes
 		for shape in to_remove:
 			self.space.remove(shape)
@@ -293,11 +434,11 @@ class pymunx:
 		
 			# Draw Ball
 			p = int(v.x), int(self.flipy(v.y))
-			pygame.draw.circle(surface, shape.color, p, int(r), 2)
+			pygame.draw.circle(surface, shape.color, p, int(r), 3)
 	
 			# Draw Rotation Vector
 			p2 = vec2d(rot.x, -rot.y) * r * 0.9
-			pygame.draw.line(surface, shape.color2, p, p+p2)
+			pygame.draw.aaline(surface, shape.color2, p, p+p2, 2)
 			
 			# Remove if outside
 			if not self.is_inside(p): return False
@@ -308,7 +449,7 @@ class pymunx:
 			p1 = (p1[0], self.flipy(p1[1]))
 			p2 = (p2[0], self.flipy(p2[1]))	
 #			print ">",p1, p2		
-			pygame.draw.lines(surface, shape.color, False, [p1, p2], 2)
+			pygame.draw.lines(surface, shape.color, False, [p1, p2], 3)
 
 			# Remove if outside
 			if not self.is_inside(p1) or not self.is_inside(p2): return False
@@ -324,7 +465,7 @@ class pymunx:
 				points.append(points[0])
 		
 			# Draw Poly
-			pygame.draw.lines(surface, shape.color, False, points, 2)
+			pygame.draw.polygon(surface, shape.color, points, 3)
 
 			# Remove if outside
 			if not self.is_inside(points[0]): return False
@@ -334,7 +475,7 @@ class pymunx:
 
 		return True
 		
-	def add_wall(self, p1, p2, friction=1.0, elasticity=0.5, mass=inf, inertia=inf):
+	def add_wall(self, p1, p2, friction=1.0, elasticity=0.1, mass=inf, inertia=inf):
 		""" Adds a fixed Wall pos = (int(x), int(y))
 		    Parameter: p1 == pos(startpoint), p2 == pos(endpoint)
 		    Optional: See #physical_parameters
@@ -546,3 +687,9 @@ class pymunx:
 	        # Append to Space
 	        self.space.add(body, shapes)
 		self.element_count += 1
+
+	def set_gravity(self, gravity_vector):
+		print "New Gravity:", gravity_vector
+		self.gravity = gravity_vector
+		self.space.set_gravity(gravity_vector)
+		
