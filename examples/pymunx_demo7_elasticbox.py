@@ -21,8 +21,11 @@ def main():
 	default_friction = 0.3
 	default_inertia = 10.0
 	
+	key_up = False
+	key_down = False
+
 	world = pymunx()
-	world.set_info("LMB: Add Ball, throw Ball or draw Polygon \nRMB: Add Box, or throw one \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast \nF1: Toggle Help " % (default_size, default_elasticity, default_density))
+	world.set_info("F1 or h: Toggle Help \n\nLMB: Add ball, throw ball or draw a shape \nRMB: Add box, or throw one \n\nMouse-Wheel or Arrow Keys: Size [ %i m ] \n  + CTRL: Elasticity [ %.2f ] \n  + Shift:  Density [ %.2f ] \n  + Alt:     Friction [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast " % (default_size, default_elasticity, default_density, default_friction))
 	
 	# Add A Wall
 	x,y,w,h = pygame.display.get_surface().get_rect()
@@ -49,7 +52,7 @@ def main():
 					# Pause with SPACE
 					world.run_physics = not world.run_physics
 
-				elif event.key == 282:
+				elif event.key == 282 or event.unicode == "h":
 					world.toggle_help()
 
 				elif event.unicode == "c": 
@@ -71,6 +74,14 @@ def main():
 					
 				elif event.unicode == ".":
 					world.screencast_stop()
+
+				elif event.key == 273 or event.key == 275:
+					# Start: Hold Up
+					key_up = True
+
+				elif event.key == 274 or event.key == 276:
+					# Start: Hold Down
+					key_down = True
 				
 				elif event.unicode == "1":
 					# Add many Balls
@@ -93,18 +104,26 @@ def main():
 						world.set_color((0, 0, 0))
 
 
-			elif event.type == MOUSEBUTTONDOWN and (event.button == 4 or event.button == 5):
+			elif (event.type == MOUSEBUTTONDOWN and (event.button == 4 or event.button == 5)) or (event.type == KEYUP and (event.key in [273, 274, 275, 276])):
+				# Change Settings with the Mouse Wheel or Up/Down (+Right/Left)
 				key = pygame.key.get_mods()
-#				print key
-
-				if event.button == 4:
+				if event.type == KEYUP:
+					key_up = False
+					key_down = False
+				
+				if (event.type == MOUSEBUTTONDOWN and event.button == 4) or (event.type == KEYDOWN and (event.key == 273 or event.key == 275)):
 					# MW UP
 					if key == 4160 or key == 4224: # Ctrl
 						default_elasticity += 0.02
 						if default_elasticity > 1.6:
 							default_elasticity = 1.6
 							
-					elif key == 4097 or key == 4098: default_density += 0.02 # Shift
+					elif key == 4097 or key == 4098: # Shift
+						default_density += 0.02 
+						
+					elif key == 4352: # Alt
+						default_friction += 0.02
+						
 					else: default_size += 2
 				else:
 					# MW DOWN
@@ -118,12 +137,17 @@ def main():
 						if default_density < 0.02:
 							default_density = 0.02
 
+					elif key == 4352: # Alt
+						default_friction -= 0.02
+						if default_friction < 0:
+							default_friction = 0.0
+						
 					else: 
 						default_size -= 2
-						if default_size < 2:
-							default_size = 2
+						if default_size < 4:
+							default_size = 4
 
-				world.set_info("LMB: Add Ball, throw Ball or draw Polygon \nRMB: Add Box, or throw one \n\nMouseWheel: Size [ %i m ] \nMouseWheel + CTRL: Elasticity [ %.2f ] \nMouseWheel + Shift: Density [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast \nF1: Toggle Help " % (default_size, default_elasticity, default_density))
+				world.set_info("F1 or h: Toggle Help \n\nLMB: Add ball, throw ball or draw a shape \nRMB: Add box, or throw one \n\nMouse-Wheel or Arrow Keys: Size [ %i m ] \n  + CTRL: Elasticity [ %.2f ] \n  + Shift:  Density [ %.2f ] \n  + Alt:     Friction [ %.2f ] \n\nc: Clear \nf: Fullscreen \nSpace: Pause\n1: Add many balls\n2: Add many squares \n\ns: Screenshot \n[,]: Start Screencast \n[.]: Stop Screencast " % (default_size, default_elasticity, default_density, default_friction))
 
 			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
 				# Start Wall-Drawing 
@@ -190,6 +214,13 @@ def main():
 		# Update & Draw World
 		world.update()
 		world.draw(screen)
+
+		# For holding Up/Down, call often
+		if key_up:
+			pygame.event.post(pygame.event.Event(MOUSEBUTTONDOWN, {'button' : 4}))
+		elif key_down:
+			pygame.event.post(pygame.event.Event(MOUSEBUTTONDOWN, {'button' : 5}))
+
 
 		# Show line if drawing a wall
 		if len(points) > 1:

@@ -149,7 +149,6 @@ class pymunx:
 	info_surface = False	# Info Box for the center of the image (Encoding, ...)
 	show_help = True	# Blit Help on Top Left of the Screen	
 
-	print hex2rgb("#8f1919")
 	def __init__(self, gravity=(0.0,-900.0)):
 		""" Init function: init pymunk, get screen size, init space, ...
 		    Parameter: gravity == (int(x), int(y))
@@ -159,7 +158,7 @@ class pymunx:
 		self.gravity = gravity
 		
 		# Python Stuff
-	        self.font = pygame.font.Font(None, 22)
+	        self.font = pygame.font.Font(None, 32)
 	        self.font_xxl = pygame.font.Font(None, 38)
 		
 		# Physics Init
@@ -231,18 +230,18 @@ class pymunx:
 		    Parameter: txt == str()
 		"""
 		txt = txt.splitlines()
-		self.infostr_surface = pygame.Surface((300, len(txt)*16))
+		self.infostr_surface = pygame.Surface((500, 800))
 		self.infostr_surface.fill((255,255,255))
 		self.infostr_surface.set_colorkey((255,255,255))
 		
 	        y = 0
 		for line in txt:
         		if len(line.strip()) == 0:
-        			y += 6
+        			y += 16
         		else:
 				text = self.font.render(line, 1,THECOLORS["black"])
 				self.infostr_surface.blit(text, (0,y))
-				y += 16
+				y += 26
 	
 	def messagebox_show(self, txt, delay=None):
 		""" Add a message box at the center on drawing 
@@ -286,14 +285,14 @@ class pymunx:
 		except: pass
 
 	def screencast_start(self, fn='screencast'):
-		""" Starts saving one image per frame in snapshots/ (as .tga)
+		""" Starts saving one image per frame in snapshots/ (as .tga), for encoding with mencoder
 		    Optional: fn == str() (filename without extension)
 		"""
 		self.capture_to = "snapshots/%s" % fn
 		system("rm %s*.tga" % self.capture_to)
 	
 	def screencast_stop(self):
-		""" Stop the image saving and start encoding the images to a .avi video (with mencoder)
+		""" Stop the image saving and start encoding (mencoder) the images to a .avi video
 		"""
 		self.run_physics = False
 		self.filecounter = 0
