@@ -480,6 +480,7 @@ def moment_for_circle(mass, inner_radius, outer_radius, offset):
     return cp.cpMomentForCircle(mass, inner_radius, outer_radius, offset)
 
 def moment_for_poly(mass, vertices,  offset):
+    """Calculate the moment of inertia for a polygon"""
     verts = (Vec2d * len(vertices))
     verts = verts(Vec2d(0, 0))
     for (i, vertex) in enumerate(vertices):
@@ -519,48 +520,49 @@ class Joint(object):
         cp.cpJointFree(self._joint)
 
 class PinJoint(Joint):
+    """Keeps the anchor points at a set distance from one another."""
     def __init__(self, a, b, anchr1, anchr2):
-        """Keeps the anchor points at a set distance from one another.
-        
-        a and b are the two bodies to connect, and anchr1 and anchr2 are the
-        anchor points on those bodies."""
+        """a and b are the two bodies to connect, and anchr1 and anchr2 are the
+        anchor points on those bodies.
+        """
         self._a = a
         self._b = b
         self._joint = cp.cpPinJointNew(a._body, b._body, anchr1, anchr2)
 
 class SlideJoint(Joint):
-    def __init__(self, a, b, anchr1, anchr2, min, max):
-        """Like pin joints, but have a minimum and maximum distance.
+    """Like pin joints, but have a minimum and maximum distance.
         A chain could be modeled using this joint. It keeps the anchor points 
         from getting to far apart, but will allow them to get closer together.
-        
-        a and b are the two bodies to connect, anchr1 and anchr2 are the
+        """
+    def __init__(self, a, b, anchr1, anchr2, min, max):
+        """a and b are the two bodies to connect, anchr1 and anchr2 are the
         anchor points on those bodies, and min and max define the allowed
-        distances of the anchor points."""
+        distances of the anchor points.
+        """
         self._a = a
         self._b = b
         self._joint = cp.cpSlideJointNew(a._body, b._body, anchr1, anchr2, min, max)
 
 class PivotJoint(Joint):
+    """Simply allow two objects to pivot about a single point."""
     def __init__(self, a, b, pivot):
-        """Simply allow two objects to pivot about a single point.
-        
-        a and b are the two bodies to connect, and pivot is the point in
+        """a and b are the two bodies to connect, and pivot is the point in
         world coordinates of the pivot. Because the pivot location is given in
         world coordinates, you must have the bodies moved into the correct
-        positions already."""
+        positions already.
+        """
         self._a = a
         self._b = b
         self._joint = cp.cpPivotJointNew(a._body, b._body, pivot)
 
 class GrooveJoint(Joint):
+    """Similar to a pivot joint, but one of the anchors is
+        on a linear slide instead of being fixed."""
     def __init__(self, a, b, groove_a, groove_b, anchr2):
-        """Similar to a pivot joint, but one of the anchors is
-        on a linear slide instead of being fixed.
-    
-        a and b are the two bodies to conenct, 
+        """a and b are the two bodies to conenct, 
         groove_a and groove_b is two points or vectors or something.
-        anchr2 is an anchor point"""
+        anchr2 is an anchor point
+        """
         self._a = a 
         self._b = b
         self._joint = cp.cpGrooveJointNew(a._body, b._body, groove_a, groove_b, anchr2)
@@ -640,6 +642,8 @@ class Arbiter(object):
     def _get_stamp(self):
         return self._arbiter.contents.stamp
     stamp = property(_get_stamp, doc="""Time stamp of the arbiter. (from the space)""")
+
+del cp, ct, u
 
 __all__ = ["inf", "init_pymunk", "Space", "Body", "Shape", "Circle", "Poly", "Segment",
         "moment_for_circle", "moment_for_poly", "reset_shapeid_counter",
