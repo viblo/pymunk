@@ -73,11 +73,11 @@ class Space(object):
         """Add one or many shapes, bodies or joints to the space"""
         for o in objs:
             if isinstance(o, Body):
-                self.add_body(o)
+                self._add_body(o)
             elif isinstance(o, Shape):
-                self.add_shape(o)
+                self._add_shape(o)
             elif isinstance(o, Joint):
-                self.add_joint(o)
+                self._add_joint(o)
             else:
                 for oo in o:
                     self.add(oo)
@@ -86,7 +86,7 @@ class Space(object):
         """Add one or many static shapes to the space"""
         for o in objs:
             if isinstance(o, Shape):
-                self.add_static_shape(o)
+                self._add_static_shape(o)
             else:
                 for oo in o:
                     self.add_static(oo)
@@ -95,11 +95,11 @@ class Space(object):
         """Remove one or many shapes, bodies or joints from the space"""
         for o in objs:
             if isinstance(o, Body):
-                self.remove_body(o)
+                self._remove_body(o)
             elif isinstance(o, Shape):
-                self.remove_shape(o)
+                self._remove_shape(o)
             elif isinstance(o, Joint):
-                self.remove_joint(o)
+                self._remove_joint(o)
             else:
                 for oo in o:
                     self.remove(oo)
@@ -108,7 +108,7 @@ class Space(object):
         """Remove one or many static shapes from the space"""
         for o in os:
             if isinstance(o, Shape):
-                self.remove_static_shape(o)
+                self._remove_static_shape(o)
             else:
                 for oo in o:
                     self.remove_static(oo)
