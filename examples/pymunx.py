@@ -1,15 +1,25 @@
 """
-   pymunx :: A simplification layer for pymunk 0.6.1+ -- with an focus on pygame
+   pymunx :: A pymunk API demo
 
-            Home: http://wiki.laptop.org/go/Pymunx
-   Documentation: http://wiki.laptop.org/go/Pymunx/Documentation
+	chipmunk (physics engine dll)
+	|
+	--- pymunk (ctypes bindings)
+	    |
+	    --- pymunx api
+		|
+		--- pygame
+
+
+	For the latest source code, please visit:
+
+            Home: http://wiki.laptop.org/go/Elements
+   Documentation: http://wiki.laptop.org/go/Elements/Documentation
    
- Sources & Demos: http://www.linuxuser.at/pymunx
+ Sources & Demos: http://www.linuxuser.at/elements
            Forum: http://www.slembcke.net/forums/viewforum.php?f=6
            
              IRC: #pymunk on irc.freenode.net
-   	
-   
+      
    > About <
 
 	Pymunx was started by Chris Hager (chris@linuxuser.at) in March 2008.
