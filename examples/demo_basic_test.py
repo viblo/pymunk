@@ -1,6 +1,6 @@
 import pymunk as pm
 import pymunk.util as u
-from pymunk.vec2d import vec2d
+from pymunk import Vec2d
 import math, sys, random
 #import timeit
 
@@ -12,7 +12,7 @@ def main1():
               
     pm.init_pymunk()
     space = pm.Space()
-    space.gravity = vec2d(0.0, -900.0)
+    space.gravity = Vec2d(0.0, -900.0)
     
     space.resize_static_hash()
     space.resize_active_hash()
@@ -22,8 +22,8 @@ def main1():
        
     ### walls
     static_body = pm.Body(1e100, 1e100)
-    static_lines = [pm.Segment(static_body, vec2d(111.0, 280.0), vec2d(407.0, 246.0), 0.0)
-                    ,pm.Segment(static_body, vec2d(407.0, 246.0), vec2d(407.0, 343.0), 0.0)
+    static_lines = [pm.Segment(static_body, Vec2d(111.0, 280.0), Vec2d(407.0, 246.0), 0.0)
+                    ,pm.Segment(static_body, Vec2d(407.0, 246.0), Vec2d(407.0, 343.0), 0.0)
                     ]    
     space.add_static(static_lines)
     
@@ -35,11 +35,11 @@ def main1():
             ticks_to_next_ball = 100
             mass = 10
             radius = 25
-            inertia = pm.moment_for_circle(mass, 0, radius, vec2d(0,0))
+            inertia = pm.moment_for_circle(mass, 0, radius, Vec2d(0,0))
             body = pm.Body(mass, inertia)
             x = random.randint(115,350)
             body.position = x, 400
-            shape = pm.Circle(body, radius, vec2d(0,0))
+            shape = pm.Circle(body, radius, Vec2d(0,0))
             space.add(body, shape)
             balls.append(shape)
         

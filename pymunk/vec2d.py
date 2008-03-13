@@ -5,7 +5,7 @@ import operator
 import math
 import ctypes 
 
-class vec2d(ctypes.Structure):
+class Vec2d(ctypes.Structure):
     """2d vector class, supports vector and scalar operators,
        and also provides a bunch of high level functions
        """
@@ -29,7 +29,7 @@ class vec2d(ctypes.Structure):
         elif key == 1:
             return self.y
         else:
-            raise IndexError("Invalid subscript "+str(key)+" to vec2d")
+            raise IndexError("Invalid subscript "+str(key)+" to Vec2d")
  
     def __setitem__(self, key, value):
         if key == 0:
@@ -37,11 +37,11 @@ class vec2d(ctypes.Structure):
         elif key == 1:
             self.y = value
         else:
-            raise IndexError("Invalid subscript "+str(key)+" to vec2d")
+            raise IndexError("Invalid subscript "+str(key)+" to Vec2d")
  
     # String representaion (for debugging)
     def __repr__(self):
-        return 'vec2d(%s, %s)' % (self.x, self.y)
+        return 'Vec2d(%s, %s)' % (self.x, self.y)
     
     # Comparison
     def __eq__(self, other):
@@ -61,24 +61,24 @@ class vec2d(ctypes.Structure):
  
     # Generic operator handlers
     def _o2(self, other, f):
-        "Any two-operator operation where the left operand is a vec2d"
-        if isinstance(other, vec2d):
-            return vec2d(f(self.x, other.x),
+        "Any two-operator operation where the left operand is a Vec2d"
+        if isinstance(other, Vec2d):
+            return Vec2d(f(self.x, other.x),
                          f(self.y, other.y))
         elif (hasattr(other, "__getitem__")):
-            return vec2d(f(self.x, other[0]),
+            return Vec2d(f(self.x, other[0]),
                          f(self.y, other[1]))
         else:
-            return vec2d(f(self.x, other),
+            return Vec2d(f(self.x, other),
                          f(self.y, other))
  
     def _r_o2(self, other, f):
-        "Any two-operator operation where the right operand is a vec2d"
+        "Any two-operator operation where the right operand is a Vec2d"
         if (hasattr(other, "__getitem__")):
-            return vec2d(f(other[0], self.x),
+            return Vec2d(f(other[0], self.x),
                          f(other[1], self.y))
         else:
-            return vec2d(f(other, self.x),
+            return Vec2d(f(other, self.x),
                          f(other, self.y))
  
     def _io(self, other, f):
@@ -93,16 +93,16 @@ class vec2d(ctypes.Structure):
  
     # Addition
     def __add__(self, other):
-        if isinstance(other, vec2d):
-            return vec2d(self.x + other.x, self.y + other.y)
+        if isinstance(other, Vec2d):
+            return Vec2d(self.x + other.x, self.y + other.y)
         elif hasattr(other, "__getitem__"):
-            return vec2d(self.x + other[0], self.y + other[1])
+            return Vec2d(self.x + other[0], self.y + other[1])
         else:
-            return vec2d(self.x + other, self.y + other)
+            return Vec2d(self.x + other, self.y + other)
     __radd__ = __add__
     
     def __iadd__(self, other):
-        if isinstance(other, vec2d):
+        if isinstance(other, Vec2d):
             self.x += other.x
             self.y += other.y
         elif hasattr(other, "__getitem__"):
@@ -115,21 +115,21 @@ class vec2d(ctypes.Structure):
  
     # Subtraction
     def __sub__(self, other):
-        if isinstance(other, vec2d):
-            return vec2d(self.x - other.x, self.y - other.y)
+        if isinstance(other, Vec2d):
+            return Vec2d(self.x - other.x, self.y - other.y)
         elif (hasattr(other, "__getitem__")):
-            return vec2d(self.x - other[0], self.y - other[1])
+            return Vec2d(self.x - other[0], self.y - other[1])
         else:
-            return vec2d(self.x - other, self.y - other)
+            return Vec2d(self.x - other, self.y - other)
     def __rsub__(self, other):
-        if isinstance(other, vec2d):
-            return vec2d(other.x - self.x, other.y - self.y)
+        if isinstance(other, Vec2d):
+            return Vec2d(other.x - self.x, other.y - self.y)
         if (hasattr(other, "__getitem__")):
-            return vec2d(other[0] - self.x, other[1] - self.y)
+            return Vec2d(other[0] - self.x, other[1] - self.y)
         else:
-            return vec2d(other - self.x, other - self.y)
+            return Vec2d(other - self.x, other - self.y)
     def __isub__(self, other):
-        if isinstance(other, vec2d):
+        if isinstance(other, Vec2d):
             self.x -= other.x
             self.y -= other.y
         elif (hasattr(other, "__getitem__")):
@@ -142,16 +142,16 @@ class vec2d(ctypes.Structure):
  
     # Multiplication
     def __mul__(self, other):
-        if isinstance(other, vec2d):
-            return vec2d(self.x*other.y, self.y*other.y)
+        if isinstance(other, Vec2d):
+            return Vec2d(self.x*other.y, self.y*other.y)
         if (hasattr(other, "__getitem__")):
-            return vec2d(self.x*other[0], self.y*other[1])
+            return Vec2d(self.x*other[0], self.y*other[1])
         else:
-            return vec2d(self.x*other, self.y*other)
+            return Vec2d(self.x*other, self.y*other)
     __rmul__ = __mul__
     
     def __imul__(self, other):
-        if isinstance(other, vec2d):
+        if isinstance(other, Vec2d):
             self.x *= other.x
             self.y *= other.y
         elif (hasattr(other, "__getitem__")):
@@ -226,16 +226,16 @@ class vec2d(ctypes.Structure):
  
     # Unary operations
     def __neg__(self):
-        return vec2d(operator.neg(self.x), operator.neg(self.y))
+        return Vec2d(operator.neg(self.x), operator.neg(self.y))
  
     def __pos__(self):
-        return vec2d(operator.pos(self.x), operator.pos(self.y))
+        return Vec2d(operator.pos(self.x), operator.pos(self.y))
  
     def __abs__(self):
-        return vec2d(abs(self.x), abs(self.y))
+        return Vec2d(abs(self.x), abs(self.y))
  
     def __invert__(self):
-        return vec2d(-self.x, -self.y)
+        return Vec2d(-self.x, -self.y)
  
     # vectory functions
     def get_length_sqrd(self): 
@@ -264,7 +264,7 @@ class vec2d(ctypes.Structure):
         sin = math.sin(radians)
         x = self.x*cos - self.y*sin
         y = self.x*sin + self.y*cos
-        return vec2d(x, y)
+        return Vec2d(x, y)
     
     def get_angle(self):
         if (self.get_length_sqrd() == 0):
@@ -285,7 +285,7 @@ class vec2d(ctypes.Structure):
         length = self.length
         if length != 0:
             return self/length
-        return vec2d(self)
+        return Vec2d(self)
  
     def normalize_return_length(self):
         length = self.length
@@ -295,13 +295,13 @@ class vec2d(ctypes.Structure):
         return length
  
     def perpendicular(self):
-        return vec2d(-self.y, self.x)
+        return Vec2d(-self.y, self.x)
     
     def perpendicular_normal(self):
         length = self.length
         if length != 0:
-            return vec2d(-self.y/length, self.x/length)
-        return vec2d(self)
+            return Vec2d(-self.y/length, self.x/length)
+        return Vec2d(self)
         
     def dot(self, other):
         return float(self.x*other[0] + self.y*other[1])
@@ -321,16 +321,16 @@ class vec2d(ctypes.Structure):
         return self.x*other[1] - self.y*other[0]
     
     def interpolate_to(self, other, range):
-        return vec2d(self.x + (other[0] - self.x)*range, self.y + (other[1] - self.y)*range)
+        return Vec2d(self.x + (other[0] - self.x)*range, self.y + (other[1] - self.y)*range)
     
     def convert_to_basis(self, x_vector, y_vector):
-        return vec2d(self.dot(x_vector)/x_vector.get_length_sqrd(), self.dot(y_vector)/y_vector.get_length_sqrd())
+        return Vec2d(self.dot(x_vector)/x_vector.get_length_sqrd(), self.dot(y_vector)/y_vector.get_length_sqrd())
  
     # Extra functions, mainly for chipmunk
     def cpvrotate(self, other):
-        return vec2d(self.x*other.x - self.y*other.y, self.x*other.y + self.y*other.x)
+        return Vec2d(self.x*other.x - self.y*other.y, self.x*other.y + self.y*other.x)
     def cpvunrotate(self, other):
-        return vec2d(self.x*other.x + self.y*other.y, self.y*other.x - self.x*other.y)
+        return Vec2d(self.x*other.x + self.y*other.y, self.y*other.x - self.x*other.y)
     
     # Pickle, does not work atm.
     def __getstate__(self):
@@ -340,7 +340,7 @@ class vec2d(ctypes.Structure):
         self.x, self.y = dict
     def __newobj__(cls, *args):
           return cls.__new__(cls, *args)    
-vec2d._fields_ = [
+Vec2d._fields_ = [
             ('x', ctypes.c_float),
             ('y', ctypes.c_float),
         ]
@@ -353,60 +353,60 @@ if __name__ == "__main__":
     import pickle
  
     ####################################################################
-    class UnitTestVec2D(unittest.TestCase):
+    class UnitTestVec2d(unittest.TestCase):
     
         def setUp(self):
             pass
         
         def testCreationAndAccess(self):
-            v = vec2d(111,222)
+            v = Vec2d(111,222)
             self.assert_(v.x == 111 and v.y == 222)
             v.x = 333
             v[1] = 444
             self.assert_(v[0] == 333 and v[1] == 444)
  
         def testMath(self):
-            v = vec2d(111,222)
-            self.assertEqual(v + 1, vec2d(112,223))
+            v = Vec2d(111,222)
+            self.assertEqual(v + 1, Vec2d(112,223))
             self.assert_(v - 2 == [109,220])
             self.assert_(v * 3 == (333,666))
-            self.assert_(v / 2.0 == vec2d(55.5, 111))
+            self.assert_(v / 2.0 == Vec2d(55.5, 111))
             #self.assert_(v / 2 == (55, 111)) # Not supported since this is a c_float structure in the bottom
-            self.assert_(v ** vec2d(2,3) == [12321, 10941048])
-            self.assert_(v + [-11, 78] == vec2d(100, 300))
+            self.assert_(v ** Vec2d(2,3) == [12321, 10941048])
+            self.assert_(v + [-11, 78] == Vec2d(100, 300))
             #self.assert_(v / [11,2] == [10,111]) # Not supported since this is a c_float structure in the bottom
  
         def testReverseMath(self):
-            v = vec2d(111,222)
-            self.assert_(1 + v == vec2d(112,223))
+            v = Vec2d(111,222)
+            self.assert_(1 + v == Vec2d(112,223))
             self.assert_(2 - v == [-109,-220])
             self.assert_(3 * v == (333,666))
             #self.assert_([222,999] / v == [2,4]) # Not supported since this is a c_float structure in the bottom
-            self.assert_([111,222] ** vec2d(2,3) == [12321, 10941048])
-            self.assert_([-11, 78] + v == vec2d(100, 300))
+            self.assert_([111,222] ** Vec2d(2,3) == [12321, 10941048])
+            self.assert_([-11, 78] + v == Vec2d(100, 300))
  
         def testUnary(self):
-            v = vec2d(111,222)
+            v = Vec2d(111,222)
             v = -v
             self.assert_(v == [-111,-222])
             v = abs(v)
             self.assert_(v == [111,222])
  
         def testLength(self):
-            v = vec2d(3,4)
+            v = Vec2d(3,4)
             self.assert_(v.length == 5)
             self.assert_(v.get_length_sqrd() == 25)
             self.assert_(v.normalize_return_length() == 5)
             self.assertAlmostEquals(v.length, 1)
             v.length = 5
-            self.assert_(v == vec2d(3,4))
-            v2 = vec2d(10, -2)
+            self.assert_(v == Vec2d(3,4))
+            v2 = Vec2d(10, -2)
             self.assert_(v.get_distance(v2) == (v - v2).get_length())
             
         def testAngles(self):            
-            v = vec2d(0, 3)
+            v = Vec2d(0, 3)
             self.assertEquals(v.angle, 90)
-            v2 = vec2d(v)
+            v2 = Vec2d(v)
             v.rotate(-90)
             self.assertEqual(v.get_angle_between(v2), 90)
             v2.angle -= 90
@@ -422,22 +422,22 @@ if __name__ == "__main__":
             self.assertAlmostEquals(v.get_angle_between(v2), 0)  
  
         def testHighLevel(self):
-            basis0 = vec2d(5.0, 0)
-            basis1 = vec2d(0, .5)
-            v = vec2d(10, 1)
+            basis0 = Vec2d(5.0, 0)
+            basis1 = Vec2d(0, .5)
+            v = Vec2d(10, 1)
             self.assert_(v.convert_to_basis(basis0, basis1) == [2, 2])
             self.assert_(v.projection(basis0) == (10, 0))
             self.assert_(basis0.dot(basis1) == 0)
             
         def testCross(self):
-            lhs = vec2d(1, .5)
-            rhs = vec2d(4,6)
+            lhs = Vec2d(1, .5)
+            rhs = Vec2d(4,6)
             self.assert_(lhs.cross(rhs) == 4)
             
         def testComparison(self):
-            int_vec = vec2d(3, -2)
-            flt_vec = vec2d(3.0, -2.0)
-            zero_vec = vec2d(0, 0)
+            int_vec = Vec2d(3, -2)
+            flt_vec = Vec2d(3.0, -2.0)
+            zero_vec = Vec2d(0, 0)
             self.assert_(int_vec == flt_vec)
             self.assert_(int_vec != zero_vec)
             self.assert_((flt_vec == zero_vec) == False)
@@ -448,20 +448,20 @@ if __name__ == "__main__":
             self.assert_(int_vec != [3, -2, -5])
         
         def testInplace(self):
-            inplace_vec = vec2d(5, 13)
+            inplace_vec = Vec2d(5, 13)
             inplace_ref = inplace_vec
-            inplace_src = vec2d(inplace_vec)    
+            inplace_src = Vec2d(inplace_vec)    
             inplace_vec *= .5
             inplace_vec += .5
             inplace_vec /= (3, 6)
-            inplace_vec += vec2d(-1, -1)
-            alternate = (inplace_src*.5 + .5)/vec2d(3,6) + [-1, -1]
+            inplace_vec += Vec2d(-1, -1)
+            alternate = (inplace_src*.5 + .5)/Vec2d(3,6) + [-1, -1]
             self.assertEquals(inplace_vec, inplace_ref)
             self.assertEquals(inplace_vec, alternate)
         
         def testPickle(self):
             return # pickling does not work atm
-            testvec = vec2d(5, .3)
+            testvec = Vec2d(5, .3)
             testvec_str = pickle.dumps(testvec)
             loaded_vec = pickle.loads(testvec_str)
             self.assertEquals(testvec, loaded_vec)
@@ -470,4 +470,4 @@ if __name__ == "__main__":
     unittest.main()
  
     ######################################################################## 
-__all__ = ["vec2d"]
+__all__ = ["Vec2d"]

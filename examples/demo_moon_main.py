@@ -28,7 +28,7 @@ import math, sys
 from pyglet import window
 from pyglet.gl import *
 
-from pymunk.vec2d import vec2d
+from pymunk import Vec2d
 from pymunk.util import *
 from pymunk import *
 

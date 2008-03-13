@@ -8,10 +8,10 @@ ABOUT
     This dev release is based on the latest pymunk release (0.6.1), 
     using chipmunk-4.0.2 (also latest, source included)
     
-	IRC: #pymunk on irc.freenode.net
+    IRC: #pymunk on irc.freenode.net
     Homepage: http://pymunk.googlecode.com/
     Forum: http://www.slembcke.net/forums/viewforum.php?f=6
-	
+    
     Getting the latest SVN copy:
       svn checkout http://pymunk.googlecode.com/svn/trunk pymunk-read-only
 

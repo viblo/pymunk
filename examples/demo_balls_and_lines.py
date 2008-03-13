@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from pygame.color import *
 import pymunk as pm
-from pymunk.vec2d import vec2d
+from pymunk import Vec2d
 import math
 X,Y = 0,1
 ### Physics collision types
@@ -30,7 +30,7 @@ def main():
     ### Physics stuff
     pm.init_pymunk()
     space = pm.Space()
-    space.gravity = vec2d(0.0, -900.0)
+    space.gravity = Vec2d(0.0, -900.0)
     
     #space.resize_static_hash()
     #space.resize_active_hash()
@@ -40,7 +40,7 @@ def main():
     
     ### Mouse
     mouse_body = pm.Body(1e100, 1e100)
-    mouse_shape = pm.Circle(mouse_body, 3, vec2d(0,0))
+    mouse_shape = pm.Circle(mouse_body, 3, Vec2d(0,0))
     mouse_shape.collision_type = COLLTYPE_MOUSE
     space.add(mouse_body, mouse_shape)
 
@@ -61,18 +61,18 @@ def main():
                 p = event.pos[X], flipy(event.pos[Y])
                 body = pm.Body(10, 100)
                 body.position = p
-                shape = pm.Circle(body, 10, vec2d(0,0))
+                shape = pm.Circle(body, 10, Vec2d(0,0))
                 shape.friction = 0.5
                 space.add(body, shape)
                 balls.append(shape)
                 
             elif event.type == MOUSEBUTTONDOWN and event.button == 3: 
                 if line_point1 is None:
-                    line_point1 = vec2d(event.pos[X], flipy(event.pos[Y]))
+                    line_point1 = Vec2d(event.pos[X], flipy(event.pos[Y]))
             elif event.type == MOUSEBUTTONUP and event.button == 3: 
                 if line_point1 is not None:
                     
-                    line_point2 = vec2d(event.pos[X], flipy(event.pos[Y]))
+                    line_point2 = Vec2d(event.pos[X], flipy(event.pos[Y]))
                     print line_point1, line_point2
                     body = pm.Body(1e100, 1e100)
                     shape= pm.Segment(body, line_point1, line_point2, 0.0)
@@ -85,14 +85,14 @@ def main():
                 run_physics = not run_physics
         
         p = pygame.mouse.get_pos()
-        mouse_pos = vec2d(p[X],flipy(p[Y]))
+        mouse_pos = Vec2d(p[X],flipy(p[Y]))
         mouse_body.position = mouse_pos
         
         
         if pygame.key.get_mods() & KMOD_SHIFT and pygame.mouse.get_pressed()[0]:
             body = pm.Body(10, 10)
             body.position = mouse_pos
-            shape = pm.Circle(body, 10, vec2d(0,0))
+            shape = pm.Circle(body, 10, Vec2d(0,0))
             space.add(body, shape)
             balls.append(shape)
        
@@ -122,7 +122,7 @@ Space: Pause physics simulation"""
             v = ball.body.position
             rot = ball.body.rotation_vector
             p = int(v.x), int(flipy(v.y))
-            p2 = vec2d(rot.x, -rot.y) * r * 0.9
+            p2 = Vec2d(rot.x, -rot.y) * r * 0.9
             pygame.draw.circle(screen, THECOLORS["blue"], p, int(r), 2)
             pygame.draw.line(screen, THECOLORS["red"], p, p+p2)
 

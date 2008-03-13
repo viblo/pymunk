@@ -23,7 +23,7 @@ with the following license:
  */
 """
 
-from pymunk.vec2d import vec2d
+from pymunk import Vec2d
 from pymunk.util import *
 from pymunk import *
 
@@ -92,7 +92,7 @@ class MoonWorld:
          number of iterations to use in the constraint solver, the amount
          of gravity, or the amount of damping. In this case, we'll just
          set the gravity. """
-        self.space.gravity = vec2d(0.0, -900.0)
+        self.space.gravity = Vec2d(0.0, -900.0)
 
         """This step is optional. While you don't have to resize the spatial
         hashes, doing so can greatly increase the speed of the collision
@@ -114,9 +114,9 @@ class MoonWorld:
       
         """This loop adds line segments for the terrain."""
         self.terrain_data
-        a = vec2d(0.0, self.terrain_data[0])
+        a = Vec2d(0.0, self.terrain_data[0])
         for i in range(1, len(self.terrain_data)):
-            b = vec2d(i*50.0, self.terrain_data[i])
+            b = Vec2d(i*50.0, self.terrain_data[i])
         
             """Collision shapes are attached to rigid bodies. When the rigid
                body moves, the collision shapes attached to it move as
@@ -146,10 +146,10 @@ class MoonWorld:
            need a non-convex polygon, simply attach more than one shape to
            the body."""
         chassis_verts = [
-                        vec2d(-18,-18),
-                        vec2d(-18, 18),
-                        vec2d( 18, 18),
-                        vec2d( 18,-18)
+                        Vec2d(-18,-18),
+                        Vec2d(-18, 18),
+                        Vec2d( 18, 18),
+                        Vec2d( 18,-18)
                         ]
                         
         chassis_mass = 5.0
@@ -158,7 +158,7 @@ class MoonWorld:
            mass of an object, but applied to its rotation. An object with a
            higher moment of inertia is harder to spin. Chipmunk has a couple
            of helper functions to help you calculate these."""
-        chassis_moment = moment_for_poly(chassis_mass, chassis_verts, vec2d(0,0))
+        chassis_moment = moment_for_poly(chassis_mass, chassis_verts, Vec2d(0,0))
 
         """Create the rigid body for our buggy with the mass and moment of
            inertia we calculated."""
@@ -167,7 +167,7 @@ class MoonWorld:
         """Like usual, after something, you'll want to set it
            properties. Let's set the buggy's location to be just above the
            start of the terrain."""
-        self.chassis.position = vec2d(100.0, 800.0)
+        self.chassis.position = Vec2d(100.0, 800.0)
 
         """Lastly, we need to add the body to a self.space for it to be
            useful."""
@@ -180,14 +180,14 @@ class MoonWorld:
 
         wheel_radius = 15.0
         wheel_mass = 1.0
-        wheel_moment = moment_for_circle(wheel_mass, wheel_radius, 0.0, vec2d(0,0))
+        wheel_moment = moment_for_circle(wheel_mass, wheel_radius, 0.0, Vec2d(0,0))
 
         """Next, we create our wheels, move them next to the chassis, and
            add them to the self.space."""
         self.wheel1 = Body(wheel_mass, wheel_moment)
         self.wheel2 = Body(wheel_mass, wheel_moment)
-        self.wheel1.position = self.chassis.position + vec2d(-wheel_offset_x, -wheel_offset_y)
-        self.wheel2.position = self.chassis.position + vec2d( wheel_offset_x, -wheel_offset_y)
+        self.wheel1.position = self.chassis.position + Vec2d(-wheel_offset_x, -wheel_offset_y)
+        self.wheel2.position = self.chassis.position + Vec2d( wheel_offset_x, -wheel_offset_y)
         self.space.add(self.wheel1, self.wheel2)
 
         """In order to attach the wheels to the chassis, we need to create
@@ -198,8 +198,8 @@ class MoonWorld:
            wheel at its center so that it rolls nicely, we could attach it
            to the chassis anywhere, though we'll just attach it to the
            center of the chassis as well."""
-        self.space.add( PinJoint(self.chassis, self.wheel1, vec2d(0,0), vec2d(0,0)) )
-        self.space.add( PinJoint(self.chassis, self.wheel2, vec2d(0,0), vec2d(0,0)) )
+        self.space.add( PinJoint(self.chassis, self.wheel1, Vec2d(0,0), Vec2d(0,0)) )
+        self.space.add( PinJoint(self.chassis, self.wheel2, Vec2d(0,0), Vec2d(0,0)) )
 
         """Now we need to attach collision shapes to the chassis and
            wheels. The shapes themselves contain no useful information to
@@ -209,16 +209,16 @@ class MoonWorld:
            management. So we'll just recycle the same variable."""
 
         """We create a polygon shape for the chassis."""
-        shape = Poly(self.chassis, chassis_verts, vec2d(0,0))
+        shape = Poly(self.chassis, chassis_verts, Vec2d(0,0))
         shape.friction = 0.5
         self.space.add(shape)
 
         """Now we create some shapes for the wheels"""
-        shape = Circle(self.wheel1, wheel_radius, vec2d(0,0))
+        shape = Circle(self.wheel1, wheel_radius, Vec2d(0,0))
         shape.friction  = 1.5
         self.space.add(shape)
 
-        shape = Circle(self.wheel2, wheel_radius, vec2d(0,0))
+        shape = Circle(self.wheel2, wheel_radius, Vec2d(0,0))
         shape.friction = 1.5
         self.space.add(shape)
 
@@ -261,8 +261,8 @@ class MoonWorld:
                spring forces between the wheels and chassis. This function
                takes a lot of parameters, read the documentation for a
                detailed description."""
-            self.chassis.damped_spring(self.wheel1, vec2d(-40.0, 40.0), vec2d(0,0), 70.0, 400.0, 15.0, dt)
-            self.chassis.damped_spring(self.wheel2, vec2d( 40.0, 40.0), vec2d(0,0), 70.0, 400.0, 15.0, dt)
+            self.chassis.damped_spring(self.wheel1, Vec2d(-40.0, 40.0), Vec2d(0,0), 70.0, 400.0, 15.0, dt)
+            self.chassis.damped_spring(self.wheel2, Vec2d( 40.0, 40.0), Vec2d(0,0), 70.0, 400.0, 15.0, dt)
         
             """ Finally, we step the self.space"""
             self.space.step(dt)

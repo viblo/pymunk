@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from pygame.color import *
 import pymunk as pm
-from pymunk.vec2d import vec2d
+from pymunk import Vec2d
 import pymunk.util as u
 
 #TODO: Clean up code, make mouse collisions draw correct
@@ -12,7 +12,7 @@ COLLTYPE_MOUSE = 1
 
 class PhysicsDemo:
     def flipyv(self, v):
-        v = vec2d(v)
+        v = Vec2d(v)
         v.y = -v.y+self.h
         return v
         
@@ -27,11 +27,11 @@ class PhysicsDemo:
         ### Init pymunk and create space
         pm.init_pymunk()
         self.space = pm.Space()
-        self.space.gravity = vec2d(0.0, -900.0)
+        self.space.gravity = Vec2d(0.0, -900.0)
         
         ### Walls
         self.walls = [] 
-        self.create_wall_segments( map(vec2d, [(100, 50), (500, 50)]) )
+        self.create_wall_segments( map(Vec2d, [(100, 50), (500, 50)]) )
         
         ## Balls
         #balls = [createBall(space, (100,300))]
@@ -44,16 +44,16 @@ class PhysicsDemo:
             #for x in range(1, y):
             x = 0
             s = 10
-            p = vec2d(300,40) + vec2d(0, y*s*2)
+            p = Vec2d(300,40) + Vec2d(0, y*s*2)
             self.polys.append(self.create_box(p, size=s, mass = 1))
             
                 
         ### Mouse
         self.mouse_body = pm.Body(pm.inf, pm.inf)
         p = pygame.mouse.get_pos()
-        self.mouse_body.position = self.flipyv(vec2d(p[0],p[1]))
+        self.mouse_body.position = self.flipyv(Vec2d(p[0],p[1]))
                 
-        self.mouse_shape = pm.Circle(self.mouse_body, 3, vec2d(0,0))
+        self.mouse_shape = pm.Circle(self.mouse_body, 3, Vec2d(0,0))
         self.mouse_shape.collision_type = COLLTYPE_MOUSE
         self.space.add(self.mouse_body, self.mouse_shape)
         self.space.add_collisionpair_func(COLLTYPE_DEFAULT, COLLTYPE_MOUSE, self.mouse_coll, None)
@@ -97,28 +97,28 @@ class PhysicsDemo:
        
     def create_ball(self, point, mass=1.0, radius=15.0):
 
-        moment = pm.moment_for_circle(mass, radius, 0.0, vec2d(0,0))
+        moment = pm.moment_for_circle(mass, radius, 0.0, Vec2d(0,0))
         ball_body = pm.Body(mass, moment)
-        ball_body.position = vec2d(point)
+        ball_body.position = Vec2d(point)
                 
-        ball_shape = pm.Circle(ball_body, radius, vec2d(0,0))
+        ball_shape = pm.Circle(ball_body, radius, Vec2d(0,0))
         ball_shape.friction = 1.5
         ball_shape.collision_type = COLLTYPE_DEFAULT
         self.space.add(ball_body, ball_shape)
         return ball_shape
 
     def create_box(self, pos, size = 10, mass = 5.0):
-        box_points = map(vec2d, [(-size, -size), (-size, size), (size,size), (size, -size)])
+        box_points = map(Vec2d, [(-size, -size), (-size, size), (size,size), (size, -size)])
         return self.create_poly(box_points, mass = mass, pos = pos)
 
     def create_poly(self, points, mass = 5.0, pos = (0,0)):
           
-        moment = pm.moment_for_poly(mass,points, vec2d(0,0))    
+        moment = pm.moment_for_poly(mass,points, Vec2d(0,0))    
         #moment = 1000
         body = pm.Body(mass, moment)
-        body.position = vec2d(pos)       
+        body.position = Vec2d(pos)       
         
-        shape = pm.Poly(body, points, vec2d(0,0))
+        shape = pm.Poly(body, points, Vec2d(0,0))
         shape.friction = 0.5
         shape.collision_type = COLLTYPE_DEFAULT
         self.space.add(body, shape)
@@ -130,8 +130,8 @@ class PhysicsDemo:
             return []
         
         for i in range(len(points)-1):
-            v1 = vec2d(points[i].x, points[i].y)
-            v2 = vec2d(points[i+1].x, points[i+1].y)
+            v1 = Vec2d(points[i].x, points[i].y)
+            v2 = Vec2d(points[i+1].x, points[i+1].y)
             wall_body = pm.Body(pm.inf, pm.inf)
             wall_shape = pm.Segment(wall_body, v1, v2, .0)
             wall_shape.friction = 1.0
@@ -191,12 +191,12 @@ class PhysicsDemo:
         
         ### Draw Uncompleted walls
         if len(self.wall_points) > 1:
-            ps = [self.flipyv(vec2d(p)) for p in self.wall_points]
+            ps = [self.flipyv(Vec2d(p)) for p in self.wall_points]
             pygame.draw.lines(self.screen, THECOLORS["gray"], False, ps, 2)
                     
         ### Uncompleted poly
         if len(self.poly_points) > 1:
-            ps = [self.flipyv(vec2d(p)) for p in self.poly_points]
+            ps = [self.flipyv(Vec2d(p)) for p in self.poly_points]
             pygame.draw.lines(self.screen, THECOLORS["red"], False, ps, 2)
         
         ### Mouse Contact
@@ -216,11 +216,11 @@ class PhysicsDemo:
                 self.running = False
             elif event.type == MOUSEBUTTONDOWN and event.button == 1: # LMB
                 if pygame.key.get_mods() & KMOD_SHIFT:
-                    p = self.flipyv(vec2d(event.pos))
+                    p = self.flipyv(Vec2d(event.pos))
                     self.polys.append(self.create_box(pos = p))
                 else:
                     #t = -10000
-                    p = self.flipyv(vec2d(event.pos))
+                    p = self.flipyv(Vec2d(event.pos))
                     self.balls.append(self.create_ball(p))
                     print p
             elif event.type == MOUSEBUTTONDOWN and event.button == 3: #RMB
@@ -228,7 +228,7 @@ class PhysicsDemo:
                     pass
                     
                 elif pygame.key.get_mods() & KMOD_CTRL:
-                    p = self.flipyv(vec2d(event.pos))
+                    p = self.flipyv(Vec2d(event.pos))
                     self.wall_points.append(p)
                 elif self.shape_to_remove is not None:
                     print self.shape_to_remove
@@ -258,17 +258,17 @@ class PhysicsDemo:
                 for x in range (-100,100,25):
                     for y in range(-100,100,25):
                         p = pygame.mouse.get_pos()
-                        p = self.flipyv(vec2d(p)) + (x,y)
+                        p = self.flipyv(Vec2d(p)) + (x,y)
                         self.polys.append(self.create_box(pos=p))                
             elif event.type == KEYDOWN and event.key == K_b:
-                p = flipyv(vec2d(pygame.mouse.get_pos())) 
+                p = flipyv(Vec2d(pygame.mouse.get_pos())) 
                 self.polys.append(self.create_box(p, size=10, mass = 1))
             elif event.type == KEYDOWN and event.key == K_f:
-                bp = vec2d(100,500)
-                p = self.flipyv(vec2d(pygame.mouse.get_pos())) -bp
+                bp = Vec2d(100,500)
+                p = self.flipyv(Vec2d(pygame.mouse.get_pos())) -bp
                 ball = self.create_ball(bp)
                 p = p.normalized()
-                ball.body.apply_impulse(p*1000, vec2d(0,0))
+                ball.body.apply_impulse(p*1000, Vec2d(0,0))
                 self.balls.append(ball)      
             elif event.type == KEYDOWN and event.key == K_g:
                 g = self.space.gravity
@@ -278,10 +278,10 @@ class PhysicsDemo:
         mpos = pygame.mouse.get_pos()
         
         if pygame.key.get_mods() & KMOD_SHIFT and pygame.mouse.get_pressed()[2]:
-            p = self.flipyv(vec2d(mpos))
+            p = self.flipyv(Vec2d(mpos))
             self.poly_points.append(p)
             
-        self.mouse_body.position = self.flipyv(vec2d(mpos))
+        self.mouse_body.position = self.flipyv(Vec2d(mpos))
        
         ### Update physics
         if self.run_physics:

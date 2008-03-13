@@ -6,7 +6,7 @@ from ctypeslib import xml2py
 
 default_path_to_chipmunk_include = join("..","chipmunk_src")
 default_output = join("..", "pymunk", "_chipmunk.py")
-default_path_to_chipmunk_lib = join("..", "pymunk", "Chipmunk.dll")
+default_path_to_chipmunk_lib = join("..", "pymunk", "libchipmunk.dll")
 def main(argv=None):
     """A small script which runs h2xml, xml2py (from ctypeslib) and then does basic replacements"""
     if argv is None:
@@ -50,8 +50,8 @@ def main(argv=None):
 
     custom_head = """
 from ctypes import * 
-from vec2d import vec2d
-cpVect = vec2d
+from vec2d import Vec2d
+cpVect = Vec2d
 
 from libload import load_library
 _lib_debug = True #Set to True to print the Chipmunk path.

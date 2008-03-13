@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from pygame.color import *
 import pymunk as pm
-from pymunk.vec2d import vec2d
+from pymunk import Vec2d
 import math, sys, random
 X,Y,Z = 0,1,2 # Easy indexing
 
@@ -21,7 +21,7 @@ def main():
     ### Physics stuff
     pm.init_pymunk()
     space = pm.Space()
-    space.gravity = vec2d(0.0, -900.0)
+    space.gravity = Vec2d(0.0, -900.0)
     
     space.resize_static_hash()
     space.resize_active_hash()
@@ -31,18 +31,18 @@ def main():
        
     ### static stuff
     rot_center_body = pm.Body(1e100, 1e100)
-    rot_center_body.position = vec2d(300,300)
+    rot_center_body.position = Vec2d(300,300)
     
     ### To hold back the L
     rot_limit_body = pm.Body(1e100, 1e100)
-    rot_limit_body.position = vec2d(200,300)
+    rot_limit_body.position = Vec2d(200,300)
        
     ### The moving L shape
-    l1 = [vec2d(-150, 0), vec2d(255.0, 0.0)]
-    l2 = [vec2d(-150.0, 0), vec2d(-150.0, 50.0)]
+    l1 = [Vec2d(-150, 0), Vec2d(255.0, 0.0)]
+    l2 = [Vec2d(-150.0, 0), Vec2d(-150.0, 50.0)]
     
     body = pm.Body(10,10000)
-    body.position = vec2d(300,300)
+    body.position = Vec2d(300,300)
     
     lines = [pm.Segment(body, l1[0], l1[1], 5.0) 
                 ,pm.Segment(body, l2[0], l2[1], 5.0)
@@ -52,10 +52,10 @@ def main():
     space.add(lines)
     
     ### The L rotates around this
-    rot_center = pm.PinJoint(body, rot_center_body, vec2d(0,0), vec2d(0,0))
+    rot_center = pm.PinJoint(body, rot_center_body, Vec2d(0,0), Vec2d(0,0))
     ### And is constrained by this
     joint_limit = 25
-    rot_limit = pm.SlideJoint(body, rot_limit_body, vec2d(-100,0), vec2d(0,0), 0, joint_limit)
+    rot_limit = pm.SlideJoint(body, rot_limit_body, Vec2d(-100,0), Vec2d(0,0), 0, joint_limit)
     space.add(rot_center, rot_limit)
     
     ticks_to_next_ball = 10
@@ -72,11 +72,11 @@ def main():
             ticks_to_next_ball = 25
             mass = 1
             radius = 14
-            inertia = pm.moment_for_circle(mass, 0, radius, vec2d(0,0))
+            inertia = pm.moment_for_circle(mass, 0, radius, Vec2d(0,0))
             body = pm.Body(mass, inertia)
             x = random.randint(120,380)
             body.position = x, 550
-            shape = pm.Circle(body, radius, vec2d(0,0))
+            shape = pm.Circle(body, radius, Vec2d(0,0))
             space.add(body, shape)
             balls.append(shape)
         

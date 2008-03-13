@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>pymunk.pymunk.GrooveJoint</title>
+  <title>pymunk.SlideJoint</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -27,7 +27,7 @@
   <!-- Breadcrumbs -->
       <th class="navbar-breadcrumbs">
         <span class="breadcrumbs">
-          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;<a href="pymunk.pymunk-module.html">pymunk</a>&nbsp;.&nbsp;GrooveJoint
+          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;SlideJoint
         </span>
       </th>
 
@@ -37,11 +37,11 @@
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class pymunk.pymunk.GrooveJoint</h1>
+<h1 class="epydoc">Class pymunk.SlideJoint</h1>
 <pre class="base-tree">
-<a href="pymunk.pymunk.Joint-class.html">Joint</a> --+
+<a href="pymunk.Joint-class.html">Joint</a> --+
         |
-       <strong class="uidshort">GrooveJoint</strong>
+       <strong class="uidshort">SlideJoint</strong>
 </pre>
 
 <!-- ==================== METHODS ==================== -->
@@ -52,14 +52,14 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a href="pymunk.pymunk.GrooveJoint-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig"><a href="pymunk.SlideJoint-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">a</span>,
         <span class="summary-sig-arg">b</span>,
-        <span class="summary-sig-arg">groove_a</span>,
-        <span class="summary-sig-arg">groove_b</span>,
-        <span class="summary-sig-arg">anchr2</span>)</span>
-<div class="summary-description">Similar to a pivot joint, but one of the anchors is
-on a linear slide instead of being fixed.</div>
+        <span class="summary-sig-arg">anchr1</span>,
+        <span class="summary-sig-arg">anchr2</span>,
+        <span class="summary-sig-arg">min</span>,
+        <span class="summary-sig-arg">max</span>)</span>
+<div class="summary-description">Like pin joints, but have a minimum and maximum distance.</div>
     </td>
   </tr>
 <tr>
@@ -67,7 +67,7 @@ on a linear slide instead of being fixed.</div>
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span>
-      <span class='inherited-from'>(Inherited from <a href="pymunk.pymunk.Joint-class.html">pymunk.pymunk.Joint</a>)</span>
+      <span class='inherited-from'>(Inherited from <a href="pymunk.Joint-class.html">pymunk.Joint</a>)</span>
     </td>
   </tr>
 </table>
@@ -84,20 +84,22 @@ on a linear slide instead of being fixed.</div>
     <span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">a</span>,
         <span class="sig-arg">b</span>,
-        <span class="sig-arg">groove_a</span>,
-        <span class="sig-arg">groove_b</span>,
-        <span class="sig-arg">anchr2</span>)</span>
+        <span class="sig-arg">anchr1</span>,
+        <span class="sig-arg">anchr2</span>,
+        <span class="sig-arg">min</span>,
+        <span class="sig-arg">max</span>)</span>
     </div>
   <div class="detail-description">
-  <p>Similar to a pivot joint, but one of the anchors is
-on a linear slide instead of being fixed.</p>
-<p>a and b are the two bodies to conenct,
-groove_a and groove_b is two points or vectors or something.
-anchr2 is an anchor point</p>
+  <p>Like pin joints, but have a minimum and maximum distance.
+A chain could be modeled using this joint. It keeps the anchor points
+from getting to far apart, but will allow them to get closer together.</p>
+<p>a and b are the two bodies to connect, anchr1 and anchr2 are the
+anchor points on those bodies, and min and max define the allowed
+distances of the anchor points.</p>
   <dl class="fields">
     <dt>Overrides:</dt>
     <dd class="overrides">
-      <a href="pymunk.pymunk.Joint-class.html#__init__">Joint.__init__</a>
+      <a href="pymunk.Joint-class.html#__init__">Joint.__init__</a>
     </dd>
   </dl>
   </div>
@@ -121,7 +123,7 @@ anchr2 is an anchor point</p>
   <!-- Breadcrumbs -->
       <th class="navbar-breadcrumbs">
         <span class="breadcrumbs">
-          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;<a href="pymunk.pymunk-module.html">pymunk</a>&nbsp;.&nbsp;GrooveJoint
+          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;SlideJoint
         </span>
       </th>
 
@@ -133,7 +135,7 @@ anchr2 is an anchor point</p>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Sun Mar 09 00:43:56 2008
+    Generated by Epydoc 3.0beta1 on Thu Mar 13 22:09:56 2008
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

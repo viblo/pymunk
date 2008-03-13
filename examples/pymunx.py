@@ -92,7 +92,7 @@ from pygame.color import *
 
 import pymunk.pymunk as pm
 import pymunk.util as util
-from pymunk.vec2d import vec2d
+from pymunk import Vec2d
 
 from os import chdir
 from os import system
@@ -185,7 +185,7 @@ class pymunx:
 		
 		# Space Init
 		self.space = pm.Space()
-		self.space.gravity = vec2d(gravity)
+		self.space.gravity = Vec2d(gravity)
 		self.space.resize_static_hash()
 		self.space.resize_active_hash()
 
@@ -339,7 +339,7 @@ class pymunx:
 
 		# Space Init
 		self.space = pm.Space()
-		self.space.gravity = vec2d(self.gravity)
+		self.space.gravity = Vec2d(self.gravity)
 		self.space.resize_static_hash()
 		self.space.resize_active_hash()
 		
@@ -353,12 +353,12 @@ class pymunx:
 		"""
 		return -y+self.display_height
 	
-	def vec2df(self, pos):
-		""" pos -> vec2d (with flipped y)
+	def Vec2df(self, pos):
+		""" pos -> Vec2d (with flipped y)
 		    Parameter: pos == (int(x), int(pygame_y))
-		    Returns: vec2d(int(x), int(chipmunk_y))
+		    Returns: Vec2d(int(x), int(chipmunk_y))
 		"""
-		return vec2d(pos[0], self.flipy(pos[1]))
+		return Vec2d(pos[0], self.flipy(pos[1]))
 		
 	def autoset_screen_size(self, size=None):
 		""" Get the current PyGame Screen Size, or sets it manually
@@ -446,7 +446,7 @@ class pymunx:
 			pygame.draw.circle(surface, shape.color, p, int(r), 3)
 	
 			# Draw Rotation Vector
-			p2 = vec2d(rot.x, -rot.y) * r * 0.9
+			p2 = Vec2d(rot.x, -rot.y) * r * 0.9
 			pygame.draw.aaline(surface, shape.color2, p, p+p2, 2)
 			
 			# Remove if outside
@@ -491,7 +491,7 @@ class pymunx:
 		    Returns: pymunk.Shape() (=> .Segment())
 		"""
 		body = pm.Body(mass, inertia)
-		shape= pm.Segment(body, self.vec2df(p1), self.vec2df(p2), 2.0)	
+		shape= pm.Segment(body, self.Vec2df(p1), self.Vec2df(p2), 2.0)	
 		shape.set_friction(friction)
 		shape.set_elasticity(elasticity)
 		
@@ -512,10 +512,10 @@ class pymunx:
 
 		# Create Body
 		body = pm.Body(mass, inertia)
-		body.position = self.vec2df(pos)
+		body.position = self.Vec2df(pos)
 		
 		# Create Shape
-		shape = pm.Circle(body, radius, vec2d(0,0))
+		shape = pm.Circle(body, radius, Vec2d(0,0))
 		shape.set_friction(friction)
 		shape.set_elasticity(elasticity)
 		
@@ -536,17 +536,17 @@ class pymunx:
 		mass = density * (a * a * 4)
 		
 		# Square Vectors (Clockwise)
-	        verts = [vec2d(-a,-a), vec2d(-a, a), vec2d(a, a), vec2d(a,-a)]
+	        verts = [Vec2d(-a,-a), Vec2d(-a, a), Vec2d(a, a), Vec2d(a,-a)]
 		
 		# Square Physic Settings
-	        inertia = pm.moment_for_poly(mass, verts, vec2d(0,0))
+	        inertia = pm.moment_for_poly(mass, verts, Vec2d(0,0))
 	
 		# Create Body
 	        body = pm.Body(mass, inertia)
-		body.position = self.vec2df(pos)
+		body.position = self.Vec2df(pos)
 	
 		# Create Shape
-	        shape = pm.Poly(body, verts, vec2d(0,0))
+	        shape = pm.Poly(body, verts, Vec2d(0,0))
 		shape.set_friction(friction)
 		shape.set_elasticity(elasticity)
 
@@ -564,10 +564,10 @@ class pymunx:
 		    Optional: See #physical_parameters
 		    Returns: pymunk.Shape() (=> .Poly())
 		"""
-		# Make vec2d's out of the points
+		# Make Vec2d's out of the points
 		poly_points = []
 		for p in points:
-			poly_points.append(self.vec2df(p))
+			poly_points.append(self.Vec2df(p))
 			
 		# Reduce polygon points
 		poly_points = util.reduce_poly(poly_points)
@@ -590,16 +590,16 @@ class pymunx:
 		mass = A * density
 		
 		# Calculate A Good Momentum
-		moment = pm.moment_for_poly(mass, poly_points_center, vec2d(0,0))
+		moment = pm.moment_for_poly(mass, poly_points_center, Vec2d(0,0))
 
 		# Create Body
 		body = pm.Body(mass, moment)
 
 		center = cx, cy = util.calc_center(poly_points)
-		body.position = vec2d((cx, cy))
+		body.position = Vec2d((cx, cy))
 
 		# Create Shape
-		shape = pm.Poly(body, poly_points_center, vec2d(0,0))
+		shape = pm.Poly(body, poly_points_center, Vec2d(0,0))
 		shape.set_friction(friction)
 		shape.set_elasticity(elasticity)
 
@@ -617,7 +617,7 @@ class pymunx:
 		    Parameter: shape == pymunk.Shape(), impulse_vector == (int(x), int(y))
 		"""
 		x, y = impulse_vector
-		shape.body.apply_impulse(vec2d(x, self.flipy(y)), vec2d(0,0))
+		shape.body.apply_impulse(Vec2d(x, self.flipy(y)), Vec2d(0,0))
 
 	def get_element_count(self):
 		""" Get the current (approx.) element count
@@ -662,11 +662,11 @@ class pymunx:
 		pointlist = util.poly_vectors_around_center(pointlist, False)
 
 		# Get Moment of Inertia
-	        moment = pm.moment_for_poly(mass, pointlist, vec2d(0,0))
+	        moment = pm.moment_for_poly(mass, pointlist, Vec2d(0,0))
 
 		# Create Body
 	        body = pm.Body(mass, inertia)	        
-		body.position = self.vec2df(center)
+		body.position = self.Vec2df(center)
 
 		# Create Shapes
 		a = b = None
@@ -684,7 +684,7 @@ class pymunx:
 
 				# add shape beween a and b
 #				print a,b
-				shape = pm.Segment(body, vec2d(a), vec2d(b), 2.0)
+				shape = pm.Segment(body, Vec2d(a), Vec2d(b), 2.0)
 				shape.set_group(1)
 				shape.set_friction(friction)
 				shape.color = clr

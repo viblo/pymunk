@@ -1,7 +1,7 @@
 """Contains utility functions, mainly to help with polygon creation"""
 __docformat__ = "reStructuredText"
 
-from vec2d import vec2d
+from vec2d import Vec2d
 from functools import partial
 
 from math import fabs
@@ -104,21 +104,21 @@ def calc_center(points):
     n = len(points)
     return (tot_x/n, tot_y/n)
     
-def poly_vectors_around_center(pointlist, points_as_vec2d=True):
+def poly_vectors_around_center(pointlist, points_as_Vec2d=True):
     """Rearranges vectors around the center
-    If points_as_vec2d, then return points are also vec2d, else pos
+    If points_as_Vec2d, then return points are also Vec2d, else pos
     
-    :return: pointlist ([vec2d/pos, ...])
+    :return: pointlist ([Vec2d/pos, ...])
     """
     
     poly_points_center = []
     center = cx, cy = calc_center(pointlist)
 
-    if points_as_vec2d:
+    if points_as_Vec2d:
         for p in pointlist:
             x = p.x - cx
             y = p.y - cy
-            poly_points_center.append(vec2d((x, y)))
+            poly_points_center.append(Vec2d((x, y)))
 
     else:
         for p in pointlist:
@@ -128,7 +128,7 @@ def poly_vectors_around_center(pointlist, points_as_vec2d=True):
     
     return poly_points_center
 
-def get_poly_UA(pointlist, points_as_vec2d=True):
+def get_poly_UA(pointlist, points_as_Vec2d=True):
     """Calculates the circumference and area of a given polygon
 
     :return: int(U), int(A)    
@@ -144,7 +144,7 @@ def get_poly_UA(pointlist, points_as_vec2d=True):
             p2 = p
             
             # Extract x and y
-            if points_as_vec2d:
+            if points_as_Vec2d:
                 x1, y1 = p1.x, p1.y
                 x2, y2 = p2.x, p2.y
             else:    

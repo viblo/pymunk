@@ -1,7 +1,7 @@
 
 from ctypes import * 
-from vec2d import vec2d
-cpVect = vec2d
+from vec2d import Vec2d
+cpVect = Vec2d
 
 from libload import load_library
 _lib_debug = True #Set to True to print the Chipmunk path.
@@ -10,10 +10,10 @@ chipmunk_lib = load_library("libchipmunk", print_path=_lib_debug)
 STRING = c_char_p
 
 
+# def CP_HASH_PAIR(A,B): return ((unsigned int)(A)*CP_HASH_COEF ^ (unsigned int)(B)*CP_HASH_COEF) # macro
 CP_CIRCLE_SHAPE = 0
 CP_NUM_SHAPES = 3
 CP_POLY_SHAPE = 2
-# def CP_HASH_PAIR(A,B): return ((unsigned int)(A)*CP_HASH_COEF ^ (unsigned int)(B)*CP_HASH_COEF) # macro
 CP_SEGMENT_SHAPE = 1
 cpFloat = c_float
 class MSVC_EVIL_FLOAT_HACK(Union):
