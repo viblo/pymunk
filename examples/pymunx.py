@@ -90,7 +90,7 @@ import pygame
 from pygame.locals import *
 from pygame.color import *
 
-import pymunk.pymunk as pm
+import pymunk as pm
 import pymunk.util as util
 from pymunk import Vec2d
 
@@ -406,7 +406,7 @@ class pymunx:
 		to_remove = []
 
 		# Draw all Shapes
-		for shape in self.space.get_shapes():
+		for shape in self.space.shapes:
 			if not self.draw_shape(surface, shape):
 				to_remove.append(shape)
 		
@@ -492,8 +492,8 @@ class pymunx:
 		"""
 		body = pm.Body(mass, inertia)
 		shape= pm.Segment(body, self.Vec2df(p1), self.Vec2df(p2), 2.0)	
-		shape.set_friction(friction)
-		shape.set_elasticity(elasticity)
+		shape.friction = friction
+		shape.elasticity = elasticity
 		
 		shape.color = self.get_color()
 		shape.color2 = self.get_color()
@@ -516,8 +516,8 @@ class pymunx:
 		
 		# Create Shape
 		shape = pm.Circle(body, radius, Vec2d(0,0))
-		shape.set_friction(friction)
-		shape.set_elasticity(elasticity)
+		shape.friction = friction
+		shape.elasticity = elasticity
 		
 		shape.color = self.get_color()
 		shape.color2 = self.get_color()
@@ -547,8 +547,8 @@ class pymunx:
 	
 		# Create Shape
 	        shape = pm.Poly(body, verts, Vec2d(0,0))
-		shape.set_friction(friction)
-		shape.set_elasticity(elasticity)
+		shape.riction = friction
+		shape.elasticity = elasticity
 
 		shape.color = self.get_color()
 		shape.color2 = self.get_color()
@@ -600,8 +600,8 @@ class pymunx:
 
 		# Create Shape
 		shape = pm.Poly(body, poly_points_center, Vec2d(0,0))
-		shape.set_friction(friction)
-		shape.set_elasticity(elasticity)
+		shape.friction = friction
+		shape.elasticity = elasticity
 
 		shape.color = self.get_color()
 		shape.color2 = self.get_color()
@@ -685,8 +685,8 @@ class pymunx:
 				# add shape beween a and b
 #				print a,b
 				shape = pm.Segment(body, Vec2d(a), Vec2d(b), 2.0)
-				shape.set_group(1)
-				shape.set_friction(friction)
+				shape.group = 1
+				shape.friction = friction
 				shape.color = clr
 				shapes.append(shape)
 				
@@ -700,5 +700,5 @@ class pymunx:
 	def set_gravity(self, gravity_vector):
 		print "New Gravity:", gravity_vector
 		self.gravity = gravity_vector
-		self.space.set_gravity(gravity_vector)
+		self.space.gravity = gravity_vector
 		
