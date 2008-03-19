@@ -643,7 +643,7 @@ class Arbiter(object):
         return self._arbiter.contents.stamp
     stamp = property(_get_stamp, doc="""Time stamp of the arbiter. (from the space)""")
 
-del cp, ct, u
+#del cp, ct, u
 
 __all__ = ["inf", "init_pymunk", "Space", "Body", "Shape", "Circle", "Poly", "Segment",
         "moment_for_circle", "moment_for_poly", "reset_shapeid_counter",
