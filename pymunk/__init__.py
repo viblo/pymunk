@@ -196,7 +196,7 @@ class Space(object):
         return arbs
     arbiters = property(_get_arbiters, doc="""List of active arbiters for the impulse solver.""")
         
-    def add_collisionpair_func(self, a, b, func, data):
+    def add_collisionpair_func(self, a, b, func, data=None):
         """Register func to be called when a collision is found between a 
         shapes with collision_type fields that match a and b. Pass None
         as func to reject any collision with the given collision type pair.
@@ -211,7 +211,7 @@ class Space(object):
         WARNING: It is not safe for collision pair functions to remove or
         free shapes or bodies from a space. Doing so will likely end in a 
         segfault as an earlier collision may already be referencing the shape
-        or body. You must wait until after the cpSpaceStep() function returns.
+        or body. You must wait until after the step() function returns.
         """
         if func is None:
             cp.cpSpaceAddCollisionPairFunc(self._space, a, b, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
@@ -226,7 +226,7 @@ class Space(object):
             del self._callbacks[(a,b)]
         cp.cpSpaceRemoveCollisionPairFunc(self._space, a, b)
     
-    def set_default_collisionpair_func(self, func, data):
+    def set_default_collisionpair_func(self, func, data=None):
         """Sets the default collsion pair function. Passing None as func will reset it to default.. :)"""
         if func is None:
             self._default_callback = None
@@ -292,7 +292,6 @@ class Body(object):
     def _set_position(self, pos):
         self._bodycontents.p = pos
     def _get_position(self):
-        return self._bodycontents.p
         return self._bodycontents.p
     position = property(_get_position, _set_position)
 
