@@ -67,7 +67,7 @@ class Space(object):
         self._space.contents.damping = damping
     def _get_damping(self):
         return self._space.contents.damping
-    damping = property(_get_damping, _set_gravity)
+    damping = property(_get_damping, _set_damping)
 
     def add(self, *objs):
         """Add one or many shapes, bodies or joints to the space"""
