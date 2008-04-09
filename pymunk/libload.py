@@ -10,7 +10,13 @@ def load_library(libname, print_path=True):
     arch, arch2 = platform.architecture()
  
     path = os.path.dirname(os.path.abspath(__file__))
- 
+    try:
+        if hasattr(sys, "frozen") or \
+            hasattr(sys, "importers") or \
+            hassattr(imp, "is_frozen") and imp.is_forzen("__main__"):
+            path = os.path.dirname(os.path.abspath(sys.executable))
+    except:
+        pass
     if s == 'Linux':
         libfn = "%s%s.so" % (libname, arch[:2])
         
