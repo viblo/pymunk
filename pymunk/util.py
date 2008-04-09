@@ -4,9 +4,9 @@ __docformat__ = "reStructuredText"
 from vec2d import Vec2d
 from functools import partial
 
-from math import fabs
-from math import sqrt
+from math import fabs, sqrt, pi
 
+X,Y = 0,1
 def is_clockwise(points): 
     """
     Check if the points given forms a clockwise polygon
@@ -31,11 +31,37 @@ def is_left(p0, p1, p2):
     # cast the answer to an int so it can be used directly from sort()
     # TODO: cast is not a good idea.. use something else
     #return int((p1.x - p0.x)*(p2.y-p0.y) - (p2.x-p0.x)*(p1.y-p0.y))
-    sorting = (p1.x - p0.x)*(p2.y-p0.y) - (p2.x-p0.x)*(p1.y-p0.y)
+    sorting = (p1[X] - p0[X])*(p2[Y]-p0[Y]) - (p2[X]-p0[X])*(p1[Y]-p0[Y])
     if sorting > 0: return 1
     elif sorting < 0: return -1 
     else: return 0
+
+def is_convex(points):
+    """Test if a polygon is convex or not
     
+    :return: True if the polygon is convex, False otherwise
+    """
+    assert len(points) > 2, "not enough points to form a polygon"
+    p0 = points[0]
+    p1 = points[1]
+    p2 = points[2]
+    xc, yc = 0, 0
+    is_same_winding = is_left(p0, p1, p2)
+    for p2 in points[2:] + [p0] + [p1]:
+        if is_same_winding != is_left(p0, p1, p2): 
+            return False
+        a = p1-p0
+        b = p2-p1
+        if sign(a.x) != sign(b.x): xc +=1
+        if sign(a.y) != sign(b.y): yc +=1
+        p0,p1 = p1, p2
+   
+    return xc <=2 and yc <=2
+
+def sign(x): 
+    if x<0: return -1 
+    else: return 1
+                
 def reduce_poly(points, tolerance=500):
     """Remove close points to simplify a polyline
     tolerance is the min distance between two points squared.
@@ -165,4 +191,4 @@ def get_poly_UA(pointlist, points_as_Vec2d=True):
     return int(U), int(A)
     
 __all__ = ["is_clockwise", "is_left", "reduce_poly", "convex_hull",
-        "calc_center", "poly_vectors_around_center", "get_poly_UA"]
+        "calc_center", "poly_vectors_around_center", "get_poly_UA", "is_convex"]
