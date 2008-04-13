@@ -10,16 +10,16 @@ Forum: http://www.slembcke.net/forums/viewforum.php?f=6
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
+import ctypes as ct
+import _chipmunk as cp
+import util as u
+from vec2d import Vec2d
+
 #: The release version of this pymunk installation
 #:
 #: Valid only if pymunk was installed from a source or binary 
 #: distribution (i.e. not in a checked-out copy from svn).
 version = "0.7"
-
-import ctypes as ct
-import _chipmunk as cp
-import util as u
-from vec2d import Vec2d
 
 #: Infinity that can be passed as mass or inertia to Body 
 #:
@@ -216,28 +216,28 @@ class Space(object):
         if func is None:
             cp.cpSpaceAddCollisionPairFunc(self._space, a, b, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
         else:
-            f = self._get_CF(func, data)
-            self._callbacks[(a,b)] = f
+            f = self._get_cf(func, data)
+            self._callbacks[(a, b)] = f
             cp.cpSpaceAddCollisionPairFunc(self._space, a, b, f, None)
             
     def remove_collisionpair_func(self, a, b):
         """Remove the collision pair function between the shapes a and b"""
-        if (a,b) in self._callbacks:
-            del self._callbacks[(a,b)]
+        if (a, b) in self._callbacks:
+            del self._callbacks[(a, b)]
         cp.cpSpaceRemoveCollisionPairFunc(self._space, a, b)
     
     def set_default_collisionpair_func(self, func, data=None):
         """Sets the default collsion pair function. Passing None as func will reset it to default.. :)"""
         if func is None:
             self._default_callback = None
-            cp.cpSpaceSetDefaultCollisionPairFunc(self._space, a, b, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
+            cp.cpSpaceSetDefaultCollisionPairFunc(self._space, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
         else:
-            f = self._get_CF(func, data)
+            f = self._get_cf(func, data)
             self._default_callback = f
             cp.cpSpaceSetDefaultCollisionPairFunc(self._space, f, None)
     
-    def _get_CF(self, func, data):
-        def CF (cpShapeA, cpShapeB, cpContacts, numContacts, normal_coef, _data):
+    def _get_cf(self, func, data):
+        def cf (cpShapeA, cpShapeB, cpContacts, numContacts, normal_coef, _data):
             ### Translate chipmunk shapes to Shapes.
             if cpShapeA.contents.id in self._shapes:
                 shapeA = self._shapes[cpShapeA.contents.id]
@@ -249,7 +249,7 @@ class Space(object):
                 shapeB = self._static_shapes[cpShapeB.contents.id]
             return func(shapeA, shapeB, [Contact(cpContacts[i]) for i in xrange(numContacts)], normal_coef, data)
         
-        return cp.cpCollFunc(CF)
+        return cp.cpCollFunc(cf)
 
     
 class Body(object):
@@ -407,6 +407,7 @@ class Shape(object):
         return BB(cp.cpShapeCacheBB(self._shape))
 
 class Circle(Shape):
+    """A circle shape defined by a radius"""
     def __init__(self, body, radius, offset):
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates."""
@@ -424,6 +425,9 @@ class Circle(Shape):
         , doc="""Center. (body space coordinates)""")
 
 class Segment(Shape):
+    """A line segment shape between two points
+    This shape is mainly intended as a static shape.
+    """
     def __init__(self, body, a, b, radius):
         """body is the body to attach the segment to, a and b are the
         endpoints, and radius is the thickness of the segment."""
@@ -445,6 +449,7 @@ class Segment(Shape):
 
 
 class Poly(Shape):
+    """A polygon shape"""
     def __init__(self, body, vertices, offset, auto_order_vertices=False):
         """body is the body to attach the poly to, verts is an array of
         cpVect's defining a convex hull with a counterclockwise winding, offset
@@ -491,6 +496,7 @@ def reset_shapeid_counter():
     cp.cpResetShapeIdCounter()
 
 class BB(object):
+    """Deprecated"""
     def __init__(self, *args):
         if len(args) == 1:
             self._bb = args[0]
@@ -644,7 +650,7 @@ class Arbiter(object):
 
 #del cp, ct, u
 
-__all__ = ["inf", "init_pymunk", "Space", "Body", "Shape", "Circle", "Poly", "Segment",
+__all__ = ["inf", "version", "init_pymunk", "Space", "Body", "Shape", "Circle", "Poly", "Segment",
         "moment_for_circle", "moment_for_poly", "reset_shapeid_counter",
         "Joint", "PinJoint", "SlideJoint", "PivotJoint", "GrooveJoint", 
         "Contact", "Arbiter"]

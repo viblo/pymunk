@@ -1,5 +1,5 @@
-__docformat__ = "restructuredtext"
 __version__ = "$Id$"
+__docformat__ = "reStructuredText"
 
 import operator
 import math
@@ -191,9 +191,9 @@ class Vec2d(ctypes.Structure):
         return self._r_o2(other, operator.mod)
  
     def __divmod__(self, other):
-        return self._o2(other, operator.divmod)
+        return self._o2(other, divmod)
     def __rdivmod__(self, other):
-        return self._r_o2(other, operator.divmod)
+        return self._r_o2(other, divmod)
  
     # Exponentation
     def __pow__(self, other):
@@ -239,17 +239,28 @@ class Vec2d(ctypes.Structure):
  
     # vectory functions
     def get_length_sqrd(self): 
+        """Get the squared length of the vector.
+        It is more efficent to use this method instead of first call 
+        get_length() or access .length and then do a sqrt().
+        
+        :return: The squared length
+        """
         return self.x**2 + self.y**2
  
     def get_length(self):
+        """Get the length of the vector.
+        
+        :return: The length
+        """
         return math.sqrt(self.x**2 + self.y**2)    
     def __setlength(self, value):
         length = self.get_length()
         self.x *= value/length
         self.y *= value/length
-    length = property(get_length, __setlength, None, "gets or sets the magnitude of the vector")
+    length = property(get_length, __setlength, doc = """Gets or sets the magnitude of the vector""")
        
     def rotate(self, angle_degrees):
+        """Rotate the vector by angle_degrees degrees."""
         radians = math.radians(angle_degrees)
         cos = math.cos(radians)
         sin = math.sin(radians)
@@ -259,6 +270,11 @@ class Vec2d(ctypes.Structure):
         self.y = y
  
     def rotated(self, angle_degrees):
+        """Create and return a new vector by rotating this vector by 
+        angle_degrees degrees.
+        
+        :return: Rotade vector
+        """
         radians = math.radians(angle_degrees)
         cos = math.cos(radians)
         sin = math.sin(radians)
@@ -274,20 +290,32 @@ class Vec2d(ctypes.Structure):
         self.x = self.length
         self.y = 0
         self.rotate(angle_degrees)
-    angle = property(get_angle, __setangle, None, "gets or sets the angle of a vector")
+    angle = property(get_angle, __setangle, doc="""Gets or sets the angle of a vector""")
  
     def get_angle_between(self, other):
+        """Get the angle between the vector and the other in degrees
+        
+        :return: The angle
+        """
         cross = self.x*other[1] - self.y*other[0]
         dot = self.x*other[0] + self.y*other[1]
         return math.degrees(math.atan2(cross, dot))
             
     def normalized(self):
+        """Get a normalized copy of the vector
+        
+        :return: A normalized vector
+        """
         length = self.length
         if length != 0:
             return self/length
         return Vec2d(self)
  
     def normalize_return_length(self):
+        """Normalize the vector and return its length before the normalization
+        
+        :return: The length before the normalization
+        """
         length = self.length
         if length != 0:
             self.x /= length
@@ -304,12 +332,27 @@ class Vec2d(ctypes.Structure):
         return Vec2d(self)
         
     def dot(self, other):
+        """The dot product between the vector and other vector
+            v1.dot(v2) -> v1.x*v2.x + v1.y*v2.y
+            
+        :return: The dot product
+        """
         return float(self.x*other[0] + self.y*other[1])
         
     def get_distance(self, other):
+        """The distance between the vector and other vector
+        
+        :return: The distance
+        """
         return math.sqrt((self.x - other[0])**2 + (self.y - other[1])**2)
         
     def get_dist_sqrd(self, other):
+        """The squared distance between the vector and other vector
+        It is more efficent to use this method than to call get_distance()
+        first and then do a sqrt() on the result.
+        
+        :return: The squared distance
+        """
         return (self.x - other[0])**2 + (self.y - other[1])**2
         
     def projection(self, other):
@@ -318,6 +361,11 @@ class Vec2d(ctypes.Structure):
         return other*(projected_length_times_other_length/other_length_sqrd)
     
     def cross(self, other):
+        """The cross product between the vector and other vector
+            v1.cross(v2) -> v1.x*v2.y - v2.y-v1.x
+        
+        :return: The cross product
+        """
         return self.x*other[1] - self.y*other[0]
     
     def interpolate_to(self, other, range):
@@ -339,7 +387,7 @@ class Vec2d(ctypes.Structure):
     def __setstate__(self, dict):
         self.x, self.y = dict
     def __newobj__(cls, *args):
-          return cls.__new__(cls, *args)    
+        return cls.__new__(cls, *args)    
 Vec2d._fields_ = [
             ('x', ctypes.c_float),
             ('y', ctypes.c_float),
@@ -359,7 +407,7 @@ if __name__ == "__main__":
             pass
         
         def testCreationAndAccess(self):
-            v = Vec2d(111,222)
+            v = Vec2d(111, 222)
             self.assert_(v.x == 111 and v.y == 222)
             v.x = 333
             v[1] = 444
@@ -367,30 +415,30 @@ if __name__ == "__main__":
  
         def testMath(self):
             v = Vec2d(111,222)
-            self.assertEqual(v + 1, Vec2d(112,223))
-            self.assert_(v - 2 == [109,220])
-            self.assert_(v * 3 == (333,666))
+            self.assertEqual(v + 1, Vec2d(112, 223))
+            self.assert_(v - 2 == [109, 220])
+            self.assert_(v * 3 == (333, 666))
             self.assert_(v / 2.0 == Vec2d(55.5, 111))
             #self.assert_(v / 2 == (55, 111)) # Not supported since this is a c_float structure in the bottom
-            self.assert_(v ** Vec2d(2,3) == [12321, 10941048])
+            self.assert_(v ** Vec2d(2, 3) == [12321, 10941048])
             self.assert_(v + [-11, 78] == Vec2d(100, 300))
             #self.assert_(v / [11,2] == [10,111]) # Not supported since this is a c_float structure in the bottom
  
         def testReverseMath(self):
-            v = Vec2d(111,222)
-            self.assert_(1 + v == Vec2d(112,223))
-            self.assert_(2 - v == [-109,-220])
-            self.assert_(3 * v == (333,666))
+            v = Vec2d(111, 222)
+            self.assert_(1 + v == Vec2d(112, 223))
+            self.assert_(2 - v == [-109, -220])
+            self.assert_(3 * v == (333, 666))
             #self.assert_([222,999] / v == [2,4]) # Not supported since this is a c_float structure in the bottom
-            self.assert_([111,222] ** Vec2d(2,3) == [12321, 10941048])
+            self.assert_([111, 222] ** Vec2d(2, 3) == [12321, 10941048])
             self.assert_([-11, 78] + v == Vec2d(100, 300))
  
         def testUnary(self):
-            v = Vec2d(111,222)
+            v = Vec2d(111, 222)
             v = -v
-            self.assert_(v == [-111,-222])
+            self.assert_(v == [-111, -222])
             v = abs(v)
-            self.assert_(v == [111,222])
+            self.assert_(v == [111, 222])
  
         def testLength(self):
             v = Vec2d(3,4)
@@ -399,7 +447,7 @@ if __name__ == "__main__":
             self.assert_(v.normalize_return_length() == 5)
             self.assertAlmostEquals(v.length, 1)
             v.length = 5
-            self.assert_(v == Vec2d(3,4))
+            self.assert_(v == Vec2d(3, 4))
             v2 = Vec2d(10, -2)
             self.assert_(v.get_distance(v2) == (v - v2).get_length())
             
@@ -431,7 +479,7 @@ if __name__ == "__main__":
             
         def testCross(self):
             lhs = Vec2d(1, .5)
-            rhs = Vec2d(4,6)
+            rhs = Vec2d(4, 6)
             self.assert_(lhs.cross(rhs) == 4)
             
         def testComparison(self):

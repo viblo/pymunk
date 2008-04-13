@@ -1,5 +1,6 @@
 import os.path
 import platform
+import sys, imp
 import ctypes
  
 def load_library(libname, print_path=True):
@@ -13,7 +14,7 @@ def load_library(libname, print_path=True):
     try:
         if hasattr(sys, "frozen") or \
             hasattr(sys, "importers") or \
-            hassattr(imp, "is_frozen") and imp.is_forzen("__main__"):
+            hasattr(imp, "is_frozen") and imp.is_forzen("__main__"):
             path = os.path.dirname(os.path.abspath(sys.executable))
     except:
         pass

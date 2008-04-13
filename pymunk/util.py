@@ -4,9 +4,10 @@ __docformat__ = "reStructuredText"
 from vec2d import Vec2d
 from functools import partial
 
-from math import fabs, sqrt, pi
+from math import fabs, sqrt
 
-X,Y = 0,1
+X, Y = 0, 1 
+
 def is_clockwise(points): 
     """
     Check if the points given forms a clockwise polygon
@@ -14,7 +15,7 @@ def is_clockwise(points):
     :return: True if the points forms a clockwise polygon
     """
     a = 0
-    i,j = 0,0
+    i, j = 0, 0
     for i in range(len(points)):
         j = i + 1
         if j == len(points): j = 0
@@ -54,12 +55,12 @@ def is_convex(points):
         b = p2-p1
         if sign(a.x) != sign(b.x): xc +=1
         if sign(a.y) != sign(b.y): yc +=1
-        p0,p1 = p1, p2
+        p0, p1 = p1, p2
    
-    return xc <=2 and yc <=2
+    return xc <= 2 and yc <= 2
 
 def sign(x): 
-    if x<0: return -1 
+    if x < 0: return -1 
     else: return 1
                 
 def reduce_poly(points, tolerance=500):
@@ -123,7 +124,7 @@ def calc_center(points):
     
     :return: The center (x,y)
     """
-    tot_x, tot_y = 0,0
+    tot_x, tot_y = 0, 0
     for p in points:
         tot_x += p[0]
         tot_y += p[1]
@@ -138,7 +139,7 @@ def poly_vectors_around_center(pointlist, points_as_Vec2d=True):
     """
     
     poly_points_center = []
-    center = cx, cy = calc_center(pointlist)
+    cx, cy = calc_center(pointlist)
 
     if points_as_Vec2d:
         for p in pointlist:
