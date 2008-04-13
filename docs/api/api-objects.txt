@@ -9,8 +9,12 @@ pymunk.util	pymunk.util-module.html
 pymunk.util.get_poly_UA	pymunk.util-module.html#get_poly_UA
 pymunk.util.calc_center	pymunk.util-module.html#calc_center
 pymunk.util.poly_vectors_around_center	pymunk.util-module.html#poly_vectors_around_center
-pymunk.util.is_left	pymunk.util-module.html#is_left
 pymunk.util.reduce_poly	pymunk.util-module.html#reduce_poly
+pymunk.util.is_left	pymunk.util-module.html#is_left
+pymunk.util.sign	pymunk.util-module.html#sign
+pymunk.util.is_convex	pymunk.util-module.html#is_convex
+pymunk.util.Y	pymunk.util-module.html#Y
+pymunk.util.X	pymunk.util-module.html#X
 pymunk.util.convex_hull	pymunk.util-module.html#convex_hull
 pymunk.util.is_clockwise	pymunk.util-module.html#is_clockwise
 pymunk.vec2d	pymunk.vec2d-module.html
@@ -229,10 +233,10 @@ pymunk.Space.step	pymunk.Space-class.html#step
 pymunk.Space._get_bodies	pymunk.Space-class.html#_get_bodies
 pymunk.Space._get_damping	pymunk.Space-class.html#_get_damping
 pymunk.Space._get_shapes	pymunk.Space-class.html#_get_shapes
+pymunk.Space._get_cf	pymunk.Space-class.html#_get_cf
 pymunk.Space.remove_collisionpair_func	pymunk.Space-class.html#remove_collisionpair_func
 pymunk.Space.remove	pymunk.Space-class.html#remove
 pymunk.Space.shapes	pymunk.Space-class.html#shapes
-pymunk.Space._get_CF	pymunk.Space-class.html#_get_CF
 pymunk.Space.resize_active_hash	pymunk.Space-class.html#resize_active_hash
 pymunk.Space._remove_joint	pymunk.Space-class.html#_remove_joint
 pymunk.Space.add	pymunk.Space-class.html#add
