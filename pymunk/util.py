@@ -38,7 +38,7 @@ def is_left(p0, p1, p2):
     else: return 0
 
 def is_convex(points):
-    """Test if a polygon is convex or not
+    """Test if a polygon (list of (x,y)) is convex or not
     
     :return: True if the polygon is convex, False otherwise
     """
@@ -51,10 +51,10 @@ def is_convex(points):
     for p2 in points[2:] + [p0] + [p1]:
         if is_same_winding != is_left(p0, p1, p2): 
             return False
-        a = p1-p0
-        b = p2-p1
-        if sign(a.x) != sign(b.x): xc +=1
-        if sign(a.y) != sign(b.y): yc +=1
+        a = p1[X] - p0[X], p1[Y] - p0[Y] # p1-p0
+        b = p2[X] - p1[X], p2[Y] - p1[Y] # p2-p1
+        if sign(a[X]) != sign(b[X]): xc +=1
+        if sign(a[Y]) != sign(b[Y]): yc +=1
         p0, p1 = p1, p2
    
     return xc <= 2 and yc <= 2
