@@ -206,7 +206,7 @@ class Space(object):
         shapeA, shapeB is the colliding shapes
         contacts is a list of contacts
         normal_coef is a float :)
-        data is the data argument sent to the addCollisionPairFunc function
+        data is the data argument sent to the add_collisionpair_func function
         
         WARNING: It is not safe for collision pair functions to remove or
         free shapes or bodies from a space. Doing so will likely end in a 
@@ -250,7 +250,52 @@ class Space(object):
             return func(shapeA, shapeB, [Contact(cpContacts[i]) for i in xrange(numContacts)], normal_coef, data)
         
         return cp.cpCollFunc(cf)
-
+    
+    
+    def _get_query_cf(self, func, data):
+        def cf (cpShape, _data):
+            ### Translate chipmunk shapes to Shapes.
+            if cpShape.contents.id in self._shapes:
+                shape = self._shapes[cpShape.contents.id]
+            else:
+                shape = self._static_shapes[cpShape.contents.id]
+            return func(shape, data)
+        return cp.cpSpacePointQueryFunc(cf)
+    
+    def point_query(self, point, func, data=None):
+        """Query the space for collisions between a point and its shapes 
+        (both static and nonstatic shapes)
+        
+        func(shape, data)
+        
+        shape is the colliding shape
+        data is the data argument sent to the point_query function
+        """       
+        f = self._get_query_cf(func, data)
+        cp.cpSpaceShapePointQuery(self._space, point, f, None)
+        cp.cpSpaceStaticShapePointQuery(self._space, point, f, None)
+        
+    def static_point_query(self, point, func, data=None):
+        """Query the space for collisions between a point and the static shapes in the space
+        
+        func(shape, data)
+        
+        shape is the colliding shape
+        data is the data argument sent to the point_query function
+        """       
+        f = self._get_query_cf(func, data)
+        cp.cpSpaceStaticShapePointQuery(self._space, point, f, None)
+        
+    def nonstatic_point_query(self, point, func, data=None):
+        """Query the space for collisions between a point and the non static shapes in the space
+        
+        func(shape, data)
+        
+        shape is the colliding shape
+        data is the data argument sent to the point_query function
+        """       
+        f = self._get_query_cf(func, data)
+        cp.cpSpaceShapePointQuery(self._space, point, f, None)    
     
 class Body(object):
     def __init__(self, mass, inertia):
