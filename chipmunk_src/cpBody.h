@@ -18,8 +18,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+struct cpBody;
+typedef void (*cpBodyVelocityFunc)(struct cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt);
+typedef void (*cpBodyPositionFunc)(struct cpBody *body, cpFloat dt);
+
  
 typedef struct cpBody{
+	// Function that is called to integrate the body's velocity. (Defaults to cpBodyUpdateVelocity)
+	cpBodyVelocityFunc velocity_func;
+	
+	// Function that is called to integrate the body's position. (Defaults to cpBodyUpdatePosition)
+	cpBodyPositionFunc position_func;
+	
 	// Mass and it's inverse.
 	cpFloat m, m_inv;
 	// Moment of inertia and it's inverse.
@@ -33,6 +44,8 @@ typedef struct cpBody{
 	// Unit length 
 	cpVect rot; 
 	
+	// User defined data pointer.
+	void *data;
 //	int active;
 } cpBody;
 

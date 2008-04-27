@@ -37,6 +37,7 @@ typedef struct cpCollPairFunc {
 typedef struct cpSpace{
 	// Number of iterations to use in the impulse solver.
 	int iterations;
+	int elasticIterations;
 //	int sleepTicks;
 	
 	// Self explanatory.
@@ -93,6 +94,11 @@ void cpSpaceRemoveShape(cpSpace *space, cpShape *shape);
 void cpSpaceRemoveStaticShape(cpSpace *space, cpShape *shape);
 void cpSpaceRemoveBody(cpSpace *space, cpBody *body);
 void cpSpaceRemoveJoint(cpSpace *space, cpJoint *joint);
+
+// Point query callback function
+typedef void (*cpSpacePointQueryFunc)(cpShape *shape, void *data);
+void cpSpaceShapePointQuery(cpSpace *space, cpVect point, cpSpacePointQueryFunc func, void *data);
+void cpSpaceStaticShapePointQuery(cpSpace *space, cpVect point, cpSpacePointQueryFunc func, void *data);
 
 // Iterator function for iterating the bodies in a space.
 typedef void (*cpSpaceBodyIterator)(cpBody *body, void *data);

@@ -74,9 +74,12 @@ circle2segment(cpShape *circleShape, cpShape *segmentShape, cpContact **con)
 	cpCircleShape *circ = (cpCircleShape *)circleShape;
 	cpSegmentShape *seg = (cpSegmentShape *)segmentShape;
 	
+	// Radius sum
+	cpFloat rsum = circ->r + seg->r;
+	
 	// Calculate normal distance from segment.
 	cpFloat dn = cpvdot(seg->tn, circ->tc) - cpvdot(seg->ta, seg->tn);
-	cpFloat dist = fabs(dn) - circ->r - seg->r;
+	cpFloat dist = fabs(dn) - rsum;
 	if(dist > 0.0f) return 0;
 	
 	// Calculate tangential distance along segment.
@@ -86,7 +89,7 @@ circle2segment(cpShape *circleShape, cpShape *segmentShape, cpContact **con)
 	
 	// Decision tree to decide which feature of the segment to collide with.
 	if(dt < dtMin){
-		if(dt < (dtMin - circ->r)){
+		if(dt < (dtMin - rsum)){
 			return 0;
 		} else {
 			return circle2circleQuery(circ->tc, seg->ta, circ->r, seg->r, con);
@@ -104,7 +107,7 @@ circle2segment(cpShape *circleShape, cpShape *segmentShape, cpContact **con)
 			);
 			return 1;
 		} else {
-			if(dt < (dtMax + circ->r)) {
+			if(dt < (dtMax + rsum)) {
 				return circle2circleQuery(circ->tc, seg->tb, circ->r, seg->r, con);
 			} else {
 				return 0;
@@ -362,8 +365,8 @@ int
 cpCollideShapes(cpShape *a, cpShape *b, cpContact **arr)
 {
 	// Their shape types must be in order.
-	assert(a->type <= b->type);
+	assert(a->klass->type <= b->klass->type);
 	
-	collisionFunc cfunc = colfuncs[a->type + b->type*CP_NUM_SHAPES];
+	collisionFunc cfunc = colfuncs[a->klass->type + b->klass->type*CP_NUM_SHAPES];
 	return (cfunc) ? cfunc(a, b, arr) : 0;
 }
