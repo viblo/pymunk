@@ -537,8 +537,11 @@ class Poly(Shape):
         #num = shape.contents.numVerts
         #verts = shape.contents.verts
         points = []
-        for i in xrange(len(self.verts)):
-            p = self.verts[i].cpvrotate(self._body.rotation_vector)+self._body.position
+        rv = self._body.rotation_vector
+        bp = self._body.position
+        vs = self.verts
+        for i in xrange(len(vs)):
+            p = vs[i].cpvrotate(rv)+bp
             points.append(Vec2d(p))
             
         return points
