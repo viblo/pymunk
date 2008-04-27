@@ -30,7 +30,7 @@ def is_left(p0, p1, p2):
         < 0 for p2 right of the line
     """
     # cast the answer to an int so it can be used directly from sort()
-    # TODO: cast is not a good idea.. use something else
+    # cast is not a good idea.. use something else
     #return int((p1.x - p0.x)*(p2.y-p0.y) - (p2.x-p0.x)*(p1.y-p0.y))
     sorting = (p1[X] - p0[X])*(p2[Y]-p0[Y]) - (p2[X]-p0[X])*(p1[Y]-p0[Y])
     if sorting > 0: return 1
@@ -60,6 +60,10 @@ def is_convex(points):
     return xc <= 2 and yc <= 2
 
 def sign(x): 
+    """Sign function. 
+    
+    :return -1 if x < 0, else return 1
+    """
     if x < 0: return -1 
     else: return 1
                 

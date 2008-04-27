@@ -184,7 +184,8 @@ class Space(object):
    
     def _get_stamp(self):
         return self._space.contents.stamp
-    stamp = property(_get_stamp, doc="""Time stamp. Is incremented on every call to step()""")
+    stamp = property(_get_stamp, 
+        doc="""Time stamp. Is incremented on every call to step()""")
     
     def _get_arbiters(self):        
         num = self._space.contents.arbiters.contents.num
@@ -194,7 +195,8 @@ class Space(object):
             arb = ct.cast(arr[i], ct.POINTER(cp.cpArbiter))
             arbs.append(Arbiter(arb, self._shapes, self._static_shapes))
         return arbs
-    arbiters = property(_get_arbiters, doc="""List of active arbiters for the impulse solver.""")
+    arbiters = property(_get_arbiters, 
+        doc="""List of active arbiters for the impulse solver.""")
         
     def add_collisionpair_func(self, a, b, func, data=None):
         """Register func to be called when a collision is found between a 
@@ -227,7 +229,9 @@ class Space(object):
         cp.cpSpaceRemoveCollisionPairFunc(self._space, a, b)
     
     def set_default_collisionpair_func(self, func, data=None):
-        """Sets the default collsion pair function. Passing None as func will reset it to default.. :)"""
+        """Sets the default collsion pair function. Passing None as func will 
+        reset it to default.. :)
+        """
         if func is None:
             self._default_callback = None
             cp.cpSpaceSetDefaultCollisionPairFunc(self._space, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
@@ -419,32 +423,46 @@ class Shape(object):
         return self._shapecontents.group
     def _set_group(self, group):
         self._shapecontents.group = group
-    group = property(_get_group, _set_group, doc="""Shapes in the same non-zero
- group do not generate collisions. Useful when creating an object out of many shapes that you don't want to self collide. Defaults to 0""")
+    group = property(_get_group, _set_group, 
+        doc="""Shapes in the same non-zero group do not generate collisions. 
+        Useful when creating an object out of many shapes that you don't want 
+        to self collide. Defaults to 0""")
 
     def _get_layers(self):
         return self._shapecontents.layers
     def _set_layers(self, layers):
         self._shapecontents.layers = layers
-    layers = property(_get_layers, _set_layers, doc="""Shapes only collide if they are in the same bit-planes. i.e. (a->layers & b->layers) != 0 By default, a shape occupies all 32 bit-planes.""")
+    layers = property(_get_layers, _set_layers, 
+        doc="""Shapes only collide if they are in the same bit-planes. 
+        i.e. (a->layers & b->layers) != 0 By default, a shape occupies all 
+        32 bit-planes.""")
 
     def _get_elasticity(self):
         return self._shapecontents.e
     def _set_elasticity(self, e):
         self._shapecontents.e = e
-    elasticity = property(_get_elasticity, _set_elasticity, doc="""Elasticity of the shape. A value of 0.0 gives no bounce, while a value of 1.0 will give a 'perfect' bounce. However due to inaccuracies in the simulation using 1.0 or greater is not recommended however.""")
+    elasticity = property(_get_elasticity, _set_elasticity, 
+        doc="""Elasticity of the shape. A value of 0.0 gives no bounce, 
+        while a value of 1.0 will give a 'perfect' bounce. However due to 
+        inaccuracies in the simulation using 1.0 or greater is not 
+        recommended.""")
 
     def _get_friction(self):
         return self._shapecontents.u
     def _set_friction(self, u):
         self._shapecontents.u = u
-    friction = property(_get_friction, _set_friction, doc="""Friction coefficient. Chipmunk uses the Coulomb friction model, a value of 0.0 is frictionless.""")
+    friction = property(_get_friction, _set_friction, 
+        doc="""Friction coefficient. Chipmunk uses the Coulomb friction model, 
+        a value of 0.0 is frictionless.""")
 
     def _get_surface_velocity(self):
         return self._shapecontents.surface_v
     def _set_surface_velocity(self, surface_v):
         self._shapecontents.surface_v = surface_v
-    surface_velocity = property(_get_surface_velocity, _set_surface_velocity, doc="""The surface velocity of the object. Useful for creating conveyor belts or players that move around. This value is only used when calculating friction, not the collision.""")
+    surface_velocity = property(_get_surface_velocity, _set_surface_velocity, 
+        doc="""The surface velocity of the object. Useful for creating 
+        conveyor belts or players that move around. This value is only used 
+        when calculating friction, not the collision.""")
 
     body = property(lambda self: self._body)
 
@@ -501,7 +519,8 @@ class Poly(Shape):
         is the offset from the body's center of gravity in body local
         coordinates. Set auto_order_vertices to automatically order the
         vertices"""
-        if auto_order_vertices: raise Exception(NotImplemented)
+        if auto_order_vertices: 
+            raise Exception(NotImplemented)
         self._body = body
         #self.verts = (Vec2d * len(vertices))(*vertices)
         self.verts = (Vec2d * len(vertices))
@@ -636,11 +655,17 @@ class Contact(object):
     # TODO: figure out how this works..
     def _get_jn_acc(self):
         return self._contact.jnAcc
-    jn_acc = property(_get_distance, doc="""The normal component of the accumulated (final) impulse applied to resolve the collision. Will not be valid until after the call to Space.step() returns""")
+    jn_acc = property(_get_distance, 
+        doc="""The normal component of the accumulated (final) impulse applied
+        to resolve the collision. Will not be valid until after the call to 
+        Space.step() returns""")
 
     def _get_jt_acc(self):
         return self._contact.jtAcc
-    jt_acc = property(_get_jt_acc, doc="""The tangential component of the accumulated (final) impulse applied to resolve the collision. Will not be valid until after the call to Space.step() returns""")
+    jt_acc = property(_get_jt_acc, 
+        doc="""The tangential component of the accumulated (final) impulse 
+        applied to resolve the collision. Will not be valid until after the 
+        call to Space.step() returns""")
 
 
 class Arbiter(object):
