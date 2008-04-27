@@ -87,8 +87,8 @@ class PhysicsDemo:
             y += 10
 
     def mouse_coll(self, shape1, shape2, contact_points, normal_coef, data):
-        if len(contact_points) > 1: print 1
-        self.mouse_contact = contact_points[0].position
+        if len(contact_points) > 1: print 1      
+        self.mouse_contact = Vec2d(contact_points[0].position)
         if shape1.collision_type == COLLTYPE_DEFAULT:
             self.shape_to_remove = shape1
         elif shape2.collision_type == COLLTYPE_DEFAULT:
@@ -280,9 +280,12 @@ class PhysicsDemo:
         if pygame.key.get_mods() & KMOD_SHIFT and pygame.mouse.get_pressed()[2]:
             p = self.flipyv(Vec2d(mpos))
             self.poly_points.append(p)
-            
+        
         self.mouse_body.position = self.flipyv(Vec2d(mpos))
-       
+        
+        ### Reset mouse contact point
+        self.mouse_contact = None
+
         ### Update physics
         if self.run_physics:
             x = 1
@@ -296,10 +299,10 @@ class PhysicsDemo:
                 for poly in self.polys:
                     #poly.body.reset_forces()
                     pass
-        
+
         ### Draw stuff
         self.draw()
-        
+
         ### Check for objects outside of the screen, we can remove those
         # Balls
         xs = []
