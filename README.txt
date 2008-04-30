@@ -5,7 +5,7 @@ ABOUT
     pymunk is a python wrapper for the 2d physics library Chipmunk
     2007 - 2008, Victor Blomqvist - vb@viblo.se, MIT License
 
-    This dev release is based on the latest pymunk release (0.7), 
+    This dev release is based on the latest pymunk release (0.7.1), 
     using chipmunk rev 223 (source included)
     
     IRC: #pymunk on irc.freenode.net
