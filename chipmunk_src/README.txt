@@ -1,4 +1,5 @@
-Chipmunk 4.0.2
+Chipmunk rev 223
+see http://wiki.slembcke.net/main/published/Chipmunk
 
   Compiling:
 
@@ -11,11 +12,3 @@ Chipmunk 4.0.2
       $ gcc -shared -o chipmunk.so *.o
 
 
-  OS X: There is an included XCode project file for building the
-  static library and demo application. Alteratively you could use the
-  CMake files. 
-
-  To build run 'cmake .' then 'make'. This should build a dynamic 
-  library, a static library, and the demo application.
-  
-  http://files.slembcke.net/chipmunk/release/ChipmunkLatest.tgz
