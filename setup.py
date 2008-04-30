@@ -35,7 +35,8 @@ class build_chipmunk(Command):
         sources = [os.path.join('chipmunk_src',x) for x in os.listdir('chipmunk_src') if x[-1] == 'c']
         preargs = ['-O3', '-std=gnu99', '-ffast-math']
         objs = compiler.compile(sources, extra_preargs=preargs)
-        compiler.link_shared_lib(objs, 'libchipmunk', output_dir='pymunk')
+        libname = 'chipmunk'
+        compiler.link_shared_lib(objs, libname, output_dir='pymunk')
 
 # todo: add/remove/think about this list :)
 classifiers = ['Development Status :: 3 - Alpha'

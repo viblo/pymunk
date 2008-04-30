@@ -18,27 +18,31 @@ def load_library(libname, print_path=True):
             path = os.path.dirname(os.path.abspath(sys.executable))
     except:
         pass
-
+    libfn_specific = None
+    
     if s == 'Linux':
-        libfn = "%s%s.so" % (libname, arch[:2])
-        libfn_default = "%s.so" % libname
-        
+        libfn = "lib%s.so" % libname
+        libfn_specific = "lib%s%s.so" % (libname, arch[:2])
+
     elif s == 'Windows':
         libfn = "%s.dll" % libname
-        libfn_default=libfn
+
     elif s == 'Darwin':
-        libfn = "%s.dylib" % libname
-        libfn_default=libfn
+        libfn = "lib%s.dylib" % libname
         
     libfn = os.path.join(path, libfn)
-    libfn_default = os.path.join(path, libfn_default)
-    try:
-        if print_path:
-            print "Loading chipmunk for %s (%s) [%s]" % (s, arch, libfn)
-        lib = ctypes.cdll.LoadLibrary(libfn)
-    except:
-        if libfn == libfn_default: 
-            raise
+    
+    if libfn_specific != None:
+        libfn_specific = os.path.join(path, libfn_specific)
+        try:
+            if print_path:
+                print "Loading chipmunk for %s (%s) [%s]" % (s, arch, libfn_specific)
+            lib = ctypes.cdll.LoadLibrary(libfn)
+        except:
+            if print_path:
+                print "Loading chipmunk for %s (%s) [%s]" % (s, arch, libfn)
+            lib = ctypes.cdll.LoadLibrary(libfn)    
+    else:
         if print_path:
             print "Loading chipmunk for %s (%s) [%s]" % (s, arch, libfn)
         lib = ctypes.cdll.LoadLibrary(libfn)
