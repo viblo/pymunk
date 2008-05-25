@@ -19,7 +19,7 @@ def is_clockwise(points):
     for i in range(len(points)):
         j = i + 1
         if j == len(points): j = 0
-        a += points[i].x*points[j].y - points[i].y*points[j].x
+        a += points[i][X]*points[j][Y] - points[i][Y]*points[j][X]
     return a <= 0 #or is it the other way around?
     
 def is_left(p0, p1, p2):
