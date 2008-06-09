@@ -11,6 +11,10 @@ class Vec2d(ctypes.Structure):
        """
     __slots__ = ['x', 'y']
     
+    @classmethod
+    def from_param(cls, arg):
+        return cls(arg)
+        
     def __init__(self, x_or_pair, y = None):
         
         if y == None:
