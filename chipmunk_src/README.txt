@@ -8,7 +8,10 @@ see http://wiki.slembcke.net/main/published/Chipmunk
       $ gcc -O3 -std=gnu99 -ffast-math -fPIC -c *.c
 
    Linking:
-
+    on Linux
       $ gcc -shared -o chipmunk.so *.o
+    or if you are on OSX
+      $ gcc -dynamiclib -o libchipmunk.dylib *.o
+      
 
 

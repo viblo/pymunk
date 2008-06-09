@@ -280,7 +280,8 @@ class Space(object):
         cp.cpSpaceStaticShapePointQuery(self._space, point, f, None)
         
     def static_point_query(self, point, func, data=None):
-        """Query the space for collisions between a point and the static shapes in the space
+        """Query the space for collisions between a point and the static 
+        shapes in the space
         
         func(shape, data)
         
@@ -291,7 +292,8 @@ class Space(object):
         cp.cpSpaceStaticShapePointQuery(self._space, point, f, None)
         
     def nonstatic_point_query(self, point, func, data=None):
-        """Query the space for collisions between a point and the non static shapes in the space
+        """Query the space for collisions between a point and the non static 
+        shapes in the space
         
         func(shape, data)
         
@@ -398,10 +400,11 @@ class Body(object):
 
 
     def damped_spring(self, b, anchor1, anchor2, rlen, k, dmp, dt):
-        """Apply a spring force between this and body b at anchors anchr1 and anchr2
-        respectively. k is the spring constant (force/distance), rlen is the rest 
-        length of the spring, dmp is the damping constant (force/velocity), and dt 
-        is the time step to apply the force over."""
+        """Apply a spring force between this and body b at anchors anchr1 and 
+        anchr2 respectively. k is the spring constant (force/distance), rlen 
+        is the rest length of the spring, dmp is the damping constant 
+        (force/velocity), and dt is the time step to apply the force over.
+        """
         cp.cpDampedSpring(self._body, b._body, anchor1, anchor2, rlen, k, dmp, dt)
 
 class Shape(object):
@@ -486,9 +489,10 @@ class Circle(Shape):
     def _get_radius(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.r
     radius = property(_get_radius, _set_radius)
-        
-    center = property(lambda self: ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.c
-        , doc="""Center. (body space coordinates)""")
+    
+    def _get_center (self):
+        return ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.c
+    center = property(_get_center, doc="""Center. (body space coordinates)""")
 
 class Segment(Shape):
     """A line segment shape between two points
@@ -505,13 +509,15 @@ class Segment(Shape):
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a = a
     def _get_a(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a
-    a = property(_get_a, _set_a, doc="""One of the two endpoints for this segment""")
+    a = property(_get_a, _set_a, 
+        doc="""One of the two endpoints for this segment""")
 
     def _set_b(self, b):
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b = b
     def _get_b(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b
-    b = property(_get_b, _set_b, doc="""One of the two endpoints for this segment""")
+    b = property(_get_b, _set_b, 
+        doc="""One of the two endpoints for this segment""")
 
 
 class Poly(Shape):
@@ -684,7 +690,8 @@ class Arbiter(object):
     def _get_contacts(self):
         cs = [Contact(self._arbiter.contents.contacts[i]) for i in xrange(self._arbiter.contents.numContacts)]
         return cs
-    contacts = property(_get_contacts, doc="""Information on the contact points between the objects.""")
+    contacts = property(_get_contacts, 
+        doc="""Information on the contact points between the objects.""")
         
     def _get_a(self):
         a = self._arbiter.contents.a.contents
@@ -726,7 +733,8 @@ class Arbiter(object):
 
 #del cp, ct, u
 
-__all__ = ["inf", "version", "init_pymunk", "Space", "Body", "Shape", "Circle", "Poly", "Segment",
-        "moment_for_circle", "moment_for_poly", "reset_shapeid_counter",
-        "Joint", "PinJoint", "SlideJoint", "PivotJoint", "GrooveJoint", 
-        "Contact", "Arbiter"]
+__all__ = ["inf", "version", "init_pymunk"
+        , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
+        , "moment_for_circle", "moment_for_poly", "reset_shapeid_counter"
+        , "Joint", "PinJoint", "SlideJoint", "PivotJoint", "GrooveJoint" 
+        , "Contact", "Arbiter"]
