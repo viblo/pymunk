@@ -19,7 +19,7 @@ from vec2d import Vec2d
 #:
 #: Valid only if pymunk was installed from a source or binary 
 #: distribution (i.e. not in a checked-out copy from svn).
-version = "0.7.1"
+version = "0.7.2"
 
 #: Infinity that can be passed as mass or inertia to Body 
 #:
@@ -356,21 +356,23 @@ class Body(object):
         return self._bodycontents.w
     angular_velocity = property(_get_angular_velocity, _set_angular_velocity)
 
+
     def apply_impulse(self, j, r):
-        """Apply the impulse j to body with offset r. Both j and r should be in
-        world coordinates."""
-        #TODO: Test me
+        """Apply the impulse j to body with offset r."""
+        
+        #TODO: Test me and figure out if r is in local or world coords.
         self.velocity = self.velocity + j * self._bodycontents.m_inv
         self._bodycontents.w += self._bodycontents.i_inv* r.cross(j)
     
     def reset_forces(self):
+        """Reset the forces on the body"""
         cp.cpBodyResetForces(self._body)
-
 
     def apply_force(self, f, r):
         """Apply (accumulate) the force f on body with offset r. Both f and r 
         should be in world coordinates."""
         cp.cpBodyApplyForce(self._body, f, r)
+
 
     def update_velocity(self, gravity, damping, dt):
         """Updates the velocity of the body using Euler integration. You don't 
@@ -378,12 +380,12 @@ class Body(object):
         of adding it to a Space."""
         cp.cpBodyUpdateVelocity(self._body, gravity, damping, dt)
 
-
     def update_position(self, dt):
         """Updates the position of the body using Euler integration. Like 
         updateVelocity() you shouldn't normally need to call this yourself."""
         cp.cpBodyUpdatePosition(self._body, dt)
-    
+
+
     def local_to_world(self, v):
         """Convert body local to world coordinates"""
         #TODO: Test me
@@ -393,6 +395,7 @@ class Body(object):
         """Convert world to body local coordinates"""
         #TODO: Test me
         return (v - self.position).cpvunrotate(self.rotation_vector)
+
 
     def damped_spring(self, b, anchor1, anchor2, rlen, k, dmp, dt):
         """Apply a spring force between this and body b at anchors anchr1 and anchr2
