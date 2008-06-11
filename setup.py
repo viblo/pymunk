@@ -37,10 +37,13 @@ class build_chipmunk(Command):
         compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math']
         objs = compiler.compile(sources, extra_preargs=compiler_preargs)
         libname = 'chipmunk'
-        link_preargs = []
-        if platform.system() == 'Darwin' and not self.no_osx_hack:
-            link_preargs.append("-dynamiclib")
-        compiler.link_shared_lib(objs, libname, output_dir='pymunk', extra_preargs=link_preargs)
+        if platform.system() == 'Darwin':
+            libname = compiler.library_filename(libname, lib_type='dylib')
+            compiler.set_executable('linker_so', ['cc', '-dynamiclib'])
+        else:
+            libname = compiler.library_filename(libname, lib_type='shared')
+        compiler.link(cc.CCompiler.SHARED_LIBRARY, objs, libname, output_dir = 'pymunk')
+            
 
 # todo: add/remove/think about this list :)
 classifiers = ['Development Status :: 3 - Alpha'
