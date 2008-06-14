@@ -13,6 +13,7 @@ class Vec2d(ctypes.Structure):
     
     @classmethod
     def from_param(cls, arg):
+        """Used by ctypes to automatically create Vec2ds"""
         return cls(arg)
         
     def __init__(self, x_or_pair, y = None):
@@ -507,7 +508,7 @@ if __name__ == "__main__":
             inplace_vec += .5
             inplace_vec /= (3, 6)
             inplace_vec += Vec2d(-1, -1)
-            alternate = (inplace_src*.5 + .5)/Vec2d(3,6) + [-1, -1]
+            alternate = (inplace_src*.5 + .5)/Vec2d(3, 6) + [-1, -1]
             self.assertEquals(inplace_vec, inplace_ref)
             self.assertEquals(inplace_vec, alternate)
         

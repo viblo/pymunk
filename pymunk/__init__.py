@@ -3,7 +3,7 @@ pymunk is a python wrapper for the 2d physics library Chipmunk
 
 IRC: #pymunk on irc.freenode.net
 
-Homepage: http://pymunk.googlecode.com/
+Homepage: http://code.google.com/p/pymunk/
 
 Forum: http://www.slembcke.net/forums/viewforum.php?f=6
 """
@@ -19,7 +19,7 @@ from vec2d import Vec2d
 #:
 #: Valid only if pymunk was installed from a source or binary 
 #: distribution (i.e. not in a checked-out copy from svn).
-version = "0.7.2"
+version = "0.8"
 
 #: Infinity that can be passed as mass or inertia to Body 
 #:
@@ -361,7 +361,7 @@ class Body(object):
 
     def apply_impulse(self, j, r):
         """Apply the impulse j to body with offset r."""
-        
+        j,r = Vec2d(j), Vec2d(r)
         #TODO: Test me and figure out if r is in local or world coords.
         self.velocity = self.velocity + j * self._bodycontents.m_inv
         self._bodycontents.w += self._bodycontents.i_inv* r.cross(j)
@@ -391,11 +391,13 @@ class Body(object):
     def local_to_world(self, v):
         """Convert body local to world coordinates"""
         #TODO: Test me
+        v = Vec2d(v)
         return self.position + v.cpvrotate(self.rotation_vector)
         
     def world_to_local(self, v):
         """Convert world to body local coordinates"""
         #TODO: Test me
+        v = Vec2d(v)
         return (v - self.position).cpvunrotate(self.rotation_vector)
 
 

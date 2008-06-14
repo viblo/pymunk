@@ -77,7 +77,8 @@ def reduce_poly(points, tolerance=500):
     reduced_ps = [points[0]]
     
     for p in points[1:]:
-        if curr_p.get_dist_sqrd(p) > tolerance:
+        distance = (curr_p[X] - p[X])**2 + (curr_p[Y] - p[Y])**2
+        if distance > tolerance:
             curr_p = p
             reduced_ps.append(p)
             
@@ -92,9 +93,9 @@ def convex_hull(points):
     ### Find lowest rightmost point
     p0 = points[0]
     for p in points[1:]:
-        if p.y < p0.y:
+        if p[Y] < p0[Y]:
             p0 = p
-        elif p.y == p0.y and p.x > p0.x:
+        elif p[Y] == p0[Y] and p[X] > p0[X]:
             p0 = p
     points.remove(p0)
     
@@ -130,8 +131,8 @@ def calc_center(points):
     """
     tot_x, tot_y = 0, 0
     for p in points:
-        tot_x += p[0]
-        tot_y += p[1]
+        tot_x += p[X]
+        tot_y += p[Y]
     n = len(points)
     return (tot_x/n, tot_y/n)
     
@@ -147,14 +148,14 @@ def poly_vectors_around_center(pointlist, points_as_Vec2d=True):
 
     if points_as_Vec2d:
         for p in pointlist:
-            x = p.x - cx
-            y = p.y - cy
+            x = p[X] - cx
+            y = p[Y] - cy
             poly_points_center.append(Vec2d((x, y)))
 
     else:
         for p in pointlist:
-            x = p[0] - cx
-            y = cy - p[1]
+            x = p[X] - cx
+            y = cy - p[Y]
             poly_points_center.append((x, y))
     
     return poly_points_center
@@ -176,8 +177,8 @@ def get_poly_UA(pointlist, points_as_Vec2d=True):
             
             # Extract x and y
             if points_as_Vec2d:
-                x1, y1 = p1.x, p1.y
-                x2, y2 = p2.x, p2.y
+                x1, y1 = p1[X], p1[Y]
+                x2, y2 = p2[X], p2[Y]
             else:    
                 x1, y1 = p1
                 x2, y2 = p2
