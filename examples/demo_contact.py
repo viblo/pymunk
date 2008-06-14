@@ -31,7 +31,7 @@ def main():
     balls = []
        
     ### walls
-    static_body = pm.Body(1e100, 1e100)
+    static_body = pm.Body(pm.inf, pm.inf)
     static_lines = [pm.Segment(static_body, (111.0, 280.0), (407.0, 246.0), 0.0)
                     ,pm.Segment(static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
                     ]    

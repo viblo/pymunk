@@ -25,11 +25,11 @@ class PyramidDemo:
         ### Init pymunk and create space
         pymunk.init_pymunk()
         self.space = pymunk.Space()
-        self.space.gravity = Vec2d(0.0, -900.0)
+        self.space.gravity = (0.0, -900.0)
         
         ### ground
         body = pymunk.Body(pymunk.inf, pymunk.inf)
-        shape = pymunk.Segment(body, Vec2d(50, 100), Vec2d(550,100), .0)
+        shape = pymunk.Segment(body, (50, 100), (550,100), .0)
         shape.friction = 1.0
         self.space.add_static(shape)
         
@@ -43,12 +43,12 @@ class PyramidDemo:
             y = Vec2d(x)
             for j in range(i, 25):
                 size= 5
-                points = map(Vec2d, [(-size, -size), (-size, size), (size,size), (size, -size)])
+                points = [(-size, -size), (-size, size), (size,size), (size, -size)]
                 mass = 10.0
-                moment = pymunk.moment_for_poly(mass, points, Vec2d(0,0))
+                moment = pymunk.moment_for_poly(mass, points, (0,0))
                 body = pymunk.Body(mass, moment)
                 body.position = y
-                shape = pymunk.Poly(body, points, Vec2d(0,0))
+                shape = pymunk.Poly(body, points, (0,0))
                 shape.friction = 1
                 self.space.add(body,shape)
                 

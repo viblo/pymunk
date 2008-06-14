@@ -12,7 +12,7 @@ def main1():
               
     pm.init_pymunk()
     space = pm.Space()
-    space.gravity = Vec2d(0.0, -900.0)
+    space.gravity = (0.0, -900.0)
     
     space.resize_static_hash()
     space.resize_active_hash()
@@ -35,7 +35,7 @@ def main1():
             ticks_to_next_ball = 10000
             mass = 10
             radius = 25
-            inertia = pm.moment_for_circle(mass, 0, radius, Vec2d(0,0))
+            inertia = pm.moment_for_circle(mass, 0, radius, (0,0))
             body = pm.Body(mass, inertia)
             x = random.randint(115,350)
             body.position = x, 400
