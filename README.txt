@@ -5,11 +5,11 @@ ABOUT
     pymunk is a python wrapper for the 2d physics library Chipmunk
     2007 - 2008, Victor Blomqvist - vb@viblo.se, MIT License
 
-    This dev release is based on the latest pymunk release (0.7.1), 
+    This dev release is based on the latest pymunk release (0.8), 
     using chipmunk rev 223 (source included)
     
     IRC: #pymunk on irc.freenode.net
-    Homepage: http://pymunk.googlecode.com/
+    Homepage: http://code.google.com/p/pymunk/
     Forum: http://www.slembcke.net/forums/viewforum.php?f=6
     Email: vb@viblo.se
     
@@ -57,12 +57,11 @@ DEPENDENCIES/REQUIREMENTS
 CHIPMUNK
 
     Compiled libraries of Chipmunk compatible Windows and Linux are distributed
-    with pymunk, a windows library is also available at 
-    http://pymunk.googlecode.com/.
+    with pymun.
     If pymunk doesnt have your particular platform included, you can compile 
     Chipmunk by hand with a custom setup argument:
     
-        >python setup.py build_chipmunk
+        > python setup.py build_chipmunk
     
     The compiled file goes into the /pymunk folder (same as _chipmunk.py, 
     util.py and others)
@@ -76,7 +75,7 @@ HOW TO GENERATE BINDINGS
     http://starship.python.net/crew/theller/wiki/CodeGenerator
     When ctypeslib (h2xml and xml2py) and gcc_xml is installed then run
 
-        >python generate_bindings.py
+        > python generate_bindings.py
 
     (use --help to display options, you will most probably want to change the include
     path and possibly the lib path) you have now created a _chipmunk.py file with
