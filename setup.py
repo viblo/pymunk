@@ -1,5 +1,5 @@
 import distutils.ccompiler as cc
-import os
+import os, os.path
 import platform
 from ez_setup import use_setuptools
 use_setuptools()
@@ -46,13 +46,15 @@ class build_chipmunk(Command):
         self.compile_chipmunk()
         
 # todo: add/remove/think about this list :)
-classifiers = ['Development Status :: 3 - Alpha'
+classifiers = ['Development Status :: 4 - Beta'
     , 'License :: OSI Approved :: MIT License'
     , 'Operating System :: OS Independent'
     , 'Programming Language :: Python'
     , 'Topic :: Games/Entertainment'
     , 'Topic :: Software Development :: Libraries'   
 ]
+
+long_description = """pymunk is wrapper for the 2d rigid body physics library Chipmunk"""
 
 setup(
     name='pymunk'
@@ -61,14 +63,19 @@ setup(
     , author_email='vb@viblo.se'
     , version='0.8' # remember to change me for new versions!
     , description='A wrapper for the 2d physics library Chipmunk'
-    , long_description='A wrapper for the 2d rigid body physics library Chipmunk'
+    , long_description=long_description
     , packages=['pymunk'] #find_packages(exclude=['*.tests']),
     , package_data = {'pymunk': ['libchipmunk.dll'
                                 , 'libchipmunk32.so'
                                 , 'libchipmunk64.so'
                                 , 'libchipmunk.so'
                                 , 'libchipmunk.dylib']}
-    , platforms=['any']
+    , eager_resources = [os.path.join('pymunk','libchipmunk.dll')
+                            , os.path.join('pymunk','libchipmunk32.so')
+                            , os.path.join('pymunk','libchipmunk64.so')
+                            , os.path.join('pymunk','libchipmunk.so')
+                            , os.path.join('pymunk','libchipmunk.dylib')]
+    #, platforms=['win32']
     , license='MIT License'
     , classifiers=classifiers
     , include_package_data = True
