@@ -24,7 +24,7 @@ def load_library(libname, print_path=True):
         libfn = "lib%s.so" % libname
         libfn_specific = "lib%s%s.so" % (libname, arch[:2])
 
-    elif s == 'Windows':
+    elif s == 'Windows' or s == 'Microsoft':
         libfn = "%s.dll" % libname
 
     elif s == 'Darwin':
