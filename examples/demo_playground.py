@@ -12,9 +12,7 @@ COLLTYPE_MOUSE = 1
 
 class PhysicsDemo:
     def flipyv(self, v):
-        v = Vec2d(v)
-        v.y = -v.y+self.h
-        return v
+        return int(v.x), int(-v.y+self.h)
         
     def __init__(self):
         self.running = True
@@ -27,7 +25,7 @@ class PhysicsDemo:
         ### Init pymunk and create space
         pm.init_pymunk()
         self.space = pm.Space()
-        self.space.gravity = Vec2d(0.0, -900.0)
+        self.space.gravity = (0.0, -900.0)
         
         ### Walls
         self.walls = [] 
@@ -51,11 +49,11 @@ class PhysicsDemo:
         ### Mouse
         self.mouse_body = pm.Body(pm.inf, pm.inf)
         p = pygame.mouse.get_pos()
-        self.mouse_body.position = self.flipyv(Vec2d(p[0],p[1]))
+        self.mouse_body.position = self.flipyv(Vec2d(p))
                 
-        self.mouse_shape = pm.Circle(self.mouse_body, 3, Vec2d(0,0))
+        self.mouse_shape = pm.Circle(self.mouse_body, 3, (0,0))
         self.mouse_shape.collision_type = COLLTYPE_MOUSE
-        self.space.add(self.mouse_body, self.mouse_shape)
+        self.space.add( self.mouse_shape)
         self.space.add_collisionpair_func(COLLTYPE_DEFAULT, COLLTYPE_MOUSE, self.mouse_coll, None)
         self.space.add_collisionpair_func(COLLTYPE_MOUSE, COLLTYPE_DEFAULT, self.mouse_coll, None)
         self.run_physics = True
@@ -245,12 +243,16 @@ class PhysicsDemo:
             elif event.type == KEYUP and event.key in (K_RSHIFT, K_LSHIFT):
                 ### Create Polygon
                  
+                if len(self.poly_points) > 0:
+                    self.poly_points = u.reduce_poly(self.poly_points, tolerance=5)
                 if len(self.poly_points) > 2:
-                    self.poly_points = u.reduce_poly(self.poly_points)
                     self.poly_points = u.convex_hull(self.poly_points)
                     if not u.is_clockwise(self.poly_points):
                         self.poly_points.reverse()
-                    self.polys.append(self.create_poly(self.poly_points))
+                        
+                    center = u.calc_center(self.poly_points)
+                    self.poly_points = u.poly_vectors_around_center(self.poly_points)
+                    self.polys.append(self.create_poly(self.poly_points, pos=center))
                 self.poly_points = []
             elif event.type == KEYDOWN and event.key == K_SPACE:    
                 self.run_physics = not self.run_physics
@@ -268,7 +270,7 @@ class PhysicsDemo:
                 p = self.flipyv(Vec2d(pygame.mouse.get_pos())) -bp
                 ball = self.create_ball(bp)
                 p = p.normalized()
-                ball.body.apply_impulse(p*1000, Vec2d(0,0))
+                ball.body.apply_impulse(p*1000, (0,0))
                 self.balls.append(ball)      
             elif event.type == KEYDOWN and event.key == K_g:
                 g = self.space.gravity
