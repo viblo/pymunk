@@ -69,7 +69,7 @@ def sign(x):
     if x < 0: return -1 
     else: return 1
                 
-def reduce_poly(points, tolerance=500):
+def reduce_poly(points, tolerance=0.5):
     """Remove close points to simplify a polyline
     tolerance is the min distance between two points squared.
     
