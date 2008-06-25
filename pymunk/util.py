@@ -42,7 +42,9 @@ def is_convex(points):
     
     :return: True if the polygon is convex, False otherwise
     """
-    assert len(points) > 2, "not enough points to form a polygon"
+    
+	assert len(points) > 2, "need at least 3 points to form a polygon"
+	
     p0 = points[0]
     p1 = points[1]
     p2 = points[2]
@@ -73,6 +75,9 @@ def reduce_poly(points, tolerance=500):
     
     :return: The reduced polygon as a list of (x,y)
     """
+	
+	assert len(points) > 0, "reduce_poly can not simplify an empty points list"
+	
     curr_p = points[0]
     reduced_ps = [points[0]]
     
@@ -90,6 +95,9 @@ def convex_hull(points):
     
     :return: Convex hull as a list of (x,y)
     """
+	
+	assert len(points) > 2, "need at least 3 points to form a convex hull"
+	
     ### Find lowest rightmost point
     p0 = points[0]
     for p in points[1:]:
@@ -129,6 +137,9 @@ def calc_center(points):
     
     :return: The center (x,y)
     """
+	
+	assert len(points) > 0, "need at least 1 points to calculate the center"
+	
     tot_x, tot_y = 0, 0
     for p in points:
         tot_x += p[X]
