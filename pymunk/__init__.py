@@ -526,7 +526,7 @@ class Poly(Shape):
     """A polygon shape"""
     def __init__(self, body, vertices, offset, auto_order_vertices=False):
         """body is the body to attach the poly to, verts is an array of
-        cpVect's defining a convex hull with a counterclockwise winding, offset
+        (x,y) defining a convex hull with a counterclockwise winding, offset
         is the offset from the body's center of gravity in body local
         coordinates. Set auto_order_vertices to automatically order the
         vertices"""
