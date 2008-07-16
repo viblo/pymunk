@@ -2,11 +2,24 @@
 __docformat__ = "reStructuredText"
 
 from vec2d import Vec2d
-from functools import partial
-
 from math import fabs, sqrt
 
 X, Y = 0, 1 
+
+try:
+    from functools import partial
+except ImportError:
+    # Python 2.4 support
+    def partial(func, *args, **keywords):
+        def newfunc(*fargs, **fkeywords):
+            newkeywords = keywords.copy()
+            newkeywords.update(fkeywords)
+            return func(*(args + fargs), **newkeywords)
+
+        newfunc.func = func
+        newfunc.args = args
+        newfunc.keywords = keywords
+        return newfunc
 
 def is_clockwise(points): 
     """

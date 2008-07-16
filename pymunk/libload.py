@@ -1,6 +1,6 @@
 import os.path
 import platform
-import sys, imp
+import sys, imp, os
 import ctypes
  
 def load_library(libname, print_path=True):
@@ -15,7 +15,10 @@ def load_library(libname, print_path=True):
         if hasattr(sys, "frozen") or \
             hasattr(sys, "importers") or \
             hasattr(imp, "is_frozen") and imp.is_forzen("__main__"):
-            path = os.path.dirname(os.path.abspath(sys.executable))
+            if 'site-packages.zip' in __file__:
+                path = os.path.join(os.path.dirname(os.getcwd()), 'Frameworks')
+            else:
+                path = os.path.dirname(os.path.abspath(sys.executable))
     except:
         pass
     libfn_specific = None
@@ -37,7 +40,7 @@ def load_library(libname, print_path=True):
         try:
             if print_path:
                 print "Loading chipmunk for %s (%s) [%s]" % (s, arch, libfn_specific)
-            lib = ctypes.cdll.LoadLibrary(libfn)
+            lib = ctypes.cdll.LoadLibrary(libfn_specific)
         except:
             if print_path:
                 print "Loading chipmunk for %s (%s) [%s]" % (s, arch, libfn)
