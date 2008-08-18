@@ -1,4 +1,5 @@
 """Contains utility functions, mainly to help with polygon creation"""
+from __future__ import division
 __docformat__ = "reStructuredText"
 
 from vec2d import Vec2d
@@ -187,7 +188,7 @@ def poly_vectors_around_center(pointlist, points_as_Vec2d=True):
 def get_poly_UA(pointlist, points_as_Vec2d=True):
     """Calculates the circumference and area of a given polygon
 
-    :return: int(U), int(A)    
+    :return: U, A    
     """
     p1 = p2 = None
     U = 0
@@ -218,7 +219,7 @@ def get_poly_UA(pointlist, points_as_Vec2d=True):
             # Current End Point becomes Next Start Point
             p1 = p2
     
-    return int(U), int(A)
+    return U, A
     
 __all__ = ["is_clockwise", "is_left", "reduce_poly", "convex_hull",
         "calc_center", "poly_vectors_around_center", "get_poly_UA", "is_convex"]

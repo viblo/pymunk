@@ -533,6 +533,7 @@ class Poly(Shape):
         if auto_order_vertices: 
             raise Exception(NotImplemented)
         self._body = body
+        self.offset = offset
         #self.verts = (Vec2d * len(vertices))(*vertices)
         self.verts = (Vec2d * len(vertices))
         self.verts = self.verts(Vec2d(0, 0))
@@ -547,12 +548,14 @@ class Poly(Shape):
         #shape = ct.cast(self._shape, ct.POINTER(cp.cpPolyShape))
         #num = shape.contents.numVerts
         #verts = shape.contents.verts
+        #TODO: Fix for polygons with offset!!!
         points = []
         rv = self._body.rotation_vector
         bp = self._body.position
         vs = self.verts
+        o = self.offset
         for i in xrange(len(vs)):
-            p = vs[i].cpvrotate(rv)+bp
+            p = vs[i].cpvrotate(rv)+bp+o
             points.append(Vec2d(p))
             
         return points

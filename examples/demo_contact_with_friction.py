@@ -50,10 +50,10 @@ def main():
                 
         ticks_to_next_ball -= 1
         if ticks_to_next_ball <= 0:
-            ticks_to_next_ball = 1000
-            mass = 10
+            ticks_to_next_ball = 100
+            mass = 0.1
             radius = 25
-            inertia = pm.moment_for_circle(mass, 0, radius, (0,0))
+            inertia = pm.inf #pm.moment_for_circle(mass, 0, radius, (0,0))
             body = pm.Body(mass, inertia)
             x = random.randint(115,350)
             body.position = x, 400
