@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 from pygame.color import *
 import pymunk as pm
-from pymunk import Vec2d
 import math, sys, random
 X,Y,Z = 0,1,2 # Easy indexing
 
@@ -120,4 +119,3 @@ def main():
         
 if __name__ == '__main__':
     sys.exit(main())
-    
