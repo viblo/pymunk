@@ -148,7 +148,7 @@ class Vec2d(ctypes.Structure):
     # Multiplication
     def __mul__(self, other):
         if isinstance(other, Vec2d):
-            return Vec2d(self.x*other.y, self.y*other.y)
+            return Vec2d(self.x*other.x, self.y*other.y)
         if (hasattr(other, "__getitem__")):
             return Vec2d(self.x*other[0], self.y*other[1])
         else:
