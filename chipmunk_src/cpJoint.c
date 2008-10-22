@@ -229,16 +229,16 @@ slideJointApplyImpulse(cpJoint *joint)
 	cpVect r2 = jnt->r2;
 	
 	//calculate bias impulse
-//	cpVect vbr = relative_velocity(r1, a->v_bias, a->w_bias, r2, b->v_bias, b->w_bias);
-//	cpFloat vbn = cpvdot(vbr, n);
-//	
-//	cpFloat jbn = (jnt->bias - vbn)*jnt->nMass;
-//	cpFloat jbnOld = jnt->jBias;
-//	jnt->jBias = cpfmin(jbnOld + jbn, 0.0f);
-//	jbn = jnt->jBias - jbnOld;
-//	
-//	cpVect jb = cpvmult(n, jbn);
-//	apply_bias_impulses(a, b, jnt->r1, jnt->r2, jb);
+	cpVect vbr = relative_velocity(r1, a->v_bias, a->w_bias, r2, b->v_bias, b->w_bias);
+	cpFloat vbn = cpvdot(vbr, n);
+	
+	cpFloat jbn = (jnt->bias - vbn)*jnt->nMass;
+	cpFloat jbnOld = jnt->jBias;
+	jnt->jBias = cpfmin(jbnOld + jbn, 0.0f);
+	jbn = jnt->jBias - jbnOld;
+	
+	cpVect jb = cpvmult(n, jbn);
+	apply_bias_impulses(a, b, jnt->r1, jnt->r2, jb);
 	
 	// compute relative velocity
 	cpVect vr = relative_velocity(r1, a->v, a->w, r2, b->v, b->w);
