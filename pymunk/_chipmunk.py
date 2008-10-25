@@ -10,17 +10,17 @@ chipmunk_lib = load_library("chipmunk", print_path=_lib_debug)
 STRING = c_char_p
 
 
-# def CP_HASH_PAIR(A,B): return ((unsigned int)(A)*CP_HASH_COEF ^ (unsigned int)(B)*CP_HASH_COEF) # macro
+CP_CUSTOM_JOINT = 4
+CP_POLY_SHAPE = 2
+CP_SEGMENT_SHAPE = 1
+CP_NUM_SHAPES = 3
 CP_GROOVE_JOINT = 3
-CP_PIVOT_JOINT = 1
+# def CP_HASH_PAIR(A,B): return ((unsigned int)(A)*CP_HASH_COEF ^ (unsigned int)(B)*CP_HASH_COEF) # macro
 CP_CIRCLE_SHAPE = 0
 CP_SLIDE_JOINT = 2
-CP_POLY_SHAPE = 2
+CP_PIVOT_JOINT = 1
 CP_PIN_JOINT = 0
-CP_SEGMENT_SHAPE = 1
-CP_CUSTOM_JOINT = 4
-CP_NUM_SHAPES = 3
-cpFloat = c_float
+cpFloat = c_double
 class MSVC_EVIL_FLOAT_HACK(Union):
     pass
 MSVC_EVIL_FLOAT_HACK._fields_ = [
@@ -158,8 +158,8 @@ cpBBWrapVect.restype = cpVect
 cpBBWrapVect.argtypes = [cpBB, cpVect]
 class cpBody(Structure):
     pass
-cpBodyVelocityFunc = CFUNCTYPE(None, POINTER(cpBody), cpVect, c_float, c_float)
-cpBodyPositionFunc = CFUNCTYPE(None, POINTER(cpBody), c_float)
+cpBodyVelocityFunc = CFUNCTYPE(None, POINTER(cpBody), cpVect, c_double, c_double)
+cpBodyPositionFunc = CFUNCTYPE(None, POINTER(cpBody), c_double)
 cpBody._fields_ = [
     ('velocity_func', cpBodyVelocityFunc),
     ('position_func', cpBodyPositionFunc),
@@ -170,13 +170,13 @@ cpBody._fields_ = [
     ('p', cpVect),
     ('v', cpVect),
     ('f', cpVect),
-    ('v_bias', cpVect),
     ('a', cpFloat),
     ('w', cpFloat),
     ('t', cpFloat),
-    ('w_bias', cpFloat),
     ('rot', cpVect),
     ('data', c_void_p),
+    ('v_bias', cpVect),
+    ('w_bias', cpFloat),
 ]
 cpBodyAlloc = chipmunk_lib.cpBodyAlloc
 cpBodyAlloc.restype = POINTER(cpBody)
@@ -283,7 +283,7 @@ class cpJoint(Structure):
     pass
 cpJointClass._fields_ = [
     ('type', cpJointType),
-    ('preStep', CFUNCTYPE(None, POINTER(cpJoint), c_float)),
+    ('preStep', CFUNCTYPE(None, POINTER(cpJoint), c_double)),
     ('applyImpulse', CFUNCTYPE(None, POINTER(cpJoint))),
 ]
 cpJoint._fields_ = [
@@ -408,16 +408,16 @@ class cpShapeClass(Structure):
     pass
 cpShape._fields_ = [
     ('klass', POINTER(cpShapeClass)),
-    ('id', c_uint),
-    ('bb', cpBB),
-    ('collision_type', c_uint),
-    ('group', c_uint),
-    ('layers', c_uint),
-    ('data', c_void_p),
     ('body', POINTER(cpBody)),
+    ('bb', cpBB),
     ('e', cpFloat),
     ('u', cpFloat),
     ('surface_v', cpVect),
+    ('data', c_void_p),
+    ('collision_type', c_uint),
+    ('group', c_uint),
+    ('layers', c_uint),
+    ('id', c_uint),
 ]
 cpPolyShape._fields_ = [
     ('shape', cpShape),
@@ -501,7 +501,7 @@ cpSegmentShapeInit.argtypes = [POINTER(cpSegmentShape), POINTER(cpBody), cpVect,
 cpSegmentShapeNew = chipmunk_lib.cpSegmentShapeNew
 cpSegmentShapeNew.restype = POINTER(cpShape)
 cpSegmentShapeNew.argtypes = [POINTER(cpBody), cpVect, cpVect, cpFloat]
-cpCollFunc = CFUNCTYPE(c_int, POINTER(cpShape), POINTER(cpShape), POINTER(cpContact), c_int, c_float, c_void_p)
+cpCollFunc = CFUNCTYPE(c_int, POINTER(cpShape), POINTER(cpShape), POINTER(cpContact), c_int, c_double, c_void_p)
 class cpCollPairFunc(Structure):
     pass
 cpCollPairFunc._fields_ = [

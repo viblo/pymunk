@@ -5,6 +5,8 @@ import operator
 import math
 import ctypes 
 
+float_type = ctypes.c_double
+
 class Vec2d(ctypes.Structure):
     """2d vector class, supports vector and scalar operators,
        and also provides a bunch of high level functions
@@ -394,8 +396,8 @@ class Vec2d(ctypes.Structure):
     def __newobj__(cls, *args):
         return cls.__new__(cls, *args)    
 Vec2d._fields_ = [
-            ('x', ctypes.c_float),
-            ('y', ctypes.c_float),
+            ('x', float_type),
+            ('y', float_type),
         ]
 ########################################################################
 ## Unit Testing                                                       ##
@@ -523,4 +525,5 @@ if __name__ == "__main__":
     unittest.main()
  
     ######################################################################## 
+del float_type
 __all__ = ["Vec2d"]
