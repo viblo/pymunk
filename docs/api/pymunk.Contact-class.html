@@ -8,185 +8,319 @@
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
 
-<body>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
 <!-- ==================== NAVIGATION BAR ==================== -->
-<table class="navbar">
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
-  <!-- Project homepage -->
-      <!--<th class="navbar" 
-            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>-->
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="pymunk-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
-      <th><a
-        href="module-tree.html">Trees</a></th>
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Index link -->
-      <th><a
-        href="identifier-index.html">Indices</a></th>
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Breadcrumbs -->
-      <th class="navbar-breadcrumbs">
-        <span class="breadcrumbs">
-          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;Contact
-        </span>
-      </th>
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar last">
-        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
-      </th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="pymunk-module.html">Package&nbsp;pymunk</a> ::
+        Class&nbsp;Contact
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="pymunk.Contact-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class pymunk.Contact</h1>
-<!-- ==================== METHODS ==================== -->
-<a name="section-Methods"></a>
-        <h2>Methods</h2>
-<table class="summary">
+<h1 class="epydoc">Class Contact</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">Contact</strong>
+</pre>
+
+<hr />
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
+</tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">contact</span>)</span>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Contact-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">contact</span>)</span><br />
+      x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__str__</code>
+      </p>
     </td>
   </tr>
 </table>
 <!-- ==================== PROPERTIES ==================== -->
 <a name="section-Properties"></a>
-        <h2>Properties</h2>
-<table class="summary">
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
+</tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#position" class="summary-name">position</a>
-<div class="summary-description">Contact position</div>
+        <a href="pymunk.Contact-class.html#position" class="summary-name">position</a><br />
+      Contact position
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#normal" class="summary-name">normal</a>
-<div class="summary-description">Contact normal</div>
+        <a href="pymunk.Contact-class.html#normal" class="summary-name">normal</a><br />
+      Contact normal
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#distance" class="summary-name">distance</a>
-<div class="summary-description">Penetration distance</div>
+        <a href="pymunk.Contact-class.html#distance" class="summary-name">distance</a><br />
+      Penetration distance
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#jn_acc" class="summary-name">jn_acc</a>
-<div class="summary-description">The normal component of the accumulated (final) impulse applied
-to resolve the collision.</div>
+        <a href="pymunk.Contact-class.html#jn_acc" class="summary-name">jn_acc</a><br />
+      The normal component of the accumulated (final) impulse applied
+to resolve the collision.
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#jt_acc" class="summary-name">jt_acc</a>
-<div class="summary-description">The tangential component of the accumulated (final) impulse
-applied to resolve the collision.</div>
+        <a href="pymunk.Contact-class.html#jt_acc" class="summary-name">jt_acc</a><br />
+      The tangential component of the accumulated (final) impulse
+applied to resolve the collision.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
     </td>
   </tr>
 </table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">contact</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  x.__init__(...) initializes x; see x.__class__.__doc__ for signature
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
 <!-- ==================== PROPERTY DETAILS ==================== -->
 <a name="section-PropertyDetails"></a>
-        <h2>Property Details</h2>
-<table class="details">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Property Details</span></td>
+</tr>
 </table>
 <a name="position"></a>
-<div class=" detail">
-  <h3>position</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">position</h3>
   Contact position
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_position" class="summary-sig-name" onclick="show_private();">_get_position</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="normal"></a>
-<div class=" detail">
-  <h3>normal</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">normal</h3>
   Contact normal
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_normal" class="summary-sig-name" onclick="show_private();">_get_normal</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="distance"></a>
-<div class=" detail">
-  <h3>distance</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">distance</h3>
   Penetration distance
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_distance" class="summary-sig-name" onclick="show_private();">_get_distance</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="jn_acc"></a>
-<div class=" detail">
-  <h3>jn_acc</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">jn_acc</h3>
   The normal component of the accumulated (final) impulse applied
 to resolve the collision. Will not be valid until after the call to
 Space.step() returns
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_distance" class="summary-sig-name" onclick="show_private();">_get_distance</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="jt_acc"></a>
-<div class=" detail">
-  <h3>jt_acc</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">jt_acc</h3>
   The tangential component of the accumulated (final) impulse
 applied to resolve the collision. Will not be valid until after the
 call to Space.step() returns
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_jt_acc" class="summary-sig-name" onclick="show_private();">_get_jt_acc</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <br />
 <!-- ==================== NAVIGATION BAR ==================== -->
-<table class="navbar">
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
-  <!-- Project homepage -->
-      <!--<th class="navbar" 
-            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>-->
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="pymunk-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
-      <th><a
-        href="module-tree.html">Trees</a></th>
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Index link -->
-      <th><a
-        href="identifier-index.html">Indices</a></th>
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Breadcrumbs -->
-      <th class="navbar-breadcrumbs">
-        <span class="breadcrumbs">
-          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;Contact
-        </span>
-      </th>
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar last">
-        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
-      </th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Sun Jun 15 16:45:17 2008
+    Generated by Epydoc 3.0.1 on Sun Oct 26 01:24:47 2008
     </td>
     <td align="right" class="footer">
-      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
     </td>
   </tr>
 </table>
@@ -197,9 +331,8 @@ call to Space.step() returns
   // javascript is turned off then we want them to be
   // visible); but by default, we want to hide them.  So hide
   // them unless we have a cookie that says to show them.
-  checkCookie()
+  checkCookie();
   // -->
 </script>
-  
 </body>
 </html>

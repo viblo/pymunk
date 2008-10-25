@@ -8,204 +8,404 @@
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
 
-<body>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
 <!-- ==================== NAVIGATION BAR ==================== -->
-<table class="navbar">
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
-  <!-- Project homepage -->
-      <!--<th class="navbar" 
-            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>-->
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="pymunk-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
-      <th><a
-        href="module-tree.html">Trees</a></th>
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Index link -->
-      <th><a
-        href="identifier-index.html">Indices</a></th>
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Breadcrumbs -->
-      <th class="navbar-breadcrumbs">
-        <span class="breadcrumbs">
-          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;Space
-        </span>
-      </th>
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar last">
-        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
-      </th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="pymunk-module.html">Package&nbsp;pymunk</a> ::
+        Class&nbsp;Space
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="pymunk.Space-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class pymunk.Space</h1>
-<!-- ==================== METHODS ==================== -->
-<a name="section-Methods"></a>
-        <h2>Methods</h2>
-<table class="summary">
+<h1 class="epydoc">Class Space</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">Space</strong>
+</pre>
+
+<hr />
+Spaces are the basic unit of simulation. You add rigid bodies, shapes
+and joints to it and then step them all forward together through time.
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
+</tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">iterations</span>=<span class="summary-sig-default">10</span>)</span>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">iterations</span>=<span class="summary-sig-default">10</span>)</span><br />
+      Create a new instace of the Space</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a name="add"></a><span class="summary-sig-name">add</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">*objs</span>)</span>
-<div class="summary-description">Add one or many shapes, bodies or joints to the space</div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="add"></a><span class="summary-sig-name">add</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*objs</span>)</span><br />
+      Add one or many shapes, bodies or joints to the space</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a name="add_static"></a><span class="summary-sig-name">add_static</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">*objs</span>)</span>
-<div class="summary-description">Add one or many static shapes to the space</div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="add_static"></a><span class="summary-sig-name">add_static</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*objs</span>)</span><br />
+      Add one or many static shapes to the space</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a name="remove"></a><span class="summary-sig-name">remove</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">*objs</span>)</span>
-<div class="summary-description">Remove one or many shapes, bodies or joints from the space</div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="remove"></a><span class="summary-sig-name">remove</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*objs</span>)</span><br />
+      Remove one or many shapes, bodies or joints from the space</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a name="remove_static"></a><span class="summary-sig-name">remove_static</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">*os</span>)</span>
-<div class="summary-description">Remove one or many static shapes from the space</div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="remove_static"></a><span class="summary-sig-name">remove_static</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*os</span>)</span><br />
+      Remove one or many static shapes from the space</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a href="pymunk.Space-class.html#resize_static_hash" class="summary-sig-name">resize_static_hash</a>(<span class="summary-sig-arg">self</span>,
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#resize_static_hash" class="summary-sig-name">resize_static_hash</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">dim</span>=<span class="summary-sig-default">100.0</span>,
-        <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">1000</span>)</span>
-<div class="summary-description">The spatial hashes used by Chipmunk's collision detection are fairly
-size sensitive.</div>
+        <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">1000</span>)</span><br />
+      The spatial hashes used by Chipmunk's collision detection are fairly
+size sensitive.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a href="pymunk.Space-class.html#resize_active_hash" class="summary-sig-name">resize_active_hash</a>(<span class="summary-sig-arg">self</span>,
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#resize_active_hash" class="summary-sig-name">resize_active_hash</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">dim</span>=<span class="summary-sig-default">100.0</span>,
-        <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">1000</span>)</span>
-<div class="summary-description">The spatial hashes used by Chipmunk's collision detection are fairly
-size sensitive.</div>
+        <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">1000</span>)</span><br />
+      The spatial hashes used by Chipmunk's collision detection are fairly
+size sensitive.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a href="pymunk.Space-class.html#rehash_static" class="summary-sig-name">rehash_static</a>(<span class="summary-sig-arg">self</span>)</span>
-<div class="summary-description">Rehashes the shapes in the static spatial hash.</div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#rehash_static" class="summary-sig-name">rehash_static</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Rehashes the shapes in the static spatial hash.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a href="pymunk.Space-class.html#step" class="summary-sig-name">step</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">dt</span>)</span>
-<div class="summary-description">Update the space for the given time step.</div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#step" class="summary-sig-name">step</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dt</span>)</span><br />
+      Update the space for the given time step.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a href="pymunk.Space-class.html#add_collisionpair_func" class="summary-sig-name">add_collisionpair_func</a>(<span class="summary-sig-arg">self</span>,
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#add_collisionpair_func" class="summary-sig-name">add_collisionpair_func</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">a</span>,
         <span class="summary-sig-arg">b</span>,
         <span class="summary-sig-arg">func</span>,
-        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span>
-<div class="summary-description">Register func to be called when a collision is found between a
-shapes with collision_type fields that match a and b.</div>
+        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Register func to be called when a collision is found between
+shapes with collision_type fields that match a and b.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a name="remove_collisionpair_func"></a><span class="summary-sig-name">remove_collisionpair_func</span>(<span class="summary-sig-arg">self</span>,
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#remove_collisionpair_func" class="summary-sig-name">remove_collisionpair_func</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">a</span>,
-        <span class="summary-sig-arg">b</span>)</span>
-<div class="summary-description">Remove the collision pair function between the shapes a and b</div>
+        <span class="summary-sig-arg">b</span>)</span><br />
+      Remove the collision pair function between shapes with
+collision_type which match a and b.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a href="pymunk.Space-class.html#set_default_collisionpair_func" class="summary-sig-name">set_default_collisionpair_func</a>(<span class="summary-sig-arg">self</span>,
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#set_default_collisionpair_func" class="summary-sig-name">set_default_collisionpair_func</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">func</span>,
-        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span>
-<div class="summary-description">Sets the default collsion pair function.</div>
+        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Sets the default collsion pair function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a href="pymunk.Space-class.html#point_query" class="summary-sig-name">point_query</a>(<span class="summary-sig-arg">self</span>,
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#point_query" class="summary-sig-name">point_query</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">point</span>,
         <span class="summary-sig-arg">func</span>,
-        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span>
-<div class="summary-description">Query the space for collisions between a point and its shapes
-(both static and nonstatic shapes)</div>
+        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Query the space for collisions between a point and its shapes
+(both static and nonstatic shapes)</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a href="pymunk.Space-class.html#static_point_query" class="summary-sig-name">static_point_query</a>(<span class="summary-sig-arg">self</span>,
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#static_point_query" class="summary-sig-name">static_point_query</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">point</span>,
         <span class="summary-sig-arg">func</span>,
-        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span>
-<div class="summary-description">Query the space for collisions between a point and the static
-shapes in the space</div>
+        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Query the space for collisions between a point and the static
+shapes in the space.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <span class="summary-sig"><a href="pymunk.Space-class.html#nonstatic_point_query" class="summary-sig-name">nonstatic_point_query</a>(<span class="summary-sig-arg">self</span>,
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#nonstatic_point_query" class="summary-sig-name">nonstatic_point_query</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">point</span>,
         <span class="summary-sig-arg">func</span>,
-        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span>
-<div class="summary-description">Query the space for collisions between a point and the non static
-shapes in the space</div>
+        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Query the space for collisions between a point and the non static
+shapes in the space</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__str__</code>
+      </p>
     </td>
   </tr>
 </table>
 <!-- ==================== PROPERTIES ==================== -->
 <a name="section-Properties"></a>
-        <h2>Properties</h2>
-<table class="summary">
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
+</tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
@@ -245,33 +445,80 @@ shapes in the space</div>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Space-class.html#stamp" class="summary-name">stamp</a>
-<div class="summary-description">Time stamp.</div>
+        <a href="pymunk.Space-class.html#stamp" class="summary-name">stamp</a><br />
+      Time stamp.
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Space-class.html#arbiters" class="summary-name">arbiters</a>
-<div class="summary-description">List of active arbiters for the impulse solver.</div>
+        <a href="pymunk.Space-class.html#arbiters" class="summary-name">arbiters</a><br />
+      List of active arbiters for the impulse solver.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
     </td>
   </tr>
 </table>
 <!-- ==================== METHOD DETAILS ==================== -->
 <a name="section-MethodDetails"></a>
-        <h2>Method Details</h2>
-<table class="details">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
+</tr>
 </table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">iterations</span>=<span class="sig-default">10</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Create a new instace of the Space
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>iterations</code></strong> (int) - Number of iterations to use in the impulse solver to solve
+contacts.</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="resize_static_hash"></a>
-<div class=" detail">
-  <h3>resize_static_hash</h3>
-  <div class="detail-signature">
-    <span class="sig"><span class="sig-name">resize_static_hash</span>(<span class="sig-arg">self</span>,
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">resize_static_hash</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">dim</span>=<span class="sig-default">100.0</span>,
         <span class="sig-arg">count</span>=<span class="sig-default">1000</span>)</span>
-    </div>
-  <div class="detail-description">
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
   <p>The spatial hashes used by Chipmunk's collision detection are fairly
 size sensitive. dim is the size of the hash cells. Setting dim to the
 average objects size is likely to give the best performance.</p>
@@ -280,17 +527,24 @@ Bigger is better, but only to a point. Setting count to ~10x the number
 of objects in the hash is probably a good starting point.</p>
   <dl class="fields">
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="resize_active_hash"></a>
-<div class=" detail">
-  <h3>resize_active_hash</h3>
-  <div class="detail-signature">
-    <span class="sig"><span class="sig-name">resize_active_hash</span>(<span class="sig-arg">self</span>,
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">resize_active_hash</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">dim</span>=<span class="sig-default">100.0</span>,
         <span class="sig-arg">count</span>=<span class="sig-default">1000</span>)</span>
-    </div>
-  <div class="detail-description">
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
   <p>The spatial hashes used by Chipmunk's collision detection are fairly
 size sensitive. dim is the size of the hash cells. Setting dim to the
 average objects size is likely to give the best performance.</p>
@@ -299,240 +553,396 @@ Bigger is better, but only to a point. Setting count to ~10x the number
 of objects in the hash is probably a good starting point.</p>
   <dl class="fields">
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="rehash_static"></a>
-<div class=" detail">
-  <h3>rehash_static</h3>
-  <div class="detail-signature">
-    <span class="sig"><span class="sig-name">rehash_static</span>(<span class="sig-arg">self</span>)</span>
-    </div>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">rehash_static</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
   Rehashes the shapes in the static spatial hash. You only need to
 call this if you move one of the static shapes.
   <dl class="fields">
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="step"></a>
-<div class=" detail">
-  <h3>step</h3>
-  <div class="detail-signature">
-    <span class="sig"><span class="sig-name">step</span>(<span class="sig-arg">self</span>,
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">step</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">dt</span>)</span>
-    </div>
-  <div class="detail-description">
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
   Update the space for the given time step. Using a fixed time step is
 highly recommended. Doing so will increase the efficiency of the
 contact persistence, requiring an order of magnitude fewer iterations
 to resolve the collisions in the usual case.
   <dl class="fields">
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="add_collisionpair_func"></a>
-<div class=" detail">
-  <h3>add_collisionpair_func</h3>
-  <div class="detail-signature">
-    <span class="sig"><span class="sig-name">add_collisionpair_func</span>(<span class="sig-arg">self</span>,
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_collisionpair_func</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">a</span>,
         <span class="sig-arg">b</span>,
         <span class="sig-arg">func</span>,
         <span class="sig-arg">data</span>=<span class="sig-default">None</span>)</span>
-    </div>
-  <div class="detail-description">
-  <p>Register func to be called when a collision is found between a
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Register func to be called when a collision is found between
 shapes with collision_type fields that match a and b. Pass None
 as func to reject any collision with the given collision type pair.</p>
+<blockquote>
 <p>func(shapeA, shapeB, contacts, normal_coef, data) -&gt; bool</p>
-<p>shapeA, shapeB is the colliding shapes
-contacts is a list of contacts
-normal_coef is a float :)
-data is the data argument sent to the add_collisionpair_func function</p>
+<dl class="rst-docutils">
+<dt>Parameters</dt>
+<dd><dl class="rst-first rst-last rst-docutils">
+<dt>shapeA <span class="classifier-delimiter">:</span> <span class="rst-classifier"><a href="pymunk.Shape-class.html" class="link">Shape</a></span></dt>
+<dd>The first shape</dd>
+<dt>shapeB <span class="classifier-delimiter">:</span> <span class="rst-classifier"><a href="pymunk.Shape-class.html" class="link">Shape</a></span></dt>
+<dd>The second shape</dd>
+<dt>contacts <span class="classifier-delimiter">:</span> <span class="rst-classifier">[<a href="pymunk.Contact-class.html" class="link">Contact</a>]</span></dt>
+<dd>A list of contacts</dd>
+<dt>normal_coef <span class="classifier-delimiter">:</span> <span class="rst-classifier">float</span></dt>
+<dd>The normal coefficient</dd>
+<dt>data <span class="classifier-delimiter">:</span> <span class="rst-classifier">any</span></dt>
+<dd>The data argument sent to the add_collisionpair_func
+function</dd>
+</dl>
+</dd>
+</dl>
+</blockquote>
 <p>WARNING: It is not safe for collision pair functions to remove or
 free shapes or bodies from a space. Doing so will likely end in a
 segfault as an earlier collision may already be referencing the shape
 or body. You must wait until after the step() function returns.</p>
   <dl class="fields">
   </dl>
-  </div>
+</td></tr></table>
+</div>
+<a name="remove_collisionpair_func"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">remove_collisionpair_func</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">a</span>,
+        <span class="sig-arg">b</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Remove the collision pair function between shapes with
+collision_type which match a and b.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>a</code></strong> (int) - The collision_type for the first shape</li>
+        <li><strong class="pname"><code>b</code></strong> (int) - The collision_type for the second shape</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
 </div>
 <a name="set_default_collisionpair_func"></a>
-<div class=" detail">
-  <h3>set_default_collisionpair_func</h3>
-  <div class="detail-signature">
-    <span class="sig"><span class="sig-name">set_default_collisionpair_func</span>(<span class="sig-arg">self</span>,
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_default_collisionpair_func</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">func</span>,
         <span class="sig-arg">data</span>=<span class="sig-default">None</span>)</span>
-    </div>
-  <div class="detail-description">
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
   Sets the default collsion pair function. Passing None as func will
-reset it to default.. :)
+reset it to default. See <tt class="rst-docutils literal"><span class="pre">add_collisionpair_func</span></tt> for a details on func
   <dl class="fields">
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="point_query"></a>
-<div class=" detail">
-  <h3>point_query</h3>
-  <div class="detail-signature">
-    <span class="sig"><span class="sig-name">point_query</span>(<span class="sig-arg">self</span>,
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">point_query</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">point</span>,
         <span class="sig-arg">func</span>,
         <span class="sig-arg">data</span>=<span class="sig-default">None</span>)</span>
-    </div>
-  <div class="detail-description">
-  <p>Query the space for collisions between a point and its shapes
-(both static and nonstatic shapes)</p>
-<p>func(shape, data)</p>
-<p>shape is the colliding shape
-data is the data argument sent to the point_query function</p>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Query the space for collisions between a point and its shapes
+(both static and nonstatic shapes)
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>point</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Define where to check for collision in the space.</li>
+        <li><strong class="pname"><code>func</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(shape,</span> <span class="pre">data)</span></tt>) - Called when a collision is found</li>
+        <li><strong class="pname"><code>shape</code></strong> (<a href="pymunk.Shape-class.html" class="link">Shape</a>) - The colliding shape</li>
+        <li><strong class="pname"><code>data</code></strong> (any) - Data argument sent to the point_query function</li>
+    </ul></dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="static_point_query"></a>
-<div class=" detail">
-  <h3>static_point_query</h3>
-  <div class="detail-signature">
-    <span class="sig"><span class="sig-name">static_point_query</span>(<span class="sig-arg">self</span>,
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">static_point_query</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">point</span>,
         <span class="sig-arg">func</span>,
         <span class="sig-arg">data</span>=<span class="sig-default">None</span>)</span>
-    </div>
-  <div class="detail-description">
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
   <p>Query the space for collisions between a point and the static
-shapes in the space</p>
-<p>func(shape, data)</p>
-<p>shape is the colliding shape
-data is the data argument sent to the point_query function</p>
+shapes in the space. Call the callback function when a colliosion is
+found:</p>
+<pre class="rst-literal-block">
+def func(shape, data):
+    pass
+</pre>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>point</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Define where to check for collision in the space.</li>
+        <li><strong class="pname"><code>func</code></strong> (function) - The callback function.</li>
+        <li><strong class="pname"><code>data</code></strong> (any) - Data argument sent to the point_query function</li>
+    </ul></dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="nonstatic_point_query"></a>
-<div class=" detail">
-  <h3>nonstatic_point_query</h3>
-  <div class="detail-signature">
-    <span class="sig"><span class="sig-name">nonstatic_point_query</span>(<span class="sig-arg">self</span>,
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">nonstatic_point_query</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">point</span>,
         <span class="sig-arg">func</span>,
         <span class="sig-arg">data</span>=<span class="sig-default">None</span>)</span>
-    </div>
-  <div class="detail-description">
-  <p>Query the space for collisions between a point and the non static
-shapes in the space</p>
-<p>func(shape, data)</p>
-<p>shape is the colliding shape
-data is the data argument sent to the point_query function</p>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Query the space for collisions between a point and the non static
+shapes in the space
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>point</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Define where to check for collision in the space.</li>
+        <li><strong class="pname"><code>func</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(shape,</span> <span class="pre">data)</span></tt>) - Called when a collision is found</li>
+        <li><strong class="pname"><code>shape</code></strong> (<a href="pymunk.Shape-class.html" class="link">Shape</a>) - The colliding shape</li>
+        <li><strong class="pname"><code>data</code></strong> (any) - Data argument sent to the point_query function</li>
+    </ul></dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <br />
 <!-- ==================== PROPERTY DETAILS ==================== -->
 <a name="section-PropertyDetails"></a>
-        <h2>Property Details</h2>
-<table class="details">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Property Details</span></td>
+</tr>
 </table>
 <a name="shapes"></a>
-<div class=" detail">
-  <h3>shapes</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">shapes</h3>
   
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_shapes" class="summary-sig-name" onclick="show_private();">_get_shapes</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="static_shapes"></a>
-<div class=" detail">
-  <h3>static_shapes</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">static_shapes</h3>
   
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_static_shapes" class="summary-sig-name" onclick="show_private();">_get_static_shapes</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="bodies"></a>
-<div class=" detail">
-  <h3>bodies</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">bodies</h3>
   
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_bodies" class="summary-sig-name" onclick="show_private();">_get_bodies</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="gravity"></a>
-<div class=" detail">
-  <h3>gravity</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">gravity</h3>
   
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_gravity" class="summary-sig-name" onclick="show_private();">_get_gravity</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_set_gravity" class="summary-sig-name" onclick="show_private();">_set_gravity</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">gravvec</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="damping"></a>
-<div class=" detail">
-  <h3>damping</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">damping</h3>
   
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_damping" class="summary-sig-name" onclick="show_private();">_get_damping</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_set_damping" class="summary-sig-name" onclick="show_private();">_set_damping</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">damping</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="stamp"></a>
-<div class=" detail">
-  <h3>stamp</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">stamp</h3>
   Time stamp. Is incremented on every call to step()
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_stamp" class="summary-sig-name" onclick="show_private();">_get_stamp</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <a name="arbiters"></a>
-<div class=" detail">
-  <h3>arbiters</h3>
-  <div class="detail-description">
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">arbiters</h3>
   List of active arbiters for the impulse solver.
   <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_arbiters" class="summary-sig-name" onclick="show_private();">_get_arbiters</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
-  </div>
+</td></tr></table>
 </div>
 <br />
 <!-- ==================== NAVIGATION BAR ==================== -->
-<table class="navbar">
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
-  <!-- Project homepage -->
-      <!--<th class="navbar" 
-            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>-->
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="pymunk-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
-      <th><a
-        href="module-tree.html">Trees</a></th>
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Index link -->
-      <th><a
-        href="identifier-index.html">Indices</a></th>
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Breadcrumbs -->
-      <th class="navbar-breadcrumbs">
-        <span class="breadcrumbs">
-          <a href="pymunk-module.html">pymunk</a>&nbsp;.&nbsp;Space
-        </span>
-      </th>
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar last">
-        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
-      </th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://pymunk.googlecode.com/">pymunk API reference</a></th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Sun Jun 15 16:45:17 2008
+    Generated by Epydoc 3.0.1 on Sun Oct 26 01:24:47 2008
     </td>
     <td align="right" class="footer">
-      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
     </td>
   </tr>
 </table>
@@ -543,9 +953,8 @@ data is the data argument sent to the point_query function</p>
   // javascript is turned off then we want them to be
   // visible); but by default, we want to hide them.  So hide
   // them unless we have a cookie that says to show them.
-  checkCookie()
+  checkCookie();
   // -->
 </script>
-  
 </body>
 </html>

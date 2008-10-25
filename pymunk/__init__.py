@@ -19,7 +19,7 @@ from vec2d import Vec2d
 #:
 #: Valid only if pymunk was installed from a source or binary 
 #: distribution (i.e. not in a checked-out copy from svn).
-version = "0.8"
+version = "0.9"
 
 #: Infinity that can be passed as mass or inertia to Body 
 #:
@@ -32,7 +32,17 @@ def init_pymunk():
     cp.cpInitChipmunk()
 
 class Space(object):
+    """Spaces are the basic unit of simulation. You add rigid bodies, shapes 
+    and joints to it and then step them all forward together through time. 
+    """
     def __init__(self, iterations=10):
+        """Create a new instace of the Space
+        
+        :Parameters:
+            iterations : int
+                Number of iterations to use in the impulse solver to solve 
+                contacts.
+        """
         self._space = cp.cpSpaceNew(iterations)
         self._callbacks = {} # To prevent the gc to collect the callbacks.
         self._default_callback = None
@@ -199,16 +209,24 @@ class Space(object):
         doc="""List of active arbiters for the impulse solver.""")
         
     def add_collisionpair_func(self, a, b, func, data=None):
-        """Register func to be called when a collision is found between a 
+        """Register func to be called when a collision is found between 
         shapes with collision_type fields that match a and b. Pass None
         as func to reject any collision with the given collision type pair.
         
-        func(shapeA, shapeB, contacts, normal_coef, data) -> bool
-        
-        shapeA, shapeB is the colliding shapes
-        contacts is a list of contacts
-        normal_coef is a float :)
-        data is the data argument sent to the add_collisionpair_func function
+            func(shapeA, shapeB, contacts, normal_coef, data) -> bool
+            
+            Parameters
+                shapeA : `Shape`
+                    The first shape
+                shapeB : `Shape`
+                    The second shape
+                contacts : [`Contact`]
+                    A list of contacts
+                normal_coef : float
+                    The normal coefficient
+                data : any
+                    The data argument sent to the add_collisionpair_func 
+                    function
         
         WARNING: It is not safe for collision pair functions to remove or
         free shapes or bodies from a space. Doing so will likely end in a 
@@ -223,14 +241,23 @@ class Space(object):
             cp.cpSpaceAddCollisionPairFunc(self._space, a, b, f, None)
             
     def remove_collisionpair_func(self, a, b):
-        """Remove the collision pair function between the shapes a and b"""
+        """Remove the collision pair function between shapes with 
+        collision_type which match a and b.
+        
+        :Parameters:
+            a : int
+                The collision_type for the first shape
+            b : int
+                The collision_type for the second shape
+            
+        """
         if (a, b) in self._callbacks:
             del self._callbacks[(a, b)]
         cp.cpSpaceRemoveCollisionPairFunc(self._space, a, b)
     
     def set_default_collisionpair_func(self, func, data=None):
         """Sets the default collsion pair function. Passing None as func will 
-        reset it to default.. :)
+        reset it to default. See ``add_collisionpair_func`` for a details on func
         """
         if func is None:
             self._default_callback = None
@@ -270,10 +297,15 @@ class Space(object):
         """Query the space for collisions between a point and its shapes 
         (both static and nonstatic shapes)
         
-        func(shape, data)
-        
-        shape is the colliding shape
-        data is the data argument sent to the point_query function
+        :Parameters:    
+            point : (x,y) or `Vec2d`
+                Define where to check for collision in the space.
+            func : ``func(shape, data)``
+                Called when a collision is found
+            shape : `Shape`
+                The colliding shape
+            data : any
+                Data argument sent to the point_query function
         """       
         f = self._get_query_cf(func, data)
         cp.cpSpaceShapePointQuery(self._space, point, f, None)
@@ -281,12 +313,19 @@ class Space(object):
         
     def static_point_query(self, point, func, data=None):
         """Query the space for collisions between a point and the static 
-        shapes in the space
+        shapes in the space. Call the callback function when a colliosion is 
+        found::
         
-        func(shape, data)
+            def func(shape, data):
+                pass
         
-        shape is the colliding shape
-        data is the data argument sent to the point_query function
+        :Parameters:
+            point : (x,y) or `Vec2d`
+                Define where to check for collision in the space.
+            func : function
+                The callback function.
+            data : any
+                Data argument sent to the point_query function
         """       
         f = self._get_query_cf(func, data)
         cp.cpSpaceStaticShapePointQuery(self._space, point, f, None)
@@ -295,10 +334,15 @@ class Space(object):
         """Query the space for collisions between a point and the non static 
         shapes in the space
         
-        func(shape, data)
-        
-        shape is the colliding shape
-        data is the data argument sent to the point_query function
+        :Parameters:
+            point : (x,y) or `Vec2d`
+                Define where to check for collision in the space.
+            func : ``func(shape, data)``
+                Called when a collision is found
+            shape : `Shape`
+                The colliding shape
+            data : any
+                Data argument sent to the point_query function
         """       
         f = self._get_query_cf(func, data)
         cp.cpSpaceShapePointQuery(self._space, point, f, None)    
@@ -360,7 +404,14 @@ class Body(object):
 
 
     def apply_impulse(self, j, r):
-        """Apply the impulse j to body with offset r."""
+        """Apply the impulse j to body with offset r.
+        
+        :Parameters:
+            j : (x,y) or `Vec2d`
+                Impulse to be applied
+            r : (x,y) or `Vec2d`
+                Offset the impulse with this vector
+        """
         j,r = Vec2d(j), Vec2d(r)
         #TODO: Test me and figure out if r is in local or world coords.
         self.velocity = self.velocity + j * self._bodycontents.m_inv
@@ -372,7 +423,13 @@ class Body(object):
 
     def apply_force(self, f, r):
         """Apply (accumulate) the force f on body with offset r. Both f and r 
-        should be in world coordinates."""
+        should be in world coordinates.
+        
+            f : (x,y) or `Vec2d`
+                Force in world coordinates
+            r : (x,y) or `Vec2d`
+                Offset in world coordinates
+        """
         cp.cpBodyApplyForce(self._body, f, r)
 
 
@@ -403,13 +460,30 @@ class Body(object):
 
     def damped_spring(self, b, anchor1, anchor2, rlen, k, dmp, dt):
         """Apply a spring force between this and body b at anchors anchr1 and 
-        anchr2 respectively. k is the spring constant (force/distance), rlen 
-        is the rest length of the spring, dmp is the damping constant 
-        (force/velocity), and dt is the time step to apply the force over.
+        anchr2 respectively. 
+        
+        :Parameters:
+            b : `Body`
+                The other body
+            anchor1 : (x,y) or `Vec2d`
+                Anchor point on the first body
+            anchor2 : (x,y) or `Vec2d`
+                Anchor point on the second body
+            k : float
+                The spring constant (force/distance)
+            rlen : float
+                The rest length of the spring
+            dmp : float
+                The damping constant (force/velocity)
+            dt : float
+                The time step to apply the force over.
         """
         cp.cpDampedSpring(self._body, b._body, anchor1, anchor2, rlen, k, dmp, dt)
 
 class Shape(object):
+    """Base class for all the shapes. You usually dont want to create instances
+    of this class directly but use one of the specialized shapes instead.
+    """
     def __init__(self, shape=None):
         self._shape = shape
         self._shapecontents = self._shape.contents
@@ -442,7 +516,7 @@ class Shape(object):
         self._shapecontents.layers = layers
     layers = property(_get_layers, _set_layers, 
         doc="""Shapes only collide if they are in the same bit-planes. 
-        i.e. (a->layers & b->layers) != 0 By default, a shape occupies all 
+        i.e. (a.layers & b.layers) != 0 By default, a shape occupies all 
         32 bit-planes.""")
 
     def _get_elasticity(self):
@@ -460,8 +534,8 @@ class Shape(object):
     def _set_friction(self, u):
         self._shapecontents.u = u
     friction = property(_get_friction, _set_friction, 
-        doc="""Friction coefficient. Chipmunk uses the Coulomb friction model, 
-        a value of 0.0 is frictionless.""")
+        doc="""Friction coefficient. Chipmunk (and therefor pymunk )uses the 
+        Coulomb friction model, a value of 0.0 is frictionless.""")
 
     def _get_surface_velocity(self):
         return self._shapecontents.surface_v
@@ -501,8 +575,18 @@ class Segment(Shape):
     This shape is mainly intended as a static shape.
     """
     def __init__(self, body, a, b, radius):
-        """body is the body to attach the segment to, a and b are the
-        endpoints, and radius is the thickness of the segment."""
+        """Create a Segment
+        
+        :Parameters:
+            body : `Body`
+                The body to attach the segment to
+            a : (x,y) or `Vec2d`
+                The first endpoint of the segment
+            b : (x,y) or `Vec2d`
+                The first endpoint of the segment
+            radius : float
+                The thickness of the segment
+        """
         self._body = body
         self._shape = cp.cpSegmentShapeNew(body._body, a, b, radius)
         self._shapecontents = self._shape.contents
@@ -525,11 +609,20 @@ class Segment(Shape):
 class Poly(Shape):
     """A polygon shape"""
     def __init__(self, body, vertices, offset, auto_order_vertices=False):
-        """body is the body to attach the poly to, verts is an array of
-        (x,y) defining a convex hull with a counterclockwise winding, offset
-        is the offset from the body's center of gravity in body local
-        coordinates. Set auto_order_vertices to automatically order the
-        vertices"""
+        """Create a polygon
+        
+            body : `Body`
+                The body to attach the poly to
+            vertices : [(x,y)] or [`Vec2d`]
+                Define a convex hull of the polygon with a counterclockwise
+                winding.
+            offset : (x,y) or `Vec2d`
+                The offset from the body's center of gravity in body local 
+                coordinates. 
+            auto_order_vertices : bool 
+                Set to True to automatically order the vertices. Currently 
+                not supported.
+        """
         if auto_order_vertices: 
             raise Exception(NotImplemented)
         self._body = body
@@ -575,28 +668,6 @@ def moment_for_poly(mass, vertices,  offset):
     
 def reset_shapeid_counter():
     cp.cpResetShapeIdCounter()
-
-class BB(object):
-    """Deprecated"""
-    def __init__(self, *args):
-        if len(args) == 1:
-            self._bb = args[0]
-        else:
-            self._bb = cp.cpBB()
-            self._bb.l = args[0]
-            self._bb.b = args[1]
-            self._bb.r = args[2]
-            self._bb.t = args[3]
-    
-    def intersects(self, other):
-        a = self._bb
-        b = other._bb
-        return a.l <= b.r and b.l <= a.r and a.b <= b.t and b.b <= a.t
-
-    left = property(lambda self: self._bb.l)
-    bottom = property(lambda self: self._bb.b)
-    right = property(lambda self: self._bb.r)
-    top = property(lambda self: self._bb.t)
 
 class Joint(object):
     def __init__(self, joint=None):
