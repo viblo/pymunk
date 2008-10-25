@@ -314,16 +314,15 @@ class Space(object):
     def static_point_query(self, point, func, data=None):
         """Query the space for collisions between a point and the static 
         shapes in the space. Call the callback function when a colliosion is 
-        found::
-        
-            def func(shape, data):
-                pass
+        found.
         
         :Parameters:
             point : (x,y) or `Vec2d`
                 Define where to check for collision in the space.
-            func : function
+            func : ``func(shape, data)``
                 The callback function.
+            shape : `Shape`
+                The colliding shape
             data : any
                 Data argument sent to the point_query function
         """       
