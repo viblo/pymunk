@@ -28,7 +28,7 @@ class build_chipmunk(Command):
         pass
     
     def compile_chipmunk(self):
-        print "compiling chipmunk..."
+        print("compiling chipmunk...")
         compiler = cc.new_compiler(compiler=self.compiler)
 
         sources = [os.path.join('chipmunk_src',x) for x in os.listdir('chipmunk_src') if x[-1] == 'c']

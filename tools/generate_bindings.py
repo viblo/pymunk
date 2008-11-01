@@ -39,7 +39,7 @@ def main(argv=None):
                     ,"-o", "chipmunk.xml"]
 
     h2xml.main(h2xml_args)
-    print "h2xml done"
+    print("h2xml done")
 
     xml2py_args = ["generate_bindings.py"
                     ,"-l", options.lib
@@ -47,7 +47,7 @@ def main(argv=None):
                     ,"chipmunk.xml"]
     
     xml2py.main(argv = xml2py_args)
-    print "xml2py done"
+    print("xml2py done")
 
     custom_head = """
 from ctypes import * 
@@ -72,7 +72,7 @@ chipmunk_lib = load_library("chipmunk", print_path=_lib_debug)
     chipmunkpy = cpVect_fields_match.sub("#cpVect _fields_ def removed", chipmunkpy)
     chipmunkpy = lib_match.sub("chipmunk_lib", chipmunkpy)
     f = open(options.output, 'w').write(chipmunkpy)
-    print "replacement done"
+    print("replacement done")
 
 if __name__ == "__main__":
     sys.exit(main())
