@@ -19,7 +19,7 @@ from vec2d import Vec2d
 #:
 #: Valid only if pymunk was installed from a source or binary 
 #: distribution (i.e. not in a checked-out copy from svn).
-version = "0.9"
+version = "0.8.1"
 
 #: Infinity that can be passed as mass or inertia to Body 
 #:

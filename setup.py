@@ -61,18 +61,14 @@ setup(
     , url='http://pymunk.googlecode.com'
     , author='Victor Blomqvist'
     , author_email='vb@viblo.se'
-    , version='0.9' # remember to change me for new versions!
+    , version='0.8.1' # remember to change me for new versions!
     , description='A wrapper for the 2d physics library Chipmunk'
     , long_description=long_description
     , packages=['pymunk'] #find_packages(exclude=['*.tests']),
-    , package_data = {'pymunk': ['libchipmunk.dll'
-                                , 'libchipmunk32.so'
-                                , 'libchipmunk64.so'
+    , package_data = {'pymunk': ['chipmunk.dll'
                                 , 'libchipmunk.so'
                                 , 'libchipmunk.dylib']}
-    , eager_resources = [os.path.join('pymunk','libchipmunk.dll')
-                            , os.path.join('pymunk','libchipmunk32.so')
-                            , os.path.join('pymunk','libchipmunk64.so')
+    , eager_resources = [os.path.join('pymunk','chipmunk.dll')
                             , os.path.join('pymunk','libchipmunk.so')
                             , os.path.join('pymunk','libchipmunk.dylib')]
     #, platforms=['win32']
