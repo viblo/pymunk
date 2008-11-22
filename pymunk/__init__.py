@@ -35,15 +35,22 @@ class Space(object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes 
     and joints to it and then step them all forward together through time. 
     """
-    def __init__(self, iterations=10):
+    def __init__(self, iterations=10, elastic_iterations=10):
         """Create a new instace of the Space
+        
+        If the objects in your Space does not have any elasticity set
+        elastic_iterations to 0 to gain a little speedup.
         
         :Parameters:
             iterations : int
                 Number of iterations to use in the impulse solver to solve 
                 contacts.
+            elastic_iterations : int
+                Number of iterations to use in the impulse solver to solve 
+                elastic contacts.
         """
         self._space = cp.cpSpaceNew(iterations)
+        self._space.contents.elasticIterations = elastic_iterations
         self._callbacks = {} # To prevent the gc to collect the callbacks.
         self._default_callback = None
         self._shapes = {}
