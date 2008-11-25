@@ -409,7 +409,7 @@ class Body(object):
     angular_velocity = property(_get_angular_velocity, _set_angular_velocity)
 
 
-    def apply_impulse(self, j, r):
+    def apply_impulse(self, j, r=(0,0)):
         """Apply the impulse j to body with offset r.
         
         :Parameters:
@@ -427,7 +427,7 @@ class Body(object):
         """Reset the forces on the body"""
         cp.cpBodyResetForces(self._body)
 
-    def apply_force(self, f, r):
+    def apply_force(self, f, r=(0,0)):
         """Apply (accumulate) the force f on body with offset r. Both f and r 
         should be in world coordinates.
         
@@ -555,11 +555,18 @@ class Shape(object):
     body = property(lambda self: self._body)
 
     def cache_bb(self):
+        """This method is used internally by chipmunk.
+        
+        If you really need it please add it as feature request on the pymunk 
+        issue tracker.
+        
+        :deprecated: Scheduled for deletion in pymunk 0.8.5+
+        """
         return BB(cp.cpShapeCacheBB(self._shape))
 
 class Circle(Shape):
     """A circle shape defined by a radius"""
-    def __init__(self, body, radius, offset):
+    def __init__(self, body, radius, offset = (0,0)):
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates."""
         self._body = body
@@ -614,7 +621,7 @@ class Segment(Shape):
 
 class Poly(Shape):
     """A polygon shape"""
-    def __init__(self, body, vertices, offset, auto_order_vertices=False):
+    def __init__(self, body, vertices, offset=(0,0), auto_order_vertices=False):
         """Create a polygon
         
             body : `Body`
@@ -644,26 +651,26 @@ class Poly(Shape):
         self._shapecontents = self._shape.contents
         
     def get_points(self):
+        """Get the points in world coordinates for the polygon"""
         #shape = ct.cast(self._shape, ct.POINTER(cp.cpPolyShape))
         #num = shape.contents.numVerts
         #verts = shape.contents.verts
-        #TODO: Fix for polygons with offset!!!
         points = []
         rv = self._body.rotation_vector
         bp = self._body.position
         vs = self.verts
         o = self.offset
         for i in xrange(len(vs)):
-            p = vs[i].cpvrotate(rv)+bp+o
+            p = (vs[i]+o).cpvrotate(rv)+bp
             points.append(Vec2d(p))
             
         return points
 
-def moment_for_circle(mass, inner_radius, outer_radius, offset):
+def moment_for_circle(mass, inner_radius, outer_radius, offset=(0,0)):
     """Calculate the moment of inertia for a circle"""
     return cp.cpMomentForCircle(mass, inner_radius, outer_radius, offset)
 
-def moment_for_poly(mass, vertices,  offset):
+def moment_for_poly(mass, vertices,  offset=(0,0)):
     """Calculate the moment of inertia for a polygon"""
     verts = (Vec2d * len(vertices))
     verts = verts(Vec2d(0, 0))
