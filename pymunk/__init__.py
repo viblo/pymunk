@@ -11,9 +11,9 @@ __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 import ctypes as ct
-import _chipmunk as cp
-import util as u
-from vec2d import Vec2d
+import pymunk._chipmunk as cp 
+import pymunk.util as u
+from .vec2d import Vec2d
 
 #: The release version of this pymunk installation
 #:

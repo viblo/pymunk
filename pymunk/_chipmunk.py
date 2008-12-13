@@ -1,9 +1,9 @@
 
 from ctypes import * 
-from vec2d import Vec2d
+from .vec2d import Vec2d
 cpVect = Vec2d
 
-from libload import load_library
+from .libload import load_library
 _lib_debug = True #Set to True to print the Chipmunk path.
 chipmunk_lib = load_library("chipmunk", print_path=_lib_debug)
 
@@ -688,7 +688,7 @@ cpvtoangle.argtypes = [cpVect]
 cpvstr = chipmunk_lib.cpvstr
 cpvstr.restype = STRING
 cpvstr.argtypes = [cpVect]
-CP_HASH_COEF = 3344921057L # Variable c_ulong
+CP_HASH_COEF = 3344921057 # Variable c_ulong
 __all__ = ['cpSpaceRehashStatic', 'cpSpaceAddCollisionPairFunc',
            'cpSpaceResizeStaticHash', 'cpHashSetReject',
            'cpBodySetAngle', 'cpSpaceRemoveCollisionPairFunc',

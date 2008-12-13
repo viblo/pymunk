@@ -2,7 +2,7 @@
 from __future__ import division
 __docformat__ = "reStructuredText"
 
-from vec2d import Vec2d
+from .vec2d import Vec2d
 from math import fabs, sqrt
 
 X, Y = 0, 1 
