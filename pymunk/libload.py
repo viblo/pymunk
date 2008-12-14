@@ -8,7 +8,7 @@ def load_library(libname, print_path=True):
     # pymunk/libchipmunk.so, libchipmunk.dylib or chipmunk.dll
      
     s = platform.system()
-    arch, arch2 = platform.architecture()
+    arch, _ = platform.architecture()
  
     path = os.path.dirname(os.path.abspath(__file__))
     
