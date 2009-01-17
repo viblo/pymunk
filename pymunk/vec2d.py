@@ -64,7 +64,7 @@ class Vec2d(ctypes.Structure):
             return True
  
     def __nonzero__(self):
-        return self.x or self.y
+        return self.x != 0.0 or self.y != 0.0
  
     # Generic operator handlers
     def _o2(self, other, f):
