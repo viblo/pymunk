@@ -547,7 +547,7 @@ class pymunx:
 	
 		# Create Shape
 	        shape = pm.Poly(body, verts, Vec2d(0,0))
-		shape.riction = friction
+		shape.friction = friction
 		shape.elasticity = elasticity
 
 		shape.color = self.get_color()
@@ -564,7 +564,7 @@ class pymunx:
 		    Optional: See #physical_parameters
 		    Returns: pymunk.Shape() (=> .Poly())
 		"""
-		# Make Vec2d's out of the points
+	ff	# Make Vec2d's out of the points
 		poly_points = []
 		for p in points:
 			poly_points.append(self.Vec2df(p))
