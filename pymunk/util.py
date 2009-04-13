@@ -210,9 +210,26 @@ def calc_area(points):
     a = 0.5 * a
     
     return a
+
+def calc_perimeter(points):
+    """Calculate the perimeter of a polygon
+    
+    :return: Perimeter of polygon
+    """
+    
+    if len(points) < 2: return 0
+       
+    p1 = points[0]
+    c = 0
+    for p2 in points[1:] + [points[0]]:
+        c += sqrt((p2[X] - p1[X])**2 + (p2[Y] - p1[Y])**2) 
+        p1 = p2
+    return c
+    
+    
     
 def get_poly_UA(pointlist, points_as_Vec2d=True):
-    """Calculates the circumference and area of a given polygon
+    """Calculates the perimeter and area of a given polygon
 
     Use calc_area() to get the area instead of this method
     
@@ -220,6 +237,8 @@ def get_poly_UA(pointlist, points_as_Vec2d=True):
     
     :return: U, A    
     """
+    return calc_perimeter(pointlist), calc_area(pointlist) # ugly fix until this method is removed
+    
     p1 = p2 = None
     U = 0
     A = 0
@@ -249,7 +268,7 @@ def get_poly_UA(pointlist, points_as_Vec2d=True):
             # Current End Point becomes Next Start Point
             p1 = p2
     
-    return U, calc_area(pointlist) # ugly fix until this method is removed
+    return U, A 
     
 __all__ = ["is_clockwise", "is_left", "reduce_poly", "convex_hull",
         "calc_center", "poly_vectors_around_center", "get_poly_UA", "is_convex"]
