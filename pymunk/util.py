@@ -58,7 +58,7 @@ def is_convex(points):
     """
     
     assert len(points) > 2, "need at least 3 points to form a polygon"
-	
+    
     p0 = points[0]
     p1 = points[1]
     p2 = points[2]
@@ -89,9 +89,9 @@ def reduce_poly(points, tolerance=0.5):
     
     :return: The reduced polygon as a list of (x,y)
     """
-	
+    
     assert len(points) > 0, "reduce_poly can not simplify an empty points list"
-	
+    
     curr_p = points[0]
     reduced_ps = [points[0]]
     
@@ -109,9 +109,9 @@ def convex_hull(points):
     
     :return: Convex hull as a list of (x,y)
     """
-	
+    
     assert len(points) > 2, "need at least 3 points to form a convex hull"
-	
+    
     ### Find lowest rightmost point
     p0 = points[0]
     for p in points[1:]:
@@ -151,16 +151,23 @@ def calc_center(points):
     
     :return: The center (x,y)
     """
-	
-    assert len(points) > 0, "need at least 1 points to calculate the center"
-	
-    tot_x, tot_y = 0, 0
-    for p in points:
-        tot_x += p[X]
-        tot_y += p[Y]
-    n = len(points)
-    return (tot_x/n, tot_y/n)
     
+    #ref: http://en.wikipedia.org/wiki/Polygon
+    
+    assert len(points) > 0, "need at least 1 points to calculate the center"
+    
+    area = calc_area(points)
+    
+    p1 = points[0]
+    cx = cy = 0
+    for p2 in points[1:] + [points[0]]:       
+        tmp = (p1[X]*p2[Y] - p2[X]*p1[Y])
+        cx += (p1[X] + p2[X]) * tmp
+        cy += (p1[Y] + p2[Y]) * tmp
+        p1 = p2
+    c = 1 / (6. * area) * cx, 1 / (6. * area) * cy
+    return c
+   
 def poly_vectors_around_center(pointlist, points_as_Vec2d=True):
     """Rearranges vectors around the center
     If points_as_Vec2d, then return points are also Vec2d, else pos
@@ -185,9 +192,32 @@ def poly_vectors_around_center(pointlist, points_as_Vec2d=True):
     
     return poly_points_center
 
+def calc_area(points):
+    """Calculate the area of a polygon
+    
+    :return: Area of polygon
+    """
+    
+    #ref: http://en.wikipedia.org/wiki/Polygon
+    
+    if len(points) < 3: return 0
+
+    p1 = points[0]
+    a = 0
+    for p2 in points[1:] + [points[0]]:       
+        a += p1[X] * p2[Y] - p2[X] * p1[Y]
+        p1 = p2
+    a = 0.5 * a
+    
+    return a
+    
 def get_poly_UA(pointlist, points_as_Vec2d=True):
     """Calculates the circumference and area of a given polygon
 
+    Use calc_area() to get the area instead of this method
+    
+    :deprecated: Scheduled for deletion in pymunk 0.8.5+ 
+    
     :return: U, A    
     """
     p1 = p2 = None
