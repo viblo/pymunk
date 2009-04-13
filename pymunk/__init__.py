@@ -577,7 +577,8 @@ class Circle(Shape):
         ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.r = r
     def _get_radius(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.r
-    radius = property(_get_radius, _set_radius)
+    radius = property(_get_radius, _set_radius
+        , doc="""The Radius of the circle""")
     
     def _get_center (self):
         return ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.c
@@ -617,6 +618,13 @@ class Segment(Shape):
         return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b
     b = property(_get_b, _set_b, 
         doc="""One of the two endpoints for this segment""")
+        
+    def _set_radius(self, r):
+        ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.r = r
+    def _get_radius(self):
+        return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.r
+    radius = property(_get_radius, _set_radius
+        , doc="""The thickness of the segment""")
 
 
 class Poly(Shape):
