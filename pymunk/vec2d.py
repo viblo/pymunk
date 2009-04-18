@@ -369,7 +369,7 @@ class Vec2d(ctypes.Structure):
     
     def cross(self, other):
         """The cross product between the vector and other vector
-            v1.cross(v2) -> v1.x*v2.y - v2.y-v1.x
+            v1.cross(v2) -> v1.x*v2.y - v2.y*v1.x
         
         :return: The cross product
         """

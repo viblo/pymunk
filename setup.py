@@ -29,18 +29,24 @@ class build_chipmunk(Command):
     
     def compile_chipmunk(self):
         print("compiling chipmunk...")
+        
         compiler = cc.new_compiler(compiler=self.compiler)
 
         sources = [os.path.join('chipmunk_src',x) for x in os.listdir('chipmunk_src') if x[-1] == 'c']
-        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math']
+        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC']
         objs = compiler.compile(sources, extra_preargs=compiler_preargs)
+        
         libname = 'chipmunk'
         if platform.system() == 'Darwin':
             libname = compiler.library_filename(libname, lib_type='dylib')
             compiler.set_executable('linker_so', ['cc', '-dynamiclib'])
         else:
             libname = compiler.library_filename(libname, lib_type='shared')
-        compiler.link(cc.CCompiler.SHARED_LIBRARY, objs, libname, output_dir = 'pymunk')
+        linker_preargs = []
+        if  platform.system() = 'Linux' and platform.machine() == 'x86_64':
+            linker_preargs += '-fPIC'
+        
+        compiler.link(cc.CCompiler.SHARED_LIBRARY, objs, libname, output_dir = 'pymunk', extra_preargs=linker_preargs)
     
     def run(self):
         self.compile_chipmunk()
