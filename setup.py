@@ -44,7 +44,7 @@ class build_chipmunk(Command):
             libname = compiler.library_filename(libname, lib_type='shared')
         linker_preargs = []
         if  platform.system() == 'Linux' and platform.machine() == 'x86_64':
-            linker_preargs += '-fPIC'
+            linker_preargs += ['-fPIC']
         
         compiler.link(cc.CCompiler.SHARED_LIBRARY, objs, libname, output_dir = 'pymunk', extra_preargs=linker_preargs)
     
