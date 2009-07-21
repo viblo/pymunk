@@ -3,7 +3,7 @@
 ABOUT
 
     pymunk is a python wrapper for the 2d physics library Chipmunk
-    2007 - 2008, Victor Blomqvist - vb@viblo.se, MIT License
+    2007 - 2009, Victor Blomqvist - vb@viblo.se, MIT License
 
     This dev release is based on the latest pymunk release (0.8.2), 
     using chipmunk 4.1.0 (source included)
@@ -25,8 +25,9 @@ HOW TO USE
     and in the (shared) forum. 
     
     If chipmunk doesnt ship with a chipmunk binary your platform can understand
-    (currently MacOSX) you will have to compile chipmunk before install. See 
-    section CHIPMUNK in this readme for (very simple) instructions.
+    (currently Windows and Linux 32bit is included) you will have to compile 
+    chipmunk before install. See section CHIPMUNK in this readme for (very 
+    simple) instructions.
     
     To install you can either run
         
@@ -36,7 +37,7 @@ HOW TO USE
     (like /my_python_scripts/yourgame/pymunk). The chipmunk binary library
     is located in the pymunk folder.
 
-    One easy way to get started is to check out the examples/ directory,
+    The easy way to get started is to check out the examples/ directory,
     and run 'python demo_contact.py' and so on, and see what it does :)
     (Note: you will have to place /pymunk in the examples directory if
     you dont install pymunk to site-packages)
@@ -56,15 +57,18 @@ DEPENDENCIES/REQUIREMENTS
 
 CHIPMUNK
 
-    Compiled libraries of Chipmunk compatible Windows and Linux are distributed
-    with pymunk.
+    Compiled libraries of Chipmunk compatible Windows and Linux 32bit are 
+    distributed with pymunk.
     If pymunk doesnt have your particular platform included, you can compile 
     Chipmunk by hand with a custom setup argument:
     
         > python setup.py build_chipmunk
     
     The compiled file goes into the /pymunk folder (same as _chipmunk.py, 
-    util.py and others)
+    util.py and others). If the compile fail, please check the readme in 
+    chipmunk_src for generic instructions on how to compile with gcc, 
+    or download the relevant relase from Chipmunk homepage and follow its
+    instructions.
 
 HOW TO GENERATE BINDINGS
 (optional -- if you want to experiment :)
@@ -77,7 +81,12 @@ HOW TO GENERATE BINDINGS
 
         > python generate_bindings.py
 
-    (use --help to display options, you will most probably want to change the include
-    path and possibly the lib path) you have now created a _chipmunk.py file with
-    generated bindings.
+    (use --help to display options, you will most probably want to change the 
+    include path and possibly the lib path) you have now created a 
+    _chipmunk.py file with generated bindings.
+    
+    Note: If you only want one or two new functions its probably easier to 
+    just add them manually to _chipmunk.py. See the ctypes documentation for
+    instructions on how the function definitons/structs/whatever should look 
+    like.
 

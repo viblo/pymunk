@@ -42,7 +42,7 @@ pymunk.Arbiter._get_friction	pymunk.Arbiter-class.html#_get_friction
 pymunk.Body	pymunk.Body-class.html
 pymunk.Body._get_angle	pymunk.Body-class.html#_get_angle
 pymunk.Body.torque	pymunk.Body-class.html#torque
-pymunk.Body._set_velocity	pymunk.Body-class.html#_set_velocity
+pymunk.Body._set_position_func	pymunk.Body-class.html#_set_position_func
 pymunk.Body._set_mass	pymunk.Body-class.html#_set_mass
 pymunk.Body._set_angle	pymunk.Body-class.html#_set_angle
 pymunk.Body.__init__	pymunk.Body-class.html#__init__
@@ -54,9 +54,10 @@ pymunk.Body._set_position	pymunk.Body-class.html#_set_position
 pymunk.Body._set_torque	pymunk.Body-class.html#_set_torque
 pymunk.Body.angular_velocity	pymunk.Body-class.html#angular_velocity
 pymunk.Body._get_moment	pymunk.Body-class.html#_get_moment
+pymunk.Body.apply_force	pymunk.Body-class.html#apply_force
 pymunk.Body.rotation_vector	pymunk.Body-class.html#rotation_vector
 pymunk.Body.__del__	pymunk.Body-class.html#__del__
-pymunk.Body.apply_force	pymunk.Body-class.html#apply_force
+pymunk.Body.position_func	pymunk.Body-class.html#position_func
 pymunk.Body.damped_spring	pymunk.Body-class.html#damped_spring
 pymunk.Body.moment	pymunk.Body-class.html#moment
 pymunk.Body._set_moment	pymunk.Body-class.html#_set_moment
@@ -64,12 +65,15 @@ pymunk.Body.apply_impulse	pymunk.Body-class.html#apply_impulse
 pymunk.Body.velocity	pymunk.Body-class.html#velocity
 pymunk.Body.angle	pymunk.Body-class.html#angle
 pymunk.Body._get_position	pymunk.Body-class.html#_get_position
-pymunk.Body._get_torque	pymunk.Body-class.html#_get_torque
+pymunk.Body._set_velocity	pymunk.Body-class.html#_set_velocity
+pymunk.Body.velocity_func	pymunk.Body-class.html#velocity_func
 pymunk.Body.update_position	pymunk.Body-class.html#update_position
 pymunk.Body._get_mass	pymunk.Body-class.html#_get_mass
 pymunk.Body._get_angular_velocity	pymunk.Body-class.html#_get_angular_velocity
 pymunk.Body.mass	pymunk.Body-class.html#mass
 pymunk.Body._set_angular_velocity	pymunk.Body-class.html#_set_angular_velocity
+pymunk.Body._get_torque	pymunk.Body-class.html#_get_torque
+pymunk.Body._set_velocity_func	pymunk.Body-class.html#_set_velocity_func
 pymunk.Body.position	pymunk.Body-class.html#position
 pymunk.Body._get_rotation_vector	pymunk.Body-class.html#_get_rotation_vector
 pymunk.Body.world_to_local	pymunk.Body-class.html#world_to_local

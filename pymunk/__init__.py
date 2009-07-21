@@ -7,7 +7,7 @@ Homepage: http://code.google.com/p/pymunk/
 
 Forum: http://www.slembcke.net/forums/viewforum.php?f=6
 """
-__version__ = "$Id$"
+__version__ = "$1Id: __init__.py 183 2009-04-18 12:21:53Z vb@viblo.se $"
 __docformat__ = "reStructuredText"
 
 import ctypes as ct
@@ -15,16 +15,14 @@ import pymunk._chipmunk as cp
 import pymunk.util as u
 from .vec2d import Vec2d
 
-#: The release version of this pymunk installation
-#:
-#: Valid only if pymunk was installed from a source or binary 
-#: distribution (i.e. not in a checked-out copy from svn).
 version = "0.8.2"
+"""The release version of this pymunk installation.
+Valid only if pymunk was installed from a source or binary 
+distribution (i.e. not in a checked-out copy from svn)."""
 
-#: Infinity that can be passed as mass or inertia to Body 
-#:
-#: Use this as mass and inertia when you need to create a static body.
 inf = 1e100
+"""Infinity that can be passed as mass or inertia to Body. 
+Use this as mass and inertia when you need to create a static body."""
 
 
 def init_pymunk():
@@ -241,7 +239,8 @@ class Space(object):
         or body. You must wait until after the step() function returns.
         """
         if func is None:
-            cp.cpSpaceAddCollisionPairFunc(self._space, a, b, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
+            cp.cpSpaceAddCollisionPairFunc(self._space, a, b, 
+                ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
         else:
             f = self._get_cf(func, data)
             self._callbacks[(a, b)] = f
@@ -268,7 +267,8 @@ class Space(object):
         """
         if func is None:
             self._default_callback = None
-            cp.cpSpaceSetDefaultCollisionPairFunc(self._space, ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
+            cp.cpSpaceSetDefaultCollisionPairFunc(self._space, 
+                ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
         else:
             f = self._get_cf(func, data)
             self._default_callback = f
@@ -285,7 +285,9 @@ class Space(object):
                 shapeB = self._shapes[cpShapeB.contents.id]
             else:
                 shapeB = self._static_shapes[cpShapeB.contents.id]
-            return func(shapeA, shapeB, [Contact(cpContacts[i]) for i in xrange(numContacts)], normal_coef, data)
+            return func(shapeA, shapeB, 
+                [Contact(cpContacts[i]) for i in xrange(numContacts)], 
+                normal_coef, data)
         
         return cp.cpCollFunc(cf)
     
@@ -357,6 +359,8 @@ class Body(object):
     def __init__(self, mass, inertia):
         self._body = cp.cpBodyNew(mass, inertia)
         self._bodycontents =  self._body.contents 
+        self._position_callback = None # To prevent the gc to collect the callbacks.
+        self._velocity_callback = None # To prevent the gc to collect the callbacks.
         
     def __del__(self):
         cp.cpBodyFree(self._body)
@@ -409,6 +413,49 @@ class Body(object):
     angular_velocity = property(_get_angular_velocity, _set_angular_velocity)
 
 
+    def _set_velocity_func(self, func):
+        """Set the velocity callback function. The velocity callback function 
+        is called each time step, and can be used to set a body's velocity.
+        
+            func(body, gravity, damping, dt) -> None
+            
+            Parameters
+                body : `Body`
+                    Body that should have its velocity calculated
+                gravity : `Vec2d`
+                    The gravity vector
+                damping : float
+                    The damping
+                dt : float
+                    Delta time since last step.
+        """
+        def _impl(_, gravity, damping, dt):
+            return func(self, gravity, damping, dt)
+        self._velocity_callback = cp.cpBodyVelocityFunc(_impl)
+        self._bodycontents.velocity_func = self._velocity_callback        
+    velocity_func = property(fset=_set_velocity_func, 
+        doc=_set_velocity_func.__doc__)    
+
+    def _set_position_func(self, func):
+        """Set the position callback function. The position callback function 
+        is called each time step and can be used to update the body's position.
+        
+            func(body, dt) -> None
+            
+            Parameters
+                body : `Body`
+                    Body that should have its velocity calculated
+                dt : float
+                    Delta time since last step.
+        """
+        def _impl(_, dt):
+            return func(self, dt)
+        self._position_callback = cp.cpBodyPositionFunc(_impl)    
+        self._bodycontents.position_func = self._position_callback
+    position_func = property(fset=_set_position_func, 
+        doc=_set_position_func.__doc__)
+    
+    
     def apply_impulse(self, j, r=(0,0)):
         """Apply the impulse j to body with offset r.
         
@@ -540,7 +587,7 @@ class Shape(object):
     def _set_friction(self, u):
         self._shapecontents.u = u
     friction = property(_get_friction, _set_friction, 
-        doc="""Friction coefficient. Chipmunk (and therefor pymunk )uses the 
+        doc="""Friction coefficient. Chipmunk (and therefor pymunk) uses the 
         Coulomb friction model, a value of 0.0 is frictionless.""")
 
     def _get_surface_velocity(self):
@@ -785,7 +832,8 @@ class Arbiter(object):
         self._static_shapes = static_shapes
     
     def _get_contacts(self):
-        cs = [Contact(self._arbiter.contents.contacts[i]) for i in xrange(self._arbiter.contents.numContacts)]
+        cs = [Contact(self._arbiter.contents.contacts[i]) 
+            for i in xrange(self._arbiter.contents.numContacts)]
         return cs
     contacts = property(_get_contacts, 
         doc="""Information on the contact points between the objects.""")
@@ -822,11 +870,13 @@ class Arbiter(object):
     
     def _get_surface_velocity(self):
         return self._arbiter.contents.target_v
-    surface_velocity = property(_get_surface_velocity, doc="""Surface velocity""")
+    surface_velocity = property(_get_surface_velocity, 
+        doc="""Surface velocity""")
 
     def _get_stamp(self):
         return self._arbiter.contents.stamp
-    stamp = property(_get_stamp, doc="""Time stamp of the arbiter. (from the space)""")
+    stamp = property(_get_stamp, 
+        doc="""Time stamp of the arbiter. (from the space)""")
 
 #del cp, ct, u
 
