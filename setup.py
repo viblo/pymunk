@@ -64,7 +64,7 @@ long_description = """pymunk is wrapper for the 2d rigid body physics library Ch
 
 setup(
     name='pymunk'
-    , url='http://pymunk.googlecode.com'
+    , url='http://code.google.com/p/pymunk/'
     , author='Victor Blomqvist'
     , author_email='vb@viblo.se'
     , version='0.8.3' # remember to change me for new versions!
