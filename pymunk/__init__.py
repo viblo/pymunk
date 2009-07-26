@@ -7,7 +7,7 @@ Homepage: http://code.google.com/p/pymunk/
 
 Forum: http://www.slembcke.net/forums/viewforum.php?f=6
 """
-__version__ = "$1Id: __init__.py 183 2009-04-18 12:21:53Z vb@viblo.se $"
+__version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 import ctypes as ct
