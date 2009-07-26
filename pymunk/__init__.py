@@ -15,12 +15,12 @@ import pymunk._chipmunk as cp
 import pymunk.util as u
 from .vec2d import Vec2d
 
-version = "0.8.2"
+version = "0.8.3"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn)."""
 
-inf = 1e100
+inf = float('inf')
 """Infinity that can be passed as mass or inertia to Body. 
 Use this as mass and inertia when you need to create a static body."""
 
@@ -676,7 +676,7 @@ class Segment(Shape):
 
 class Poly(Shape):
     """A polygon shape"""
-    def __init__(self, body, vertices, offset=(0,0), auto_order_vertices=False):
+    def __init__(self, body, vertices, offset=(0,0), auto_order_vertices=True):
         """Create a polygon
         
             body : `Body`
@@ -688,20 +688,25 @@ class Poly(Shape):
                 The offset from the body's center of gravity in body local 
                 coordinates. 
             auto_order_vertices : bool 
-                Set to True to automatically order the vertices. Currently 
-                not supported.
+                Set to True to automatically order the vertices. If you know 
+                the vertices are in the correct (clockwise) orded you can gain 
+                a little performance by setting this to False.
         """
-        if auto_order_vertices: 
-            raise Exception(NotImplemented)
+        
         self._body = body
         self.offset = offset
         #self.verts = (Vec2d * len(vertices))(*vertices)
         self.verts = (Vec2d * len(vertices))
         self.verts = self.verts(Vec2d(0, 0))
-        for (i, vertex) in enumerate(vertices):
+        
+        i_vs = enumerate(vertices)
+        if auto_order_vertices and not u.is_clockwise(vertices):
+            i_vs = zip(xrange(len(vertices)-1, -1, -1), vertices)
+        
+        for (i, vertex) in i_vs:
             self.verts[i].x = vertex[0]
             self.verts[i].y = vertex[1]
-            
+
         self._shape = cp.cpPolyShapeNew(body._body, len(vertices), self.verts, offset)
         self._shapecontents = self._shape.contents
         
