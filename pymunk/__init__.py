@@ -15,7 +15,7 @@ import pymunk._chipmunk as cp
 import pymunk.util as u
 from .vec2d import Vec2d
 
-version = "0.8.3"
+version = "0.8.4"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn)."""

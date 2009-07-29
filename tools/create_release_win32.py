@@ -6,6 +6,8 @@ def main():
     
     os.chdir("..")
     os.system("python setup.py sdist")
+    os.system("python setup.py bdist --formats=msi")
+    os.system("python25 setup.py bdist --formats=msi")
     os.system("python setup.py bdist --formats=wininst")
     print("""
     Remember (before running this script!): 

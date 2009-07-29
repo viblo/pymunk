@@ -61,7 +61,9 @@ classifiers = ['Development Status :: 4 - Beta'
 ]
 
 long_description = """pymunk is wrapper for the 2d rigid body physics library Chipmunk"""
-
+from distutils.command import bdist
+bdist.bdist.format_commands += ['msi']
+bdist.bdist.format_command['msi'] = ('bdist_msi', "Microsoft Installer") 
 setup(
     name='pymunk'
     , url='http://code.google.com/p/pymunk/'
