@@ -11,7 +11,7 @@ def main():
     os.system("python setup.py bdist --formats=wininst")
     print("""
     Remember (before running this script!): 
-    - change version number in readme and __init__ 
+    - change version number in readme, setup.py and __init__ 
     - regenerate the api
     - branch in svn""")
     
