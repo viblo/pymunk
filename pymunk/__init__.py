@@ -20,7 +20,8 @@ version = "0.8.3"
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn)."""
 
-inf = float('inf')
+#inf = float('inf') # works only on python 2.6+
+inf = 1e100
 """Infinity that can be passed as mass or inertia to Body. 
 Use this as mass and inertia when you need to create a static body."""
 
