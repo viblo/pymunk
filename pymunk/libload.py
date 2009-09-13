@@ -23,15 +23,18 @@ def load_library(libname, print_path=True):
     except:
         pass
     
-    if s == 'Linux':
+    if s in ('Linux', 'FreeBSD'):
         libfn = "lib%s.so" % libname
 
-    elif s == 'Windows' or s == 'Microsoft':
+    elif s in ('Windows', 'Microsoft'):
         libfn = "%s.dll" % libname
 
     elif s == 'Darwin':
         libfn = "lib%s.dylib" % libname
-        
+    
+    # we use *nix library naming as default
+    else: 
+        libfn = "lib%s.so" % libname
     libfn = os.path.join(path, libfn)
     
     if print_path:
