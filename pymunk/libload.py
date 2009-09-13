@@ -35,9 +35,35 @@ def load_library(libname, print_path=True):
     # we use *nix library naming as default
     else: 
         libfn = "lib%s.so" % libname
+        
     libfn = os.path.join(path, libfn)
     
     if print_path:
         print ("Loading chipmunk for %s (%s) [%s]" % (s, arch, libfn))
-    lib = ctypes.cdll.LoadLibrary(libfn)
+    try:
+        lib = ctypes.cdll.LoadLibrary(libfn)
+    except OSError: 
+        print """
+Failed to load pymunk library.
+
+This error usually means that you don't have a compiled version of chipmunk in 
+the correct spot where pymunk can find it. Usually its enough (at least on 
+*nix & macos) to simply run the compile command first before installing and 
+then retry again:
+
+You compile chipmunk with
+> python setup.py build_chipmunk
+and then continue as usual with 
+> python setup.py install
+> cd examples
+> python demo_contact.py
+
+(for complete instructions please see the readme file)
+
+If it still doesnt work, please report as a bug on the issue tracker at 
+http://code.google.com/p/pymunk/issues
+Remember to include information about your OS and version of python. Please 
+include the exception traceback as well (usually found below this message).
+"""
+        raise
     return lib
