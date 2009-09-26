@@ -171,25 +171,34 @@ class Vec2d(ctypes.Structure):
  
     # Division
     def __div__(self, other):
+        print(1)
         return self._o2(other, operator.div)
     def __rdiv__(self, other):
+        print(2)
         return self._r_o2(other, operator.div)
     def __idiv__(self, other):
+        print(3)
         return self._io(other, operator.div)
  
     def __floordiv__(self, other):
+        print(4)
         return self._o2(other, operator.floordiv)
     def __rfloordiv__(self, other):
+        print(5)
         return self._r_o2(other, operator.floordiv)
     def __ifloordiv__(self, other):
+        print(6)
         return self._io(other, operator.floordiv)
  
     def __truediv__(self, other):
+        print(7)
         return self._o2(other, operator.truediv)
     def __rtruediv__(self, other):
+        print(8)
         return self._r_o2(other, operator.truediv)
     def __itruediv__(self, other):
-        return self._io(other, operator.floordiv)
+        print(9)
+        return self._io(other, operator.truediv)
  
     # Modulo
     def __mod__(self, other):
@@ -471,7 +480,7 @@ if __name__ == "__main__":
             self.assert_((v - v2).length < .00001)
             self.assertEqual(v.length, v2.length)
             v2.rotate(300)
-            self.assertAlmostEquals(v.get_angle_between(v2), -60, 5) # Allow a little more error than usual (floats..)
+            self.assertAlmostEquals(v.get_angle_between(v2), -60) # Allow a little more error than usual (floats..)
             v2.rotate(v2.get_angle_between(v))
             angle = v.get_angle_between(v2)
             self.assertAlmostEquals(v.get_angle_between(v2), 0)  
