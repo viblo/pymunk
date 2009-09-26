@@ -43,7 +43,7 @@ def load_library(libname, print_path=True):
     try:
         lib = ctypes.cdll.LoadLibrary(libfn)
     except OSError: 
-        print """
+        print ("""
 Failed to load pymunk library.
 
 This error usually means that you don't have a compiled version of chipmunk in 
@@ -64,6 +64,6 @@ If it still doesnt work, please report as a bug on the issue tracker at
 http://code.google.com/p/pymunk/issues
 Remember to include information about your OS and version of python. Please 
 include the exception traceback as well (usually found below this message).
-"""
+""")
         raise
     return lib
