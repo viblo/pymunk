@@ -171,33 +171,24 @@ class Vec2d(ctypes.Structure):
  
     # Division
     def __div__(self, other):
-        print(1)
         return self._o2(other, operator.div)
     def __rdiv__(self, other):
-        print(2)
         return self._r_o2(other, operator.div)
     def __idiv__(self, other):
-        print(3)
         return self._io(other, operator.div)
  
     def __floordiv__(self, other):
-        print(4)
         return self._o2(other, operator.floordiv)
     def __rfloordiv__(self, other):
-        print(5)
         return self._r_o2(other, operator.floordiv)
     def __ifloordiv__(self, other):
-        print(6)
         return self._io(other, operator.floordiv)
  
     def __truediv__(self, other):
-        print(7)
         return self._o2(other, operator.truediv)
     def __rtruediv__(self, other):
-        print(8)
         return self._r_o2(other, operator.truediv)
     def __itruediv__(self, other):
-        print(9)
         return self._io(other, operator.truediv)
  
     # Modulo
