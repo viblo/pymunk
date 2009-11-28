@@ -413,6 +413,9 @@ class Body(object):
         return self._bodycontents.w
     angular_velocity = property(_get_angular_velocity, _set_angular_velocity)
 
+    def _get_force(self):
+        return self._bodycontents.f
+    force = property(_get_force)
 
     def _set_velocity_func(self, func):
         """Set the velocity callback function. The velocity callback function 
