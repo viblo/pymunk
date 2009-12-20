@@ -124,7 +124,7 @@ cpConstraintClass._fields_ = [
     ('applyImpulse', cpConstraintApplyImpulseFunction),
     ('getImpulse', cpConstraintGetImpulseFunction),
 ]
-cpConstraint._pack_ = 4
+#cpConstraint._pack_ = 4
 cpConstraint._fields_ = [
     ('klass', POINTER(cpConstraintClass)),
     ('a', POINTER(cpBody)),
@@ -266,7 +266,7 @@ cpPinJointGetClass.restype = POINTER(cpConstraintClass)
 cpPinJointGetClass.argtypes = []
 class cpPinJoint(Structure):
     pass
-cpPinJoint._pack_ = 4
+#cpPinJoint._pack_ = 4
 cpPinJoint._fields_ = [
     ('constraint', cpConstraint),
     ('anchr1', cpVect),
@@ -676,7 +676,7 @@ class cpPolyShape(Structure):
     pass
 class cpShapeClass(Structure):
     pass
-cpShape._pack_ = 4
+#cpShape._pack_ = 4
 cpShape._fields_ = [
     ('klass', POINTER(cpShapeClass)),
     ('body', POINTER(cpBody)),
