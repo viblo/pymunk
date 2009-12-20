@@ -32,8 +32,14 @@ class build_chipmunk(Command):
         
         compiler = cc.new_compiler(compiler=self.compiler)
 
-        sources = [os.path.join('chipmunk_src',x) for x in os.listdir('chipmunk_src') if x[-1] == 'c']
+        source_folders = ['chipmunk_src', 'chipmunk_src/constraints']
+        sources = []
+        for folder in source_folders:
+            sources += [os.path.join(folder,x) for x in os.listdir(folder) if x[-1] == 'c']
+        
         compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC']
+        if platform.system() in ('Windows', 'Microsoft'):
+            compiler_preargs += ['-mrtd'] # compile with stddecl instead of cdecl
         objs = compiler.compile(sources, extra_preargs=compiler_preargs)
         
         libname = 'chipmunk'
@@ -43,9 +49,10 @@ class build_chipmunk(Command):
         else:
             libname = compiler.library_filename(libname, lib_type='shared')
         linker_preargs = []
-        if  platform.system() == 'Linux' and platform.machine() == 'x86_64':
+        if platform.system() == 'Linux' and platform.machine() == 'x86_64':
             linker_preargs += ['-fPIC']
-        
+        if platform.system() in ('Windows', 'Microsoft'):
+            linker_preargs += ['-mrtd'] # link with stddecl instead of cdecl
         compiler.link(cc.CCompiler.SHARED_LIBRARY, objs, libname, output_dir = 'pymunk', extra_preargs=linker_preargs)
     
     def run(self):
@@ -69,7 +76,7 @@ setup(
     , url='http://code.google.com/p/pymunk/'
     , author='Victor Blomqvist'
     , author_email='vb@viblo.se'
-    , version='0.8.4' # remember to change me for new versions!
+    , version='0.9.0' # remember to change me for new versions!
     , description='A wrapper for the 2d physics library Chipmunk'
     , long_description=long_description
     , packages=['pymunk'] #find_packages(exclude=['*.tests']),

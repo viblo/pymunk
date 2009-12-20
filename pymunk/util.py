@@ -225,50 +225,8 @@ def calc_perimeter(points):
         c += sqrt((p2[X] - p1[X])**2 + (p2[Y] - p1[Y])**2) 
         p1 = p2
     return c
-    
-    
-    
-def get_poly_UA(pointlist, points_as_Vec2d=True):
-    """Calculates the perimeter and area of a given polygon
 
-    Use calc_area() to get the area instead of this method
     
-    :deprecated: Scheduled for deletion in pymunk 0.8.5+ 
-    
-    :return: U, A    
-    """
-    return calc_perimeter(pointlist), calc_area(pointlist) # ugly fix until this method is removed
-    
-    p1 = p2 = None
-    U = 0
-    A = 0
-    for p in pointlist:
-        if p1 == None:
-            p1 = p
-            
-        else:
-            p2 = p
-            
-            # Extract x and y
-            if points_as_Vec2d:
-                x1, y1 = p1[X], p1[Y]
-                x2, y2 = p2[X], p2[Y]
-            else:    
-                x1, y1 = p1
-                x2, y2 = p2
-
-            # Get distance between the two Points
-            dx = fabs(x2 - x1)
-            dy = fabs(y2 - y1)
-            
-            # U += c = sqrt(a^2+b^2) | A += (a*b)/2
-            U += sqrt((dx*dx) + (dy*dy))
-            A += ((dx*dy)/2)
-
-            # Current End Point becomes Next Start Point
-            p1 = p2
-    
-    return U, A 
-    
-__all__ = ["is_clockwise", "is_left", "reduce_poly", "convex_hull",
-        "calc_center", "poly_vectors_around_center", "get_poly_UA", "is_convex"]
+__all__ = ["is_clockwise", "reduce_poly", "convex_hull", "calc_area"
+        "calc_center", "poly_vectors_around_center", "is_convex", 
+        "calc_perimeter"]

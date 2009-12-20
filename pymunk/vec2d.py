@@ -12,7 +12,7 @@ class Vec2d(ctypes.Structure):
        and also provides a bunch of high level functions
        """
     __slots__ = ['x', 'y']
-    
+     
     @classmethod
     def from_param(cls, arg):
         """Used by ctypes to automatically create Vec2ds"""
@@ -266,50 +266,74 @@ class Vec2d(ctypes.Structure):
         self.y *= value/length
     length = property(get_length, __setlength, doc = """Gets or sets the magnitude of the vector""")
        
-    def rotate(self, angle_degrees):
-        """Rotate the vector by angle_degrees degrees."""
-        radians = math.radians(angle_degrees)
-        cos = math.cos(radians)
-        sin = math.sin(radians)
+    def rotate(self, angle_radians):
+        """Rotate the vector by angle_radians radians."""
+        cos = math.cos(angle_radians)
+        sin = math.sin(angle_radians)
         x = self.x*cos - self.y*sin
         y = self.x*sin + self.y*cos
         self.x = x
         self.y = y
  
-    def rotated(self, angle_degrees):
+    def rotated(self, angle_radians):
+        """Create and return a new vector by rotating this vector by 
+        angle_radians radians.
+        
+        :return: Rotade vector
+        """
+        cos = math.cos(angle_radians)
+        sin = math.sin(angle_radians)
+        x = self.x*cos - self.y*sin
+        y = self.x*sin + self.y*cos
+        return Vec2d(x, y)
+    
+    def rotate_degrees(self, angle_degrees):
+        """Rotate the vector by angle_degrees degrees."""
+        self.rotate(math.radians(angle_degrees))
+    
+    def rotated_degrees(self, angle_degrees):
         """Create and return a new vector by rotating this vector by 
         angle_degrees degrees.
         
         :return: Rotade vector
         """
-        radians = math.radians(angle_degrees)
-        cos = math.cos(radians)
-        sin = math.sin(radians)
-        x = self.x*cos - self.y*sin
-        y = self.x*sin + self.y*cos
-        return Vec2d(x, y)
+        return self.rotated(math.radians(angle_degrees))
     
     def get_angle(self):
         if (self.get_length_sqrd() == 0):
             return 0
-        return math.degrees(math.atan2(self.y, self.x))
-    def __setangle(self, angle_degrees):
+        return math.atan2(self.y, self.x)
+    def __setangle(self, angle):
         self.x = self.length
         self.y = 0
-        self.rotate(angle_degrees)
-    angle = property(get_angle, __setangle, doc="""Gets or sets the angle of a vector""")
+        self.rotate(angle)
+    angle = property(get_angle, __setangle, doc="""Gets or sets the angle (in radians) of a vector""")
  
+    def get_angle_degrees(self):
+        return math.degrees(self.get_angle())
+    def __set_angle_degrees(self, angle_degrees):
+        self.__setangle(math.radians(angle_degrees))
+    angle_degrees = property(get_angle_degrees, __set_angle_degrees, doc="""Gets or sets the angle (in degrees) of a vector""")
+    
     def get_angle_between(self, other):
-        """Get the angle between the vector and the other in degrees
+        """Get the angle between the vector and the other in radians
         
         :return: The angle
         """
         cross = self.x*other[1] - self.y*other[0]
         dot = self.x*other[0] + self.y*other[1]
-        return math.degrees(math.atan2(cross, dot))
-            
+        return math.atan2(cross, dot)
+        
+    def get_angle_degrees_between(self, other):
+        """Get the angle between the vector and the other in degrees
+        
+        :return: The angle (in degrees)
+        """
+        return math.degrees(self.get_angle_between(other))
+        
     def normalized(self):
         """Get a normalized copy of the vector
+        Note: This function will return 0 if the length of the vector is 0.
         
         :return: A normalized vector
         """
@@ -383,8 +407,10 @@ class Vec2d(ctypes.Structure):
  
     # Extra functions, mainly for chipmunk
     def cpvrotate(self, other):
+        """Uses complex multiplication to rotate this vector by the other. """
         return Vec2d(self.x*other.x - self.y*other.y, self.x*other.y + self.y*other.x)
     def cpvunrotate(self, other):
+        """The inverse of cpvrotate"""
         return Vec2d(self.x*other.x + self.y*other.y, self.y*other.x - self.x*other.y)
     
     # Pickle, does not work atm.
@@ -394,11 +420,14 @@ class Vec2d(ctypes.Structure):
     def __setstate__(self, dict):
         self.x, self.y = dict
     def __newobj__(cls, *args):
-        return cls.__new__(cls, *args)    
+        return cls.__new__(cls, *args)   
+
+       
 Vec2d._fields_ = [
             ('x', float_type),
             ('y', float_type),
         ]
+
 ########################################################################
 ## Unit Testing                                                       ##
 ########################################################################
@@ -458,23 +487,41 @@ if __name__ == "__main__":
             v2 = Vec2d(10, -2)
             self.assert_(v.get_distance(v2) == (v - v2).get_length())
             
-        def testAngles(self):            
+        def testAnglesDegrees(self):            
             v = Vec2d(0, 3)
-            self.assertEquals(v.angle, 90)
+            self.assertEquals(v.angle_degrees, 90)
             v2 = Vec2d(v)
-            v.rotate(-90)
-            self.assertEqual(v.get_angle_between(v2), 90)
-            v2.angle -= 90
+            v.rotate_degrees(-90)
+            self.assertEqual(v.get_angle_degrees_between(v2), 90)
+            v2.angle_degrees -= 90
+            self.assertEqual(v.length, v2.length)
+            self.assertEquals(v2.angle_degrees, 0)
+            self.assertEqual(v2, [3, 0])
+            self.assert_((v - v2).length < .00001)
+            self.assertEqual(v.length, v2.length)
+            v2.rotate_degrees(300)
+            self.assertAlmostEquals(v.get_angle_degrees_between(v2), -60) # Allow a little more error than usual (floats..)
+            v2.rotate_degrees(v2.get_angle_degrees_between(v))
+            angle = v.get_angle_degrees_between(v2)
+            self.assertAlmostEquals(v.get_angle_degrees_between(v2), 0)  
+ 
+        def testAnglesRadians(self):            
+            v = Vec2d(0, 3)
+            self.assertEquals(v.angle, math.pi/2.)
+            v2 = Vec2d(v)
+            v.rotate(-math.pi/2.)
+            self.assertEqual(v.get_angle_between(v2), math.pi/2.)
+            v2.angle -= math.pi/2.
             self.assertEqual(v.length, v2.length)
             self.assertEquals(v2.angle, 0)
             self.assertEqual(v2, [3, 0])
             self.assert_((v - v2).length < .00001)
             self.assertEqual(v.length, v2.length)
-            v2.rotate(300)
-            self.assertAlmostEquals(v.get_angle_between(v2), -60) # Allow a little more error than usual (floats..)
+            v2.rotate(math.pi/3.*5.)
+            self.assertAlmostEquals(v.get_angle_between(v2), -math.pi/3.) # Allow a little more error than usual (floats..)
             v2.rotate(v2.get_angle_between(v))
             angle = v.get_angle_between(v2)
-            self.assertAlmostEquals(v.get_angle_between(v2), 0)  
+            self.assertAlmostEquals(v.get_angle_between(v2), 0) 
  
         def testHighLevel(self):
             basis0 = Vec2d(5.0, 0)

@@ -44,7 +44,7 @@ class Main(pyglet.window.Window):
         for x in range(5):
             for y in range(12):
                 size= 5
-                points = [(-size, -size), (-size, size), (size,size), (size, -size)]
+                points = [(-size, -size), (-size, size), (size,size)] #, (size, -size)]
                 mass = 10.0
                 moment = pymunk.moment_for_poly(mass, points, (0,0))
                 body = pymunk.Body(mass, moment)

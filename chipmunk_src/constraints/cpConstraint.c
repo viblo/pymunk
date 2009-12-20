@@ -18,54 +18,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
-#include <stdio.h>
-#include <math.h>
 
-#include "chipmunk.h"
+#include <stdlib.h>
+#include <assert.h>
 
-cpFloat
-cpvlength(const cpVect v)
+#include "../chipmunk.h"
+#include "util.h"
+
+// TODO: Comment me!
+
+cpFloat cp_constraint_bias_coef = 0.1f;
+
+void cpConstraintDestroy(cpConstraint *constraint){}
+
+void
+cpConstraintFree(cpConstraint *constraint)
 {
-	return cpfsqrt( cpvdot(v, v) );
-}
-
-inline cpVect
-cpvslerp(const cpVect v1, const cpVect v2, const cpFloat t)
-{
-	cpFloat omega = cpfacos(cpvdot(v1, v2));
-	
-	if(omega){
-		cpFloat denom = 1.0f/cpfsin(omega);
-		return cpvadd(cpvmult(v1, cpfsin((1.0f - t)*omega)*denom), cpvmult(v2, cpfsin(t*omega)*denom));
-	} else {
-		return v1;
+	if(constraint){
+		cpConstraintDestroy(constraint);
+		cpfree(constraint);
 	}
 }
 
-cpVect
-cpvslerpconst(const cpVect v1, const cpVect v2, const cpFloat a)
+void
+cpConstraintCheckCast(cpConstraint *constraint, const cpConstraintClass *klass)
 {
-	cpFloat angle = cpfacos(cpvdot(v1, v2));
-	return cpvslerp(v1, v2, cpfmin(a, angle)/angle);
+	assert(constraint->klass == klass); // Bad cpConstraint type in cast
 }
 
-cpVect
-cpvforangle(const cpFloat a)
-{
-	return cpv(cpfcos(a), cpfsin(a));
-}
 
-cpFloat
-cpvtoangle(const cpVect v)
-{
-	return cpfatan2(v.y, v.x);
-}
+// *** defined in util.h
 
-char*
-cpvstr(const cpVect v)
+void
+cpConstraintInit(cpConstraint *constraint, const cpConstraintClass *klass, cpBody *a, cpBody *b)
 {
-	static char str[256];
-	sprintf(str, "(% .3f, % .3f)", v.x, v.y);
-	return str;
+	constraint->klass = klass;
+	constraint->a = a;
+	constraint->b = b;
+	
+	constraint->maxForce = INFINITY;
+	constraint->biasCoef = cp_constraint_bias_coef;
+	constraint->maxBias = INFINITY;
 }

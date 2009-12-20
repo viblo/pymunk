@@ -27,7 +27,7 @@ typedef struct cpHashSetBin {
 	// Pointer to the element.
 	void *elt;
 	// Hash value of the element.
-	unsigned int hash;
+	cpHashValue hash;
 	// Next element in the chain.
 	struct cpHashSetBin *next;
 } cpHashSetBin;
@@ -38,8 +38,8 @@ typedef int (*cpHashSetEqlFunc)(void *ptr, void *elt);
 typedef void *(*cpHashSetTransFunc)(void *ptr, void *data);
 // Iterator function for a hashset.
 typedef void (*cpHashSetIterFunc)(void *elt, void *data);
-// Reject function. Returns true if elt should be dropped.
-typedef int (*cpHashSetRejectFunc)(void *elt, void *data);
+// Filter function. Returns false if elt should be dropped.
+typedef int (*cpHashSetFilterFunc)(void *elt, void *data);
 
 typedef struct cpHashSet {
 	// Number of elements stored in the table.
@@ -67,13 +67,13 @@ cpHashSet *cpHashSetNew(int size, cpHashSetEqlFunc eqlFunc, cpHashSetTransFunc t
 
 // Insert an element into the set, returns the element.
 // If it doesn't already exist, the transformation function is applied.
-void *cpHashSetInsert(cpHashSet *set, unsigned int hash, void *ptr, void *data);
+void *cpHashSetInsert(cpHashSet *set, cpHashValue hash, void *ptr, void *data);
 // Remove and return an element from the set.
-void *cpHashSetRemove(cpHashSet *set, unsigned int hash, void *ptr);
+void *cpHashSetRemove(cpHashSet *set, cpHashValue hash, void *ptr);
 // Find an element in the set. Returns the default value if the element isn't found.
-void *cpHashSetFind(cpHashSet *set, unsigned int hash, void *ptr);
+void *cpHashSetFind(cpHashSet *set, cpHashValue hash, void *ptr);
 
 // Iterate over a hashset.
 void cpHashSetEach(cpHashSet *set, cpHashSetIterFunc func, void *data);
-// Iterate over a hashset while rejecting certain elements.
-void cpHashSetReject(cpHashSet *set, cpHashSetRejectFunc func, void *data);
+// Iterate over a hashset, retain .
+void cpHashSetFilter(cpHashSet *set, cpHashSetFilterFunc func, void *data);

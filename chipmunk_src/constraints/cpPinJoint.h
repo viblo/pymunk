@@ -19,53 +19,25 @@
  * SOFTWARE.
  */
  
-#include <stdio.h>
-#include <math.h>
+const cpConstraintClass *cpPinJointGetClass();
 
-#include "chipmunk.h"
-
-cpFloat
-cpvlength(const cpVect v)
-{
-	return cpfsqrt( cpvdot(v, v) );
-}
-
-inline cpVect
-cpvslerp(const cpVect v1, const cpVect v2, const cpFloat t)
-{
-	cpFloat omega = cpfacos(cpvdot(v1, v2));
+typedef struct cpPinJoint {
+	cpConstraint constraint;
+	cpVect anchr1, anchr2;
+	cpFloat dist;
 	
-	if(omega){
-		cpFloat denom = 1.0f/cpfsin(omega);
-		return cpvadd(cpvmult(v1, cpfsin((1.0f - t)*omega)*denom), cpvmult(v2, cpfsin(t*omega)*denom));
-	} else {
-		return v1;
-	}
-}
+	cpVect r1, r2;
+	cpVect n;
+	cpFloat nMass;
+	
+	cpFloat jnAcc, jnMax;
+	cpFloat bias;
+} cpPinJoint;
 
-cpVect
-cpvslerpconst(const cpVect v1, const cpVect v2, const cpFloat a)
-{
-	cpFloat angle = cpfacos(cpvdot(v1, v2));
-	return cpvslerp(v1, v2, cpfmin(a, angle)/angle);
-}
+cpPinJoint *cpPinJointAlloc(void);
+cpPinJoint *cpPinJointInit(cpPinJoint *joint, cpBody *a, cpBody *b, cpVect anchr1, cpVect anchr2);
+cpConstraint *cpPinJointNew(cpBody *a, cpBody *b, cpVect anchr1, cpVect anchr2);
 
-cpVect
-cpvforangle(const cpFloat a)
-{
-	return cpv(cpfcos(a), cpfsin(a));
-}
-
-cpFloat
-cpvtoangle(const cpVect v)
-{
-	return cpfatan2(v.y, v.x);
-}
-
-char*
-cpvstr(const cpVect v)
-{
-	static char str[256];
-	sprintf(str, "(% .3f, % .3f)", v.x, v.y);
-	return str;
-}
+CP_DefineConstraintProperty(cpPinJoint, cpVect, anchr1, Anchr1);
+CP_DefineConstraintProperty(cpPinJoint, cpVect, anchr2, Anchr2);
+CP_DefineConstraintProperty(cpPinJoint, cpFloat, dist, Dist);

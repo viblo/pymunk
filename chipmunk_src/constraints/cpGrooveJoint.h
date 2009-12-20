@@ -18,54 +18,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
-#include <stdio.h>
-#include <math.h>
 
-#include "chipmunk.h"
+const cpConstraintClass *cpGrooveJointGetClass();
 
-cpFloat
-cpvlength(const cpVect v)
-{
-	return cpfsqrt( cpvdot(v, v) );
-}
-
-inline cpVect
-cpvslerp(const cpVect v1, const cpVect v2, const cpFloat t)
-{
-	cpFloat omega = cpfacos(cpvdot(v1, v2));
+typedef struct cpGrooveJoint {
+	cpConstraint constraint;
+	cpVect grv_n, grv_a, grv_b;
+	cpVect  anchr2;
 	
-	if(omega){
-		cpFloat denom = 1.0f/cpfsin(omega);
-		return cpvadd(cpvmult(v1, cpfsin((1.0f - t)*omega)*denom), cpvmult(v2, cpfsin(t*omega)*denom));
-	} else {
-		return v1;
-	}
-}
+	cpVect grv_tn;
+	cpFloat clamp;
+	cpVect r1, r2;
+	cpVect k1, k2;
+	
+	cpVect jAcc;
+	cpFloat jMaxLen;
+	cpVect bias;
+} cpGrooveJoint;
 
-cpVect
-cpvslerpconst(const cpVect v1, const cpVect v2, const cpFloat a)
-{
-	cpFloat angle = cpfacos(cpvdot(v1, v2));
-	return cpvslerp(v1, v2, cpfmin(a, angle)/angle);
-}
+cpGrooveJoint *cpGrooveJointAlloc(void);
+cpGrooveJoint *cpGrooveJointInit(cpGrooveJoint *joint, cpBody *a, cpBody *b, cpVect groove_a, cpVect groove_b, cpVect anchr2);
+cpConstraint *cpGrooveJointNew(cpBody *a, cpBody *b, cpVect groove_a, cpVect groove_b, cpVect anchr2);
 
-cpVect
-cpvforangle(const cpFloat a)
-{
-	return cpv(cpfcos(a), cpfsin(a));
-}
-
-cpFloat
-cpvtoangle(const cpVect v)
-{
-	return cpfatan2(v.y, v.x);
-}
-
-char*
-cpvstr(const cpVect v)
-{
-	static char str[256];
-	sprintf(str, "(% .3f, % .3f)", v.x, v.y);
-	return str;
-}
+// TODO setters for the groove.
+CP_DefineConstraintProperty(cpGrooveJoint, cpVect, anchr2, Anchr2);

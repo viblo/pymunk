@@ -3,6 +3,20 @@ import platform
 import sys, imp, os
 import ctypes
  
+def platform_specific_functions():
+    # use stddecl on windows, cdecl on all other platforms
+    
+    d = {'library_loader' : ctypes.cdll
+        ,'function_pointer' : ctypes.CFUNCTYPE
+        }
+    
+    if platform.system() in ('Windows', 'Microsoft'):
+        d['library_loader'] = ctypes.windll
+        d['function_pointer'] = ctypes.WINFUNCTYPE
+        
+    return d
+    
+ 
 def load_library(libname, print_path=True):
     # lib gets loaded from:
     # pymunk/libchipmunk.so, libchipmunk.dylib or chipmunk.dll
@@ -23,25 +37,28 @@ def load_library(libname, print_path=True):
     except:
         pass
     
+    
     if s in ('Linux', 'FreeBSD'):
         libfn = "lib%s.so" % libname
-
+        
     elif s in ('Windows', 'Microsoft'):
         libfn = "%s.dll" % libname
-
+        
     elif s == 'Darwin':
         libfn = "lib%s.dylib" % libname
-    
+        
     # we use *nix library naming as default
     else: 
         libfn = "lib%s.so" % libname
         
     libfn = os.path.join(path, libfn)
     
+    
+    
     if print_path:
         print ("Loading chipmunk for %s (%s) [%s]" % (s, arch, libfn))
     try:
-        lib = ctypes.cdll.LoadLibrary(libfn)
+        lib = platform_specific_functions()['library_loader'].LoadLibrary(libfn)
     except OSError: 
         print ("""
 Failed to load pymunk library.

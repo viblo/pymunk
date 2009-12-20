@@ -18,54 +18,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
-#include <stdio.h>
-#include <math.h>
 
-#include "chipmunk.h"
+typedef cpFloat (*cpDampedRotarySpringTorqueFunc)(struct cpConstraint *spring, cpFloat relativeAngle);
 
-cpFloat
-cpvlength(const cpVect v)
-{
-	return cpfsqrt( cpvdot(v, v) );
-}
+const cpConstraintClass *cpDampedRotarySpringGetClass();
 
-inline cpVect
-cpvslerp(const cpVect v1, const cpVect v2, const cpFloat t)
-{
-	cpFloat omega = cpfacos(cpvdot(v1, v2));
+typedef struct cpDampedRotarySpring {
+	cpConstraint constraint;
+	cpFloat restAngle;
+	cpFloat stiffness;
+	cpFloat damping;
+	cpDampedRotarySpringTorqueFunc springTorqueFunc;
 	
-	if(omega){
-		cpFloat denom = 1.0f/cpfsin(omega);
-		return cpvadd(cpvmult(v1, cpfsin((1.0f - t)*omega)*denom), cpvmult(v2, cpfsin(t*omega)*denom));
-	} else {
-		return v1;
-	}
-}
+	cpFloat dt;
+	cpFloat target_wrn;
+	
+	cpFloat iSum;
+} cpDampedRotarySpring;
 
-cpVect
-cpvslerpconst(const cpVect v1, const cpVect v2, const cpFloat a)
-{
-	cpFloat angle = cpfacos(cpvdot(v1, v2));
-	return cpvslerp(v1, v2, cpfmin(a, angle)/angle);
-}
+cpDampedRotarySpring *cpDampedRotarySpringAlloc(void);
+cpDampedRotarySpring *cpDampedRotarySpringInit(cpDampedRotarySpring *joint, cpBody *a, cpBody *b, cpFloat restAngle, cpFloat stiffness, cpFloat damping);
+cpConstraint *cpDampedRotarySpringNew(cpBody *a, cpBody *b, cpFloat restAngle, cpFloat stiffness, cpFloat damping);
 
-cpVect
-cpvforangle(const cpFloat a)
-{
-	return cpv(cpfcos(a), cpfsin(a));
-}
-
-cpFloat
-cpvtoangle(const cpVect v)
-{
-	return cpfatan2(v.y, v.x);
-}
-
-char*
-cpvstr(const cpVect v)
-{
-	static char str[256];
-	sprintf(str, "(% .3f, % .3f)", v.x, v.y);
-	return str;
-}
+CP_DefineConstraintProperty(cpDampedRotarySpring, cpFloat, restAngle, RestAngle);
+CP_DefineConstraintProperty(cpDampedRotarySpring, cpFloat, stiffness, Stiffness);
+CP_DefineConstraintProperty(cpDampedRotarySpring, cpFloat, damping, Damping);
+CP_DefineConstraintProperty(cpDampedRotarySpring, cpDampedRotarySpringTorqueFunc, springTorqueFunc, SpringTorqueFunc);

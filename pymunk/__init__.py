@@ -15,7 +15,7 @@ import pymunk._chipmunk as cp
 import pymunk.util as u
 from .vec2d import Vec2d
 
-version = "0.8.4"
+version = "0.9.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn)."""
@@ -48,14 +48,16 @@ class Space(object):
                 Number of iterations to use in the impulse solver to solve 
                 elastic contacts.
         """
-        self._space = cp.cpSpaceNew(iterations)
+        self._space = cp.cpSpaceNew()
+        self._space.contents.iterations = iterations
         self._space.contents.elasticIterations = elastic_iterations
         self._callbacks = {} # To prevent the gc to collect the callbacks.
         self._default_callback = None
         self._shapes = {}
+        self._next_shape_id = 0
         self._static_shapes = {}
         self._bodies = set()
-        self._joints = set()
+        self._constraints = set()
 
     def _get_shapes(self):
         return self._shapes.values()
@@ -77,13 +79,15 @@ class Space(object):
         self._space.contents.gravity = gravvec
     def _get_gravity(self):
         return self._space.contents.gravity
-    gravity = property(_get_gravity, _set_gravity)
+    gravity = property(_get_gravity, _set_gravity
+        , doc="""Default gravity to supply when integrating rigid body motions.""")
 
     def _set_damping(self, damping):
         self._space.contents.damping = damping
     def _get_damping(self):
         return self._space.contents.damping
-    damping = property(_get_damping, _set_damping)
+    damping = property(_get_damping, _set_damping
+        , doc="""Default damping to supply when integrating rigid body motions.""")
 
     def add(self, *objs):
         """Add one or many shapes, bodies or joints to the space"""
@@ -92,8 +96,8 @@ class Space(object):
                 self._add_body(o)
             elif isinstance(o, Shape):
                 self._add_shape(o)
-            elif isinstance(o, Joint):
-                self._add_joint(o)
+            elif isinstance(o, Constraint):
+                self._add_constraint(o)
             else:
                 for oo in o:
                     self.add(oo)
@@ -108,14 +112,19 @@ class Space(object):
                     self.add_static(oo)
                     
     def remove(self, *objs):
-        """Remove one or many shapes, bodies or joints from the space"""
+        """Remove one or many shapes, bodies or constraints from the space
+        
+        Note: When removing objects from the space, make sure you remove any 
+        other objects that reference it. For instance, when you remove a body, 
+        remove the joints and shapes attached to it. 
+        """
         for o in objs:
             if isinstance(o, Body):
                 self._remove_body(o)
             elif isinstance(o, Shape):
                 self._remove_shape(o)
-            elif isinstance(o, Joint):
-                self._remove_joint(o)
+            elif isinstance(o, Constraint):
+                self._remove_constraint(o)
             else:
                 for oo in o:
                     self.remove(oo)
@@ -131,40 +140,44 @@ class Space(object):
                     
     def _add_shape(self, shape):
         """Adds a shape to the space"""
-        self._shapes[shape.id] = shape
+        assert shape._hashid not in self._shapes, "shape already added to space"
+        self._shapes[shape._hashid] = shape
         cp.cpSpaceAddShape(self._space, shape._shape)
     def _add_static_shape(self, static_shape):
         """Adds a shape to the space. Static shapes should be be attached to 
         a rigid body with an infinite mass and moment of inertia. Also, don't 
         add the rigid body used to the space, as that will cause it to fall 
         under the effects of gravity."""
-        self._static_shapes[static_shape.id] = static_shape
+        assert shape._hashid not in self._static_shapes, "shape already added to space"
+        self._static_shapes[static_shape._hashid] = static_shape
         cp.cpSpaceAddStaticShape(self._space, static_shape._shape)
     def _add_body(self, body):
         """Adds a body to the space"""
+        assert body not in self._bodies, "body already added to space"
         self._bodies.add(body)
         cp.cpSpaceAddBody(self._space, body._body)
-    def _add_joint(self, joint):
-        """Adds a joint to the space"""
-        self._joints.add(joint)
-        cp.cpSpaceAddJoint(self._space, joint._joint)
+    def _add_constraint(self, constraint):
+        """Adds a constraint to the space"""
+        assert constraint not in self._constraints, "constraint already added to space"
+        self._constraints.add(constraint)
+        cp.cpSpaceAddConstraint(self._space, constraint._constraint)
 
     def _remove_shape(self, shape):
         """Removes a shape from the space"""
-        del self._shapes[shape.id]
-        cp.cpSpaceRemoveShape(self._space, shape._shape)
+        del self._shapes[shape._hashid]
+        cp.cpSpaceRemoveShape(self._space, shape._hashid)
     def _remove_static_shape(self, static_shape):
         """Removes a static shape from the space."""
-        del self._static_shapes[static_shape.id]
-        cp.cpSpaceRemoveStaticShape(self._space, static_shape._shape)
+        del self._static_shapes[static_shape._hashid]
+        cp.cpSpaceRemoveStaticShape(self._space, static_shape._hashid)
     def _remove_body(self, body):
         """Removes a body from the space"""
         self._bodies.remove(body)
         cp.cpSpaceRemoveBody(self._space, body._body)
-    def _remove_joint(self, joint):
-        """Removes a joint from the space"""
-        self._joints.remove(joint)
-        cp.cpSpaceRemoveJoint(self._space, joint._joint)
+    def _remove_constraint(self, constraint):
+        """Removes a constraint from the space"""
+        self._constraints.remove(constraint)
+        cp.cpSpaceRemoveConstraintt(self._space, constraint._constraint)
 
     def resize_static_hash(self, dim=100.0, count=1000):
         """The spatial hashes used by Chipmunk's collision detection are fairly
@@ -173,7 +186,12 @@ class Space(object):
 
         count is the suggested minimum number of cells in the hash table.
         Bigger is better, but only to a point. Setting count to ~10x the number
-        of objects in the hash is probably a good starting point."""
+        of objects in the hash is probably a good starting point.
+        
+        Because static shapes are only rehashed when you request it, it's 
+        possible to use a much higher count argument to resize_static_hash() 
+        than to resize_active_hash(). Doing so will use more memory though. 
+        """
         cp.cpSpaceResizeStaticHash(self._space, dim, count)
 
     def resize_active_hash(self, dim=100.0, count=1000):
@@ -197,22 +215,6 @@ class Space(object):
         contact persistence, requiring an order of magnitude fewer iterations
         to resolve the collisions in the usual case."""
         cp.cpSpaceStep(self._space, dt)
-   
-    def _get_stamp(self):
-        return self._space.contents.stamp
-    stamp = property(_get_stamp, 
-        doc="""Time stamp. Is incremented on every call to step()""")
-    
-    def _get_arbiters(self):        
-        num = self._space.contents.arbiters.contents.num
-        arr = self._space.contents.arbiters.contents.arr
-        arbs = []
-        for i in xrange(num):
-            arb = ct.cast(arr[i], ct.POINTER(cp.cpArbiter))
-            arbs.append(Arbiter(arb, self._shapes, self._static_shapes))
-        return arbs
-    arbiters = property(_get_arbiters, 
-        doc="""List of active arbiters for the impulse solver.""")
         
     def add_collisionpair_func(self, a, b, func, data=None):
         """Register func to be called when a collision is found between 
@@ -357,8 +359,20 @@ class Space(object):
         cp.cpSpaceShapePointQuery(self._space, point, f, None)    
     
 class Body(object):
-    def __init__(self, mass, inertia):
-        self._body = cp.cpBodyNew(mass, inertia)
+    """A rigid body
+    
+    * Use forces to modify the rigid bodies if possible. This is likely to be 
+    the most stable.
+    * Modifying a body's velocity shouldn't necessarily be avoided, but 
+    applying large changes can cause strange results in the simulation. 
+    Experiment freely, but be warned.
+    * Don't modify a body's position every step unless you really know what 
+    you are doing. Otherwise you're likely to get the position/velocity badly 
+    out of sync. 
+    """
+    def __init__(self, mass, moment):
+        """Create a new Body"""
+        self._body = cp.cpBodyNew(mass, moment)
         self._bodycontents =  self._body.contents 
         self._position_callback = None # To prevent the gc to collect the callbacks.
         self._velocity_callback = None # To prevent the gc to collect the callbacks.
@@ -381,7 +395,6 @@ class Body(object):
     def _set_angle(self, angle):
         cp.cpBodySetAngle(self._body, angle)
     def _get_angle(self):
-        #return self._bodycontents.a
         return self._bodycontents.a
     angle = property(_get_angle, _set_angle)
     
@@ -413,9 +426,11 @@ class Body(object):
         return self._bodycontents.w
     angular_velocity = property(_get_angular_velocity, _set_angular_velocity)
 
+    def _set_force(self, f):
+        self._bodycontents.f = f
     def _get_force(self):
         return self._bodycontents.f
-    force = property(_get_force)
+    force = property(_get_force, _set_force)
 
     def _set_velocity_func(self, func):
         """Set the velocity callback function. The velocity callback function 
@@ -436,7 +451,7 @@ class Body(object):
         def _impl(_, gravity, damping, dt):
             return func(self, gravity, damping, dt)
         self._velocity_callback = cp.cpBodyVelocityFunc(_impl)
-        self._bodycontents.velocity_func = self._velocity_callback        
+        self._bodycontents.velocity_func = self._velocity_callback
     velocity_func = property(fset=_set_velocity_func, 
         doc=_set_velocity_func.__doc__)    
 
@@ -461,7 +476,8 @@ class Body(object):
     
     
     def apply_impulse(self, j, r=(0,0)):
-        """Apply the impulse j to body with offset r.
+        """Apply the impulse j to body at a relative offset (important!) r 
+        from the center of gravity. Both r and j are in world coordinates. 
         
         :Parameters:
             j : (x,y) or `Vec2d`
@@ -470,17 +486,18 @@ class Body(object):
                 Offset the impulse with this vector
         """
         j,r = Vec2d(j), Vec2d(r)
-        #TODO: Test me and figure out if r is in local or world coords.
         self.velocity = self.velocity + j * self._bodycontents.m_inv
         self._bodycontents.w += self._bodycontents.i_inv* r.cross(j)
     
     def reset_forces(self):
-        """Reset the forces on the body"""
+        """Zero both the forces and torques accumulated on body"""
         cp.cpBodyResetForces(self._body)
 
     def apply_force(self, f, r=(0,0)):
-        """Apply (accumulate) the force f on body with offset r. Both f and r 
-        should be in world coordinates.
+        """Apply (accumulate) the force f on body at a relative offset 
+        (important!) r from the center of gravity. 
+        
+        Both r and f are in world coordinates. 
         
             f : (x,y) or `Vec2d`
                 Force in world coordinates
@@ -489,35 +506,13 @@ class Body(object):
         """
         cp.cpBodyApplyForce(self._body, f, r)
 
-
-    def update_velocity(self, gravity, damping, dt):
-        """Updates the velocity of the body using Euler integration. You don't 
-        need to call this unless you are managing the object manually instead 
-        of adding it to a Space."""
-        cp.cpBodyUpdateVelocity(self._body, gravity, damping, dt)
-
-    def update_position(self, dt):
-        """Updates the position of the body using Euler integration. Like 
-        updateVelocity() you shouldn't normally need to call this yourself."""
-        cp.cpBodyUpdatePosition(self._body, dt)
-
-
-    def local_to_world(self, v):
-        """Convert body local to world coordinates"""
-        #TODO: Test me
-        v = Vec2d(v)
-        return self.position + v.cpvrotate(self.rotation_vector)
-        
-    def world_to_local(self, v):
-        """Convert world to body local coordinates"""
-        #TODO: Test me
-        v = Vec2d(v)
-        return (v - self.position).cpvunrotate(self.rotation_vector)
-
-
-    def damped_spring(self, b, anchor1, anchor2, rlen, k, dmp, dt):
-        """Apply a spring force between this and body b at anchors anchr1 and 
+    def apply_damped_spring(self, b, anchor1, anchor2, rlen, k, dmp, dt):
+        """Apply a spring force between this body and b at anchors anchr1 and 
         anchr2 respectively. 
+        
+        Note: not solving the damping forces in the impulse solver causes 
+        problems with large damping values. There is a new constraint type 
+        DampedSpring that should be used instead.        
         
         :Parameters:
             b : `Body`
@@ -527,7 +522,7 @@ class Body(object):
             anchor2 : (x,y) or `Vec2d`
                 Anchor point on the second body
             k : float
-                The spring constant (force/distance)
+                The spring constant (force/distance) (Young's modulus)
             rlen : float
                 The rest length of the spring
             dmp : float
@@ -535,7 +530,51 @@ class Body(object):
             dt : float
                 The time step to apply the force over.
         """
-        cp.cpDampedSpring(self._body, b._body, anchor1, anchor2, rlen, k, dmp, dt)
+        cp.cpApplyDampedSpring(self._body, b._body, anchor1, anchor2, rlen, k, dmp, dt)
+        
+        
+    def slew(self, pos, dt):
+        """Modify the velocity of the body so that it will move to the 
+        specified absolute coordinates in the next timestep. 
+        
+        Intended for objects that are moved manually with a custom velocity 
+        integration function.
+        """ 
+        cp.cpBodySlew(self._body, pos, dt)
+        
+    def update_velocity(self, gravity, damping, dt):
+        """Default rigid body velocity integration function. 
+        
+        Updates the velocity of the body using Euler integration.
+        """
+        cp.cpBodyUpdateVelocity(self._body, gravity, damping, dt)
+
+    def update_position(self, dt):
+        """Default rigid body position integration function. 
+        
+        Updates the position of the body using Euler integration. Unlike the 
+        velocity function, it's unlikely you'll want to override this 
+        function. If you do, make sure you understand it's source code 
+        (in Chipmunk) as it's an important part of the collision/joint 
+        correction process. 
+        """
+        cp.cpBodyUpdatePosition(self._body, dt)
+
+
+    def local_to_world(self, v):
+        """Convert body local coordinates to world space coordinates"""
+        #TODO: Test me
+        v = Vec2d(v)
+        return self.position + v.cpvrotate(self.rotation_vector)
+        
+    def world_to_local(self, v):
+        """Convert world space coordinates to body local coordinates"""
+        #TODO: Test me
+        v = Vec2d(v)
+        return (v - self.position).cpvunrotate(self.rotation_vector)
+
+
+    
 
 class Shape(object):
     """Base class for all the shapes. You usually dont want to create instances
@@ -550,13 +589,26 @@ class Shape(object):
     def __del__(self):
         cp.cpShapeFree(self._shape)
 
-    id = property(lambda self: self._shapecontents.id)
-
+    def _get_hashid(self):
+        return self._shapecontents.hashid
+    _hashid = property(_get_hashid)
+        
+    def _get_sensor(self):
+        return bool(self._shapecontents.sensor)
+    def _set_sensor(self, is_sensor):
+        self._shapecontents.sensor = is_sensor
+    sensor = property(_get_sensor, _set_sensor, 
+        doc="""A boolean value if this shape is a sensor or not. Sensors only
+        call collision callbacks, and never generate real collisions.""")
+    
     def _get_collision_type(self):
         return self._shapecontents.collision_type
     def _set_collision_type(self, t):
         self._shapecontents.collision_type = t
-    collision_type = property(_get_collision_type, _set_collision_type)
+    collision_type = property(_get_collision_type, _set_collision_type,
+        doc="""User defined collision type for the shape. See 
+        add_collisionpair_func function for more information on when to use 
+        this property""")
 
     def _get_group(self):
         return self._shapecontents.group
@@ -573,7 +625,7 @@ class Shape(object):
         self._shapecontents.layers = layers
     layers = property(_get_layers, _set_layers, 
         doc="""Shapes only collide if they are in the same bit-planes. 
-        i.e. (a.layers & b.layers) != 0 By default, a shape occupies all 
+        i.e. (a.layers & b.layers) != 0. By default, a shape occupies all 
         32 bit-planes.""")
 
     def _get_elasticity(self):
@@ -601,43 +653,63 @@ class Shape(object):
     surface_velocity = property(_get_surface_velocity, _set_surface_velocity, 
         doc="""The surface velocity of the object. Useful for creating 
         conveyor belts or players that move around. This value is only used 
-        when calculating friction, not the collision.""")
+        when calculating friction, not resolving the collision.""")
 
-    body = property(lambda self: self._body)
+    body = property(lambda self: self._body, 
+        doc="""The body this shape is attached to""")
 
     def cache_bb(self):
-        """This method is used internally by chipmunk.
-        
-        If you really need it please add it as feature request on the pymunk 
-        issue tracker.
-        
-        :deprecated: Scheduled for deletion in pymunk 0.8.5+
-        """
+        """Update and returns the bouding box of this shape"""
         return BB(cp.cpShapeCacheBB(self._shape))
 
 class Circle(Shape):
-    """A circle shape defined by a radius"""
+    """A circle shape defined by a radius
+    
+    This is the fastest and simplest collision shape
+    """
     def __init__(self, body, radius, offset = (0,0)):
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates."""
         self._body = body
         self._shape = cp.cpCircleShapeNew(body._body, radius, offset)
         self._shapecontents = self._shape.contents
-
-    def _set_radius(self, r):
-        ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.r = r
-    def _get_radius(self):
-        return ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.r
-    radius = property(_get_radius, _set_radius, 
-        doc="""The Radius of the circle""")
+        self._cs = ct.cast(self._shape, ct.POINTER(cp.cpCircleShape))
+        
+    def unsafe_set_radius(self, r):
+        """Unsafe set the radius of the circle. 
     
-    def _get_center (self):
-        return ct.cast(self._shape, ct.POINTER(cp.cpCircleShape)).contents.c
-    center = property(_get_center, doc="""Center. (body space coordinates)""")
+        WARNING: This change is only picked up as a change to the position of 
+        the shape's surface, but not it's velocity. Changing it will not 
+        result in realistic physical behavior. Do not use if you don't know 
+        what you are doing!
+        """
+        cp.cpCircleShapeSetRadius(self._shape, r)
+        
+    def _get_radius(self):
+        return cp.cpCircleShapeGetRadius(self._shape)
+    radius = property(_get_radius, doc="""The Radius of the circle""")
 
+    def unsafe_set_offset(self, o):
+        """Unsafe set the offset of the circle. 
+    
+        WARNING: This change is only picked up as a change to the position of 
+        the shape's surface, but not it's velocity. Changing it will not 
+        result in realistic physical behavior. Do not use if you don't know 
+        what you are doing!
+        """
+        cp.cpCircleShapeSetOffset(self._shape, o)
+    
+    def _get_offset (self):
+        return cp.cpCircleShapeGetOffset(self._shape)
+    offset = property(_get_offset, doc="""Offset. (body space coordinates)""")
+
+    
 class Segment(Shape):
     """A line segment shape between two points
-    This shape is mainly intended as a static shape.
+    
+    This shape can be attached to moving bodies, but don't currently generate 
+    collisions with other line segments. Can be beveled in order to give it a 
+    thickness. 
     """
     def __init__(self, body, a, b, radius):
         """Create a Segment
@@ -679,7 +751,10 @@ class Segment(Shape):
 
 
 class Poly(Shape):
-    """A polygon shape"""
+    """A convex polygon shape
+    
+    Slowest, but most flexible collision shape. 
+    """
     def __init__(self, body, vertices, offset=(0,0), auto_order_vertices=True):
         """Create a polygon
         
@@ -744,6 +819,15 @@ def moment_for_poly(mass, vertices,  offset=(0,0)):
     return cp.cpMomentForPoly(mass, len(verts), verts, offset)
     
 def reset_shapeid_counter():
+    """Reset the internal shape counter
+    
+    Chipmunk (and therefor pymunk) keeps a counter so that every new shape 
+    is given a unique hash value to be used in the spatial hash. Because this 
+    affects the order in which the collisions are found and handled, you 
+    should reset the shape counter every time you populate a space with new 
+    shapes. If you don't, there might be (very) slight differences in the 
+    simulation.
+    """
     cp.cpResetShapeIdCounter()
 
 class Joint(object):
@@ -887,6 +971,105 @@ class Arbiter(object):
     stamp = property(_get_stamp, 
         doc="""Time stamp of the arbiter. (from the space)""")
 
+    
+class BB(object):
+    """Simple bounding box class. Stored as left, bottom, right, top values."""
+    def __init__(self, *args):
+        """Create a new instance of a bounding box. Can be created with zero 
+        size with bb = BB() or with four args defining left, bottom, right and
+        top: bb = BB(left, bottom, right, top)
+        """
+        if len(args) == 0:
+            self._bb = cp.cpBB()
+        elif len(args) == 1:
+            self._bb = args[0]
+        else:
+            self._bb = cp._cpBBNew(args[0],args[1], args[2],args[3])
+            
+    # String representaion (for debugging)
+    def __repr__(self):
+        return 'BB(%s, %s, %s, %s)' % (self.left, self.bottom, self.right, self.top)
+        
+    def __eq__(self, other):
+        return self.left == other.left and self.bottom == other.bottom and \
+            self.right == other.right and self.top == other.top
+    
+    def __ne__(self, other):
+        return not self.__eq__(other)
+        
+    def intersects(self, other):
+        """Returns true if the bounding boxes intersect"""
+        return bool(cp._cpBBintersects(self._bb, other._bb))
+
+    def contains(self, other):
+        """Returns true if bb completley contains the other bb"""
+        return bool(cp._cpBBcontainsBB(self._bb, other._bb))
+        
+    def contains_vect(self, v):
+        """Returns true if this bb contains the vector v"""
+        return bool(cp._cpBBcontainsVect(self._bb, v))
+        
+    def merge(self, other):
+        """Return the minimal bounding box that contains both this bb and the 
+        other bb
+        """
+        return BB(cp._cpBBmerge(self._bb, other._bb))
+        
+    def expand(self, v):
+        """Return the minimal bounding box that contans both this bounding box 
+        and the vector v
+        """
+        return BB(cp._cpBBexpand(self._bb, v))
+        
+    left = property(lambda self: self._bb.l)
+    bottom = property(lambda self: self._bb.b)
+    right = property(lambda self: self._bb.r)
+    top = property(lambda self: self._bb.t)
+    
+    def clamp_vect(self, v):
+        """Returns a copy of the vector v clamped to the bounding box"""
+        return cp.cpBBClampVect(self._bb, v)
+    
+    def wrap_vect(self, v):
+        """Returns a copy of v wrapped to the bounding box.
+        That is, BB(0,0,10,10).wrap_vect((5,5)) == Vec2d(10,10)
+        """
+        return cp.cpBBWrapVect(self._bb, v)
+        
+       
+v1 = Vec2d(1,3)
+v2 = Vec2d(1,3)
+
+b = Body(10,100)
+bb = BB(1,2,3,4)
+bb1 = BB(0,0,10,10)
+bb2 = BB(1,2,3,4)
+c = Circle(b, 10, (3.3,2.2))
+s = Segment(b, (10,10), (100,100),5)
+
+
+def test(): 
+    try:
+        bb = cp.cpBB(1,2,3,4)
+        print cp.cpBBWrapVect(bb, Vec2d(10,12))
+    except Exception, e: 
+        print e
+    
+    try:
+        test_bb = BB(1,2,3,4)
+        test_v = Vec2d(12,14)
+        print  test_bb.wrap_vect(test_v)
+    except Exception, e: 
+        print e
+    try:
+        test_b = Body(10,100)
+        test_c = Circle(test_b, 10, (3.1,5.9))
+        print test_c.offset
+    except Exception, e:
+        print e
+
+ 
+        
 #del cp, ct, u
 
 __all__ = ["inf", "version", "init_pymunk"

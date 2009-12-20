@@ -20,7 +20,6 @@
  */
  
 #include <stdlib.h>
-#include <math.h>
 #include <float.h>
 
 #include "chipmunk.h"
@@ -28,14 +27,17 @@
 cpBody*
 cpBodyAlloc(void)
 {
-	return (cpBody *)malloc(sizeof(cpBody));
+	return (cpBody *)cpmalloc(sizeof(cpBody));
 }
+
+cpBodyVelocityFunc cpBodyUpdateVelocityDefault = cpBodyUpdateVelocity;
+cpBodyPositionFunc cpBodyUpdatePositionDefault = cpBodyUpdatePosition;
 
 cpBody*
 cpBodyInit(cpBody *body, cpFloat m, cpFloat i)
 {
-	body->velocity_func = cpBodyUpdateVelocity;
-	body->position_func = cpBodyUpdatePosition;
+	body->velocity_func = cpBodyUpdateVelocityDefault;
+	body->position_func = cpBodyUpdatePositionDefault;
 	
 	cpBodySetMass(body, m);
 	cpBodySetMoment(body, i);
@@ -68,36 +70,38 @@ void cpBodyDestroy(cpBody *body){}
 void
 cpBodyFree(cpBody *body)
 {
-	if(body) cpBodyDestroy(body);
-	free(body);
+	if(body){
+		cpBodyDestroy(body);
+		cpfree(body);
+	}
 }
 
 void
-cpBodySetMass(cpBody *body, cpFloat m)
+cpBodySetMass(cpBody *body, cpFloat mass)
 {
-	body->m = m;
-	body->m_inv = 1.0f/m;
+	body->m = mass;
+	body->m_inv = 1.0f/mass;
 }
 
 void
-cpBodySetMoment(cpBody *body, cpFloat i)
+cpBodySetMoment(cpBody *body, cpFloat moment)
 {
-	body->i = i;
-	body->i_inv = 1.0f/i;
+	body->i = moment;
+	body->i_inv = 1.0f/moment;
 }
 
 void
-cpBodySetAngle(cpBody *body, cpFloat a)
+cpBodySetAngle(cpBody *body, cpFloat angle)
 {
-	body->a = fmod(a, (cpFloat)M_PI*2.0f);
-	body->rot = cpvforangle(a);
+	body->a = angle;//fmod(a, (cpFloat)M_PI*2.0f);
+	body->rot = cpvforangle(angle);
 }
 
 void
 cpBodySlew(cpBody *body, cpVect pos, cpFloat dt)
 {
 	cpVect delta = cpvsub(pos, body->p);
-	body->v = cpvmult(delta, 1.0/dt);
+	body->v = cpvmult(delta, 1.0f/dt);
 }
 
 void
@@ -125,14 +129,14 @@ cpBodyResetForces(cpBody *body)
 }
 
 void
-cpBodyApplyForce(cpBody *body, cpVect f, cpVect r)
+cpBodyApplyForce(cpBody *body, cpVect force, cpVect r)
 {
-	body->f = cpvadd(body->f, f);
-	body->t += cpvcross(r, f);
+	body->f = cpvadd(body->f, force);
+	body->t += cpvcross(r, force);
 }
 
 void
-cpDampedSpring(cpBody *a, cpBody *b, cpVect anchr1, cpVect anchr2, cpFloat rlen, cpFloat k, cpFloat dmp, cpFloat dt)
+cpApplyDampedSpring(cpBody *a, cpBody *b, cpVect anchr1, cpVect anchr2, cpFloat rlen, cpFloat k, cpFloat dmp, cpFloat dt)
 {
 	// Calculate the world space anchor coordinates.
 	cpVect r1 = cpvrotate(anchr1, a->rot);

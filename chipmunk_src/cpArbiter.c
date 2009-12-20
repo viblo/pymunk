@@ -20,15 +20,15 @@
  */
  
 #include <stdlib.h>
-#include <math.h>
 
 #include "chipmunk.h"
+#include "constraints/util.h"
 
 cpFloat cp_bias_coef = 0.1f;
 cpFloat cp_collision_slop = 0.1f;
 
 cpContact*
-cpContactInit(cpContact *con, cpVect p, cpVect n, cpFloat dist, unsigned int hash)
+cpContactInit(cpContact *con, cpVect p, cpVect n, cpFloat dist, cpHashValue hash)
 {
 	con->p = p;
 	con->n = n;
@@ -44,42 +44,59 @@ cpContactInit(cpContact *con, cpVect p, cpVect n, cpFloat dist, unsigned int has
 }
 
 cpVect
-cpContactsSumImpulses(cpContact *contacts, int numContacts)
+cpArbiterTotalImpulse(cpArbiter *arb)
 {
+	cpContact *contacts = arb->contacts;
 	cpVect sum = cpvzero;
 	
-	for(int i=0; i<numContacts; i++){
+	for(int i=0, count=arb->numContacts; i<count; i++){
 		cpContact *con = &contacts[i];
-		cpVect j = cpvmult(con->n, con->jnAcc);
-		sum = cpvadd(sum, j);
+		sum = cpvadd(sum, cpvmult(con->n, con->jnAcc));
 	}
 		
 	return sum;
 }
 
 cpVect
-cpContactsSumImpulsesWithFriction(cpContact *contacts, int numContacts)
+cpArbiterTotalImpulseWithFriction(cpArbiter *arb)
 {
+	cpContact *contacts = arb->contacts;
 	cpVect sum = cpvzero;
 	
-	for(int i=0; i<numContacts; i++){
+	for(int i=0, count=arb->numContacts; i<count; i++){
 		cpContact *con = &contacts[i];
-		cpVect t = cpvperp(con->n);
-		cpVect j = cpvadd(cpvmult(con->n, con->jnAcc), cpvmult(t, con->jtAcc));
-		sum = cpvadd(sum, j);
+		sum = cpvadd(sum, cpvrotate(con->n, cpv(con->jnAcc, con->jtAcc)));
 	}
 		
 	return sum;
 }
 
-cpArbiter*
-cpArbiterAlloc(void)
+cpFloat
+cpContactsEstimateCrushingImpulse(cpContact *contacts, int numContacts)
 {
-	return (cpArbiter *)calloc(1, sizeof(cpArbiter));
+	cpFloat fsum = 0.0f;
+	cpVect vsum = cpvzero;
+	
+	for(int i=0; i<numContacts; i++){
+		cpContact *con = &contacts[i];
+		cpVect j = cpvrotate(con->n, cpv(con->jnAcc, con->jtAcc));
+		
+		fsum += cpvlength(j);
+		vsum = cpvadd(vsum, j);
+	}
+	
+	cpFloat vmag = cpvlength(vsum);
+	return (1.0f - vmag/fsum);
 }
 
 cpArbiter*
-cpArbiterInit(cpArbiter *arb, cpShape *a, cpShape *b, int stamp)
+cpArbiterAlloc(void)
+{
+	return (cpArbiter *)cpcalloc(1, sizeof(cpArbiter));
+}
+
+cpArbiter*
+cpArbiterInit(cpArbiter *arb, cpShape *a, cpShape *b)
 {
 	arb->numContacts = 0;
 	arb->contacts = NULL;
@@ -87,53 +104,69 @@ cpArbiterInit(cpArbiter *arb, cpShape *a, cpShape *b, int stamp)
 	arb->a = a;
 	arb->b = b;
 	
-	arb->stamp = stamp;
-		
+	arb->stamp = -1;
+	arb->firstColl = 1;
+	
 	return arb;
 }
 
 cpArbiter*
-cpArbiterNew(cpShape *a, cpShape *b, int stamp)
+cpArbiterNew(cpShape *a, cpShape *b)
 {
-	return cpArbiterInit(cpArbiterAlloc(), a, b, stamp);
+	return cpArbiterInit(cpArbiterAlloc(), a, b);
 }
 
 void
 cpArbiterDestroy(cpArbiter *arb)
 {
-	free(arb->contacts);
+	if(arb->contacts) cpfree(arb->contacts);
 }
 
 void
 cpArbiterFree(cpArbiter *arb)
 {
-	if(arb) cpArbiterDestroy(arb);
-	free(arb);
+	if(arb){
+		cpArbiterDestroy(arb);
+		cpfree(arb);
+	}
 }
 
 void
-cpArbiterInject(cpArbiter *arb, cpContact *contacts, int numContacts)
+cpArbiterUpdate(cpArbiter *arb, cpContact *contacts, int numContacts, cpCollisionHandler *handler, cpShape *a, cpShape *b)
 {
-	// Iterate over the possible pairs to look for hash value matches.
-	for(int i=0; i<arb->numContacts; i++){
-		cpContact *old = &arb->contacts[i];
-		
-		for(int j=0; j<numContacts; j++){
-			cpContact *new_contact = &contacts[j];
+	// Arbiters without contact data may exist if a collision function rejected the collision.
+	if(arb->contacts){
+		// Iterate over the possible pairs to look for hash value matches.
+		for(int i=0; i<arb->numContacts; i++){
+			cpContact *old = &arb->contacts[i];
 			
-			// This could trigger false possitives.
-			if(new_contact->hash == old->hash){
-				// Copy the persistant contact information.
-				new_contact->jnAcc = old->jnAcc;
-				new_contact->jtAcc = old->jtAcc;
+			for(int j=0; j<numContacts; j++){
+				cpContact *new_contact = &contacts[j];
+				
+				// This could trigger false positives, but is fairly unlikely nor serious if it does.
+				if(new_contact->hash == old->hash){
+					// Copy the persistant contact information.
+					new_contact->jnAcc = old->jnAcc;
+					new_contact->jtAcc = old->jtAcc;
+				}
 			}
 		}
-	}
 
-	free(arb->contacts);
+		cpfree(arb->contacts);
+	}
 	
 	arb->contacts = contacts;
 	arb->numContacts = numContacts;
+	
+	arb->handler = handler;
+	arb->swappedColl = (a->collision_type != handler->a);
+	
+	arb->e = a->e * b->e;
+	arb->u = a->u * b->u;
+	arb->surface_vr = cpvsub(a->surface_v, b->surface_v);
+	
+	// For collisions between two similar primitive types, the order could have been swapped.
+	arb->a = a; arb->b = b;
 }
 
 void
@@ -141,10 +174,6 @@ cpArbiterPreStep(cpArbiter *arb, cpFloat dt_inv)
 {
 	cpShape *shapea = arb->a;
 	cpShape *shapeb = arb->b;
-		
-	cpFloat e = shapea->e * shapeb->e;
-	arb->u = shapea->u * shapeb->u;
-	arb->target_v = cpvsub(shapeb->surface_v, shapea->surface_v);
 
 	cpBody *a = shapea->body;
 	cpBody *b = shapeb->body;
@@ -156,29 +185,16 @@ cpArbiterPreStep(cpArbiter *arb, cpFloat dt_inv)
 		con->r1 = cpvsub(con->p, a->p);
 		con->r2 = cpvsub(con->p, b->p);
 		
-		// Calculate the mass normal.
-		cpFloat mass_sum = a->m_inv + b->m_inv;
-		
-		cpFloat r1cn = cpvcross(con->r1, con->n);
-		cpFloat r2cn = cpvcross(con->r2, con->n);
-		cpFloat kn = mass_sum + a->i_inv*r1cn*r1cn + b->i_inv*r2cn*r2cn;
-		con->nMass = 1.0f/kn;
-		
-		// Calculate the mass tangent.
-		cpVect t = cpvperp(con->n);
-		cpFloat r1ct = cpvcross(con->r1, t);
-		cpFloat r2ct = cpvcross(con->r2, t);
-		cpFloat kt = mass_sum + a->i_inv*r1ct*r1ct + b->i_inv*r2ct*r2ct;
-		con->tMass = 1.0f/kt;
+		// Calculate the mass normal and mass tangent.
+		con->nMass = 1.0f/k_scalar(a, b, con->r1, con->r2, con->n);
+		con->tMass = 1.0f/k_scalar(a, b, con->r1, con->r2, cpvperp(con->n));
 				
 		// Calculate the target bias velocity.
 		con->bias = -cp_bias_coef*dt_inv*cpfmin(0.0f, con->dist + cp_collision_slop);
 		con->jBias = 0.0f;
 		
 		// Calculate the target bounce velocity.
-		cpVect v1 = cpvadd(a->v, cpvmult(cpvperp(con->r1), a->w));
-		cpVect v2 = cpvadd(b->v, cpvmult(cpvperp(con->r2), b->w));
-		con->bounce = cpvdot(con->n, cpvsub(v2, v1))*e;
+		con->bounce = normal_relative_velocity(a, b, con->r1, con->r2, con->n)*arb->e;//cpvdot(con->n, cpvsub(v2, v1))*e;
 	}
 }
 
@@ -189,18 +205,14 @@ cpArbiterApplyCachedImpulse(cpArbiter *arb)
 	cpShape *shapeb = arb->b;
 		
 	arb->u = shapea->u * shapeb->u;
-	arb->target_v = cpvsub(shapeb->surface_v, shapea->surface_v);
+	arb->surface_vr = cpvsub(shapeb->surface_v, shapea->surface_v);
 
 	cpBody *a = shapea->body;
 	cpBody *b = shapeb->body;
 	
 	for(int i=0; i<arb->numContacts; i++){
 		cpContact *con = &arb->contacts[i];
-		
-		cpVect t = cpvperp(con->n);
-		cpVect j = cpvadd(cpvmult(con->n, con->jnAcc), cpvmult(t, con->jtAcc));
-		cpBodyApplyImpulse(a, cpvneg(j), con->r1);
-		cpBodyApplyImpulse(b, j, con->r2);
+		apply_impulses(a, b, con->r1, con->r2, cpvrotate(con->n, cpv(con->jnAcc, con->jtAcc)));
 	}
 }
 
@@ -228,14 +240,10 @@ cpArbiterApplyImpulse(cpArbiter *arb, cpFloat eCoef)
 		jbn = con->jBias - jbnOld;
 		
 		// Apply the bias impulse.
-		cpVect jb = cpvmult(n, jbn);
-		cpBodyApplyBiasImpulse(a, cpvneg(jb), r1);
-		cpBodyApplyBiasImpulse(b, jb, r2);
+		apply_bias_impulses(a, b, r1, r2, cpvmult(n, jbn));
 
 		// Calculate the relative velocity.
-		cpVect v1 = cpvadd(a->v, cpvmult(cpvperp(r1), a->w));
-		cpVect v2 = cpvadd(b->v, cpvmult(cpvperp(r2), b->w));
-		cpVect vr = cpvsub(v2, v1);
+		cpVect vr = relative_velocity(a, b, r1, r2);
 		cpFloat vrn = cpvdot(vr, n);
 		
 		// Calculate and clamp the normal impulse.
@@ -245,8 +253,7 @@ cpArbiterApplyImpulse(cpArbiter *arb, cpFloat eCoef)
 		jn = con->jnAcc - jnOld;
 		
 		// Calculate the relative tangent velocity.
-		cpVect t = cpvperp(n);
-		cpFloat vrt = cpvdot(cpvadd(vr, arb->target_v), t);
+		cpFloat vrt = cpvdot(cpvadd(vr, arb->surface_vr), cpvperp(n));
 		
 		// Calculate and clamp the friction impulse.
 		cpFloat jtMax = arb->u*con->jnAcc;
@@ -256,8 +263,6 @@ cpArbiterApplyImpulse(cpArbiter *arb, cpFloat eCoef)
 		jt = con->jtAcc - jtOld;
 		
 		// Apply the final impulse.
-		cpVect j = cpvadd(cpvmult(n, jn), cpvmult(t, jt));
-		cpBodyApplyImpulse(a, cpvneg(j), r1);
-		cpBodyApplyImpulse(b, j, r2);
+		apply_impulses(a, b, r1, r2, cpvrotate(n, cpv(jn, jt)));
 	}
 }
