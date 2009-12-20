@@ -305,58 +305,42 @@ class Space(object):
             return func(shape, data)
         return cp.cpSpacePointQueryFunc(cf)
     
-    def point_query(self, point, func, data=None):
-        """Query the space for collisions between a point and its shapes 
-        (both static and nonstatic shapes)
+    def point_query(self, point, layers = -1, group = 0):
+        """Query space at point filtering out matches with the given layers 
+        and group. Return a list of found shapes.
+        
+        If you don't want to filter out any matches, use -1 for the layers 
+        and 0 as the group.
         
         :Parameters:    
             point : (x,y) or `Vec2d`
                 Define where to check for collision in the space.
-            func : ``func(shape, data)``
-                Called when a collision is found
-            shape : `Shape`
-                The colliding shape
-            data : any
-                Data argument sent to the point_query function
-        """       
-        f = self._get_query_cf(func, data)
-        cp.cpSpaceShapePointQuery(self._space, point, f, None)
-        cp.cpSpaceStaticShapePointQuery(self._space, point, f, None)
+            layers : int
+                Only pick shapes matching the bit mask. i.e. (layers & shape.layers) != 0
+            group : 
+                Only pick shapes in this group.
+                
+        """
+        self.__query_hits = []
+        def cf(_shape, data):
+            shape = self._shapes[_shape.contents.hashid]
+            self.__query_hits.append(shape)
+        f = cp.cpSpacePointQueryFunc(cf)
+        cp.cpSpacePointQuery(self._space, point, layers, group, f, None)
         
-    def static_point_query(self, point, func, data=None):
-        """Query the space for collisions between a point and the static 
-        shapes in the space. Call the callback function when a colliosion is 
-        found.
+        return self.__query_hits
         
-        :Parameters:
-            point : (x,y) or `Vec2d`
-                Define where to check for collision in the space.
-            func : ``func(shape, data)``
-                The callback function.
-            shape : `Shape`
-                The colliding shape
-            data : any
-                Data argument sent to the point_query function
-        """       
-        f = self._get_query_cf(func, data)
-        cp.cpSpaceStaticShapePointQuery(self._space, point, f, None)
+    def point_query_first(self, point, layers = 0xFFFFFFFF, group = 0):
+        """Query space at point and return the first shape found matching the 
+        given layers and group. Returns None if no shape was found.
+        """
+        shape = None
+        _shape = cp.cpSpacePointQueryFirst(self._space, point, layers, group)
+        if _shape:
+            shape = self._shapes[_shape.contents.hashid]
+        return shape
         
-    def nonstatic_point_query(self, point, func, data=None):
-        """Query the space for collisions between a point and the non static 
-        shapes in the space
-        
-        :Parameters:
-            point : (x,y) or `Vec2d`
-                Define where to check for collision in the space.
-            func : ``func(shape, data)``
-                Called when a collision is found
-            shape : `Shape`
-                The colliding shape
-            data : any
-                Data argument sent to the point_query function
-        """       
-        f = self._get_query_cf(func, data)
-        cp.cpSpaceShapePointQuery(self._space, point, f, None)    
+     
     
 class Body(object):
     """A rigid body
@@ -664,6 +648,52 @@ class Shape(object):
         """Update and returns the bouding box of this shape"""
         return BB(cp.cpShapeCacheBB(self._shape))
 
+    def point_query(self, p):
+        """Check if the given point lies within the shape."""
+        return bool(cp.cpShapePointQuery(self._shape, p))
+        
+    def segment_query(self, a, b):
+        """Check if the line segment from a to b intersects the shape. 
+        
+        Return either SegmentQueryInfo object or None
+        """
+        info = cp.cpSegmentQueryInfo()
+        info_p = ct.POINTER(cp.cpSegmentQueryInfo)(info)
+        r = cp.cpShapeSegmentQuery(self._shape, a, b, info_p)
+        if bool(r):
+            return SegmentQueryInfo(self, a, b, info)
+        else:
+            return None
+    
+class SegmentQueryInfo(object):
+    def __init__(self, shape, start, end, _segment_query_info):
+        self._shape = shape
+        self._t = _segment_query_info.t
+        self._n = _segment_query_info.n
+        self._start = start
+        self._end = end
+        
+    shape = property(lambda self: self._shape
+        , doc = """shape that was hit, NULL if no collision""")
+        
+    t = property(lambda self: self._t
+        , doc = """Distance along query segment, will always be in the range [0, 1]""")
+        
+    n = property(lambda self: self._n
+        , doc = """Normal of hit surface""")
+        
+    def get_hit_point(self):
+        """Return the hit point in world coordinates where the segment first 
+        intersected with the shape
+        """
+        return cp._cpvlerp(self._start, self._end, self.t)
+        
+    def get_hit_distance(self):
+        """Return the absolute distance where the segment first hit the shape
+        """
+        return cp._cpvdist(self._start, self._end) * self.t
+    
+    
 class Circle(Shape):
     """A circle shape defined by a radius
     
@@ -1328,8 +1358,11 @@ b = Body(10,100)
 bb = BB(1,2,3,4)
 bb1 = BB(0,0,10,10)
 bb2 = BB(1,2,3,4)
-c = Circle(b, 10, (3.3,2.2))
+c = Circle(b, 10, (0.1,0.1))
 s = Segment(b, (10,10), (100,100),5)
+ss = Space()
+ss.add(c)
+ss.step(1)
 
 
 def test(): 

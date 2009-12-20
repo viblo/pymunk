@@ -719,7 +719,7 @@ cpPolyShapeGetVert.restype = cpVect
 cpPolyShapeGetVert.argtypes = [POINTER(cpShape), c_int]
 class cpSegmentQueryInfo(Structure):
     pass
-cpSegmentQueryInfo._pack_ = 4
+#cpSegmentQueryInfo._pack_ = 4
 cpSegmentQueryInfo._fields_ = [
     ('shape', POINTER(cpShape)),
     ('t', cpFloat),
