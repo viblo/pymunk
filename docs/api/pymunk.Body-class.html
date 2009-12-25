@@ -66,6 +66,18 @@ object --+
 </pre>
 
 <hr />
+<p>A rigid body</p>
+<ul class="rst-simple">
+<li>Use forces to modify the rigid bodies if possible. This is likely to be
+the most stable.</li>
+<li>Modifying a body's velocity shouldn't necessarily be avoided, but
+applying large changes can cause strange results in the simulation.
+Experiment freely, but be warned.</li>
+<li>Don't modify a body's position every step unless you really know what
+you are doing. Otherwise you're likely to get the position/velocity badly
+out of sync.</li>
+</ul>
+
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -82,8 +94,8 @@ object --+
         <tr>
           <td><span class="summary-sig"><a href="pymunk.Body-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">mass</span>,
-        <span class="summary-sig-arg">inertia</span>)</span><br />
-      x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
+        <span class="summary-sig-arg">moment</span>)</span><br />
+      Create a new Body</td>
           <td align="right" valign="top">
             
             
@@ -118,7 +130,8 @@ object --+
           <td><span class="summary-sig"><a href="pymunk.Body-class.html#apply_impulse" class="summary-sig-name">apply_impulse</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">j</span>,
         <span class="summary-sig-arg">r</span>=<span class="summary-sig-default"><code class="variable-group">(</code>0<code class="variable-op">, </code>0<code class="variable-group">)</code></span>)</span><br />
-      Apply the impulse j to body with offset r.</td>
+      Apply the impulse j to body at a relative offset (important!) r
+from the center of gravity.</td>
           <td align="right" valign="top">
             
             
@@ -135,7 +148,7 @@ object --+
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="reset_forces"></a><span class="summary-sig-name">reset_forces</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Reset the forces on the body</td>
+      Zero both the forces and torques accumulated on body</td>
           <td align="right" valign="top">
             
             
@@ -154,7 +167,53 @@ object --+
           <td><span class="summary-sig"><a href="pymunk.Body-class.html#apply_force" class="summary-sig-name">apply_force</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">f</span>,
         <span class="summary-sig-arg">r</span>=<span class="summary-sig-default"><code class="variable-group">(</code>0<code class="variable-op">, </code>0<code class="variable-group">)</code></span>)</span><br />
-      Apply (accumulate) the force f on body with offset r.</td>
+      Apply (accumulate) the force f on body at a relative offset
+(important!) r from the center of gravity.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Body-class.html#apply_damped_spring" class="summary-sig-name">apply_damped_spring</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">b</span>,
+        <span class="summary-sig-arg">anchor1</span>,
+        <span class="summary-sig-arg">anchor2</span>,
+        <span class="summary-sig-arg">rlen</span>,
+        <span class="summary-sig-arg">k</span>,
+        <span class="summary-sig-arg">dmp</span>,
+        <span class="summary-sig-arg">dt</span>)</span><br />
+      Apply a spring force between this body and b at anchors anchr1 and
+anchr2 respectively.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Body-class.html#slew" class="summary-sig-name">slew</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pos</span>,
+        <span class="summary-sig-arg">dt</span>)</span><br />
+      Modify the velocity of the body so that it will move to the
+specified absolute coordinates in the next timestep.</td>
           <td align="right" valign="top">
             
             
@@ -174,7 +233,7 @@ object --+
         <span class="summary-sig-arg">gravity</span>,
         <span class="summary-sig-arg">damping</span>,
         <span class="summary-sig-arg">dt</span>)</span><br />
-      Updates the velocity of the body using Euler integration.</td>
+      Default rigid body velocity integration function.</td>
           <td align="right" valign="top">
             
             
@@ -192,7 +251,7 @@ object --+
         <tr>
           <td><span class="summary-sig"><a href="pymunk.Body-class.html#update_position" class="summary-sig-name">update_position</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">dt</span>)</span><br />
-      Updates the position of the body using Euler integration.</td>
+      Default rigid body position integration function.</td>
           <td align="right" valign="top">
             
             
@@ -210,7 +269,7 @@ object --+
         <tr>
           <td><span class="summary-sig"><a name="local_to_world"></a><span class="summary-sig-name">local_to_world</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">v</span>)</span><br />
-      Convert body local to world coordinates</td>
+      Convert body local coordinates to world space coordinates</td>
           <td align="right" valign="top">
             
             
@@ -228,32 +287,7 @@ object --+
         <tr>
           <td><span class="summary-sig"><a name="world_to_local"></a><span class="summary-sig-name">world_to_local</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">v</span>)</span><br />
-      Convert world to body local coordinates</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="pymunk.Body-class.html#damped_spring" class="summary-sig-name">damped_spring</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">b</span>,
-        <span class="summary-sig-arg">anchor1</span>,
-        <span class="summary-sig-arg">anchor2</span>,
-        <span class="summary-sig-arg">rlen</span>,
-        <span class="summary-sig-arg">k</span>,
-        <span class="summary-sig-arg">dmp</span>,
-        <span class="summary-sig-arg">dt</span>)</span><br />
-      Apply a spring force between this and body b at anchors anchr1 and
-anchr2 respectively.</td>
+      Convert world space coordinates to body local coordinates</td>
           <td align="right" valign="top">
             
             
@@ -350,6 +384,13 @@ anchr2 respectively.</td>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a href="pymunk.Body-class.html#force" class="summary-name">force</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="pymunk.Body-class.html#velocity_func" class="summary-name">velocity_func</a><br />
       Set the velocity callback function.
     </td>
@@ -388,7 +429,7 @@ anchr2 respectively.</td>
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">mass</span>,
-        <span class="sig-arg">inertia</span>)</span>
+        <span class="sig-arg">moment</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -396,11 +437,10 @@ anchr2 respectively.</td>
     </td>
   </tr></table>
   
-  x.__init__(...) initializes x; see x.__class__.__doc__ for signature
+  Create a new Body
   <dl class="fields">
     <dt>Overrides:
         object.__init__
-        <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
 </td></tr></table>
@@ -421,7 +461,8 @@ anchr2 respectively.</td>
     </td>
   </tr></table>
   
-  Apply the impulse j to body with offset r.
+  Apply the impulse j to body at a relative offset (important!) r
+from the center of gravity. Both r and j are in world coordinates.
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
@@ -447,8 +488,9 @@ anchr2 respectively.</td>
     </td>
   </tr></table>
   
-  <p>Apply (accumulate) the force f on body with offset r. Both f and r
-should be in world coordinates.</p>
+  <p>Apply (accumulate) the force f on body at a relative offset
+(important!) r from the center of gravity.</p>
+<p>Both r and f are in world coordinates.</p>
 <blockquote>
 <dl class="rst-docutils">
 <dt>f <span class="classifier-delimiter">:</span> <span class="rst-classifier">(x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a></span></dt>
@@ -457,6 +499,70 @@ should be in world coordinates.</p>
 <dd>Offset in world coordinates</dd>
 </dl>
 </blockquote>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="apply_damped_spring"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">apply_damped_spring</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">b</span>,
+        <span class="sig-arg">anchor1</span>,
+        <span class="sig-arg">anchor2</span>,
+        <span class="sig-arg">rlen</span>,
+        <span class="sig-arg">k</span>,
+        <span class="sig-arg">dmp</span>,
+        <span class="sig-arg">dt</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Apply a spring force between this body and b at anchors anchr1 and
+anchr2 respectively.</p>
+<p>Note: not solving the damping forces in the impulse solver causes
+problems with large damping values. There is a new constraint type
+DampedSpring that should be used instead.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>b</code></strong> (<a href="pymunk.Body-class.html" class="link">Body</a>) - The other body</li>
+        <li><strong class="pname"><code>anchor1</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Anchor point on the first body</li>
+        <li><strong class="pname"><code>anchor2</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Anchor point on the second body</li>
+        <li><strong class="pname"><code>k</code></strong> (float) - The spring constant (force/distance) (Young's modulus)</li>
+        <li><strong class="pname"><code>rlen</code></strong> (float) - The rest length of the spring</li>
+        <li><strong class="pname"><code>dmp</code></strong> (float) - The damping constant (force/velocity)</li>
+        <li><strong class="pname"><code>dt</code></strong> (float) - The time step to apply the force over.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="slew"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">slew</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pos</span>,
+        <span class="sig-arg">dt</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Modify the velocity of the body so that it will move to the
+specified absolute coordinates in the next timestep.</p>
+<p>Intended for objects that are moved manually with a custom velocity
+integration function.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -478,9 +584,8 @@ should be in world coordinates.</p>
     </td>
   </tr></table>
   
-  Updates the velocity of the body using Euler integration. You don't
-need to call this unless you are managing the object manually instead
-of adding it to a Space.
+  <p>Default rigid body velocity integration function.</p>
+<p>Updates the velocity of the body using Euler integration.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -500,46 +605,13 @@ of adding it to a Space.
     </td>
   </tr></table>
   
-  Updates the position of the body using Euler integration. Like
-updateVelocity() you shouldn't normally need to call this yourself.
+  <p>Default rigid body position integration function.</p>
+<p>Updates the position of the body using Euler integration. Unlike the
+velocity function, it's unlikely you'll want to override this
+function. If you do, make sure you understand it's source code
+(in Chipmunk) as it's an important part of the collision/joint
+correction process.</p>
   <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="damped_spring"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">damped_spring</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">b</span>,
-        <span class="sig-arg">anchor1</span>,
-        <span class="sig-arg">anchor2</span>,
-        <span class="sig-arg">rlen</span>,
-        <span class="sig-arg">k</span>,
-        <span class="sig-arg">dmp</span>,
-        <span class="sig-arg">dt</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  Apply a spring force between this and body b at anchors anchr1 and
-anchr2 respectively.
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>b</code></strong> (<a href="pymunk.Body-class.html" class="link">Body</a>) - The other body</li>
-        <li><strong class="pname"><code>anchor1</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Anchor point on the first body</li>
-        <li><strong class="pname"><code>anchor2</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Anchor point on the second body</li>
-        <li><strong class="pname"><code>k</code></strong> (float) - The spring constant (force/distance)</li>
-        <li><strong class="pname"><code>rlen</code></strong> (float) - The rest length of the spring</li>
-        <li><strong class="pname"><code>dmp</code></strong> (float) - The damping constant (force/velocity)</li>
-        <li><strong class="pname"><code>dt</code></strong> (float) - The time step to apply the force over.</li>
-    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -693,6 +765,24 @@ anchr2 respectively.
   </dl>
 </td></tr></table>
 </div>
+<a name="force"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">force</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Body-class.html#_get_force" class="summary-sig-name" onclick="show_private();">_get_force</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Body-class.html#_set_force" class="summary-sig-name" onclick="show_private();">_set_force</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">f</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="velocity_func"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -789,7 +879,7 @@ is called each time step and can be used to update the body's position.</p>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Fri Dec 25 22:54:50 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

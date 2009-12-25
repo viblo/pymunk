@@ -65,7 +65,7 @@
 
 <hr />
 <div class="fields">      <p><strong>Version:</strong>
-        $Id: __init__.py 203 2009-07-29 20:15:37Z vb@viblo.se $
+        $Id: __init__.py 219 2009-12-20 22:22:17Z vb@viblo.se $
       </p>
 </div><!-- ==================== SUBMODULES ==================== -->
 <a name="section-Submodules"></a>
@@ -77,6 +77,7 @@
 </tr>
   <tr><td class="summary">
   <ul class="nomargin">
+    <li class="private"> <strong class="uidlink"><a href="pymunk.constraint-module.html" onclick="show_private();">pymunk.constraint</a></strong>    </li>
     <li class="private"> <strong class="uidlink"><a href="pymunk.util-module.html" onclick="show_private();">pymunk.util</a></strong>: <em class="summary">Contains utility functions, mainly to help with polygon creation</em>    </li>
     <li class="private"> <strong class="uidlink"><a href="pymunk.vec2d-module.html" onclick="show_private();">pymunk.vec2d</a></strong>    </li>
   </ul></td></tr>
@@ -103,7 +104,8 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Body-class.html" class="summary-name">Body</a>
+        <a href="pymunk.Body-class.html" class="summary-name">Body</a><br />
+      A rigid body
     </td>
   </tr>
 <tr>
@@ -112,6 +114,16 @@
     </td><td class="summary">
         <a href="pymunk.Shape-class.html" class="summary-name">Shape</a><br />
       Base class for all the shapes.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.SegmentQueryInfo-class.html" class="summary-name">SegmentQueryInfo</a><br />
+      Segment queries return more information than just a simple yes or no,
+they also return where a shape was hit and it's surface normal at the hit
+point.
     </td>
   </tr>
 <tr>
@@ -128,7 +140,6 @@
     </td><td class="summary">
         <a href="pymunk.Segment-class.html" class="summary-name">Segment</a><br />
       A line segment shape between two points
-This shape is mainly intended as a static shape.
     </td>
   </tr>
 <tr>
@@ -136,47 +147,7 @@ This shape is mainly intended as a static shape.
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Poly-class.html" class="summary-name">Poly</a><br />
-      A polygon shape
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.Joint-class.html" class="summary-name">Joint</a>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.PinJoint-class.html" class="summary-name">PinJoint</a><br />
-      Keeps the anchor points at a set distance from one another.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.SlideJoint-class.html" class="summary-name">SlideJoint</a><br />
-      Like pin joints, but have a minimum and maximum distance.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.PivotJoint-class.html" class="summary-name">PivotJoint</a><br />
-      Simply allow two objects to pivot about a single point.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.GrooveJoint-class.html" class="summary-name">GrooveJoint</a><br />
-      Similar to a pivot joint, but one of the anchors is
-on a linear slide instead of being fixed.
+      A convex polygon shape
     </td>
   </tr>
 <tr>
@@ -192,6 +163,103 @@ on a linear slide instead of being fixed.
     </td><td class="summary">
         <a href="pymunk.Arbiter-class.html" class="summary-name">Arbiter</a><br />
       Class for tracking collisions between shapes.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.BB-class.html" class="summary-name">BB</a><br />
+      Simple bounding box class.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.Constraint-class.html" class="summary-name">Constraint</a><br />
+      Base class of all constraints.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.DampedRotarySpring-class.html" class="summary-name">DampedRotarySpring</a><br />
+      Like a damped spring, but works in an angular fashion
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.DampedSpring-class.html" class="summary-name">DampedSpring</a><br />
+      A damped sprint
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.GearJoint-class.html" class="summary-name">GearJoint</a><br />
+      Keeps the angular velocity ratio of a pair of bodies constant.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.GrooveJoint-class.html" class="summary-name">GrooveJoint</a><br />
+      Similar to a pivot joint, but one of the anchors is
+on a linear slide instead of being fixed.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.PinJoint-class.html" class="summary-name">PinJoint</a><br />
+      Keeps the anchor points at a set distance from one another.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.PivotJoint-class.html" class="summary-name">PivotJoint</a><br />
+      Simply allow two objects to pivot about a single point.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.RatchetJoint-class.html" class="summary-name">RatchetJoint</a><br />
+      Works like a socket wrench.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.RotaryLimitJoint-class.html" class="summary-name">RotaryLimitJoint</a><br />
+      Constrains the relative rotations of two bodies.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.SimpleMotor-class.html" class="summary-name">SimpleMotor</a><br />
+      Keeps the relative angular velocity of a pair of bodies constant.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.SlideJoint-class.html" class="summary-name">SlideJoint</a><br />
+      Like pin joints, but have a minimum and maximum distance.
     </td>
   </tr>
 </table>
@@ -265,7 +333,8 @@ on a linear slide instead of being fixed.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="reset_shapeid_counter"></a><span class="summary-sig-name">reset_shapeid_counter</span>()</span></td>
+          <td><span class="summary-sig"><a href="pymunk-module.html#reset_shapeid_counter" class="summary-sig-name">reset_shapeid_counter</a>()</span><br />
+      Reset the internal shape counter</td>
           <td align="right" valign="top">
             
             
@@ -288,7 +357,7 @@ on a linear slide instead of being fixed.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk-module.html#version" class="summary-name">version</a> = <code title="'0.8.4'"><code class="variable-quote">'</code><code class="variable-string">0.8.4</code><code class="variable-quote">'</code></code><br />
+        <a href="pymunk-module.html#version" class="summary-name">version</a> = <code title="'0.9.0'"><code class="variable-quote">'</code><code class="variable-string">0.9.0</code><code class="variable-quote">'</code></code><br />
       The release version of this pymunk installation.
     </td>
   </tr>
@@ -301,6 +370,41 @@ on a linear slide instead of being fixed.
     </td>
   </tr>
 </table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="reset_shapeid_counter"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">reset_shapeid_counter</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Reset the internal shape counter</p>
+<p>Chipmunk (and therefor pymunk) keeps a counter so that every new shape
+is given a unique hash value to be used in the spatial hash. Because this
+affects the order in which the collisions are found and handled, you
+should reset the shape counter every time you populate a space with new
+shapes. If you don't, there might be (very) slight differences in the
+simulation.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
 <!-- ==================== VARIABLES DETAILS ==================== -->
 <a name="section-VariablesDetails"></a>
 <table class="details" border="1" cellpadding="3"
@@ -324,7 +428,7 @@ distribution (i.e. not in a checked-out copy from svn).
   <dl class="fields">
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-<code class="variable-quote">'</code><code class="variable-string">0.8.4</code><code class="variable-quote">'</code>
+<code class="variable-quote">'</code><code class="variable-string">0.9.0</code><code class="variable-quote">'</code>
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -381,7 +485,7 @@ Use this as mass and inertia when you need to create a static body.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Fri Dec 25 22:54:50 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

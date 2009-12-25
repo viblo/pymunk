@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>pymunk.Contact</title>
+  <title>pymunk.SegmentQueryInfo</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -43,7 +43,7 @@
     <td width="100%">
       <span class="breadcrumbs">
         <a href="pymunk-module.html">Package&nbsp;pymunk</a> ::
-        Class&nbsp;Contact
+        Class&nbsp;SegmentQueryInfo
       </span>
     </td>
     <td>
@@ -51,21 +51,25 @@
         <!-- hide/show private -->
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="pymunk.Contact-class.html"
+            >]&nbsp;|&nbsp;<a href="pymunk.SegmentQueryInfo-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class Contact</h1><p class="nomargin-top"></p>
+<h1 class="epydoc">Class SegmentQueryInfo</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
 object --+
          |
-        <strong class="uidshort">Contact</strong>
+        <strong class="uidshort">SegmentQueryInfo</strong>
 </pre>
 
 <hr />
+Segment queries return more information than just a simple yes or no,
+they also return where a shape was hit and it's surface normal at the hit
+point. This object hold that information.
+
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -80,9 +84,66 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Contact-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">contact</span>)</span><br />
-      x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
+          <td><span class="summary-sig"><a href="pymunk.SegmentQueryInfo-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">shape</span>,
+        <span class="summary-sig-arg">start</span>,
+        <span class="summary-sig-arg">end</span>,
+        <span class="summary-sig-arg">t</span>,
+        <span class="summary-sig-arg">n</span>)</span><br />
+      You shouldn't need to initialize SegmentQueryInfo objects on your
+own.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.SegmentQueryInfo-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      str(x)</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_hit_point"></a><span class="summary-sig-name">get_hit_point</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the hit point in world coordinates where the segment first
+intersected with the shape</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_hit_distance"></a><span class="summary-sig-name">get_hit_distance</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the absolute distance where the segment first hit the shape</td>
           <td align="right" valign="top">
             
             
@@ -105,7 +166,6 @@ object --+
       <code>__repr__</code>,
       <code>__setattr__</code>,
       <code>__sizeof__</code>,
-      <code>__str__</code>,
       <code>__subclasshook__</code>
       </p>
     </td>
@@ -123,42 +183,24 @@ object --+
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#position" class="summary-name">position</a><br />
-      Contact position
+        <a href="pymunk.SegmentQueryInfo-class.html#shape" class="summary-name">shape</a><br />
+      Shape that was hit
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#normal" class="summary-name">normal</a><br />
-      Contact normal
+        <a href="pymunk.SegmentQueryInfo-class.html#t" class="summary-name">t</a><br />
+      Distance along query segment, will always be in the range [0, 1]
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#distance" class="summary-name">distance</a><br />
-      Penetration distance
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.Contact-class.html#jn_acc" class="summary-name">jn_acc</a><br />
-      The normal component of the accumulated (final) impulse applied
-to resolve the collision.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.Contact-class.html#jt_acc" class="summary-name">jt_acc</a><br />
-      The tangential component of the accumulated (final) impulse
-applied to resolve the collision.
+        <a href="pymunk.SegmentQueryInfo-class.html#n" class="summary-name">n</a><br />
+      Normal of hit surface
     </td>
   </tr>
   <tr>
@@ -186,7 +228,11 @@ applied to resolve the collision.
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">contact</span>)</span>
+        <span class="sig-arg">shape</span>,
+        <span class="sig-arg">start</span>,
+        <span class="sig-arg">end</span>,
+        <span class="sig-arg">t</span>,
+        <span class="sig-arg">n</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -194,10 +240,34 @@ applied to resolve the collision.
     </td>
   </tr></table>
   
-  x.__init__(...) initializes x; see x.__class__.__doc__ for signature
+  You shouldn't need to initialize SegmentQueryInfo objects on your
+own.
   <dl class="fields">
     <dt>Overrides:
         object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  str(x)
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
         <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
@@ -213,76 +283,44 @@ applied to resolve the collision.
     <span class="table-header">Property Details</span></td>
 </tr>
 </table>
-<a name="position"></a>
+<a name="shape"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">position</h3>
-  Contact position
+  <h3 class="epydoc">shape</h3>
+  Shape that was hit
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_position" class="summary-sig-name" onclick="show_private();">_get_position</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
 </div>
-<a name="normal"></a>
+<a name="t"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">normal</h3>
-  Contact normal
+  <h3 class="epydoc">t</h3>
+  Distance along query segment, will always be in the range [0, 1]
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_normal" class="summary-sig-name" onclick="show_private();">_get_normal</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
 </div>
-<a name="distance"></a>
+<a name="n"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">distance</h3>
-  Penetration distance
+  <h3 class="epydoc">n</h3>
+  Normal of hit surface
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_distance" class="summary-sig-name" onclick="show_private();">_get_distance</a>(<span class="summary-sig-arg">self</span>)</span>
-    </dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="jn_acc"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">jn_acc</h3>
-  The normal component of the accumulated (final) impulse applied
-to resolve the collision. Will not be valid until after the call to
-Space.step() returns
-  <dl class="fields">
-    <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_distance" class="summary-sig-name" onclick="show_private();">_get_distance</a>(<span class="summary-sig-arg">self</span>)</span>
-    </dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="jt_acc"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">jt_acc</h3>
-  The tangential component of the accumulated (final) impulse
-applied to resolve the collision. Will not be valid until after the
-call to Space.step() returns
-  <dl class="fields">
-    <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_jt_acc" class="summary-sig-name" onclick="show_private();">_get_jt_acc</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>

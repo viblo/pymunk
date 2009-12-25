@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>pymunk.Contact</title>
+  <title>pymunk.constraint.Constraint</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -43,7 +43,8 @@
     <td width="100%">
       <span class="breadcrumbs">
         <a href="pymunk-module.html">Package&nbsp;pymunk</a> ::
-        Class&nbsp;Contact
+        <a href="pymunk.constraint-module.html" onclick="show_private();">Module&nbsp;constraint</a> ::
+        Class&nbsp;Constraint
       </span>
     </td>
     <td>
@@ -51,21 +52,34 @@
         <!-- hide/show private -->
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="pymunk.Contact-class.html"
+            >]&nbsp;|&nbsp;<a href="pymunk.constraint.Constraint-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class Contact</h1><p class="nomargin-top"></p>
+<h1 class="epydoc">Class Constraint</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
 object --+
          |
-        <strong class="uidshort">Contact</strong>
+        <strong class="uidshort">Constraint</strong>
 </pre>
 
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="pymunk.constraint.DampedRotarySpring-class.html">DampedRotarySpring</a></li><li>, <a href="pymunk.constraint.DampedSpring-class.html">DampedSpring</a></li><li>, <a href="pymunk.constraint.GearJoint-class.html">GearJoint</a></li><li>, <a href="pymunk.constraint.GrooveJoint-class.html">GrooveJoint</a></li><li>, <a href="pymunk.constraint.PinJoint-class.html">PinJoint</a></li><li>, <a href="pymunk.constraint.PivotJoint-class.html">PivotJoint</a></li><li>, <a href="pymunk.constraint.RatchetJoint-class.html">RatchetJoint</a></li><li>, <a href="pymunk.constraint.RotaryLimitJoint-class.html">RotaryLimitJoint</a></li><li>, <a href="pymunk.constraint.SimpleMotor-class.html">SimpleMotor</a></li><li>, <a href="pymunk.constraint.SlideJoint-class.html">SlideJoint</a></li>  </ul>
+</dd></dl>
+
 <hr />
+<p>Base class of all constraints.</p>
+<p>You usually don't want to create instances of this class directly.</p>
+<p>A constraint is something that describes how two bodies interact with
+each other. (how they constraint each other). Constraints can be simple
+joints that allow bodies to pivot around each other like the bones in your
+body, or they can be more abstract like the gear joint or motors.</p>
+
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -80,9 +94,25 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Contact-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">contact</span>)</span><br />
+          <td><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">constraint</span>=<span class="summary-sig-default">None</span>)</span><br />
       x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -123,42 +153,40 @@ object --+
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#position" class="summary-name">position</a><br />
-      Contact position
+        <a href="pymunk.constraint.Constraint-class.html#max_force" class="summary-name">max_force</a><br />
+      The maximum force that the constraint can use to act on the two
+bodies.
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#normal" class="summary-name">normal</a><br />
-      Contact normal
+        <a href="pymunk.constraint.Constraint-class.html#bias_coef" class="summary-name">bias_coef</a><br />
+      The percentage of error corrected each step of the space.
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#distance" class="summary-name">distance</a><br />
-      Penetration distance
+        <a href="pymunk.constraint.Constraint-class.html#max_bias" class="summary-name">max_bias</a><br />
+      The maximum speed at which the constraint can apply error
+correction.
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#jn_acc" class="summary-name">jn_acc</a><br />
-      The normal component of the accumulated (final) impulse applied
-to resolve the collision.
+        <a href="pymunk.constraint.Constraint-class.html#a" class="summary-name">a</a>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Contact-class.html#jt_acc" class="summary-name">jt_acc</a><br />
-      The tangential component of the accumulated (final) impulse
-applied to resolve the collision.
+        <a href="pymunk.constraint.Constraint-class.html#b" class="summary-name">b</a>
     </td>
   </tr>
   <tr>
@@ -186,7 +214,7 @@ applied to resolve the collision.
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">contact</span>)</span>
+        <span class="sig-arg">constraint</span>=<span class="sig-default">None</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -213,76 +241,86 @@ applied to resolve the collision.
     <span class="table-header">Property Details</span></td>
 </tr>
 </table>
-<a name="position"></a>
+<a name="max_force"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">position</h3>
-  Contact position
+  <h3 class="epydoc">max_force</h3>
+  The maximum force that the constraint can use to act on the two
+bodies. Defaults to infinity
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_position" class="summary-sig-name" onclick="show_private();">_get_position</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_get_max_force" class="summary-sig-name" onclick="show_private();">_get_max_force</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_set_max_force" class="summary-sig-name" onclick="show_private();">_set_max_force</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">f</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
 </div>
-<a name="normal"></a>
+<a name="bias_coef"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">normal</h3>
-  Contact normal
+  <h3 class="epydoc">bias_coef</h3>
+  The percentage of error corrected each step of the space. (Can
+cause issues if you don't use a constant time step) Defaults to 0.1
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_normal" class="summary-sig-name" onclick="show_private();">_get_normal</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_get_bias_coef" class="summary-sig-name" onclick="show_private();">_get_bias_coef</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_set_bias_coef" class="summary-sig-name" onclick="show_private();">_set_bias_coef</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">bias_coef</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
 </div>
-<a name="distance"></a>
+<a name="max_bias"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">distance</h3>
-  Penetration distance
+  <h3 class="epydoc">max_bias</h3>
+  The maximum speed at which the constraint can apply error
+correction. Defaults to infinity
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_distance" class="summary-sig-name" onclick="show_private();">_get_distance</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_get_max_bias" class="summary-sig-name" onclick="show_private();">_get_max_bias</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_set_max_bias" class="summary-sig-name" onclick="show_private();">_set_max_bias</a>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
 </div>
-<a name="jn_acc"></a>
+<a name="a"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">jn_acc</h3>
-  The normal component of the accumulated (final) impulse applied
-to resolve the collision. Will not be valid until after the call to
-Space.step() returns
+  <h3 class="epydoc">a</h3>
+  
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_distance" class="summary-sig-name" onclick="show_private();">_get_distance</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
 </div>
-<a name="jt_acc"></a>
+<a name="b"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">jt_acc</h3>
-  The tangential component of the accumulated (final) impulse
-applied to resolve the collision. Will not be valid until after the
-call to Space.step() returns
+  <h3 class="epydoc">b</h3>
+  
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Contact-class.html#_get_jt_acc" class="summary-sig-name" onclick="show_private();">_get_jt_acc</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>

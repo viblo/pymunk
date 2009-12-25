@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>pymunk.Circle</title>
+  <title>pymunk.BB</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -43,7 +43,7 @@
     <td width="100%">
       <span class="breadcrumbs">
         <a href="pymunk-module.html">Package&nbsp;pymunk</a> ::
-        Class&nbsp;Circle
+        Class&nbsp;BB
       </span>
     </td>
     <td>
@@ -51,25 +51,22 @@
         <!-- hide/show private -->
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="pymunk.Circle-class.html"
+            >]&nbsp;|&nbsp;<a href="pymunk.BB-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class Circle</h1><p class="nomargin-top"></p>
+<h1 class="epydoc">Class BB</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
-object --+    
-         |    
-     <a href="pymunk.Shape-class.html">Shape</a> --+
-             |
-            <strong class="uidshort">Circle</strong>
+object --+
+         |
+        <strong class="uidshort">BB</strong>
 </pre>
 
 <hr />
-<p>A circle shape defined by a radius</p>
-<p>This is the fastest and simplest collision shape</p>
+Simple bounding box class. Stored as left, bottom, right, top values.
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -85,12 +82,9 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Circle-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">body</span>,
-        <span class="summary-sig-arg">radius</span>,
-        <span class="summary-sig-arg">offset</span>=<span class="summary-sig-default"><code class="variable-group">(</code>0<code class="variable-op">, </code>0<code class="variable-group">)</code></span>)</span><br />
-      body is the body attach the circle to, offset is the offset from the
-body's center of gravity in body local coordinates.</td>
+          <td><span class="summary-sig"><a href="pymunk.BB-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      Create a new instance of a bounding box.</td>
           <td align="right" valign="top">
             
             
@@ -106,9 +100,8 @@ body's center of gravity in body local coordinates.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Circle-class.html#unsafe_set_radius" class="summary-sig-name">unsafe_set_radius</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">r</span>)</span><br />
-      Unsafe set the radius of the circle.</td>
+          <td><span class="summary-sig"><a href="pymunk.BB-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      repr(x)</td>
           <td align="right" valign="top">
             
             
@@ -124,9 +117,8 @@ body's center of gravity in body local coordinates.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Circle-class.html#unsafe_set_offset" class="summary-sig-name">unsafe_set_offset</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">o</span>)</span><br />
-      Unsafe set the offset of the circle.</td>
+          <td><span class="summary-sig"><a name="__eq__"></a><span class="summary-sig-name">__eq__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -142,8 +134,8 @@ body's center of gravity in body local coordinates.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span>
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em></td>
+          <td><span class="summary-sig"><a name="__ne__"></a><span class="summary-sig-name">__ne__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -159,9 +151,9 @@ body's center of gravity in body local coordinates.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="cache_bb"></a><span class="summary-sig-name">cache_bb</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Update and returns the bouding box of this shape
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em></td>
+          <td><span class="summary-sig"><a name="intersects"></a><span class="summary-sig-name">intersects</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Returns true if the bounding boxes intersect</td>
           <td align="right" valign="top">
             
             
@@ -177,10 +169,9 @@ body's center of gravity in body local coordinates.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="point_query"></a><span class="summary-sig-name">point_query</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">p</span>)</span><br />
-      Check if the given point lies within the shape.
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em></td>
+          <td><span class="summary-sig"><a name="contains"></a><span class="summary-sig-name">contains</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Returns true if bb completley contains the other bb</td>
           <td align="right" valign="top">
             
             
@@ -196,11 +187,83 @@ body's center of gravity in body local coordinates.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Shape-class.html#segment_query" class="summary-sig-name">segment_query</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">start</span>,
-        <span class="summary-sig-arg">end</span>)</span><br />
-      Check if the line segment from start to end intersects the shape.
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em></td>
+          <td><span class="summary-sig"><a name="contains_vect"></a><span class="summary-sig-name">contains_vect</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">v</span>)</span><br />
+      Returns true if this bb contains the vector v</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="merge"></a><span class="summary-sig-name">merge</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Return the minimal bounding box that contains both this bb and the
+other bb</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="expand"></a><span class="summary-sig-name">expand</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">v</span>)</span><br />
+      Return the minimal bounding box that contans both this bounding box
+and the vector v</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clamp_vect"></a><span class="summary-sig-name">clamp_vect</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">v</span>)</span><br />
+      Returns a copy of the vector v clamped to the bounding box</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.BB-class.html#wrap_vect" class="summary-sig-name">wrap_vect</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">v</span>)</span><br />
+      Returns a copy of v wrapped to the bounding box.</td>
           <td align="right" valign="top">
             
             
@@ -220,7 +283,6 @@ body's center of gravity in body local coordinates.</td>
       <code>__new__</code>,
       <code>__reduce__</code>,
       <code>__reduce_ex__</code>,
-      <code>__repr__</code>,
       <code>__setattr__</code>,
       <code>__sizeof__</code>,
       <code>__str__</code>,
@@ -241,88 +303,28 @@ body's center of gravity in body local coordinates.</td>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Circle-class.html#radius" class="summary-name">radius</a><br />
-      The Radius of the circle
+        <a href="pymunk.BB-class.html#left" class="summary-name">left</a>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Circle-class.html#offset" class="summary-name">offset</a><br />
-      Offset.
+        <a href="pymunk.BB-class.html#bottom" class="summary-name">bottom</a>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Shape-class.html#body" class="summary-name">body</a><br />
-      The body this shape is attached to
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
+        <a href="pymunk.BB-class.html#right" class="summary-name">right</a>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Shape-class.html#collision_type" class="summary-name">collision_type</a><br />
-      User defined collision type for the shape.
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.Shape-class.html#elasticity" class="summary-name">elasticity</a><br />
-      Elasticity of the shape.
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.Shape-class.html#friction" class="summary-name">friction</a><br />
-      Friction coefficient.
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.Shape-class.html#group" class="summary-name">group</a><br />
-      Shapes in the same non-zero group do not generate collisions.
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.Shape-class.html#layers" class="summary-name">layers</a><br />
-      Shapes only collide if they are in the same bit-planes.
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.Shape-class.html#sensor" class="summary-name">sensor</a><br />
-      A boolean value if this shape is a sensor or not.
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.Shape-class.html#surface_velocity" class="summary-name">surface_velocity</a><br />
-      The surface velocity of the object.
-      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
+        <a href="pymunk.BB-class.html#top" class="summary-name">top</a>
     </td>
   </tr>
   <tr>
@@ -350,9 +352,7 @@ body's center of gravity in body local coordinates.</td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">body</span>,
-        <span class="sig-arg">radius</span>,
-        <span class="sig-arg">offset</span>=<span class="sig-default"><code class="variable-group">(</code>0<code class="variable-op">, </code>0<code class="variable-group">)</code></span>)</span>
+        <span class="sig-arg">*args</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -360,8 +360,9 @@ body's center of gravity in body local coordinates.</td>
     </td>
   </tr></table>
   
-  body is the body attach the circle to, offset is the offset from the
-body's center of gravity in body local coordinates.
+  Create a new instance of a bounding box. Can be created with zero
+size with bb = BB() or with four args defining left, bottom, right and
+top: bb = BB(left, bottom, right, top)
   <dl class="fields">
     <dt>Overrides:
         object.__init__
@@ -369,50 +370,47 @@ body's center of gravity in body local coordinates.
   </dl>
 </td></tr></table>
 </div>
-<a name="unsafe_set_radius"></a>
+<a name="__repr__"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">unsafe_set_radius</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">r</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__repr__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Representation operator)</em>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
   </tr></table>
   
-  <p>Unsafe set the radius of the circle.</p>
-<p>WARNING: This change is only picked up as a change to the position of
-the shape's surface, but not it's velocity. Changing it will not
-result in realistic physical behavior. Only use if you know what you
-are doing!</p>
+  repr(x)
   <dl class="fields">
+    <dt>Overrides:
+        object.__repr__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
-<a name="unsafe_set_offset"></a>
+<a name="wrap_vect"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">unsafe_set_offset</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">o</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">wrap_vect</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">v</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
   </tr></table>
   
-  <p>Unsafe set the offset of the circle.</p>
-<p>WARNING: This change is only picked up as a change to the position of
-the shape's surface, but not it's velocity. Changing it will not
-result in realistic physical behavior. Only use if you know what you
-are doing!</p>
+  Returns a copy of v wrapped to the bounding box.
+That is, BB(0,0,10,10).wrap_vect((5,5)) == Vec2d(10,10)
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -427,30 +425,58 @@ are doing!</p>
     <span class="table-header">Property Details</span></td>
 </tr>
 </table>
-<a name="radius"></a>
+<a name="left"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">radius</h3>
-  The Radius of the circle
+  <h3 class="epydoc">left</h3>
+  
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Circle-class.html#_get_radius" class="summary-sig-name" onclick="show_private();">_get_radius</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
 </div>
-<a name="offset"></a>
+<a name="bottom"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">offset</h3>
-  Offset. (body space coordinates)
+  <h3 class="epydoc">bottom</h3>
+  
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Circle-class.html#_get_offset" class="summary-sig-name" onclick="show_private();">_get_offset</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="right"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">right</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="top"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">top</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>

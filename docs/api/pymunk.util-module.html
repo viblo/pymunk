@@ -92,25 +92,6 @@ Contains utility functions, mainly to help with polygon creation
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.util-module.html#is_left" class="summary-sig-name">is_left</a>(<span class="summary-sig-arg">p0</span>,
-        <span class="summary-sig-arg">p1</span>,
-        <span class="summary-sig-arg">p2</span>)</span><br />
-      Test if p2 is left, on or right of the (infinite) line (p0,p1).</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="pymunk.util-module.html#is_convex" class="summary-sig-name">is_convex</a>(<span class="summary-sig-arg">points</span>)</span><br />
       Test if a polygon (list of (x,y)) is convex or not</td>
           <td align="right" valign="top">
@@ -164,23 +145,6 @@ tolerance is the min distance between two points squared.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.util-module.html#calc_center" class="summary-sig-name">calc_center</a>(<span class="summary-sig-arg">points</span>)</span><br />
-      Calculate the center of a polygon</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="pymunk.util-module.html#poly_vectors_around_center" class="summary-sig-name">poly_vectors_around_center</a>(<span class="summary-sig-arg">pointlist</span>,
         <span class="summary-sig-arg">points_as_Vec2d</span>=<span class="summary-sig-default">True</span>)</span><br />
       Rearranges vectors around the center
@@ -200,9 +164,8 @@ If points_as_Vec2d, then return points are also Vec2d, else pos</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.util-module.html#get_poly_UA" class="summary-sig-name">get_poly_UA</a>(<span class="summary-sig-arg">pointlist</span>,
-        <span class="summary-sig-arg">points_as_Vec2d</span>=<span class="summary-sig-default">True</span>)</span><br />
-      Calculates the perimeter and area of a given polygon</td>
+          <td><span class="summary-sig"><a href="pymunk.util-module.html#calc_perimeter" class="summary-sig-name">calc_perimeter</a>(<span class="summary-sig-arg">points</span>)</span><br />
+      Calculate the perimeter of a polygon</td>
           <td align="right" valign="top">
             
             
@@ -240,31 +203,6 @@ If points_as_Vec2d, then return points are also Vec2d, else pos</td>
   <dl class="fields">
     <dt>Returns:</dt>
         <dd>True if the points forms a clockwise polygon</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="is_left"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">is_left</span>(<span class="sig-arg">p0</span>,
-        <span class="sig-arg">p1</span>,
-        <span class="sig-arg">p2</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  Test if p2 is left, on or right of the (infinite) line (p0,p1).
-  <dl class="fields">
-    <dt>Returns:</dt>
-        <dd>&gt; 0 for p2 left of the line through p0 and p1
-= 0 for p2 on the line
-&lt; 0 for p2 right of the line</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -334,27 +272,6 @@ This function uses the Graham Scan Algorithm.
   </dl>
 </td></tr></table>
 </div>
-<a name="calc_center"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">calc_center</span>(<span class="sig-arg">points</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  Calculate the center of a polygon
-  <dl class="fields">
-    <dt>Returns:</dt>
-        <dd>The center (x,y)</dd>
-  </dl>
-</td></tr></table>
-</div>
 <a name="poly_vectors_around_center"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -378,31 +295,26 @@ If points_as_Vec2d, then return points are also Vec2d, else pos
   </dl>
 </td></tr></table>
 </div>
-<a name="get_poly_UA"></a>
+<a name="calc_perimeter"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_poly_UA</span>(<span class="sig-arg">pointlist</span>,
-        <span class="sig-arg">points_as_Vec2d</span>=<span class="sig-default">True</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">calc_perimeter</span>(<span class="sig-arg">points</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
   </tr></table>
   
-  <p>Calculates the perimeter and area of a given polygon</p>
-<p>Use calc_area() to get the area instead of this method</p>
+  Calculate the perimeter of a polygon
   <dl class="fields">
     <dt>Returns:</dt>
-        <dd>U, A</dd>
+        <dd>Perimeter of polygon</dd>
   </dl>
-<div class="fields">      <p><strong>Deprecated:</strong>
-        Scheduled for deletion in pymunk 0.8.5+
-      </p>
-</div></td></tr></table>
+</td></tr></table>
 </div>
 <br />
 <!-- ==================== NAVIGATION BAR ==================== -->
@@ -436,7 +348,7 @@ If points_as_Vec2d, then return points are also Vec2d, else pos
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Fri Dec 25 22:54:50 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

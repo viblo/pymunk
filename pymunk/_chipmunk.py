@@ -548,7 +548,7 @@ cpBodyVelocityFunc = function_pointer(None, POINTER(cpBody), cpVect, cpFloat, cp
 cpBodyPositionFunc = function_pointer(None, POINTER(cpBody), cpFloat)
 cpBodyUpdateVelocityDefault = (cpBodyVelocityFunc).in_dll(chipmunk_lib, 'cpBodyUpdateVelocityDefault')
 cpBodyUpdatePositionDefault = (cpBodyPositionFunc).in_dll(chipmunk_lib, 'cpBodyUpdatePositionDefault')
-cpBody._pack_ = 4
+#cpBody._pack_ = 4
 cpBody._fields_ = [
     ('velocity_func', cpBodyVelocityFunc),
     ('position_func', cpBodyPositionFunc),

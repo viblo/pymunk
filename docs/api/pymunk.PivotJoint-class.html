@@ -62,7 +62,7 @@
 <pre class="base-tree">
 object --+    
          |    
-     <a href="pymunk.Joint-class.html">Joint</a> --+
+<a href="pymunk.Constraint-class.html">Constraint</a> --+
              |
             <strong class="uidshort">PivotJoint</strong>
 </pre>
@@ -87,7 +87,7 @@ Simply allow two objects to pivot about a single point.
           <td><span class="summary-sig"><a href="pymunk.PivotJoint-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">a</span>,
         <span class="summary-sig-arg">b</span>,
-        <span class="summary-sig-arg">pivot</span>)</span><br />
+        <span class="summary-sig-arg">*args</span>)</span><br />
       a and b are the two bodies to connect, and pivot is the point in
 world coordinates of the pivot.</td>
           <td align="right" valign="top">
@@ -106,7 +106,7 @@ world coordinates of the pivot.</td>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span>
-      <em>(Inherited from <a href="pymunk.Joint-class.html">pymunk.Joint</a>)</em></td>
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em></td>
           <td align="right" valign="top">
             
             
@@ -143,6 +143,65 @@ world coordinates of the pivot.</td>
   <td align="left" colspan="2" class="table-header">
     <span class="table-header">Properties</span></td>
 </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.PivotJoint-class.html#anchr1" class="summary-name">anchr1</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.PivotJoint-class.html#anchr2" class="summary-name">anchr2</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Constraint-class.html#a" class="summary-name">a</a>
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Constraint-class.html#b" class="summary-name">b</a>
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Constraint-class.html#bias_coef" class="summary-name">bias_coef</a><br />
+      The percentage of error corrected each step of the space.
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Constraint-class.html#max_bias" class="summary-name">max_bias</a><br />
+      The maximum speed at which the constraint can apply error
+correction.
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Constraint-class.html#max_force" class="summary-name">max_force</a><br />
+      The maximum force that the constraint can use to act on the two
+bodies.
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em>
+    </td>
+  </tr>
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -170,7 +229,7 @@ world coordinates of the pivot.</td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">a</span>,
         <span class="sig-arg">b</span>,
-        <span class="sig-arg">pivot</span>)</span>
+        <span class="sig-arg">*args</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -178,14 +237,75 @@ world coordinates of the pivot.</td>
     </td>
   </tr></table>
   
-  a and b are the two bodies to connect, and pivot is the point in
+  <p>a and b are the two bodies to connect, and pivot is the point in
 world coordinates of the pivot. Because the pivot location is given in
 world coordinates, you must have the bodies moved into the correct
 positions already.
+Alternatively you can specify the joint based on a pair of anchor
+points, but make sure you have the bodies in the right place as the
+joint will fix itself as soon as you start simulating the space.</p>
+<p>That is, either create the joint with PivotJoint(a, b, pivot) or
+PivotJoint(a, b, anchr1, anchr2).</p>
+<blockquote>
+<dl class="rst-docutils">
+<dt>a <span class="classifier-delimiter">:</span> <span class="rst-classifier"><a href="pymunk.Body-class.html" class="link">Body</a></span></dt>
+<dd>The first of the two bodies</dd>
+<dt>b <span class="classifier-delimiter">:</span> <span class="rst-classifier"><a href="pymunk.Body-class.html" class="link">Body</a></span></dt>
+<dd>The second of the two bodies</dd>
+<dt>args <span class="classifier-delimiter">:</span> <span class="rst-classifier">[Vec2d] or [Vec2d,Vec2d]</span></dt>
+<dd>Either one pivot point, or two anchor points</dd>
+</dl>
+</blockquote>
   <dl class="fields">
     <dt>Overrides:
         object.__init__
     </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Property Details</span></td>
+</tr>
+</table>
+<a name="anchr1"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">anchr1</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.PivotJoint-class.html#_get_anchr1" class="summary-sig-name" onclick="show_private();">_get_anchr1</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.PivotJoint-class.html#_set_anchr1" class="summary-sig-name" onclick="show_private();">_set_anchr1</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">anchr</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="anchr2"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">anchr2</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.PivotJoint-class.html#_get_anchr2" class="summary-sig-name" onclick="show_private();">_get_anchr2</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.PivotJoint-class.html#_set_anchr2" class="summary-sig-name" onclick="show_private();">_set_anchr2</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">anchr</span>)</span>
+    </dd>
   </dl>
 </td></tr></table>
 </div>
@@ -221,7 +341,7 @@ positions already.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Fri Dec 25 19:08:13 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
