@@ -37,7 +37,7 @@ class build_chipmunk(Command):
         for folder in source_folders:
             sources += [os.path.join(folder,x) for x in os.listdir(folder) if x[-1] == 'c']
         
-        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC']
+        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC', '-DNDEBUG']
         if platform.system() in ('Windows', 'Microsoft'):
             compiler_preargs += ['-mrtd'] # compile with stddecl instead of cdecl
         objs = compiler.compile(sources, extra_preargs=compiler_preargs)

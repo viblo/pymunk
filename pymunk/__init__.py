@@ -10,7 +10,7 @@ Forum: http://www.slembcke.net/forums/viewforum.php?f=6
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-__all__ = ["inf", "version", "init_pymunk"
+__all__ = ["inf", "version", "chipmunk_version", "init_pymunk"
         , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
         , "moment_for_circle", "moment_for_poly", "reset_shapeid_counter"
         , "Constraint", "PinJoint", "SlideJoint", "PivotJoint", "GrooveJoint"
@@ -29,6 +29,15 @@ version = "0.9.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn).
+"""
+
+chipmunk_version = "rev343"
+"""The chipmunk version compatible with this pymunk version.
+Other (newer) chipmunk versions might also work if the new version does not 
+contain any breaking API changes.
+
+*Note:* This is also the version of the chipmunk source files included in the 
+chipmunk_src folder (normally included in the pymunk source distribution).
 """
 
 #inf = float('inf') # works only on python 2.6+
@@ -775,8 +784,8 @@ class Circle(Shape):
     def unsafe_set_radius(self, r):
         """Unsafe set the radius of the circle. 
     
-        WARNING: This change is only picked up as a change to the position of 
-        the shape's surface, but not it's velocity. Changing it will not 
+        *WARNING:* This change is only picked up as a change to the position 
+        of the shape's surface, but not it's velocity. Changing it will not 
         result in realistic physical behavior. Only use if you know what you 
         are doing!
         """
@@ -789,8 +798,8 @@ class Circle(Shape):
     def unsafe_set_offset(self, o):
         """Unsafe set the offset of the circle. 
     
-        WARNING: This change is only picked up as a change to the position of 
-        the shape's surface, but not it's velocity. Changing it will not 
+        *WARNING:* This change is only picked up as a change to the position 
+        of the shape's surface, but not it's velocity. Changing it will not 
         result in realistic physical behavior. Only use if you know what you 
         are doing!
         """
@@ -933,7 +942,7 @@ class Contact(object):
     def __init__(self, _contact):
         """Initialize a Contact object from the chipmunk equivalent struct
         
-        Note: You should never need to create an instance of this class 
+        *Note:* You should never need to create an instance of this class 
         directly.
         """
         self._p = _contact.p
@@ -962,8 +971,8 @@ class Arbiter(object):
     """Arbiters are collision pairs between shapes that are used with the 
     collision callbacks.
     
-    IMPORTANT: Because arbiters are handled by the space you should never hold 
-    onto a reference to an arbiter as you don't know when it will be 
+    *IMPORTANT:* Because arbiters are handled by the space you should never 
+    hold onto a reference to an arbiter as you don't know when it will be 
     destroyed! Use them within the callback where they are given to you and 
     then forget about them or copy out the information you need from them.
     """
@@ -1030,7 +1039,6 @@ class Arbiter(object):
     
     def _get_is_first_contact(self):
         return bool(self._arbiter.contents.firstColl)
-        #return bool(cp.cpArbiterIsFirstContact(self._arbiter))
     is_first_contact = property(_get_is_first_contact,
         doc="""Returns true if this is the first step that an arbiter existed. You can use this from preSolve and postSolve to know if a collision between two shapes is new without needing to flag a boolean in your begin callback.""")
         

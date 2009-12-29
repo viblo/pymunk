@@ -170,7 +170,7 @@ class GrooveJoint(Constraint):
     on a linear slide instead of being fixed.
     """
     def __init__(self, a, b, groove_a, groove_b, anchr2):
-        """The groove goes from groov_a to groove_b on body a, and the pivot 
+        """The groove goes from groove_a to groove_b on body a, and the pivot 
         is attached to anchr2 on body b. All coordinates are body local. 
         """
         self._constraint = cp.cpGrooveJointNew(a._body, b._body, groove_a, groove_b, anchr2)

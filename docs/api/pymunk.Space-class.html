@@ -265,13 +265,14 @@ size sensitive.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Space-class.html#add_collisionpair_func" class="summary-sig-name">add_collisionpair_func</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#add_collision_handler" class="summary-sig-name">add_collision_handler</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">a</span>,
         <span class="summary-sig-arg">b</span>,
-        <span class="summary-sig-arg">func</span>,
-        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span><br />
-      Register func to be called when a collision is found between
-shapes with collision_type fields that match a and b.</td>
+        <span class="summary-sig-arg">begin</span>,
+        <span class="summary-sig-arg">pre_solve</span>,
+        <span class="summary-sig-arg">post_solve</span>,
+        <span class="summary-sig-arg">separate</span>)</span><br />
+      Add a collision handler for given collision type pair.</td>
           <td align="right" valign="top">
             
             
@@ -287,11 +288,32 @@ shapes with collision_type fields that match a and b.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Space-class.html#remove_collisionpair_func" class="summary-sig-name">remove_collisionpair_func</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#set_default_collision_handler" class="summary-sig-name">set_default_collision_handler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">begin</span>,
+        <span class="summary-sig-arg">pre_solve</span>,
+        <span class="summary-sig-arg">post_solve</span>,
+        <span class="summary-sig-arg">separate</span>)</span><br />
+      Register a default collision handler to be used when no specific
+collision handler is found.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#remove_collision_handler" class="summary-sig-name">remove_collision_handler</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">a</span>,
         <span class="summary-sig-arg">b</span>)</span><br />
-      Remove the collision pair function between shapes with
-collision_type which match a and b.</td>
+      Remove a collision handler for a given collision type pair.</td>
           <td align="right" valign="top">
             
             
@@ -307,10 +329,11 @@ collision_type which match a and b.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Space-class.html#set_default_collisionpair_func" class="summary-sig-name">set_default_collisionpair_func</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a name="add_post_step_callback"></a><span class="summary-sig-name">add_post_step_callback</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">func</span>,
-        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">None</span>)</span><br />
-      Sets the default collsion pair function.</td>
+        <span class="summary-sig-arg">obj</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -653,63 +676,74 @@ to resolve the collisions in the usual case.
   </dl>
 </td></tr></table>
 </div>
-<a name="add_collisionpair_func"></a>
+<a name="add_collision_handler"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_collisionpair_func</span>(<span class="sig-arg">self</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_collision_handler</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">a</span>,
         <span class="sig-arg">b</span>,
-        <span class="sig-arg">func</span>,
-        <span class="sig-arg">data</span>=<span class="sig-default">None</span>)</span>
+        <span class="sig-arg">begin</span>,
+        <span class="sig-arg">pre_solve</span>,
+        <span class="sig-arg">post_solve</span>,
+        <span class="sig-arg">separate</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
   </tr></table>
   
-  <p>Register func to be called when a collision is found between
-shapes with collision_type fields that match a and b. Pass None
-as func to reject any collision with the given collision type pair.</p>
-<blockquote>
-<p>func(shapeA, shapeB, contacts, normal_coef, data) -&gt; bool</p>
-<dl class="rst-docutils">
-<dt>Parameters</dt>
-<dd><dl class="rst-first rst-last rst-docutils">
-<dt>shapeA <span class="classifier-delimiter">:</span> <span class="rst-classifier"><a href="pymunk.Shape-class.html" class="link">Shape</a></span></dt>
-<dd>The first shape</dd>
-<dt>shapeB <span class="classifier-delimiter">:</span> <span class="rst-classifier"><a href="pymunk.Shape-class.html" class="link">Shape</a></span></dt>
-<dd>The second shape</dd>
-<dt>contacts <span class="classifier-delimiter">:</span> <span class="rst-classifier">[<a href="pymunk.Contact-class.html" class="link">Contact</a>]</span></dt>
-<dd>A list of contacts</dd>
-<dt>normal_coef <span class="classifier-delimiter">:</span> <span class="rst-classifier">float</span></dt>
-<dd>The normal coefficient</dd>
-<dt>data <span class="classifier-delimiter">:</span> <span class="rst-classifier">any</span></dt>
-<dd>The data argument sent to the add_collisionpair_func
-function</dd>
-</dl>
-</dd>
-</dl>
-</blockquote>
-<p>WARNING: It is not safe for collision pair functions to remove or
-free shapes or bodies from a space. Doing so will likely end in a
-segfault as an earlier collision may already be referencing the shape
-or body. You must wait until after the step() function returns.</p>
+  <p>Add a collision handler for given collision type pair.</p>
+<p>Whenever a shapes with collision_type a and collision_type b collide,
+these callbacks will be used to process the collision. data is a user
+definable context pointer that is passed to each of the callbacks.
+None can be provided for callbacks you do not wish to implement,
+however Chipmunk will call it's own default versions for these and not
+the default ones you've set up for the space. If you need to fall back
+on the space's default callbacks, you'll have to provide them
+individually to each handler definition.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
 </div>
-<a name="remove_collisionpair_func"></a>
+<a name="set_default_collision_handler"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">remove_collisionpair_func</span>(<span class="sig-arg">self</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_default_collision_handler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">begin</span>,
+        <span class="sig-arg">pre_solve</span>,
+        <span class="sig-arg">post_solve</span>,
+        <span class="sig-arg">separate</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Register a default collision handler to be used when no specific
+collision handler is found. If you do nothing, the space will be given
+a default handler that accepts all collisions in begin() and
+pre_solve() and does nothing for the post_solve() and separate()
+callbacks.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="remove_collision_handler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">remove_collision_handler</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">a</span>,
         <span class="sig-arg">b</span>)</span>
   </h3>
@@ -718,36 +752,13 @@ or body. You must wait until after the step() function returns.</p>
     </td>
   </tr></table>
   
-  Remove the collision pair function between shapes with
-collision_type which match a and b.
+  Remove a collision handler for a given collision type pair.
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>a</code></strong> (int) - The collision_type for the first shape</li>
         <li><strong class="pname"><code>b</code></strong> (int) - The collision_type for the second shape</li>
     </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="set_default_collisionpair_func"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_default_collisionpair_func</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">func</span>,
-        <span class="sig-arg">data</span>=<span class="sig-default">None</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  Sets the default collsion pair function. Passing None as func will
-reset it to default. See <tt class="rst-docutils literal"><span class="pre">add_collisionpair_func</span></tt> for a details on func
-  <dl class="fields">
   </dl>
 </td></tr></table>
 </div>
@@ -996,7 +1007,7 @@ Returns None if no shape was found.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Dec 25 22:54:50 2009
+    Generated by Epydoc 3.0.1 on Wed Dec 30 00:43:59 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

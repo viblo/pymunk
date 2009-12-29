@@ -501,34 +501,34 @@ void cpSpaceHashSegmentQuery(cpSpaceHash *hash, void *obj, cpVect a, cpVect b, c
 	a = cpvmult(a, 1.0f/hash->celldim);
 	b = cpvmult(b, 1.0f/hash->celldim);
 	
-	cpFloat dt_dx = 1.0f/fabs(b.x - a.x), dt_dy = 1.0f/fabs(b.y - a.y);
+	cpFloat dt_dx = 1.0f/cpfabs(b.x - a.x), dt_dy = 1.0f/cpfabs(b.y - a.y);
 	
 	int cell_x = floor_int(a.x), cell_y = floor_int(a.y);
 
 	cpFloat t = 0;
 
 	int x_inc, y_inc;
-	cpFloat next_v, next_h;
+	cpFloat temp_v, temp_h;
 
 	if (b.x > a.x){
 		x_inc = 1;
-		next_h = (cpffloor(a.x + 1.0f) - a.x)*dt_dx;
+		temp_h = (cpffloor(a.x + 1.0f) - a.x);
 	} else {
 		x_inc = -1;
-		next_h = (a.x - cpffloor(a.x))*dt_dx;
+		temp_h = (a.x - cpffloor(a.x));
 	}
 
 	if (b.y > a.y){
 		y_inc = 1;
-		next_v = (cpffloor(a.y + 1.0f) - a.y)*dt_dy;
+		temp_v = (cpffloor(a.y + 1.0f) - a.y);
 	} else {
 		y_inc = -1;
-		next_v = (a.y - cpffloor(a.y))*dt_dy;
+		temp_v = (a.y - cpffloor(a.y));
 	}
 	
 	// fix NANs in horizontal directions
-	next_h = (next_h == next_h ? next_h : dt_dx);
-	next_v = (next_v == next_v ? next_v : dt_dy);
+	cpFloat next_h = (temp_h ? temp_h*dt_dx : dt_dx);
+	cpFloat next_v = (temp_v ? temp_v*dt_dy : dt_dy);
 
 	int n = hash->numcells;
 	while(t < t_exit){

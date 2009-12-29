@@ -92,8 +92,8 @@ postStepFuncSetTrans(postStepCallback *callback, void *ignored)
 #pragma mark Misc Helper Funcs
 
 // Default collision functions.
-static int alwaysCollide(cpArbiter *arb, cpSpace *space, cpDataPointer data){return 1;}
-static void nothing(cpArbiter *arb, cpSpace *space, cpDataPointer data){}
+static int alwaysCollide(cpArbiter *arb, cpSpace *space, void *data){return 1;}
+static void nothing(cpArbiter *arb, cpSpace *space, void *data){}
 
 // BBfunc callback for the spatial hash.
 static cpBB shapeBBFunc(cpShape *shape){return shape->bb;}
@@ -233,7 +233,6 @@ cpSpaceRemoveCollisionHandler(cpSpace *space, cpCollisionType a, cpCollisionType
 void
 cpSpaceSetDefaultCollisionHandler(
 	cpSpace *space,
-	cpCollisionType a, cpCollisionType b,
 	cpCollisionBeginFunc begin,
 	cpCollisionPreSolveFunc preSolve,
 	cpCollisionPostSolveFunc postSolve,
@@ -241,7 +240,7 @@ cpSpaceSetDefaultCollisionHandler(
 	void *data
 ){
 	cpCollisionHandler handler = {
-		a, b,
+		0, 0,
 		begin ? begin : alwaysCollide,
 		preSolve ? preSolve : alwaysCollide,
 		postSolve ? postSolve : nothing,
@@ -582,6 +581,7 @@ queryFunc(cpShape *a, cpShape *b, cpSpace *space)
 	} else {
 		cpfree(arb->contacts);
 		arb->contacts = NULL;
+		arb->numContacts = 0;
 	}
 	
 	// Time stamp the arbiter so we know it was used recently.
