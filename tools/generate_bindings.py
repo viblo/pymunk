@@ -73,6 +73,7 @@ function_pointer = platform_specific_functions()['function_pointer']
     lib_match = re.compile(r"_libraries.*?]")
     function_pointer_cdecl = re.compile(r"CFUNCTYPE", re.DOTALL)
     function_pointer_stddecl = re.compile(r"WINFUNCTYPE", re.DOTALL)
+    pack = re.compile(r"(\w+\._pack_ = 4)", re.DOTALL)
     
     chipmunkpy = head_match.sub(custom_head, chipmunkpy)
     chipmunkpy = cpVect_classdef_match.sub("#cpVect class def removed", chipmunkpy)
@@ -80,6 +81,7 @@ function_pointer = platform_specific_functions()['function_pointer']
     chipmunkpy = lib_match.sub("chipmunk_lib", chipmunkpy)
     chipmunkpy = function_pointer_cdecl.sub("function_pointer", chipmunkpy)
     chipmunkpy = function_pointer_stddecl.sub("function_pointer", chipmunkpy)
+    chipmunkpy = pack.sub(r"#\1", chipmunkpy)
     f = open(options.output, 'w').write(chipmunkpy)
     print("replacement done")
 
