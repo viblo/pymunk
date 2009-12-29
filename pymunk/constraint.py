@@ -360,3 +360,5 @@ class SimpleMotor(Constraint):
     def _set_rate(self, rate):
         self._dsc.rate
     rate = property(_get_rate, _set_rate)  
+
+

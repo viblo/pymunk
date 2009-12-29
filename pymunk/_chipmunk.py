@@ -423,7 +423,7 @@ cp_bias_coef = (cpFloat).in_dll(chipmunk_lib, 'cp_bias_coef')
 cp_collision_slop = (cpFloat).in_dll(chipmunk_lib, 'cp_collision_slop')
 class cpContact(Structure):
     pass
-cpContact._pack_ = 4
+#cpContact._pack_ = 4
 cpContact._fields_ = [
     ('p', cpVect),
     ('n', cpVect),
@@ -446,7 +446,7 @@ class cpArbiter(Structure):
     pass
 class cpCollisionHandler(Structure):
     pass
-cpArbiter._pack_ = 4
+#cpArbiter._pack_ = 4
 cpArbiter._fields_ = [
     ('numContacts', c_int),
     ('contacts', POINTER(cpContact)),

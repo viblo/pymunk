@@ -10,6 +10,14 @@ Forum: http://www.slembcke.net/forums/viewforum.php?f=6
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
+__all__ = ["inf", "version", "init_pymunk"
+        , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
+        , "moment_for_circle", "moment_for_poly", "reset_shapeid_counter"
+        , "Constraint", "PinJoint", "SlideJoint", "PivotJoint", "GrooveJoint"
+        , "DampedSpring", "DampedRotarySpring", "RotaryLimitJoint"
+        , "RatchetJoint", "GearJoint", "SimpleMotor"
+        , "SegmentQueryInfo", "Contact", "Arbiter", "BB"]
+
 import ctypes as ct
 import pymunk._chipmunk as cp 
 import pymunk.util as u
@@ -20,12 +28,14 @@ from constraint import *
 version = "0.9.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
-distribution (i.e. not in a checked-out copy from svn)."""
+distribution (i.e. not in a checked-out copy from svn).
+"""
 
 #inf = float('inf') # works only on python 2.6+
 inf = 1e100
 """Infinity that can be passed as mass or inertia to Body. 
-Use this as mass and inertia when you need to create a static body."""
+Use this as mass and inertia when you need to create a static body.
+"""
 
 
 def init_pymunk():
@@ -53,8 +63,12 @@ class Space(object):
         self._space = cp.cpSpaceNew()
         self._space.contents.iterations = iterations
         self._space.contents.elasticIterations = elastic_iterations
-        self._callbacks = {} # To prevent the gc to collect the callbacks.
-        self._default_callback = None
+        
+        self._handlers = {} # To prevent the gc to collect the callbacks.
+        self._default_handler = None
+        
+        self._post_step_callbacks = {}
+        
         self._shapes = {}
         self._static_shapes = {}
         self._bodies = set()
@@ -225,95 +239,87 @@ class Space(object):
         to resolve the collisions in the usual case."""
         cp.cpSpaceStep(self._space, dt)
         
-    def add_collisionpair_func(self, a, b, func, data=None):
-        """Register func to be called when a collision is found between 
-        shapes with collision_type fields that match a and b. Pass None
-        as func to reject any collision with the given collision type pair.
+        for obj,(func, args, kwargs) in self._post_step_callbacks.items():
+            func(obj, *args, **kwargs)
+        self._post_step_callbacks = {}
+    
+    def add_collision_handler(self, a, b, begin, pre_solve, post_solve, separate):
+        """Add a collision handler for given collision type pair. 
         
-            func(shapeA, shapeB, contacts, normal_coef, data) -> bool
-            
-            Parameters
-                shapeA : `Shape`
-                    The first shape
-                shapeB : `Shape`
-                    The second shape
-                contacts : [`Contact`]
-                    A list of contacts
-                normal_coef : float
-                    The normal coefficient
-                data : any
-                    The data argument sent to the add_collisionpair_func 
-                    function
-        
-        WARNING: It is not safe for collision pair functions to remove or
-        free shapes or bodies from a space. Doing so will likely end in a 
-        segfault as an earlier collision may already be referencing the shape
-        or body. You must wait until after the step() function returns.
+        Whenever a shapes with collision_type a and collision_type b collide, 
+        these callbacks will be used to process the collision. data is a user 
+        definable context pointer that is passed to each of the callbacks. 
+        None can be provided for callbacks you do not wish to implement, 
+        however Chipmunk will call it's own default versions for these and not 
+        the default ones you've set up for the space. If you need to fall back 
+        on the space's default callbacks, you'll have to provide them 
+        individually to each handler definition.
         """
-        if func is None:
-            cp.cpSpaceAddCollisionPairFunc(self._space, a, b, 
-                ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
-        else:
-            f = self._get_cf(func, data)
-            self._callbacks[(a, b)] = f
-            cp.cpSpaceAddCollisionPairFunc(self._space, a, b, f, None)
+        
+        _functions = self._collision_function_helper(begin, pre_solve, post_solve, separate)
+        
+        self._handlers[(a,b)] = _functions
+        cp.cpSpaceAddCollisionHandler(self._space, a, b, 
+            _functions[0], _functions[1], _functions[2], _functions[3], None)
             
-    def remove_collisionpair_func(self, a, b):
-        """Remove the collision pair function between shapes with 
-        collision_type which match a and b.
+    def set_default_collision_handler(self, begin, pre_solve, post_solve, separate):
+        """Register a default collision handler to be used when no specific 
+        collision handler is found. If you do nothing, the space will be given 
+        a default handler that accepts all collisions in begin() and 
+        pre_solve() and does nothing for the post_solve() and separate() 
+        callbacks. 
+        """
+        
+        _functions = self._collision_function_helper(begin, pre_solve, post_solve, separate)
+        self._default_handler = _functions
+        cp.cpSpaceSetDefaultCollisionHandler(self._space,
+            _functions[0], _functions[1], _functions[2], _functions[3], None)
+    
+    def _collision_function_helper(self, begin, pre_solve, post_solve, separate):
+        
+        functions = [(begin, cp.cpCollisionBeginFunc)
+                    , (pre_solve, cp.cpCollisionPreSolveFunc)
+                    , (post_solve, cp.cpCollisionPostSolveFunc)
+                    , (separate, cp.cpCollisionSeparateFunc)]
+        
+        _functions = []
+        
+        for func, func_type in functions:
+            if func is None:
+                _f = ct.cast(ct.POINTER(ct.c_int)(), func_type)
+            else:
+                
+                _f = self._get_cf1(func, func_type)
+            _functions.append(_f)
+        return _functions
+    
+    def remove_collision_handler(self, a, b):
+        """Remove a collision handler for a given collision type pair.
         
         :Parameters:
             a : int
                 The collision_type for the first shape
             b : int
                 The collision_type for the second shape
-            
         """
-        if (a, b) in self._callbacks:
-            del self._callbacks[(a, b)]
-        cp.cpSpaceRemoveCollisionPairFunc(self._space, a, b)
-    
-    def set_default_collisionpair_func(self, func, data=None):
-        """Sets the default collsion pair function. Passing None as func will 
-        reset it to default. See ``add_collisionpair_func`` for a details on func
-        """
-        if func is None:
-            self._default_callback = None
-            cp.cpSpaceSetDefaultCollisionPairFunc(self._space, 
-                ct.cast(ct.POINTER(ct.c_int)(), cp.cpCollFunc), None)
-        else:
-            f = self._get_cf(func, data)
-            self._default_callback = f
-            cp.cpSpaceSetDefaultCollisionPairFunc(self._space, f, None)
-    
-    def _get_cf(self, func, data):
-        def cf (cpShapeA, cpShapeB, cpContacts, numContacts, normal_coef, _data):
-            ### Translate chipmunk shapes to Shapes.
-            if cpShapeA.contents.id in self._shapes:
-                shapeA = self._shapes[cpShapeA.contents.id]
-            else:
-                shapeA = self._static_shapes[cpShapeA.contents.id]
-            if cpShapeB.contents.id in self._shapes:
-                shapeB = self._shapes[cpShapeB.contents.id]
-            else:
-                shapeB = self._static_shapes[cpShapeB.contents.id]
-            return func(shapeA, shapeB, 
-                [Contact(cpContacts[i]) for i in xrange(numContacts)], 
-                normal_coef, data)
+        if (a, b) in self._handlers:
+            del self._handlers[(a, b)]
+        cp.cpSpaceRemoveCollisionHandler(self._space, a, b)
         
-        return cp.cpCollFunc(cf)
     
+    def _get_cf1(self, func, function_type):
+        def cf(_arbiter, _space, _data):
+            arbiter = Arbiter(_arbiter, self)
+            return func(self, arbiter)
+        return function_type(cf)
+        
     
-    def _get_query_cf(self, func, data):
-        def cf (cpShape, _data):
-            ### Translate chipmunk shapes to Shapes.
-            if cpShape.contents.id in self._shapes:
-                shape = self._shapes[cpShape.contents.id]
-            else:
-                shape = self._static_shapes[cpShape.contents.id]
-            return func(shape, data)
-        return cp.cpSpacePointQueryFunc(cf)
-    
+    def add_post_step_callback(self, func, obj, *args, **kwargs):
+        if obj in self._post_step_callbacks:
+            return
+        self._post_step_callbacks[obj] = func, args, kwargs
+        pass
+        
     def point_query(self, point, layers = -1, group = 0):
         """Query space at point filtering out matches with the given layers 
         and group. Return a list of found shapes.
@@ -389,6 +395,8 @@ class Space(object):
             return SegmentQueryInfo(shape, start, end, info.t, info.n)
         else:
             return None
+            
+     
     
 class Body(object):
     """A rigid body
@@ -921,73 +929,82 @@ def reset_shapeid_counter():
 
     
 class Contact(object):
-    def __init__(self, contact):
-        self._contact = contact
+    """Contact information"""
+    def __init__(self, _contact):
+        """Initialize a Contact object from the chipmunk equivalent struct
+        
+        Note: You should never need to create an instance of this class 
+        directly.
+        """
+        self._p = _contact.p
+        self._n = _contact.n
+        self._dist = _contact.dist
+        #self._contact = contact
 
+    def __repr__(self):
+        return "Contact(%s, %s, %s)" % (self.position, self.normal, self.distance)
+        
     def _get_position(self):
-        return self._contact.p
+        return self._p
     position = property(_get_position, doc="""Contact position""")
 
     def _get_normal(self):
-        return self._contact.n
+        return self._n
     normal = property(_get_normal, doc="""Contact normal""")
 
     def _get_distance(self):
-        return self._contact.dist
+        return self._dist
     distance = property(_get_distance, doc="""Penetration distance""")
     
-    # TODO: figure out how this works..
-    def _get_jn_acc(self):
-        return self._contact.jnAcc
-    jn_acc = property(_get_distance, 
-        doc="""The normal component of the accumulated (final) impulse applied
-        to resolve the collision. Will not be valid until after the call to 
-        Space.step() returns""")
-
-    def _get_jt_acc(self):
-        return self._contact.jtAcc
-    jt_acc = property(_get_jt_acc, 
-        doc="""The tangential component of the accumulated (final) impulse 
-        applied to resolve the collision. Will not be valid until after the 
-        call to Space.step() returns""")
 
 
 class Arbiter(object):
-    """Class for tracking collisions between shapes."""
-    def __init__(self, arbiter, shapes, static_shapes):
-        self._arbiter = arbiter
-        self._shapes = shapes
-        self._static_shapes = static_shapes
+    """Arbiters are collision pairs between shapes that are used with the 
+    collision callbacks.
     
+    IMPORTANT: Because arbiters are handled by the space you should never hold 
+    onto a reference to an arbiter as you don't know when it will be 
+    destroyed! Use them within the callback where they are given to you and 
+    then forget about them or copy out the information you need from them.
+    """
+    def __init__(self, _arbiter, space):
+        """You should never need to create an Arbiter yourself, consider this 
+        method private :)
+        """
+        self._arbiter = _arbiter
+        self._arbitercontents = self._arbiter.contents
+        self._space = space
+        self._contacts = None # keep a lazy loaded cache of converted contacts
+        
     def _get_contacts(self):
-        cs = [Contact(self._arbiter.contents.contacts[i]) 
-            for i in xrange(self._arbiter.contents.numContacts)]
-        return cs
+        if self._contacts is None:
+            self._contacts = []
+            for i in xrange(self._arbitercontents.numContacts):
+                self.contacts.append(Contact(self._arbitercontents.contacts[i]))
+        return self._contacts
     contacts = property(_get_contacts, 
         doc="""Information on the contact points between the objects.""")
         
-    def _get_a(self):
-        a = self._arbiter.contents.a.contents
-        if a.id in self._shapes:
-            shapeA = self._shapes[a.id]
-        elif a.id in self._static_shapes:
-            shapeA = self._static_shapes[a.id]
+    def _get_shapes(self):
+        _a = self._arbitercontents.a
+        _b = self._arbitercontents.b
+        def _get_shape(_s):
+            if _s.contents.hashid in self._space._shapes:
+                s = self._space._shapes[_s.contents.hashid]
+            elif _s.contents.hashid in self._space._static_shapes:
+                s = self._space._static_shapes[_s.contents.hashid]
+            else:
+                s = None
+            return s
+        a,b = _get_shape(_a), _get_shape(_b)
+        if self.swapped_coll:
+            return b,a
         else:
-            shapeA = None # What to do here, the shape has been removed from the space.
-        return shapeA
-    a = property(_get_a, doc="""The first shape involved in the collision""")    
-    
-    def _get_b(self):
-        b = self._arbiter.contents.b.contents
-        if b.id in self._shapes:
-            shapeB = self._shapes[b.id]
-        elif b.id in self._static_shapes:
-            shapeB = self._static_shapes[b.id]
-        else:
-            shapeB = None # What to do here, the shape has been removed from the space.
-        return shapeB
-    b = property(_get_b, doc="""The second shape involved in the collision""")
-
+            return a,b
+            
+    shapes = property(_get_shapes, 
+        doc="""Get the shapes in the order that they were defined in the collision handler associated with this arbiter""")
+            
     def _get_elasticity(self):
         return self._arbiter.contents.e
     elasticity = property(_get_elasticity, doc="""Elasticity""")
@@ -997,15 +1014,27 @@ class Arbiter(object):
     friction = property(_get_friction, doc="""Friction""")
     
     def _get_surface_velocity(self):
-        return self._arbiter.contents.target_v
+        return self._arbiter.contents.surface_vr
     surface_velocity = property(_get_surface_velocity, 
-        doc="""Surface velocity""")
+        doc="""Used for surface_v calculations, implementation may change""")
 
     def _get_stamp(self):
         return self._arbiter.contents.stamp
     stamp = property(_get_stamp, 
         doc="""Time stamp of the arbiter. (from the space)""")
 
+    def _get_swapped_coll(self):
+        return bool(self._arbiter.contents.swappedColl)
+    swapped_coll = property(_get_swapped_coll,
+        doc="""Are the shapes swapped in relation to the collision handler?""")
+    
+    def _get_is_first_contact(self):
+        return bool(self._arbiter.contents.firstColl)
+        #return bool(cp.cpArbiterIsFirstContact(self._arbiter))
+    is_first_contact = property(_get_is_first_contact,
+        doc="""Returns true if this is the first step that an arbiter existed. You can use this from preSolve and postSolve to know if a collision between two shapes is new without needing to flag a boolean in your begin callback.""")
+        
+    
     
 class BB(object):
     """Simple bounding box class. Stored as left, bottom, right, top values."""
@@ -1110,10 +1139,3 @@ def test():
         
 #del cp, ct, u
 
-__all__ = ["inf", "version", "init_pymunk"
-        , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
-        , "moment_for_circle", "moment_for_poly", "reset_shapeid_counter"
-        , "Constraint", "PinJoint", "SlideJoint", "PivotJoint", "GrooveJoint"
-        , "DampedSpring", "DampedRotarySpring", "RotaryLimitJoint"
-        , "RatchetJoint", "GearJoint", "SimpleMotor"
-        , "SegmentQueryInfo", "Contact", "Arbiter", "BB"]
