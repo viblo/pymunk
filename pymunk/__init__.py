@@ -31,7 +31,7 @@ Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from svn).
 """
 
-chipmunk_version = "rev343"
+chipmunk_version = cp.cpVersionString.value + "r343"
 """The chipmunk version compatible with this pymunk version.
 Other (newer) chipmunk versions might also work if the new version does not 
 contain any breaking API changes.
@@ -104,7 +104,11 @@ class Space(object):
         doc="""A list of the constraints added to this space""")
 
     def __del__(self):
-        cp.cpSpaceFree(self._space)
+        # check if the imported cp still exists.. think the only case when 
+        # it doesnt is on program exit so should be more or less ok to skip 
+        # the call to *free in that case
+        if cp is not None: 
+            cp.cpSpaceFree(self._space)
 
 
     def _set_gravity(self, gravity_vec):
@@ -427,7 +431,8 @@ class Body(object):
         self._velocity_callback = None # To prevent the gc to collect the callbacks.
         
     def __del__(self):
-        cp.cpBodyFree(self._body)
+        if cp is not None:
+            cp.cpBodyFree(self._body)
 
     def _set_mass(self, mass):
         cp.cpBodySetMass(self._body, mass)
@@ -638,7 +643,8 @@ class Shape(object):
         self.data = None
 
     def __del__(self):
-        cp.cpShapeFree(self._shape)
+        if cp is not None:
+            cp.cpShapeFree(self._shape)
 
     def _get_hashid(self):
         return self._shapecontents.hashid

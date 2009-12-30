@@ -45,7 +45,8 @@ class Constraint(object):
     b = property(lambda self: self._b)
         
     def __del__(self):
-        cp.cpConstraintFree(self._constraint)
+        if cp is not None:
+            cp.cpConstraintFree(self._constraint)
 
 class PinJoint(Constraint):
     """Keeps the anchor points at a set distance from one another."""

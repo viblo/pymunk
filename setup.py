@@ -91,4 +91,5 @@ setup(
     , classifiers=classifiers
     , include_package_data = True
     , cmdclass={'build_chipmunk':build_chipmunk}
+    , test_suite = "tests"
     )
