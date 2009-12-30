@@ -50,7 +50,7 @@ def drawCircle(x, y, r, a):
 
 def drawCircleShape(circle):
     body = circle.body
-    c = body.position + circle.center.cpvrotate(body.rotation_vector)
+    c = body.position + circle.offset.cpvrotate(body.rotation_vector)
     drawCircle(c.x, c.y, circle.radius, body.angle)
 
 
@@ -103,7 +103,7 @@ def display():
         glVertex2f(body.position.x, body.position.y)
       
     glColor3f(1.0, 0.0, 0.0)
-    map(drawCollisions, world.space.arbiters)
+    #map(drawCollisions, world.space.arbiters)
 
     glEnd()
 

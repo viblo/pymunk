@@ -96,11 +96,11 @@ def main():
 
         for line in lines:
             body = line.body
-            pv1 = body.position + line.a.rotated(math.degrees(body.angle))
-            pv2 = body.position + line.b.rotated(math.degrees(body.angle))
+            pv1 = body.position + line.a.rotated(body.angle)
+            pv2 = body.position + line.b.rotated(body.angle)
             p1 = to_pygame(pv1)
             p2 = to_pygame(pv2)
-            pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])
+            pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2], 4)
         
         ### The rotation center of the L shape        
         pygame.draw.circle(screen, THECOLORS["red"], to_pygame(rot_center_body.position), 5)

@@ -83,8 +83,8 @@ class Main(pyglet.window.Window):
         for shape in self.space.static_shapes:
             if isinstance(shape, pymunk.Segment):
                 body = shape.body
-                pv1 = body.position + shape.a.rotated(math.degrees(body.angle))
-                pv2 = body.position + shape.b.rotated(math.degrees(body.angle))
+                pv1 = body.position + shape.a.rotated(body.angle)
+                pv2 = body.position + shape.b.rotated(body.angle)
                 pyglet.graphics.draw(2, GL_LINES,
                                      ('v2f', (pv1.x, pv1.y, pv2.x, pv2.y)),
                                       ('c4f', (1.0, 1.0, 1.0, 1.) * 2))

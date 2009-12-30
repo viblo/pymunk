@@ -11,6 +11,9 @@ class UnitTestGeneral(unittest.TestCase):
         p.init_pymunk()
         p.version
         p.inf
+        from pymunk import *
+        from pymunk.util import *
+        from pymunk.vec2d import *
         
 class UnitTestBody(unittest.TestCase):
     def setUp(self):
@@ -125,16 +128,16 @@ class UnitTestSpace(unittest.TestCase):
         self.begin_contacts = None
         self.begin_space = None
         
-        def pre_solve(space, arb):
-            self.begin_shapes = arb.shapes
-            self.begin_contacts = arb.contacts
-            self.begin_space = space
+        def pre_solve(space, arb, test_self):
+            test_self.begin_shapes = arb.shapes
+            test_self.begin_contacts = arb.contacts
+            test_self.begin_space = space
             return True
             
         for x in range(100): 
             self.s.step(0.1)
         
-        self.s.add_collision_handler(0,0,None,pre_solve, None,None)
+        self.s.add_collision_handler(0,0,None,pre_solve, None,None, self)
         self.s.step(0.1)
         
         self.assert_(self.s1 in self.begin_shapes)
@@ -143,11 +146,10 @@ class UnitTestSpace(unittest.TestCase):
         
     def testPostStepCallback(self):
         self.number_of_calls = 0
-        def f(obj, *args, **kwargs):
-            for shape in args:
+        def f(obj, shapes, test_self):
+            for shape in shapes:
                 self.s.remove(shape)
-            kwargs['test_self'].number_of_calls += 1
-        print "hlloe"
+            test_self.number_of_calls += 1
         def pre_solve(space, arb):
             space.add_post_step_callback(f, arb.shapes[0], arb.shapes, test_self = self)
             return True

@@ -14,10 +14,10 @@ def flipy(y):
     """Small hack to convert chipmunk physics to pygame coordinates"""
     return -y+600
 
-def mouse_coll_func(s1, s2, cs, normal_coef, data):
+def mouse_coll_func(space, arbiter):
     """Simple callback that increases the radius of circles touching the mouse"""
-    if s2.collision_type != COLLTYPE_MOUSE and type(s2) == pm.Circle:
-        s2.radius += 0.15
+    s1,s2 = arbiter.shapes
+    s2.unsafe_set_radius(s2.radius + 0.15)
     return False
 
 def main():
@@ -44,7 +44,7 @@ def main():
     mouse_shape.collision_type = COLLTYPE_MOUSE
     space.add(mouse_shape)
 
-    space.add_collisionpair_func(COLLTYPE_MOUSE, COLLTYPE_DEFAULT, mouse_coll_func, ("hello", "world"))   
+    space.add_collision_handler(COLLTYPE_MOUSE, COLLTYPE_DEFAULT, None, mouse_coll_func, None, None)   
     
     ### Static line
     line_point1 = None
@@ -61,7 +61,7 @@ def main():
                 p = event.pos[X], flipy(event.pos[Y])
                 body = pm.Body(10, 100)
                 body.position = p
-                shape = pm.Circle(body, 10, Vec2d(0,0))
+                shape = pm.Circle(body, 10, (0,0))
                 shape.friction = 0.5
                 space.add(body, shape)
                 balls.append(shape)
@@ -92,7 +92,7 @@ def main():
         if pygame.key.get_mods() & KMOD_SHIFT and pygame.mouse.get_pressed()[0]:
             body = pm.Body(10, 10)
             body.position = mouse_pos
-            shape = pm.Circle(body, 10, Vec2d(0,0))
+            shape = pm.Circle(body, 10, (0,0))
             space.add(body, shape)
             balls.append(shape)
        
@@ -134,8 +134,8 @@ Space: Pause physics simulation"""
         for line in static_lines:
             body = line.body
             
-            pv1 = body.position + line.a.rotated(math.degrees(body.angle))
-            pv2 = body.position + line.b.rotated(math.degrees(body.angle))
+            pv1 = body.position + line.a.rotated(body.angle)
+            pv2 = body.position + line.b.rotated(body.angle)
             p1 = pv1.x, flipy(pv1.y)
             p2 = pv2.x, flipy(pv2.y)
             pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])

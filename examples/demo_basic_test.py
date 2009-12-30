@@ -56,7 +56,7 @@ def main1():
 
         if len(balls) >= 1:
            v = balls[0].body.position
-           print("(in on_draw): point = %f,%f" % (v.x,v.y))
+           print("(in on_draw): point = %.2f, %.2f" % (v.x,v.y))
 
         ### Update physics
         for x in range(1):

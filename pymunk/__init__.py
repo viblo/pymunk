@@ -256,7 +256,7 @@ class Space(object):
             func(obj, *args, **kwargs)
         self._post_step_callbacks = {}
     
-    def add_collision_handler(self, a, b, begin, pre_solve, post_solve, separate):
+    def add_collision_handler(self, a, b, begin, pre_solve, post_solve, separate, *args, **kwargs):
         """Add a collision handler for given collision type pair. 
         
         Whenever a shapes with collision_type a and collision_type b collide, 
@@ -269,13 +269,13 @@ class Space(object):
         individually to each handler definition.
         """
         
-        _functions = self._collision_function_helper(begin, pre_solve, post_solve, separate)
+        _functions = self._collision_function_helper(begin, pre_solve, post_solve, separate, *args, **kwargs)
         
         self._handlers[(a,b)] = _functions
         cp.cpSpaceAddCollisionHandler(self._space, a, b, 
             _functions[0], _functions[1], _functions[2], _functions[3], None)
             
-    def set_default_collision_handler(self, begin, pre_solve, post_solve, separate):
+    def set_default_collision_handler(self, begin, pre_solve, post_solve, separate, *args, **kwargs):
         """Register a default collision handler to be used when no specific 
         collision handler is found. If you do nothing, the space will be given 
         a default handler that accepts all collisions in begin() and 
@@ -283,12 +283,14 @@ class Space(object):
         callbacks. 
         """
         
-        _functions = self._collision_function_helper(begin, pre_solve, post_solve, separate)
+        _functions = self._collision_function_helper(
+            begin, pre_solve, post_solve, separate, *args, **kwargs
+            )
         self._default_handler = _functions
         cp.cpSpaceSetDefaultCollisionHandler(self._space,
             _functions[0], _functions[1], _functions[2], _functions[3], None)
     
-    def _collision_function_helper(self, begin, pre_solve, post_solve, separate):
+    def _collision_function_helper(self, begin, pre_solve, post_solve, separate, *args, **kwargs):
         
         functions = [(begin, cp.cpCollisionBeginFunc)
                     , (pre_solve, cp.cpCollisionPreSolveFunc)
@@ -301,8 +303,7 @@ class Space(object):
             if func is None:
                 _f = ct.cast(ct.POINTER(ct.c_int)(), func_type)
             else:
-                
-                _f = self._get_cf1(func, func_type)
+                _f = self._get_cf1(func, func_type, *args, **kwargs)
             _functions.append(_f)
         return _functions
     
@@ -320,10 +321,10 @@ class Space(object):
         cp.cpSpaceRemoveCollisionHandler(self._space, a, b)
         
     
-    def _get_cf1(self, func, function_type):
+    def _get_cf1(self, func, function_type, *args, **kwargs):
         def cf(_arbiter, _space, _data):
             arbiter = Arbiter(_arbiter, self)
-            return func(self, arbiter)
+            return func(self, arbiter, *args, **kwargs)
         return function_type(cf)
         
     
@@ -331,7 +332,6 @@ class Space(object):
         if obj in self._post_step_callbacks:
             return
         self._post_step_callbacks[obj] = func, args, kwargs
-        pass
         
     def point_query(self, point, layers = -1, group = 0):
         """Query space at point filtering out matches with the given layers 
@@ -365,7 +365,11 @@ class Space(object):
         shape = None
         _shape = cp.cpSpacePointQueryFirst(self._space, point, layers, group)
         if _shape:
-            shape = self._shapes[_shape.contents.hashid]
+            hashid = _shape.contents.hashid
+            if hashid in self._shapes:
+                shape = self._shapes[hashid]
+            elif hashid in self._static_shapes:
+                shape = self._static_shapes[hashid]
         return shape
         
     def segment_query(self, start, end, layers = -1, group = 0):

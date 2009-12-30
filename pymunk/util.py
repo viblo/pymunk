@@ -227,6 +227,6 @@ def calc_perimeter(points):
     return c
 
     
-__all__ = ["is_clockwise", "reduce_poly", "convex_hull", "calc_area"
+__all__ = ["is_clockwise", "reduce_poly", "convex_hull", "calc_area",
         "calc_center", "poly_vectors_around_center", "is_convex", 
         "calc_perimeter"]
