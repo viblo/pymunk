@@ -219,12 +219,12 @@ pymunk.Segment._get_radius	pymunk.Segment-class.html#_get_radius
 pymunk.Shape._get_surface_velocity	pymunk.Shape-class.html#_get_surface_velocity
 pymunk.SegmentQueryInfo	pymunk.SegmentQueryInfo-class.html
 pymunk.SegmentQueryInfo.get_hit_point	pymunk.SegmentQueryInfo-class.html#get_hit_point
-pymunk.SegmentQueryInfo.__str__	pymunk.SegmentQueryInfo-class.html#__str__
 pymunk.SegmentQueryInfo.n	pymunk.SegmentQueryInfo-class.html#n
 pymunk.SegmentQueryInfo.shape	pymunk.SegmentQueryInfo-class.html#shape
 pymunk.SegmentQueryInfo.get_hit_distance	pymunk.SegmentQueryInfo-class.html#get_hit_distance
 pymunk.SegmentQueryInfo.t	pymunk.SegmentQueryInfo-class.html#t
 pymunk.SegmentQueryInfo.__init__	pymunk.SegmentQueryInfo-class.html#__init__
+pymunk.SegmentQueryInfo.__repr__	pymunk.SegmentQueryInfo-class.html#__repr__
 pymunk.Shape	pymunk.Shape-class.html
 pymunk.Shape.collision_type	pymunk.Shape-class.html#collision_type
 pymunk.Shape._set_elasticity	pymunk.Shape-class.html#_set_elasticity

@@ -11,9 +11,6 @@ class UnitTestGeneral(unittest.TestCase):
         p.init_pymunk()
         p.version
         p.inf
-        from pymunk import *
-        from pymunk.util import *
-        from pymunk.vec2d import *
         
 class UnitTestBody(unittest.TestCase):
     def setUp(self):
@@ -26,6 +23,13 @@ class UnitTestBody(unittest.TestCase):
         self.assertEqual(b.moment, 100)
         b.reset_forces()
         b.apply_force((10,10))
+        
+    def testConversion(self):
+        b = p.Body(1,1)
+        b.position = 10,20
+        self.assertEqual(b.local_to_world((1,1)), Vec2d(11,21))
+        self.assertEqual(b.world_to_local((1,1)), Vec2d(-9,-19))
+        
         
 class UnitTestShape(unittest.TestCase):
     def setUp(self):
@@ -67,6 +71,11 @@ class UnitTestSpace(unittest.TestCase):
         del self.s
         del self.b1, self.b2
         del self.s1, self.s2
+    
+    def testResizeRehash(self):
+        self.s.resize_static_hash()
+        self.s.resize_active_hash()
+        self.s.rehash_static()
     
     def testAddRemove(self):
         

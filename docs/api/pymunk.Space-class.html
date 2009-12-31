@@ -173,7 +173,7 @@ and joints to it and then step them all forward together through time.
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="remove_static"></a><span class="summary-sig-name">remove_static</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">*os</span>)</span><br />
+        <span class="summary-sig-arg">*objs</span>)</span><br />
       Remove one or many static shapes from the space</td>
           <td align="right" valign="top">
             
@@ -271,7 +271,9 @@ size sensitive.</td>
         <span class="summary-sig-arg">begin</span>,
         <span class="summary-sig-arg">pre_solve</span>,
         <span class="summary-sig-arg">post_solve</span>,
-        <span class="summary-sig-arg">separate</span>)</span><br />
+        <span class="summary-sig-arg">separate</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Add a collision handler for given collision type pair.</td>
           <td align="right" valign="top">
             
@@ -292,7 +294,9 @@ size sensitive.</td>
         <span class="summary-sig-arg">begin</span>,
         <span class="summary-sig-arg">pre_solve</span>,
         <span class="summary-sig-arg">post_solve</span>,
-        <span class="summary-sig-arg">separate</span>)</span><br />
+        <span class="summary-sig-arg">separate</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Register a default collision handler to be used when no specific
 collision handler is found.</td>
           <td align="right" valign="top">
@@ -329,11 +333,12 @@ collision handler is found.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="add_post_step_callback"></a><span class="summary-sig-name">add_post_step_callback</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">func</span>,
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#add_post_step_callback" class="summary-sig-name">add_post_step_callback</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">callback_function</span>,
         <span class="summary-sig-arg">obj</span>,
         <span class="summary-sig-arg">*args</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Add a function to be called last in the next simulation step.</td>
           <td align="right" valign="top">
             
             
@@ -689,7 +694,9 @@ to resolve the collisions in the usual case.
         <span class="sig-arg">begin</span>,
         <span class="sig-arg">pre_solve</span>,
         <span class="sig-arg">post_solve</span>,
-        <span class="sig-arg">separate</span>)</span>
+        <span class="sig-arg">separate</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -698,14 +705,40 @@ to resolve the collisions in the usual case.
   
   <p>Add a collision handler for given collision type pair.</p>
 <p>Whenever a shapes with collision_type a and collision_type b collide,
-these callbacks will be used to process the collision. data is a user
-definable context pointer that is passed to each of the callbacks.
+these callbacks will be used to process the collision.
 None can be provided for callbacks you do not wish to implement,
-however Chipmunk will call it's own default versions for these and not
-the default ones you've set up for the space. If you need to fall back
+however pymunk will call it's own default versions for these and not
+the default ones you've set up for the Space. If you need to fall back
 on the space's default callbacks, you'll have to provide them
 individually to each handler definition.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>a</code></strong> (int) - Collision type of the first shape</li>
+        <li><strong class="pname"><code>b</code></strong> (int) - Collision type of the second shape</li>
+        <li><strong class="pname"><code>begin</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></tt>) - Collision handler called when two shapes just started touching
+for the first time this step. Return False from the callback
+to make pymunk ignore the collision or True to process it
+normally. Pass None if you wish to use the pymunk default.</li>
+        <li><strong class="pname"><code>pre_solve</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></tt>) - Collision handler called when two shapes are touching. Return
+False from the callback to make pymunk ignore the collision or
+True to process it normally. Additionally, you may override
+collision values such as Arbiter.elasticity and
+Arbiter.friction to provide custom friction or elasticity
+values. See Arbiter for more info. Pass None if you wish to
+use the pymunk default.</li>
+        <li><strong class="pname"><code>post_solve</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>) - Collsion handler called when two shapes are touching and their
+collision response has been processed. You can retrieve the
+collision force at this time if you want to use it to
+calculate sound volumes or damage amounts. Pass None if you
+wish to use the pymunk default.</li>
+        <li><strong class="pname"><code>separate</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>) - Collision handler called when two shapes have just stopped
+touching for the first time this frame. Pass None if you wish
+to use the pymunk default.</li>
+        <li><strong class="pname"><code>args</code></strong> - Optional parameters passed to the collision handler functions.</li>
+        <li><strong class="pname"><code>kwargs</code></strong> - Optional keyword parameters passed on to the collision handler
+functions.</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -720,7 +753,9 @@ individually to each handler definition.</p>
         <span class="sig-arg">begin</span>,
         <span class="sig-arg">pre_solve</span>,
         <span class="sig-arg">post_solve</span>,
-        <span class="sig-arg">separate</span>)</span>
+        <span class="sig-arg">separate</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -733,6 +768,31 @@ a default handler that accepts all collisions in begin() and
 pre_solve() and does nothing for the post_solve() and separate()
 callbacks.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>begin</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></tt>) - Collision handler called when two shapes just started touching
+for the first time this step. Return False from the callback
+to make pymunk ignore the collision or True to process it
+normally. Pass None if you wish to use the pymunk default.</li>
+        <li><strong class="pname"><code>pre_solve</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></tt>) - Collision handler called when two shapes are touching. Return
+False from the callback to make pymunk ignore the collision or
+True to process it normally. Additionally, you may override
+collision values such as Arbiter.elasticity and
+Arbiter.friction to provide custom friction or elasticity
+values. See Arbiter for more info. Pass None if you wish to
+use the pymunk default.</li>
+        <li><strong class="pname"><code>post_solve</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>) - Collsion handler called when two shapes are touching and their
+collision response has been processed. You can retrieve the
+collision force at this time if you want to use it to
+calculate sound volumes or damage amounts. Pass None if you
+wish to use the pymunk default.</li>
+        <li><strong class="pname"><code>separate</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>) - Collision handler called when two shapes have just stopped
+touching for the first time this frame. Pass None if you wish
+to use the pymunk default.</li>
+        <li><strong class="pname"><code>args</code></strong> - Optional parameters passed to the collision handler functions.</li>
+        <li><strong class="pname"><code>kwargs</code></strong> - Optional keyword parameters passed on to the collision handler
+functions.</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -756,8 +816,52 @@ callbacks.
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>a</code></strong> (int) - The collision_type for the first shape</li>
-        <li><strong class="pname"><code>b</code></strong> (int) - The collision_type for the second shape</li>
+        <li><strong class="pname"><code>a</code></strong> (int) - Collision type of the first shape</li>
+        <li><strong class="pname"><code>b</code></strong> (int) - Collision type of the second shape</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_post_step_callback"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_post_step_callback</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">callback_function</span>,
+        <span class="sig-arg">obj</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Add a function to be called last in the next simulation step.</p>
+<p>Post step callbacks are the place where you can break the rules about
+removing objects from within a callback. In fact, their primary
+function is to help you safely remove objects from the space that were
+destroyed or disabled during the step.</p>
+<p>Post step callbacks are registered as a function and an object used as
+a key. You can only register one post step callback per object. This
+prevents you from removing an object more than once. For instance, say
+that you get a collision callback between a bullet and object A. The
+bullet and object A are destroyed, so you add a post step callback for
+each to remove. In the same step, the same bullet also hit object B
+and you add two more callbacks, one for object B and a second for the
+bullet. This is actually just fine, and the callback to remove the
+bullet will only be called once!</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>callback_function</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(obj,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>) - The callback function.</li>
+        <li><strong class="pname"><code>obj</code></strong> (Any object) - This object is used as a key, you can only have one callback
+for a single object. It is passed on to the callback function.</li>
+        <li><strong class="pname"><code>args</code></strong> - Optional parameters passed to the callback function.</li>
+        <li><strong class="pname"><code>kwargs</code></strong> - Optional keyword parameters passed on to the callback function.</li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -787,7 +891,8 @@ and 0 as the group.</p>
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>point</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Define where to check for collision in the space.</li>
-        <li><strong class="pname"><code>layers</code></strong> (int) - Only pick shapes matching the bit mask. i.e. (layers &amp; shape.layers) != 0</li>
+        <li><strong class="pname"><code>layers</code></strong> (int) - Only pick shapes matching the bit mask. i.e.
+(layers &amp; shape.layers) != 0</li>
         <li><strong class="pname"><code>group</code></strong> (int) - Only pick shapes in this group.</li>
     </ul></dd>
   </dl>
@@ -813,6 +918,13 @@ and 0 as the group.</p>
   Query space at point and return the first shape found matching the
 given layers and group. Returns None if no shape was found.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>point</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Define where to check for collision in the space.</li>
+        <li><strong class="pname"><code>layers</code></strong> (int) - Only pick shapes matching the bit mask. i.e.
+(layers &amp; shape.layers) != 0</li>
+        <li><strong class="pname"><code>group</code></strong> (int) - Only pick shapes in this group.</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -836,14 +948,14 @@ given layers and group. Returns None if no shape was found.
   
   <p>Query space along the line segment from start to end filtering out
 matches with the given layers and group.</p>
-<p>Segment queries are like ray casting, but because Chipmunk uses a
-spatial hash to process collisions, it cannot process infinitely long
-queries like a ray. In practice this is still very fast and you don't
-need to worry too much about the performance as long as you aren't
-using very long segments for your queries.</p>
+<p>Segment queries are like ray casting, but because pymunk/Chipmunk uses
+a spatial hash to process collisions, it cannot process infinitely
+long queries like a ray. In practice this is still very fast and you
+don't need to worry too much about the performance as long as you
+aren't using very long segments for your queries.</p>
   <dl class="fields">
     <dt>Returns:</dt>
-        <dd>a list of SegmentQueryInfo objects of all hits</dd>
+        <dd>[<a href="pymunk.SegmentQueryInfo-class.html" class="link">SegmentQueryInfo</a>] - One SegmentQueryInfo object for each hit.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1007,7 +1119,7 @@ Returns None if no shape was found.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Dec 30 00:43:59 2009
+    Generated by Epydoc 3.0.1 on Thu Dec 31 02:12:48 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

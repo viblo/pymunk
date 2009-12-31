@@ -267,7 +267,7 @@ specified absolute coordinates in the next timestep.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="local_to_world"></a><span class="summary-sig-name">local_to_world</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="pymunk.Body-class.html#local_to_world" class="summary-sig-name">local_to_world</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">v</span>)</span><br />
       Convert body local coordinates to world space coordinates</td>
           <td align="right" valign="top">
@@ -285,7 +285,7 @@ specified absolute coordinates in the next timestep.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="world_to_local"></a><span class="summary-sig-name">world_to_local</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="pymunk.Body-class.html#world_to_local" class="summary-sig-name">world_to_local</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">v</span>)</span><br />
       Convert world space coordinates to body local coordinates</td>
           <td align="right" valign="top">
@@ -392,7 +392,7 @@ specified absolute coordinates in the next timestep.</td>
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Body-class.html#velocity_func" class="summary-name">velocity_func</a><br />
-      Set the velocity callback function.
+      The velocity callback function.
     </td>
   </tr>
 <tr>
@@ -400,7 +400,7 @@ specified absolute coordinates in the next timestep.</td>
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Body-class.html#position_func" class="summary-name">position_func</a><br />
-      Set the position callback function.
+      The position callback function.
     </td>
   </tr>
   <tr>
@@ -491,15 +491,12 @@ from the center of gravity. Both r and j are in world coordinates.
   <p>Apply (accumulate) the force f on body at a relative offset
 (important!) r from the center of gravity.</p>
 <p>Both r and f are in world coordinates.</p>
-<blockquote>
-<dl class="rst-docutils">
-<dt>f <span class="classifier-delimiter">:</span> <span class="rst-classifier">(x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a></span></dt>
-<dd>Force in world coordinates</dd>
-<dt>r <span class="classifier-delimiter">:</span> <span class="rst-classifier">(x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a></span></dt>
-<dd>Offset in world coordinates</dd>
-</dl>
-</blockquote>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>f</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Force in world coordinates</li>
+        <li><strong class="pname"><code>r</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Offset in world coordinates</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -612,6 +609,54 @@ function. If you do, make sure you understand it's source code
 (in Chipmunk) as it's an important part of the collision/joint
 correction process.</p>
   <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="local_to_world"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">local_to_world</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">v</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Convert body local coordinates to world space coordinates
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>v</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Vector in body local coordinates</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="world_to_local"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">world_to_local</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">v</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Convert world space coordinates to body local coordinates
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>v</code></strong> ((x,y) or <a href="pymunk.vec2d.Vec2d-class.html" class="link">Vec2d</a>) - Vector in world space coordinates</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -789,12 +834,12 @@ correction process.</p>
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">velocity_func</h3>
-  <p>Set the velocity callback function. The velocity callback function
+  <p>The velocity callback function. The velocity callback function
 is called each time step, and can be used to set a body's velocity.</p>
 <blockquote>
 <p>func(body, gravity, damping, dt) -&gt; None</p>
 <dl class="rst-docutils">
-<dt>Parameters</dt>
+<dt>Callback Parameters</dt>
 <dd><dl class="rst-first rst-last rst-docutils">
 <dt>body <span class="classifier-delimiter">:</span> <span class="rst-classifier"><a href="pymunk.Body-class.html" class="link">Body</a></span></dt>
 <dd>Body that should have its velocity calculated</dd>
@@ -812,7 +857,7 @@ is called each time step, and can be used to set a body's velocity.</p>
     <dt>Set Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Body-class.html#_set_velocity_func" class="summary-sig-name" onclick="show_private();">_set_velocity_func</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">func</span>)</span>
-        - Set the velocity callback function.
+        - The velocity callback function.
     </dd>
   </dl>
 </td></tr></table>
@@ -823,12 +868,12 @@ is called each time step, and can be used to set a body's velocity.</p>
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">position_func</h3>
-  <p>Set the position callback function. The position callback function
+  <p>The position callback function. The position callback function
 is called each time step and can be used to update the body's position.</p>
 <blockquote>
 <p>func(body, dt) -&gt; None</p>
 <dl class="rst-docutils">
-<dt>Parameters</dt>
+<dt>Callback Parameters</dt>
 <dd><dl class="rst-first rst-last rst-docutils">
 <dt>body <span class="classifier-delimiter">:</span> <span class="rst-classifier"><a href="pymunk.Body-class.html" class="link">Body</a></span></dt>
 <dd>Body that should have its velocity calculated</dd>
@@ -842,7 +887,7 @@ is called each time step and can be used to update the body's position.</p>
     <dt>Set Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Body-class.html#_set_position_func" class="summary-sig-name" onclick="show_private();">_set_position_func</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">func</span>)</span>
-        - Set the position callback function.
+        - The position callback function.
     </dd>
   </dl>
 </td></tr></table>
@@ -879,7 +924,7 @@ is called each time step and can be used to update the body's position.</p>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Dec 30 00:43:59 2009
+    Generated by Epydoc 3.0.1 on Thu Dec 31 02:12:48 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

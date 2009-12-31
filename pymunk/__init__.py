@@ -165,9 +165,9 @@ class Space(object):
                 for oo in o:
                     self.remove(oo)
                     
-    def remove_static(self, *os):
+    def remove_static(self, *objs):
         """Remove one or many static shapes from the space"""
-        for o in os:
+        for o in objs:
             if isinstance(o, Shape):
                 self._remove_static_shape(o)
             else:
@@ -260,13 +260,47 @@ class Space(object):
         """Add a collision handler for given collision type pair. 
         
         Whenever a shapes with collision_type a and collision_type b collide, 
-        these callbacks will be used to process the collision. data is a user 
-        definable context pointer that is passed to each of the callbacks. 
+        these callbacks will be used to process the collision. 
         None can be provided for callbacks you do not wish to implement, 
-        however Chipmunk will call it's own default versions for these and not 
-        the default ones you've set up for the space. If you need to fall back 
+        however pymunk will call it's own default versions for these and not 
+        the default ones you've set up for the Space. If you need to fall back 
         on the space's default callbacks, you'll have to provide them 
         individually to each handler definition.
+        
+        :Parameters:
+            a : int
+                Collision type of the first shape
+            b : int 
+                Collision type of the second shape
+            begin : ``func(space, arbiter, *args, **kwargs) -> bool``
+                Collision handler called when two shapes just started touching 
+                for the first time this step. Return False from the callback 
+                to make pymunk ignore the collision or True to process it 
+                normally. Pass None if you wish to use the pymunk default.
+            pre_solve : ``func(space, arbiter, *args, **kwargs) -> bool``
+                Collision handler called when two shapes are touching. Return 
+                False from the callback to make pymunk ignore the collision or 
+                True to process it normally. Additionally, you may override 
+                collision values such as Arbiter.elasticity and 
+                Arbiter.friction to provide custom friction or elasticity 
+                values. See Arbiter for more info. Pass None if you wish to 
+                use the pymunk default.
+            post_solve : ``func(space, arbiter, *args, **kwargs)``
+                Collsion handler called when two shapes are touching and their 
+                collision response has been processed. You can retrieve the 
+                collision force at this time if you want to use it to 
+                calculate sound volumes or damage amounts. Pass None if you 
+                wish to use the pymunk default.
+            separate : ``func(space, arbiter, *args, **kwargs)``
+                Collision handler called when two shapes have just stopped 
+                touching for the first time this frame. Pass None if you wish 
+                to use the pymunk default.
+            args
+                Optional parameters passed to the collision handler functions.
+            kwargs
+                Optional keyword parameters passed on to the collision handler 
+                functions.
+                
         """
         
         _functions = self._collision_function_helper(begin, pre_solve, post_solve, separate, *args, **kwargs)
@@ -281,6 +315,36 @@ class Space(object):
         a default handler that accepts all collisions in begin() and 
         pre_solve() and does nothing for the post_solve() and separate() 
         callbacks. 
+        
+        :Parameters:
+            begin : ``func(space, arbiter, *args, **kwargs) -> bool``
+                Collision handler called when two shapes just started touching 
+                for the first time this step. Return False from the callback 
+                to make pymunk ignore the collision or True to process it 
+                normally. Pass None if you wish to use the pymunk default.
+            pre_solve : ``func(space, arbiter, *args, **kwargs) -> bool``
+                Collision handler called when two shapes are touching. Return 
+                False from the callback to make pymunk ignore the collision or 
+                True to process it normally. Additionally, you may override 
+                collision values such as Arbiter.elasticity and 
+                Arbiter.friction to provide custom friction or elasticity 
+                values. See Arbiter for more info. Pass None if you wish to 
+                use the pymunk default.
+            post_solve : ``func(space, arbiter, *args, **kwargs)``
+                Collsion handler called when two shapes are touching and their 
+                collision response has been processed. You can retrieve the 
+                collision force at this time if you want to use it to 
+                calculate sound volumes or damage amounts. Pass None if you 
+                wish to use the pymunk default.
+            separate : ``func(space, arbiter, *args, **kwargs)``
+                Collision handler called when two shapes have just stopped 
+                touching for the first time this frame. Pass None if you wish 
+                to use the pymunk default.
+            args
+                Optional parameters passed to the collision handler functions.
+            kwargs
+                Optional keyword parameters passed on to the collision handler 
+                functions.
         """
         
         _functions = self._collision_function_helper(
@@ -312,9 +376,9 @@ class Space(object):
         
         :Parameters:
             a : int
-                The collision_type for the first shape
+                Collision type of the first shape
             b : int
-                The collision_type for the second shape
+                Collision type of the second shape
         """
         if (a, b) in self._handlers:
             del self._handlers[(a, b)]
@@ -328,10 +392,39 @@ class Space(object):
         return function_type(cf)
         
     
-    def add_post_step_callback(self, func, obj, *args, **kwargs):
+    def add_post_step_callback(self, callback_function, obj, *args, **kwargs):
+        """Add a function to be called last in the next simulation step.
+        
+        Post step callbacks are the place where you can break the rules about 
+        removing objects from within a callback. In fact, their primary 
+        function is to help you safely remove objects from the space that were 
+        destroyed or disabled during the step.
+        
+        Post step callbacks are registered as a function and an object used as 
+        a key. You can only register one post step callback per object. This 
+        prevents you from removing an object more than once. For instance, say 
+        that you get a collision callback between a bullet and object A. The 
+        bullet and object A are destroyed, so you add a post step callback for 
+        each to remove. In the same step, the same bullet also hit object B 
+        and you add two more callbacks, one for object B and a second for the 
+        bullet. This is actually just fine, and the callback to remove the 
+        bullet will only be called once! 
+        
+        :Parameters:
+            callback_function : ``func(obj, *args, **kwargs)``
+                The callback function.
+            obj : Any object
+                This object is used as a key, you can only have one callback 
+                for a single object. It is passed on to the callback function.
+            args
+                Optional parameters passed to the callback function.
+            kwargs
+                Optional keyword parameters passed on to the callback function.
+        
+        """
         if obj in self._post_step_callbacks:
             return
-        self._post_step_callbacks[obj] = func, args, kwargs
+        self._post_step_callbacks[obj] = callback_function, args, kwargs
         
     def point_query(self, point, layers = -1, group = 0):
         """Query space at point filtering out matches with the given layers 
@@ -344,7 +437,8 @@ class Space(object):
             point : (x,y) or `Vec2d`
                 Define where to check for collision in the space.
             layers : int
-                Only pick shapes matching the bit mask. i.e. (layers & shape.layers) != 0
+                Only pick shapes matching the bit mask. i.e. 
+                (layers & shape.layers) != 0
             group : int
                 Only pick shapes in this group.
                 
@@ -361,6 +455,15 @@ class Space(object):
     def point_query_first(self, point, layers = -1, group = 0):
         """Query space at point and return the first shape found matching the 
         given layers and group. Returns None if no shape was found.
+        
+        :Parameters:    
+            point : (x,y) or `Vec2d`
+                Define where to check for collision in the space.
+            layers : int
+                Only pick shapes matching the bit mask. i.e. 
+                (layers & shape.layers) != 0
+            group : int
+                Only pick shapes in this group.
         """
         shape = None
         _shape = cp.cpSpacePointQueryFirst(self._space, point, layers, group)
@@ -376,14 +479,14 @@ class Space(object):
         """Query space along the line segment from start to end filtering out 
         matches with the given layers and group. 
         
-        Segment queries are like ray casting, but because Chipmunk uses a 
-        spatial hash to process collisions, it cannot process infinitely long 
-        queries like a ray. In practice this is still very fast and you don't 
-        need to worry too much about the performance as long as you aren't 
-        using very long segments for your queries. 
+        Segment queries are like ray casting, but because pymunk/Chipmunk uses 
+        a spatial hash to process collisions, it cannot process infinitely 
+        long queries like a ray. In practice this is still very fast and you 
+        don't need to worry too much about the performance as long as you 
+        aren't using very long segments for your queries. 
         
-        :Return:
-            a list of SegmentQueryInfo objects of all hits
+        :Return: 
+            [`SegmentQueryInfo`] - One SegmentQueryInfo object for each hit.
         """
         
         self.__query_hits = []
@@ -491,12 +594,12 @@ class Body(object):
     force = property(_get_force, _set_force)
 
     def _set_velocity_func(self, func):
-        """Set the velocity callback function. The velocity callback function 
+        """The velocity callback function. The velocity callback function 
         is called each time step, and can be used to set a body's velocity.
         
             func(body, gravity, damping, dt) -> None
             
-            Parameters
+            Callback Parameters
                 body : `Body`
                     Body that should have its velocity calculated
                 gravity : `Vec2d`
@@ -514,12 +617,12 @@ class Body(object):
         doc=_set_velocity_func.__doc__)    
 
     def _set_position_func(self, func):
-        """Set the position callback function. The position callback function 
+        """The position callback function. The position callback function 
         is called each time step and can be used to update the body's position.
         
             func(body, dt) -> None
             
-            Parameters
+            Callback Parameters
                 body : `Body`
                     Body that should have its velocity calculated
                 dt : float
@@ -543,10 +646,8 @@ class Body(object):
             r : (x,y) or `Vec2d`
                 Offset the impulse with this vector
         """
-        j,r = Vec2d(j), Vec2d(r)
-        self.velocity = self.velocity + j * self._bodycontents.m_inv
-        self._bodycontents.w += self._bodycontents.i_inv* r.cross(j)
-    
+        cp._cpBodyApplyImpulse(self._body, j, r)
+        
     def reset_forces(self):
         """Zero both the forces and torques accumulated on body"""
         cp.cpBodyResetForces(self._body)
@@ -557,6 +658,7 @@ class Body(object):
         
         Both r and f are in world coordinates. 
         
+        :Parameters:
             f : (x,y) or `Vec2d`
                 Force in world coordinates
             r : (x,y) or `Vec2d`
@@ -620,19 +722,24 @@ class Body(object):
 
 
     def local_to_world(self, v):
-        """Convert body local coordinates to world space coordinates"""
-        #TODO: Test me
-        v = Vec2d(v)
-        return self.position + v.cpvrotate(self.rotation_vector)
+        """Convert body local coordinates to world space coordinates
+        
+        :Parameters:
+            v : (x,y) or `Vec2d`
+                Vector in body local coordinates
+        """
+        return cp._cpBodyLocal2World(self._body, v)
         
     def world_to_local(self, v):
-        """Convert world space coordinates to body local coordinates"""
-        #TODO: Test me
-        v = Vec2d(v)
-        return (v - self.position).cpvunrotate(self.rotation_vector)
+        """Convert world space coordinates to body local coordinates
+        
+        :Parameters:
+            v : (x,y) or `Vec2d`
+                Vector in world space coordinates
+        """
+        return cp._cpBodyWorld2Local(self._body, v)
+        
 
-
-    
 
 class Shape(object):
     """Base class for all the shapes. 
@@ -755,8 +862,9 @@ class SegmentQueryInfo(object):
         self._start = start
         self._end = end
         
-    def __str__(self):
+    def __repr__(self):
         return "SegmentQueryInfo(%s, %s, %s, %s, %s)" % (self.shape, self._start, self._end, self.t, self.n)
+            
     shape = property(lambda self: self._shape
         , doc = """Shape that was hit""")
         
@@ -1068,7 +1176,6 @@ class BB(object):
         else:
             self._bb = cp._cpBBNew(args[0],args[1], args[2],args[3])
             
-    # String representaion (for debugging)
     def __repr__(self):
         return 'BB(%s, %s, %s, %s)' % (self.left, self.bottom, self.right, self.top)
         
