@@ -1134,11 +1134,17 @@ class Arbiter(object):
             
     def _get_elasticity(self):
         return self._arbiter.contents.e
-    elasticity = property(_get_elasticity, doc="""Elasticity""")
+    def _set_elasticity(self, elasticity):
+        self._arbiter.contents.e = elasticity
+    elasticity = property(_get_elasticity, _set_elasticity, 
+        doc="""Elasticity""")
+    
     
     def _get_friction(self):
         return self._arbiter.contents.u
-    friction = property(_get_friction, doc="""Friction""")
+    def _set_friction(self, friction):
+        self._arbiter.contents.u = friction
+    friction = property(_get_friction, _set_elasticity, doc="""Friction""")
     
     def _get_surface_velocity(self):
         return self._arbiter.contents.surface_vr
@@ -1158,7 +1164,10 @@ class Arbiter(object):
     def _get_is_first_contact(self):
         return bool(self._arbiter.contents.firstColl)
     is_first_contact = property(_get_is_first_contact,
-        doc="""Returns true if this is the first step that an arbiter existed. You can use this from preSolve and postSolve to know if a collision between two shapes is new without needing to flag a boolean in your begin callback.""")
+        doc="""Returns true if this is the first step that an arbiter existed. 
+        You can use this from preSolve and postSolve to know if a collision 
+        between two shapes is new without needing to flag a boolean in your 
+        begin callback.""")
         
     
     

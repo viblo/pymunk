@@ -35,8 +35,8 @@ class Constraint(object):
         
     def _get_max_bias(self):
         return self._ccontents.maxBias
-    def _set_max_bias(self):
-        self._ccontents.maxCoef = max_coef
+    def _set_max_bias(self, max_bias):
+        self._ccontents.maxBias = max_bias
     max_bias = property(_get_max_bias, _set_max_bias,
         doc="""The maximum speed at which the constraint can apply error 
         correction. Defaults to infinity""")

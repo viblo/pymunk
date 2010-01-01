@@ -28,9 +28,11 @@ pymunk.vec2d	pymunk.vec2d-module.html
 pymunk.vec2d.__package__	pymunk.vec2d-module.html#__package__
 pymunk.Arbiter	pymunk.Arbiter-class.html
 pymunk.Arbiter._get_contacts	pymunk.Arbiter-class.html#_get_contacts
+pymunk.Arbiter._set_elasticity	pymunk.Arbiter-class.html#_set_elasticity
 pymunk.Arbiter._get_stamp	pymunk.Arbiter-class.html#_get_stamp
 pymunk.Arbiter.elasticity	pymunk.Arbiter-class.html#elasticity
 pymunk.Arbiter.friction	pymunk.Arbiter-class.html#friction
+pymunk.Arbiter._set_friction	pymunk.Arbiter-class.html#_set_friction
 pymunk.Arbiter.surface_velocity	pymunk.Arbiter-class.html#surface_velocity
 pymunk.Arbiter.__init__	pymunk.Arbiter-class.html#__init__
 pymunk.Arbiter.contacts	pymunk.Arbiter-class.html#contacts
