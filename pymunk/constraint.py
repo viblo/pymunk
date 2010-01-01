@@ -77,7 +77,7 @@ class PinJoint(Constraint):
     def _get_dist(self):
         return self._pjc.dist
     def _set_dist(self, dist):
-        self._pjc.dist
+        self._pjc.dist = dist
     distance = property(_get_dist, _set_dist)
     
 class SlideJoint(Constraint):
@@ -117,7 +117,7 @@ class SlideJoint(Constraint):
     def _get_max(self):
         return self._sjc.max
     def _set_max(self, max):
-        self._sjc.max
+        self._sjc.max = max
     max = property(_get_max, _set_max)    
         
 class PivotJoint(Constraint):
@@ -220,13 +220,13 @@ class DampedSpring(Constraint):
     def _get_stiffness(self):
         return self._dsc.stiffness
     def _set_stiffness(self, stiffness):
-        self._dsc.stiffness
+        self._dsc.stiffness = stiffness
     stiffness = property(_get_stiffness, _set_stiffness)  
     
     def _get_damping(self):
         return self._dsc.damping
     def _set_damping(self, damping):
-        self._dsc.damping
+        self._dsc.damping = damping
     damping = property(_get_damping, _set_damping)  
     
 class DampedRotarySpring(Constraint):
@@ -251,13 +251,13 @@ class DampedRotarySpring(Constraint):
     def _get_stiffness(self):
         return self._dsc.stiffness
     def _set_stiffness(self, stiffness):
-        self._dsc.stiffness
+        self._dsc.stiffness = stiffness
     stiffness = property(_get_stiffness, _set_stiffness)  
     
     def _get_damping(self):
         return self._dsc.damping
     def _set_damping(self, damping):
-        self._dsc.damping
+        self._dsc.damping = damping
     damping = property(_get_damping, _set_damping) 
 
 class RotaryLimitJoint(Constraint):
@@ -282,7 +282,7 @@ class RotaryLimitJoint(Constraint):
     def _get_max(self):
         return self._rlc.max
     def _set_max(self, max):
-        self._rlc.max
+        self._rlc.max = max
     max = property(_get_max, _set_max)    
     
 class RatchetJoint(Constraint):
@@ -307,13 +307,13 @@ class RatchetJoint(Constraint):
     def _get_phase(self):
         return self._dsc.phase
     def _set_phase(self, phase):
-        self._dsc.phase
+        self._dsc.phase = phase
     phase = property(_get_phase, _set_phase)  
     
     def _get_ratchet(self):
         return self._dsc.ratchet
     def _set_ratchet(self, ratchet):
-        self._dsc.ratchet
+        self._dsc.ratchet = ratchet
     ratchet = property(_get_ratchet, _set_ratchet) 
     
 class GearJoint(Constraint):
@@ -333,13 +333,13 @@ class GearJoint(Constraint):
     def _get_phase(self):
         return self._dsc.phase
     def _set_phase(self, phase):
-        self._dsc.phase
+        self._dsc.phase = phase
     phase = property(_get_phase, _set_phase)  
     
     def _get_ratio(self):
         return self._dsc.ratio
     def _set_ratio(self, ratio):
-        self._dsc.ratio
+        self._dsc.ratio = ratio
     ratio = property(_get_ratio, _set_ratio) 
     
 class SimpleMotor(Constraint):
@@ -359,7 +359,7 @@ class SimpleMotor(Constraint):
     def _get_rate(self):
         return self._dsc.rate
     def _set_rate(self, rate):
-        self._dsc.rate
+        self._dsc.rate = rate
     rate = property(_get_rate, _set_rate)  
 
 

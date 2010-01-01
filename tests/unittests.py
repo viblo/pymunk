@@ -239,6 +239,8 @@ class UnitTestConstraint(unittest.TestCase):
         a,b = p.Body(10,10), p.Body(20,20)
         j = p.SimpleMotor(a, b, 0.3)
         self.assertEqual(j.rate, 0.3)
+        j.rate = 0.4
+        self.assertEqual(j.rate, 0.4)
         j.max_bias = 30
         j.bias_coef = 40
         j.max_force = 50
