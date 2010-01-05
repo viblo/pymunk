@@ -902,6 +902,43 @@ and also provides a bunch of high level functions
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="rotate"></a><span class="summary-sig-name">rotate</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">angle_radians</span>)</span><br />
+      Rotate the vector by angle_radians radians.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.vec2d.Vec2d-class.html#rotated" class="summary-sig-name">rotated</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">angle_radians</span>)</span><br />
+      Create and return a new vector by rotating this vector by
+angle_radians radians.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="rotate_degrees"></a><span class="summary-sig-name">rotate_degrees</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">angle_degrees</span>)</span><br />
       Rotate the vector by angle_degrees degrees.</td>
           <td align="right" valign="top">
@@ -919,7 +956,7 @@ and also provides a bunch of high level functions
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.vec2d.Vec2d-class.html#rotated" class="summary-sig-name">rotated</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="pymunk.vec2d.Vec2d-class.html#rotated_degrees" class="summary-sig-name">rotated_degrees</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">angle_degrees</span>)</span><br />
       Create and return a new vector by rotating this vector by
 angle_degrees degrees.</td>
@@ -954,7 +991,41 @@ angle_degrees degrees.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="get_angle_degrees"></a><span class="summary-sig-name">get_angle_degrees</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="pymunk.vec2d.Vec2d-class.html#get_angle_between" class="summary-sig-name">get_angle_between</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Get the angle between the vector and the other in radians</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.vec2d.Vec2d-class.html#get_angle_degrees_between" class="summary-sig-name">get_angle_degrees_between</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">other</span>)</span><br />
       Get the angle between the vector and the other in degrees</td>
           <td align="right" valign="top">
@@ -973,7 +1044,8 @@ angle_degrees degrees.</td>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="pymunk.vec2d.Vec2d-class.html#normalized" class="summary-sig-name">normalized</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Get a normalized copy of the vector</td>
+      Get a normalized copy of the vector
+Note: This function will return 0 if the length of the vector is 0.</td>
           <td align="right" valign="top">
             
             
@@ -1166,7 +1238,8 @@ first and then do a sqrt() on the result.</td>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="cpvrotate"></a><span class="summary-sig-name">cpvrotate</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">other</span>)</span></td>
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Uses complex multiplication to rotate this vector by the other.</td>
           <td align="right" valign="top">
             
             
@@ -1183,7 +1256,8 @@ first and then do a sqrt() on the result.</td>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="cpvunrotate"></a><span class="summary-sig-name">cpvunrotate</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">other</span>)</span></td>
+        <span class="summary-sig-arg">other</span>)</span><br />
+      The inverse of cpvrotate</td>
           <td align="right" valign="top">
             
             
@@ -1293,6 +1367,63 @@ first and then do a sqrt() on the result.</td>
     </td>
   </tr>
 </table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Static Methods</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="zero"></a><span class="summary-sig-name">zero</span>()</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="unit"></a><span class="summary-sig-name">unit</span>()</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="ones"></a><span class="summary-sig-name">ones</span>()</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
 <!-- ==================== CLASS VARIABLES ==================== -->
 <a name="section-ClassVariables"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -1344,7 +1475,15 @@ first and then do a sqrt() on the result.</td>
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.vec2d.Vec2d-class.html#angle" class="summary-name">angle</a><br />
-      Gets or sets the angle of a vector
+      Gets or sets the angle (in radians) of a vector
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.vec2d.Vec2d-class.html#angle_degrees" class="summary-name">angle_degrees</a><br />
+      Gets or sets the angle (in degrees) of a vector
     </td>
   </tr>
   <tr>
@@ -1470,6 +1609,29 @@ get_length() or access .length and then do a sqrt().
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">rotated</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">angle_radians</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Create and return a new vector by rotating this vector by
+angle_radians radians.
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>Rotade vector</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="rotated_degrees"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">rotated_degrees</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">angle_degrees</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -1500,10 +1662,32 @@ angle_degrees degrees.
     </td>
   </tr></table>
   
-  Get the angle between the vector and the other in degrees
+  Get the angle between the vector and the other in radians
   <dl class="fields">
     <dt>Returns:</dt>
         <dd>The angle</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_angle_degrees_between"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_angle_degrees_between</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">other</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Get the angle between the vector and the other in degrees
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>The angle (in degrees)</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1522,6 +1706,7 @@ angle_degrees degrees.
   </tr></table>
   
   Get a normalized copy of the vector
+Note: This function will return 0 if the length of the vector is 0.
   <dl class="fields">
     <dt>Returns:</dt>
         <dd>A normalized vector</dd>
@@ -1731,13 +1916,31 @@ first and then do a sqrt() on the result.
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">angle</h3>
-  Gets or sets the angle of a vector
+  Gets or sets the angle (in radians) of a vector
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.vec2d.Vec2d-class.html#get_angle" class="summary-sig-name">get_angle</a>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
     <dt>Set Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.vec2d.Vec2d-class.html#__setangle" class="summary-sig-name" onclick="show_private();">__setangle</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">angle</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="angle_degrees"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">angle_degrees</h3>
+  Gets or sets the angle (in degrees) of a vector
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.vec2d.Vec2d-class.html#get_angle_degrees" class="summary-sig-name">get_angle_degrees</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.vec2d.Vec2d-class.html#__set_angle_degrees" class="summary-sig-name" onclick="show_private();">__set_angle_degrees</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">angle_degrees</span>)</span>
     </dd>
   </dl>
@@ -1775,7 +1978,7 @@ first and then do a sqrt() on the result.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Tue Jan 05 20:00:32 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

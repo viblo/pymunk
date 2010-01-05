@@ -74,9 +74,9 @@ void cpSpaceHashFree(cpSpaceHash *hash);
 void cpSpaceHashResize(cpSpaceHash *hash, cpFloat celldim, int numcells);
 
 // Add an object to the hash.
-void cpSpaceHashInsert(cpSpaceHash *hash, void *obj, unsigned int id, cpBB bb);
+void cpSpaceHashInsert(cpSpaceHash *hash, void *obj, cpHashValue id, cpBB bb);
 // Remove an object from the hash.
-void cpSpaceHashRemove(cpSpaceHash *hash, void *obj, unsigned int id);
+void cpSpaceHashRemove(cpSpaceHash *hash, void *obj, cpHashValue id);
 
 // Iterator function
 typedef void (*cpSpaceHashIterator)(void *obj, void *data);
@@ -86,10 +86,10 @@ void cpSpaceHashEach(cpSpaceHash *hash, cpSpaceHashIterator func, void *data);
 // Rehash the contents of the hash.
 void cpSpaceHashRehash(cpSpaceHash *hash);
 // Rehash only a specific object.
-void cpSpaceHashRehashObject(cpSpaceHash *hash, void *obj, unsigned int id);
+void cpSpaceHashRehashObject(cpSpaceHash *hash, void *obj, cpHashValue id);
 
 // Query callback.
-typedef int (*cpSpaceHashQueryFunc)(void *obj1, void *obj2, void *data);
+typedef void (*cpSpaceHashQueryFunc)(void *obj1, void *obj2, void *data);
 // Point query the hash. A reference to the query point is passed as obj1 to the query callback.
 void cpSpaceHashPointQuery(cpSpaceHash *hash, cpVect point, cpSpaceHashQueryFunc func, void *data);
 // Query the hash for a given BBox.
@@ -98,3 +98,9 @@ void cpSpaceHashQuery(cpSpaceHash *hash, void *obj, cpBB bb, cpSpaceHashQueryFun
 void cpSpaceHashQueryInsert(cpSpaceHash *hash, void *obj, cpBB bb, cpSpaceHashQueryFunc func, void *data);
 // Rehashes while querying for each object. (Optimized case) 
 void cpSpaceHashQueryRehash(cpSpaceHash *hash, cpSpaceHashQueryFunc func, void *data);
+
+// Segment Query callback.
+// Return value is uesd for early exits of the query.
+// If while traversing the grid, the raytrace function detects that an entire grid cell is beyond the hit point, it will stop the trace.
+typedef cpFloat (*cpSpaceHashSegmentQueryFunc)(void *obj1, void *obj2, void *data);
+void cpSpaceHashSegmentQuery(cpSpaceHash *hash, void *obj, cpVect a, cpVect b, cpFloat t_exit, cpSpaceHashSegmentQueryFunc func, void *data);

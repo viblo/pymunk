@@ -21,14 +21,15 @@
  
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+#include <assert.h>
 
 #include "chipmunk.h"
+#include "chipmunk_unsafe.h"
 
 cpPolyShape *
 cpPolyShapeAlloc(void)
 {
-	return (cpPolyShape *)calloc(1, sizeof(cpPolyShape));
+	return (cpPolyShape *)cpcalloc(1, sizeof(cpPolyShape));
 }
 
 static void
@@ -87,17 +88,46 @@ cpPolyShapeDestroy(cpShape *shape)
 {
 	cpPolyShape *poly = (cpPolyShape *)shape;
 	
-	free(poly->verts);
-	free(poly->tVerts);
+	cpfree(poly->verts);
+	cpfree(poly->tVerts);
 	
-	free(poly->axes);
-	free(poly->tAxes);
+	cpfree(poly->axes);
+	cpfree(poly->tAxes);
 }
 
 static int
 cpPolyShapePointQuery(cpShape *shape, cpVect p){
-	// TODO Check against BB first?
-	return cpPolyShapeContainsVert((cpPolyShape *)shape, p);
+	return cpBBcontainsVect(shape->bb, p) && cpPolyShapeContainsVert((cpPolyShape *)shape, p);
+}
+
+static void
+cpPolyShapeSegmentQuery(cpShape *shape, cpVect a, cpVect b, cpSegmentQueryInfo *info)
+{
+	cpPolyShape *poly = (cpPolyShape *)shape;
+	cpPolyShapeAxis *axes = poly->tAxes;
+	cpVect *verts = poly->tVerts;
+	int numVerts = poly->numVerts;
+	
+	for(int i=0; i<numVerts; i++){
+		cpVect n = axes[i].n;
+		cpFloat an = cpvdot(a, n);
+		if(axes[i].d > an) continue;
+		
+		cpFloat bn = cpvdot(b, n);
+		cpFloat t = (axes[i].d - an)/(bn - an);
+		if(t < 0.0f || 1.0f < t) continue;
+		
+		cpVect point = cpvlerp(a, b, t);
+		cpFloat dt = -cpvcross(n, point);
+		cpFloat dtMin = -cpvcross(n, verts[i]);
+		cpFloat dtMax = -cpvcross(n, verts[(i+1)%numVerts]);
+		
+		if(dtMin <= dt && dt <= dtMax){
+			info->shape = shape;
+			info->t = t;
+			info->n = n;
+		}
+	}
 }
 
 static const cpShapeClass polyClass = {
@@ -105,17 +135,50 @@ static const cpShapeClass polyClass = {
 	cpPolyShapeCacheData,
 	cpPolyShapeDestroy,
 	cpPolyShapePointQuery,
+	cpPolyShapeSegmentQuery,
 };
 
-cpPolyShape *
-cpPolyShapeInit(cpPolyShape *poly, cpBody *body, int numVerts, cpVect *verts, cpVect offset)
-{	
+int
+cpPolyValidate(cpVect *verts, int numVerts)
+{
+	for(int i=0; i<numVerts; i++){
+		cpVect a = verts[i];
+		cpVect b = verts[(i+1)%numVerts];
+		cpVect c = verts[(i+2)%numVerts];
+		
+		if(cpvcross(cpvsub(b, a), cpvsub(c, b)) > 0.0f)
+			return 0;
+	}
+	
+	return 1;
+}
+
+int
+cpPolyShapeGetNumVerts(cpShape *shape)
+{
+	assert(shape->klass == &polyClass);
+	return ((cpPolyShape *)shape)->numVerts;
+}
+
+cpVect
+cpPolyShapeGetVert(cpShape *shape, int idx)
+{
+	assert(shape->klass == &polyClass);
+	assert(idx < cpPolyShapeGetNumVerts(shape));
+	
+	return ((cpPolyShape *)shape)->verts[idx];
+}
+
+
+static void
+setUpVerts(cpPolyShape *poly, int numVerts, cpVect *verts, cpVect offset)
+{
 	poly->numVerts = numVerts;
 
-	poly->verts = (cpVect *)calloc(numVerts, sizeof(cpVect));
-	poly->tVerts = (cpVect *)calloc(numVerts, sizeof(cpVect));
-	poly->axes = (cpPolyShapeAxis *)calloc(numVerts, sizeof(cpPolyShapeAxis));
-	poly->tAxes = (cpPolyShapeAxis *)calloc(numVerts, sizeof(cpPolyShapeAxis));
+	poly->verts = (cpVect *)cpcalloc(numVerts, sizeof(cpVect));
+	poly->tVerts = (cpVect *)cpcalloc(numVerts, sizeof(cpVect));
+	poly->axes = (cpPolyShapeAxis *)cpcalloc(numVerts, sizeof(cpPolyShapeAxis));
+	poly->tAxes = (cpPolyShapeAxis *)cpcalloc(numVerts, sizeof(cpPolyShapeAxis));
 	
 	for(int i=0; i<numVerts; i++){
 		cpVect a = cpvadd(offset, verts[i]);
@@ -126,7 +189,15 @@ cpPolyShapeInit(cpPolyShape *poly, cpBody *body, int numVerts, cpVect *verts, cp
 		poly->axes[i].n = n;
 		poly->axes[i].d = cpvdot(n, a);
 	}
+}
+
+cpPolyShape *
+cpPolyShapeInit(cpPolyShape *poly, cpBody *body, int numVerts, cpVect *verts, cpVect offset)
+{
+	// Fail if the user attempts to pass a concave poly, or a bad winding.
+	assert(cpPolyValidate(verts, numVerts));
 	
+	setUpVerts(poly, numVerts, verts, offset);
 	cpShapeInit((cpShape *)poly, &polyClass, body);
 
 	return poly;
@@ -136,4 +207,14 @@ cpShape *
 cpPolyShapeNew(cpBody *body, int numVerts, cpVect *verts, cpVect offset)
 {
 	return (cpShape *)cpPolyShapeInit(cpPolyShapeAlloc(), body, numVerts, verts, offset);
+}
+
+// Unsafe API (chipmunk_unsafe.h)
+
+void
+cpPolyShapeSetVerts(cpShape *shape, int numVerts, cpVect *verts, cpVect offset)
+{
+	assert(shape->klass == &polyClass);
+	cpPolyShapeDestroy(shape);
+	setUpVerts((cpPolyShape *)shape, numVerts, verts, offset);
 }

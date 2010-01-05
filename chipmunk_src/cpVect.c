@@ -19,39 +19,47 @@
  * SOFTWARE.
  */
  
-#include "stdio.h"
-#include "math.h"
+#include <stdio.h>
+#include <math.h>
 
 #include "chipmunk.h"
 
 cpFloat
 cpvlength(const cpVect v)
 {
-	return sqrtf( cpvdot(v, v) );
+	return cpfsqrt( cpvdot(v, v) );
 }
 
-cpFloat
-cpvlengthsq(const cpVect v)
+inline cpVect
+cpvslerp(const cpVect v1, const cpVect v2, const cpFloat t)
 {
-	return cpvdot(v, v);
+	cpFloat omega = cpfacos(cpvdot(v1, v2));
+	
+	if(omega){
+		cpFloat denom = 1.0f/cpfsin(omega);
+		return cpvadd(cpvmult(v1, cpfsin((1.0f - t)*omega)*denom), cpvmult(v2, cpfsin(t*omega)*denom));
+	} else {
+		return v1;
+	}
 }
 
 cpVect
-cpvnormalize(const cpVect v)
+cpvslerpconst(const cpVect v1, const cpVect v2, const cpFloat a)
 {
-	return cpvmult( v, 1.0f/cpvlength(v) );
+	cpFloat angle = cpfacos(cpvdot(v1, v2));
+	return cpvslerp(v1, v2, cpfmin(a, angle)/angle);
 }
 
 cpVect
 cpvforangle(const cpFloat a)
 {
-	return cpv(cos(a), sin(a));
+	return cpv(cpfcos(a), cpfsin(a));
 }
 
 cpFloat
 cpvtoangle(const cpVect v)
 {
-	return atan2(v.y, v.x);
+	return cpfatan2(v.y, v.x);
 }
 
 char*

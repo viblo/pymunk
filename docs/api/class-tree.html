@@ -62,28 +62,58 @@
       <em class="summary">The most base type</em>
     <ul>
     <li> <strong class="uidlink"><a href="pymunk.Arbiter-class.html">pymunk.Arbiter</a></strong>:
-      <em class="summary">Class for tracking collisions between shapes.</em>
+      <em class="summary">Arbiters are collision pairs between shapes that are used with the
+collision callbacks.</em>
     </li>
-    <li> <strong class="uidlink"><a href="pymunk.Body-class.html">pymunk.Body</a></strong>
+    <li> <strong class="uidlink"><a href="pymunk.BB-class.html">pymunk.BB</a></strong>:
+      <em class="summary">Simple bounding box class.</em>
     </li>
-    <li> <strong class="uidlink"><a href="pymunk.Contact-class.html">pymunk.Contact</a></strong>
+    <li> <strong class="uidlink"><a href="pymunk.Body-class.html">pymunk.Body</a></strong>:
+      <em class="summary">A rigid body</em>
     </li>
-    <li> <strong class="uidlink"><a href="pymunk.Joint-class.html">pymunk.Joint</a></strong>
+    <li> <strong class="uidlink"><a href="pymunk.constraint.Constraint-class.html">pymunk.constraint.Constraint</a></strong>:
+      <em class="summary">Base class of all constraints.</em>
     <ul>
-    <li> <strong class="uidlink"><a href="pymunk.GrooveJoint-class.html">pymunk.GrooveJoint</a></strong>:
+    <li> <strong class="uidlink"><a href="pymunk.constraint.DampedRotarySpring-class.html">pymunk.constraint.DampedRotarySpring</a></strong>:
+      <em class="summary">Like a damped spring, but works in an angular fashion</em>
+    </li>
+    <li> <strong class="uidlink"><a href="pymunk.constraint.DampedSpring-class.html">pymunk.constraint.DampedSpring</a></strong>:
+      <em class="summary">A damped spring</em>
+    </li>
+    <li> <strong class="uidlink"><a href="pymunk.constraint.GearJoint-class.html">pymunk.constraint.GearJoint</a></strong>:
+      <em class="summary">Keeps the angular velocity ratio of a pair of bodies constant.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="pymunk.constraint.GrooveJoint-class.html">pymunk.constraint.GrooveJoint</a></strong>:
       <em class="summary">Similar to a pivot joint, but one of the anchors is
 on a linear slide instead of being fixed.</em>
     </li>
-    <li> <strong class="uidlink"><a href="pymunk.PinJoint-class.html">pymunk.PinJoint</a></strong>:
+    <li> <strong class="uidlink"><a href="pymunk.constraint.PinJoint-class.html">pymunk.constraint.PinJoint</a></strong>:
       <em class="summary">Keeps the anchor points at a set distance from one another.</em>
     </li>
-    <li> <strong class="uidlink"><a href="pymunk.PivotJoint-class.html">pymunk.PivotJoint</a></strong>:
+    <li> <strong class="uidlink"><a href="pymunk.constraint.PivotJoint-class.html">pymunk.constraint.PivotJoint</a></strong>:
       <em class="summary">Simply allow two objects to pivot about a single point.</em>
     </li>
-    <li> <strong class="uidlink"><a href="pymunk.SlideJoint-class.html">pymunk.SlideJoint</a></strong>:
+    <li> <strong class="uidlink"><a href="pymunk.constraint.RatchetJoint-class.html">pymunk.constraint.RatchetJoint</a></strong>:
+      <em class="summary">Works like a socket wrench.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="pymunk.constraint.RotaryLimitJoint-class.html">pymunk.constraint.RotaryLimitJoint</a></strong>:
+      <em class="summary">Constrains the relative rotations of two bodies.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="pymunk.constraint.SimpleMotor-class.html">pymunk.constraint.SimpleMotor</a></strong>:
+      <em class="summary">Keeps the relative angular velocity of a pair of bodies constant.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="pymunk.constraint.SlideJoint-class.html">pymunk.constraint.SlideJoint</a></strong>:
       <em class="summary">Like pin joints, but have a minimum and maximum distance.</em>
     </li>
     </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="pymunk.Contact-class.html">pymunk.Contact</a></strong>:
+      <em class="summary">Contact information</em>
+    </li>
+    <li> <strong class="uidlink"><a href="pymunk.SegmentQueryInfo-class.html">pymunk.SegmentQueryInfo</a></strong>:
+      <em class="summary">Segment queries return more information than just a simple yes or no,
+they also return where a shape was hit and it's surface normal at the hit
+point.</em>
     </li>
     <li> <strong class="uidlink"><a href="pymunk.Shape-class.html">pymunk.Shape</a></strong>:
       <em class="summary">Base class for all the shapes.</em>
@@ -92,11 +122,10 @@ on a linear slide instead of being fixed.</em>
       <em class="summary">A circle shape defined by a radius</em>
     </li>
     <li> <strong class="uidlink"><a href="pymunk.Poly-class.html">pymunk.Poly</a></strong>:
-      <em class="summary">A polygon shape</em>
+      <em class="summary">A convex polygon shape</em>
     </li>
     <li> <strong class="uidlink"><a href="pymunk.Segment-class.html">pymunk.Segment</a></strong>:
-      <em class="summary">A line segment shape between two points
-This shape is mainly intended as a static shape.</em>
+      <em class="summary">A line segment shape between two points</em>
     </li>
     </ul>
     </li>
@@ -151,7 +180,7 @@ and also provides a bunch of high level functions</em>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Tue Jan 05 20:00:31 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

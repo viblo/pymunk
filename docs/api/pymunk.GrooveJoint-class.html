@@ -62,7 +62,7 @@
 <pre class="base-tree">
 object --+    
          |    
-     <a href="pymunk.Joint-class.html">Joint</a> --+
+<a href="pymunk.Constraint-class.html">Constraint</a> --+
              |
             <strong class="uidshort">GrooveJoint</strong>
 </pre>
@@ -91,8 +91,8 @@ on a linear slide instead of being fixed.
         <span class="summary-sig-arg">groove_a</span>,
         <span class="summary-sig-arg">groove_b</span>,
         <span class="summary-sig-arg">anchr2</span>)</span><br />
-      a and b are the two bodies to conenct,
-groove_a and groove_b is two points or vectors or something.</td>
+      The groove goes from groov_a to groove_b on body a, and the pivot
+is attached to anchr2 on body b.</td>
           <td align="right" valign="top">
             
             
@@ -109,7 +109,7 @@ groove_a and groove_b is two points or vectors or something.</td>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span>
-      <em>(Inherited from <a href="pymunk.Joint-class.html">pymunk.Joint</a>)</em></td>
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em></td>
           <td align="right" valign="top">
             
             
@@ -146,6 +146,58 @@ groove_a and groove_b is two points or vectors or something.</td>
   <td align="left" colspan="2" class="table-header">
     <span class="table-header">Properties</span></td>
 </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.GrooveJoint-class.html#anchr2" class="summary-name">anchr2</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Constraint-class.html#a" class="summary-name">a</a>
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Constraint-class.html#b" class="summary-name">b</a>
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Constraint-class.html#bias_coef" class="summary-name">bias_coef</a><br />
+      The percentage of error corrected each step of the space.
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Constraint-class.html#max_bias" class="summary-name">max_bias</a><br />
+      The maximum speed at which the constraint can apply error
+correction.
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Constraint-class.html#max_force" class="summary-name">max_force</a><br />
+      The maximum force that the constraint can use to act on the two
+bodies.
+      <em>(Inherited from <a href="pymunk.Constraint-class.html">pymunk.Constraint</a>)</em>
+    </td>
+  </tr>
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -183,13 +235,40 @@ groove_a and groove_b is two points or vectors or something.</td>
     </td>
   </tr></table>
   
-  a and b are the two bodies to conenct,
-groove_a and groove_b is two points or vectors or something.
-anchr2 is an anchor point
+  The groove goes from groov_a to groove_b on body a, and the pivot
+is attached to anchr2 on body b. All coordinates are body local.
   <dl class="fields">
     <dt>Overrides:
         object.__init__
     </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Property Details</span></td>
+</tr>
+</table>
+<a name="anchr2"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">anchr2</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.GrooveJoint-class.html#_get_anchr2" class="summary-sig-name" onclick="show_private();">_get_anchr2</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.GrooveJoint-class.html#_set_anchr2" class="summary-sig-name" onclick="show_private();">_set_anchr2</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">anchr</span>)</span>
+    </dd>
   </dl>
 </td></tr></table>
 </div>
@@ -225,7 +304,7 @@ anchr2 is an anchor point
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Fri Dec 25 19:08:13 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

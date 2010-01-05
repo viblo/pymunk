@@ -11,21 +11,8 @@ def to_pygame(p):
 def flipy(y):
     """Small hack to convert chipmunk physics to pygame coordinates"""
     return -y+600
-    
-def coll_func(shape, screen):
-    """Draw a circle at the contact"""
-    if hasattr(shape, "radius"):
-        r = shape.radius + 4
-    else:
-        r = 10
-    p = to_pygame(shape.body.position)
-    pygame.draw.circle(screen, THECOLORS["red"], p, r, 2)
 
 def main():
-    
-    global contact
-    global shape_to_remove
-        
     pygame.init()
     screen = pygame.display.set_mode((600, 600))
     clock = pygame.time.Clock()
@@ -89,8 +76,8 @@ def main():
 
         for line in static_lines:
             body = line.body
-            pv1 = body.position + line.a.rotated(math.degrees(body.angle))
-            pv2 = body.position + line.b.rotated(math.degrees(body.angle))
+            pv1 = body.position + line.a.rotated(body.angle)
+            pv2 = body.position + line.b.rotated(body.angle)
             p1 = to_pygame(pv1)
             p2 = to_pygame(pv2)
             pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])
@@ -98,10 +85,16 @@ def main():
         p = pygame.mouse.get_pos()
         mouse_pos = Vec2d(p[0],flipy(p[1]))
 
-        space.nonstatic_point_query(mouse_pos, coll_func, screen)
-
+        shape = space.point_query_first(mouse_pos)
+        if shape is not None:
+            if hasattr(shape, "radius"):
+                r = shape.radius + 4
+            else:
+                r = 10
+            p = to_pygame(shape.body.position)
+            pygame.draw.circle(screen, THECOLORS["red"], p, int(r), 2)
+        
         ### Update physics
-        # (this will also draw the contacts)
         dt = 1.0/60.0
         for x in range(1):
             space.step(dt)

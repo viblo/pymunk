@@ -5,7 +5,7 @@ import pymunk as pm
 from pymunk import Vec2d
 import pymunk.util as u
 
-#TODO: Clean up code, make mouse collisions draw correct
+#TODO: Clean up code
 
 COLLTYPE_DEFAULT = 0
 COLLTYPE_MOUSE = 1
@@ -45,17 +45,7 @@ class PhysicsDemo:
             p = Vec2d(300,40) + Vec2d(0, y*s*2)
             self.polys.append(self.create_box(p, size=s, mass = 1))
             
-                
-        ### Mouse
-        self.mouse_body = pm.Body(pm.inf, pm.inf)
-        p = pygame.mouse.get_pos()
-        self.mouse_body.position = self.flipyv(Vec2d(p))
-                
-        self.mouse_shape = pm.Circle(self.mouse_body, 3, (0,0))
-        self.mouse_shape.collision_type = COLLTYPE_MOUSE
-        self.space.add( self.mouse_shape)
-        self.space.add_collisionpair_func(COLLTYPE_DEFAULT, COLLTYPE_MOUSE, self.mouse_coll, None)
-        self.space.add_collisionpair_func(COLLTYPE_MOUSE, COLLTYPE_DEFAULT, self.mouse_coll, None)
+        
         self.run_physics = True
         
         ### Wall under construction
@@ -84,15 +74,6 @@ class PhysicsDemo:
             self.screen.blit(text, (5,y))
             y += 10
 
-    def mouse_coll(self, shape1, shape2, contact_points, normal_coef, data):
-        if len(contact_points) > 1: print 1      
-        self.mouse_contact = Vec2d(contact_points[0].position)
-        if shape1.collision_type == COLLTYPE_DEFAULT:
-            self.shape_to_remove = shape1
-        elif shape2.collision_type == COLLTYPE_DEFAULT:
-            self.shape_to_remove = shape2
-        return False
-       
     def create_ball(self, point, mass=1.0, radius=15.0):
 
         moment = pm.moment_for_circle(mass, radius, 0.0, Vec2d(0,0))
@@ -126,7 +107,7 @@ class PhysicsDemo:
         """Create a number of wall segments connecting the points"""
         if len(points) < 2:
             return []
-        
+        points = map(Vec2d, points)
         for i in range(len(points)-1):
             v1 = Vec2d(points[i].x, points[i].y)
             v2 = Vec2d(points[i+1].x, points[i+1].y)
@@ -143,7 +124,7 @@ class PhysicsDemo:
 
     def draw_ball(self, ball):
         body = ball.body
-        v = body.position + ball.center.cpvrotate(body.rotation_vector)
+        v = body.position + ball.offset.cpvrotate(body.rotation_vector)
         p = self.flipyv(v)
         r = ball.radius
         pygame.draw.circle(self.screen, THECOLORS["blue"], p, r, 2)
@@ -231,9 +212,9 @@ class PhysicsDemo:
                 elif self.shape_to_remove is not None:
                     print self.shape_to_remove
                     
-                    self.balls = filter(lambda a: a.id != self.shape_to_remove.id, self.balls)
-                    self.walls = filter(lambda a: a.id != self.shape_to_remove.id, self.walls)
-                    self.polys = filter(lambda a: a.id != self.shape_to_remove.id, self.polys)
+                    self.balls = filter(lambda a: a != self.shape_to_remove, self.balls)
+                    self.walls = filter(lambda a: a != self.shape_to_remove, self.walls)
+                    self.polys = filter(lambda a: a != self.shape_to_remove, self.polys)
                     self.space.remove(self.shape_to_remove.body, self.shape_to_remove)
                     
             elif event.type == KEYUP and event.key in (K_RCTRL, K_LCTRL):
@@ -282,18 +263,13 @@ class PhysicsDemo:
         if pygame.key.get_mods() & KMOD_SHIFT and pygame.mouse.get_pressed()[2]:
             p = self.flipyv(Vec2d(mpos))
             self.poly_points.append(p)
+        self.shape_to_remove = self.space.point_query_first( self.flipyv(Vec2d(mpos)) )
         
-        self.mouse_body.position = self.flipyv(Vec2d(mpos))
-        
-        ### Reset mouse contact point
-        self.mouse_contact = None
-
         ### Update physics
         if self.run_physics:
             x = 1
             dt = 1.0/60.0/x            
             for x in range(x):
-                self.shape_to_remove = None
                 self.space.step(dt)
                 for ball in self.balls:
                     #ball.body.reset_forces()

@@ -5,8 +5,8 @@ ABOUT
     pymunk is a python wrapper for the 2d physics library Chipmunk
     2007 - 2009, Victor Blomqvist - vb@viblo.se, MIT License
 
-    This dev release is based on the latest pymunk release (0.8.4), 
-    using chipmunk 4.1.0 (source included)
+    This dev release is based on the latest pymunk release (0.9.0), 
+    using chipmunk 5.x (svn revision 343, source included)
     
     IRC: #pymunk on irc.freenode.net
     Homepage: http://code.google.com/p/pymunk/
@@ -16,7 +16,7 @@ ABOUT
     Getting the latest SVN copy:
         svn checkout http://pymunk.googlecode.com/svn/trunk pymunk-read-only
 
-    Chipmunk: http://wiki.slembcke.net/main/published/Chipmunk
+    Chipmunk: http://code.google.com/p/chipmunk-physics/
 
 HOW TO USE
 
@@ -67,7 +67,7 @@ CHIPMUNK
     The compiled file goes into the /pymunk folder (same as _chipmunk.py, 
     util.py and others). If the compile fail, please check the readme in 
     chipmunk_src for generic instructions on how to compile with gcc, 
-    or download the relevant relase from Chipmunk homepage and follow its
+    or download the relevant release from Chipmunk homepage and follow its
     instructions.
 
 HOW TO GENERATE BINDINGS

@@ -7,12 +7,17 @@ import ctypes
 
 float_type = ctypes.c_double
 
+__all__ = ["Vec2d", "zero"]
+
+def zero():
+    return Vec2d(0,0)
+
 class Vec2d(ctypes.Structure):
     """2d vector class, supports vector and scalar operators,
        and also provides a bunch of high level functions
        """
     __slots__ = ['x', 'y']
-    
+     
     @classmethod
     def from_param(cls, arg):
         """Used by ctypes to automatically create Vec2ds"""
@@ -266,50 +271,74 @@ class Vec2d(ctypes.Structure):
         self.y *= value/length
     length = property(get_length, __setlength, doc = """Gets or sets the magnitude of the vector""")
        
-    def rotate(self, angle_degrees):
-        """Rotate the vector by angle_degrees degrees."""
-        radians = math.radians(angle_degrees)
-        cos = math.cos(radians)
-        sin = math.sin(radians)
+    def rotate(self, angle_radians):
+        """Rotate the vector by angle_radians radians."""
+        cos = math.cos(angle_radians)
+        sin = math.sin(angle_radians)
         x = self.x*cos - self.y*sin
         y = self.x*sin + self.y*cos
         self.x = x
         self.y = y
  
-    def rotated(self, angle_degrees):
+    def rotated(self, angle_radians):
+        """Create and return a new vector by rotating this vector by 
+        angle_radians radians.
+        
+        :return: Rotade vector
+        """
+        cos = math.cos(angle_radians)
+        sin = math.sin(angle_radians)
+        x = self.x*cos - self.y*sin
+        y = self.x*sin + self.y*cos
+        return Vec2d(x, y)
+    
+    def rotate_degrees(self, angle_degrees):
+        """Rotate the vector by angle_degrees degrees."""
+        self.rotate(math.radians(angle_degrees))
+    
+    def rotated_degrees(self, angle_degrees):
         """Create and return a new vector by rotating this vector by 
         angle_degrees degrees.
         
         :return: Rotade vector
         """
-        radians = math.radians(angle_degrees)
-        cos = math.cos(radians)
-        sin = math.sin(radians)
-        x = self.x*cos - self.y*sin
-        y = self.x*sin + self.y*cos
-        return Vec2d(x, y)
+        return self.rotated(math.radians(angle_degrees))
     
     def get_angle(self):
         if (self.get_length_sqrd() == 0):
             return 0
-        return math.degrees(math.atan2(self.y, self.x))
-    def __setangle(self, angle_degrees):
+        return math.atan2(self.y, self.x)
+    def __setangle(self, angle):
         self.x = self.length
         self.y = 0
-        self.rotate(angle_degrees)
-    angle = property(get_angle, __setangle, doc="""Gets or sets the angle of a vector""")
+        self.rotate(angle)
+    angle = property(get_angle, __setangle, doc="""Gets or sets the angle (in radians) of a vector""")
  
+    def get_angle_degrees(self):
+        return math.degrees(self.get_angle())
+    def __set_angle_degrees(self, angle_degrees):
+        self.__setangle(math.radians(angle_degrees))
+    angle_degrees = property(get_angle_degrees, __set_angle_degrees, doc="""Gets or sets the angle (in degrees) of a vector""")
+    
     def get_angle_between(self, other):
-        """Get the angle between the vector and the other in degrees
+        """Get the angle between the vector and the other in radians
         
         :return: The angle
         """
         cross = self.x*other[1] - self.y*other[0]
         dot = self.x*other[0] + self.y*other[1]
-        return math.degrees(math.atan2(cross, dot))
-            
+        return math.atan2(cross, dot)
+        
+    def get_angle_degrees_between(self, other):
+        """Get the angle between the vector and the other in degrees
+        
+        :return: The angle (in degrees)
+        """
+        return math.degrees(self.get_angle_between(other))
+        
     def normalized(self):
         """Get a normalized copy of the vector
+        Note: This function will return 0 if the length of the vector is 0.
         
         :return: A normalized vector
         """
@@ -380,11 +409,25 @@ class Vec2d(ctypes.Structure):
     
     def convert_to_basis(self, x_vector, y_vector):
         return Vec2d(self.dot(x_vector)/x_vector.get_length_sqrd(), self.dot(y_vector)/y_vector.get_length_sqrd())
+    
+    @staticmethod
+    def zero():
+        return Vec2d(0,0)
+        
+    @staticmethod
+    def unit():
+        return Vec2d(1,0)
+        
+    @staticmethod
+    def ones():
+        return Vec2d(1,1)
  
     # Extra functions, mainly for chipmunk
     def cpvrotate(self, other):
+        """Uses complex multiplication to rotate this vector by the other. """
         return Vec2d(self.x*other.x - self.y*other.y, self.x*other.y + self.y*other.x)
     def cpvunrotate(self, other):
+        """The inverse of cpvrotate"""
         return Vec2d(self.x*other.x + self.y*other.y, self.y*other.x - self.x*other.y)
     
     # Pickle, does not work atm.
@@ -394,136 +437,13 @@ class Vec2d(ctypes.Structure):
     def __setstate__(self, dict):
         self.x, self.y = dict
     def __newobj__(cls, *args):
-        return cls.__new__(cls, *args)    
+        return cls.__new__(cls, *args)   
+
+       
 Vec2d._fields_ = [
             ('x', float_type),
             ('y', float_type),
         ]
-########################################################################
-## Unit Testing                                                       ##
-########################################################################
-if __name__ == "__main__":
- 
-    import unittest
-    import pickle
- 
-    ####################################################################
-    class UnitTestVec2d(unittest.TestCase):
-    
-        def setUp(self):
-            pass
-        
-        def testCreationAndAccess(self):
-            v = Vec2d(111, 222)
-            self.assert_(v.x == 111 and v.y == 222)
-            v.x = 333
-            v[1] = 444
-            self.assert_(v[0] == 333 and v[1] == 444)
- 
-        def testMath(self):
-            v = Vec2d(111,222)
-            self.assertEqual(v + 1, Vec2d(112, 223))
-            self.assert_(v - 2 == [109, 220])
-            self.assert_(v * 3 == (333, 666))
-            self.assert_(v / 2.0 == Vec2d(55.5, 111))
-            #self.assert_(v / 2 == (55, 111)) # Not supported since this is a c_float structure in the bottom
-            self.assert_(v ** Vec2d(2, 3) == [12321, 10941048])
-            self.assert_(v + [-11, 78] == Vec2d(100, 300))
-            #self.assert_(v / [11,2] == [10,111]) # Not supported since this is a c_float structure in the bottom
- 
-        def testReverseMath(self):
-            v = Vec2d(111, 222)
-            self.assert_(1 + v == Vec2d(112, 223))
-            self.assert_(2 - v == [-109, -220])
-            self.assert_(3 * v == (333, 666))
-            #self.assert_([222,999] / v == [2,4]) # Not supported since this is a c_float structure in the bottom
-            self.assert_([111, 222] ** Vec2d(2, 3) == [12321, 10941048])
-            self.assert_([-11, 78] + v == Vec2d(100, 300))
- 
-        def testUnary(self):
-            v = Vec2d(111, 222)
-            v = -v
-            self.assert_(v == [-111, -222])
-            v = abs(v)
-            self.assert_(v == [111, 222])
- 
-        def testLength(self):
-            v = Vec2d(3,4)
-            self.assert_(v.length == 5)
-            self.assert_(v.get_length_sqrd() == 25)
-            self.assert_(v.normalize_return_length() == 5)
-            self.assertAlmostEquals(v.length, 1)
-            v.length = 5
-            self.assert_(v == Vec2d(3, 4))
-            v2 = Vec2d(10, -2)
-            self.assert_(v.get_distance(v2) == (v - v2).get_length())
-            
-        def testAngles(self):            
-            v = Vec2d(0, 3)
-            self.assertEquals(v.angle, 90)
-            v2 = Vec2d(v)
-            v.rotate(-90)
-            self.assertEqual(v.get_angle_between(v2), 90)
-            v2.angle -= 90
-            self.assertEqual(v.length, v2.length)
-            self.assertEquals(v2.angle, 0)
-            self.assertEqual(v2, [3, 0])
-            self.assert_((v - v2).length < .00001)
-            self.assertEqual(v.length, v2.length)
-            v2.rotate(300)
-            self.assertAlmostEquals(v.get_angle_between(v2), -60) # Allow a little more error than usual (floats..)
-            v2.rotate(v2.get_angle_between(v))
-            angle = v.get_angle_between(v2)
-            self.assertAlmostEquals(v.get_angle_between(v2), 0)  
- 
-        def testHighLevel(self):
-            basis0 = Vec2d(5.0, 0)
-            basis1 = Vec2d(0, .5)
-            v = Vec2d(10, 1)
-            self.assert_(v.convert_to_basis(basis0, basis1) == [2, 2])
-            self.assert_(v.projection(basis0) == (10, 0))
-            self.assert_(basis0.dot(basis1) == 0)
-            
-        def testCross(self):
-            lhs = Vec2d(1, .5)
-            rhs = Vec2d(4, 6)
-            self.assert_(lhs.cross(rhs) == 4)
-            
-        def testComparison(self):
-            int_vec = Vec2d(3, -2)
-            flt_vec = Vec2d(3.0, -2.0)
-            zero_vec = Vec2d(0, 0)
-            self.assert_(int_vec == flt_vec)
-            self.assert_(int_vec != zero_vec)
-            self.assert_((flt_vec == zero_vec) == False)
-            self.assert_((flt_vec != int_vec) == False)
-            self.assert_(int_vec == (3, -2))
-            self.assert_(int_vec != [0, 0])
-            self.assert_(int_vec != 5)
-            self.assert_(int_vec != [3, -2, -5])
-        
-        def testInplace(self):
-            inplace_vec = Vec2d(5, 13)
-            inplace_ref = inplace_vec
-            inplace_src = Vec2d(inplace_vec)    
-            inplace_vec *= .5
-            inplace_vec += .5
-            inplace_vec /= (3, 6)
-            inplace_vec += Vec2d(-1, -1)
-            alternate = (inplace_src*.5 + .5)/Vec2d(3, 6) + [-1, -1]
-            self.assertEquals(inplace_vec, inplace_ref)
-            self.assertEquals(inplace_vec, alternate)
-        
-        def testPickle(self):
-            return # pickling does not work atm
-            testvec = Vec2d(5, .3)
-            testvec_str = pickle.dumps(testvec)
-            loaded_vec = pickle.loads(testvec_str)
-            self.assertEquals(testvec, loaded_vec)
-    
-    ####################################################################
-    unittest.main()
- 
-    ######################################################################## 
+
 del float_type
-__all__ = ["Vec2d"]
+

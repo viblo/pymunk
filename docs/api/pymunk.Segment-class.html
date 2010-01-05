@@ -68,8 +68,10 @@ object --+
 </pre>
 
 <hr />
-A line segment shape between two points
-This shape is mainly intended as a static shape.
+<p>A line segment shape between two points</p>
+<p>This shape can be attached to moving bodies, but don't currently generate
+collisions with other line segments. Can be beveled in order to give it a
+thickness.</p>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -123,8 +125,47 @@ This shape is mainly intended as a static shape.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Shape-class.html#cache_bb" class="summary-sig-name">cache_bb</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      This method is used internally by chipmunk.
+          <td><span class="summary-sig"><a name="cache_bb"></a><span class="summary-sig-name">cache_bb</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Update and returns the bouding box of this shape
+      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="point_query"></a><span class="summary-sig-name">point_query</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">p</span>)</span><br />
+      Check if the given point lies within the shape.
+      <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Shape-class.html#segment_query" class="summary-sig-name">segment_query</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">start</span>,
+        <span class="summary-sig-arg">end</span>)</span><br />
+      Check if the line segment from start to end intersects the shape.
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em></td>
           <td align="right" valign="top">
             
@@ -190,7 +231,8 @@ This shape is mainly intended as a static shape.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Shape-class.html#body" class="summary-name">body</a>
+        <a href="pymunk.Shape-class.html#body" class="summary-name">body</a><br />
+      The body this shape is attached to
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -198,7 +240,8 @@ This shape is mainly intended as a static shape.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Shape-class.html#collision_type" class="summary-name">collision_type</a>
+        <a href="pymunk.Shape-class.html#collision_type" class="summary-name">collision_type</a><br />
+      User defined collision type for the shape.
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -233,7 +276,8 @@ This shape is mainly intended as a static shape.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Shape-class.html#id" class="summary-name">id</a>
+        <a href="pymunk.Shape-class.html#layers" class="summary-name">layers</a><br />
+      Shapes only collide if they are in the same bit-planes.
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -241,8 +285,8 @@ This shape is mainly intended as a static shape.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Shape-class.html#layers" class="summary-name">layers</a><br />
-      Shapes only collide if they are in the same bit-planes.
+        <a href="pymunk.Shape-class.html#sensor" class="summary-name">sensor</a><br />
+      A boolean value if this shape is a sensor or not.
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -402,7 +446,7 @@ This shape is mainly intended as a static shape.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Tue Jan 05 20:00:32 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

@@ -1,6 +1,7 @@
 import distutils.ccompiler as cc
 import os, os.path
 import platform
+import ctypes
 from ez_setup import use_setuptools
 use_setuptools()
 from setuptools import setup, Command, find_packages
@@ -32,8 +33,20 @@ class build_chipmunk(Command):
         
         compiler = cc.new_compiler(compiler=self.compiler)
 
-        sources = [os.path.join('chipmunk_src',x) for x in os.listdir('chipmunk_src') if x[-1] == 'c']
-        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC']
+        source_folders = ['chipmunk_src', 'chipmunk_src/constraints']
+        sources = []
+        for folder in source_folders:
+            sources += [os.path.join(folder,x) for x in os.listdir(folder) if x[-1] == 'c']
+        
+        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC', '-DNDEBUG']
+        if platform.system() == 'Darwin':
+            if ctypes.sizeof(ctypes.c_voidp) * 8 == 64:
+                compiler_preargs += ['-arch x86_64']
+            else:
+                compiler_preargs += ['-arch=i386']
+        if platform.system() in ('Windows', 'Microsoft'):
+            compiler_preargs += ['-mrtd'] # compile with stddecl instead of cdecl
+        
         objs = compiler.compile(sources, extra_preargs=compiler_preargs)
         
         libname = 'chipmunk'
@@ -43,9 +56,10 @@ class build_chipmunk(Command):
         else:
             libname = compiler.library_filename(libname, lib_type='shared')
         linker_preargs = []
-        if  platform.system() == 'Linux' and platform.machine() == 'x86_64':
+        if platform.system() == 'Linux' and platform.machine() == 'x86_64':
             linker_preargs += ['-fPIC']
-        
+        if platform.system() in ('Windows', 'Microsoft'):
+            linker_preargs += ['-mrtd'] # link with stddecl instead of cdecl
         compiler.link(cc.CCompiler.SHARED_LIBRARY, objs, libname, output_dir = 'pymunk', extra_preargs=linker_preargs)
     
     def run(self):
@@ -60,7 +74,8 @@ classifiers = ['Development Status :: 4 - Beta'
     , 'Topic :: Software Development :: Libraries'   
 ]
 
-long_description = """pymunk is wrapper for the 2d rigid body physics library Chipmunk"""
+long_description = """pymunk is a easy-to-use pythonic 2d physics library that can be used whenever you need 2d rigid body physics from Python. It is build on top of the very nice 2d physics library Chipmunk, http://code.google.com/p/chipmunk-physics/"""
+
 from distutils.command import bdist
 bdist.bdist.format_commands += ['msi']
 bdist.bdist.format_command['msi'] = ('bdist_msi', "Microsoft Installer") 
@@ -69,7 +84,7 @@ setup(
     , url='http://code.google.com/p/pymunk/'
     , author='Victor Blomqvist'
     , author_email='vb@viblo.se'
-    , version='0.8.4' # remember to change me for new versions!
+    , version='0.9.0' # remember to change me for new versions!
     , description='A wrapper for the 2d physics library Chipmunk'
     , long_description=long_description
     , packages=['pymunk'] #find_packages(exclude=['*.tests']),
@@ -84,4 +99,5 @@ setup(
     , classifiers=classifiers
     , include_package_data = True
     , cmdclass={'build_chipmunk':build_chipmunk}
+    , test_suite = "tests"
     )

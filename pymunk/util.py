@@ -1,5 +1,6 @@
 """Contains utility functions, mainly to help with polygon creation"""
 from __future__ import division
+__version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 from .vec2d import Vec2d
@@ -225,50 +226,143 @@ def calc_perimeter(points):
         c += sqrt((p2[X] - p1[X])**2 + (p2[Y] - p1[Y])**2) 
         p1 = p2
     return c
-    
-    
-    
-def get_poly_UA(pointlist, points_as_Vec2d=True):
-    """Calculates the perimeter and area of a given polygon
 
-    Use calc_area() to get the area instead of this method
+### "hidden" functions
+
+def _is_corner(a,b,c):
+    # returns if point b is an outer corner
+    return not(is_clockwise([a,b,c]))
     
-    :deprecated: Scheduled for deletion in pymunk 0.8.5+ 
+def _point_in_triangle(p,a,b,c):
+    # measure area of whole triangle
+    whole = abs(calc_area([a,b,c]))
+    # measure areas of inner triangles formed by p
+    parta = abs(calc_area([a,b,p]))
+    partb = abs(calc_area([b,c,p]))
+    partc = abs(calc_area([c,a,p]))
+    # allow for potential rounding error in area calcs
+    # (not that i've encountered one yet, but just in case...)
+    thresh = 0.0000001
+    # return if the sum of the inner areas = the whole area
+    return ((parta+partb+partc) < (whole+thresh))
+        
+def _get_ear(poly):
+    count = len(poly)
+    # not even a poly
+    if count < 3:
+        return [], []
+    # only a triangle anyway
+    if count == 3:
+        return poly, []
+
+    # start checking points
+    for i in range(count):
+        ia = (i-1) % count
+        ib = i
+        ic = (i+1) % count
+        a = poly[ia]
+        b = poly[ib]
+        c = poly[ic]
+        # is point b an outer corner?
+        if _is_corner(a,b,c):
+            # are there any other points inside triangle abc?
+            valid = True
+            for j in range(count):
+                if not(j in (ia,ib,ic)):
+                    p = poly[j]
+                    if _point_in_triangle(p,a,b,c):
+                        valid = False
+            # if no such point found, abc must be an "ear"
+            if valid:
+                remaining = []
+                for j in range(count):
+                    if j != ib:
+                        remaining.append(poly[j])
+                # return the ear, and what's left of the polygon after the ear is clipped
+                return [a,b,c], remaining
+                
+    # no ear was found, so something is wrong with the given poly (not anticlockwise? self-intersects?)
+    return [], []
     
-    :return: U, A    
+def _attempt_reduction(hulla, hullb):
+    inter = [vec for vec in hulla if vec in hullb]
+    if len(inter) == 2:
+        starta = hulla.index(inter[1])
+        tempa = hulla[starta:]+hulla[:starta]
+        tempa = tempa[1:]
+        startb = hullb.index(inter[0])
+        tempb = hullb[startb:]+hullb[:startb]
+        tempb = tempb[1:]
+        reduced = tempa+tempb
+        if is_convex(reduced):
+            return reduced
+    # reduction failed, return None
+    return None
+    
+def _reduce_hulls(hulls):
+    count = len(hulls)
+    # 1 or less hulls passed
+    if count < 2:
+        return hulls, False
+        
+    # check all hulls in the list against each other
+    for ia in range(count-1):
+        for ib in range(ia+1, count):
+            # see if hulls can be reduced to one
+            reduction = _attempt_reduction(hulls[ia], hulls[ib])
+            if reduction != None:
+                # they can so return a new list of hulls and a True
+                newhulls = [reduction]
+                for j in range(count):
+                    if not(j in (ia,ib)):
+                        newhulls.append(hulls[j])
+                return newhulls, True
+                
+    # nothing was reduced, send the original hull list back with a False
+    return hulls, False
+   
+### major functions
+   
+def triangulate(poly):
+    """Triangulates poly and returns a list of triangles
+    
+    :Parameters:
+        poly
+            list of points that form an anticlockwise polygon 
+            (self-intersecting polygons won't work, results are undefined)
     """
-    return calc_perimeter(pointlist), calc_area(pointlist) # ugly fix until this method is removed
+    triangles = []
+    remaining = poly[:]
+    # while the poly still needs clipping
+    while len(remaining) > 2:
+        # rotate the list:
+        # this stops the starting point from getting stale which sometimes a "fan" of polys, which often leads to poor convexisation
+        remaining = remaining[1:]+remaining[:1]
+        # clip the ear, store it
+        ear, remaining = _get_ear(remaining)
+        if ear != []:
+            triangles.append(ear)
+    # return stored triangles
+    return triangles
+   
+def convexise(triangles):
+    """Reduces a list of triangles (such as returned by triangulate()) to a 
+    non-optimum list of convex polygons 
+        
+    :Parameters:
+        triangles
+            list of anticlockwise triangles (a list of three points) to reduce
+    """
+    # fun fact: convexise probably isn't a real word
+    hulls = triangles[:]
+    reduced = True
+    # keep trying to reduce until it won't reduce any more
+    while reduced:
+        hulls, reduced = _reduce_hulls(hulls)
+    # return reduced hull list
+    return hulls
     
-    p1 = p2 = None
-    U = 0
-    A = 0
-    for p in pointlist:
-        if p1 == None:
-            p1 = p
-            
-        else:
-            p2 = p
-            
-            # Extract x and y
-            if points_as_Vec2d:
-                x1, y1 = p1[X], p1[Y]
-                x2, y2 = p2[X], p2[Y]
-            else:    
-                x1, y1 = p1
-                x2, y2 = p2
-
-            # Get distance between the two Points
-            dx = fabs(x2 - x1)
-            dy = fabs(y2 - y1)
-            
-            # U += c = sqrt(a^2+b^2) | A += (a*b)/2
-            U += sqrt((dx*dx) + (dy*dy))
-            A += ((dx*dy)/2)
-
-            # Current End Point becomes Next Start Point
-            p1 = p2
-    
-    return U, A 
-    
-__all__ = ["is_clockwise", "is_left", "reduce_poly", "convex_hull",
-        "calc_center", "poly_vectors_around_center", "get_poly_UA", "is_convex"]
+__all__ = ["is_clockwise", "reduce_poly", "convex_hull", "calc_area",
+        "calc_center", "poly_vectors_around_center", "is_convex", 
+        "calc_perimeter", 
+        "triangulate", "convexise"]

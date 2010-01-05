@@ -72,8 +72,9 @@ object --+
 </dd></dl>
 
 <hr />
-Base class for all the shapes. You usually dont want to create instances
-of this class directly but use one of the specialized shapes instead.
+<p>Base class for all the shapes.</p>
+<p>You usually dont want to create instances of this class directly but use
+one of the specialized shapes instead.</p>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -123,8 +124,45 @@ of this class directly but use one of the specialized shapes instead.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Shape-class.html#cache_bb" class="summary-sig-name">cache_bb</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      This method is used internally by chipmunk.</td>
+          <td><span class="summary-sig"><a name="cache_bb"></a><span class="summary-sig-name">cache_bb</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Update and returns the bouding box of this shape</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="point_query"></a><span class="summary-sig-name">point_query</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">p</span>)</span><br />
+      Check if the given point lies within the shape.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Shape-class.html#segment_query" class="summary-sig-name">segment_query</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">start</span>,
+        <span class="summary-sig-arg">end</span>)</span><br />
+      Check if the line segment from start to end intersects the shape.</td>
           <td align="right" valign="top">
             
             
@@ -165,14 +203,16 @@ of this class directly but use one of the specialized shapes instead.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Shape-class.html#id" class="summary-name">id</a>
+        <a href="pymunk.Shape-class.html#sensor" class="summary-name">sensor</a><br />
+      A boolean value if this shape is a sensor or not.
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Shape-class.html#collision_type" class="summary-name">collision_type</a>
+        <a href="pymunk.Shape-class.html#collision_type" class="summary-name">collision_type</a><br />
+      User defined collision type for the shape.
     </td>
   </tr>
 <tr>
@@ -219,7 +259,8 @@ of this class directly but use one of the specialized shapes instead.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Shape-class.html#body" class="summary-name">body</a>
+        <a href="pymunk.Shape-class.html#body" class="summary-name">body</a><br />
+      The body this shape is attached to
     </td>
   </tr>
   <tr>
@@ -264,29 +305,27 @@ of this class directly but use one of the specialized shapes instead.
   </dl>
 </td></tr></table>
 </div>
-<a name="cache_bb"></a>
+<a name="segment_query"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">cache_bb</span>(<span class="sig-arg">self</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">segment_query</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">start</span>,
+        <span class="sig-arg">end</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
   </tr></table>
   
-  <p>This method is used internally by chipmunk.</p>
-<p>If you really need it please add it as feature request on the pymunk
-issue tracker.</p>
+  <p>Check if the line segment from start to end intersects the shape.</p>
+<p>Return either SegmentQueryInfo object or None</p>
   <dl class="fields">
   </dl>
-<div class="fields">      <p><strong>Deprecated:</strong>
-        Scheduled for deletion in pymunk 0.8.5+
-      </p>
-</div></td></tr></table>
+</td></tr></table>
 </div>
 <br />
 <!-- ==================== PROPERTY DETAILS ==================== -->
@@ -298,16 +337,21 @@ issue tracker.</p>
     <span class="table-header">Property Details</span></td>
 </tr>
 </table>
-<a name="id"></a>
+<a name="sensor"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">id</h3>
-  
+  <h3 class="epydoc">sensor</h3>
+  A boolean value if this shape is a sensor or not. Sensors only
+call collision callbacks, and never generate real collisions.
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Shape-class.html#_get_sensor" class="summary-sig-name" onclick="show_private();">_get_sensor</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Shape-class.html#_set_sensor" class="summary-sig-name" onclick="show_private();">_set_sensor</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">is_sensor</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
@@ -318,7 +362,9 @@ issue tracker.</p>
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">collision_type</h3>
-  
+  User defined collision type for the shape. See
+add_collisionpair_func function for more information on when to use
+this property
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Shape-class.html#_get_collision_type" class="summary-sig-name" onclick="show_private();">_get_collision_type</a>(<span class="summary-sig-arg">self</span>)</span>
@@ -357,7 +403,7 @@ to self collide. Defaults to 0
 <tr><td>
   <h3 class="epydoc">layers</h3>
   Shapes only collide if they are in the same bit-planes.
-i.e. (a.layers &amp; b.layers) != 0 By default, a shape occupies all
+i.e. (a.layers &amp; b.layers) != 0. By default, a shape occupies all
 32 bit-planes.
   <dl class="fields">
     <dt>Get Method:</dt>
@@ -418,7 +464,7 @@ Coulomb friction model, a value of 0.0 is frictionless.
   <h3 class="epydoc">surface_velocity</h3>
   The surface velocity of the object. Useful for creating
 conveyor belts or players that move around. This value is only used
-when calculating friction, not the collision.
+when calculating friction, not resolving the collision.
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Shape-class.html#_get_surface_velocity" class="summary-sig-name" onclick="show_private();">_get_surface_velocity</a>(<span class="summary-sig-arg">self</span>)</span>
@@ -436,7 +482,7 @@ when calculating friction, not the collision.
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">body</h3>
-  
+  The body this shape is attached to
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
@@ -476,7 +522,7 @@ when calculating friction, not the collision.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Tue Jan 05 20:00:32 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

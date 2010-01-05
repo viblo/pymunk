@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>pymunk.Joint</title>
+  <title>pymunk.SegmentQueryInfo</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -43,7 +43,7 @@
     <td width="100%">
       <span class="breadcrumbs">
         <a href="pymunk-module.html">Package&nbsp;pymunk</a> ::
-        Class&nbsp;Joint
+        Class&nbsp;SegmentQueryInfo
       </span>
     </td>
     <td>
@@ -51,27 +51,25 @@
         <!-- hide/show private -->
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="pymunk.Joint-class.html"
+            >]&nbsp;|&nbsp;<a href="pymunk.SegmentQueryInfo-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class Joint</h1><p class="nomargin-top"></p>
+<h1 class="epydoc">Class SegmentQueryInfo</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
 object --+
          |
-        <strong class="uidshort">Joint</strong>
+        <strong class="uidshort">SegmentQueryInfo</strong>
 </pre>
 
-<dl><dt>Known Subclasses:</dt>
-<dd>
-      <ul class="subclass-list">
-<li><a href="pymunk.GrooveJoint-class.html">GrooveJoint</a></li><li>, <a href="pymunk.PinJoint-class.html">PinJoint</a></li><li>, <a href="pymunk.PivotJoint-class.html">PivotJoint</a></li><li>, <a href="pymunk.SlideJoint-class.html">SlideJoint</a></li>  </ul>
-</dd></dl>
-
 <hr />
+Segment queries return more information than just a simple yes or no,
+they also return where a shape was hit and it's surface normal at the hit
+point. This object hold that information.
+
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -86,9 +84,14 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Joint-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>=<span class="summary-sig-default">None</span>)</span><br />
-      x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
+          <td><span class="summary-sig"><a href="pymunk.SegmentQueryInfo-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">shape</span>,
+        <span class="summary-sig-arg">start</span>,
+        <span class="summary-sig-arg">end</span>,
+        <span class="summary-sig-arg">t</span>,
+        <span class="summary-sig-arg">n</span>)</span><br />
+      You shouldn't need to initialize SegmentQueryInfo objects on your
+own.</td>
           <td align="right" valign="top">
             
             
@@ -104,7 +107,43 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="pymunk.SegmentQueryInfo-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      repr(x)</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_hit_point"></a><span class="summary-sig-name">get_hit_point</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the hit point in world coordinates where the segment first
+intersected with the shape</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_hit_distance"></a><span class="summary-sig-name">get_hit_distance</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the absolute distance where the segment first hit the shape</td>
           <td align="right" valign="top">
             
             
@@ -124,7 +163,6 @@ object --+
       <code>__new__</code>,
       <code>__reduce__</code>,
       <code>__reduce_ex__</code>,
-      <code>__repr__</code>,
       <code>__setattr__</code>,
       <code>__sizeof__</code>,
       <code>__str__</code>,
@@ -141,6 +179,30 @@ object --+
   <td align="left" colspan="2" class="table-header">
     <span class="table-header">Properties</span></td>
 </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.SegmentQueryInfo-class.html#shape" class="summary-name">shape</a><br />
+      Shape that was hit
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.SegmentQueryInfo-class.html#t" class="summary-name">t</a><br />
+      Distance along query segment, will always be in the range [0, 1]
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.SegmentQueryInfo-class.html#n" class="summary-name">n</a><br />
+      Normal of hit surface
+    </td>
+  </tr>
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -166,7 +228,11 @@ object --+
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>=<span class="sig-default">None</span>)</span>
+        <span class="sig-arg">shape</span>,
+        <span class="sig-arg">start</span>,
+        <span class="sig-arg">end</span>,
+        <span class="sig-arg">t</span>,
+        <span class="sig-arg">n</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -174,12 +240,88 @@ object --+
     </td>
   </tr></table>
   
-  x.__init__(...) initializes x; see x.__class__.__doc__ for signature
+  You shouldn't need to initialize SegmentQueryInfo objects on your
+own.
   <dl class="fields">
     <dt>Overrides:
         object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__repr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__repr__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  repr(x)
+  <dl class="fields">
+    <dt>Overrides:
+        object.__repr__
         <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Property Details</span></td>
+</tr>
+</table>
+<a name="shape"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">shape</h3>
+  Shape that was hit
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="t"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">t</h3>
+  Distance along query segment, will always be in the range [0, 1]
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="n"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">n</h3>
+  Normal of hit surface
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
   </dl>
 </td></tr></table>
 </div>
@@ -215,7 +357,7 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Tue Jan 05 20:00:32 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

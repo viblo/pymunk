@@ -12,6 +12,7 @@ def main():
     print("""
     Remember (before running this script!): 
     - change version number in readme, setup.py and __init__ 
+    - test in at least python 2.5, 2.6, 3.x
     - regenerate the api
     - branch in svn""")
     

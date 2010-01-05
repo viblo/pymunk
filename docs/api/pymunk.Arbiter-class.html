@@ -66,7 +66,12 @@ object --+
 </pre>
 
 <hr />
-Class for tracking collisions between shapes.
+<p>Arbiters are collision pairs between shapes that are used with the
+collision callbacks.</p>
+<p><em>IMPORTANT:</em> Because arbiters are handled by the space you should never
+hold onto a reference to an arbiter as you don't know when it will be
+destroyed! Use them within the callback where they are given to you and
+then forget about them or copy out the information you need from them.</p>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -83,10 +88,10 @@ Class for tracking collisions between shapes.
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="pymunk.Arbiter-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">arbiter</span>,
-        <span class="summary-sig-arg">shapes</span>,
-        <span class="summary-sig-arg">static_shapes</span>)</span><br />
-      x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
+        <span class="summary-sig-arg">_arbiter</span>,
+        <span class="summary-sig-arg">space</span>)</span><br />
+      You should never need to create an Arbiter yourself, consider this
+method private :)</td>
           <td align="right" valign="top">
             
             
@@ -135,16 +140,8 @@ Class for tracking collisions between shapes.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.Arbiter-class.html#a" class="summary-name">a</a><br />
-      The first shape involved in the collision
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="pymunk.Arbiter-class.html#b" class="summary-name">b</a><br />
-      The second shape involved in the collision
+        <a href="pymunk.Arbiter-class.html#shapes" class="summary-name">shapes</a><br />
+      Get the shapes in the order that they were defined in the collision handler associated with this arbiter
     </td>
   </tr>
 <tr>
@@ -168,7 +165,7 @@ Class for tracking collisions between shapes.
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Arbiter-class.html#surface_velocity" class="summary-name">surface_velocity</a><br />
-      Surface velocity
+      Used for surface_v calculations, implementation may change
     </td>
   </tr>
 <tr>
@@ -177,6 +174,22 @@ Class for tracking collisions between shapes.
     </td><td class="summary">
         <a href="pymunk.Arbiter-class.html#stamp" class="summary-name">stamp</a><br />
       Time stamp of the arbiter.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Arbiter-class.html#swapped_coll" class="summary-name">swapped_coll</a><br />
+      Are the shapes swapped in relation to the collision handler?
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Arbiter-class.html#is_first_contact" class="summary-name">is_first_contact</a><br />
+      Returns true if this is the first step that an arbiter existed.
     </td>
   </tr>
   <tr>
@@ -204,9 +217,8 @@ Class for tracking collisions between shapes.
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">arbiter</span>,
-        <span class="sig-arg">shapes</span>,
-        <span class="sig-arg">static_shapes</span>)</span>
+        <span class="sig-arg">_arbiter</span>,
+        <span class="sig-arg">space</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -214,11 +226,11 @@ Class for tracking collisions between shapes.
     </td>
   </tr></table>
   
-  x.__init__(...) initializes x; see x.__class__.__doc__ for signature
+  You should never need to create an Arbiter yourself, consider this
+method private :)
   <dl class="fields">
     <dt>Overrides:
         object.__init__
-        <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
 </td></tr></table>
@@ -247,30 +259,16 @@ Class for tracking collisions between shapes.
   </dl>
 </td></tr></table>
 </div>
-<a name="a"></a>
+<a name="shapes"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">a</h3>
-  The first shape involved in the collision
+  <h3 class="epydoc">shapes</h3>
+  Get the shapes in the order that they were defined in the collision handler associated with this arbiter
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_get_a" class="summary-sig-name" onclick="show_private();">_get_a</a>(<span class="summary-sig-arg">self</span>)</span>
-    </dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="b"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">b</h3>
-  The second shape involved in the collision
-  <dl class="fields">
-    <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_get_b" class="summary-sig-name" onclick="show_private();">_get_b</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_get_shapes" class="summary-sig-name" onclick="show_private();">_get_shapes</a>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
@@ -286,6 +284,10 @@ Class for tracking collisions between shapes.
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_get_elasticity" class="summary-sig-name" onclick="show_private();">_get_elasticity</a>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_set_elasticity" class="summary-sig-name" onclick="show_private();">_set_elasticity</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">elasticity</span>)</span>
+    </dd>
   </dl>
 </td></tr></table>
 </div>
@@ -300,6 +302,10 @@ Class for tracking collisions between shapes.
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_get_friction" class="summary-sig-name" onclick="show_private();">_get_friction</a>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_set_elasticity" class="summary-sig-name" onclick="show_private();">_set_elasticity</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">elasticity</span>)</span>
+    </dd>
   </dl>
 </td></tr></table>
 </div>
@@ -309,7 +315,7 @@ Class for tracking collisions between shapes.
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">surface_velocity</h3>
-  Surface velocity
+  Used for surface_v calculations, implementation may change
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_get_surface_velocity" class="summary-sig-name" onclick="show_private();">_get_surface_velocity</a>(<span class="summary-sig-arg">self</span>)</span>
@@ -327,6 +333,37 @@ Class for tracking collisions between shapes.
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_get_stamp" class="summary-sig-name" onclick="show_private();">_get_stamp</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="swapped_coll"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">swapped_coll</h3>
+  Are the shapes swapped in relation to the collision handler?
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_get_swapped_coll" class="summary-sig-name" onclick="show_private();">_get_swapped_coll</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="is_first_contact"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">is_first_contact</h3>
+  Returns true if this is the first step that an arbiter existed.
+You can use this from preSolve and postSolve to know if a collision
+between two shapes is new without needing to flag a boolean in your
+begin callback.
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Arbiter-class.html#_get_is_first_contact" class="summary-sig-name" onclick="show_private();">_get_is_first_contact</a>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
@@ -363,7 +400,7 @@ Class for tracking collisions between shapes.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 29 23:21:14 2009
+    Generated by Epydoc 3.0.1 on Tue Jan 05 20:00:31 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
