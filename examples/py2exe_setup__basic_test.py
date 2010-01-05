@@ -5,7 +5,7 @@ import pymunk
 
 pymunk_dir = os.path.dirname(pymunk.__file__)
 
-setup(console=['demo_basic_test.py'],
+setup(console=['basic_test.py'],
     data_files = [os.path.join(pymunk_dir, 'chipmunk.dll')]
     )
     
