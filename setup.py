@@ -1,6 +1,7 @@
 import distutils.ccompiler as cc
 import os, os.path
 import platform
+import ctypes
 from ez_setup import use_setuptools
 use_setuptools()
 from setuptools import setup, Command, find_packages
@@ -38,8 +39,14 @@ class build_chipmunk(Command):
             sources += [os.path.join(folder,x) for x in os.listdir(folder) if x[-1] == 'c']
         
         compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC', '-DNDEBUG']
+        if platform.system() == 'Darwin':
+            if ctypes.sizeof(ctypes.c_voidp) * 8 == 64:
+                compiler_preargs += ['-arch x86_64']
+            else:
+                compiler_preargs += ['-arch=i386']
         if platform.system() in ('Windows', 'Microsoft'):
             compiler_preargs += ['-mrtd'] # compile with stddecl instead of cdecl
+        
         objs = compiler.compile(sources, extra_preargs=compiler_preargs)
         
         libname = 'chipmunk'
@@ -67,7 +74,8 @@ classifiers = ['Development Status :: 4 - Beta'
     , 'Topic :: Software Development :: Libraries'   
 ]
 
-long_description = """pymunk is wrapper for the 2d rigid body physics library Chipmunk"""
+long_description = """pymunk is a easy-to-use pythonic 2d physics library that can be used whenever you need 2d rigid body physics from Python. It is build on top of the very nice 2d physics library Chipmunk, http://code.google.com/p/chipmunk-physics/"""
+
 from distutils.command import bdist
 bdist.bdist.format_commands += ['msi']
 bdist.bdist.format_command['msi'] = ('bdist_msi', "Microsoft Installer") 
