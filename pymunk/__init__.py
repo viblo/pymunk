@@ -274,27 +274,27 @@ class Space(object):
                 Collision type of the second shape
             begin : ``func(space, arbiter, *args, **kwargs) -> bool``
                 Collision handler called when two shapes just started touching 
-                for the first time this step. Return False from the callback 
-                to make pymunk ignore the collision or True to process it 
-                normally. Pass None if you wish to use the pymunk default.
+                for the first time this step. Return false from the callback 
+                to make pymunk ignore the collision or true to process it 
+                normally. Pass `None` if you wish to use the pymunk default.
             pre_solve : ``func(space, arbiter, *args, **kwargs) -> bool``
                 Collision handler called when two shapes are touching. Return 
-                False from the callback to make pymunk ignore the collision or 
-                True to process it normally. Additionally, you may override 
-                collision values such as Arbiter.elasticity and 
-                Arbiter.friction to provide custom friction or elasticity 
-                values. See Arbiter for more info. Pass None if you wish to 
-                use the pymunk default.
+                false from the callback to make pymunk ignore the collision or 
+                true to process it normally. Additionally, you may override 
+                collision values such as `Arbiter.elasticity` and 
+                `Arbiter.friction` to provide custom friction or elasticity 
+                values. See `Arbiter` for more info. Pass `None` if you wish 
+                to use the pymunk default.
             post_solve : ``func(space, arbiter, *args, **kwargs)``
                 Collsion handler called when two shapes are touching and their 
                 collision response has been processed. You can retrieve the 
                 collision force at this time if you want to use it to 
-                calculate sound volumes or damage amounts. Pass None if you 
+                calculate sound volumes or damage amounts. Pass `None` if you 
                 wish to use the pymunk default.
             separate : ``func(space, arbiter, *args, **kwargs)``
                 Collision handler called when two shapes have just stopped 
-                touching for the first time this frame. Pass None if you wish 
-                to use the pymunk default.
+                touching for the first time this frame. Pass `None` if you 
+                wish to use the pymunk default.
             args
                 Optional parameters passed to the collision handler functions.
             kwargs
@@ -1014,7 +1014,10 @@ class Poly(Shape):
         self._shapecontents = self._shape.contents
         
     def get_points(self):
-        """Get the points in world coordinates for the polygon"""
+        """Get the points in world coordinates for the polygon
+        
+        :return: [`Vec2d`] in world coords
+        """
         #shape = ct.cast(self._shape, ct.POINTER(cp.cpPolyShape))
         #num = shape.contents.numVerts
         #verts = shape.contents.verts
@@ -1029,6 +1032,7 @@ class Poly(Shape):
             
         return points
 
+        
 def moment_for_circle(mass, inner_radius, outer_radius, offset=(0,0)):
     """Calculate the moment of inertia for a circle"""
     return cp.cpMomentForCircle(mass, inner_radius, outer_radius, offset)

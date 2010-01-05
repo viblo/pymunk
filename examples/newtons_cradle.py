@@ -88,9 +88,9 @@ def main():
     
     ### Physics stuff
     pm.init_pymunk()
-    space = pm.Space(elastic_iterations=20)
-    space.gravity = (0.0, -900.0)
-    
+    space = pm.Space(iterations = 1, elastic_iterations=250)
+    space.gravity = (0.0, -1900.0)
+    space.damping = 0.999 # to prevent it from blowing up.
     static_body = pm.Body(pm.inf, pm.inf)
     mouse_body = pm.Body(pm.inf, pm.inf)
    
@@ -105,7 +105,7 @@ def main():
         body.position = (x,-125+offset_y)
         body.start_position = Vec2d(body.position)
         shape = pm.Circle(body, radius)
-        shape.elasticity = 1
+        shape.elasticity = 0.999
         space.add(body, shape)
         bodies.append(body)
         pj = pm.PinJoint(static_body, body, (x,125+offset_y), (0,0))
@@ -146,7 +146,7 @@ def main():
                 shape = space.point_query_first(p)
                 if shape != None:
                     rest_length = mouse_body.position.get_distance(shape.body.position)
-                    ds = pm.DampedSpring(mouse_body, shape.body, (0,0), (0,0), rest_length, 100, 1)
+                    ds = pm.DampedSpring(mouse_body, shape.body, (0,0), (0,0), rest_length, 1000, 1)
                     space.add(ds)
                     selected = ds
             
@@ -182,7 +182,7 @@ def main():
             
         ### Update physics
         fps = 50
-        iterations = 1
+        iterations = 25
         dt = 1.0/float(fps)/float(iterations)
         for x in range(iterations): # 10 iterations to get a more stable simulation
             space.step(dt)

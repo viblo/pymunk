@@ -1,11 +1,13 @@
 BIG THANKS TO (in no order):
 
+- Rawlyn (polygon triangulation code)
 - Paul Kienzle (ctload)
 - Mark Sherry (base of pymunk.py)
 - unknown @ pygame (vec2d)
 - Devan Lai (vec2d autoconvert)
 - alecthomas (base setup)
 - mr Chipmunk himself, Scott Lembcke! (Chipmunk)
+
 
 and everyone else that have conrtibuted in any way.
 

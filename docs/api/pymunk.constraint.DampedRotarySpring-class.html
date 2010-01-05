@@ -149,28 +149,32 @@ Like a damped spring, but works in an angular fashion
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.constraint.DampedRotarySpring-class.html#rest_angle" class="summary-name">rest_angle</a>
+        <a href="pymunk.constraint.DampedRotarySpring-class.html#rest_angle" class="summary-name">rest_angle</a><br />
+      The relative angle in radians that the bodies want to have
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.constraint.DampedRotarySpring-class.html#stiffness" class="summary-name">stiffness</a>
+        <a href="pymunk.constraint.DampedRotarySpring-class.html#stiffness" class="summary-name">stiffness</a><br />
+      The spring constant (Young's modulus).
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.constraint.DampedRotarySpring-class.html#damping" class="summary-name">damping</a>
+        <a href="pymunk.constraint.DampedRotarySpring-class.html#damping" class="summary-name">damping</a><br />
+      How soft to make the damping of the spring.
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.constraint.Constraint-class.html#a" class="summary-name">a</a>
+        <a href="pymunk.constraint.Constraint-class.html#a" class="summary-name">a</a><br />
+      The first of the two bodies constrained
       <em>(Inherited from <a href="pymunk.constraint.Constraint-class.html">pymunk.constraint.Constraint</a>)</em>
     </td>
   </tr>
@@ -178,7 +182,8 @@ Like a damped spring, but works in an angular fashion
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.constraint.Constraint-class.html#b" class="summary-name">b</a>
+        <a href="pymunk.constraint.Constraint-class.html#b" class="summary-name">b</a><br />
+      The second of the two bodies constrained
       <em>(Inherited from <a href="pymunk.constraint.Constraint-class.html">pymunk.constraint.Constraint</a>)</em>
     </td>
   </tr>
@@ -248,10 +253,14 @@ bodies.
     </td>
   </tr></table>
   
-  Like a damped spring, but works in an angular fashion. restAngle is
-the relative angle in radians that the bodies want to have, stiffness
-and damping work basically the same as on a damped spring.
+  Like a damped spring, but works in an angular fashion.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>rest_angle</code></strong> - The relative angle in radians that the bodies want to have</li>
+        <li><strong class="pname"><code>stiffness</code></strong> - The spring constant (Young's modulus).</li>
+        <li><strong class="pname"><code>damping</code></strong> - How soft to make the damping of the spring.</li>
+    </ul></dd>
     <dt>Overrides:
         object.__init__
     </dt>
@@ -274,7 +283,7 @@ and damping work basically the same as on a damped spring.
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">rest_angle</h3>
-  
+  The relative angle in radians that the bodies want to have
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.DampedRotarySpring-class.html#_get_rest_angle" class="summary-sig-name" onclick="show_private();">_get_rest_angle</a>(<span class="summary-sig-arg">self</span>)</span>
@@ -292,7 +301,7 @@ and damping work basically the same as on a damped spring.
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">stiffness</h3>
-  
+  The spring constant (Young's modulus).
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.DampedRotarySpring-class.html#_get_stiffness" class="summary-sig-name" onclick="show_private();">_get_stiffness</a>(<span class="summary-sig-arg">self</span>)</span>
@@ -310,7 +319,7 @@ and damping work basically the same as on a damped spring.
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">damping</h3>
-  
+  How soft to make the damping of the spring.
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.DampedRotarySpring-class.html#_get_damping" class="summary-sig-name" onclick="show_private();">_get_damping</a>(<span class="summary-sig-arg">self</span>)</span>
@@ -354,7 +363,7 @@ and damping work basically the same as on a damped spring.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Dec 31 02:18:03 2009
+    Generated by Epydoc 3.0.1 on Tue Jan 05 20:00:32 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

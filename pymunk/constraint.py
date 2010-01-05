@@ -1,3 +1,11 @@
+"""A constraint is something that describes how two bodies interact with 
+each other. (how they constraint each other). Constraints can be simple 
+joints that allow bodies to pivot around each other like the bones in your 
+body, or they can be more abstract like the gear joint or motors. 
+"""
+__version__ = "$Id$"
+__docformat__ = "reStructuredText"
+
 import ctypes as ct
 import pymunk._chipmunk as cp 
 import pymunk.util as u
@@ -41,8 +49,10 @@ class Constraint(object):
         doc="""The maximum speed at which the constraint can apply error 
         correction. Defaults to infinity""")
 
-    a = property(lambda self: self._a)
-    b = property(lambda self: self._b)
+    a = property(lambda self: self._a, 
+        doc="""The first of the two bodies constrained""")
+    b = property(lambda self: self._b,
+        doc="""The second of the two bodies constrained""")
         
     def __del__(self):
         if cp is not None:
@@ -187,11 +197,17 @@ class GrooveJoint(Constraint):
     anchr2 = property(_get_anchr2, _set_anchr2)
     
 class DampedSpring(Constraint):
-    """A damped sprint"""
+    """A damped spring"""
     def __init__(self, a, b, anchr1, anchr2, rest_length, stiffness, damping):
-        """Defined much like a slide joint. restLength is the distance the 
-        spring wants to be, stiffness is the spring constant (Young's 
-        modulus), and damping is how soft to make the damping of the spring. 
+        """Defined much like a slide joint. 
+        
+        :Parameters:
+            rest_length : float
+                The distance the spring wants to be.
+            stiffness : float
+                The spring constant (Young's modulus). 
+            damping : float
+                How soft to make the damping of the spring. 
         """
         self._constraint = cp.cpDampedSpringNew(a._body, b._body, anchr1, anchr2, rest_length, stiffness, damping)
         self._ccontents = self._constraint.contents
@@ -215,26 +231,35 @@ class DampedSpring(Constraint):
         return self._dsc.restLength
     def _set_rest_length(self,rest_length):
         self._dsc.restLength = rest_length
-    rest_length = property(_get_rest_length, _set_rest_length)
+    rest_length = property(_get_rest_length, _set_rest_length,
+        doc="""The distance the spring wants to be.""")
     
     def _get_stiffness(self):
         return self._dsc.stiffness
     def _set_stiffness(self, stiffness):
         self._dsc.stiffness = stiffness
-    stiffness = property(_get_stiffness, _set_stiffness)  
+    stiffness = property(_get_stiffness, _set_stiffness,
+        doc="""The spring constant (Young's modulus).""")    
     
     def _get_damping(self):
         return self._dsc.damping
     def _set_damping(self, damping):
         self._dsc.damping = damping
-    damping = property(_get_damping, _set_damping)  
+    damping = property(_get_damping, _set_damping, 
+        doc="""How soft to make the damping of the spring.""")   
     
 class DampedRotarySpring(Constraint):
     """Like a damped spring, but works in an angular fashion"""
     def __init__(self, a, b, rest_angle, stiffness, damping):
-        """Like a damped spring, but works in an angular fashion. restAngle is 
-        the relative angle in radians that the bodies want to have, stiffness 
-        and damping work basically the same as on a damped spring.  
+        """Like a damped spring, but works in an angular fashion. 
+        
+        :Parameters:
+            rest_angle
+                The relative angle in radians that the bodies want to have
+            stiffness
+                The spring constant (Young's modulus). 
+            damping
+                How soft to make the damping of the spring. 
         """
         self._constraint = cp.cpDampedRotarySpringNew(a._body, b._body, rest_angle, stiffness, damping)
         self._ccontents = self._constraint.contents
@@ -246,19 +271,22 @@ class DampedRotarySpring(Constraint):
         return self._dsc.restAngle
     def _set_rest_angle(self,rest_angle):
         self._dsc.restAngle = rest_angle
-    rest_angle = property(_get_rest_angle, _set_rest_angle)
+    rest_angle = property(_get_rest_angle, _set_rest_angle, 
+        doc="""The relative angle in radians that the bodies want to have""")
     
     def _get_stiffness(self):
         return self._dsc.stiffness
     def _set_stiffness(self, stiffness):
         self._dsc.stiffness = stiffness
-    stiffness = property(_get_stiffness, _set_stiffness)  
+    stiffness = property(_get_stiffness, _set_stiffness,
+        doc="""The spring constant (Young's modulus).""")  
     
     def _get_damping(self):
         return self._dsc.damping
     def _set_damping(self, damping):
         self._dsc.damping = damping
-    damping = property(_get_damping, _set_damping) 
+    damping = property(_get_damping, _set_damping, 
+        doc="""How soft to make the damping of the spring.""") 
 
 class RotaryLimitJoint(Constraint):
     """Constrains the relative rotations of two bodies."""
@@ -360,6 +388,7 @@ class SimpleMotor(Constraint):
         return self._dsc.rate
     def _set_rate(self, rate):
         self._dsc.rate = rate
-    rate = property(_get_rate, _set_rate)  
+    rate = property(_get_rate, _set_rate,
+        doc="""The desired relative angular velocity""")  
 
 
