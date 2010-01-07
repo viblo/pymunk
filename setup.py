@@ -39,17 +39,27 @@ class build_chipmunk(Command):
             sources += [os.path.join(folder,x) for x in os.listdir(folder) if x[-1] == 'c']
         
         compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC', '-DNDEBUG']
-        if platform.system() == 'Darwin':
-            if ctypes.sizeof(ctypes.c_voidp) * 8 == 64:
-                compiler_preargs += ['-arch x86_64']
-            else:
-                compiler_preargs += ['-arch=i386']
+        
+        # check if we are on a 64bit python
+        arch = ctypes.sizeof(ctypes.c_voidp) * 8
+        
+        
+        if arch == 64 and platform.system() == 'Linux':
+            compiler_preargs += ['-m64']
+        elif arch == 32 and platform.system() == 'Linux':
+            compiler_preargs += ['-m32']
+        elif platform.system() == 'Darwin':
+            compiler_preargs += ['-arch i386', '-arch x86_64']
+        ### because mingw only ships with gcc 3 we don't add any -mXX argument on Windows
+        
         if platform.system() in ('Windows', 'Microsoft'):
             compiler_preargs += ['-mrtd'] # compile with stddecl instead of cdecl
         
         objs = compiler.compile(sources, extra_preargs=compiler_preargs)
         
         libname = 'chipmunk'
+        if arch == 64 and platform.system() != 'Darwin':
+            libname += '64'
         if platform.system() == 'Darwin':
             libname = compiler.library_filename(libname, lib_type='dylib')
             compiler.set_executable('linker_so', ['cc', '-dynamiclib'])
@@ -89,10 +99,14 @@ setup(
     , long_description=long_description
     , packages=['pymunk'] #find_packages(exclude=['*.tests']),
     , package_data = {'pymunk': ['chipmunk.dll'
+                                , 'chipmunk64.dll'
                                 , 'libchipmunk.so'
+                                , 'libchipmunk64.so'
                                 , 'libchipmunk.dylib']}
     , eager_resources = [os.path.join('pymunk','chipmunk.dll')
+                            , os.path.join('pymunk','chipmunk64.dll')
                             , os.path.join('pymunk','libchipmunk.so')
+                            , os.path.join('pymunk','libchipmunk64.so')
                             , os.path.join('pymunk','libchipmunk.dylib')]
     #, platforms=['win32']
     , license='MIT License'

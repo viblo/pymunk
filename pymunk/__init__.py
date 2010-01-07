@@ -1,11 +1,14 @@
 """
-pymunk is a python wrapper for the 2d physics library Chipmunk
+pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
+you need 2d rigid body physics from Python.
 
 IRC: #pymunk on irc.freenode.net
 
 Homepage: http://code.google.com/p/pymunk/
 
 Forum: http://www.slembcke.net/forums/viewforum.php?f=6
+
+Chipmunk documentation: http://code.google.com/p/chipmunk-physics/wiki/Documentation
 """
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
@@ -32,11 +35,11 @@ distribution (i.e. not in a checked-out copy from svn).
 """
 
 chipmunk_version = cp.cpVersionString.value + "r343"
-"""The chipmunk version compatible with this pymunk version.
-Other (newer) chipmunk versions might also work if the new version does not 
+"""The Chipmunk version compatible with this pymunk version.
+Other (newer) Chipmunk versions might also work if the new version does not 
 contain any breaking API changes.
 
-*Note:* This is also the version of the chipmunk source files included in the 
+*Note:* This is also the version of the Chipmunk source files included in the 
 chipmunk_src folder (normally included in the pymunk source distribution).
 """
 
@@ -216,7 +219,7 @@ class Space(object):
         cp.cpSpaceRemoveConstraint(self._space, constraint._constraint)
 
     def resize_static_hash(self, dim=100.0, count=1000):
-        """The spatial hashes used by Chipmunk's collision detection are fairly
+        """The spatial hashes used by pymunk's collision detection are fairly
         size sensitive. dim is the size of the hash cells. Setting dim to the
         average objects size is likely to give the best performance.
 
@@ -231,7 +234,7 @@ class Space(object):
         cp.cpSpaceResizeStaticHash(self._space, dim, count)
 
     def resize_active_hash(self, dim=100.0, count=1000):
-        """The spatial hashes used by Chipmunk's collision detection are fairly
+        """The spatial hashes used by pymunk's collision detection are fairly
         size sensitive. dim is the size of the hash cells. Setting dim to the
         average objects size is likely to give the best performance.
 
@@ -479,8 +482,8 @@ class Space(object):
         """Query space along the line segment from start to end filtering out 
         matches with the given layers and group. 
         
-        Segment queries are like ray casting, but because pymunk/Chipmunk uses 
-        a spatial hash to process collisions, it cannot process infinitely 
+        Segment queries are like ray casting, but because pymunk uses a 
+        spatial hash to process collisions, it cannot process infinitely 
         long queries like a ray. In practice this is still very fast and you 
         don't need to worry too much about the performance as long as you 
         aren't using very long segments for your queries. 
@@ -811,8 +814,8 @@ class Shape(object):
     def _set_friction(self, u):
         self._shapecontents.u = u
     friction = property(_get_friction, _set_friction, 
-        doc="""Friction coefficient. Chipmunk (and therefor pymunk) uses the 
-        Coulomb friction model, a value of 0.0 is frictionless.""")
+        doc="""Friction coefficient. pymunk uses the Coulomb friction model, a 
+        value of 0.0 is frictionless.""")
 
     def _get_surface_velocity(self):
         return self._shapecontents.surface_v
@@ -1049,12 +1052,11 @@ def moment_for_poly(mass, vertices,  offset=(0,0)):
 def reset_shapeid_counter():
     """Reset the internal shape counter
     
-    Chipmunk (and therefor pymunk) keeps a counter so that every new shape 
-    is given a unique hash value to be used in the spatial hash. Because this 
-    affects the order in which the collisions are found and handled, you 
-    should reset the shape counter every time you populate a space with new 
-    shapes. If you don't, there might be (very) slight differences in the 
-    simulation.
+    pymunk keeps a counter so that every new shape is given a unique hash 
+    value to be used in the spatial hash. Because this affects the order in 
+    which the collisions are found and handled, you should reset the shape 
+    counter every time you populate a space with new shapes. If you don't, 
+    there might be (very) slight differences in the simulation.
     """
     cp.cpResetShapeIdCounter()
 
@@ -1062,7 +1064,7 @@ def reset_shapeid_counter():
 class Contact(object):
     """Contact information"""
     def __init__(self, _contact):
-        """Initialize a Contact object from the chipmunk equivalent struct
+        """Initialize a Contact object from the Chipmunk equivalent struct
         
         *Note:* You should never need to create an instance of this class 
         directly.
@@ -1099,8 +1101,11 @@ class Arbiter(object):
     then forget about them or copy out the information you need from them.
     """
     def __init__(self, _arbiter, space):
-        """You should never need to create an Arbiter yourself, consider this 
-        method private :)
+        """Initialize an Arbiter object from the Chipmunk equivalent struct 
+        and the Space.
+        
+        *Note:* You should never need to create an instance of this class 
+        directly.
         """
         self._arbiter = _arbiter
         self._arbitercontents = self._arbiter.contents
@@ -1134,7 +1139,8 @@ class Arbiter(object):
             return a,b
             
     shapes = property(_get_shapes, 
-        doc="""Get the shapes in the order that they were defined in the collision handler associated with this arbiter""")
+        doc="""Get the shapes in the order that they were defined in the 
+        collision handler associated with this arbiter""")
             
     def _get_elasticity(self):
         return self._arbiter.contents.e

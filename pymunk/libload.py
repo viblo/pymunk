@@ -21,12 +21,13 @@ def platform_specific_functions():
     
  
 def load_library(libname, print_path=True):
-    # lib gets loaded from:
-    # pymunk/libchipmunk.so, libchipmunk.dylib or chipmunk.dll
-     
+    # lib gets loaded from
+    # 32bit python: pymunk/libchipmunk.so, libchipmunk.dylib or chipmunk.dll
+    # 64 bit python pymunk/libchipmunk64.so, libchipmunk.dylib or chipmunk64.dll
+    
     s = platform.system()
-    arch, _ = platform.architecture()
- 
+    arch = str(ctypes.sizeof(ctypes.c_voidp) * 8)
+    
     path = os.path.dirname(os.path.abspath(__file__))
     
     try:
@@ -40,12 +41,16 @@ def load_library(libname, print_path=True):
     except:
         pass
     
+    if arch == 64:
+        arch_param = "64"
+    else:
+        arch_param = ""
     
     if s in ('Linux', 'FreeBSD'):
-        libfn = "lib%s.so" % libname
+        libfn = "lib%s%s.so" % (libname, arch_param)
         
     elif s in ('Windows', 'Microsoft'):
-        libfn = "%s.dll" % libname
+        libfn = "%s%s.dll" % (libname, arch_param)
         
     elif s == 'Darwin':
         libfn = "lib%s.dylib" % libname
@@ -57,7 +62,6 @@ def load_library(libname, print_path=True):
     libfn = os.path.join(path, libfn)
     
     
-    
     if print_path:
         print ("Loading chipmunk for %s (%s) [%s]" % (s, arch, libfn))
     try:
@@ -67,23 +71,26 @@ def load_library(libname, print_path=True):
 Failed to load pymunk library.
 
 This error usually means that you don't have a compiled version of chipmunk in 
-the correct spot where pymunk can find it. Usually its enough (at least on 
-*nix & macos) to simply run the compile command first before installing and 
-then retry again:
+the correct spot where pymunk can find it. pymunk does not include precompiled 
+chipmunk library files for all platforms. 
+
+The good news is that it is usually enough (at least on *nix and OS X) to 
+simply run the compile command first before installing and then retry again:
 
 You compile chipmunk with
 > python setup.py build_chipmunk
 and then continue as usual with 
 > python setup.py install
 > cd examples
-> python demo_contact.py
+> python basic_test.py
 
 (for complete instructions please see the readme file)
 
 If it still doesnt work, please report as a bug on the issue tracker at 
 http://code.google.com/p/pymunk/issues
-Remember to include information about your OS and version of python. Please 
-include the exception traceback as well (usually found below this message).
+Remember to include information about your OS, which version of python you use 
+and the version of pymunk you have downloaded. Please include the exception 
+traceback if any (usually found below this message).
 """)
         raise
     return lib
