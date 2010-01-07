@@ -41,7 +41,7 @@ def load_library(libname, print_path=True):
     except:
         pass
     
-    if arch == 64:
+    if arch == "64":
         arch_param = "64"
     else:
         arch_param = ""
