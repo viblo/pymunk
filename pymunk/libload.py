@@ -63,7 +63,7 @@ def load_library(libname, print_path=True):
     
     
     if print_path:
-        print ("Loading chipmunk for %s (%s) [%s]" % (s, arch, libfn))
+        print ("Loading chipmunk for %s (%sbit) [%s]" % (s, arch, libfn))
     try:
         lib = platform_specific_functions()['library_loader'].LoadLibrary(libfn)
     except OSError: 
@@ -89,8 +89,9 @@ and then continue as usual with
 If it still doesnt work, please report as a bug on the issue tracker at 
 http://code.google.com/p/pymunk/issues
 Remember to include information about your OS, which version of python you use 
-and the version of pymunk you have downloaded. Please include the exception 
-traceback if any (usually found below this message).
+and the version of pymunk you tried to run. A description of what you did to 
+trigger the error is also good. Please include the exception traceback if any 
+(usually found below this message).
 """)
         raise
     return lib
