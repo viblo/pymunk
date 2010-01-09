@@ -49,7 +49,7 @@ class build_chipmunk(Command):
         elif arch == 32 and platform.system() == 'Linux':
             compiler_preargs += ['-m32']
         elif platform.system() == 'Darwin':
-            compiler_preargs += ['-arch i386', '-arch x86_64']
+            compiler_preargs += ['-arch', 'i386', '-arch', 'x86_64']
         ### because mingw only ships with gcc 3 we don't add any -mXX argument on Windows
         
         if platform.system() in ('Windows', 'Microsoft'):
@@ -62,7 +62,7 @@ class build_chipmunk(Command):
             libname += '64'
         if platform.system() == 'Darwin':
             libname = compiler.library_filename(libname, lib_type='dylib')
-            compiler.set_executable('linker_so', ['cc', '-dynamiclib'])
+            compiler.set_executable('linker_so', ['cc', '-dynamiclib', '-arch', 'i386', '-arch', 'x86_64'])
         else:
             libname = compiler.library_filename(libname, lib_type='shared')
         linker_preargs = []
