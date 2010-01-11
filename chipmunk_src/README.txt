@@ -1,4 +1,4 @@
-Chipmunk rev 330
+Chipmunk rev 358
 see http://wiki.slembcke.net/main/published/Chipmunk
 
   Compiling:

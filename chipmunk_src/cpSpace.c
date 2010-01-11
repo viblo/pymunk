@@ -172,6 +172,10 @@ cpSpaceDestroy(cpSpace *space)
 	cpHashSetFree(space->contactSet);
 	cpArrayFree(space->arbiters);
 	
+	if(space->postStepCallbacks)
+		cpHashSetEach(space->postStepCallbacks, &freeWrap, NULL);
+	cpHashSetFree(space->postStepCallbacks);
+	
 	if(space->collFuncSet)
 		cpHashSetEach(space->collFuncSet, &freeWrap, NULL);
 	cpHashSetFree(space->collFuncSet);
@@ -574,9 +578,19 @@ queryFunc(cpShape *a, cpShape *b, cpSpace *space)
 	cpArbiter *arb = (cpArbiter *)cpHashSetInsert(space->contactSet, arbHashID, shape_pair, NULL);
 	cpArbiterUpdate(arb, contacts, numContacts, handler, a, b); // retains the contacts array
 	
-	// Call the begin function first if we need to
-	int beginPass = (arb->stamp >= 0) || (handler->begin(arb, space, handler->data));
-	if(beginPass && handler->preSolve(arb, space, handler->data) && !sensor){
+	// Call the begin function first if it's the first step
+	if(!(arb->stamp >= 0) && !handler->begin(arb, space, handler->data)){
+		cpArbiterIgnore(arb);
+	}
+	
+	if(
+		// Ignore the arbiter if it has been flagged
+		(arb->state != cpArbiterStateIgnore) && 
+		// Call preSolve
+		handler->preSolve(arb, space, handler->data) &&
+		// Process, but don't add collisions for sensors.
+		!sensor
+	){
 		cpArrayPush(space->arbiters, arb);
 	} else {
 		cpfree(arb->contacts);
@@ -592,7 +606,7 @@ queryFunc(cpShape *a, cpShape *b, cpSpace *space)
 static void
 active2staticIter(cpShape *shape, cpSpace *space)
 {
-	cpSpaceHashQuery(space->staticShapes, shape, shape->bb, (cpSpaceHashQueryFunc)&queryFunc, space);
+	cpSpaceHashQuery(space->staticShapes, shape, shape->bb, (cpSpaceHashQueryFunc)queryFunc, space);
 }
 
 // Hashset filter func to throw away old arbiters.
@@ -647,11 +661,11 @@ cpSpaceStep(cpSpace *space, cpFloat dt)
 	}
 	
 	// Pre-cache BBoxes and shape data.
-	cpSpaceHashEach(space->activeShapes, (cpSpaceHashIterator)&updateBBCache, NULL);
+	cpSpaceHashEach(space->activeShapes, (cpSpaceHashIterator)updateBBCache, NULL);
 	
 	// Collide!
-	cpSpaceHashEach(space->activeShapes, (cpSpaceHashIterator)&active2staticIter, space);
-	cpSpaceHashQueryRehash(space->activeShapes, (cpSpaceHashQueryFunc)&queryFunc, space);
+	cpSpaceHashEach(space->activeShapes, (cpSpaceHashIterator)active2staticIter, space);
+	cpSpaceHashQueryRehash(space->activeShapes, (cpSpaceHashQueryFunc)queryFunc, space);
 	
 	// Clear out old cached arbiters and dispatch untouch functions
 	cpHashSetFilter(space->contactSet, (cpHashSetFilterFunc)contactSetFilter, space);
@@ -708,7 +722,7 @@ cpSpaceStep(cpSpace *space, cpFloat dt)
 		cpCollisionHandler *handler = arb->handler;
 		handler->postSolve(arb, space, handler->data);
 		
-		arb->firstColl = 0;
+		arb->state = cpArbiterStateNormal;
 	}
 	
 	// Run the post step callbacks
