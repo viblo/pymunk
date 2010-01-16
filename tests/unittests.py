@@ -30,6 +30,42 @@ class UnitTestBody(unittest.TestCase):
         self.assertEqual(b.local_to_world((1,1)), Vec2d(11,21))
         self.assertEqual(b.world_to_local((1,1)), Vec2d(-9,-19))
         
+    def testPositonFunction(self):
+        s = p.Space()
+        b = p.Body(1,1)
+        def f(body, dt):
+            body.position += 0,dt
+        
+        b.position_func=f
+        s.add(b)
+        s.step(10)
+        self.assertEqual(b.position.y, 10)
+        s.step(1)
+        s.step(1)
+        self.assertEqual(b.position.y, 12)
+        
+        b.position_func = p.Body.update_position
+        s.step(1)
+        self.assertEqual(b.position.y, 12)
+        
+    def testVelocityFunction(self):
+        s = p.Space()
+        b = p.Body(1,1)
+        def f(body, gravity, damping, dt):
+            body.velocity += 5*gravity
+        
+        b.velocity_func=f
+        s.gravity = 1,0
+        s.add(b)
+        s.step(10)
+        self.assertEqual(b.velocity.x, 5)
+        s.step(0.1)
+        s.step(0.1)
+        self.assertEqual(b.velocity.x, 15)
+        
+        b.velocity_func = b.update_velocity
+        s.step(1)
+        self.assertEqual(b.velocity.x, 16)
         
 class UnitTestShape(unittest.TestCase):
     def setUp(self):

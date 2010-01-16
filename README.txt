@@ -3,7 +3,7 @@
 ABOUT
 
     pymunk is a python wrapper for the 2d physics library Chipmunk
-    2007 - 2009, Victor Blomqvist - vb@viblo.se, MIT License
+    2007 - 2010, Victor Blomqvist - vb@viblo.se, MIT License
 
     This dev release is based on the latest pymunk release (0.9.0), 
     using chipmunk 5.x (svn revision 358, source included)
@@ -38,7 +38,7 @@ HOW TO USE
     is located in the pymunk folder.
 
     The easy way to get started is to check out the examples/ directory,
-    and run 'python demo_contact.py' and so on, and see what it does :)
+    and run 'python contact.py' and so on, and see what it does :)
     (Note: you will have to place /pymunk in the examples directory if
     you dont install pymunk to site-packages)
 

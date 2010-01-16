@@ -1,15 +1,36 @@
+# ----------------------------------------------------------------------------
+# pymunk
+# Copyright (c) 2007-2010 Victor Blomqvist
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# ----------------------------------------------------------------------------
+
 """A constraint is something that describes how two bodies interact with 
 each other. (how they constraint each other). Constraints can be simple 
 joints that allow bodies to pivot around each other like the bones in your 
 body, or they can be more abstract like the gear joint or motors. 
 """
-__version__ = "$Id$"
+__version__ = "$Id: $"
 __docformat__ = "reStructuredText"
 
 import ctypes as ct
 import pymunk._chipmunk as cp 
-import pymunk.util as u
-from .vec2d import Vec2d
 
 class Constraint(object):
     """Base class of all constraints. 
@@ -229,7 +250,7 @@ class DampedSpring(Constraint):
 
     def _get_rest_length(self):
         return self._dsc.restLength
-    def _set_rest_length(self,rest_length):
+    def _set_rest_length(self, rest_length):
         self._dsc.restLength = rest_length
     rest_length = property(_get_rest_length, _set_rest_length,
         doc="""The distance the spring wants to be.""")
@@ -269,7 +290,7 @@ class DampedRotarySpring(Constraint):
         
     def _get_rest_angle(self):
         return self._dsc.restAngle
-    def _set_rest_angle(self,rest_angle):
+    def _set_rest_angle(self, rest_angle):
         self._dsc.restAngle = rest_angle
     rest_angle = property(_get_rest_angle, _set_rest_angle, 
         doc="""The relative angle in radians that the bodies want to have""")
@@ -328,7 +349,7 @@ class RatchetJoint(Constraint):
         
     def _get_angle(self):
         return self._dsc.angle
-    def _set_angle(self,angle):
+    def _set_angle(self, angle):
         self._dsc.angle = angle
     angle = property(_get_angle, _set_angle)
     

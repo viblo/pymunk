@@ -1,10 +1,33 @@
+# ----------------------------------------------------------------------------
+# pymunk
+# Copyright (c) 2007-2010 Victor Blomqvist
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# ----------------------------------------------------------------------------
+
 """Contains utility functions, mainly to help with polygon creation"""
 from __future__ import division
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
+from math import sqrt
 from .vec2d import Vec2d
-from math import fabs, sqrt
 
 X, Y = 0, 1 
 
@@ -229,17 +252,17 @@ def calc_perimeter(points):
 
 ### "hidden" functions
 
-def _is_corner(a,b,c):
+def _is_corner(a, b, c):
     # returns if point b is an outer corner
-    return not(is_clockwise([a,b,c]))
+    return not(is_clockwise([a, b, c]))
     
-def _point_in_triangle(p,a,b,c):
+def _point_in_triangle(p, a, b, c):
     # measure area of whole triangle
-    whole = abs(calc_area([a,b,c]))
+    whole = abs(calc_area([a, b, c]))
     # measure areas of inner triangles formed by p
-    parta = abs(calc_area([a,b,p]))
-    partb = abs(calc_area([b,c,p]))
-    partc = abs(calc_area([c,a,p]))
+    parta = abs(calc_area([a, b, p]))
+    partb = abs(calc_area([b, c, p]))
+    partc = abs(calc_area([c, a, p]))
     # allow for potential rounding error in area calcs
     # (not that i've encountered one yet, but just in case...)
     thresh = 0.0000001
@@ -336,7 +359,8 @@ def triangulate(poly):
     # while the poly still needs clipping
     while len(remaining) > 2:
         # rotate the list:
-        # this stops the starting point from getting stale which sometimes a "fan" of polys, which often leads to poor convexisation
+        # this stops the starting point from getting stale which sometimes 
+        # a "fan" of polys, which often leads to poor convexisation
         remaining = remaining[1:]+remaining[:1]
         # clip the ear, store it
         ear, remaining = _get_ear(remaining)

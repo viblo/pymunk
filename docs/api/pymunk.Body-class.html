@@ -229,44 +229,6 @@ specified absolute coordinates in the next timestep.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Body-class.html#update_velocity" class="summary-sig-name">update_velocity</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">gravity</span>,
-        <span class="summary-sig-arg">damping</span>,
-        <span class="summary-sig-arg">dt</span>)</span><br />
-      Default rigid body velocity integration function.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="pymunk.Body-class.html#update_position" class="summary-sig-name">update_position</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">dt</span>)</span><br />
-      Default rigid body position integration function.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="pymunk.Body-class.html#local_to_world" class="summary-sig-name">local_to_world</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">v</span>)</span><br />
       Convert body local coordinates to world space coordinates</td>
@@ -313,6 +275,53 @@ specified absolute coordinates in the next timestep.</td>
       <code>__str__</code>,
       <code>__subclasshook__</code>
       </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Static Methods</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Body-class.html#update_velocity" class="summary-sig-name">update_velocity</a>(<span class="summary-sig-arg">body</span>,
+        <span class="summary-sig-arg">gravity</span>,
+        <span class="summary-sig-arg">damping</span>,
+        <span class="summary-sig-arg">dt</span>)</span><br />
+      Default rigid body velocity integration function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Body-class.html#update_position" class="summary-sig-name">update_position</a>(<span class="summary-sig-arg">body</span>,
+        <span class="summary-sig-arg">dt</span>)</span><br />
+      Default rigid body position integration function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 </table>
@@ -445,6 +454,56 @@ specified absolute coordinates in the next timestep.</td>
   </dl>
 </td></tr></table>
 </div>
+<a name="update_velocity"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">update_velocity</span>(<span class="sig-arg">body</span>,
+        <span class="sig-arg">gravity</span>,
+        <span class="sig-arg">damping</span>,
+        <span class="sig-arg">dt</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Default rigid body velocity integration function.</p>
+<p>Updates the velocity of the body using Euler integration.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="update_position"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">update_position</span>(<span class="sig-arg">body</span>,
+        <span class="sig-arg">dt</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Default rigid body position integration function.</p>
+<p>Updates the position of the body using Euler integration. Unlike the
+velocity function, it's unlikely you'll want to override this
+function. If you do, make sure you understand it's source code
+(in Chipmunk) as it's an important part of the collision/joint
+correction process.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
 <a name="apply_impulse"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -560,54 +619,6 @@ DampedSpring that should be used instead.</p>
 specified absolute coordinates in the next timestep.</p>
 <p>Intended for objects that are moved manually with a custom velocity
 integration function.</p>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="update_velocity"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">update_velocity</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">gravity</span>,
-        <span class="sig-arg">damping</span>,
-        <span class="sig-arg">dt</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Default rigid body velocity integration function.</p>
-<p>Updates the velocity of the body using Euler integration.</p>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="update_position"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">update_position</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">dt</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Default rigid body position integration function.</p>
-<p>Updates the position of the body using Euler integration. Unlike the
-velocity function, it's unlikely you'll want to override this
-function. If you do, make sure you understand it's source code
-(in Chipmunk) as it's an important part of the collision/joint
-correction process.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -924,7 +935,7 @@ is called each time step and can be used to update the body's position.</p>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Jan 05 20:00:31 2010
+    Generated by Epydoc 3.0.1 on Sat Jan 16 18:34:00 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

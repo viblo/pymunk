@@ -1,3 +1,26 @@
+# ----------------------------------------------------------------------------
+# pymunk
+# Copyright (c) 2007-2010 Victor Blomqvist
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# ----------------------------------------------------------------------------
+
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
@@ -7,14 +30,11 @@ import ctypes
 
 float_type = ctypes.c_double
 
-__all__ = ["Vec2d", "zero"]
-
-def zero():
-    return Vec2d(0,0)
+__all__ = ["Vec2d"]
 
 class Vec2d(ctypes.Structure):
     """2d vector class, supports vector and scalar operators,
-       and also provides a bunch of high level functions
+       and also provides some high level functions
        """
     __slots__ = ['x', 'y']
      
@@ -269,7 +289,8 @@ class Vec2d(ctypes.Structure):
         length = self.get_length()
         self.x *= value/length
         self.y *= value/length
-    length = property(get_length, __setlength, doc = """Gets or sets the magnitude of the vector""")
+    length = property(get_length, __setlength, 
+        doc = """Gets or sets the magnitude of the vector""")
        
     def rotate(self, angle_radians):
         """Rotate the vector by angle_radians radians."""
@@ -312,13 +333,15 @@ class Vec2d(ctypes.Structure):
         self.x = self.length
         self.y = 0
         self.rotate(angle)
-    angle = property(get_angle, __setangle, doc="""Gets or sets the angle (in radians) of a vector""")
+    angle = property(get_angle, __setangle, 
+        doc="""Gets or sets the angle (in radians) of a vector""")
  
     def get_angle_degrees(self):
         return math.degrees(self.get_angle())
     def __set_angle_degrees(self, angle_degrees):
         self.__setangle(math.radians(angle_degrees))
-    angle_degrees = property(get_angle_degrees, __set_angle_degrees, doc="""Gets or sets the angle (in degrees) of a vector""")
+    angle_degrees = property(get_angle_degrees, __set_angle_degrees, 
+        doc="""Gets or sets the angle (in degrees) of a vector""")
     
     def get_angle_between(self, other):
         """Get the angle between the vector and the other in radians
@@ -408,19 +431,24 @@ class Vec2d(ctypes.Structure):
         return Vec2d(self.x + (other[0] - self.x)*range, self.y + (other[1] - self.y)*range)
     
     def convert_to_basis(self, x_vector, y_vector):
-        return Vec2d(self.dot(x_vector)/x_vector.get_length_sqrd(), self.dot(y_vector)/y_vector.get_length_sqrd())
+        x = self.dot(x_vector)/x_vector.get_length_sqrd()
+        y = self.dot(y_vector)/y_vector.get_length_sqrd()
+        return Vec2d(x, y)
     
     @staticmethod
     def zero():
-        return Vec2d(0,0)
+        """A vector of zero length"""
+        return Vec2d(0, 0)
         
     @staticmethod
     def unit():
-        return Vec2d(1,0)
+        """A unit vector pointing up"""
+        return Vec2d(1, 0)
         
     @staticmethod
     def ones():
-        return Vec2d(1,1)
+        """A vector where both x and y is 1"""
+        return Vec2d(1, 1)
  
     # Extra functions, mainly for chipmunk
     def cpvrotate(self, other):

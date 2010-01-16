@@ -4,7 +4,6 @@ pymunk.inf	pymunk-module.html#inf
 pymunk.moment_for_poly	pymunk-module.html#moment_for_poly
 pymunk.__package__	pymunk-module.html#__package__
 pymunk.version	pymunk-module.html#version
-pymunk.test	pymunk-module.html#test
 pymunk.moment_for_circle	pymunk-module.html#moment_for_circle
 pymunk.chipmunk_version	pymunk-module.html#chipmunk_version
 pymunk.init_pymunk	pymunk-module.html#init_pymunk
@@ -33,7 +32,6 @@ pymunk.util._is_corner	pymunk.util-module.html#_is_corner
 pymunk.util._attempt_reduction	pymunk.util-module.html#_attempt_reduction
 pymunk.vec2d	pymunk.vec2d-module.html
 pymunk.vec2d.__package__	pymunk.vec2d-module.html#__package__
-pymunk.vec2d.zero	pymunk.vec2d-module.html#zero
 pymunk.Arbiter	pymunk.Arbiter-class.html
 pymunk.Arbiter._get_contacts	pymunk.Arbiter-class.html#_get_contacts
 pymunk.Arbiter._set_elasticity	pymunk.Arbiter-class.html#_set_elasticity

@@ -1,3 +1,26 @@
+# ----------------------------------------------------------------------------
+# pymunk
+# Copyright (c) 2007-2010 Victor Blomqvist
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# ----------------------------------------------------------------------------
+
 """
 pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
 you need 2d rigid body physics from Python.
@@ -8,7 +31,8 @@ Homepage: http://code.google.com/p/pymunk/
 
 Forum: http://www.slembcke.net/forums/viewforum.php?f=6
 
-Chipmunk documentation: http://code.google.com/p/chipmunk-physics/wiki/Documentation
+Chipmunk documentation: 
+http://code.google.com/p/chipmunk-physics/wiki/Documentation
 """
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
@@ -26,7 +50,7 @@ import pymunk._chipmunk as cp
 import pymunk.util as u
 from .vec2d import Vec2d
 
-from constraint import *
+from pymunk.constraint import *
 
 version = "0.9.0"
 """The release version of this pymunk installation.
@@ -255,7 +279,7 @@ class Space(object):
         to resolve the collisions in the usual case."""
         cp.cpSpaceStep(self._space, dt)
         
-        for obj,(func, args, kwargs) in self._post_step_callbacks.items():
+        for obj, (func, args, kwargs) in self._post_step_callbacks.items():
             func(obj, *args, **kwargs)
         self._post_step_callbacks = {}
     
@@ -308,7 +332,7 @@ class Space(object):
         
         _functions = self._collision_function_helper(begin, pre_solve, post_solve, separate, *args, **kwargs)
         
-        self._handlers[(a,b)] = _functions
+        self._handlers[(a, b)] = _functions
         cp.cpSpaceAddCollisionHandler(self._space, a, b, 
             _functions[0], _functions[1], _functions[2], _functions[3], None)
             
@@ -638,8 +662,27 @@ class Body(object):
     position_func = property(fset=_set_position_func, 
         doc=_set_position_func.__doc__)
     
+    @staticmethod
+    def update_velocity(body, gravity, damping, dt):
+        """Default rigid body velocity integration function. 
+        
+        Updates the velocity of the body using Euler integration.
+        """
+        cp.cpBodyUpdateVelocity(body._body, gravity, damping, dt)
+
+    @staticmethod
+    def update_position(body, dt):
+        """Default rigid body position integration function. 
+        
+        Updates the position of the body using Euler integration. Unlike the 
+        velocity function, it's unlikely you'll want to override this 
+        function. If you do, make sure you understand it's source code 
+        (in Chipmunk) as it's an important part of the collision/joint 
+        correction process. 
+        """
+        cp.cpBodyUpdatePosition(body._body, dt)
     
-    def apply_impulse(self, j, r=(0,0)):
+    def apply_impulse(self, j, r=(0, 0)):
         """Apply the impulse j to body at a relative offset (important!) r 
         from the center of gravity. Both r and j are in world coordinates. 
         
@@ -655,7 +698,7 @@ class Body(object):
         """Zero both the forces and torques accumulated on body"""
         cp.cpBodyResetForces(self._body)
 
-    def apply_force(self, f, r=(0,0)):
+    def apply_force(self, f, r=(0, 0)):
         """Apply (accumulate) the force f on body at a relative offset 
         (important!) r from the center of gravity. 
         
@@ -705,24 +748,6 @@ class Body(object):
         """ 
         cp.cpBodySlew(self._body, pos, dt)
         
-    def update_velocity(self, gravity, damping, dt):
-        """Default rigid body velocity integration function. 
-        
-        Updates the velocity of the body using Euler integration.
-        """
-        cp.cpBodyUpdateVelocity(self._body, gravity, damping, dt)
-
-    def update_position(self, dt):
-        """Default rigid body position integration function. 
-        
-        Updates the position of the body using Euler integration. Unlike the 
-        velocity function, it's unlikely you'll want to override this 
-        function. If you do, make sure you understand it's source code 
-        (in Chipmunk) as it's an important part of the collision/joint 
-        correction process. 
-        """
-        cp.cpBodyUpdatePosition(self._body, dt)
-
 
     def local_to_world(self, v):
         """Convert body local coordinates to world space coordinates
@@ -894,7 +919,7 @@ class Circle(Shape):
     
     This is the fastest and simplest collision shape
     """
-    def __init__(self, body, radius, offset = (0,0)):
+    def __init__(self, body, radius, offset = (0, 0)):
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates."""
         self._body = body
@@ -982,7 +1007,7 @@ class Poly(Shape):
     
     Slowest, but most flexible collision shape. 
     """
-    def __init__(self, body, vertices, offset=(0,0), auto_order_vertices=True):
+    def __init__(self, body, vertices, offset=(0, 0), auto_order_vertices=True):
         """Create a polygon
         
             body : `Body`
@@ -1036,11 +1061,11 @@ class Poly(Shape):
         return points
 
         
-def moment_for_circle(mass, inner_radius, outer_radius, offset=(0,0)):
+def moment_for_circle(mass, inner_radius, outer_radius, offset=(0, 0)):
     """Calculate the moment of inertia for a circle"""
     return cp.cpMomentForCircle(mass, inner_radius, outer_radius, offset)
 
-def moment_for_poly(mass, vertices,  offset=(0,0)):
+def moment_for_poly(mass, vertices,  offset=(0, 0)):
     """Calculate the moment of inertia for a polygon"""
     verts = (Vec2d * len(vertices))
     verts = verts(Vec2d(0, 0))
@@ -1132,11 +1157,11 @@ class Arbiter(object):
             else:
                 s = None
             return s
-        a,b = _get_shape(_a), _get_shape(_b)
+        a, b = _get_shape(_a), _get_shape(_b)
         if self.swapped_coll:
-            return b,a
+            return b, a
         else:
-            return a,b
+            return a, b
             
     shapes = property(_get_shapes, 
         doc="""Get the shapes in the order that they were defined in the 
@@ -1193,7 +1218,7 @@ class BB(object):
         elif len(args) == 1:
             self._bb = args[0]
         else:
-            self._bb = cp._cpBBNew(args[0],args[1], args[2],args[3])
+            self._bb = cp._cpBBNew(args[0], args[1], args[2], args[3])
             
     def __repr__(self):
         return 'BB(%s, %s, %s, %s)' % (self.left, self.bottom, self.right, self.top)
@@ -1243,42 +1268,6 @@ class BB(object):
         That is, BB(0,0,10,10).wrap_vect((5,5)) == Vec2d(10,10)
         """
         return cp.cpBBWrapVect(self._bb, v)
-        
-"""       
-v1 = Vec2d(1,3)
-v2 = Vec2d(1,3)
-
-b = Body(10,100)
-bb = BB(1,2,3,4)
-bb1 = BB(0,0,10,10)
-bb2 = BB(1,2,3,4)
-c = Circle(b, 10, (0.1,0.1))
-s = Segment(b, (10,10), (100,100),5)
-ss = Space()
-ss.add(c)
-ss.step(1)
-"""
-
-def test(): 
-    try:
-        bb = cp.cpBB(1,2,3,4)
-        print cp.cpBBWrapVect(bb, Vec2d(10,12))
-    except Exception, e: 
-        print e
-    
-    try:
-        test_bb = BB(1,2,3,4)
-        test_v = Vec2d(12,14)
-        print  test_bb.wrap_vect(test_v)
-    except Exception, e: 
-        print e
-    try:
-        test_b = Body(10,100)
-        test_c = Circle(test_b, 10, (3.1,5.9))
-        print test_c.offset
-    except Exception, e:
-        print e
-
  
         
 #del cp, ct, u
