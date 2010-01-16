@@ -26,7 +26,7 @@ each other. (how they constraint each other). Constraints can be simple
 joints that allow bodies to pivot around each other like the bones in your 
 body, or they can be more abstract like the gear joint or motors. 
 """
-__version__ = "$Id: $"
+__version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 import ctypes as ct
