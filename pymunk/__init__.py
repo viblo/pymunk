@@ -177,7 +177,7 @@ class Space(object):
     def remove(self, *objs):
         """Remove one or many shapes, bodies or constraints from the space
         
-        Note: When removing objects from the space, make sure you remove any 
+        *Note* When removing objects from the space, make sure you remove any 
         other objects that reference it. For instance, when you remove a body, 
         remove the joints and shapes attached to it. 
         """
@@ -584,7 +584,13 @@ class Body(object):
         cp.cpBodySetAngle(self._body, angle)
     def _get_angle(self):
         return self._bodycontents.a
-    angle = property(_get_angle, _set_angle)
+    angle = property(_get_angle, _set_angle, 
+        doc="""The rotation of the body. 
+        
+        *Note* If you get small/no changes to the angle when for example a 
+        ball is "rolling" down a slope it might be because the Circle shape 
+        attached to the body or the slope shape does not have any friction 
+        set.""")
     
     def _get_rotation_vector(self):
         return self._bodycontents.rot
@@ -716,7 +722,7 @@ class Body(object):
         """Apply a spring force between this body and b at anchors anchr1 and 
         anchr2 respectively. 
         
-        Note: not solving the damping forces in the impulse solver causes 
+        *Note* not solving the damping forces in the impulse solver causes 
         problems with large damping values. There is a new constraint type 
         DampedSpring that should be used instead.        
         
