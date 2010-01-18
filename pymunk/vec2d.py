@@ -443,7 +443,7 @@ class Vec2d(ctypes.Structure):
     @staticmethod
     def unit():
         """A unit vector pointing up"""
-        return Vec2d(1, 0)
+        return Vec2d(0, 1)
         
     @staticmethod
     def ones():
