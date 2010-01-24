@@ -38,11 +38,12 @@ class build_chipmunk(Command):
         for folder in source_folders:
             sources += [os.path.join(folder,x) for x in os.listdir(folder) if x[-1] == 'c']
         
+        include_folders = ['chipmunk_src/include']
+        
         compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC', '-DNDEBUG']
         
         # check if we are on a 64bit python
         arch = ctypes.sizeof(ctypes.c_voidp) * 8
-        
         
         if arch == 64 and platform.system() == 'Linux':
             compiler_preargs += ['-m64']
@@ -55,7 +56,7 @@ class build_chipmunk(Command):
         if platform.system() in ('Windows', 'Microsoft'):
             compiler_preargs += ['-mrtd'] # compile with stddecl instead of cdecl
         
-        objs = compiler.compile(sources, extra_preargs=compiler_preargs)
+        objs = compiler.compile(sources, include_dirs=include_folders, extra_preargs=compiler_preargs)
         
         libname = 'chipmunk'
         if arch == 64 and platform.system() != 'Darwin':
