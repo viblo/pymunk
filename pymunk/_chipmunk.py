@@ -11,34 +11,34 @@ function_pointer = platform_specific_functions()['function_pointer']
 STRING = c_char_p
 
 
-# def CP_DefineConstraintSetter(struct,type,member,name): return static inline void struct ##Set ##name(cpConstraint *constraint, type value){ cpConstraintCheckCast(constraint, struct ##GetClass()); ((struct *)constraint)->member = value; } # macro
-# cpfacos = acos # alias
-# cpmalloc = malloc # alias
 # cpfree = free # alias
+# cpffloor = floor # alias
+# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct ##GetClass()); return ((struct *)constraint)->member; } # macro
+# def CP_DefineBodyGetter(type,member,name): return static inline type cpBodyGet ##name(cpBody *body){return body->member;} # macro
+# cpfacos = acos # alias
+# cpfexp = exp # alias
+# cpfcos = cos # alias
+# def CP_DeclareShapeGetter(struct,type,name): return type struct ##Get ##name(cpShape *shape) # macro
+def MAKE_REF(name): return __typeof__(name) *_ ##name = name # macro
+# cpmalloc = malloc # alias
+# cpfsin = sin # alias
+# def CP_DefineConstraintProperty(struct,type,member,name): return CP_DefineConstraintGetter(struct, type, member, name) CP_DefineConstraintSetter(struct, type, member, name) # macro
+def CP_HASH_PAIR(A,B): return ((cpHashValue)(A)*CP_HASH_COEF ^ (cpHashValue)(B)*CP_HASH_COEF) # macro
+# cpfceil = ceil # alias
+# cpfmod = fmod # alias
+# def CP_DefineConstraintSetter(struct,type,member,name): return static inline void struct ##Set ##name(cpConstraint *constraint, type value){ cpConstraintCheckCast(constraint, struct ##GetClass()); ((struct *)constraint)->member = value; } # macro
+CP_POLY_SHAPE = 2
+# def CP_DefineBodySetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, type value){body->member = value;} # macro
 # def CP_ARBITER_GET_SHAPES(arb,a,b): return cpShape *a, *b; cpArbiterGetShapes(arb, &a, &b); # macro
 # cpfatan2 = atan2 # alias
 # cpfsqrt = sqrt # alias
-# def CP_DefineConstraintProperty(struct,type,member,name): return CP_DefineConstraintGetter(struct, type, member, name) CP_DefineConstraintSetter(struct, type, member, name) # macro
 # cpfpow = pow # alias
+CP_CIRCLE_SHAPE = 0
 # def CP_DefineBodyProperty(type,member,name): return CP_DefineBodyGetter(type, member, name) CP_DefineBodySetter(type, member, name) # macro
-# def CP_DefineBodySetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, type value){body->member = value;} # macro
+CP_SEGMENT_SHAPE = 1
+# cpcalloc = calloc # alias
 CP_NUM_SHAPES = 3
 # cprealloc = realloc # alias
-# def CP_DeclareShapeGetter(struct,type,name): return type struct ##Get ##name(cpShape *shape) # macro
-# cpffloor = floor # alias
-# def CP_DefineBodyGetter(type,member,name): return static inline type cpBodyGet ##name(cpBody *body){return body->member;} # macro
-# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct ##GetClass()); return ((struct *)constraint)->member; } # macro
-# cpfexp = exp # alias
-# cpfcos = cos # alias
-# cpfsin = sin # alias
-def MAKE_REF(name): return __typeof__(name) *_ ##name = name # macro
-# cpfmod = fmod # alias
-def CP_HASH_PAIR(A,B): return ((cpHashValue)(A)*CP_HASH_COEF ^ (cpHashValue)(B)*CP_HASH_COEF) # macro
-CP_SEGMENT_SHAPE = 1
-CP_POLY_SHAPE = 2
-# cpfceil = ceil # alias
-# cpcalloc = calloc # alias
-CP_CIRCLE_SHAPE = 0
 cpVersionString = (STRING).in_dll(chipmunk_lib, 'cpVersionString')
 cpInitChipmunk = chipmunk_lib.cpInitChipmunk
 cpInitChipmunk.restype = None
