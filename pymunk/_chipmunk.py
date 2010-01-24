@@ -95,7 +95,7 @@ class cpShape(Structure):
 _cpArbiterGetShapes = (function_pointer(None, POINTER(cpArbiter), POINTER(POINTER(cpShape)), POINTER(POINTER(cpShape)))).in_dll(chipmunk_lib, '_cpArbiterGetShapes')
 _cpArbiterGetNormal = (function_pointer(cpVect, POINTER(cpArbiter), c_int)).in_dll(chipmunk_lib, '_cpArbiterGetNormal')
 _cpArbiterGetPoint = (function_pointer(cpVect, POINTER(cpArbiter), c_int)).in_dll(chipmunk_lib, '_cpArbiterGetPoint')
-cpHashValue = c_size_t
+cpHashValue = c_uint
 cpDataPointer = c_void_p
 cpCollisionType = c_uint
 cpLayers = c_uint
