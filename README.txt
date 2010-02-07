@@ -25,9 +25,9 @@ HOW TO USE
     and in the (shared) forum. 
     
     If chipmunk doesnt ship with a chipmunk binary your platform can understand
-    (currently Windows and Linux 32bit is included) you will have to compile 
-    chipmunk before install. See section CHIPMUNK in this readme for (very 
-    simple) instructions.
+    (currently Windows and Linux 32bit and 64bit are included) you will have to 
+    compile chipmunk before install. See section CHIPMUNK in this readme for 
+    (very simple) instructions.
     
     To install you can either run
         

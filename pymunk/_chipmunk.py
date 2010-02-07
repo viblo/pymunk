@@ -1,9 +1,9 @@
 
 from ctypes import * 
-from vec2d import Vec2d
+from .vec2d import Vec2d
 cpVect = Vec2d
 
-from libload import load_library, platform_specific_functions
+from .libload import load_library, platform_specific_functions
 _lib_debug = True #Set to True to print the Chipmunk path.
 chipmunk_lib = load_library("chipmunk", print_path=_lib_debug)
 function_pointer = platform_specific_functions()['function_pointer']
