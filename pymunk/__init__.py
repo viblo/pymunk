@@ -1064,7 +1064,7 @@ class Poly(Shape):
         bp = self._body.position
         vs = self.verts
         o = self.offset
-        for i in xrange(len(vs)):
+        for i in range(len(vs)):
             p = (vs[i]+o).cpvrotate(rv)+bp
             points.append(Vec2d(p))
             
@@ -1150,7 +1150,7 @@ class Arbiter(object):
     def _get_contacts(self):
         if self._contacts is None:
             self._contacts = []
-            for i in xrange(self._arbitercontents.numContacts):
+            for i in range(self._arbitercontents.numContacts):
                 self.contacts.append(Contact(self._arbitercontents.contacts[i]))
         return self._contacts
     contacts = property(_get_contacts, 
