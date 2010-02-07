@@ -11,34 +11,34 @@ function_pointer = platform_specific_functions()['function_pointer']
 STRING = c_char_p
 
 
+# cpffloor = floor # alias
+# def CP_ARBITER_GET_SHAPES(arb,a,b): return cpShape *a, *b; cpArbiterGetShapes(arb, &a, &b); # macro
+# cpfpow = pow # alias
+# cprealloc = realloc # alias
+# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct ##GetClass()); return ((struct *)constraint)->member; } # macro
+# def CP_DefineBodySetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, type value){body->member = value;} # macro
+CP_NUM_SHAPES = 3
+# cpfatan2 = atan2 # alias
+# def CP_DefineBodyGetter(type,member,name): return static inline type cpBodyGet ##name(cpBody *body){return body->member;} # macro
+# cpcalloc = calloc # alias
+# def CP_DefineBodyProperty(type,member,name): return CP_DefineBodyGetter(type, member, name) CP_DefineBodySetter(type, member, name) # macro
+CP_POLY_SHAPE = 2
+CP_CIRCLE_SHAPE = 0
+# def CP_DeclareShapeGetter(struct,type,name): return type struct ##Get ##name(cpShape *shape) # macro
+# cpmalloc = malloc # alias
+def MAKE_REF(name): return __typeof__(name) *_ ##name = name # macro
+# def CP_DefineConstraintSetter(struct,type,member,name): return static inline void struct ##Set ##name(cpConstraint *constraint, type value){ cpConstraintCheckCast(constraint, struct ##GetClass()); ((struct *)constraint)->member = value; } # macro
+# cpfacos = acos # alias
+# cpfsin = sin # alias
+# cpfexp = exp # alias
+# cpfcos = cos # alias
+# cpfsqrt = sqrt # alias
 # cpfree = free # alias
 # def CP_DefineConstraintProperty(struct,type,member,name): return CP_DefineConstraintGetter(struct, type, member, name) CP_DefineConstraintSetter(struct, type, member, name) # macro
 # cpfceil = ceil # alias
 def CP_HASH_PAIR(A,B): return ((cpHashValue)(A)*CP_HASH_COEF ^ (cpHashValue)(B)*CP_HASH_COEF) # macro
 # cpfmod = fmod # alias
-CP_NUM_SHAPES = 3
-# cpfpow = pow # alias
 CP_SEGMENT_SHAPE = 1
-# def CP_DeclareShapeGetter(struct,type,name): return type struct ##Get ##name(cpShape *shape) # macro
-# cpffloor = floor # alias
-# def CP_DefineBodyProperty(type,member,name): return CP_DefineBodyGetter(type, member, name) CP_DefineBodySetter(type, member, name) # macro
-# cpfsqrt = sqrt # alias
-# cpfcos = cos # alias
-# cprealloc = realloc # alias
-# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct ##GetClass()); return ((struct *)constraint)->member; } # macro
-# cpfatan2 = atan2 # alias
-# def CP_DefineBodyGetter(type,member,name): return static inline type cpBodyGet ##name(cpBody *body){return body->member;} # macro
-CP_POLY_SHAPE = 2
-CP_CIRCLE_SHAPE = 0
-# cpcalloc = calloc # alias
-# def CP_ARBITER_GET_SHAPES(arb,a,b): return cpShape *a, *b; cpArbiterGetShapes(arb, &a, &b); # macro
-# cpmalloc = malloc # alias
-def MAKE_REF(name): return __typeof__(name) *_ ##name = name # macro
-# def CP_DefineConstraintSetter(struct,type,member,name): return static inline void struct ##Set ##name(cpConstraint *constraint, type value){ cpConstraintCheckCast(constraint, struct ##GetClass()); ((struct *)constraint)->member = value; } # macro
-# def CP_DefineBodySetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, type value){body->member = value;} # macro
-# cpfacos = acos # alias
-# cpfsin = sin # alias
-# cpfexp = exp # alias
 cpVersionString = (STRING).in_dll(chipmunk_lib, 'cpVersionString')
 cpInitChipmunk = chipmunk_lib.cpInitChipmunk
 cpInitChipmunk.restype = None
@@ -1026,7 +1026,7 @@ cpvtoangle.argtypes = [cpVect]
 cpvstr = chipmunk_lib.cpvstr
 cpvstr.restype = STRING
 cpvstr.argtypes = [cpVect]
-CP_HASH_COEF = 3344921057L # Variable c_ulong '-950046239ul'
+CP_HASH_COEF = 3344921057 # Variable c_ulong '-950046239ul'
 __all__ = ['cpArbiterFree', 'cpSpaceRehashStatic', '_cpvnear',
            '_cpBBintersects', 'cpSpaceResizeStaticHash',
            'cpCollisionHandler', 'cpvslerp', 'cpvlength',
