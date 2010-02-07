@@ -1,6 +1,7 @@
 import math
 import unittest
 
+import pymunk as p
 from pymunk.vec2d import Vec2d
 
 
@@ -136,5 +137,5 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertEquals(testvec, loaded_vec)
 
 if __name__ == "__main__":
-    print "testing pymunk.vec2d version " + p.version
+    print ("testing pymunk.vec2d version " + p.version)
     unittest.main()

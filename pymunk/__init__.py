@@ -1042,7 +1042,7 @@ class Poly(Shape):
         
         i_vs = enumerate(vertices)
         if auto_order_vertices and not u.is_clockwise(vertices):
-            i_vs = zip(xrange(len(vertices)-1, -1, -1), vertices)
+            i_vs = zip(range(len(vertices)-1, -1, -1), vertices)
         
         for (i, vertex) in i_vs:
             self.verts[i].x = vertex[0]

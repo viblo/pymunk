@@ -329,5 +329,5 @@ class UnitTestBB(unittest.TestCase):
         
 ####################################################################
 if __name__ == "__main__":
-    print "testing pymunk version " + p.version
+    print ("testing pymunk version " + p.version)
     unittest.main()
