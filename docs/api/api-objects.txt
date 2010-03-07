@@ -47,9 +47,7 @@ pymunk.Arbiter.contacts	pymunk.Arbiter-class.html#contacts
 pymunk.Arbiter.stamp	pymunk.Arbiter-class.html#stamp
 pymunk.Arbiter._get_surface_velocity	pymunk.Arbiter-class.html#_get_surface_velocity
 pymunk.Arbiter._get_is_first_contact	pymunk.Arbiter-class.html#_get_is_first_contact
-pymunk.Arbiter.swapped_coll	pymunk.Arbiter-class.html#swapped_coll
 pymunk.Arbiter._get_shapes	pymunk.Arbiter-class.html#_get_shapes
-pymunk.Arbiter._get_swapped_coll	pymunk.Arbiter-class.html#_get_swapped_coll
 pymunk.Arbiter._get_elasticity	pymunk.Arbiter-class.html#_get_elasticity
 pymunk.Arbiter._get_friction	pymunk.Arbiter-class.html#_get_friction
 pymunk.Arbiter.shapes	pymunk.Arbiter-class.html#shapes

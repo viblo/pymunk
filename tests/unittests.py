@@ -191,8 +191,8 @@ class UnitTestSpace(unittest.TestCase):
         self.s.add_collision_handler(0,0,None,pre_solve, None,None, self)
         self.s.step(0.1)
         
-        self.assert_(self.s1 in self.begin_shapes)
-        self.assert_(self.s2 in self.begin_shapes)
+        self.assertEqual(self.s1, self.begin_shapes[0])
+        self.assertEqual(self.s2, self.begin_shapes[1])
         self.assertEqual(self.begin_space, self.s)
         
     def testPostStepCallback(self):

@@ -1175,7 +1175,7 @@ class Arbiter(object):
                 s = None
             return s
         a, b = _get_shape(_a), _get_shape(_b)
-        if self.swapped_coll:
+        if bool(self._arbiter.contents.swappedColl):
             return b, a
         else:
             return a, b
@@ -1207,11 +1207,6 @@ class Arbiter(object):
         return self._arbiter.contents.stamp
     stamp = property(_get_stamp, 
         doc="""Time stamp of the arbiter. (from the space)""")
-
-    def _get_swapped_coll(self):
-        return bool(self._arbiter.contents.swappedColl)
-    swapped_coll = property(_get_swapped_coll,
-        doc="""Are the shapes swapped in relation to the collision handler?""")
     
     def _get_is_first_contact(self):
         return bool(self._arbiter.contents.firstColl)
