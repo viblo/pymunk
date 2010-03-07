@@ -12,6 +12,12 @@ class UnitTestGeneral(unittest.TestCase):
         p.version
         p.inf
         
+        m = p.moment_for_box(1, 2, 3)
+        self.assertAlmostEqual(m, 1.08333333333)
+        
+        m = p.moment_for_segment(1, Vec2d(-1,0), Vec2d(1,0))
+        self.assertAlmostEqual(m, 0.33333333333)
+        
 class UnitTestBody(unittest.TestCase):
     def setUp(self):
         p.init_pymunk()
