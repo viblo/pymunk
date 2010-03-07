@@ -4,8 +4,10 @@ pymunk.inf	pymunk-module.html#inf
 pymunk.moment_for_poly	pymunk-module.html#moment_for_poly
 pymunk.__package__	pymunk-module.html#__package__
 pymunk.version	pymunk-module.html#version
+pymunk.moment_for_segment	pymunk-module.html#moment_for_segment
 pymunk.moment_for_circle	pymunk-module.html#moment_for_circle
 pymunk.chipmunk_version	pymunk-module.html#chipmunk_version
+pymunk.moment_for_box	pymunk-module.html#moment_for_box
 pymunk.init_pymunk	pymunk-module.html#init_pymunk
 pymunk.constraint	pymunk.constraint-module.html
 pymunk.constraint.__package__	pymunk.constraint-module.html#__package__

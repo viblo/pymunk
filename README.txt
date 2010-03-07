@@ -5,10 +5,9 @@ ABOUT
     pymunk is a python wrapper for the 2d physics library Chipmunk
     2007 - 2010, Victor Blomqvist - vb@viblo.se, MIT License
 
-    This dev release is based on the latest pymunk release (0.9.0), 
+    This release is based on the latest pymunk release (1.0.0), 
     using chipmunk 5.x (svn revision 428, source included)
     
-    IRC: #pymunk on irc.freenode.net
     Homepage: http://code.google.com/p/pymunk/
     Forum: http://www.slembcke.net/forums/viewforum.php?f=6
     Email: vb@viblo.se
@@ -57,7 +56,7 @@ DEPENDENCIES/REQUIREMENTS
 
 CHIPMUNK
 
-    Compiled libraries of Chipmunk compatible Windows and Linux 32bit are 
+    Compiled libraries of Chipmunk compatible Windows and Linux 32 & 64bit are 
     distributed with pymunk.
     If pymunk doesnt have your particular platform included, you can compile 
     Chipmunk by hand with a custom setup argument:

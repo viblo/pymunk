@@ -60,7 +60,6 @@
 <h1 class="epydoc">Package pymunk</h1><p class="nomargin-top"></p>
 <p>pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
 you need 2d rigid body physics from Python.</p>
-<p>IRC: #pymunk on irc.freenode.net</p>
 <p>Homepage: <a class="rst-reference external" href="http://code.google.com/p/pymunk/" target="_top">http://code.google.com/p/pymunk/</a></p>
 <p>Forum: <a class="rst-reference external" href="http://www.slembcke.net/forums/viewforum.php?f=6" target="_top">http://www.slembcke.net/forums/viewforum.php?f=6</a></p>
 <p>Chipmunk documentation:
@@ -68,7 +67,7 @@ you need 2d rigid body physics from Python.</p>
 
 <hr />
 <div class="fields">      <p><strong>Version:</strong>
-        $Id: __init__.py 255 2010-02-07 22:08:18Z vb@viblo.se $
+        $Id: __init__.py 265 2010-03-07 17:12:06Z vb@viblo.se $
       </p>
 </div><!-- ==================== SUBMODULES ==================== -->
 <a name="section-Submodules"></a>
@@ -320,10 +319,48 @@ on a linear slide instead of being fixed.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="moment_for_segment"></a><span class="summary-sig-name">moment_for_segment</span>(<span class="summary-sig-arg">mass</span>,
+        <span class="summary-sig-arg">a</span>,
+        <span class="summary-sig-arg">b</span>)</span><br />
+      Calculate the moment of inertia for a segment</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="moment_for_poly"></a><span class="summary-sig-name">moment_for_poly</span>(<span class="summary-sig-arg">mass</span>,
         <span class="summary-sig-arg">vertices</span>,
         <span class="summary-sig-arg">offset</span>=<span class="summary-sig-default"><code class="variable-group">(</code>0<code class="variable-op">, </code>0<code class="variable-group">)</code></span>)</span><br />
       Calculate the moment of inertia for a polygon</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="moment_for_box"></a><span class="summary-sig-name">moment_for_box</span>(<span class="summary-sig-arg">mass</span>,
+        <span class="summary-sig-arg">width</span>,
+        <span class="summary-sig-arg">height</span>)</span><br />
+      Calculate the momentn of inertia for a box</td>
           <td align="right" valign="top">
             
             
@@ -363,7 +400,7 @@ on a linear slide instead of being fixed.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk-module.html#version" class="summary-name">version</a> = <code title="'0.9.0'"><code class="variable-quote">'</code><code class="variable-string">0.9.0</code><code class="variable-quote">'</code></code><br />
+        <a href="pymunk-module.html#version" class="summary-name">version</a> = <code title="'1.0.0'"><code class="variable-quote">'</code><code class="variable-string">1.0.0</code><code class="variable-quote">'</code></code><br />
       The release version of this pymunk installation.
     </td>
   </tr>
@@ -371,7 +408,7 @@ on a linear slide instead of being fixed.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk-module.html#chipmunk_version" class="summary-name">chipmunk_version</a> = <code title="'5.x.xr406'"><code class="variable-quote">'</code><code class="variable-string">5.x.xr406</code><code class="variable-quote">'</code></code><br />
+        <a href="pymunk-module.html#chipmunk_version" class="summary-name">chipmunk_version</a> = <code title="'5.x.xr428'"><code class="variable-quote">'</code><code class="variable-string">5.x.xr428</code><code class="variable-quote">'</code></code><br />
       The Chipmunk version compatible with this pymunk version.
     </td>
   </tr>
@@ -441,7 +478,7 @@ distribution (i.e. not in a checked-out copy from svn).
   <dl class="fields">
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-<code class="variable-quote">'</code><code class="variable-string">0.9.0</code><code class="variable-quote">'</code>
+<code class="variable-quote">'</code><code class="variable-string">1.0.0</code><code class="variable-quote">'</code>
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -463,7 +500,7 @@ chipmunk_src folder (normally included in the pymunk source distribution).</p>
   <dl class="fields">
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-<code class="variable-quote">'</code><code class="variable-string">5.x.xr406</code><code class="variable-quote">'</code>
+<code class="variable-quote">'</code><code class="variable-string">5.x.xr428</code><code class="variable-quote">'</code>
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -520,7 +557,7 @@ Use this as mass and inertia when you need to create a static body.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sun Feb 07 23:17:50 2010
+    Generated by Epydoc 3.0.1 on Sun Mar 07 20:26:08 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

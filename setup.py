@@ -96,7 +96,7 @@ setup(
     , author='Victor Blomqvist'
     , author_email='vb@viblo.se'
     , version='0.9.0' # remember to change me for new versions!
-    , description='A wrapper for the 2d physics library Chipmunk'
+    , description='A python wrapper for the 2d physics library Chipmunk'
     , long_description=long_description
     , packages=['pymunk'] #find_packages(exclude=['*.tests']),
     , package_data = {'pymunk': ['chipmunk.dll'

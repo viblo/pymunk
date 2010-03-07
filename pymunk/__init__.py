@@ -25,8 +25,6 @@
 pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
 you need 2d rigid body physics from Python.
 
-IRC: #pymunk on irc.freenode.net
-
 Homepage: http://code.google.com/p/pymunk/
 
 Forum: http://www.slembcke.net/forums/viewforum.php?f=6
@@ -39,7 +37,8 @@ __docformat__ = "reStructuredText"
 
 __all__ = ["inf", "version", "chipmunk_version", "init_pymunk"
         , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
-        , "moment_for_circle", "moment_for_poly", "reset_shapeid_counter"
+        , "moment_for_circle", "moment_for_poly", "moment_for_segment"
+        , "moment_for_box", "reset_shapeid_counter"
         , "Constraint", "PinJoint", "SlideJoint", "PivotJoint", "GrooveJoint"
         , "DampedSpring", "DampedRotarySpring", "RotaryLimitJoint"
         , "RatchetJoint", "GearJoint", "SimpleMotor"
@@ -52,7 +51,7 @@ from .vec2d import Vec2d
 
 from pymunk.constraint import *
 
-version = "0.9.0"
+version = "1.0.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn).
