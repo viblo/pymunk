@@ -57,6 +57,7 @@ def main(argv=None):
 from ctypes import * 
 from .vec2d import Vec2d
 cpVect = Vec2d
+STRING = c_char_p
 
 from .libload import load_library, platform_specific_functions
 _lib_debug = True #Set to True to print the Chipmunk path.
