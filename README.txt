@@ -6,7 +6,7 @@ ABOUT
     2007 - 2010, Victor Blomqvist - vb@viblo.se, MIT License
 
     This dev release is based on the latest pymunk release (0.9.0), 
-    using chipmunk 5.x (svn revision 406, source included)
+    using chipmunk 5.x (svn revision 428, source included)
     
     IRC: #pymunk on irc.freenode.net
     Homepage: http://code.google.com/p/pymunk/
@@ -48,8 +48,8 @@ EXAMPLE
 
 DEPENDENCIES/REQUIREMENTS
 
+    * python (tested on 2.5, 2.6 and 3.x)
     * ctypes (included in python 2.5)
-    * python 2.5 (optional, used by the pymunk.util module)
     * pygame (optional, you need it to run most of the demos)
     * pyglet (optional, you need it to run the moon buggy demo)
     * ctypeslib & GCC_XML (optional, you need them to generate new bindings)
