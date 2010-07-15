@@ -282,7 +282,7 @@ class Space(object):
             func(obj, *args, **kwargs)
         self._post_step_callbacks = {}
     
-    def add_collision_handler(self, a, b, begin, pre_solve, post_solve, separate, *args, **kwargs):
+    def add_collision_handler(self, a, b, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
         """Add a collision handler for given collision type pair. 
         
         Whenever a shapes with collision_type a and collision_type b collide, 
@@ -337,7 +337,7 @@ class Space(object):
         cp.cpSpaceAddCollisionHandler(self._space, a, b, 
             _functions[0], _functions[1], _functions[2], _functions[3], None)
             
-    def set_default_collision_handler(self, begin, pre_solve, post_solve, separate, *args, **kwargs):
+    def set_default_collision_handler(self, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
         """Register a default collision handler to be used when no specific 
         collision handler is found. If you do nothing, the space will be given 
         a default handler that accepts all collisions in begin() and 
@@ -1161,7 +1161,7 @@ class Arbiter(object):
                 self.contacts.append(Contact(self._arbitercontents.contacts[i]))
         return self._contacts
     contacts = property(_get_contacts, 
-        doc="""Information on the contact points between the objects.""")
+        doc="""Information on the contact points between the objects. Return [`Contact`]""")
         
     def _get_shapes(self):
         _a = self._arbitercontents.private_a
@@ -1209,7 +1209,7 @@ class Arbiter(object):
         doc="""Time stamp of the arbiter. (from the space)""")
     
     def _get_is_first_contact(self):
-        return bool(self._arbiter.contents.firstColl)
+        return bool(cp._cpArbiterIsFirstContact(self._arbiter))
     is_first_contact = property(_get_is_first_contact,
         doc="""Returns true if this is the first step that an arbiter existed. 
         You can use this from preSolve and postSolve to know if a collision 
