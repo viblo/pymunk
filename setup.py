@@ -83,6 +83,7 @@ classifiers = ['Development Status :: 5 - Production/Stable'
     , 'Programming Language :: Python'
     , 'Topic :: Games/Entertainment'
     , 'Topic :: Software Development :: Libraries'   
+    , 'Topic :: Software Development :: Libraries :: pygame'
 ]
 
 long_description = """pymunk is a easy-to-use pythonic 2d physics library that can be used whenever you need 2d rigid body physics from Python. It is build on top of the very nice 2d physics library Chipmunk, http://code.google.com/p/chipmunk-physics/"""
