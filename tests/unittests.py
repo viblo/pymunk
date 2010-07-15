@@ -173,7 +173,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assert_(self.s2 in hit_shapes)
         self.assert_(s3 in hit_shapes)
         
-    def testCollisionHandlers(self):
+    def testCollisionHandlerPreSolve(self):
     
         self.begin_shapes = None
         self.begin_contacts = None
@@ -188,12 +188,26 @@ class UnitTestSpace(unittest.TestCase):
         for x in range(100): 
             self.s.step(0.1)
         
-        self.s.add_collision_handler(0,0,None,pre_solve, None,None, self)
+        self.s.add_collision_handler(0,0, None, pre_solve, None, None, self)
         self.s.step(0.1)
         
         self.assertEqual(self.s1, self.begin_shapes[0])
         self.assertEqual(self.s2, self.begin_shapes[1])
         self.assertEqual(self.begin_space, self.s)
+        
+    def testCollisionHandlerPostSolve(self):  
+        self.first_contact = None
+        def post_solve(space, arb, test_self):
+            self.first_contact = arb.is_first_contact
+            return True
+            
+        self.s.add_collision_handler(0,0, None, None, post_solve, None, self)
+        self.s.step(0.1)
+        self.assert_(self.first_contact)
+        self.s.step(0.1)
+        self.assertFalse(self.first_contact)
+        
+        
         
     def testPostStepCallback(self):
         self.number_of_calls = 0
