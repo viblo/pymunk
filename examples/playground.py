@@ -23,7 +23,6 @@ class PhysicsDemo:
         self.clock = pygame.time.Clock()
                 
         ### Init pymunk and create space
-        pm.init_pymunk()
         self.space = pm.Space()
         self.space.gravity = (0.0, -900.0)
         

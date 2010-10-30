@@ -15,7 +15,6 @@ clock = pygame.time.Clock()
 running = True
 
 ### Physics stuff
-pymunk.init_pymunk()
 space = pymunk.Space(50,50)
 space.gravity = (0.0, -900.0)
 

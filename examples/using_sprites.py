@@ -19,7 +19,6 @@ def main():
     running = True
     
     ### Physics stuff
-    pymunk.init_pymunk()
     space = pymunk.Space()
     space.gravity = Vec2d(0.0, -900.0)
     

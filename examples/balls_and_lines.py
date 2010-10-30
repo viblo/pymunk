@@ -8,6 +8,7 @@ X,Y = 0,1
 ### Physics collision types
 COLLTYPE_DEFAULT = 0
 COLLTYPE_MOUSE = 1
+COLLTYPE_BALL = 2
 
 
 def flipy(y):
@@ -28,7 +29,6 @@ def main():
     running = True
     
     ### Physics stuff
-    pm.init_pymunk()
     space = pm.Space()
     space.gravity = Vec2d(0.0, -900.0)
     
@@ -44,7 +44,7 @@ def main():
     mouse_shape.collision_type = COLLTYPE_MOUSE
     space.add(mouse_shape)
 
-    space.add_collision_handler(COLLTYPE_MOUSE, COLLTYPE_DEFAULT, None, mouse_coll_func, None, None)   
+    space.add_collision_handler(COLLTYPE_MOUSE, COLLTYPE_BALL, None, mouse_coll_func, None, None)   
     
     ### Static line
     line_point1 = None
@@ -63,6 +63,7 @@ def main():
                 body.position = p
                 shape = pm.Circle(body, 10, (0,0))
                 shape.friction = 0.5
+                shape.collision_type = COLLTYPE_BALL
                 space.add(body, shape)
                 balls.append(shape)
                 
@@ -93,6 +94,7 @@ def main():
             body = pm.Body(10, 10)
             body.position = mouse_pos
             shape = pm.Circle(body, 10, (0,0))
+            shape.collision_type = COLLTYPE_BALL
             space.add(body, shape)
             balls.append(shape)
        

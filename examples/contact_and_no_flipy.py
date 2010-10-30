@@ -24,7 +24,6 @@ def main():
     running = True
     
     ### Physics stuff
-    pm.init_pymunk()
     space = pm.Space()
     space.gravity = (0.0, 900.0)
     

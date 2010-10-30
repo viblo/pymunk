@@ -10,7 +10,6 @@ def main():
 
 def main1():
               
-    pm.init_pymunk()
     space = pm.Space()
     space.gravity = (0.0, -900.0)
     

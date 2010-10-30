@@ -16,8 +16,7 @@ class Main(pyglet.window.Window):
         
         pyglet.window.Window.__init__(self)
         self.set_caption('Vertical stack from box2d')
-        pymunk.init_pymunk()
-        
+
         pyglet.clock.schedule_interval(self.update, 1/60.0)
         self.fps_display = pyglet.clock.ClockDisplay()
         

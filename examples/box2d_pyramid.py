@@ -23,7 +23,6 @@ class PyramidDemo:
         self.clock = pygame.time.Clock()
 
         ### Init pymunk and create space
-        pymunk.init_pymunk()
         self.space = pymunk.Space()
         self.space.gravity = (0.0, -900.0)
         
