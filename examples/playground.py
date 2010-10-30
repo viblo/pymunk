@@ -95,7 +95,7 @@ class PhysicsDemo:
         #moment = 1000
         body = pm.Body(mass, moment)
         body.position = Vec2d(pos)       
-        
+        print body.position
         shape = pm.Poly(body, points, Vec2d(0,0))
         shape.friction = 0.5
         shape.collision_type = COLLTYPE_DEFAULT
