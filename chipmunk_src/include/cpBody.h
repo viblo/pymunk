@@ -20,14 +20,27 @@
  */
 
 struct cpBody;
+struct cpShape;
+struct cpSpace;
+
 typedef void (*cpBodyVelocityFunc)(struct cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt);
 typedef void (*cpBodyPositionFunc)(struct cpBody *body, cpFloat dt);
 
 extern cpBodyVelocityFunc cpBodyUpdateVelocityDefault;
 extern cpBodyPositionFunc cpBodyUpdatePositionDefault;
- 
+
+// Structure to hold information about the contact graph components
+// when putting groups of objects to sleep.
+// No interesting user accessible fields.
+typedef struct cpComponentNode {
+	struct cpBody *parent;
+	struct cpBody *next;
+	int rank;
+	cpFloat idleTime;
+} cpComponentNode;
+
 typedef struct cpBody{
-	// *** Integration Functions.ntoehu
+	// *** Integration Functions.
 
 	// Function that is called to integrate the body's velocity. (Defaults to cpBodyUpdateVelocity)
 	cpBodyVelocityFunc velocity_func;
@@ -63,6 +76,8 @@ typedef struct cpBody{
 	// User defined data pointer.
 	cpDataPointer data;
 	
+	// *** Other Fields
+	
 	// Maximum velocities this body can move at after integrating velocity
 	cpFloat v_limit, w_limit;
 	
@@ -72,7 +87,15 @@ typedef struct cpBody{
 	cpVect v_bias;
 	cpFloat w_bias;
 	
-//	int active;
+	// Space this body has been added to
+	struct cpSpace *space;
+	
+	// Pointer to the shape list.
+	// Shapes form a linked list using cpShape.next when added to a space.
+	struct cpShape *shapesList;
+	
+	// Used by cpSpaceStep() to store contact graph information.
+	cpComponentNode node;
 } cpBody;
 
 // Basic allocation/destruction functions
@@ -83,8 +106,37 @@ cpBody *cpBodyNew(cpFloat m, cpFloat i);
 void cpBodyDestroy(cpBody *body);
 void cpBodyFree(cpBody *body);
 
-#define CP_DefineBodyGetter(type, member, name) static inline type cpBodyGet##name(cpBody *body){return body->member;}
-#define CP_DefineBodySetter(type, member, name) static inline void cpBodySet##name(cpBody *body, type value){body->member = value;}
+// Wake up a sleeping or idle body. (defined in cpSpace.c)
+void cpBodyActivate(cpBody *body);
+
+// Force a body to sleep;
+void cpBodySleep(cpBody *body);
+//void cpBodySleepGroup(cpBody *body, ...);
+
+static inline cpBool
+cpBodyIsSleeping(const cpBody *body)
+{
+	return (body->node.next != ((cpBody*)0));
+}
+
+cpBool cpBodyIsStatic(const cpBody *body);
+
+static inline cpBool
+cpBodyIsRogue(const cpBody *body)
+{
+	return (body->space == ((struct cpSpace*)0));
+}
+
+
+#define CP_DefineBodyGetter(type, member, name) \
+static inline type cpBodyGet##name(const cpBody *body){return body->member;}
+
+#define CP_DefineBodySetter(type, member, name) \
+static inline void \
+cpBodySet##name(cpBody *body, const type value){ \
+	cpBodyActivate(body); \
+	body->member = value; \
+} \
 
 #define CP_DefineBodyProperty(type, member, name) \
 CP_DefineBodyGetter(type, member, name) \
@@ -120,41 +172,40 @@ void cpBodyUpdatePosition(cpBody *body, cpFloat dt);
 
 // Convert body local to world coordinates
 static inline cpVect
-cpBodyLocal2World(cpBody *body, cpVect v)
+cpBodyLocal2World(const cpBody *body, const cpVect v)
 {
 	return cpvadd(body->p, cpvrotate(v, body->rot));
 }
 
 // Convert world to body local coordinates
 static inline cpVect
-cpBodyWorld2Local(cpBody *body, cpVect v)
+cpBodyWorld2Local(const cpBody *body, const cpVect v)
 {
 	return cpvunrotate(cpvsub(v, body->p), body->rot);
 }
 
 // Apply an impulse (in world coordinates) to the body at a point relative to the center of gravity (also in world coordinates).
 static inline void
-cpBodyApplyImpulse(cpBody *body, cpVect j, cpVect r)
+cpBodyApplyImpulse(cpBody *body, const cpVect j, const cpVect r)
 {
 	body->v = cpvadd(body->v, cpvmult(j, body->m_inv));
 	body->w += body->i_inv*cpvcross(r, j);
 }
 
-// Not intended for external use. Used by cpArbiter.c and cpConstraint.c.
-static inline void
-cpBodyApplyBiasImpulse(cpBody *body, cpVect j, cpVect r)
-{
-	body->v_bias = cpvadd(body->v_bias, cpvmult(j, body->m_inv));
-	body->w_bias += body->i_inv*cpvcross(r, j);
-}
-
 // Zero the forces on a body.
 void cpBodyResetForces(cpBody *body);
 // Apply a force (in world coordinates) to a body at a point relative to the center of gravity (also in world coordinates).
-void cpBodyApplyForce(cpBody *body, cpVect f, cpVect r);
+void cpBodyApplyForce(cpBody *body, const cpVect f, const cpVect r);
+
+static inline cpFloat
+cpBodyKineticEnergy(const cpBody *body)
+{
+	// Need to do some fudging to avoid NaNs
+	cpFloat vsq = cpvdot(body->v, body->v);
+	cpFloat wsq = body->w*body->w;
+	return (vsq ? vsq*body->m : 0.0f) + (wsq ? wsq*body->i : 0.0f);
+}
 
 // Apply a damped spring force between two bodies.
 // Warning: Large damping values can be unstable. Use a cpDampedSpring constraint for this instead.
 void cpApplyDampedSpring(cpBody *a, cpBody *b, cpVect anchr1, cpVect anchr2, cpFloat rlen, cpFloat k, cpFloat dmp, cpFloat dt);
-
-//int cpBodyMarkLowEnergy(cpBody *body, cpFloat dvsq, int max);

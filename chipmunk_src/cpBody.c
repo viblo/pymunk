@@ -24,6 +24,9 @@
 
 #include "chipmunk.h"
 
+// initialized in cpInitChipmunk()
+cpBody cpStaticBodySingleton;
+
 cpBody*
 cpBodyAlloc(void)
 {
@@ -56,8 +59,13 @@ cpBodyInit(cpBody *body, cpFloat m, cpFloat i)
 	body->data = NULL;
 	body->v_limit = (cpFloat)INFINITY;
 	body->w_limit = (cpFloat)INFINITY;
-//	body->active = 1;
-
+	
+	body->space = NULL;
+	body->shapesList = NULL;
+	
+	cpComponentNode node = {NULL, NULL, 0, 0.0f};
+	body->node = node;
+	
 	return body;
 }
 
@@ -167,22 +175,20 @@ cpApplyDampedSpring(cpBody *a, cpBody *b, cpVect anchr1, cpVect anchr2, cpFloat 
 	cpBodyApplyForce(b, cpvneg(f), r2);
 }
 
-//int
-//cpBodyMarkLowEnergy(cpBody *body, cpFloat dvsq, int max)
-//{
-//	cpFloat ke = body->m*cpvdot(body->v, body->v);
-//	cpFloat re = body->i*body->w*body->w;
-//	
-//	if(ke + re > body->m*dvsq)
-//		body->active = 1;
-//	else if(body->active)
-//		body->active = (body->active + 1)%(max + 1);
-//	else {
-//		body->v = cpvzero;
-//		body->v_bias = cpvzero;
-//		body->w = 0.0f;
-//		body->w_bias = 0.0f;
-//	}
-//	
-//	return body->active;
-//}
+cpBool
+cpBodyIsStatic(const cpBody *body)
+{
+	cpSpace *space = body->space;
+	return (space != ((cpSpace*)0) && body == &space->staticBody);
+}
+
+void cpSpaceSleepBody(cpSpace *space, cpBody *body);
+
+void
+cpBodySleep(cpBody *body)
+{
+	if(cpBodyIsSleeping(body)) return;
+	
+	cpAssert(!cpBodyIsStatic(body) && !cpBodyIsRogue(body), "Rogue and static bodies cannot be put to sleep.");
+	cpSpaceSleepBody(body->space, body);
+}

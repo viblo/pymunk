@@ -50,7 +50,7 @@ cpPolyShape *cpBoxShapeInit(cpPolyShape *poly, cpBody *body, cpFloat width, cpFl
 cpShape *cpBoxShapeNew(cpBody *body, cpFloat width, cpFloat height);
 
 // Check that a set of vertexes has a correct winding and that they are convex
-int cpPolyValidate(cpVect *verts, int numVerts);
+cpBool cpPolyValidate(cpVect *verts, int numVerts);
 
 int cpPolyShapeGetNumVerts(cpShape *shape);
 cpVect cpPolyShapeGetVert(cpShape *shape, int idx);
@@ -72,23 +72,23 @@ cpPolyShapeValueOnAxis(const cpPolyShape *poly, const cpVect n, const cpFloat d)
 }
 
 // Returns true if the polygon contains the vertex.
-static inline int
-cpPolyShapeContainsVert(cpPolyShape *poly, cpVect v)
+static inline cpBool
+cpPolyShapeContainsVert(const cpPolyShape *poly, const cpVect v)
 {
 	cpPolyShapeAxis *axes = poly->tAxes;
 	
 	int i;
 	for(i=0; i<poly->numVerts; i++){
 		cpFloat dist = cpvdot(axes[i].n, v) - axes[i].d;
-		if(dist > 0.0f) return 0;
+		if(dist > 0.0f) return cpFalse;
 	}
 	
-	return 1;
+	return cpTrue;
 }
 
 // Same as cpPolyShapeContainsVert() but ignores faces pointing away from the normal.
-static inline int
-cpPolyShapeContainsVertPartial(cpPolyShape *poly, cpVect v, cpVect n)
+static inline cpBool
+cpPolyShapeContainsVertPartial(const cpPolyShape *poly, const cpVect v, const cpVect n)
 {
 	cpPolyShapeAxis *axes = poly->tAxes;
 	
@@ -96,8 +96,8 @@ cpPolyShapeContainsVertPartial(cpPolyShape *poly, cpVect v, cpVect n)
 	for(i=0; i<poly->numVerts; i++){
 		if(cpvdot(axes[i].n, n) < 0.0f) continue;
 		cpFloat dist = cpvdot(axes[i].n, v) - axes[i].d;
-		if(dist > 0.0f) return 0;
+		if(dist > 0.0f) return cpFalse;
 	}
 	
-	return 1;
+	return cpTrue;
 }
