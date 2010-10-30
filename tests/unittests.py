@@ -8,7 +8,6 @@ import unittest
 class UnitTestGeneral(unittest.TestCase):
     
     def testGeneral(self):
-        p.init_pymunk()
         p.version
         p.inf
         
@@ -20,7 +19,6 @@ class UnitTestGeneral(unittest.TestCase):
         
 class UnitTestBody(unittest.TestCase):
     def setUp(self):
-        p.init_pymunk()
         p.reset_shapeid_counter()
         
     def test(self):
@@ -75,7 +73,6 @@ class UnitTestBody(unittest.TestCase):
         
 class UnitTestShape(unittest.TestCase):
     def setUp(self):
-        p.init_pymunk()
         p.reset_shapeid_counter()
     
     def testShape(self):
@@ -83,6 +80,7 @@ class UnitTestShape(unittest.TestCase):
         b = p.Body(10,10)
         b.position = 10,0
         c = p.Circle(b,5)
+        c.cache_bb()
         self.assertFalse( c.point_query((0,0)) )
         self.assert_( c.point_query((11,1)) )
         
@@ -96,7 +94,6 @@ class UnitTestShape(unittest.TestCase):
     
 class UnitTestSpace(unittest.TestCase):
     def setUp(self):
-        p.init_pymunk()
         p.reset_shapeid_counter()
     
         self.s = p.Space()
@@ -179,6 +176,9 @@ class UnitTestSpace(unittest.TestCase):
         self.begin_contacts = None
         self.begin_space = None
         
+        self.s1.collision_type = 1
+        self.s2.collision_type = 2
+        
         def pre_solve(space, arb, test_self):
             test_self.begin_shapes = arb.shapes
             test_self.begin_contacts = arb.contacts
@@ -188,9 +188,8 @@ class UnitTestSpace(unittest.TestCase):
         for x in range(100): 
             self.s.step(0.1)
         
-        self.s.add_collision_handler(0,0, None, pre_solve, None, None, self)
+        self.s.add_collision_handler(1,2, None, pre_solve, None, None, self)
         self.s.step(0.1)
-        
         self.assertEqual(self.s1, self.begin_shapes[0])
         self.assertEqual(self.s2, self.begin_shapes[1])
         self.assertEqual(self.begin_space, self.s)
@@ -232,7 +231,6 @@ class UnitTestSpace(unittest.TestCase):
         
 class UnitTestConstraint(unittest.TestCase):
     def setUp(self):
-        p.init_pymunk()
         p.reset_shapeid_counter()
         
     def testPinJoint(self):

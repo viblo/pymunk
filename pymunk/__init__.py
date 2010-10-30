@@ -51,13 +51,13 @@ from .vec2d import Vec2d
 
 from pymunk.constraint import *
 
-version = "1.0.0"
+version = "1.1.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn).
 """
 
-chipmunk_version = cp.cpVersionString.value + "r428"
+chipmunk_version = cp.cpVersionString.value + "r584"
 """The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not 
 contain any breaking API changes.
@@ -72,11 +72,30 @@ inf = 1e100
 Use this as mass and inertia when you need to create a static body.
 """
 
+options = {
+    "debug_lib" : True
+}
+"""Global dict of pymunk options. TODO: Make me work!
+To change make sure you import pymunk before any sub-packages and then set the 
+option you want. For example::
+    import pymunk
+    pymunk.option["debug_lib"] = False
+    
+The only available currently available option is
+debug_lib
+    Print out useful debug information about where pymunk tries to load 
+    the chipmunk library from.
+"""
 
-def init_pymunk():
-    """Call this method to initialize pymunk"""
+def _init_pymunk():
+    """Initialize chipmunk. 
+    You shouldn't need to call this method yourself as it is called 
+    automatically on import.
+    """
     cp.cpInitChipmunk()
 
+_init_pymunk()
+        
 class Space(object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes 
     and joints to it and then step them all forward together through time. 
@@ -1149,6 +1168,7 @@ class Arbiter(object):
         *Note:* You should never need to create an instance of this class 
         directly.
         """
+
         self._arbiter = _arbiter
         self._arbitercontents = self._arbiter.contents
         self._space = space
