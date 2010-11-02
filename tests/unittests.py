@@ -344,7 +344,18 @@ class UnitTestBB(unittest.TestCase):
         self.assertEqual(bb1.clamp_vect(v2), Vec2d(10,5))
         
         self.assertEqual(bb1.wrap_vect((11,11)), (1,1))
-        
+
+class UnitTestBugs(unittest.TestCase):
+    def testManyBoxCrash(self):
+        space = p.Space()
+        for x in [1,2]:
+            for y in range(16):
+                size = 10
+                box_points = map(Vec2d, [(-size, -size), (-size, size), (size,size), (size, -size)])
+                body = p.Body(10,20)
+                shape = p.Poly(body, box_points, Vec2d(0,0))
+                space.add(body, shape)
+            space.step(1/50.0)
 ####################################################################
 if __name__ == "__main__":
     print ("testing pymunk version " + p.version)
