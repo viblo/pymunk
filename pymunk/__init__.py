@@ -35,7 +35,7 @@ http://code.google.com/p/chipmunk-physics/wiki/Documentation
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-__all__ = ["inf", "version", "chipmunk_version", 
+__all__ = ["inf", "version", "chipmunk_version"
         , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
         , "moment_for_circle", "moment_for_poly", "moment_for_segment"
         , "moment_for_box", "reset_shapeid_counter"
@@ -103,12 +103,11 @@ class Space(object):
     def __init__(self, iterations=10, elastic_iterations=0):
         """Create a new instace of the Space
         
-        Its usually best to keep the elastic_iterations setting to 0, they 
-        used to be required to the boucy balls, but are not required anymore. 
-        Now the only use is if you have problem stacking elastic objects on 
-        each other. If that is the case, try to raise it. Note however that it 
+        Its usually best to keep the elastic_iterations setting to 0. Only 
+        change if you have problem with stacking elastic objects on each other. 
+        If that is the case, try to raise it. However, a value other than 0 
         will affect other parts, most importantly you wont get reliable 
-        total_impulse readings from the `Arbiter`!
+        total_impulse readings from the `Arbiter` object in collsion callbacks!
         
         :Parameters:
             iterations : int
