@@ -100,11 +100,15 @@ class Space(object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes 
     and joints to it and then step them all forward together through time. 
     """
-    def __init__(self, iterations=10, elastic_iterations=10):
+    def __init__(self, iterations=10, elastic_iterations=0):
         """Create a new instace of the Space
         
-        If the objects in your Space does not have any elasticity set
-        elastic_iterations to 0 to gain a little speedup.
+        Its usually best to keep the elastic_iterations setting to 0, they 
+        used to be required to the boucy balls, but are not required anymore. 
+        Now the only use is if you have problem stacking elastic objects on 
+        each other. If that is the case, try to raise it. Note however that it 
+        will affect other parts, most importantly you wont get reliable 
+        total_impulse readings from the `Arbiter`!
         
         :Parameters:
             iterations : int
@@ -1173,7 +1177,7 @@ class Arbiter(object):
         self._arbitercontents = self._arbiter.contents
         self._space = space
         self._contacts = None # keep a lazy loaded cache of converted contacts
-        
+    
     def _get_contacts(self):
         if self._contacts is None:
             self._contacts = []
@@ -1210,8 +1214,7 @@ class Arbiter(object):
         self._arbiter.contents.e = elasticity
     elasticity = property(_get_elasticity, _set_elasticity, 
         doc="""Elasticity""")
-    
-    
+
     def _get_friction(self):
         return self._arbiter.contents.u
     def _set_friction(self, friction):
@@ -1223,6 +1226,18 @@ class Arbiter(object):
     surface_velocity = property(_get_surface_velocity, 
         doc="""Used for surface_v calculations, implementation may change""")
 
+    def _get_total_impulse(self):
+        return cp.cpArbiterTotalImpulse(self._arbiter)
+    total_impulse = property(_get_total_impulse,
+        doc="""Returns the impulse that was applied this step to resolve the 
+        collision""")
+    
+    def _get_total_impulse_with_friction(self):
+        return cp.cpArbiterTotalImpulseWithFriction(self._arbiter)
+    total_impulse_with_friction = property(_get_total_impulse_with_friction,
+        doc="""Returns the impulse with friction that was applied this step to 
+        resolve the collision""")
+        
     def _get_stamp(self):
         return self._arbiter.contents.stamp
     stamp = property(_get_stamp, 
