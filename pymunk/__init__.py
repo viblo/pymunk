@@ -35,7 +35,7 @@ http://code.google.com/p/chipmunk-physics/wiki/Documentation
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-__all__ = ["inf", "version", "chipmunk_version", "init_pymunk"
+__all__ = ["inf", "version", "chipmunk_version", 
         , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
         , "moment_for_circle", "moment_for_poly", "moment_for_segment"
         , "moment_for_box", "reset_shapeid_counter"
