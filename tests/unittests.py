@@ -169,7 +169,17 @@ class UnitTestSpace(unittest.TestCase):
         self.assert_(self.s1 not in hit_shapes)
         self.assert_(self.s2 in hit_shapes)
         self.assert_(s3 in hit_shapes)
+
+    def testStaticSegmentQueries(self):
+        b = p.Body(p.inf, p.inf)
+        c = p.Circle(b, 10)
+        b.position = -50,-50
         
+        self.s.add_static(c)
+        
+        self.assertEqual(self.s.segment_query_first( (-70,-50), (-30, -50) ), c)
+        self.assertEqual(self.s.segment_query( (-70,-50), (-30, -50) ), [c])
+    
     def testCollisionHandlerPreSolve(self):
     
         self.begin_shapes = None
