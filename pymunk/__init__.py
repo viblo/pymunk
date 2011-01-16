@@ -543,7 +543,10 @@ class Space(object):
         
         self.__query_hits = []
         def cf(_shape, t, n, data):
-            shape = self._shapes[_shape.contents.hashid]
+            if _shape.contents.hashid in self._shapes:
+                shape = self._shapes[_shape.contents.hashid]
+            else:
+                shape = self._static_shapes[_shape.contents.hashid]
             info = SegmentQueryInfo(shape, start, end, t, n)
             self.__query_hits.append(info)
         
@@ -563,7 +566,11 @@ class Space(object):
         info_p = ct.POINTER(cp.cpSegmentQueryInfo)(info)
         _shape = cp.cpSpaceSegmentQueryFirst(self._space, start, end, layers, group, info_p)
         if bool(_shape):
-            shape = self._shapes[_shape.contents.hashid]
+            if _shape.contents.hashid in self._shapes:
+                shape = self._shapes[_shape.contents.hashid]
+            else:
+                shape = self._static_shapes[_shape.contents.hashid]
+            
             return SegmentQueryInfo(shape, start, end, info.t, info.n)
         else:
             return None

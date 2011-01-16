@@ -177,8 +177,10 @@ class UnitTestSpace(unittest.TestCase):
         
         self.s.add_static(c)
         
-        self.assertEqual(self.s.segment_query_first( (-70,-50), (-30, -50) ), c)
-        self.assertEqual(self.s.segment_query( (-70,-50), (-30, -50) ), [c])
+        hit = self.s.segment_query_first( (-70,-50), (-30, -50) )
+        self.assertEqual(hit.shape, c)
+        hits = self.s.segment_query( (-70,-50), (-30, -50) )
+        self.assertEqual(hits[0].shape, c)
     
     def testCollisionHandlerPreSolve(self):
     
