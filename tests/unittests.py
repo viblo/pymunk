@@ -10,6 +10,7 @@ class UnitTestGeneral(unittest.TestCase):
     def testGeneral(self):
         p.version
         p.inf
+        p.chipmunk_version
         
         m = p.moment_for_box(1, 2, 3)
         self.assertAlmostEqual(m, 1.08333333333)
