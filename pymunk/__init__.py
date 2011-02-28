@@ -1225,7 +1225,7 @@ class Arbiter(object):
         return self._arbiter.contents.u
     def _set_friction(self, friction):
         self._arbiter.contents.u = friction
-    friction = property(_get_friction, _set_elasticity, doc="""Friction""")
+    friction = property(_get_friction, _set_friction, doc="""Friction""")
     
     def _get_surface_velocity(self):
         return self._arbiter.contents.surface_vr
