@@ -149,6 +149,32 @@ class UnitTestSpace(unittest.TestCase):
         self.assert_(self.s1 not in hits)
         self.assert_(self.s2 in hits)
         self.assert_(s3 in hits)
+        
+    def testStaticPointQueries(self):
+        b = p.Body(p.inf, p.inf)
+        c = p.Circle(b, 10)
+        b.position = -50,-50
+        
+        self.s.add_static(c)
+        
+        hit = self.s.point_query_first( (-50,-55) )
+        self.assertEqual(hit, c)
+        hits = self.s.point_query( (-50,-55) )
+        self.assertEqual(hits[0], c)
+    
+    def testRehash(self):
+        b = p.Body(p.inf, p.inf)
+        c = p.Circle(b, 10)
+        
+        self.s.add_static(c)
+        
+        b.position = -50,-50
+        hit = self.s.point_query_first( (-50,-55) )
+        self.assertEqual(hit, None)
+        self.s.rehash_static()
+        hit = self.s.point_query_first( (-50,-55) )
+        self.assertEqual(hit, c)
+        
     
     def testSegmentQueries(self):
         

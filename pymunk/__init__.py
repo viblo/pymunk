@@ -497,12 +497,23 @@ class Space(object):
         """
         self.__query_hits = []
         def cf(_shape, data):
-            shape = self._shapes[_shape.contents.hashid]
+            
+            shape = self._get_shape(_shape)
             self.__query_hits.append(shape)
         f = cp.cpSpacePointQueryFunc(cf)
         cp.cpSpacePointQuery(self._space, point, layers, group, f, None)
         
         return self.__query_hits
+    
+    def _get_shape(self, _shape):
+        if not bool(_shape):
+            return None
+        hashid = _shape.contents.hashid
+        if hashid in self._shapes:
+            shape = self._shapes[hashid]
+        elif hashid in self._static_shapes:
+            shape = self._static_shapes[hashid]
+        return shape
         
     def point_query_first(self, point, layers = -1, group = 0):
         """Query space at point and return the first shape found matching the 
@@ -517,15 +528,8 @@ class Space(object):
             group : int
                 Only pick shapes in this group.
         """
-        shape = None
         _shape = cp.cpSpacePointQueryFirst(self._space, point, layers, group)
-        if _shape:
-            hashid = _shape.contents.hashid
-            if hashid in self._shapes:
-                shape = self._shapes[hashid]
-            elif hashid in self._static_shapes:
-                shape = self._static_shapes[hashid]
-        return shape
+        return self._get_shape(_shape)
         
     def segment_query(self, start, end, layers = -1, group = 0):
         """Query space along the line segment from start to end filtering out 
@@ -543,10 +547,7 @@ class Space(object):
         
         self.__query_hits = []
         def cf(_shape, t, n, data):
-            if _shape.contents.hashid in self._shapes:
-                shape = self._shapes[_shape.contents.hashid]
-            else:
-                shape = self._static_shapes[_shape.contents.hashid]
+            shape = self._get_shape(_shape)
             info = SegmentQueryInfo(shape, start, end, t, n)
             self.__query_hits.append(info)
         
@@ -565,18 +566,12 @@ class Space(object):
         info = cp.cpSegmentQueryInfo()
         info_p = ct.POINTER(cp.cpSegmentQueryInfo)(info)
         _shape = cp.cpSpaceSegmentQueryFirst(self._space, start, end, layers, group, info_p)
-        if bool(_shape):
-            if _shape.contents.hashid in self._shapes:
-                shape = self._shapes[_shape.contents.hashid]
-            else:
-                shape = self._static_shapes[_shape.contents.hashid]
-            
+        shape = self._get_shape(_shape)
+        if shape != None:
             return SegmentQueryInfo(shape, start, end, info.t, info.n)
         else:
             return None
             
-     
-    
 class Body(object):
     """A rigid body
     
