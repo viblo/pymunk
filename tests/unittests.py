@@ -112,10 +112,6 @@ class UnitTestSpace(unittest.TestCase):
         del self.b1, self.b2
         del self.s1, self.s2
     
-    def testResizeRehash(self):
-        self.s.resize_static_hash()
-        self.s.resize_active_hash()
-        self.s.rehash_static()
     
     def testAddRemove(self):
         
@@ -162,7 +158,7 @@ class UnitTestSpace(unittest.TestCase):
         hits = self.s.point_query( (-50,-55) )
         self.assertEqual(hits[0], c)
     
-    def testRehash(self):
+    def testReindexStatic(self):
         b = p.Body(p.inf, p.inf)
         c = p.Circle(b, 10)
         
@@ -171,10 +167,26 @@ class UnitTestSpace(unittest.TestCase):
         b.position = -50,-50
         hit = self.s.point_query_first( (-50,-55) )
         self.assertEqual(hit, None)
-        self.s.rehash_static()
+        self.s.reindex_static()
         hit = self.s.point_query_first( (-50,-55) )
         self.assertEqual(hit, c)
+        b.position = 50,50
+        self.s.reindex_shape(c)
+        hit = self.s.point_query_first( (50,50) )
+        self.assertEqual(hit, c)
+    
+    def testReindexShape(self):
+        b = p.Body(p.inf, p.inf)
+        c = p.Circle(b, 10)
         
+        self.s.add_static(c)
+        
+        b.position = -50,-50
+        hit = self.s.point_query_first( (-50,-55) )
+        self.assertEqual(hit, None)
+        self.s.reindex_shape(c)
+        hit = self.s.point_query_first( (-50,-55) )
+        self.assertEqual(hit, c)
     
     def testSegmentQueries(self):
         

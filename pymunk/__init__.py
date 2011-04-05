@@ -224,16 +224,16 @@ class Space(object):
                     
     def _add_shape(self, shape):
         """Adds a shape to the space"""
-        assert shape._hashid not in self._shapes, "shape already added to space"
-        self._shapes[shape._hashid] = shape
+        assert shape._hashid_private not in self._shapes, "shape already added to space"
+        self._shapes[shape._hashid_private] = shape
         cp.cpSpaceAddShape(self._space, shape._shape)
     def _add_static_shape(self, static_shape):
         """Adds a shape to the space. Static shapes should be be attached to 
         a rigid body with an infinite mass and moment of inertia. Also, don't 
         add the rigid body used to the space, as that will cause it to fall 
         under the effects of gravity."""
-        assert static_shape._hashid not in self._static_shapes, "shape already added to space"
-        self._static_shapes[static_shape._hashid] = static_shape
+        assert static_shape._hashid_private not in self._static_shapes, "shape already added to space"
+        self._static_shapes[static_shape._hashid_private] = static_shape
         cp.cpSpaceAddStaticShape(self._space, static_shape._shape)
     def _add_body(self, body):
         """Adds a body to the space"""
@@ -248,11 +248,11 @@ class Space(object):
 
     def _remove_shape(self, shape):
         """Removes a shape from the space"""
-        del self._shapes[shape._hashid]
+        del self._shapes[shape._hashid_private]
         cp.cpSpaceRemoveShape(self._space, shape._shape)
     def _remove_static_shape(self, static_shape):
         """Removes a static shape from the space."""
-        del self._static_shapes[static_shape._hashid]
+        del self._static_shapes[static_shape._hashid_private]
         cp.cpSpaceRemoveStaticShape(self._space, static_shape._shape)
     def _remove_body(self, body):
         """Removes a body from the space"""
@@ -288,11 +288,18 @@ class Space(object):
         of objects in the hash is probably a good starting point."""
         cp.cpSpaceResizeActiveHash(self._space, dim, count)
 
-    def rehash_static(self):
-        """Rehashes the shapes in the static spatial hash. You only need to
-        call this if you move one of the static shapes."""
-        cp.cpSpaceRehashStatic(self._space)
+    def reindex_static(self):
+        """Update the collision detection info for the static shapes in the 
+        space. You only need to call this if you move one of the static shapes.
+        """
+        cp.cpSpaceReindexStatic(self._space)
 
+    def reindex_shape(self, shape):
+        """Update the collision detection data for a specific shape in the 
+        space.
+        """
+        cp.cpSpaceReindexShape(self._space, shape._shape)
+        
     def step(self, dt):
         """Update the space for the given time step. Using a fixed time step is
         highly recommended. Doing so will increase the efficiency of the
@@ -508,11 +515,11 @@ class Space(object):
     def _get_shape(self, _shape):
         if not bool(_shape):
             return None
-        hashid = _shape.contents.hashid
-        if hashid in self._shapes:
-            shape = self._shapes[hashid]
-        elif hashid in self._static_shapes:
-            shape = self._static_shapes[hashid]
+        hashid_private = _shape.contents.hashid_private
+        if hashid_private in self._shapes:
+            shape = self._shapes[hashid_private]
+        elif hashid_private in self._static_shapes:
+            shape = self._static_shapes[hashid_private]
         return shape
         
     def point_query_first(self, point, layers = -1, group = 0):
@@ -818,9 +825,9 @@ class Shape(object):
         if cp is not None:
             cp.cpShapeFree(self._shape)
 
-    def _get_hashid(self):
-        return self._shapecontents.hashid
-    _hashid = property(_get_hashid)
+    def _get_hashid_private(self):
+        return self._shapecontents.hashid_private
+    _hashid_private = property(_get_hashid_private)
         
     def _get_sensor(self):
         return bool(self._shapecontents.sensor)
@@ -1192,10 +1199,10 @@ class Arbiter(object):
         _a = self._arbitercontents.private_a
         _b = self._arbitercontents.private_b
         def _get_shape(_s):
-            if _s.contents.hashid in self._space._shapes:
-                s = self._space._shapes[_s.contents.hashid]
-            elif _s.contents.hashid in self._space._static_shapes:
-                s = self._space._static_shapes[_s.contents.hashid]
+            if _s.contents.hashid_private in self._space._shapes:
+                s = self._space._shapes[_s.contents.hashid_private]
+            elif _s.contents.hashid_private in self._space._static_shapes:
+                s = self._space._static_shapes[_s.contents.hashid_private]
             else:
                 s = None
             return s
@@ -1280,27 +1287,27 @@ class BB(object):
         
     def intersects(self, other):
         """Returns true if the bounding boxes intersect"""
-        return bool(cp._cpBBintersects(self._bb, other._bb))
+        return bool(cp._cpBBIntersects(self._bb, other._bb))
 
     def contains(self, other):
         """Returns true if bb completley contains the other bb"""
-        return bool(cp._cpBBcontainsBB(self._bb, other._bb))
+        return bool(cp._cpBBContainsBB(self._bb, other._bb))
         
     def contains_vect(self, v):
         """Returns true if this bb contains the vector v"""
-        return bool(cp._cpBBcontainsVect(self._bb, v))
+        return bool(cp._cpBBContainsVect(self._bb, v))
         
     def merge(self, other):
         """Return the minimal bounding box that contains both this bb and the 
         other bb
         """
-        return BB(cp._cpBBmerge(self._bb, other._bb))
+        return BB(cp._cpBBMerge(self._bb, other._bb))
         
     def expand(self, v):
         """Return the minimal bounding box that contans both this bounding box 
         and the vector v
         """
-        return BB(cp._cpBBexpand(self._bb, v))
+        return BB(cp._cpBBExpand(self._bb, v))
         
     left = property(lambda self: self._bb.l)
     bottom = property(lambda self: self._bb.b)
