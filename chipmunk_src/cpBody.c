@@ -21,8 +21,9 @@
  
 #include <stdlib.h>
 #include <float.h>
+#include <math.h>
 
-#include "chipmunk.h"
+#include "chipmunk_private.h"
 
 // initialized in cpInitChipmunk()
 cpBody cpStaticBodySingleton;
@@ -33,14 +34,16 @@ cpBodyAlloc(void)
 	return (cpBody *)cpmalloc(sizeof(cpBody));
 }
 
-cpBodyVelocityFunc cpBodyUpdateVelocityDefault = cpBodyUpdateVelocity;
-cpBodyPositionFunc cpBodyUpdatePositionDefault = cpBodyUpdatePosition;
-
-cpBody*
+cpBody *
 cpBodyInit(cpBody *body, cpFloat m, cpFloat i)
 {
-	body->velocity_func = cpBodyUpdateVelocityDefault;
-	body->position_func = cpBodyUpdatePositionDefault;
+	body->space = NULL;
+	body->shapeList = NULL;
+	body->arbiterList = NULL;
+	body->constraintList = NULL;
+	
+	body->velocity_func = cpBodyUpdateVelocity;
+	body->position_func = cpBodyUpdatePosition;
 	
 	cpBodySetMass(body, m);
 	cpBodySetMoment(body, i);
@@ -56,15 +59,13 @@ cpBodyInit(cpBody *body, cpFloat m, cpFloat i)
 	body->v_bias = cpvzero;
 	body->w_bias = 0.0f;
 	
-	body->data = NULL;
 	body->v_limit = (cpFloat)INFINITY;
 	body->w_limit = (cpFloat)INFINITY;
 	
-	body->space = NULL;
-	body->shapesList = NULL;
-	
-	cpComponentNode node = {NULL, NULL, 0, 0.0f};
+	cpComponentNode node = {NULL, NULL, 0.0f};
 	body->node = node;
+	
+	body->data = NULL;
 	
 	return body;
 }
@@ -73,6 +74,21 @@ cpBody*
 cpBodyNew(cpFloat m, cpFloat i)
 {
 	return cpBodyInit(cpBodyAlloc(), m, i);
+}
+
+cpBody *
+cpBodyInitStatic(cpBody *body)
+{
+	cpBodyInit(body, (cpFloat)INFINITY, (cpFloat)INFINITY);
+	body->node.idleTime = (cpFloat)INFINITY;
+	
+	return body;
+}
+
+cpBody *
+cpBodyNewStatic()
+{
+	return cpBodyInitStatic(cpBodyAlloc());
 }
 
 void cpBodyDestroy(cpBody *body){}
@@ -89,6 +105,7 @@ cpBodyFree(cpBody *body)
 void
 cpBodySetMass(cpBody *body, cpFloat mass)
 {
+	cpBodyActivate(body);
 	body->m = mass;
 	body->m_inv = 1.0f/mass;
 }
@@ -96,27 +113,36 @@ cpBodySetMass(cpBody *body, cpFloat mass)
 void
 cpBodySetMoment(cpBody *body, cpFloat moment)
 {
+	cpBodyActivate(body);
 	body->i = moment;
 	body->i_inv = 1.0f/moment;
 }
 
-void
-cpBodySetAngle(cpBody *body, cpFloat angle)
+static inline void
+setAngle(cpBody *body, cpFloat angle, cpBool activate)
 {
+	if(activate) cpBodyActivate(body);
 	body->a = angle;//fmod(a, (cpFloat)M_PI*2.0f);
 	body->rot = cpvforangle(angle);
 }
 
 void
-cpBodySlew(cpBody *body, cpVect pos, cpFloat dt)
+cpBodySetAngle(cpBody *body, cpFloat angle)
 {
-	cpVect delta = cpvsub(pos, body->p);
-	body->v = cpvmult(delta, 1.0f/dt);
+	setAngle(body, angle, cpTrue);
 }
+
+//void
+//cpBodySlew(cpBody *body, cpVect pos, cpFloat dt)
+//{
+//	cpBodyActivate(body);
+//	body->v = cpvmult(cpvsub(pos, body->p), 1.0f/dt);
+//}
 
 void
 cpBodyUpdateVelocity(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt)
 {
+	// TODO per body damping and gravity coefs
 	body->v = cpvclamp(cpvadd(cpvmult(body->v, damping), cpvmult(cpvadd(gravity, cpvmult(body->f, body->m_inv)), dt)), body->v_limit);
 	
 	cpFloat w_limit = body->w_limit;
@@ -127,7 +153,7 @@ void
 cpBodyUpdatePosition(cpBody *body, cpFloat dt)
 {
 	body->p = cpvadd(body->p, cpvmult(cpvadd(body->v, body->v_bias), dt));
-	cpBodySetAngle(body, body->a + (body->w + body->w_bias)*dt);
+	setAngle(body, body->a + (body->w + body->w_bias)*dt, cpFalse);
 	
 	body->v_bias = cpvzero;
 	body->w_bias = 0.0f;
@@ -148,47 +174,22 @@ cpBodyApplyForce(cpBody *body, cpVect force, cpVect r)
 }
 
 void
-cpApplyDampedSpring(cpBody *a, cpBody *b, cpVect anchr1, cpVect anchr2, cpFloat rlen, cpFloat k, cpFloat dmp, cpFloat dt)
+cpBodyEachShape(cpBody *body, cpBodyShapeIteratorFunc func, void *data)
 {
-	// Calculate the world space anchor coordinates.
-	cpVect r1 = cpvrotate(anchr1, a->rot);
-	cpVect r2 = cpvrotate(anchr2, b->rot);
-	
-	cpVect delta = cpvsub(cpvadd(b->p, r2), cpvadd(a->p, r1));
-	cpFloat dist = cpvlength(delta);
-	cpVect n = dist ? cpvmult(delta, 1.0f/dist) : cpvzero;
-	
-	cpFloat f_spring = (dist - rlen)*k;
-
-	// Calculate the world relative velocities of the anchor points.
-	cpVect v1 = cpvadd(a->v, cpvmult(cpvperp(r1), a->w));
-	cpVect v2 = cpvadd(b->v, cpvmult(cpvperp(r2), b->w));
-	
-	// Calculate the damping force.
-	// This really should be in the impulse solver and can produce problems when using large damping values.
-	cpFloat vrn = cpvdot(cpvsub(v2, v1), n);
-	cpFloat f_damp = vrn*cpfmin(dmp, 1.0f/(dt*(a->m_inv + b->m_inv)));
-	
-	// Apply!
-	cpVect f = cpvmult(n, f_spring + f_damp);
-	cpBodyApplyForce(a, f, r1);
-	cpBodyApplyForce(b, cpvneg(f), r2);
+	CP_BODY_FOREACH_SHAPE(body, shape) func(body, shape, data);
 }
-
-cpBool
-cpBodyIsStatic(const cpBody *body)
-{
-	cpSpace *space = body->space;
-	return (space != ((cpSpace*)0) && body == &space->staticBody);
-}
-
-void cpSpaceSleepBody(cpSpace *space, cpBody *body);
 
 void
-cpBodySleep(cpBody *body)
+cpBodyEachConstraint(cpBody *body, cpBodyConstraintIteratorFunc func, void *data)
 {
-	if(cpBodyIsSleeping(body)) return;
-	
-	cpAssert(!cpBodyIsStatic(body) && !cpBodyIsRogue(body), "Rogue and static bodies cannot be put to sleep.");
-	cpSpaceSleepBody(body->space, body);
+	CP_BODY_FOREACH_CONSTRAINT(body,constraint) func(body, constraint, data);
+}
+
+void
+cpBodyEachArbiter(cpBody *body, cpBodyArbiterIteratorFunc func, void *data)
+{
+	CP_BODY_FOREACH_ARBITER(body, arb){
+		arb->swappedColl = (body == arb->body_b);
+		func(body, arb, data);
+	}
 }

@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "chipmunk.h"
+#include "chipmunk_private.h"
 #include "constraints/util.h"
 
 static cpFloat
@@ -31,14 +31,16 @@ defaultSpringTorque(cpDampedRotarySpring *spring, cpFloat relativeAngle){
 }
 
 static void
-preStep(cpDampedRotarySpring *spring, cpFloat dt, cpFloat dt_inv)
+preStep(cpDampedRotarySpring *spring, cpFloat dt)
 {
-	CONSTRAINT_BEGIN(spring, a, b);
+	cpBody *a = spring->constraint.a;
+	cpBody *b = spring->constraint.b;
 	
 	cpFloat moment = a->i_inv + b->i_inv;
+	cpAssert(moment != 0.0, "Unsolvable spring.");
 	spring->iSum = 1.0f/moment;
 
-	spring->w_coef = 1.0f - cpfexp(-spring->damping*dt*moment);
+	spring->w_coef = 1.0f - cpfexp(-spring->damping*dt*moment*0.25f/(cpFloat)M_E);
 	spring->target_wrn = 0.0f;
 
 	// apply spring torque
@@ -47,10 +49,13 @@ preStep(cpDampedRotarySpring *spring, cpFloat dt, cpFloat dt_inv)
 	b->w += j_spring*b->i_inv;
 }
 
+static void applyCachedImpulse(cpDampedRotarySpring *spring, cpFloat dt_coef){}
+
 static void
 applyImpulse(cpDampedRotarySpring *spring)
 {
-	CONSTRAINT_BEGIN(spring, a, b);
+	cpBody *a = spring->constraint.a;
+	cpBody *b = spring->constraint.b;
 	
 	// compute relative velocity
 	cpFloat wrn = a->w - b->w;//normal_relative_velocity(a, b, r1, r2, n) - spring->target_vrn;
@@ -73,9 +78,10 @@ getImpulse(cpConstraint *constraint)
 }
 
 static const cpConstraintClass klass = {
-	(cpConstraintPreStepFunction)preStep,
-	(cpConstraintApplyImpulseFunction)applyImpulse,
-	(cpConstraintGetImpulseFunction)getImpulse,
+	(cpConstraintPreStepImpl)preStep,
+	(cpConstraintApplyCachedImpulseImpl)applyCachedImpulse,
+	(cpConstraintApplyImpulseImpl)applyImpulse,
+	(cpConstraintGetImpulseImpl)getImpulse,
 };
 CP_DefineClassGetter(cpDampedRotarySpring)
 

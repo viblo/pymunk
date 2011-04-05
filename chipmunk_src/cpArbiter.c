@@ -18,14 +18,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
+
 #include <stdlib.h>
+#include <math.h>
 
-#include "chipmunk.h"
+#include "chipmunk_private.h"
 #include "constraints/util.h"
-
-cpFloat cp_bias_coef = 0.1f;
-cpFloat cp_collision_slop = 0.1f;
 
 cpContact*
 cpContactInit(cpContact *con, cpVect p, cpVect n, cpFloat dist, cpHashValue hash)
@@ -42,6 +40,42 @@ cpContactInit(cpContact *con, cpVect p, cpVect n, cpFloat dist, cpHashValue hash
 		
 	return con;
 }
+
+cpVect
+cpArbiterGetNormal(const cpArbiter *arb, int i)
+{
+	cpVect n = arb->CP_PRIVATE(contacts)[i].CP_PRIVATE(n);
+	return arb->CP_PRIVATE(swappedColl) ? cpvneg(n) : n;
+}
+
+cpVect
+cpArbiterGetPoint(const cpArbiter *arb, int i)
+{
+	return arb->CP_PRIVATE(contacts)[i].CP_PRIVATE(p);
+}
+
+cpFloat
+cpArbiterGetDepth(const cpArbiter *arb, int i)
+{
+	return arb->CP_PRIVATE(contacts)[i].CP_PRIVATE(dist);
+}
+
+cpContactPointSet
+cpArbiterGetContactPointSet(const cpArbiter *arb)
+{
+	cpContactPointSet set;
+	set.count = cpArbiterGetCount(arb);
+	
+	int i;
+	for(i=0; i<set.count; i++){
+		set.points[i].point = arb->CP_PRIVATE(contacts)[i].CP_PRIVATE(p);
+		set.points[i].normal = arb->CP_PRIVATE(contacts)[i].CP_PRIVATE(n);
+		set.points[i].dist = arb->CP_PRIVATE(contacts)[i].CP_PRIVATE(dist);
+	}
+	
+	return set;
+}
+
 
 cpVect
 cpArbiterTotalImpulse(cpArbiter *arb)
@@ -92,49 +126,32 @@ cpContactsEstimateCrushingImpulse(cpContact *contacts, int numContacts)
 void
 cpArbiterIgnore(cpArbiter *arb)
 {
-	arb->state = cpArbiterStateIgnore;
-}
-
-cpArbiter*
-cpArbiterAlloc(void)
-{
-	return (cpArbiter *)cpcalloc(1, sizeof(cpArbiter));
+	arb->state = cpArbiterStateIgnore;
 }
 
 cpArbiter*
 cpArbiterInit(cpArbiter *arb, cpShape *a, cpShape *b)
 {
+	arb->handler = NULL;
+	arb->swappedColl = cpFalse;
+	
+	arb->e = 0.0f;
+	arb->u = 0.0f;
+	arb->surface_vr = cpvzero;
+	
 	arb->numContacts = 0;
 	arb->contacts = NULL;
 	
-	arb->private_a = a;
-	arb->private_b = b;
+	arb->a = a; arb->body_a = a->body;
+	arb->b = b; arb->body_b = b->body;
+	
+	arb->next_a = NULL;
+	arb->next_b = NULL;
 	
 	arb->stamp = 0;
 	arb->state = cpArbiterStateFirstColl;
 	
 	return arb;
-}
-
-cpArbiter*
-cpArbiterNew(cpShape *a, cpShape *b)
-{
-	return cpArbiterInit(cpArbiterAlloc(), a, b);
-}
-
-void
-cpArbiterDestroy(cpArbiter *arb)
-{
-//	if(arb->contacts) cpfree(arb->contacts);
-}
-
-void
-cpArbiterFree(cpArbiter *arb)
-{
-	if(arb){
-		cpArbiterDestroy(arb);
-		cpfree(arb);
-	}
 }
 
 void
@@ -157,8 +174,6 @@ cpArbiterUpdate(cpArbiter *arb, cpContact *contacts, int numContacts, cpCollisio
 				}
 			}
 		}
-
-//		cpfree(arb->contacts);
 	}
 	
 	arb->contacts = contacts;
@@ -172,18 +187,18 @@ cpArbiterUpdate(cpArbiter *arb, cpContact *contacts, int numContacts, cpCollisio
 	arb->surface_vr = cpvsub(a->surface_v, b->surface_v);
 	
 	// For collisions between two similar primitive types, the order could have been swapped.
-	arb->private_a = a;
-	arb->private_b = b;
+	arb->a = a; arb->body_a = a->body;
+	arb->b = b; arb->body_b = b->body;
 	
 	// mark it as new if it's been cached
 	if(arb->state == cpArbiterStateCached) arb->state = cpArbiterStateFirstColl;
 }
 
 void
-cpArbiterPreStep(cpArbiter *arb, cpFloat dt_inv)
+cpArbiterPreStep(cpArbiter *arb, cpFloat dt, cpFloat slop, cpFloat bias)
 {
-	cpBody *a = arb->private_a->body;
-	cpBody *b = arb->private_b->body;
+	cpBody *a = arb->body_a;
+	cpBody *b = arb->body_b;
 	
 	for(int i=0; i<arb->numContacts; i++){
 		cpContact *con = &arb->contacts[i];
@@ -197,37 +212,36 @@ cpArbiterPreStep(cpArbiter *arb, cpFloat dt_inv)
 		con->tMass = 1.0f/k_scalar(a, b, con->r1, con->r2, cpvperp(con->n));
 				
 		// Calculate the target bias velocity.
-		con->bias = -cp_bias_coef*dt_inv*cpfmin(0.0f, con->dist + cp_collision_slop);
+		con->bias = -bias*cpfmin(0.0f, con->dist + slop)/dt;
 		con->jBias = 0.0f;
 		
 		// Calculate the target bounce velocity.
-		con->bounce = normal_relative_velocity(a, b, con->r1, con->r2, con->n)*arb->e;//cpvdot(con->n, cpvsub(v2, v1))*e;
+		con->bounce = normal_relative_velocity(a, b, con->r1, con->r2, con->n)*arb->e;
 	}
 }
 
 void
-cpArbiterApplyCachedImpulse(cpArbiter *arb)
+cpArbiterApplyCachedImpulse(cpArbiter *arb, cpFloat dt_coef)
 {
-	cpShape *shapea = arb->private_a;
-	cpShape *shapeb = arb->private_b;
-		
-	arb->u = shapea->u * shapeb->u;
-	arb->surface_vr = cpvsub(shapeb->surface_v, shapea->surface_v);
-
-	cpBody *a = shapea->body;
-	cpBody *b = shapeb->body;
+	if(cpArbiterIsFirstContact(arb)) return;
+	
+	cpBody *a = arb->body_a;
+	cpBody *b = arb->body_b;
 	
 	for(int i=0; i<arb->numContacts; i++){
 		cpContact *con = &arb->contacts[i];
-		apply_impulses(a, b, con->r1, con->r2, cpvrotate(con->n, cpv(con->jnAcc, con->jtAcc)));
+		cpVect j = cpvrotate(con->n, cpv(con->jnAcc, con->jtAcc));
+		apply_impulses(a, b, con->r1, con->r2, cpvmult(j, dt_coef));
 	}
 }
 
+// TODO is it worth splitting velocity/position correction?
+
 void
-cpArbiterApplyImpulse(cpArbiter *arb, cpFloat eCoef)
+cpArbiterApplyImpulse(cpArbiter *arb)
 {
-	cpBody *a = arb->private_a->body;
-	cpBody *b = arb->private_b->body;
+	cpBody *a = arb->body_a;
+	cpBody *b = arb->body_b;
 
 	for(int i=0; i<arb->numContacts; i++){
 		cpContact *con = &arb->contacts[i];
@@ -254,7 +268,7 @@ cpArbiterApplyImpulse(cpArbiter *arb, cpFloat eCoef)
 		cpFloat vrn = cpvdot(vr, n);
 		
 		// Calculate and clamp the normal impulse.
-		cpFloat jn = -(con->bounce*eCoef + vrn)*con->nMass;
+		cpFloat jn = -(con->bounce + vrn)*con->nMass;
 		cpFloat jnOld = con->jnAcc;
 		con->jnAcc = cpfmax(jnOld + jn, 0.0f);
 		jn = con->jnAcc - jnOld;

@@ -19,43 +19,60 @@
  * SOFTWARE.
  */
 
-// TODO: Comment me!
+/// @defgroup cpConstraint cpConstraint
+/// @{
+
+typedef struct cpConstraintClass cpConstraintClass;
+
+typedef void (*cpConstraintPreStepImpl)(cpConstraint *constraint, cpFloat dt);
+typedef void (*cpConstraintApplyCachedImpulseImpl)(cpConstraint *constraint, cpFloat dt_coef);
+typedef void (*cpConstraintApplyImpulseImpl)(cpConstraint *constraint);
+typedef cpFloat (*cpConstraintGetImpulseImpl)(cpConstraint *constraint);
+
+/// @private
+struct cpConstraintClass {
+	cpConstraintPreStepImpl preStep;
+	cpConstraintApplyCachedImpulseImpl applyCachedImpulse;
+	cpConstraintApplyImpulseImpl applyImpulse;
+	cpConstraintGetImpulseImpl getImpulse;
+};
+
+
+/// Opaque cpConstraint struct.
+struct cpConstraint {
+	CP_PRIVATE(const cpConstraintClass *klass);
 	
-extern cpFloat cp_constraint_bias_coef;
-
-struct cpConstraintClass;
-struct cpConstraint;
-
-typedef void (*cpConstraintPreStepFunction)(struct cpConstraint *constraint, cpFloat dt, cpFloat dt_inv);
-typedef void (*cpConstraintApplyImpulseFunction)(struct cpConstraint *constraint);
-typedef cpFloat (*cpConstraintGetImpulseFunction)(struct cpConstraint *constraint);
-
-typedef struct cpConstraintClass {
-	cpConstraintPreStepFunction preStep;
-	cpConstraintApplyImpulseFunction applyImpulse;
-	cpConstraintGetImpulseFunction getImpulse;
-} cpConstraintClass;
-
-
-
-typedef struct cpConstraint {
-	const cpConstraintClass *klass;
+	/// The first body connected to this constraint.
+	cpBody *a;
+	/// The second body connected to this constraint.
+	cpBody *b;
 	
-	cpBody *a, *b;
+	CP_PRIVATE(cpConstraint *next_a);
+	CP_PRIVATE(cpConstraint *next_b);
+	
+	/// The maximum force that this constraint is allowed to use.
+	/// Defaults to infinity.
 	cpFloat maxForce;
-	cpFloat biasCoef;
+	/// The rate at which joint error is corrected.
+	/// Defaults to pow(1.0 - 0.1, 60.0) meaning that it will
+	/// correct 10% of the error every 1/60th of a second.
+	cpFloat errorBias;
+	/// The maximum rate at which joint error is corrected.
+	/// Defaults to infinity.
 	cpFloat maxBias;
 	
+	/// User definable data pointer.
+	/// Generally this points to your the game object class so you can access it
+	/// when given a cpConstraint reference in a callback.
 	cpDataPointer data;
-} cpConstraint;
+};
 
-#ifdef CP_USE_DEPRECATED_API_4
-typedef cpConstraint cpJoint;
-#endif
-
+/// Destroy a constraint.
 void cpConstraintDestroy(cpConstraint *constraint);
+/// Destroy and free a constraint.
 void cpConstraintFree(cpConstraint *constraint);
 
+/// @private
 static inline void
 cpConstraintActivateBodies(cpConstraint *constraint)
 {
@@ -63,36 +80,55 @@ cpConstraintActivateBodies(cpConstraint *constraint)
 	cpBody *b = constraint->b; if(b) cpBodyActivate(b);
 }
 
+#define CP_DefineConstraintStructGetter(type, member, name) \
+static inline type cpConstraint##Get##name(const cpConstraint *constraint){return constraint->member;}
+
+#define CP_DefineConstraintStructSetter(type, member, name) \
+static inline void cpConstraint##Set##name(cpConstraint *constraint, type value){ \
+	cpConstraintActivateBodies(constraint); \
+	constraint->member = value; \
+}
+
+#define CP_DefineConstraintStructProperty(type, member, name) \
+CP_DefineConstraintStructGetter(type, member, name) \
+CP_DefineConstraintStructSetter(type, member, name)
+
+CP_DefineConstraintStructGetter(cpBody *, a, A);
+CP_DefineConstraintStructGetter(cpBody *, b, B);
+CP_DefineConstraintStructProperty(cpFloat, maxForce, MaxForce);
+CP_DefineConstraintStructProperty(cpFloat, errorBias, ErrorBias);
+CP_DefineConstraintStructProperty(cpFloat, maxBias, MaxBias);
+CP_DefineConstraintStructProperty(cpDataPointer, data, Data);
+
+/// Get the last impulse applied by this constraint.
 static inline cpFloat
 cpConstraintGetImpulse(cpConstraint *constraint)
 {
-	return constraint->klass->getImpulse(constraint);
+	return constraint->CP_PRIVATE(klass)->getImpulse(constraint);
 }
 
-#define cpConstraintCheckCast(constraint, struct) \
-	cpAssert(constraint->klass == struct##GetClass(), "Constraint is not a "#struct);
+/// @}
 
+#define cpConstraintCheckCast(constraint, struct) \
+	cpAssert(constraint->CP_PRIVATE(klass) == struct##GetClass(), "Constraint is not a "#struct)
 
 #define CP_DefineConstraintGetter(struct, type, member, name) \
-static inline type \
-struct##Get##name(const cpConstraint *constraint){ \
+static inline type struct##Get##name(const cpConstraint *constraint){ \
 	cpConstraintCheckCast(constraint, struct); \
 	return ((struct *)constraint)->member; \
-} \
+}
 
 #define CP_DefineConstraintSetter(struct, type, member, name) \
-static inline void \
-struct##Set##name(cpConstraint *constraint, type value){ \
+static inline void struct##Set##name(cpConstraint *constraint, type value){ \
 	cpConstraintCheckCast(constraint, struct); \
 	cpConstraintActivateBodies(constraint); \
 	((struct *)constraint)->member = value; \
-} \
+}
 
 #define CP_DefineConstraintProperty(struct, type, member, name) \
 CP_DefineConstraintGetter(struct, type, member, name) \
 CP_DefineConstraintSetter(struct, type, member, name)
 
-// Built in Joint types
 #include "cpPinJoint.h"
 #include "cpSlideJoint.h"
 #include "cpPivotJoint.h"

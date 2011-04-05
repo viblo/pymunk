@@ -21,7 +21,7 @@
  
 #include <stdlib.h>
 
-#include "chipmunk.h"
+#include "chipmunk_private.h"
 
 #pragma mark Point Query Functions
 
@@ -48,10 +48,10 @@ cpSpacePointQuery(cpSpace *space, cpVect point, cpLayers layers, cpGroup group, 
 {
 	pointQueryContext context = {layers, group, func, data};
 	
-	cpBool locked = space->locked; space->locked = cpTrue; {
-		cpSpaceHashPointQuery(space->activeShapes, point, (cpSpaceHashQueryFunc)pointQueryHelper, &context);
-		cpSpaceHashPointQuery(space->staticShapes, point, (cpSpaceHashQueryFunc)pointQueryHelper, &context);
-	} space->locked = locked;
+	cpSpaceLock(space); {
+    cpSpatialIndexPointQuery(space->activeShapes, point, (cpSpatialIndexQueryFunc)pointQueryHelper, &context);
+    cpSpatialIndexPointQuery(space->staticShapes, point, (cpSpatialIndexQueryFunc)pointQueryHelper, &context);
+	} cpSpaceUnlock(space, cpTrue);
 }
 
 static void
@@ -69,16 +69,6 @@ cpSpacePointQueryFirst(cpSpace *space, cpVect point, cpLayers layers, cpGroup gr
 	return shape;
 }
 
-
-// TODO probably should deprecate this
-void
-cpSpaceEachBody(cpSpace *space, cpSpaceBodyIterator func, void *data)
-{
-	cpArray *bodies = space->bodies;
-	
-	for(int i=0; i<bodies->num; i++)
-		func((cpBody *)bodies->arr[i], data);
-}
 
 #pragma mark Segment Query Functions
 
@@ -113,10 +103,10 @@ cpSpaceSegmentQuery(cpSpace *space, cpVect start, cpVect end, cpLayers layers, c
 		func,
 	};
 	
-	cpBool locked = space->locked; space->locked = cpTrue; {
-		cpSpaceHashSegmentQuery(space->staticShapes, &context, start, end, 1.0f, (cpSpaceHashSegmentQueryFunc)segQueryFunc, data);
-		cpSpaceHashSegmentQuery(space->activeShapes, &context, start, end, 1.0f, (cpSpaceHashSegmentQueryFunc)segQueryFunc, data);
-	} space->locked = locked;
+	cpSpaceLock(space); {
+    cpSpatialIndexSegmentQuery(space->staticShapes, &context, start, end, 1.0f, (cpSpatialIndexSegmentQueryFunc)segQueryFunc, data);
+    cpSpatialIndexSegmentQuery(space->activeShapes, &context, start, end, 1.0f, (cpSpatialIndexSegmentQueryFunc)segQueryFunc, data);
+	} cpSpaceUnlock(space, cpTrue);
 }
 
 typedef struct segQueryFirstContext {
@@ -131,8 +121,7 @@ segQueryFirst(segQueryFirstContext *context, cpShape *shape, cpSegmentQueryInfo 
 	cpSegmentQueryInfo info;
 	
 	if(
-		!(shape->group && context->group == shape->group) &&
-		(context->layers&shape->layers) &&
+		!(shape->group && context->group == shape->group) && (context->layers&shape->layers) &&
 		!shape->sensor &&
 		cpShapeSegmentQuery(shape, context->start, context->end, &info) &&
 		info.t < out->t
@@ -158,13 +147,13 @@ cpSpaceSegmentQueryFirst(cpSpace *space, cpVect start, cpVect end, cpLayers laye
 		layers, group
 	};
 	
-	cpSpaceHashSegmentQuery(space->staticShapes, &context, start, end, 1.0f, (cpSpaceHashSegmentQueryFunc)segQueryFirst, out);
-	cpSpaceHashSegmentQuery(space->activeShapes, &context, start, end, out->t, (cpSpaceHashSegmentQueryFunc)segQueryFirst, out);
+	cpSpatialIndexSegmentQuery(space->staticShapes, &context, start, end, 1.0f, (cpSpatialIndexSegmentQueryFunc)segQueryFirst, out);
+	cpSpatialIndexSegmentQuery(space->activeShapes, &context, start, end, out->t, (cpSpatialIndexSegmentQueryFunc)segQueryFirst, out);
 	
 	return out->shape;
 }
 
-#pragma mark BB Query functions
+#pragma mark BB Query Functions
 
 typedef struct bbQueryContext {
 	cpLayers layers;
@@ -178,7 +167,7 @@ bbQueryHelper(cpBB *bb, cpShape *shape, bbQueryContext *context)
 {
 	if(
 		!(shape->group && context->group == shape->group) && (context->layers&shape->layers) &&
-		cpBBintersects(*bb, shape->bb)
+		cpBBIntersects(*bb, shape->bb)
 	){
 		context->func(shape, context->data);
 	}
@@ -189,8 +178,69 @@ cpSpaceBBQuery(cpSpace *space, cpBB bb, cpLayers layers, cpGroup group, cpSpaceB
 {
 	bbQueryContext context = {layers, group, func, data};
 	
-	cpBool locked = space->locked; space->locked = cpTrue; {
-		cpSpaceHashQuery(space->activeShapes, &bb, bb, (cpSpaceHashQueryFunc)bbQueryHelper, &context);
-		cpSpaceHashQuery(space->staticShapes, &bb, bb, (cpSpaceHashQueryFunc)bbQueryHelper, &context);
-	} space->locked = locked;
+	cpSpaceLock(space); {
+    cpSpatialIndexQuery(space->activeShapes, &bb, bb, (cpSpatialIndexQueryFunc)bbQueryHelper, &context);
+    cpSpatialIndexQuery(space->staticShapes, &bb, bb, (cpSpatialIndexQueryFunc)bbQueryHelper, &context);
+	} cpSpaceUnlock(space, cpTrue);
+}
+
+#pragma mark Shape Query Functions
+
+typedef struct shapeQueryContext {
+	cpSpaceShapeQueryFunc func;
+	void *data;
+	cpBool anyCollision;
+} shapeQueryContext;
+
+// Callback from the spatial hash.
+static void
+shapeQueryHelper(cpShape *a, cpShape *b, shapeQueryContext *context)
+{
+	// Reject any of the simple cases
+	if(
+		(a->group && a->group == b->group) ||
+		!(a->layers & b->layers) ||
+		a->sensor || b->sensor
+	) return;
+	
+	cpContact contacts[CP_MAX_CONTACTS_PER_ARBITER];
+	int numContacts = 0;
+	
+	// Shape 'a' should have the lower shape type. (required by cpCollideShapes() )
+	if(a->klass->type <= b->klass->type){
+		numContacts = cpCollideShapes(a, b, contacts);
+	} else {
+		numContacts = cpCollideShapes(b, a, contacts);
+		for(int i=0; i<numContacts; i++) contacts[i].n = cpvneg(contacts[i].n);
+	}
+	
+	if(numContacts){
+		context->anyCollision = cpTrue;
+		
+		if(context->func){
+			cpContactPointSet set = {numContacts, {}};
+			for(int i=0; i<set.count; i++){
+				set.points[i].point = contacts[i].p;
+				set.points[i].normal = contacts[i].p;
+				set.points[i].dist = contacts[i].dist;
+			}
+			
+			context->func(b, &set, context->data);
+		}
+	}
+}
+
+cpBool
+cpSpaceShapeQuery(cpSpace *space, cpShape *shape, cpSpaceShapeQueryFunc func, void *data)
+{
+	cpBody *body = shape->body;
+	cpBB bb = (body ? cpShapeUpdate(shape, body->p, body->rot) : shape->bb);
+	shapeQueryContext context = {func, data, cpFalse};
+	
+	cpSpaceLock(space); {
+    cpSpatialIndexQuery(space->activeShapes, shape, bb, (cpSpatialIndexQueryFunc)shapeQueryHelper, &context);
+    cpSpatialIndexQuery(space->staticShapes, shape, bb, (cpSpatialIndexQueryFunc)shapeQueryHelper, &context);
+	} cpSpaceUnlock(space, cpTrue);
+	
+	return context.anyCollision;
 }

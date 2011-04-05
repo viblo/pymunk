@@ -23,7 +23,7 @@
 #include <math.h>
 //#include <stdio.h>
 
-#include "chipmunk.h"
+#include "chipmunk_private.h"
 
 typedef int (*collisionFunc)(const cpShape *, const cpShape *, cpContact *);
 
@@ -55,7 +55,7 @@ circle2circleQuery(const cpVect p1, const cpVect p2, const cpFloat r1, const cpF
 static int
 circle2circle(const cpShape *shape1, const cpShape *shape2, cpContact *arr)
 {
-	cpCircleShape *circ1 = (cpCircleShape *)shape1;
+	cpCircleShape *circ1 = (cpCircleShape *)shape1; //TODO
 	cpCircleShape *circ2 = (cpCircleShape *)shape2;
 	
 	return circle2circleQuery(circ1->tc, circ2->tc, circ1->r, circ2->r, arr);
@@ -279,10 +279,11 @@ seg2poly(const cpShape *shape1, const cpShape *shape2, cpContact *arr)
 		cpContactInit(nextContactPoint(arr, &num), va, poly_n, poly_min, CP_HASH_PAIR(seg->shape.hashid, 0));
 	if(cpPolyShapeContainsVert(poly, vb))
 		cpContactInit(nextContactPoint(arr, &num), vb, poly_n, poly_min, CP_HASH_PAIR(seg->shape.hashid, 1));
-
+	
 	// Floating point precision problems here.
 	// This will have to do for now.
-	poly_min -= cp_collision_slop;
+//	poly_min -= cp_collision_slop; // TODO is this needed anymore?
+	
 	if(minNorm >= poly_min || minNeg >= poly_min) {
 		if(minNorm > minNeg)
 			findPointsBehindSeg(arr, &num, seg, poly, minNorm, 1.0f);
