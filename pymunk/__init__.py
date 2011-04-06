@@ -1142,8 +1142,8 @@ class Contact(object):
         *Note:* You should never need to create an instance of this class 
         directly.
         """
-        self._p = _contact.p
-        self._n = _contact.n
+        self._point = _contact.point
+        self._normal = _contact.normal
         self._dist = _contact.dist
         #self._contact = contact
 
@@ -1151,11 +1151,11 @@ class Contact(object):
         return "Contact(%s, %s, %s)" % (self.position, self.normal, self.distance)
         
     def _get_position(self):
-        return self._p
+        return self._point
     position = property(_get_position, doc="""Contact position""")
 
     def _get_normal(self):
-        return self._n
+        return self._normal
     normal = property(_get_normal, doc="""Contact normal""")
 
     def _get_distance(self):
@@ -1187,31 +1187,26 @@ class Arbiter(object):
         self._contacts = None # keep a lazy loaded cache of converted contacts
     
     def _get_contacts(self):
+        #cpArbiterGetContactPointSet
+        point_set = cp.cpArbiterGetContactPointSet(self._arbiter)
+        
         if self._contacts is None:
             self._contacts = []
-            for i in range(self._arbitercontents.numContacts):
-                self.contacts.append(Contact(self._arbitercontents.contacts[i]))
+            for i in range(point_set.count):
+                self.contacts.append(Contact(point_set.points[i]))
         return self._contacts
     contacts = property(_get_contacts, 
         doc="""Information on the contact points between the objects. Return [`Contact`]""")
         
     def _get_shapes(self):
-        _a = self._arbitercontents.private_a
-        _b = self._arbitercontents.private_b
-        def _get_shape(_s):
-            if _s.contents.hashid_private in self._space._shapes:
-                s = self._space._shapes[_s.contents.hashid_private]
-            elif _s.contents.hashid_private in self._space._static_shapes:
-                s = self._space._static_shapes[_s.contents.hashid_private]
-            else:
-                s = None
-            return s
-        a, b = _get_shape(_a), _get_shape(_b)
-        if bool(self._arbiter.contents.swappedColl):
-            return b, a
-        else:
-            return a, b
-            
+        shapeA_p = ct.POINTER(cp.cpShape)()
+        shapeB_p = ct.POINTER(cp.cpShape)()
+        
+        cp._cpArbiterGetShapes(self._arbiter, shapeA_p, shapeB_p)
+    
+        a, b = self._space._get_shape(shapeA_p), self._space._get_shape(shapeB_p)
+        return a, b
+        
     shapes = property(_get_shapes, 
         doc="""Get the shapes in the order that they were defined in the 
         collision handler associated with this arbiter""")

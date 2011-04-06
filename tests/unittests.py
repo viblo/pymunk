@@ -260,6 +260,7 @@ class UnitTestSpace(unittest.TestCase):
     def testPostStepCallback(self):
         self.number_of_calls = 0
         def f(obj, shapes, test_self):
+            print 1
             for shape in shapes:
                 self.s.remove(shape)
             test_self.number_of_calls += 1
@@ -354,7 +355,7 @@ class UnitTestConstraint(unittest.TestCase):
 class UnitTestArbiter(unittest.TestCase):
     def setUp(self):
         p.reset_shapeid_counter()
-        self.s = p.Space(elastic_iterations = 0)
+        self.s = p.Space()
         
         self.b1, self.b2 = p.Body(1,10),p.Body(p.inf,p.inf)
         self.s.add(self.b1)
@@ -376,10 +377,10 @@ class UnitTestArbiter(unittest.TestCase):
         self.post_solve_done = False
         self.b1.apply_impulse((10,0))
         def post_solve(space, arb, test_self):
-            self.assertAlmostEqual(arb.total_impulse.x, -11.25)
-            self.assertAlmostEqual(arb.total_impulse.y, 3.75)
-            self.assertAlmostEqual(arb.total_impulse_with_friction.x, -12.05)
-            self.assertAlmostEqual(arb.total_impulse_with_friction.y, 1.35)
+            self.assertAlmostEqual(arb.total_impulse.x, 11.25)
+            self.assertAlmostEqual(arb.total_impulse.y, -3.75)
+            self.assertAlmostEqual(arb.total_impulse_with_friction.x, 12.05)
+            self.assertAlmostEqual(arb.total_impulse_with_friction.y, -1.35)
             self.post_solve_done = True
             return True
         
