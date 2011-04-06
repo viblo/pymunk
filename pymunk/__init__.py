@@ -57,7 +57,7 @@ Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from svn).
 """
 
-chipmunk_version = "%sr585" % cp.cpVersionString.value.decode()
+chipmunk_version = "%sr734" % cp.cpVersionString.value.decode()
 """The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not 
 contain any breaking API changes.
@@ -100,7 +100,7 @@ class Space(object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes 
     and joints to it and then step them all forward together through time. 
     """
-    def __init__(self, iterations=10, elastic_iterations=0):
+    def __init__(self, iterations=10):
         """Create a new instace of the Space
         
         Its usually best to keep the elastic_iterations setting to 0. Only 
@@ -113,13 +113,9 @@ class Space(object):
             iterations : int
                 Number of iterations to use in the impulse solver to solve 
                 contacts.
-            elastic_iterations : int
-                Number of iterations to use in the impulse solver to solve 
-                elastic contacts.
         """
         self._space = cp.cpSpaceNew()
         self._space.contents.iterations = iterations
-        self._space.contents.elasticIterations = elastic_iterations
         
         self._handlers = {} # To prevent the gc to collect the callbacks.
         self._default_handler = None
@@ -159,6 +155,15 @@ class Space(object):
             cp.cpSpaceFree(self._space)
 
 
+    def _set_iterations(self, iterations):
+        self._space.contents.iterations = iterations
+    def _get_iterations(self):
+        return self._space.contents.iterations
+    iterations = property(_get_iterations, _set_iterations
+        , doc="""Number of iterations to use in the impulse solver to solve 
+        contacts.""")
+
+            
     def _set_gravity(self, gravity_vec):
         self._space.contents.gravity = gravity_vec
     def _get_gravity(self):
@@ -171,8 +176,81 @@ class Space(object):
     def _get_damping(self):
         return self._space.contents.damping
     damping = property(_get_damping, _set_damping
-        , doc="""Default damping to supply when integrating rigid body motions.""")
+        , doc="""Damping rate expressed as the fraction of velocity bodies 
+        retain each second.
+        
+        A value of 0.9 would mean that each body's velocity will drop 10% per 
+        second. The default value is 1.0, meaning no damping is applied.""")
 
+    def _set_idle_speed_threshold(self, idle_speed_threshold):
+        self._space.contents.idleSpeedThreshold = idle_speed_threshold
+    def _get_idle_speed_threshold(self):
+        return self._space.contents.idleSpeedThreshold
+    idle_speed_threshold = property(_get_idle_speed_threshold
+        , _set_idle_speed_threshold
+        , doc="""Speed threshold for a body to be considered idle.
+        The default value of 0 means to let the space guess a good threshold 
+        based on gravity.""")
+
+    def _set_sleep_time_threshold(self, sleep_time_threshold):
+        self._space.contents.sleepTimeThreshold = sleep_time_threshold
+    def _get_sleep_time_threshold(self):
+        return self._space.contents.sleepTimeThreshold
+    sleep_time_threshold = property(_get_sleep_time_threshold
+        , _set_sleep_time_threshold
+        , doc="""Time a group of bodies must remain idle in order to fall 
+        asleep.
+        
+        Enabling sleeping also implicitly enables the the contact graph. The 
+        default value of `inf` disables the sleeping algorithm.""")
+        
+    def _set_collision_slop(self, collision_slop):
+        self._space.contents.collisionSlop = collision_slop
+    def _get_collision_slop(self):
+        return self._space.contents.collisionSlop
+    collision_slop = property(_get_collision_slop
+        , _set_collision_slop
+        , doc="""Amount of allowed penetration.
+        
+        Used to reduce oscillating contacts and keep the collision cache warm. 
+        Defaults to 0.1. If you have poor simulation quality, increase this 
+        number as much as possible without allowing visible amounts of 
+        overlap.""")
+        
+    def _set_collision_bias(self, collision_bias):
+        self._space.contents.collisionBias = collision_bias
+    def _get_collision_bias(self):
+        return self._space.contents.collisionBias
+    collision_bias = property(_get_collision_bias
+        , _set_collision_bias
+        , doc="""Determines how fast overlapping shapes are pushed apart.
+        
+        Expressed as a fraction of the error remaining after each second. 
+        Defaults to pow(1.0 - 0.1, 60.0) meaning that pymunk fixes 10% of 
+        overlap each frame at 60Hz.""")
+        
+    def _set_collision_persistence(self, collision_persistence):
+        self._space.contents.collisionPersistence = collision_persistence
+    def _get_collision_persistence(self):
+        return self._space.contents.collisionPersistence
+    collision_persistence = property(_get_collision_persistence
+        , _set_collision_persistence
+        , doc="""Number of frames that contact information should persist.
+        
+        Defaults to 3. There is probably never a reason to change this value.
+        """)
+        
+    def _set_enable_contact_graph(self, enable_contact_graph):
+        self._space.contents.enableContactGraph = enable_contact_graph
+    def _get_enable_contact_graph(self):
+        return self._space.contents.enableContactGraph
+    enable_contact_graph = property(_get_enable_contact_graph
+        , _set_enable_contact_graph
+        , doc="""Rebuild the contact graph during each step. 
+        
+        Must be enabled to use the cpBodyEachArbiter() function. Disabled by default for a small performance boost.""")
+        
+        
     def add(self, *objs):
         """Add one or many shapes, bodies or joints to the space"""
         for o in objs:

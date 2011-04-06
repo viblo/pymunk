@@ -113,6 +113,30 @@ class UnitTestSpace(unittest.TestCase):
         del self.s1, self.s2
     
     
+    def testProperties(self):
+        s = p.Space(15)
+        self.assertEqual(s.iterations, 15)
+        s.gravity = 10,2
+        self.assertEqual(s.gravity.x, 10)
+        s.damping = 3
+        self.assertEqual(s.damping, 3)
+        
+        s.idle_speed_threshold = 4
+        self.assertEqual(s.idle_speed_threshold, 4)
+        s.sleep_time_threshold = 5
+        self.assertEqual(s.sleep_time_threshold, 5)
+        s.collision_slop = 6
+        self.assertEqual(s.collision_slop, 6)
+        
+        
+        s.collision_bias = 8
+        self.assertEqual(s.collision_bias, 8)
+        s.collision_persistence = 9
+        self.assertEqual(s.collision_persistence, 9)
+        
+        s.enable_contact_graph = True
+        self.assertEqual(s.enable_contact_graph, True)
+    
     def testAddRemove(self):
         
         self.s.remove(self.b1)
