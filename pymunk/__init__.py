@@ -866,7 +866,19 @@ class Body(object):
         """ 
         cp.cpBodySlew(self._body, pos, dt)
         
-
+    def activate(self):
+        """Wake up a sleeping or idle body."""
+        cp.cpBodyActivate(self._body)
+        
+    def sleep(self):
+        """Force a body to fall asleep immediately."""
+        cp.cpBodySleep(self._body)    
+        
+    def _is_sleeping(self):
+        return cp._cpBodyIsSleeping(self._body)
+    is_sleeping = property(_is_sleeping, 
+        doc="""Returns true if the body is sleeping.""")
+    
     def local_to_world(self, v):
         """Convert body local coordinates to world space coordinates
         

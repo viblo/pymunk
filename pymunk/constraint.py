@@ -54,26 +54,37 @@ class Constraint(object):
         doc="""The maximum force that the constraint can use to act on the two 
         bodies. Defaults to infinity""")
         
-    def _get_bias_coef(self):
-        return self._ccontents.biasCoef
-    def _set_bias_coef(self, bias_coef):
-        self._ccontents.biasCoef = bias_coef
-    bias_coef = property(_get_bias_coef, _set_bias_coef,
-        doc="""The percentage of error corrected each step of the space. (Can 
-        cause issues if you don't use a constant time step) Defaults to 0.1""")
+    def _get_error_bias(self):
+        return self._ccontents.errorBias
+    def _set_error_bias(self, error_bias):
+        self._ccontents.errorBias = error_bias
+    error_bias = property(_get_error_bias, _set_error_bias,
+        doc="""The rate at which joint error is corrected.
+
+        Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of 
+        the error every 1/60th of a second.""")
         
     def _get_max_bias(self):
         return self._ccontents.maxBias
     def _set_max_bias(self, max_bias):
         self._ccontents.maxBias = max_bias
     max_bias = property(_get_max_bias, _set_max_bias,
-        doc="""The maximum speed at which the constraint can apply error 
-        correction. Defaults to infinity""")
+        doc="""The maximum rate at which joint error is corrected. Defaults 
+        to infinity""")
 
+    def _get_impulse(self):
+        return cp._cpConstraintGetImpulse(self._constraint)
+    impulse = property(_get_impulse,
+        doc="""Get the last impulse applied by this constraint.""")
+        
     a = property(lambda self: self._a, 
         doc="""The first of the two bodies constrained""")
     b = property(lambda self: self._b,
         doc="""The second of the two bodies constrained""")
+        
+    def activate_bodies(self):
+        self._a.activate()
+        self._b.activate()
         
     def __del__(self):
         if cp is not None:
@@ -81,7 +92,7 @@ class Constraint(object):
 
 class PinJoint(Constraint):
     """Keeps the anchor points at a set distance from one another."""
-    def __init__(self, a, b, anchr1, anchr2):
+    def __init__(self, a, b, anchr1=(0,0), anchr2=(0,0)):
         """a and b are the two bodies to connect, and anchr1 and anchr2 are the
         anchor points on those bodies.
         """

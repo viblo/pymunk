@@ -29,6 +29,20 @@ class UnitTestBody(unittest.TestCase):
         b.reset_forces()
         b.apply_force((10,10))
         
+    def testSleep(self):
+        b = p.Body(1,1)
+        s = p.Space()
+        s.add(b)
+        
+        self.assertFalse(b.is_sleeping)
+        
+        b.sleep()
+        self.assert_(b.is_sleeping)
+        
+        b.activate()
+        self.assertFalse(b.is_sleeping)
+        
+        
     def testConversion(self):
         b = p.Body(1,1)
         b.position = 10,20
@@ -306,6 +320,44 @@ class UnitTestSpace(unittest.TestCase):
 class UnitTestConstraint(unittest.TestCase):
     def setUp(self):
         p.reset_shapeid_counter()
+    
+    def testProperties(self):
+        a,b = p.Body(p.inf, p.inf), p.Body(10,10)
+        j = p.PinJoint(a,b)
+        
+        self.assertEqual(j.a, a)
+        self.assertEqual(j.b, b)
+        
+        j.max_force = 10
+        j.error_bias = 20
+        j.max_bias = 30
+        self.assertEqual(j.max_force, 10)
+        self.assertEqual(j.error_bias, 20)
+        self.assertEqual(j.max_bias, 30)
+    
+    def testActivate(self):
+        a,b = p.Body(p.inf, p.inf), p.Body(10,10)
+        j = p.PinJoint(a,b)
+        s = p.Space()
+        s.add(a,b)
+        a.sleep()
+        b.sleep()
+        
+        j.activate_bodies()
+        self.assertFalse(a.is_sleeping)
+        self.assertFalse(b.is_sleeping)
+        
+    def testImpulse(self):
+        a,b = p.Body(p.inf, p.inf), p.Body(10,10)
+        b.position = 0,10
+        j = p.PinJoint(a,b)
+        
+        s = p.Space()
+        s.gravity = 0,10
+        s.add(b,j)
+        self.assertEqual(j.impulse, 0)
+        s.step(1)
+        self.assertEqual(j.impulse, 100)
         
     def testPinJoint(self):
         a,b = p.Body(10,10), p.Body(20,20)
