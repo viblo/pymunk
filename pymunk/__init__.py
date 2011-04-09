@@ -780,6 +780,12 @@ class Body(object):
     position_func = property(fset=_set_position_func, 
         doc=_set_position_func.__doc__)
     
+    def _get_kinetic_energy(self):
+        return cp._cpBodyKineticEnergy(self._body)
+    kinetic_energy = property(_get_kinetic_energy,
+        doc="""Get the kinetic energy of a body.""")
+    
+    
     @staticmethod
     def update_velocity(body, gravity, damping, dt):
         """Default rigid body velocity integration function. 
@@ -874,10 +880,20 @@ class Body(object):
         """Force a body to fall asleep immediately."""
         cp.cpBodySleep(self._body)    
         
+    def sleep_with_group(self, body):
+        """Force a body to fall asleep immediately along with other bodies in a group.
+        """
+        cp.cpBodySleepWithGroup(self._body, body._body)
+        
     def _is_sleeping(self):
         return cp._cpBodyIsSleeping(self._body)
     is_sleeping = property(_is_sleeping, 
         doc="""Returns true if the body is sleeping.""")
+    
+    def _is_rogue(self):
+        return cp._cpBodyIsRogue(self._body)
+    is_rogue = property(_is_rogue,
+        doc="""Returns true if the body has not been added to a space.""")
     
     def local_to_world(self, v):
         """Convert body local coordinates to world space coordinates

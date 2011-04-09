@@ -42,6 +42,31 @@ class UnitTestBody(unittest.TestCase):
         b.activate()
         self.assertFalse(b.is_sleeping)
         
+    def testSleepWithGroup(self):
+        b1 = p.Body(1,1)
+        b2 = p.Body(2,2)
+        s = p.Space()
+        s.add(b1,b2)
+        b2.sleep()
+        b1.sleep()
+        b1.sleep_with_group(b2)
+        b2.activate()
+        self.assertFalse(b1.is_sleeping)
+        
+        
+        
+    def testKineticEnergy(self):
+        b = p.Body(1,10)
+        self.assertEqual(b.kinetic_energy, 0)
+        b.apply_impulse((10,0))
+        self.assertEqual(b.kinetic_energy, 100)
+        
+    def testIsRogue(self):
+        b = p.Body(1,1)
+        self.assert_(b.is_rogue)
+        s = p.Space()
+        s.add(b)
+        self.assertFalse(b.is_rogue)
         
     def testConversion(self):
         b = p.Body(1,1)
