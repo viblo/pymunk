@@ -323,7 +323,6 @@ class UnitTestSpace(unittest.TestCase):
     def testPostStepCallback(self):
         self.number_of_calls = 0
         def f(obj, shapes, test_self):
-            print 1
             for shape in shapes:
                 self.s.remove(shape)
             test_self.number_of_calls += 1

@@ -2,22 +2,20 @@ import distutils.ccompiler as cc
 import os, os.path
 import platform
 import ctypes
-from ez_setup import use_setuptools
-use_setuptools()
-from setuptools import setup, Command, find_packages
+import distutils.cmd
+#from ez_setup import use_setuptools
+#use_setuptools()
+#from setuptools import setup, Command, find_packages
+from distutils.core import setup
 
-def show_compilers ():
-    from distutils.ccompiler import show_compilers
-    show_compilers()
-
-class build_chipmunk(Command):
+class build_chipmunk(distutils.cmd.Command):
     description = """build chipmunk to a shared library"""
     
     user_options = [('compiler=', 'c', 'specify the compiler type')]
 
     help_options = [
         ('help-compiler', None,
-         "list available compilers", show_compilers),
+         "list available compilers", cc.show_compilers),
         ]
 
     compiler = None  
@@ -99,21 +97,21 @@ setup(
     , version='1.0.0' # remember to change me for new versions!
     , description='A python wrapper for the 2d physics library Chipmunk'
     , long_description=long_description
-    , packages=['pymunk'] #find_packages(exclude=['*.tests']),
+    , packages=['pymunk']
     , package_data = {'pymunk': ['chipmunk.dll'
                                 , 'chipmunk64.dll'
                                 , 'libchipmunk.so'
                                 , 'libchipmunk64.so'
                                 , 'libchipmunk.dylib']}
-    , eager_resources = [os.path.join('pymunk','chipmunk.dll')
-                            , os.path.join('pymunk','chipmunk64.dll')
-                            , os.path.join('pymunk','libchipmunk.so')
-                            , os.path.join('pymunk','libchipmunk64.so')
-                            , os.path.join('pymunk','libchipmunk.dylib')]
+    #, data_files = [('pymunk', os.path.join('pymunk','chipmunk.dll'))
+    #                        , os.path.join('pymunk','chipmunk64.dll')
+    #                        , os.path.join('pymunk','libchipmunk.so')
+    #                        , os.path.join('pymunk','libchipmunk64.so')
+    #                        , os.path.join('pymunk','libchipmunk.dylib')]
     #, platforms=['win32']
     , license='MIT License'
     , classifiers=classifiers
-    , include_package_data = True
+    #, include_package_data = True
     , cmdclass={'build_chipmunk':build_chipmunk}
-    , test_suite = "tests"
+    #, test_suite = "tests"
     )
