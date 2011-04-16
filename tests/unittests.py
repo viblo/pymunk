@@ -284,6 +284,18 @@ class UnitTestSpace(unittest.TestCase):
         hits = self.s.segment_query( (-70,-50), (-30, -50) )
         self.assertEqual(hits[0].shape, c)
     
+    def testCollisionHandlerBegin(self):
+        self.num_of_begins = 0
+        def begin(space, arb, data):
+            self.num_of_begins += 1
+            return True
+            
+        self.b1.position = self.b2.position
+        self.s.add_collision_handler(0,0, begin, None, None, None, None)
+        self.s.step(0.1)
+        self.s.step(0.1)
+        self.assertEqual(self.num_of_begins, 1)
+        
     def testCollisionHandlerPreSolve(self):
     
         self.begin_shapes = None
