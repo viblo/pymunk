@@ -229,6 +229,58 @@ specified absolute coordinates in the next timestep.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="activate"></a><span class="summary-sig-name">activate</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Wake up a sleeping or idle body.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sleep"></a><span class="summary-sig-name">sleep</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Force a body to fall asleep immediately.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sleep_with_group"></a><span class="summary-sig-name">sleep_with_group</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">body</span>)</span><br />
+      Force a body to fall asleep immediately along with other bodies in a group.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="pymunk.Body-class.html#local_to_world" class="summary-sig-name">local_to_world</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">v</span>)</span><br />
       Convert body local coordinates to world space coordinates</td>
@@ -411,6 +463,30 @@ specified absolute coordinates in the next timestep.</td>
     </td><td class="summary">
         <a href="pymunk.Body-class.html#position_func" class="summary-name">position_func</a><br />
       The position callback function.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Body-class.html#kinetic_energy" class="summary-name">kinetic_energy</a><br />
+      Get the kinetic energy of a body.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Body-class.html#is_sleeping" class="summary-name">is_sleeping</a><br />
+      Returns true if the body is sleeping.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Body-class.html#is_rogue" class="summary-name">is_rogue</a><br />
+      Returns true if the body has not been added to a space.
     </td>
   </tr>
   <tr>
@@ -908,6 +984,48 @@ is called each time step and can be used to update the body's position.</p>
   </dl>
 </td></tr></table>
 </div>
+<a name="kinetic_energy"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">kinetic_energy</h3>
+  Get the kinetic energy of a body.
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Body-class.html#_get_kinetic_energy" class="summary-sig-name" onclick="show_private();">_get_kinetic_energy</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="is_sleeping"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">is_sleeping</h3>
+  Returns true if the body is sleeping.
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Body-class.html#_is_sleeping" class="summary-sig-name" onclick="show_private();">_is_sleeping</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="is_rogue"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">is_rogue</h3>
+  Returns true if the body has not been added to a space.
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Body-class.html#_is_rogue" class="summary-sig-name" onclick="show_private();">_is_rogue</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
 <br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
@@ -940,7 +1058,7 @@ is called each time step and can be used to update the body's position.</p>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sun Mar 07 22:17:52 2010
+    Generated by Epydoc 3.0.1 on Sun Apr 17 17:38:02 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

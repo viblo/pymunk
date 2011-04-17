@@ -84,8 +84,7 @@ and joints to it and then step them all forward together through time.
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="pymunk.Space-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">iterations</span>=<span class="summary-sig-default">10</span>,
-        <span class="summary-sig-arg">elastic_iterations</span>=<span class="summary-sig-default">10</span>)</span><br />
+        <span class="summary-sig-arg">iterations</span>=<span class="summary-sig-default">10</span>)</span><br />
       Create a new instace of the Space</td>
           <td align="right" valign="top">
             
@@ -230,8 +229,28 @@ size sensitive.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Space-class.html#rehash_static" class="summary-sig-name">rehash_static</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Rehashes the shapes in the static spatial hash.</td>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#reindex_static" class="summary-sig-name">reindex_static</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Update the collision detection info for the static shapes in the
+space.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="reindex_shape"></a><span class="summary-sig-name">reindex_shape</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">shape</span>)</span><br />
+      Update the collision detection data for a specific shape in the
+space.</td>
           <td align="right" valign="top">
             
             
@@ -268,10 +287,10 @@ size sensitive.</td>
           <td><span class="summary-sig"><a href="pymunk.Space-class.html#add_collision_handler" class="summary-sig-name">add_collision_handler</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">a</span>,
         <span class="summary-sig-arg">b</span>,
-        <span class="summary-sig-arg">begin</span>,
-        <span class="summary-sig-arg">pre_solve</span>,
-        <span class="summary-sig-arg">post_solve</span>,
-        <span class="summary-sig-arg">separate</span>,
+        <span class="summary-sig-arg">begin</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">pre_solve</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">post_solve</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">separate</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">*args</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Add a collision handler for given collision type pair.</td>
@@ -291,10 +310,10 @@ size sensitive.</td>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="pymunk.Space-class.html#set_default_collision_handler" class="summary-sig-name">set_default_collision_handler</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">begin</span>,
-        <span class="summary-sig-arg">pre_solve</span>,
-        <span class="summary-sig-arg">post_solve</span>,
-        <span class="summary-sig-arg">separate</span>,
+        <span class="summary-sig-arg">begin</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">pre_solve</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">post_solve</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">separate</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">*args</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Register a default collision handler to be used when no specific
@@ -497,6 +516,15 @@ matches with the given layers and group.</td>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a href="pymunk.Space-class.html#iterations" class="summary-name">iterations</a><br />
+      Number of iterations to use in the impulse solver to solve
+contacts.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="pymunk.Space-class.html#gravity" class="summary-name">gravity</a><br />
       Default gravity to supply when integrating rigid body motions.
     </td>
@@ -506,7 +534,57 @@ matches with the given layers and group.</td>
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Space-class.html#damping" class="summary-name">damping</a><br />
-      Default damping to supply when integrating rigid body motions.
+      Damping rate expressed as the fraction of velocity bodies
+retain each second.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Space-class.html#idle_speed_threshold" class="summary-name">idle_speed_threshold</a><br />
+      Speed threshold for a body to be considered idle.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Space-class.html#sleep_time_threshold" class="summary-name">sleep_time_threshold</a><br />
+      Time a group of bodies must remain idle in order to fall
+asleep.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Space-class.html#collision_slop" class="summary-name">collision_slop</a><br />
+      Amount of allowed penetration.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Space-class.html#collision_bias" class="summary-name">collision_bias</a><br />
+      Determines how fast overlapping shapes are pushed apart.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Space-class.html#collision_persistence" class="summary-name">collision_persistence</a><br />
+      Number of frames that contact information should persist.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Space-class.html#enable_contact_graph" class="summary-name">enable_contact_graph</a><br />
+      Rebuild the contact graph during each step.
     </td>
   </tr>
   <tr>
@@ -534,8 +612,7 @@ matches with the given layers and group.</td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">iterations</span>=<span class="sig-default">10</span>,
-        <span class="sig-arg">elastic_iterations</span>=<span class="sig-default">10</span>)</span>
+        <span class="sig-arg">iterations</span>=<span class="sig-default">10</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -544,15 +621,16 @@ matches with the given layers and group.</td>
   </tr></table>
   
   <p>Create a new instace of the Space</p>
-<p>If the objects in your Space does not have any elasticity set
-elastic_iterations to 0 to gain a little speedup.</p>
+<p>Its usually best to keep the elastic_iterations setting to 0. Only
+change if you have problem with stacking elastic objects on each other.
+If that is the case, try to raise it. However, a value other than 0
+will affect other parts, most importantly you wont get reliable
+total_impulse readings from the <a href="pymunk.Arbiter-class.html" class="link">Arbiter</a> object in collsion callbacks!</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>iterations</code></strong> (int) - Number of iterations to use in the impulse solver to solve
 contacts.</li>
-        <li><strong class="pname"><code>elastic_iterations</code></strong> (int) - Number of iterations to use in the impulse solver to solve
-elastic contacts.</li>
     </ul></dd>
     <dt>Overrides:
         object.__init__
@@ -638,22 +716,22 @@ of objects in the hash is probably a good starting point.</p>
   </dl>
 </td></tr></table>
 </div>
-<a name="rehash_static"></a>
+<a name="reindex_static"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">rehash_static</span>(<span class="sig-arg">self</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">reindex_static</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
   </tr></table>
   
-  Rehashes the shapes in the static spatial hash. You only need to
-call this if you move one of the static shapes.
+  Update the collision detection info for the static shapes in the
+space. You only need to call this if you move one of the static shapes.
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -691,10 +769,10 @@ to resolve the collisions in the usual case.
   <h3 class="epydoc"><span class="sig"><span class="sig-name">add_collision_handler</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">a</span>,
         <span class="sig-arg">b</span>,
-        <span class="sig-arg">begin</span>,
-        <span class="sig-arg">pre_solve</span>,
-        <span class="sig-arg">post_solve</span>,
-        <span class="sig-arg">separate</span>,
+        <span class="sig-arg">begin</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">pre_solve</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">post_solve</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">separate</span>=<span class="sig-default">None</span>,
         <span class="sig-arg">*args</span>,
         <span class="sig-arg">**kwargs</span>)</span>
   </h3>
@@ -752,10 +830,10 @@ functions.</li>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">set_default_collision_handler</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">begin</span>,
-        <span class="sig-arg">pre_solve</span>,
-        <span class="sig-arg">post_solve</span>,
-        <span class="sig-arg">separate</span>,
+        <span class="sig-arg">begin</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">pre_solve</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">post_solve</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">separate</span>=<span class="sig-default">None</span>,
         <span class="sig-arg">*args</span>,
         <span class="sig-arg">**kwargs</span>)</span>
   </h3>
@@ -1055,6 +1133,25 @@ Returns None if no shape was found.
   </dl>
 </td></tr></table>
 </div>
+<a name="iterations"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">iterations</h3>
+  Number of iterations to use in the impulse solver to solve
+contacts.
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_iterations" class="summary-sig-name" onclick="show_private();">_get_iterations</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_set_iterations" class="summary-sig-name" onclick="show_private();">_set_iterations</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">iterations</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="gravity"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1079,7 +1176,10 @@ Returns None if no shape was found.
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">damping</h3>
-  Default damping to supply when integrating rigid body motions.
+  <p>Damping rate expressed as the fraction of velocity bodies
+retain each second.</p>
+<p>A value of 0.9 would mean that each body's velocity will drop 10% per
+second. The default value is 1.0, meaning no damping is applied.</p>
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_damping" class="summary-sig-name" onclick="show_private();">_get_damping</a>(<span class="summary-sig-arg">self</span>)</span>
@@ -1087,6 +1187,128 @@ Returns None if no shape was found.
     <dt>Set Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_set_damping" class="summary-sig-name" onclick="show_private();">_set_damping</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">damping</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="idle_speed_threshold"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">idle_speed_threshold</h3>
+  Speed threshold for a body to be considered idle.
+The default value of 0 means to let the space guess a good threshold
+based on gravity.
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_idle_speed_threshold" class="summary-sig-name" onclick="show_private();">_get_idle_speed_threshold</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_set_idle_speed_threshold" class="summary-sig-name" onclick="show_private();">_set_idle_speed_threshold</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">idle_speed_threshold</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sleep_time_threshold"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">sleep_time_threshold</h3>
+  <p>Time a group of bodies must remain idle in order to fall
+asleep.</p>
+<p>Enabling sleeping also implicitly enables the the contact graph. The
+default value of <a href="pymunk-module.html#inf" class="link">inf</a> disables the sleeping algorithm.</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_sleep_time_threshold" class="summary-sig-name" onclick="show_private();">_get_sleep_time_threshold</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_set_sleep_time_threshold" class="summary-sig-name" onclick="show_private();">_set_sleep_time_threshold</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sleep_time_threshold</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="collision_slop"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">collision_slop</h3>
+  <p>Amount of allowed penetration.</p>
+<p>Used to reduce oscillating contacts and keep the collision cache warm.
+Defaults to 0.1. If you have poor simulation quality, increase this
+number as much as possible without allowing visible amounts of
+overlap.</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_collision_slop" class="summary-sig-name" onclick="show_private();">_get_collision_slop</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_set_collision_slop" class="summary-sig-name" onclick="show_private();">_set_collision_slop</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">collision_slop</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="collision_bias"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">collision_bias</h3>
+  <p>Determines how fast overlapping shapes are pushed apart.</p>
+<p>Expressed as a fraction of the error remaining after each second.
+Defaults to pow(1.0 - 0.1, 60.0) meaning that pymunk fixes 10% of
+overlap each frame at 60Hz.</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_collision_bias" class="summary-sig-name" onclick="show_private();">_get_collision_bias</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_set_collision_bias" class="summary-sig-name" onclick="show_private();">_set_collision_bias</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">collision_bias</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="collision_persistence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">collision_persistence</h3>
+  <p>Number of frames that contact information should persist.</p>
+<p>Defaults to 3. There is probably never a reason to change this value.</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_collision_persistence" class="summary-sig-name" onclick="show_private();">_get_collision_persistence</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_set_collision_persistence" class="summary-sig-name" onclick="show_private();">_set_collision_persistence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">collision_persistence</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="enable_contact_graph"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">enable_contact_graph</h3>
+  <p>Rebuild the contact graph during each step.</p>
+<p>Must be enabled to use the cpBodyEachArbiter() function. Disabled by default for a small performance boost.</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_enable_contact_graph" class="summary-sig-name" onclick="show_private();">_get_enable_contact_graph</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_set_enable_contact_graph" class="summary-sig-name" onclick="show_private();">_set_enable_contact_graph</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">enable_contact_graph</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
@@ -1123,7 +1345,7 @@ Returns None if no shape was found.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sun Mar 07 22:17:52 2010
+    Generated by Epydoc 3.0.1 on Sun Apr 17 17:38:02 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

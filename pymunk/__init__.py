@@ -640,7 +640,6 @@ class Space(object):
         cp.cpSpaceSegmentQuery(self._space, start, end, layers, group, f, None)
         
         return self.__query_hits
-        
             
     def segment_query_first(self, start, end, layers = -1, group = 0):
         """Query space along the line segment from start to end filtering out 
@@ -754,8 +753,10 @@ class Body(object):
                 dt : float
                     Delta time since last step.
         """
+        
         def _impl(_, gravity, damping, dt):
             return func(self, gravity, damping, dt)
+        
         self._velocity_callback = cp.cpBodyVelocityFunc(_impl)
         self._bodycontents.velocity_func = self._velocity_callback
     velocity_func = property(fset=_set_velocity_func, 
@@ -773,9 +774,11 @@ class Body(object):
                 dt : float
                     Delta time since last step.
         """
+        
         def _impl(_, dt):
-            return func(self, dt)
-        self._position_callback = cp.cpBodyPositionFunc(_impl)    
+            func(self, dt)
+            return 0
+        self._position_callback = cp.cpBodyPositionFunc(_impl)
         self._bodycontents.position_func = self._position_callback
     position_func = property(fset=_set_position_func, 
         doc=_set_position_func.__doc__)

@@ -8,5 +8,14 @@ import unittest
 suite = unittest.TestLoader().loadTestsFromModule(tests.vec2d_unittest)
 suite.addTests(unittest.TestLoader().loadTestsFromModule(tests.unittests))
 
-unittest.TextTestRunner(verbosity=2).run(suite)
+if len(sys.argv) > 1:
+    m = sys.argv[1]
+
+    for t in suite:
+        for x in t:
+            if m in str(x.id()):
+                unittest.TextTestRunner(verbosity=2).run(x)
+            #dir(x)
+else:
+    unittest.TextTestRunner(verbosity=2).run(suite)
 

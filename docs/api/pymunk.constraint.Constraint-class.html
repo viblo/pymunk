@@ -112,6 +112,22 @@ body, or they can be more abstract like the gear joint or motors.</p>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="activate_bodies"></a><span class="summary-sig-name">activate_bodies</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
             
@@ -162,8 +178,8 @@ bodies.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="pymunk.constraint.Constraint-class.html#bias_coef" class="summary-name">bias_coef</a><br />
-      The percentage of error corrected each step of the space.
+        <a href="pymunk.constraint.Constraint-class.html#error_bias" class="summary-name">error_bias</a><br />
+      The rate at which joint error is corrected.
     </td>
   </tr>
 <tr>
@@ -171,8 +187,15 @@ bodies.
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.constraint.Constraint-class.html#max_bias" class="summary-name">max_bias</a><br />
-      The maximum speed at which the constraint can apply error
-correction.
+      The maximum rate at which joint error is corrected.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.constraint.Constraint-class.html#impulse" class="summary-name">impulse</a><br />
+      Get the last impulse applied by this constraint.
     </td>
   </tr>
 <tr>
@@ -262,21 +285,22 @@ bodies. Defaults to infinity
   </dl>
 </td></tr></table>
 </div>
-<a name="bias_coef"></a>
+<a name="error_bias"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">bias_coef</h3>
-  The percentage of error corrected each step of the space. (Can
-cause issues if you don't use a constant time step) Defaults to 0.1
+  <h3 class="epydoc">error_bias</h3>
+  <p>The rate at which joint error is corrected.</p>
+<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
+the error every 1/60th of a second.</p>
   <dl class="fields">
     <dt>Get Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_get_bias_coef" class="summary-sig-name" onclick="show_private();">_get_bias_coef</a>(<span class="summary-sig-arg">self</span>)</span>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_get_error_bias" class="summary-sig-name" onclick="show_private();">_get_error_bias</a>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
     <dt>Set Method:</dt>
-    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_set_bias_coef" class="summary-sig-name" onclick="show_private();">_set_bias_coef</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">bias_coef</span>)</span>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_set_error_bias" class="summary-sig-name" onclick="show_private();">_set_error_bias</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">error_bias</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
@@ -287,8 +311,8 @@ cause issues if you don't use a constant time step) Defaults to 0.1
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">max_bias</h3>
-  The maximum speed at which the constraint can apply error
-correction. Defaults to infinity
+  The maximum rate at which joint error is corrected. Defaults
+to infinity
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_get_max_bias" class="summary-sig-name" onclick="show_private();">_get_max_bias</a>(<span class="summary-sig-arg">self</span>)</span>
@@ -296,6 +320,20 @@ correction. Defaults to infinity
     <dt>Set Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_set_max_bias" class="summary-sig-name" onclick="show_private();">_set_max_bias</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">max_bias</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="impulse"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">impulse</h3>
+  Get the last impulse applied by this constraint.
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.constraint.Constraint-class.html#_get_impulse" class="summary-sig-name" onclick="show_private();">_get_impulse</a>(<span class="summary-sig-arg">self</span>)</span>
     </dd>
   </dl>
 </td></tr></table>
@@ -360,7 +398,7 @@ correction. Defaults to infinity
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sun Mar 07 22:17:52 2010
+    Generated by Epydoc 3.0.1 on Sun Apr 17 17:38:02 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

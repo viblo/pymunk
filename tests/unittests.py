@@ -554,7 +554,7 @@ class UnitTestBugs(unittest.TestCase):
                 size = 10
                 box_points = map(Vec2d, [(-size, -size), (-size, size), (size,size), (size, -size)])
                 body = p.Body(10,20)
-                shape = p.Poly(body, box_points, Vec2d(0,0))
+                shape = p.Poly(body, list(box_points), Vec2d(0,0))
                 space.add(body, shape)
             space.step(1/50.0)
 ####################################################################
