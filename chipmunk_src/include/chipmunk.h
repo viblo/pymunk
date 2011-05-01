@@ -57,6 +57,7 @@ void cpMessage(const char *message, const char *condition, const char *file, int
 // Maximum allocated size for various Chipmunk buffers
 #define CP_BUFFER_BYTES (32*1024)
 
+//TODO allow redifinition
 #define cpmalloc malloc
 #define cpcalloc calloc
 #define cprealloc realloc
@@ -111,7 +112,8 @@ cpFloat cpAreaForSegment(cpVect a, cpVect b, cpFloat r);
 /// Calculate the moment of inertia for a solid polygon shape assuming it's center of gravity is at it's centroid. The offset is added to each vertex.
 cpFloat cpMomentForPoly(cpFloat m, int numVerts, const cpVect *verts, cpVect offset);
 
-/// Calculate the signed area of a polygon.
+/// Calculate the signed area of a polygon. A Clockwise winding gives positive area.
+/// This is probably backwards from what you expect, but matches Chipmunk's the winding for poly shapes.
 cpFloat cpAreaForPoly(const int numVerts, const cpVect *verts);
 
 /// Calculate the natural centroid of a polygon.

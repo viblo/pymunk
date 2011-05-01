@@ -57,7 +57,7 @@ Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from svn).
 """
 
-chipmunk_version = "%sr734" % cp.cpVersionString.value.decode()
+chipmunk_version = "%sr742" % cp.cpVersionString.value.decode()
 """The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not 
 contain any breaking API changes.

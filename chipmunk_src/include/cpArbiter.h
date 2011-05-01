@@ -54,9 +54,14 @@ typedef struct cpContact cpContact;
 
 /// @private
 typedef enum cpArbiterState {
-	cpArbiterStateNormal,
+	// Arbiter is active and its the first collision.
 	cpArbiterStateFirstColl,
+	// Arbiter is active and its not the first collision.
+	cpArbiterStateNormal,
+	// Collision has been explicitly ignored.
+	// Either by returning false from a begin collision handler or calling cpArbiterIgnore().
 	cpArbiterStateIgnore,
+	// Collison has separated, arbiter will be recyled soon.
 	cpArbiterStateCached,
 } cpArbiterState;
 
@@ -90,10 +95,10 @@ struct cpArbiter {
 
 /// Calculate the total impulse that was applied by this arbiter.
 /// Calling this function from a begin or pre-solve callback is undefined.
-cpVect cpArbiterTotalImpulse(cpArbiter *arb);
+cpVect cpArbiterTotalImpulse(const cpArbiter *arb);
 /// Calculate the total impulse including the friction that was applied by this arbiter.
 /// Calling this function from a begin or pre-solve callback is undefined.
-cpVect cpArbiterTotalImpulseWithFriction(cpArbiter *arb);
+cpVect cpArbiterTotalImpulseWithFriction(const cpArbiter *arb);
 
 /// Causes a collision pair to be ignored as if you returned false from a begin callback.
 /// If called from a pre-step callback, you will still need to return false

@@ -48,11 +48,10 @@ class UnitTestBody(unittest.TestCase):
         s = p.Space()
         s.add(b1,b2)
         b2.sleep()
-        b1.sleep()
         b1.sleep_with_group(b2)
+        self.assert_(b1.is_sleeping)
         b2.activate()
         self.assertFalse(b1.is_sleeping)
-        
         
         
     def testKineticEnergy(self):

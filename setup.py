@@ -3,9 +3,6 @@ import os, os.path
 import platform
 import ctypes
 import distutils.cmd
-#from ez_setup import use_setuptools
-#use_setuptools()
-#from setuptools import setup, Command, find_packages
 from distutils.core import setup
 
 class build_chipmunk(distutils.cmd.Command):
@@ -34,11 +31,16 @@ class build_chipmunk(distutils.cmd.Command):
         source_folders = ['chipmunk_src', 'chipmunk_src/constraints']
         sources = []
         for folder in source_folders:
-            sources += [os.path.join(folder,x) for x in os.listdir(folder) if x[-1] == 'c']
-        
+            for fn in os.listdir(folder):
+                fn_path = os.path.join(folder, fn)
+                if fn_path[-1] == 'c':
+                    sources.append(fn_path)
+                elif fn_path[-1] == 'o':
+                    os.remove(fn_path)
+                    
         include_folders = ['chipmunk_src/include']
         
-        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC', '-DNDEBUG']
+        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC'] #, '-DNDEBUG']
         
         # check if we are on a 64bit python
         arch = ctypes.sizeof(ctypes.c_voidp) * 8
@@ -103,15 +105,7 @@ setup(
                                 , 'libchipmunk.so'
                                 , 'libchipmunk64.so'
                                 , 'libchipmunk.dylib']}
-    #, data_files = [('pymunk', os.path.join('pymunk','chipmunk.dll'))
-    #                        , os.path.join('pymunk','chipmunk64.dll')
-    #                        , os.path.join('pymunk','libchipmunk.so')
-    #                        , os.path.join('pymunk','libchipmunk64.so')
-    #                        , os.path.join('pymunk','libchipmunk.dylib')]
-    #, platforms=['win32']
     , license='MIT License'
     , classifiers=classifiers
-    #, include_package_data = True
     , cmdclass={'build_chipmunk':build_chipmunk}
-    #, test_suite = "tests"
     )

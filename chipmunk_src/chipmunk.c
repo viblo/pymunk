@@ -44,7 +44,7 @@ cpMessage(const char *message, const char *condition, const char *file, int line
 }
 
 
-const char *cpVersionString = "5.3.4";
+const char *cpVersionString = "6.0.0b";
 
 void
 cpInitChipmunk(void)
@@ -111,7 +111,7 @@ cpAreaForPoly(const int numVerts, const cpVect *verts)
 		area += cpvcross(verts[i], verts[(i+1)%numVerts]);
 	}
 	
-	return area/2.0f;
+	return -area/2.0f;
 }
 
 cpVect

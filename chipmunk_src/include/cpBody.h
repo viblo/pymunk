@@ -116,6 +116,14 @@ void cpBodyDestroy(cpBody *body);
 /// Destroy and free a cpBody.
 void cpBodyFree(cpBody *body);
 
+/// Check that the properties of a body is sane. (Only in debug mode)
+#ifdef NDEBUG
+	#define	cpBodyAssertSane(body)
+#else
+	void cpBodySanityCheck(cpBody *body);
+	#define	cpBodyAssertSane(body) cpBodySanityCheck(body)
+#endif
+
 // Defined in cpSpace.c
 /// Wake up a sleeping or idle body.
 void cpBodyActivate(cpBody *body);
@@ -152,6 +160,7 @@ static inline type cpBodyGet##name(const cpBody *body){return body->member;}
 #define CP_DefineBodyStructSetter(type, member, name) \
 static inline void cpBodySet##name(cpBody *body, const type value){ \
 	cpBodyActivate(body); \
+	cpBodyAssertSane(body); \
 	body->member = value; \
 }
 
@@ -168,7 +177,9 @@ CP_DefineBodyStructGetter(cpFloat, i, Moment);
 /// Set the moment of a body.
 void cpBodySetMoment(cpBody *body, cpFloat i);
 
-CP_DefineBodyStructProperty(cpVect, p, Pos);
+CP_DefineBodyStructGetter(cpVect, p, Pos);
+/// Set the position of a body.
+void cpBodySetPos(cpBody *body, cpVect pos);
 CP_DefineBodyStructProperty(cpVect, v, Vel);
 CP_DefineBodyStructProperty(cpVect, f, Force);
 CP_DefineBodyStructGetter(cpFloat, a, Angle);
@@ -204,18 +215,12 @@ cpBodyWorld2Local(const cpBody *body, const cpVect v)
 	return cpvunrotate(cpvsub(v, body->p), body->rot);
 }
 
-/// Apply an impulse (in world coordinates) to the body at a point relative to the center of gravity (also in world coordinates).
-static inline void
-cpBodyApplyImpulse(cpBody *body, const cpVect j, const cpVect offset)
-{
-	body->v = cpvadd(body->v, cpvmult(j, body->m_inv));
-	body->w += body->i_inv*cpvcross(offset, j);
-}
-
 /// Set the forces and torque or a body to zero.
 void cpBodyResetForces(cpBody *body);
 /// Apply an force (in world coordinates) to the body at a point relative to the center of gravity (also in world coordinates).
 void cpBodyApplyForce(cpBody *body, const cpVect f, const cpVect r);
+/// Apply an impulse (in world coordinates) to the body at a point relative to the center of gravity (also in world coordinates).
+void cpBodyApplyImpulse(cpBody *body, const cpVect j, const cpVect r);
 
 /// Get the kinetic energy of a body.
 static inline cpFloat
