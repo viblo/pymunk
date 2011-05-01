@@ -3,10 +3,10 @@
 ABOUT
 
     pymunk is a python wrapper for the 2d physics library Chipmunk
-    2007 - 2010, Victor Blomqvist - vb@viblo.se, MIT License
+    2007 - 2011, Victor Blomqvist - vb@viblo.se, MIT License
 
-    This release is based on the latest pymunk release (1.0.0), 
-    using chipmunk 5.x (svn revision 428, source included)
+    This release is based on the latest pymunk release (2.0.0), 
+    using chipmunk 6.x (svn revision 742, source included)
     
     Homepage: http://code.google.com/p/pymunk/
     Forum: http://www.slembcke.net/forums/viewforum.php?f=6
@@ -24,7 +24,7 @@ HOW TO USE
     and in the (shared) forum. 
     
     If chipmunk doesnt ship with a chipmunk binary your platform can understand
-    (currently Windows and Linux 32bit and 64bit are included) you will have to 
+    (currently Windows and Linux 32bit are included) you will have to 
     compile chipmunk before install. See section CHIPMUNK in this readme for 
     (very simple) instructions.
     
@@ -47,7 +47,7 @@ EXAMPLE
 
 DEPENDENCIES/REQUIREMENTS
 
-    * python (tested on 2.5, 2.6 and 3.x)
+    * python (tested on 2.5, 2.6, 2.7 and 3.2)
     * ctypes (included in python 2.5)
     * pygame (optional, you need it to run most of the demos)
     * pyglet (optional, you need it to run the moon buggy demo)
@@ -56,7 +56,7 @@ DEPENDENCIES/REQUIREMENTS
 
 CHIPMUNK
 
-    Compiled libraries of Chipmunk compatible Windows and Linux 32 & 64bit are 
+    Compiled libraries of Chipmunk compatible Windows and Linux 32bit are 
     distributed with pymunk.
     If pymunk doesnt have your particular platform included, you can compile 
     Chipmunk by hand with a custom setup argument:

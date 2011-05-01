@@ -96,7 +96,7 @@ setup(
     , url='http://code.google.com/p/pymunk/'
     , author='Victor Blomqvist'
     , author_email='vb@viblo.se'
-    , version='1.0.0' # remember to change me for new versions!
+    , version='2.0.0' # remember to change me for new versions!
     , description='A python wrapper for the 2d physics library Chipmunk'
     , long_description=long_description
     , packages=['pymunk']
