@@ -87,7 +87,7 @@ def main():
     font = pygame.font.Font(None, 16)
     
     ### Physics stuff
-    space = pm.Space(iterations = 1, elastic_iterations=250)
+    space = pm.Space(iterations = 1)
     space.gravity = (0.0, -1900.0)
     space.damping = 0.999 # to prevent it from blowing up.
     static_body = pm.Body(pm.inf, pm.inf)

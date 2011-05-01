@@ -54,9 +54,7 @@ class PyramidDemo:
                 y += deltaY
 
             x += deltaX
-            
-        self.space.resize_active_hash(dim=10, count=3250)
-    
+        
     def run(self):
         while self.running:
             self.loop() 
