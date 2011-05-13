@@ -1,4 +1,4 @@
-Chipmunk rev 742 Chipmunk6 beta branch
+Chipmunk rev 746 Chipmunk6 beta branch
 see http://wiki.slembcke.net/main/published/Chipmunk
 
   Compiling:

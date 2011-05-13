@@ -38,7 +38,7 @@ class build_chipmunk(distutils.cmd.Command):
                 elif fn_path[-1] == 'o':
                     os.remove(fn_path)
                     
-        include_folders = ['chipmunk_src/include']
+        include_folders = ['chipmunk_src/include/chipmunk']
         
         compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC'] #, '-DNDEBUG']
         
