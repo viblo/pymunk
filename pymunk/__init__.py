@@ -62,6 +62,10 @@ chipmunk_version = "%sr746" % cp.cpVersionString.value.decode()
 Other (newer) Chipmunk versions might also work if the new version does not 
 contain any breaking API changes.
 
+The string is in the following format:
+<cpVersionString>r<svn version of chipmunk>
+where cpVersionString is a version string set by Chipmunk and the svn version corresponds to the svn version of the chipmunk source files included with pymnuk.
+
 *Note:* This is also the version of the Chipmunk source files included in the 
 chipmunk_src folder (normally included in the pymunk source distribution).
 """
