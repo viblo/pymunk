@@ -4,9 +4,9 @@ from optparse import OptionParser
 from ctypeslib import h2xml
 from ctypeslib import xml2py
 
-default_path_to_chipmunk_include = join("..","chipmunk_src")
+default_path_to_chipmunk_include = join("..","chipmunk_src","include","chipmunk")
 default_output = join("..", "pymunk", "_chipmunk.py")
-default_path_to_chipmunk_lib = join("..", "pymunk", "chipmunk.dll")
+default_path_to_chipmunk_lib = join("..", "pymunk", "libchipmunk.so")
 def main(argv=None):
     """A small script which runs h2xml, xml2py (from ctypeslib) and then does 
     basic replacements.
