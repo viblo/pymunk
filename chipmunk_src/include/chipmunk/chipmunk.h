@@ -46,21 +46,35 @@ void cpMessage(const char *message, const char *condition, const char *file, int
 	#define cpAssertWarn(condition, message) if(!(condition)) cpMessage(message, #condition, __FILE__, __LINE__, 0)
 #endif
 
+// Hard assertions are important and cheap to execute. They are not disabled by compiling as debug.
+#define cpAssertHard(condition, message) if(!(condition)) cpMessage(message, #condition, __FILE__, __LINE__, 1)
+
 #ifdef NDEBUG
-	#define	cpAssert(condition, message)
+	#define	cpAssertSoft(condition, message)
 #else
-	#define cpAssert(condition, message) if(!(condition)) cpMessage(message, #condition, __FILE__, __LINE__, 1)
+	#define cpAssertSoft(condition, message) cpAssertHard(condition, message)
 #endif
+
 
 #include "chipmunk_types.h"
 	
-// Maximum allocated size for various Chipmunk buffers
-#define CP_BUFFER_BYTES (32*1024)
+// Allocated size for various Chipmunk buffers
+#ifndef CP_BUFFER_BYTES
+	#define CP_BUFFER_BYTES (32*1024)
+#endif
 
-//TODO allow redifinition
-#define cpcalloc calloc
-#define cprealloc realloc
-#define cpfree free
+// Chipmunk memory function aliases.
+#ifndef cpcalloc
+	#define cpcalloc calloc
+#endif
+
+#ifndef cprealloc
+	#define cprealloc realloc
+#endif
+
+#ifndef cpfree
+	#define cpfree free
+#endif
 
 typedef struct cpArray cpArray;
 typedef struct cpHashSet cpHashSet;
@@ -69,6 +83,7 @@ typedef struct cpBody cpBody;
 typedef struct cpShape cpShape;
 typedef struct cpConstraint cpConstraint;
 
+typedef struct cpCollisionHandler cpCollisionHandler;
 typedef struct cpArbiter cpArbiter;
 
 typedef struct cpSpace cpSpace;
@@ -86,11 +101,14 @@ typedef struct cpSpace cpSpace;
 
 #include "cpSpace.h"
 
+#define CP_VERSION_MAJOR 6
+#define CP_VERSION_MINOR 0
+#define CP_VERSION_RELEASE 0
+
 /// Version string.
 extern const char *cpVersionString;
 
-/// Initialize Chipmunk.
-/// Must be called before anything else or your program will crash.
+/// @deprecated
 void cpInitChipmunk(void);
 
 /// Calculate the moment of inertia for a circle.
@@ -123,6 +141,9 @@ void cpRecenterPoly(const int numVerts, cpVect *verts);
 
 /// Calculate the moment of inertia for a solid box.
 cpFloat cpMomentForBox(cpFloat m, cpFloat width, cpFloat height);
+
+/// Calculate the moment of inertia for a solid box.
+cpFloat cpMomentForBox2(cpFloat m, cpBB box);
 
 #ifdef __cplusplus
 }

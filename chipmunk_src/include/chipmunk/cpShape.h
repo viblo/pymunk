@@ -91,7 +91,11 @@ struct cpShape {
 	// Layer bitmask for this shape. Shapes only collide if the bitwise and of their layers is non-zero.
 	cpLayers layers;
 	
+	CP_PRIVATE(cpSpace *space);
+	
 	CP_PRIVATE(cpShape *next);
+	CP_PRIVATE(cpShape *prev);
+	
 	CP_PRIVATE(cpHashValue hashid);
 };
 
@@ -121,10 +125,11 @@ static inline void cpShapeSet##name(cpShape *shape, type value){ \
 CP_DefineShapeStructGetter(type, member, name) \
 CP_DefineShapeStructSetter(type, member, name, activates)
 
-// TODO the properties
-CP_DefineShapeStructProperty(cpBody *, body, Body, cpTrue);
+CP_DefineShapeStructGetter(cpBody *, body, Body);
+void cpShapeSetBody(cpShape *shape, cpBody *body);
+
 CP_DefineShapeStructGetter(cpBB, bb, BB);
-CP_DefineShapeStructProperty(cpBool, sensor, IsSensor, cpTrue);
+CP_DefineShapeStructProperty(cpBool, sensor, Sensor, cpTrue);
 CP_DefineShapeStructProperty(cpFloat, e, Elasticity, cpFalse);
 CP_DefineShapeStructProperty(cpFloat, u, Friction, cpTrue);
 CP_DefineShapeStructProperty(cpVect, surface_v, SurfaceVelocity, cpTrue);
@@ -142,15 +147,13 @@ void cpResetShapeIdCounter(void);
 cpBool cpShapeSegmentQuery(cpShape *shape, cpVect a, cpVect b, cpSegmentQueryInfo *info);
 
 /// Get the hit point for a segment query.
-static inline cpVect
-cpSegmentQueryHitPoint(const cpVect start, const cpVect end, const cpSegmentQueryInfo info)
+static inline cpVect cpSegmentQueryHitPoint(const cpVect start, const cpVect end, const cpSegmentQueryInfo info)
 {
 	return cpvlerp(start, end, info.t);
 }
 
 /// Get the hit distance for a segment query.
-static inline cpFloat
-cpSegmentQueryHitDist(const cpVect start, const cpVect end, const cpSegmentQueryInfo info)
+static inline cpFloat cpSegmentQueryHitDist(const cpVect start, const cpVect end, const cpSegmentQueryInfo info)
 {
 	return cpvdist(start, end)*info.t;
 }

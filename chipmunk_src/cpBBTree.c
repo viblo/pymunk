@@ -24,15 +24,7 @@
 
 #include "chipmunk_private.h"
 
-#ifdef _MSC_VER
-// Are you freaking kidding me?
-// Can it really not tell the difference between a declaration and a definition?
-// Have I ever mentioned how much I hate MSVC?
-extern
-#else
-static
-#endif
-cpSpatialIndexClass klass;
+static inline cpSpatialIndexClass *Klass();
 
 typedef struct Node Node;
 typedef struct Pair Pair;
@@ -105,12 +97,12 @@ GetBB(cpBBTree *tree, void *obj)
 static inline cpBBTree *
 GetTree(cpSpatialIndex *index)
 {
-	return (index && index->klass == &klass ? (cpBBTree *)index : NULL);
+	return (index && index->klass == Klass() ? (cpBBTree *)index : NULL);
 }
 
 static inline Node *
 GetRootIfTree(cpSpatialIndex *index){
-	return (index && index->klass == &klass ? ((cpBBTree *)index)->root : NULL);
+	return (index && index->klass == Klass() ? ((cpBBTree *)index)->root : NULL);
 }
 
 static inline cpTimestamp
@@ -151,7 +143,7 @@ PairFromPool(cpBBTree *tree)
 	} else {
 		// Pool is exhausted, make more
 		int count = CP_BUFFER_BYTES/sizeof(Pair);
-		cpAssert(count, "Buffer size is too small.");
+		cpAssertSoft(count, "Buffer size is too small.");
 		
 		Pair *buffer = (Pair *)cpcalloc(1, CP_BUFFER_BYTES);
 		cpArrayPush(tree->allocatedBuffers, buffer);
@@ -240,7 +232,7 @@ NodeFromPool(cpBBTree *tree)
 	} else {
 		// Pool is exhausted, make more
 		int count = CP_BUFFER_BYTES/sizeof(Node);
-		cpAssert(count, "Buffer size is too small.");
+		cpAssertSoft(count, "Buffer size is too small.");
 		
 		Node *buffer = (Node *)cpcalloc(1, CP_BUFFER_BYTES);
 		cpArrayPush(tree->allocatedBuffers, buffer);
@@ -295,8 +287,8 @@ NodeOther(Node *node, Node *child)
 static inline void
 NodeReplaceChild(Node *parent, Node *child, Node *value, cpBBTree *tree)
 {
-	cpAssert(!NodeIsLeaf(parent), "Cannot replace child of a leaf.");
-	cpAssert(child == parent->a || child == parent->b, "Node is not a child of parent.");
+	cpAssertSoft(!NodeIsLeaf(parent), "Cannot replace child of a leaf.");
+	cpAssertSoft(child == parent->a || child == parent->b, "Node is not a child of parent.");
 	
 	if(parent->a == child){
 		NodeRecycle(tree, parent->a);
@@ -541,7 +533,7 @@ leafSetTrans(void *obj, cpBBTree *tree)
 cpSpatialIndex *
 cpBBTreeInit(cpBBTree *tree, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex)
 {
-	cpSpatialIndexInit((cpSpatialIndex *)tree, &klass, bbfunc, staticIndex);
+	cpSpatialIndexInit((cpSpatialIndex *)tree, Klass(), bbfunc, staticIndex);
 	
 	tree->velocityFunc = NULL;
 	
@@ -559,7 +551,7 @@ cpBBTreeInit(cpBBTree *tree, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *static
 void
 cpBBTreeSetVelocityFunc(cpSpatialIndex *index, cpBBTreeVelocityFunc func)
 {
-	if(index->klass != &klass){
+	if(index->klass != Klass()){
 		cpAssertWarn(cpFalse, "Ignoring cpBBTreeSetVelocityFunc() call to non-tree spatial index.");
 		return;
 	}
@@ -624,7 +616,7 @@ cpBBTreeReindexQuery(cpBBTree *tree, cpSpatialIndexQueryFunc func, void *data)
 	cpHashSetEach(tree->leaves, (cpHashSetIteratorFunc)LeafUpdate, tree);
 	
 	cpSpatialIndex *staticIndex = tree->spatialIndex.staticIndex;
-	Node *staticRoot = (staticIndex && staticIndex->klass == &klass ? ((cpBBTree *)staticIndex)->root : NULL);
+	Node *staticRoot = (staticIndex && staticIndex->klass == Klass() ? ((cpBBTree *)staticIndex)->root : NULL);
 	
 	MarkContext context = {tree, staticRoot, func, data};
 	MarkSubtree(tree->root, &context);
@@ -711,6 +703,9 @@ static cpSpatialIndexClass klass = {
 	(cpSpatialIndexSegmentQueryImpl)cpBBTreeSegmentQuery,
 	(cpSpatialIndexQueryImpl)cpBBTreeQuery,
 };
+
+static inline cpSpatialIndexClass *Klass(){return &klass;}
+
 
 #pragma mark Tree Optimization
 

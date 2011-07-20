@@ -38,7 +38,7 @@ typedef void (*cpCollisionPostSolveFunc)(cpArbiter *arb, cpSpace *space, void *d
 typedef void (*cpCollisionSeparateFunc)(cpArbiter *arb, cpSpace *space, void *data);
 
 /// @private
-typedef struct cpCollisionHandler {
+struct cpCollisionHandler {
 	cpCollisionType a;
 	cpCollisionType b;
 	cpCollisionBeginFunc begin;
@@ -46,7 +46,7 @@ typedef struct cpCollisionHandler {
 	cpCollisionPostSolveFunc postSolve;
 	cpCollisionSeparateFunc separate;
 	void *data;
-} cpCollisionHandler;
+};
 
 typedef struct cpContact cpContact;
 
@@ -61,9 +61,15 @@ typedef enum cpArbiterState {
 	// Collision has been explicitly ignored.
 	// Either by returning false from a begin collision handler or calling cpArbiterIgnore().
 	cpArbiterStateIgnore,
-	// Collison has separated, arbiter will be recyled soon.
+	// Collison is no longer active. A space will cache an arbiter for up to cpSpace.collisionPersistence more steps.
 	cpArbiterStateCached,
 } cpArbiterState;
+
+/// @private
+struct cpArbiterThread {
+	// Links to next and previous arbiters in the contact graph.
+	struct cpArbiter *next, *prev;
+};
 
 /// A colliding pair of shapes.
 struct cpArbiter {
@@ -81,8 +87,9 @@ struct cpArbiter {
 	CP_PRIVATE(cpShape *b);
 	CP_PRIVATE(cpBody *body_a);
 	CP_PRIVATE(cpBody *body_b);
-	CP_PRIVATE(cpArbiter *next_a);
-	CP_PRIVATE(cpArbiter *next_b);
+	
+	CP_PRIVATE(struct cpArbiterThread thread_a);
+	CP_PRIVATE(struct cpArbiterThread thread_b);
 	
 	CP_PRIVATE(int numContacts);
 	CP_PRIVATE(cpContact *contacts);
@@ -92,6 +99,20 @@ struct cpArbiter {
 	CP_PRIVATE(cpBool swappedColl);
 	CP_PRIVATE(cpArbiterState state);
 };
+
+#define CP_DefineArbiterStructGetter(type, member, name) \
+static inline type cpArbiterGet##name(const cpArbiter *arb){return arb->member;}
+
+#define CP_DefineArbiterStructSetter(type, member, name) \
+static inline void cpArbiterSet##name(cpArbiter *arb, type value){arb->member = value;}
+
+#define CP_DefineArbiterStructProperty(type, member, name) \
+CP_DefineArbiterStructGetter(type, member, name) \
+CP_DefineArbiterStructSetter(type, member, name)
+
+CP_DefineArbiterStructProperty(cpFloat, e, Elasticity);
+CP_DefineArbiterStructProperty(cpFloat, u, Friction);
+CP_DefineArbiterStructProperty(cpVect, surface_vr, SurfaceVelocity);
 
 /// Calculate the total impulse that was applied by this arbiter.
 /// Calling this function from a begin or pre-solve callback is undefined.
@@ -108,8 +129,7 @@ void cpArbiterIgnore(cpArbiter *arb);
 /// Return the colliding shapes involved for this arbiter.
 /// The order of their cpSpace.collision_type values will match
 /// the order set when the collision handler was registered.
-static inline void
-cpArbiterGetShapes(const cpArbiter *arb, cpShape **a, cpShape **b)
+static inline void cpArbiterGetShapes(const cpArbiter *arb, cpShape **a, cpShape **b)
 {
 	if(arb->CP_PRIVATE(swappedColl)){
 		(*a) = arb->CP_PRIVATE(b), (*b) = arb->CP_PRIVATE(a);
@@ -123,8 +143,7 @@ cpArbiterGetShapes(const cpArbiter *arb, cpShape **a, cpShape **b)
 /// Return the colliding bodies involved for this arbiter.
 /// The order of the cpSpace.collision_type the bodies are associated with values will match
 /// the order set when the collision handler was registered.
-static inline void
-cpArbiterGetBodies(const cpArbiter *arb, cpBody **a, cpBody **b)
+static inline void cpArbiterGetBodies(const cpArbiter *arb, cpBody **a, cpBody **b)
 {
 	CP_ARBITER_GET_SHAPES(arb, shape_a, shape_b);
 	(*a) = shape_a->body;
@@ -134,15 +153,13 @@ cpArbiterGetBodies(const cpArbiter *arb, cpBody **a, cpBody **b)
 #define CP_ARBITER_GET_BODIES(arb, a, b) cpBody *a, *b; cpArbiterGetBodies(arb, &a, &b);
 
 /// Returns true if this is the first step a pair of objects started colliding.
-static inline cpBool
-cpArbiterIsFirstContact(const cpArbiter *arb)
+static inline cpBool cpArbiterIsFirstContact(const cpArbiter *arb)
 {
 	return arb->CP_PRIVATE(state) == cpArbiterStateFirstColl;
 }
 
 /// Get the number of contact points for this arbiter.
-static inline int
-cpArbiterGetCount(const cpArbiter *arb)
+static inline int cpArbiterGetCount(const cpArbiter *arb)
 {
 	return arb->CP_PRIVATE(numContacts);
 }

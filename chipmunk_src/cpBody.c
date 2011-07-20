@@ -104,28 +104,28 @@ cpBodyFree(cpBody *body)
 	}
 }
 
-static void cpv_assert_nan(cpVect v, char *message){cpAssert(v.x == v.x && v.y == v.y, message);}
-static void cpv_assert_infinite(cpVect v, char *message){cpAssert(cpfabs(v.x) != INFINITY && cpfabs(v.y) != INFINITY, message);}
+static void cpv_assert_nan(cpVect v, char *message){cpAssertSoft(v.x == v.x && v.y == v.y, message);}
+static void cpv_assert_infinite(cpVect v, char *message){cpAssertSoft(cpfabs(v.x) != INFINITY && cpfabs(v.y) != INFINITY, message);}
 static void cpv_assert_sane(cpVect v, char *message){cpv_assert_nan(v, message); cpv_assert_infinite(v, message);}
 
 void
 cpBodySanityCheck(cpBody *body)
 {
-	cpAssert(body->m == body->m && body->m_inv == body->m_inv, "Body's mass is invalid.");
-	cpAssert(body->i == body->i && body->i_inv == body->i_inv, "Body's moment is invalid.");
+	cpAssertSoft(body->m == body->m && body->m_inv == body->m_inv, "Body's mass is invalid.");
+	cpAssertSoft(body->i == body->i && body->i_inv == body->i_inv, "Body's moment is invalid.");
 	
 	cpv_assert_sane(body->p, "Body's position is invalid.");
 	cpv_assert_sane(body->v, "Body's velocity is invalid.");
 	cpv_assert_sane(body->f, "Body's force is invalid.");
 
-	cpAssert(body->a == body->a && cpfabs(body->a) != INFINITY, "Body's angle is invalid.");
-	cpAssert(body->w == body->w && cpfabs(body->w) != INFINITY, "Body's angular velocity is invalid.");
-	cpAssert(body->t == body->t && cpfabs(body->t) != INFINITY, "Body's torque is invalid.");
+	cpAssertSoft(body->a == body->a && cpfabs(body->a) != INFINITY, "Body's angle is invalid.");
+	cpAssertSoft(body->w == body->w && cpfabs(body->w) != INFINITY, "Body's angular velocity is invalid.");
+	cpAssertSoft(body->t == body->t && cpfabs(body->t) != INFINITY, "Body's torque is invalid.");
 	
 	cpv_assert_sane(body->rot, "Internal error: Body's rotation vector is invalid.");
 	
-	cpAssert(body->v_limit == body->v_limit, "Body's velocity limit is invalid.");
-	cpAssert(body->w_limit == body->w_limit, "Body's angular velocity limit is invalid.");
+	cpAssertSoft(body->v_limit == body->v_limit, "Body's velocity limit is invalid.");
+	cpAssertSoft(body->w_limit == body->w_limit, "Body's angular velocity limit is invalid.");
 }
 
 void
@@ -144,13 +144,54 @@ cpBodySetMoment(cpBody *body, cpFloat moment)
 	body->i_inv = 1.0f/moment;
 }
 
-static inline void
-updateShapes(cpBody *body){
-	cpSpace *space = body->space;
+void
+cpBodyAddShape(cpBody *body, cpShape *shape)
+{
+	cpShape *next = body->shapeList;
+	if(next) next->prev = shape;
 	
-	if(space){
-		CP_BODY_FOREACH_SHAPE(body, shape) cpSpaceReindexShape(space, shape);
+	shape->next = next;
+	body->shapeList = shape;
+}
+
+void
+cpBodyRemoveShape(cpBody *body, cpShape *shape)
+{
+  cpShape *prev = shape->prev;
+  cpShape *next = shape->next;
+  
+  if(prev){
+		prev->next = next;
+  } else {
+		body->shapeList = next;
+  }
+  
+  if(next){
+		next->prev = prev;
 	}
+  
+  shape->prev = NULL;
+  shape->next = NULL;
+}
+
+static cpConstraint *
+filterConstraints(cpConstraint *node, cpBody *body, cpConstraint *filter)
+{
+	if(node == filter){
+		return cpConstraintNext(node, body);
+	} else if(node->a == body){
+		node->next_a = filterConstraints(node->next_a, body, filter);
+	} else {
+		node->next_b = filterConstraints(node->next_b, body, filter);
+	}
+	
+	return node;
+}
+
+void
+cpBodyRemoveConstraint(cpBody *body, cpConstraint *constraint)
+{
+	body->constraintList = filterConstraints(body->constraintList, body, constraint);
 }
 
 void
@@ -158,7 +199,6 @@ cpBodySetPos(cpBody *body, cpVect pos)
 {
 	cpBodyActivate(body);
 	cpBodyAssertSane(body);
-	updateShapes(body);
 	body->p = pos;
 }
 
@@ -174,21 +214,12 @@ cpBodySetAngle(cpBody *body, cpFloat angle)
 {
 	cpBodyActivate(body);
 	cpBodyAssertSane(body);
-	updateShapes(body);
 	setAngle(body, angle);
 }
-
-//void
-//cpBodySlew(cpBody *body, cpVect pos, cpFloat dt)
-//{
-//	cpBodyActivate(body);
-//	body->v = cpvmult(cpvsub(pos, body->p), 1.0f/dt);
-//}
 
 void
 cpBodyUpdateVelocity(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt)
 {
-	// TODO per body damping and gravity coefs
 	body->v = cpvclamp(cpvadd(cpvmult(body->v, damping), cpvmult(cpvadd(gravity, cpvmult(body->f, body->m_inv)), dt)), body->v_limit);
 	
 	cpFloat w_limit = body->w_limit;
@@ -233,20 +264,35 @@ cpBodyApplyImpulse(cpBody *body, const cpVect j, const cpVect r)
 void
 cpBodyEachShape(cpBody *body, cpBodyShapeIteratorFunc func, void *data)
 {
-	CP_BODY_FOREACH_SHAPE(body, shape) func(body, shape, data);
+	cpShape *shape = body->shapeList;
+	while(shape){
+		cpShape *next = shape->next;
+		func(body, shape, data);
+		shape = next;
+	}
 }
 
 void
 cpBodyEachConstraint(cpBody *body, cpBodyConstraintIteratorFunc func, void *data)
 {
-	CP_BODY_FOREACH_CONSTRAINT(body,constraint) func(body, constraint, data);
+	cpConstraint *constraint = body->constraintList;
+	while(constraint){
+		cpConstraint *next = cpConstraintNext(constraint, body);
+		func(body, constraint, data);
+		constraint = next;
+	}
 }
 
 void
 cpBodyEachArbiter(cpBody *body, cpBodyArbiterIteratorFunc func, void *data)
 {
-	CP_BODY_FOREACH_ARBITER(body, arb){
+	cpArbiter *arb = body->arbiterList;
+	while(arb){
+		cpArbiter *next = cpArbiterNext(arb, body);
+		
 		arb->swappedColl = (body == arb->body_b);
 		func(body, arb, data);
+		
+		arb = next;
 	}
 }

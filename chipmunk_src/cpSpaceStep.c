@@ -27,11 +27,11 @@
 
 #pragma mark Post Step Callback Functions
 
-struct cpPostStepCallback {
+typedef struct cpPostStepCallback {
 	cpPostStepFunc func;
 	void *obj;
 	void *data;
-};
+} cpPostStepCallback;
 
 static cpBool
 postStepFuncSetEql(cpPostStepCallback *a, cpPostStepCallback *b){
@@ -106,7 +106,7 @@ void
 cpSpaceUnlock(cpSpace *space, cpBool runPostStep)
 {
 	space->locked--;
-	cpAssert(space->locked >= 0, "Internal Error: Space lock underflow.");
+	cpAssertSoft(space->locked >= 0, "Internal Error: Space lock underflow.");
 	
 	if(!space->locked){
 		cpArray *waking = space->rousedBodies;
@@ -152,7 +152,7 @@ cpContactBufferHeaderInit(cpContactBufferHeader *header, cpTimestamp stamp, cpCo
 	return header;
 }
 
-void
+static void
 cpSpacePushFreshContactBuffer(cpSpace *space)
 {
 	cpTimestamp stamp = space->stamp;
@@ -189,24 +189,24 @@ cpContactBufferGetArray(cpSpace *space)
 void
 cpSpacePushContacts(cpSpace *space, int count)
 {
-	cpAssert(count <= CP_MAX_CONTACTS_PER_ARBITER, "Internal Error:contact buffer overflow!");
+	cpAssertSoft(count <= CP_MAX_CONTACTS_PER_ARBITER, "Internal Error:contact buffer overflow!");
 	space->contactBuffersHead->numContacts += count;
 }
 
-void
+static void
 cpSpacePopContacts(cpSpace *space, int count){
 	space->contactBuffersHead->numContacts -= count;
 }
 
 #pragma mark Collision Detection Functions
 
-void *
+static void *
 cpSpaceArbiterSetTrans(cpShape **shapes, cpSpace *space)
 {
 	if(space->pooledArbiters->num == 0){
 		// arbiter pool is exhausted, make more
 		int count = CP_BUFFER_BYTES/sizeof(cpArbiter);
-		cpAssert(count, "Buffer size too small.");
+		cpAssertSoft(count, "Buffer size too small.");
 		
 		cpArbiter *buffer = (cpArbiter *)cpcalloc(1, CP_BUFFER_BYTES);
 		cpArrayPush(space->allocatedBuffers, buffer);
@@ -239,10 +239,7 @@ collideShapes(cpShape *a, cpShape *b, cpSpace *space)
 	// Reject any of the simple cases
 	if(queryReject(a,b)) return;
 	
-	// Find the collision pair function for the shapes.
-	cpCollisionType types[] = {a->collision_type, b->collision_type};
-	cpHashValue collHashID = CP_HASH_PAIR(a->collision_type, b->collision_type);
-	cpCollisionHandler *handler = (cpCollisionHandler *)cpHashSetFind(space->collisionHandlers, collHashID, types);
+	cpCollisionHandler *handler = cpSpaceLookupHandler(space, a->collision_type, b->collision_type);
 	
 	cpBool sensor = a->sensor || b->sensor;
 	if(sensor && handler == &cpDefaultCollisionHandler) return;
@@ -297,13 +294,14 @@ collideShapes(cpShape *a, cpShape *b, cpSpace *space)
 }
 
 // Hashset filter func to throw away old arbiters.
-cpBool
+static cpBool
 cpSpaceArbiterSetFilter(cpArbiter *arb, cpSpace *space)
 {
 	cpTimestamp ticks = space->stamp - arb->stamp;
 	
 	cpBody *a = arb->body_a, *b = arb->body_b;
 	
+	// TODO should make an arbiter state for this so it doesn't require filtering arbiters for dangling body pointers on body removal.
 	// Preserve arbiters on sensors and rejected arbiters for sleeping objects.
 	if(
 		(cpBodyIsStatic(a) || cpBodyIsSleeping(a)) &&
@@ -314,7 +312,7 @@ cpSpaceArbiterSetFilter(cpArbiter *arb, cpSpace *space)
 	
 	// Arbiter was used last frame, but not this one
 	if(ticks >= 1 && arb->state != cpArbiterStateCached){
-		arb->handler->separate(arb, space, arb->handler->data);
+		cpArbiterCallSeparate(arb, space);
 		arb->state = cpArbiterStateCached;
 	}
 	
@@ -331,7 +329,7 @@ cpSpaceArbiterSetFilter(cpArbiter *arb, cpSpace *space)
 
 #pragma mark All Important cpSpaceStep() Function
 
-void
+static void
 cpShapeUpdateFunc(cpShape *shape, void *unused)
 {
 	cpBody *body = shape->body;
@@ -342,12 +340,20 @@ void
 cpSpaceStep(cpSpace *space, cpFloat dt)
 {
 	if(dt == 0.0f) return; // don't step if the timestep is 0!
+	
+	cpFloat prev_dt = space->curr_dt;
+	space->curr_dt = dt;
 		
 	// Reset and empty the arbiter list.
 	cpArray *arbiters = space->arbiters;
 	for(int i=0; i<arbiters->num; i++){
 		cpArbiter *arb = (cpArbiter *)arbiters->arr[i];
 		arb->state = cpArbiterStateNormal;
+		
+		// If both bodies are awake, unthread the arbiter from the contact graph.
+		if(!cpBodyIsSleeping(arb->body_a) && !cpBodyIsSleeping(arb->body_b)){
+			cpArbiterUnthread(arb);
+		}
 	}
 	arbiters->num = 0;
 
@@ -395,7 +401,7 @@ cpSpaceStep(cpSpace *space, cpFloat dt)
 	}
 	
 	// Apply cached impulses
-	cpFloat dt_coef = (space->stamp ? dt/space->prev_dt : 0.0f);
+	cpFloat dt_coef = (space->stamp ? dt/prev_dt : 0.0f);
 	for(int i=0; i<arbiters->num; i++){
 		cpArbiterApplyCachedImpulse((cpArbiter *)arbiters->arr[i], dt_coef);
 	}
@@ -429,5 +435,4 @@ cpSpaceStep(cpSpace *space, cpFloat dt)
 	
 	// Increment the stamp.
 	space->stamp++;
-	space->prev_dt = dt;
 }

@@ -80,7 +80,7 @@ handleSetTrans(void *obj, cpSpaceHash *hash)
 	if(hash->pooledHandles->num == 0){
 		// handle pool is exhausted, make more
 		int count = CP_BUFFER_BYTES/sizeof(cpHandle);
-		cpAssert(count, "Buffer size is too small.");
+		cpAssertSoft(count, "Buffer size is too small.");
 		
 		cpHandle *buffer = (cpHandle *)cpcalloc(1, CP_BUFFER_BYTES);
 		cpArrayPush(hash->allocatedBuffers, buffer);
@@ -142,7 +142,7 @@ getEmptyBin(cpSpaceHash *hash)
 	} else {
 		// Pool is exhausted, make more
 		int count = CP_BUFFER_BYTES/sizeof(cpSpaceHashBin);
-		cpAssert(count, "Buffer size is too small.");
+		cpAssertSoft(count, "Buffer size is too small.");
 		
 		cpSpaceHashBin *buffer = (cpSpaceHashBin *)cpcalloc(1, CP_BUFFER_BYTES);
 		cpArrayPush(hash->allocatedBuffers, buffer);
@@ -171,20 +171,12 @@ cpSpaceHashAllocTable(cpSpaceHash *hash, int numcells)
 	hash->table = (cpSpaceHashBin **)cpcalloc(numcells, sizeof(cpSpaceHashBin *));
 }
 
-#ifdef _MSC_VER
-// Are you freaking kidding me?
-// Can it really not tell the difference between a declaration and a definition?
-// Have I ever mentioned how much I hate MSVC?
-extern
-#else
-static
-#endif
-cpSpatialIndexClass klass;
+static inline cpSpatialIndexClass *Klass();
 
 cpSpatialIndex *
 cpSpaceHashInit(cpSpaceHash *hash, cpFloat celldim, int numcells, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex)
 {
-	cpSpatialIndexInit((cpSpatialIndex *)hash, &klass, bbfunc, staticIndex);
+	cpSpatialIndexInit((cpSpatialIndex *)hash, Klass(), bbfunc, staticIndex);
 	
 	cpSpaceHashAllocTable(hash, next_prime(numcells));
 	hash->celldim = celldim;
@@ -568,7 +560,7 @@ cpSpaceHashSegmentQuery(cpSpaceHash *hash, void *obj, cpVect a, cpVect b, cpFloa
 void
 cpSpaceHashResize(cpSpaceHash *hash, cpFloat celldim, int numcells)
 {
-	if(hash->spatialIndex.klass != &klass){
+	if(hash->spatialIndex.klass != Klass()){
 		cpAssertWarn(cpFalse, "Ignoring cpSpaceHashResize() call to non-cpSpaceHash spatial index.");
 		return;
 	}
@@ -609,6 +601,8 @@ static cpSpatialIndexClass klass = {
 	(cpSpatialIndexSegmentQueryImpl)cpSpaceHashSegmentQuery,
 	(cpSpatialIndexQueryImpl)cpSpaceHashQuery,
 };
+
+static inline cpSpatialIndexClass *Klass(){return &klass;}
 
 #pragma mark Debug Drawing
 

@@ -127,28 +127,28 @@ void cpBodyFree(cpBody *body);
 // Defined in cpSpace.c
 /// Wake up a sleeping or idle body.
 void cpBodyActivate(cpBody *body);
+/// Wake up any sleeping or idle bodies touching a static body.
+void cpBodyActivateStatic(cpBody *body, cpShape *filter);
+
 /// Force a body to fall asleep immediately.
 void cpBodySleep(cpBody *body);
 /// Force a body to fall asleep immediately along with other bodies in a group.
 void cpBodySleepWithGroup(cpBody *body, cpBody *group);
 
 /// Returns true if the body is sleeping.
-static inline cpBool
-cpBodyIsSleeping(const cpBody *body)
+static inline cpBool cpBodyIsSleeping(const cpBody *body)
 {
 	return (CP_PRIVATE(body->node).root != ((cpBody*)0));
 }
 
 /// Returns true if the body is static.
-static inline cpBool
-cpBodyIsStatic(const cpBody *body)
+static inline cpBool cpBodyIsStatic(const cpBody *body)
 {
 	return CP_PRIVATE(body->node).idleTime == INFINITY;
 }
 
 /// Returns true if the body has not been added to a space.
-static inline cpBool
-cpBodyIsRogue(const cpBody *body)
+static inline cpBool cpBodyIsRogue(const cpBody *body)
 {
 	return (body->CP_PRIVATE(space) == ((cpSpace*)0));
 }
@@ -168,7 +168,6 @@ static inline void cpBodySet##name(cpBody *body, const type value){ \
 CP_DefineBodyStructGetter(type, member, name) \
 CP_DefineBodyStructSetter(type, member, name)
 
-/// TODO need to document these somehow.
 CP_DefineBodyStructGetter(cpFloat, m, Mass);
 /// Set the mass of a body.
 void cpBodySetMass(cpBody *body, cpFloat m);
@@ -190,27 +189,20 @@ CP_DefineBodyStructProperty(cpFloat, t, Torque);
 CP_DefineBodyStructGetter(cpVect, rot, Rot);
 CP_DefineBodyStructProperty(cpFloat, v_limit, VelLimit);
 CP_DefineBodyStructProperty(cpFloat, w_limit, AngVelLimit);
-CP_DefineBodyStructProperty(cpDataPointer, data, Data);
-
-/// Return the user data pointer for a body.
-static inline cpDataPointer cpBodyGetUserData(const cpBody *body){return body->data;}
-/// Set the user data pointer for a body.
-static inline void cpBodySetUserData(cpBody *body, cpDataPointer data){body->data = data;}
+CP_DefineBodyStructProperty(cpDataPointer, data, UserData);
 
 /// Default Integration functions.
 void cpBodyUpdateVelocity(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt);
 void cpBodyUpdatePosition(cpBody *body, cpFloat dt);
 
 /// Convert body relative/local coordinates to absolute/world coordinates.
-static inline cpVect
-cpBodyLocal2World(const cpBody *body, const cpVect v)
+static inline cpVect cpBodyLocal2World(const cpBody *body, const cpVect v)
 {
 	return cpvadd(body->p, cpvrotate(v, body->rot));
 }
 
 /// Convert body absolute/world coordinates to  relative/local coordinates.
-static inline cpVect
-cpBodyWorld2Local(const cpBody *body, const cpVect v)
+static inline cpVect cpBodyWorld2Local(const cpBody *body, const cpVect v)
 {
 	return cpvunrotate(cpvsub(v, body->p), body->rot);
 }
@@ -223,8 +215,7 @@ void cpBodyApplyForce(cpBody *body, const cpVect f, const cpVect r);
 void cpBodyApplyImpulse(cpBody *body, const cpVect j, const cpVect r);
 
 /// Get the kinetic energy of a body.
-static inline cpFloat
-cpBodyKineticEnergy(const cpBody *body)
+static inline cpFloat cpBodyKineticEnergy(const cpBody *body)
 {
 	// Need to do some fudging to avoid NaNs
 	cpFloat vsq = cpvdot(body->v, body->v);

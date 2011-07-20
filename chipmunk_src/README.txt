@@ -1,5 +1,5 @@
-Chipmunk rev 746 Chipmunk6 beta branch
-see http://wiki.slembcke.net/main/published/Chipmunk
+Chipmunk rev 801 Chipmunk6
+see http://chipmunk-physics.net/
 
   Compiling:
 

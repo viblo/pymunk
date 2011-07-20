@@ -28,7 +28,7 @@
 
 #define CP_DefineShapeGetter(struct, type, member, name) \
 CP_DeclareShapeGetter(struct, type, name){ \
-	cpAssert(shape->klass == &struct##Class, "shape is not a "#struct); \
+	cpAssertHard(shape->klass == &struct##Class, "shape is not a "#struct); \
 	return ((struct *)shape)->member; \
 }
 
@@ -62,6 +62,7 @@ cpShapeInit(cpShape *shape, const cpShapeClass *klass, cpBody *body)
 	
 	shape->data = NULL;
 	shape->next = NULL;
+	shape->prev = NULL;
 	
 	return shape;
 }
@@ -79,6 +80,13 @@ cpShapeFree(cpShape *shape)
 		cpShapeDestroy(shape);
 		cpfree(shape);
 	}
+}
+
+void
+cpShapeSetBody(cpShape *shape, cpBody *body)
+{
+	cpAssertHard(!cpShapeActive(shape), "You cannot change the body on an active shape. You must remove the shape, then ");
+	shape->body = body;
 }
 
 cpBB
@@ -340,7 +348,7 @@ CP_DefineShapeGetter(cpSegmentShape, cpFloat, r, Radius)
 void
 cpCircleShapeSetRadius(cpShape *shape, cpFloat radius)
 {
-	cpAssert(shape->klass == &cpCircleShapeClass, "Shape is not a circle shape.");
+	cpAssertHard(shape->klass == &cpCircleShapeClass, "Shape is not a circle shape.");
 	cpCircleShape *circle = (cpCircleShape *)shape;
 	
 	circle->r = radius;
@@ -349,7 +357,7 @@ cpCircleShapeSetRadius(cpShape *shape, cpFloat radius)
 void
 cpCircleShapeSetOffset(cpShape *shape, cpVect offset)
 {
-	cpAssert(shape->klass == &cpCircleShapeClass, "Shape is not a circle shape.");
+	cpAssertHard(shape->klass == &cpCircleShapeClass, "Shape is not a circle shape.");
 	cpCircleShape *circle = (cpCircleShape *)shape;
 	
 	circle->c = offset;
@@ -358,7 +366,7 @@ cpCircleShapeSetOffset(cpShape *shape, cpVect offset)
 void
 cpSegmentShapeSetEndpoints(cpShape *shape, cpVect a, cpVect b)
 {
-	cpAssert(shape->klass == &cpSegmentShapeClass, "Shape is not a segment shape.");
+	cpAssertHard(shape->klass == &cpSegmentShapeClass, "Shape is not a segment shape.");
 	cpSegmentShape *seg = (cpSegmentShape *)shape;
 	
 	seg->a = a;
@@ -369,7 +377,7 @@ cpSegmentShapeSetEndpoints(cpShape *shape, cpVect a, cpVect b)
 void
 cpSegmentShapeSetRadius(cpShape *shape, cpFloat radius)
 {
-	cpAssert(shape->klass == &cpSegmentShapeClass, "Shape is not a segment shape.");
+	cpAssertHard(shape->klass == &cpSegmentShapeClass, "Shape is not a segment shape.");
 	cpSegmentShape *seg = (cpSegmentShape *)shape;
 	
 	seg->r = radius;

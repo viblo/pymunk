@@ -6,7 +6,7 @@ ABOUT
     2007 - 2011, Victor Blomqvist - vb@viblo.se, MIT License
 
     This release is based on the latest pymunk release (2.0.0), 
-    using chipmunk 6.x (svn revision 746, source included)
+    using chipmunk 6.x (svn revision 801, source included)
     
     Homepage: http://code.google.com/p/pymunk/
     Forum: http://www.slembcke.net/forums/viewforum.php?f=6
