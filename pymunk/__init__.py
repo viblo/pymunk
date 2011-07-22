@@ -660,7 +660,39 @@ class Space(object):
             return SegmentQueryInfo(shape, start, end, info.t, info.n)
         else:
             return None
+    
+    def bb_query(self, bb, layers = -1, group = 0):
+        """Perform a fast rectangle query on the space.
+        
+        Only the shape's bounding boxes are checked for overlap, not their 
+        full shape. Returns a list of shapes.
+        """
+        
+        self.__query_hits = []
+        def cf(_shape, data):
             
+            shape = self._get_shape(_shape)
+            self.__query_hits.append(shape)
+        f = cp.cpSpaceBBQueryFunc(cf)
+        cp.cpSpaceBBQuery(self._space, bb._bb, layers, group, f, None)
+        return self.__query_hits 
+    
+    
+    def shape_query(self, shape):
+        """Query a space for any shapes overlapping the given shape
+        
+        Returns a list of shapes.
+        """
+        
+        self.__query_hits = []
+        def cf(_shape, points, data):
+            
+            shape = self._get_shape(_shape)
+            self.__query_hits.append(shape)
+        f = cp.cpSpaceShapeQueryFunc(cf)
+        cp.cpSpaceShapeQuery(self._space, shape._shape, f, None)
+        return self.__query_hits
+        
 class Body(object):
     """A rigid body
     

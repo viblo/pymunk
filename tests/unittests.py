@@ -215,6 +215,24 @@ class UnitTestSpace(unittest.TestCase):
         self.assert_(self.s2 in hits)
         self.assert_(s3 in hits)
         
+    def testBBQuery(self):
+        bb = p.BB(-7,-7,7,7)
+        
+        hits = self.s.bb_query(bb)        
+        self.assert_(self.s1 in hits)
+        self.assert_(self.s2 not in hits)
+    
+    def testShapeQuery(self):
+        
+        b = p.Body()
+        s = p.Circle(b, 2)
+        b.position = 20,1
+        
+        hits = self.s.shape_query(s)        
+        self.assert_(self.s1 not in hits)
+        self.assert_(self.s2 in hits)
+        
+        
     def testStaticPointQueries(self):
         b = p.Body(p.inf, p.inf)
         c = p.Circle(b, 10)
