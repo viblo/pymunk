@@ -28,7 +28,7 @@ class build_chipmunk(distutils.cmd.Command):
         
         compiler = cc.new_compiler(compiler=self.compiler)
 
-        source_folders = ['chipmunk_src', 'chipmunk_src/constraints']
+        source_folders = ['chipmunk_src', os.path.join('chipmunk_src','constraints')]
         sources = []
         for folder in source_folders:
             for fn in os.listdir(folder):
@@ -38,9 +38,9 @@ class build_chipmunk(distutils.cmd.Command):
                 elif fn_path[-1] == 'o':
                     os.remove(fn_path)
                     
-        include_folders = ['chipmunk_src/include/chipmunk']
+        include_folders = [os.path.join('chipmunk_src','include','chipmunk')]
         
-        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC'] #, '-DNDEBUG']
+        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC', '-DCHIPMUNK_FFI'] #, '-DCP_ALLOW_PRIVATE_ACCESS', '-DNDEBUG']
         
         # check if we are on a 64bit python
         arch = ctypes.sizeof(ctypes.c_voidp) * 8

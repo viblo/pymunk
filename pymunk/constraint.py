@@ -31,6 +31,7 @@ __docformat__ = "reStructuredText"
 
 import ctypes as ct
 import pymunk._chipmunk as cp 
+import pymunk._chipmunk_ffi as cpffi 
 
 class Constraint(object):
     """Base class of all constraints. 
@@ -73,7 +74,7 @@ class Constraint(object):
         to infinity""")
 
     def _get_impulse(self):
-        return cp._cpConstraintGetImpulse(self._constraint)
+        return cpffi.cpConstraintGetImpulse(self._constraint)
     impulse = property(_get_impulse,
         doc="""Get the last impulse applied by this constraint.""")
         

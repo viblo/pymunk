@@ -67,6 +67,12 @@ class UnitTestBody(unittest.TestCase):
         s.add(b)
         self.assertFalse(b.is_rogue)
         
+    def testStatic(self):
+        bd = p.Body(1,1)
+        bs = p.Body()
+        self.assertFalse(bd.is_static)
+        self.assert_(bs.is_static)
+        
     def testConversion(self):
         b = p.Body(1,1)
         b.position = 10,20
@@ -179,7 +185,8 @@ class UnitTestSpace(unittest.TestCase):
         
         self.s.remove(self.b1)
         self.s.add(self.b1)
-        s3 = p.Circle(self.b1,2)
+        b = p.Body()
+        s3 = p.Circle(b,2)
         self.s.add_static(s3)
         b3 = p.Body(1,1)
         self.s.add(b3)

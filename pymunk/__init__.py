@@ -46,6 +46,7 @@ __all__ = ["inf", "version", "chipmunk_version"
 
 import ctypes as ct
 import pymunk._chipmunk as cp 
+import pymunk._chipmunk_ffi as cpffi
 import pymunk.util as u
 from .vec2d import Vec2d
 
@@ -672,9 +673,15 @@ class Body(object):
       you are doing. Otherwise you're likely to get the position/velocity badly 
       out of sync. 
     """
-    def __init__(self, mass, moment):
-        """Create a new Body"""
-        self._body = cp.cpBodyNew(mass, moment)
+    def __init__(self, mass=None, moment=None):
+        """Create a new Body
+        
+        To create a static body, pass in None for mass and moment.
+        """
+        if mass == None and moment == None:
+            self._body = cp.cpBodyNewStatic()
+        else:
+            self._body = cp.cpBodyNew(mass, moment)
         self._bodycontents =  self._body.contents 
         self._position_callback = None # To prevent the gc to collect the callbacks.
         self._velocity_callback = None # To prevent the gc to collect the callbacks.
@@ -788,7 +795,13 @@ class Body(object):
         doc=_set_position_func.__doc__)
     
     def _get_kinetic_energy(self):
-        return cp._cpBodyKineticEnergy(self._body)
+        #todo: use ffi method
+        #return cp._cpBodyKineticEnergy(self._body)
+        
+        vsq = self.velocity.dot(self.velocity)
+        wsq = self.angular_velocity * self.angular_velocity
+        return (vsq*self.mass if vsq else 0.) + (wsq*self.moment if wsq else 0.)
+    
     kinetic_energy = property(_get_kinetic_energy,
         doc="""Get the kinetic energy of a body.""")
     
@@ -823,7 +836,7 @@ class Body(object):
             r : (x,y) or `Vec2d`
                 Offset the impulse with this vector
         """
-        cp._cpBodyApplyImpulse(self._body, j, r)
+        cp.cpBodyApplyImpulse(self._body, j, r)
         
     def reset_forces(self):
         """Zero both the forces and torques accumulated on body"""
@@ -893,14 +906,24 @@ class Body(object):
         cp.cpBodySleepWithGroup(self._body, body._body)
         
     def _is_sleeping(self):
-        return cp._cpBodyIsSleeping(self._body)
+        return cpffi.cpBodyIsSleeping(self._body)
+        #todo: use ffi function
+        #return bool(self._bodycontents.node_private.root)
     is_sleeping = property(_is_sleeping, 
         doc="""Returns true if the body is sleeping.""")
     
     def _is_rogue(self):
-        return cp._cpBodyIsRogue(self._body)
+        return cpffi.cpBodyIsRogue(self._body)
+        #todo: use ffi function
+        return not bool(self._bodycontents.space_private)
     is_rogue = property(_is_rogue,
         doc="""Returns true if the body has not been added to a space.""")
+    
+    def _is_static(self):
+        return cpffi.cpBodyIsStatic(self._body)
+    is_static = property(_is_static,
+        doc="""Returns true if the body is a static body""")
+    
     
     def local_to_world(self, v):
         """Convert body local coordinates to world space coordinates
@@ -909,7 +932,7 @@ class Body(object):
             v : (x,y) or `Vec2d`
                 Vector in body local coordinates
         """
-        return cp._cpBodyLocal2World(self._body, v)
+        return cpffi.cpBodyLocal2World(self._body, v)
         
     def world_to_local(self, v):
         """Convert world space coordinates to body local coordinates
@@ -918,7 +941,7 @@ class Body(object):
             v : (x,y) or `Vec2d`
                 Vector in world space coordinates
         """
-        return cp._cpBodyWorld2Local(self._body, v)
+        return cpffi.cpBodyWorld2Local(self._body, v)
         
 
 
@@ -1059,12 +1082,14 @@ class SegmentQueryInfo(object):
         """Return the hit point in world coordinates where the segment first 
         intersected with the shape
         """
-        return cp._cpvlerp(self._start, self._end, self.t)
+        #todo: use ffi function
+        return Vec2d(self._start).interpolate_to(self._end, self.t)
         
     def get_hit_distance(self):
         """Return the absolute distance where the segment first hit the shape
         """
-        return cp._cpvdist(self._start, self._end) * self.t
+        #todo: use ffi function
+        return Vec2d(self._start).get_distance(self._end) * self.t
     
     
 class Circle(Shape):
@@ -1300,7 +1325,6 @@ class Arbiter(object):
         self._contacts = None # keep a lazy loaded cache of converted contacts
     
     def _get_contacts(self):
-        #cpArbiterGetContactPointSet
         point_set = cp.cpArbiterGetContactPointSet(self._arbiter)
         
         if self._contacts is None:
@@ -1315,7 +1339,7 @@ class Arbiter(object):
         shapeA_p = ct.POINTER(cp.cpShape)()
         shapeB_p = ct.POINTER(cp.cpShape)()
         
-        cp._cpArbiterGetShapes(self._arbiter, shapeA_p, shapeB_p)
+        cpffi.cpArbiterGetShapes(self._arbiter, shapeA_p, shapeB_p)
     
         a, b = self._space._get_shape(shapeA_p), self._space._get_shape(shapeB_p)
         return a, b
@@ -1360,7 +1384,7 @@ class Arbiter(object):
         doc="""Time stamp of the arbiter. (from the space)""")
     
     def _get_is_first_contact(self):
-        return bool(cp._cpArbiterIsFirstContact(self._arbiter))
+        return bool(cpffi.cpArbiterIsFirstContact(self._arbiter))
     is_first_contact = property(_get_is_first_contact,
         doc="""Returns true if this is the first step that an arbiter existed. 
         You can use this from preSolve and postSolve to know if a collision 
@@ -1381,7 +1405,7 @@ class BB(object):
         elif len(args) == 1:
             self._bb = args[0]
         else:
-            self._bb = cp._cpBBNew(args[0], args[1], args[2], args[3])
+            self._bb = cpffi.cpBBNew(args[0], args[1], args[2], args[3])
             
     def __repr__(self):
         return 'BB(%s, %s, %s, %s)' % (self.left, self.bottom, self.right, self.top)
@@ -1395,27 +1419,27 @@ class BB(object):
         
     def intersects(self, other):
         """Returns true if the bounding boxes intersect"""
-        return bool(cp._cpBBIntersects(self._bb, other._bb))
+        return bool(cpffi.cpBBIntersects(self._bb, other._bb))
 
     def contains(self, other):
         """Returns true if bb completley contains the other bb"""
-        return bool(cp._cpBBContainsBB(self._bb, other._bb))
+        return bool(cpffi.cpBBContainsBB(self._bb, other._bb))
         
     def contains_vect(self, v):
         """Returns true if this bb contains the vector v"""
-        return bool(cp._cpBBContainsVect(self._bb, v))
+        return bool(cpffi.cpBBContainsVect(self._bb, v))
         
     def merge(self, other):
         """Return the minimal bounding box that contains both this bb and the 
         other bb
         """
-        return BB(cp._cpBBMerge(self._bb, other._bb))
+        return BB(cpffi.cpBBMerge(self._bb, other._bb))
         
     def expand(self, v):
         """Return the minimal bounding box that contans both this bounding box 
         and the vector v
         """
-        return BB(cp._cpBBExpand(self._bb, v))
+        return BB(cpffi.cpBBExpand(self._bb, v))
         
     left = property(lambda self: self._bb.l)
     bottom = property(lambda self: self._bb.b)
