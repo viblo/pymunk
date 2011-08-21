@@ -3,9 +3,9 @@ see http://chipmunk-physics.net/
 
   Compiling:
 
-      $ gcc -O3 -std=gnu99 -ffast-math -c *.c constraints/*.c
+      $ gcc -O3 -std=gnu99 -ffast-math -DCHIPMUNK_FFI -c *.c constraints/*.c 
     or (you might need -fPIC as well, at least on 64bit)
-      $ gcc -O3 -std=gnu99 -ffast-math -fPIC -c *.c constraints/*.c
+      $ gcc -O3 -std=gnu99 -ffast-math -fPIC -DCHIPMUNK_FFI -c *.c constraints/*.c
 
    Linking:
     on Linux

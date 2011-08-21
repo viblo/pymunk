@@ -7,7 +7,8 @@ You usually dont need to use this module directly, instead use the high level bi
 """
 from ctypes import *
 from .vec2d import Vec2d
-from ._chipmunk import *
+from ._chipmunk import cpBool, cpFloat
+from ._chipmunk import cpBB, cpBody, cpVect, cpArbiter, cpShape, cpConstraint
 from ._chipmunk import chipmunk_lib
 from ._chipmunk import function_pointer
 
