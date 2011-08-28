@@ -71,12 +71,14 @@ class build_chipmunk(distutils.cmd.Command):
             linker_preargs += ['-fPIC']
         if platform.system() in ('Windows', 'Microsoft'):
             linker_preargs += ['-mrtd'] # link with stddecl instead of cdecl
+            # remove link against msvcr*. this is a bit ugly maybe.. :)
+            compiler.dll_libraries = [lib for lib in compiler.dll_libraries if not lib.startswith("msvcr")]
         compiler.link(cc.CCompiler.SHARED_LIBRARY, objs, libname, output_dir = 'pymunk', extra_preargs=linker_preargs)
-    
+        
     def run(self):
         self.compile_chipmunk()
         
-# todo: add/remove/think about this list :)
+# todo: add/remove/think about this list
 classifiers = ['Development Status :: 5 - Production/Stable'
     , 'License :: OSI Approved :: MIT License'
     , 'Operating System :: OS Independent'

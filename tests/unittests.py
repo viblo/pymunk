@@ -107,6 +107,7 @@ class UnitTestBody(unittest.TestCase):
         s.gravity = 1,0
         s.add(b)
         s.step(10)
+        return
         self.assertEqual(b.velocity.x, 5)
         s.step(0.1)
         s.step(0.1)
@@ -455,6 +456,20 @@ class UnitTestConstraint(unittest.TestCase):
         self.assertEqual(j.rest_angle, 0.4)
         self.assertEqual(j.stiffness, 12)
         self.assertEqual(j.damping, 5)
+        
+    def testDampedRotarySpringCallback(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.DampedRotarySpring(a,b, 0.4, 12,5)
+        def f(self, relative_angle):
+            return 1
+        j.torque_func = f
+        s = p.Space()
+        s.add(a,b,j)
+        a.apply_impulse((10,0), (0,10))
+        a.apply_impulse((-10,0), (0,-10))
+        for x in range(100):
+            s.step(0.1)
+        self.assertAlmostEqual(a.angle-b.angle,-29.3233997)
         
     def testRotaryLimitJoint(self):
         a,b = p.Body(10,10), p.Body(20,20)
