@@ -284,7 +284,7 @@ cpSpaceAddStaticShape(cpSpace *space, cpShape *shape)
 cpBody *
 cpSpaceAddBody(cpSpace *space, cpBody *body)
 {
-	cpAssertWarn(!cpBodyIsStatic(body), "Static bodies cannot be added to a space as they are not meant to be simulated.");
+	cpAssertHard(!cpBodyIsStatic(body), "Static bodies cannot be added to a space as they are not meant to be simulated.");
 	cpAssertSoft(!body->space, "This body is already added to a space and cannot be added to another.");
 	cpAssertSpaceUnlocked(space);
 	
@@ -316,15 +316,28 @@ cpSpaceAddConstraint(cpSpace *space, cpConstraint *constraint)
 struct arbiterFilterContext {
 	cpSpace *space;
 	cpBody *body;
+	cpShape *shape;
 };
 
 static cpBool
-contactSetFilterRemovedBody(cpArbiter *arb, struct arbiterFilterContext *context)
+cachedArbitersFilter(cpArbiter *arb, struct arbiterFilterContext *context)
 {
+	cpShape *shape = context->shape;
 	cpBody *body = context->body;
-	if(body == arb->body_a || body == arb->body_b){
+	
+	
+	// Match on the filter shape, or if it's NULL the filter body
+	if(
+		(body == arb->body_a && (shape == arb->a || shape == NULL)) ||
+		(body == arb->body_b && (shape == arb->b || shape == NULL))
+	){
+		// Call separate when removing shapes.
+		if(shape && arb->state != cpArbiterStateCached) cpArbiterCallSeparate(arb, context->space);
+		
+		cpArbiterUnthread(arb);
 		cpArrayDeleteObj(context->space->arbiters, arb);
 		cpArrayPush(context->space->pooledArbiters, arb);
+		
 		return cpFalse;
 	}
 	
@@ -334,25 +347,8 @@ contactSetFilterRemovedBody(cpArbiter *arb, struct arbiterFilterContext *context
 void
 cpSpaceFilterArbiters(cpSpace *space, cpBody *body, cpShape *filter)
 {
-	cpArbiter *arb = body->arbiterList;
-	while(arb){
-		cpArbiter *next = cpArbiterNext(arb, body);
-		if(filter == NULL || filter == arb->a || filter == arb->b){
-			if(arb->state != cpArbiterStateCached) cpArbiterCallSeparate(arb, space);
-			
-			cpArbiterUnthread(arb);
-			cpSpaceUncacheArbiter(space, arb);
-			cpArrayPush(space->pooledArbiters, arb);
-		}
-		arb = next;
-	}
-	
-	// TODO see note at cpSpaceArbiterSetFilter()
-	// When just removing the body, so we need to filter all cached arbiters to avoid dangling pointers.
-	if(filter == NULL){
-		struct arbiterFilterContext context = {space, body};
-		cpHashSetFilter(space->cachedArbiters, (cpHashSetFilterFunc)contactSetFilterRemovedBody, &context);
-	}
+	struct arbiterFilterContext context = {space, body, filter};
+	cpHashSetFilter(space->cachedArbiters, (cpHashSetFilterFunc)cachedArbitersFilter, &context);
 }
 
 void
@@ -382,7 +378,7 @@ cpSpaceRemoveStaticShape(cpSpace *space, cpShape *shape)
 	cpAssertSpaceUnlocked(space);
 	
 	cpBody *body = shape->body;
-	cpBodyActivateStatic(body, shape);
+	if(cpBodyIsStatic(body)) cpBodyActivateStatic(body, shape);
 	cpBodyRemoveShape(body, shape);
 	cpSpaceFilterArbiters(space, body, shape);
 	cpSpatialIndexRemove(space->staticShapes, shape, shape->hashid);
@@ -397,7 +393,7 @@ cpSpaceRemoveBody(cpSpace *space, cpBody *body)
 	cpAssertSpaceUnlocked(space);
 	
 	cpBodyActivate(body);
-	cpSpaceFilterArbiters(space, body, NULL);
+//	cpSpaceFilterArbiters(space, body, NULL);
 	cpArrayDeleteObj(space->bodies, body);
 	body->space = NULL;
 }
@@ -446,10 +442,17 @@ cpSpaceEachBody(cpSpace *space, cpSpaceBodyIteratorFunc func, void *data)
 			func((cpBody *)bodies->arr[i], data);
 		}
 		
+		// TODO BUG not safe to activate sleeping bodies from here!
 		cpArray *components = space->sleepingComponents;
 		for(int i=0; i<components->num; i++){
 			cpBody *root = (cpBody *)components->arr[i];
-			CP_BODY_FOREACH_COMPONENT(root, body) func(body, data);
+			
+			cpBody *body = root;
+			while(body){
+				cpBody *next = body->node.next;
+				func(body, data);
+				body = next;
+			}
 		}
 	} cpSpaceUnlock(space, cpTrue);
 }

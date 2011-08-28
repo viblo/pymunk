@@ -1,4 +1,4 @@
-Chipmunk rev 801 Chipmunk6
+Chipmunk rev fa5ecd2 Chipmunk6
 see http://chipmunk-physics.net/
 
   Compiling:

@@ -58,16 +58,16 @@ Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from svn).
 """
 
-chipmunk_version = "%sr801" % cp.cpVersionString.value.decode()
+chipmunk_version = "%sRfa5ecd2" % cp.cpVersionString.value.decode()
 """The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not 
 contain any breaking API changes.
 
 The string is in the following format:
-<cpVersionString>r<svn version of chipmunk>
+<cpVersionString>R<svn or github commit of chipmunk>
 where cpVersionString is a version string set by Chipmunk and the svn version 
 corresponds to the svn version of the chipmunk source files included with 
-pymunk.
+pymunk or the github commit hash.
 
 *Note:* This is also the version of the Chipmunk source files included in the 
 chipmunk_src folder (normally included in the pymunk source distribution).

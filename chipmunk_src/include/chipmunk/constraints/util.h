@@ -19,6 +19,10 @@
  * SOFTWARE.
  */
 
+// These are utility routines to use when creating custom constraints.
+// I'm not sure if this should be part of the private API or not.
+// I should probably clean up the naming conventions if it is...
+
 #define CP_DefineClassGetter(t) const cpConstraintClass * t##GetClass(){return (cpConstraintClass *)&klass;}
 
 void cpConstraintInit(cpConstraint *constraint, const cpConstraintClass *klass, cpBody *a, cpBody *b);
@@ -54,8 +58,8 @@ apply_impulses(cpBody *a , cpBody *b, cpVect r1, cpVect r2, cpVect j)
 static inline void
 apply_bias_impulse(cpBody *body, cpVect j, cpVect r)
 {
-	body->v_bias = cpvadd(body->v_bias, cpvmult(j, body->m_inv));
-	body->w_bias += body->i_inv*cpvcross(r, j);
+	body->CP_PRIVATE(v_bias) = cpvadd(body->CP_PRIVATE(v_bias), cpvmult(j, body->m_inv));
+	body->CP_PRIVATE(w_bias) += body->i_inv*cpvcross(r, j);
 }
 
 static inline void
@@ -66,13 +70,16 @@ apply_bias_impulses(cpBody *a , cpBody *b, cpVect r1, cpVect r2, cpVect j)
 }
 
 static inline cpFloat
+k_scalar_body(cpBody *body, cpVect r, cpVect n)
+{
+	cpFloat rcn = cpvcross(r, n);
+	return body->m_inv + body->i_inv*rcn*rcn;
+}
+
+static inline cpFloat
 k_scalar(cpBody *a, cpBody *b, cpVect r1, cpVect r2, cpVect n)
 {
-	cpFloat mass_sum = a->m_inv + b->m_inv;
-	cpFloat r1cn = cpvcross(r1, n);
-	cpFloat r2cn = cpvcross(r2, n);
-	
-	cpFloat value = mass_sum + a->i_inv*r1cn*r1cn + b->i_inv*r2cn*r2cn;
+	cpFloat value = k_scalar_body(a, r1, n) + k_scalar_body(b, r2, n);
 	cpAssertSoft(value != 0.0, "Unsolvable collision or constraint.");
 	
 	return value;

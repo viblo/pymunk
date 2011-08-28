@@ -108,6 +108,10 @@ static void cpv_assert_nan(cpVect v, char *message){cpAssertSoft(v.x == v.x && v
 static void cpv_assert_infinite(cpVect v, char *message){cpAssertSoft(cpfabs(v.x) != INFINITY && cpfabs(v.y) != INFINITY, message);}
 static void cpv_assert_sane(cpVect v, char *message){cpv_assert_nan(v, message); cpv_assert_infinite(v, message);}
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void
 cpBodySanityCheck(cpBody *body)
 {
@@ -127,6 +131,10 @@ cpBodySanityCheck(cpBody *body)
 	cpAssertSoft(body->v_limit == body->v_limit, "Body's velocity limit is invalid.");
 	cpAssertSoft(body->w_limit == body->w_limit, "Body's angular velocity limit is invalid.");
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 void
 cpBodySetMass(cpBody *body, cpFloat mass)
@@ -243,6 +251,7 @@ cpBodyUpdatePosition(cpBody *body, cpFloat dt)
 void
 cpBodyResetForces(cpBody *body)
 {
+	cpBodyActivate(body);
 	body->f = cpvzero;
 	body->t = 0.0f;
 }
@@ -250,6 +259,7 @@ cpBodyResetForces(cpBody *body)
 void
 cpBodyApplyForce(cpBody *body, cpVect force, cpVect r)
 {
+	cpBodyActivate(body);
 	body->f = cpvadd(body->f, force);
 	body->t += cpvcross(r, force);
 }

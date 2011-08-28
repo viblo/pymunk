@@ -11,57 +11,55 @@ function_pointer = platform_specific_functions()['function_pointer']
 
 
 
-cpArbiterStateCached = 3
-# cpfsin = sin # alias
-# cpfpow = pow # alias
-# def CP_DefineSpaceStructSetter(type,member,name): return static inline void cpSpaceSet ##name(cpSpace *space, type value){space->member = value;} # macro
-# def CP_DefineSpaceStructGetter(type,member,name): return static inline type cpSpaceGet ##name(const cpSpace *space){return space->member;} # macro
-CP_POLY_SHAPE = 2
-# def CP_DefineArbiterStructSetter(type,member,name): return static inline void cpArbiterSet ##name(cpArbiter *arb, type value){arb->member = value;} # macro
-CP_NUM_SHAPES = 3
-# def CP_DefineArbiterStructGetter(type,member,name): return static inline type cpArbiterGet ##name(const cpArbiter *arb){return arb->member;} # macro
-cpArbiterStateIgnore = 2
-# def CP_ARBITER_GET_BODIES(arb,a,b): return cpBody *a, *b; cpArbiterGetBodies(arb, &a, &b); # macro
-# cpfmod = fmod # alias
-# def CP_DefineConstraintStructGetter(type,member,name): return static inline type cpConstraint ##Get ##name(const cpConstraint *constraint){return constraint->member;} # macro
-# cpfceil = ceil # alias
-# cpcalloc = calloc # alias
-# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(const cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct); return ((struct *)constraint)->member; } # macro
-# def CP_ARBITER_GET_SHAPES(arb,a,b): return cpShape *a, *b; cpArbiterGetShapes(arb, &a, &b); # macro
-# def CP_DefineConstraintSetter(struct,type,member,name): return static inline void struct ##Set ##name(cpConstraint *constraint, type value){ cpConstraintCheckCast(constraint, struct); cpConstraintActivateBodies(constraint); ((struct *)constraint)->member = value; } # macro
-# def CP_DefineShapeStructGetter(type,member,name): return static inline type cpShapeGet ##name(const cpShape *shape){return shape->member;} # macro
-def cpAssertSoft(condition,message): return cpAssertHard(condition, message) # macro
-# def CP_DefineConstraintStructSetter(type,member,name): return static inline void cpConstraint ##Set ##name(cpConstraint *constraint, type value){ cpConstraintActivateBodies(constraint); constraint->member = value; } # macro
-CP_SEGMENT_SHAPE = 1
-# cpffloor = floor # alias
-# def CP_DefineBodyStructGetter(type,member,name): return static inline type cpBodyGet ##name(const cpBody *body){return body->member;} # macro
-# cpfcos = cos # alias
-# def CP_DefineConstraintProperty(struct,type,member,name): return CP_DefineConstraintGetter(struct, type, member, name) CP_DefineConstraintSetter(struct, type, member, name) # macro
-# def CP_DefineBodyStructSetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, const type value){ cpBodyActivate(body); cpBodyAssertSane(body); body->member = value; } # macro
-# def cpConstraintCheckCast(constraint,struct): return cpAssertHard(constraint->CP_PRIVATE(klass) == struct ##GetClass(), "Constraint is not a "#struct) # macro
-# def CP_DefineConstraintStructProperty(type,member,name): return CP_DefineConstraintStructGetter(type, member, name) CP_DefineConstraintStructSetter(type, member, name) # macro
-cpArbiterStateNormal = 1
-# cprealloc = realloc # alias
-# cpfsqrt = sqrt # alias
-# cpfacos = acos # alias
-# def CP_DefineBodyStructProperty(type,member,name): return CP_DefineBodyStructGetter(type, member, name) CP_DefineBodyStructSetter(type, member, name) # macro
-# def CP_DeclareShapeGetter(struct,type,name): return type struct ##Get ##name(const cpShape *shape) # macro
-def CP_PRIVATE(symbol): return symbol ##_private # macro
-# def CP_DefineArbiterStructProperty(type,member,name): return CP_DefineArbiterStructGetter(type, member, name) CP_DefineArbiterStructSetter(type, member, name) # macro
-# def cpAssertHard(condition,message): return if(!(condition)) cpMessage(message, #condition, __FILE__, __LINE__, 1) # macro
-CP_CIRCLE_SHAPE = 0
 # def CP_DefineShapeStructProperty(type,member,name,activates): return CP_DefineShapeStructGetter(type, member, name) CP_DefineShapeStructSetter(type, member, name, activates) # macro
-# cpfree = free # alias
-def cpBodyAssertSane(body): return cpBodySanityCheck(body) # macro
+# def CP_DefineBodyStructProperty(type,member,name): return CP_DefineBodyStructGetter(type, member, name) CP_DefineBodyStructSetter(type, member, name) # macro
+# cpfsqrt = sqrt # alias
+# def CP_DefineArbiterStructProperty(type,member,name): return CP_DefineArbiterStructGetter(type, member, name) CP_DefineArbiterStructSetter(type, member, name) # macro
+def CP_PRIVATE(symbol): return symbol ##_private # macro
+# def CP_DefineConstraintStructProperty(type,member,name): return CP_DefineConstraintStructGetter(type, member, name) CP_DefineConstraintStructSetter(type, member, name) # macro
 cpArbiterStateFirstColl = 0
-# def CP_DefineSpaceStructProperty(type,member,name): return CP_DefineSpaceStructGetter(type, member, name) CP_DefineSpaceStructSetter(type, member, name) # macro
-# cpfexp = exp # alias
+# def cpConstraintCheckCast(constraint,struct): return cpAssertHard(constraint->CP_PRIVATE(klass) == struct ##GetClass(), "Constraint is not a "#struct) # macro
+# def CP_DefineConstraintProperty(struct,type,member,name): return CP_DefineConstraintGetter(struct, type, member, name) CP_DefineConstraintSetter(struct, type, member, name) # macro
+# cpcalloc = calloc # alias
+cpArbiterStateCached = 3
+# cpffloor = floor # alias
+# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(const cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct); return ((struct *)constraint)->member; } # macro
+# def CP_DefineBodyStructSetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, const type value){ cpBodyActivate(body); cpBodyAssertSane(body); body->member = value; } # macro
+# cpfcos = cos # alias
 # cpfatan2 = atan2 # alias
-# def cpAssertWarn(condition,message): return if(!(condition)) cpMessage(message, #condition, __FILE__, __LINE__, 0) # macro
-# def CP_DefineShapeStructSetter(type,member,name,activates): return static inline void cpShapeSet ##name(cpShape *shape, type value){ if(activates) cpBodyActivate(shape->body); shape->member = value; } # macro
+# cpfceil = ceil # alias
+# cpfacos = acos # alias
+CP_POLY_SHAPE = 2
+# def CP_DefineConstraintSetter(struct,type,member,name): return static inline void struct ##Set ##name(cpConstraint *constraint, type value){ cpConstraintCheckCast(constraint, struct); cpConstraintActivateBodies(constraint); ((struct *)constraint)->member = value; } # macro
+# def CP_ARBITER_GET_SHAPES(arb,a,b): return cpShape *a, *b; cpArbiterGetShapes(arb, &a, &b); # macro
+CP_CIRCLE_SHAPE = 0
+# def CP_DefineConstraintStructGetter(type,member,name): return static inline type cpConstraint ##Get ##name(const cpConstraint *constraint){return constraint->member;} # macro
+# def CP_DefineSpaceStructSetter(type,member,name): return static inline void cpSpaceSet ##name(cpSpace *space, type value){space->member = value;} # macro
+# def CP_ARBITER_GET_BODIES(arb,a,b): return cpBody *a, *b; cpArbiterGetBodies(arb, &a, &b); # macro
+CP_NUM_SHAPES = 3
+# def CP_DefineBodyStructGetter(type,member,name): return static inline type cpBodyGet ##name(const cpBody *body){return body->member;} # macro
+# cprealloc = realloc # alias
+# def CP_DefineConstraintStructSetter(type,member,name): return static inline void cpConstraint ##Set ##name(cpConstraint *constraint, type value){ cpConstraintActivateBodies(constraint); constraint->member = value; } # macro
+# def CP_DefineSpaceStructProperty(type,member,name): return CP_DefineSpaceStructGetter(type, member, name) CP_DefineSpaceStructSetter(type, member, name) # macro
+# def CP_DefineSpaceStructGetter(type,member,name): return static inline type cpSpaceGet ##name(const cpSpace *space){return space->member;} # macro
+cpArbiterStateNormal = 1
+# cpfsin = sin # alias
+def cpBodyAssertSane(body): return cpBodySanityCheck(body) # macro
+# cpfree = free # alias
+cpArbiterStateIgnore = 2
+# def CP_DefineArbiterStructSetter(type,member,name): return static inline void cpArbiterSet ##name(cpArbiter *arb, type value){arb->member = value;} # macro
+# def CP_DefineArbiterStructGetter(type,member,name): return static inline type cpArbiterGet ##name(const cpArbiter *arb){return arb->member;} # macro
+# cpfpow = pow # alias
+# cpfmod = fmod # alias
+CP_SEGMENT_SHAPE = 1
+# def cpAssertHard(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, __VA_ARGS__) # macro
+# cpfexp = exp # alias
+# def CP_DefineShapeStructGetter(type,member,name): return static inline type cpShapeGet ##name(const cpShape *shape){return shape->member;} # macro
+# def CP_DefineShapeStructSetter(type,member,name,activates): return static inline void cpShapeSet ##name(cpShape *shape, type value){ if(activates && shape->body) cpBodyActivate(shape->body); shape->member = value; } # macro
+# def CP_DeclareShapeGetter(struct,type,name): return type struct ##Get ##name(const cpShape *shape) # macro
 cpMessage = chipmunk_lib.cpMessage
 cpMessage.restype = None
-cpMessage.argtypes = [STRING, STRING, STRING, c_int, c_int]
+cpMessage.argtypes = [STRING, STRING, c_int, c_int, STRING]
 class cpArray(Structure):
     pass
 cpArray._fields_ = [
@@ -156,6 +154,8 @@ cpConstraintClass._fields_ = [
     ('applyImpulse', cpConstraintApplyImpulseImpl),
     ('getImpulse', cpConstraintGetImpulseImpl),
 ]
+cpConstraintPreSolveFunc = function_pointer(None, POINTER(cpConstraint), POINTER(cpSpace))
+cpConstraintPostSolveFunc = function_pointer(None, POINTER(cpConstraint), POINTER(cpSpace))
 #cpConstraint._pack_ = 4
 cpConstraint._fields_ = [
     ('klass_private', POINTER(cpConstraintClass)),
@@ -167,6 +167,8 @@ cpConstraint._fields_ = [
     ('maxForce', cpFloat),
     ('errorBias', cpFloat),
     ('maxBias', cpFloat),
+    ('preSolve', cpConstraintPreSolveFunc),
+    ('postSolve', cpConstraintPostSolveFunc),
     ('data', cpDataPointer),
 ]
 cpConstraintDestroy = chipmunk_lib.cpConstraintDestroy
@@ -1094,15 +1096,15 @@ cpvstr.argtypes = [cpVect]
 CP_VERSION_MINOR = 0 # Variable c_int '0'
 CP_ALL_LAYERS = 4294967295 # Variable c_uint '-1u'
 CP_BUFFER_BYTES = 32768 # Variable c_int '32768'
-CP_MAX_CONTACTS_PER_ARBITER = 4 # Variable c_int '4'
 cpTrue = 1 # Variable c_int '1'
-M_E = 2.7182818284590451 # Variable c_double '2.71828182845904509079559829842764884233474731445e+0'
-CP_ALLOW_PRIVATE_ACCESS = 0 # Variable c_int '0'
-CP_VERSION_RELEASE = 0 # Variable c_int '0'
-CP_VERSION_MAJOR = 6 # Variable c_int '6'
 CP_NO_GROUP = 0 # Variable c_uint '0u'
+CP_ALLOW_PRIVATE_ACCESS = 0 # Variable c_int '0'
+CP_VERSION_RELEASE = 1 # Variable c_int '1'
+CP_MAX_CONTACTS_PER_ARBITER = 4 # Variable c_int '4'
+CP_VERSION_MAJOR = 6 # Variable c_int '6'
 CP_USE_DOUBLES = 1 # Variable c_int '1'
 cpFalse = 0 # Variable c_int '0'
+M_E = 2.7182818284590451 # Variable c_double '2.71828182845904509079559829842764884233474731445e+0'
 M_PI = 3.1415926535897931 # Variable c_double '3.14159265358979311599796346854418516159057617188e+0'
 __all__ = ['cpBodyResetForces', 'cpShapeUpdate', 'cpSpacePointQuery',
            'cpSpaceBBQueryFunc', 'cpSpaceActivateShapesTouchingShape',
@@ -1154,25 +1156,26 @@ __all__ = ['cpBodyResetForces', 'cpShapeUpdate', 'cpSpacePointQuery',
            'cpPivotJointNew', 'cpBBTreeAlloc',
            'cpConstraintApplyCachedImpulseImpl', 'cpSweep1DInit',
            'cpSegmentShapeNew', 'cpCircleShapeSetRadius',
-           'cpBodyFree', 'cpRatchetJointGetClass', 'cpGearJointAlloc',
+           'cpBodyFree', 'cpRatchetJointGetClass',
+           'cpConstraintPreSolveFunc', 'cpGearJointAlloc',
            'cpSpaceRemoveBody', 'cpCentroidForPoly', 'cpBoxShapeNew',
-           'cpBodySleepWithGroup', 'cpBBTree',
+           'cpBBTreeSetVelocityFunc', 'cpBBTree',
            'cpSpatialIndexEachImpl', 'cpSegmentShapeSetRadius',
            'cpSpaceReindexStatic', 'cpPivotJointInit',
            'cpShapeSegmentQuery', 'CP_VERSION_RELEASE',
            'cpSpatialIndexFree', 'cpVersionString', 'cpSpaceAddBody',
            'cpBodySetMoment', 'cpBoxShapeInit', 'CP_VERSION_MINOR',
-           'cpBBTreeSetVelocityFunc', 'cpBBClampVect',
-           'cpPolyShapeGetVert', 'cpFalse', 'cpShapeType', 'cpShape',
-           'cpPolyShapeGetNumVerts', 'cpSimpleMotorGetClass',
-           'cpSpaceRemoveShape', 'cpContactBufferHeader',
-           'cpGrooveJointGetClass', 'CP_CIRCLE_SHAPE', 'cpSpaceHash',
-           'cpBodySleep', 'cpSpaceSegmentQuery', 'cpSpaceHashAlloc',
-           'cpPinJoint', 'cpConstraintPreStepImpl',
+           'cpBBClampVect', 'cpPolyShapeGetVert', 'cpFalse',
+           'cpShapeType', 'cpShape', 'cpPolyShapeGetNumVerts',
+           'cpSimpleMotorGetClass', 'cpSpaceRemoveShape',
+           'cpContactBufferHeader', 'cpGrooveJointGetClass',
+           'CP_CIRCLE_SHAPE', 'cpSpaceHash', 'cpBodySleep',
+           'cpSpaceSegmentQuery', 'cpSpaceHashAlloc', 'cpPinJoint',
+           'cpConstraintPreStepImpl',
            'cpDampedRotarySpringTorqueFunc', 'cpBBWrapVect',
            'cpSegmentShapeGetA', 'cpSegmentShapeGetB', 'cpSpaceNew',
            'cpSpaceConstraintIteratorFunc', 'cpBodyAssertSane',
-           'cpAssertSoft', 'cpCollisionSeparateFunc',
+           'cpBodySleepWithGroup', 'cpCollisionSeparateFunc',
            'cpMomentForBox2', 'cpBodyArbiterIteratorFunc',
            'cpCircleShapeGetRadius', 'cpSpatialIndexQueryImpl',
            'CP_VERSION_MAJOR', 'cpBB', 'cpBodyInitStatic',
@@ -1206,12 +1209,12 @@ __all__ = ['cpBodyResetForces', 'cpShapeUpdate', 'cpSpacePointQuery',
            'cpvtoangle', 'cpConstraintClass', 'cpFloat',
            'cpShapePointQuery', 'cpPinJointNew', 'cpBodySanityCheck',
            'cpPostStepFunc', 'cpSpatialIndexReindexQueryImpl',
-           'cpPolyShape', 'M_PI', 'cpShapeCacheDataImpl',
-           'cpBodyPositionFunc', 'cpAreaForCircle',
-           'cpRatchetJointAlloc', 'cpSpaceHashNew', 'cpArbiterThread',
-           'cpBodyApplyForce', 'cpSpacePointQueryFirst',
-           'CP_NO_GROUP', 'cpMomentForSegment',
-           'cpArbiterTotalImpulseWithFriction',
+           'cpConstraintPostSolveFunc', 'cpPolyShape', 'M_PI',
+           'cpShapeCacheDataImpl', 'cpBodyPositionFunc',
+           'cpAreaForCircle', 'cpRatchetJointAlloc', 'cpSpaceHashNew',
+           'cpArbiterThread', 'cpBodyApplyForce',
+           'cpSpacePointQueryFirst', 'CP_NO_GROUP',
+           'cpMomentForSegment', 'cpArbiterTotalImpulseWithFriction',
            'cpRotaryLimitJointGetClass',
            'cpSpaceRemoveCollisionHandler', 'cpBBTreeNew',
            'cpSpaceEachShape', 'cpPivotJointAlloc',
