@@ -124,6 +124,8 @@ class Space(object):
         self._space = cp.cpSpaceNew()
         self._space.contents.iterations = iterations
         
+        self._static_body = Body()
+        
         self._handlers = {} # To prevent the gc to collect the callbacks.
         self._default_handler = None
         
@@ -154,6 +156,11 @@ class Space(object):
     constraints = property(_get_constraints,
         doc="""A list of the constraints added to this space""")
 
+    def _get_static_body(self):
+        """A convenience static body already added to the space"""
+        return self._static_body
+    static_body = property(_get_static_body, doc=_get_static_body.__doc__)
+        
     def __del__(self):
         # check if the imported cp still exists.. think the only case when 
         # it doesnt is on program exit so should be more or less ok to skip 
@@ -716,7 +723,7 @@ class Body(object):
             self._body = cp.cpBodyNewStatic()
         else:
             self._body = cp.cpBodyNew(mass, moment)
-        self._bodycontents =  self._body.contents 
+        self._bodycontents = self._body.contents 
         self._position_callback = None # To prevent the gc to collect the callbacks.
         self._velocity_callback = None # To prevent the gc to collect the callbacks.
         
@@ -1184,7 +1191,7 @@ class Segment(Shape):
             a : (x,y) or `Vec2d`
                 The first endpoint of the segment
             b : (x,y) or `Vec2d`
-                The first endpoint of the segment
+                The second endpoint of the segment
             radius : float
                 The thickness of the segment
         """
@@ -1197,14 +1204,14 @@ class Segment(Shape):
     def _get_a(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a
     a = property(_get_a, _set_a, 
-        doc="""One of the two endpoints for this segment""")
+        doc="""The first of the two endpoints for this segment""")
 
     def _set_b(self, b):
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b = b
     def _get_b(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b
     b = property(_get_b, _set_b, 
-        doc="""One of the two endpoints for this segment""")
+        doc="""The second of the two endpoints for this segment""")
         
     def _set_radius(self, r):
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.r = r
@@ -1252,6 +1259,14 @@ class Poly(Shape):
 
         self._shape = cp.cpPolyShapeNew(body._body, len(vertices), self.verts, offset)
         self._shapecontents = self._shape.contents
+        
+    @staticmethod
+    def create_box(body, size=(10,10)): 
+        """Convenience function to create a box centered around the body position."""
+        x,y = size[0]*.5,size[1]*.5
+        vs = [(-x,-y),(-x,y),(x,y),(x,-y)]
+    
+        return Poly(body,vs)
         
     def get_points(self):
         """Get the points in world coordinates for the polygon

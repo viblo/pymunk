@@ -210,6 +210,33 @@ object --+
     </td>
   </tr>
 </table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Static Methods</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="create_box"></a><span class="summary-sig-name">create_box</span>(<span class="summary-sig-arg">body</span>,
+        <span class="summary-sig-arg">size</span>=<span class="summary-sig-default"><code class="variable-group">(</code>10<code class="variable-op">, </code>10<code class="variable-group">)</code></span>)</span><br />
+      Convenience function to create a box centered around the body position.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
 <!-- ==================== PROPERTIES ==================== -->
 <a name="section-Properties"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -232,7 +259,9 @@ object --+
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Shape-class.html#collision_type" class="summary-name">collision_type</a><br />
-      User defined collision type for the shape.
+      User defined collision type for the shape. See
+add_collisionpair_func function for more information on when to use
+this property
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -241,7 +270,10 @@ object --+
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Shape-class.html#elasticity" class="summary-name">elasticity</a><br />
-      Elasticity of the shape.
+      Elasticity of the shape. A value of 0.0 gives no bounce,
+while a value of 1.0 will give a 'perfect' bounce. However due to
+inaccuracies in the simulation using 1.0 or greater is not
+recommended.
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -250,7 +282,8 @@ object --+
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Shape-class.html#friction" class="summary-name">friction</a><br />
-      Friction coefficient.
+      Friction coefficient. pymunk uses the Coulomb friction model, a
+value of 0.0 is frictionless.
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -260,6 +293,8 @@ object --+
     </td><td class="summary">
         <a href="pymunk.Shape-class.html#group" class="summary-name">group</a><br />
       Shapes in the same non-zero group do not generate collisions.
+Useful when creating an object out of many shapes that you don't want
+to self collide. Defaults to 0
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -269,6 +304,8 @@ object --+
     </td><td class="summary">
         <a href="pymunk.Shape-class.html#layers" class="summary-name">layers</a><br />
       Shapes only collide if they are in the same bit-planes.
+i.e. (a.layers &amp; b.layers) != 0. By default, a shape occupies all
+32 bit-planes, i.e. layers == -1
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -277,7 +314,8 @@ object --+
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Shape-class.html#sensor" class="summary-name">sensor</a><br />
-      A boolean value if this shape is a sensor or not.
+      A boolean value if this shape is a sensor or not. Sensors only
+call collision callbacks, and never generate real collisions.
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -286,7 +324,9 @@ object --+
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Shape-class.html#surface_velocity" class="summary-name">surface_velocity</a><br />
-      The surface velocity of the object.
+      The surface velocity of the object. Useful for creating
+conveyor belts or players that move around. This value is only used
+when calculating friction, not resolving the collision.
       <em>(Inherited from <a href="pymunk.Shape-class.html">pymunk.Shape</a>)</em>
     </td>
   </tr>
@@ -401,7 +441,7 @@ a little performance by setting this to False.</dd>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed May 18 23:07:36 2011
+    Generated by Epydoc 3.0.1 on Sun Sep 04 20:04:28 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

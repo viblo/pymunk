@@ -193,7 +193,8 @@ and joints to it and then step them all forward together through time.
         <span class="summary-sig-arg">dim</span>=<span class="summary-sig-default">100.0</span>,
         <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">1000</span>)</span><br />
       The spatial hashes used by pymunk's collision detection are fairly
-size sensitive.</td>
+size sensitive. dim is the size of the hash cells. Setting dim to the
+average objects size is likely to give the best performance.</td>
           <td align="right" valign="top">
             
             
@@ -213,7 +214,8 @@ size sensitive.</td>
         <span class="summary-sig-arg">dim</span>=<span class="summary-sig-default">100.0</span>,
         <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">1000</span>)</span><br />
       The spatial hashes used by pymunk's collision detection are fairly
-size sensitive.</td>
+size sensitive. dim is the size of the hash cells. Setting dim to the
+average objects size is likely to give the best performance.</td>
           <td align="right" valign="top">
             
             
@@ -229,9 +231,9 @@ size sensitive.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Space-class.html#reindex_static" class="summary-sig-name">reindex_static</a>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a name="reindex_static"></a><span class="summary-sig-name">reindex_static</span>(<span class="summary-sig-arg">self</span>)</span><br />
       Update the collision detection info for the static shapes in the
-space.</td>
+space. You only need to call this if you move one of the static shapes.</td>
           <td align="right" valign="top">
             
             
@@ -266,9 +268,12 @@ space.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Space-class.html#step" class="summary-sig-name">step</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a name="step"></a><span class="summary-sig-name">step</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">dt</span>)</span><br />
-      Update the space for the given time step.</td>
+      Update the space for the given time step. Using a fixed time step is
+highly recommended. Doing so will increase the efficiency of the
+contact persistence, requiring an order of magnitude fewer iterations
+to resolve the collisions in the usual case.</td>
           <td align="right" valign="top">
             
             
@@ -317,7 +322,10 @@ space.</td>
         <span class="summary-sig-arg">*args</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Register a default collision handler to be used when no specific
-collision handler is found.</td>
+collision handler is found. If you do nothing, the space will be given
+a default handler that accepts all collisions in begin() and
+pre_solve() and does nothing for the post_solve() and separate()
+callbacks.</td>
           <td align="right" valign="top">
             
             
@@ -378,7 +386,7 @@ collision handler is found.</td>
         <span class="summary-sig-arg">layers</span>=<span class="summary-sig-default">-1</span>,
         <span class="summary-sig-arg">group</span>=<span class="summary-sig-default">0</span>)</span><br />
       Query space at point filtering out matches with the given layers
-and group.</td>
+and group. Return a list of found shapes.</td>
           <td align="right" valign="top">
             
             
@@ -399,7 +407,7 @@ and group.</td>
         <span class="summary-sig-arg">layers</span>=<span class="summary-sig-default">-1</span>,
         <span class="summary-sig-arg">group</span>=<span class="summary-sig-default">0</span>)</span><br />
       Query space at point and return the first shape found matching the
-given layers and group.</td>
+given layers and group. Returns None if no shape was found.</td>
           <td align="right" valign="top">
             
             
@@ -437,13 +445,53 @@ matches with the given layers and group.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Space-class.html#segment_query_first" class="summary-sig-name">segment_query_first</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a name="segment_query_first"></a><span class="summary-sig-name">segment_query_first</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">start</span>,
         <span class="summary-sig-arg">end</span>,
         <span class="summary-sig-arg">layers</span>=<span class="summary-sig-default">-1</span>,
         <span class="summary-sig-arg">group</span>=<span class="summary-sig-default">0</span>)</span><br />
       Query space along the line segment from start to end filtering out
-matches with the given layers and group.</td>
+matches with the given layers and group. Only the first shape
+encountered is returned and the search is short circuited.
+Returns None if no shape was found.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#bb_query" class="summary-sig-name">bb_query</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">bb</span>,
+        <span class="summary-sig-arg">layers</span>=<span class="summary-sig-default">-1</span>,
+        <span class="summary-sig-arg">group</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Perform a fast rectangle query on the space.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymunk.Space-class.html#shape_query" class="summary-sig-name">shape_query</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">shape</span>)</span><br />
+      Query a space for any shapes overlapping the given shape</td>
           <td align="right" valign="top">
             
             
@@ -516,6 +564,14 @@ matches with the given layers and group.</td>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a href="pymunk.Space-class.html#static_body" class="summary-name">static_body</a><br />
+      A convenience static body already added to the space
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="pymunk.Space-class.html#iterations" class="summary-name">iterations</a><br />
       Number of iterations to use in the impulse solver to solve
 contacts.
@@ -544,6 +600,8 @@ retain each second.
     </td><td class="summary">
         <a href="pymunk.Space-class.html#idle_speed_threshold" class="summary-name">idle_speed_threshold</a><br />
       Speed threshold for a body to be considered idle.
+The default value of 0 means to let the space guess a good threshold
+based on gravity.
     </td>
   </tr>
 <tr>
@@ -716,49 +774,6 @@ of objects in the hash is probably a good starting point.</p>
   </dl>
 </td></tr></table>
 </div>
-<a name="reindex_static"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">reindex_static</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  Update the collision detection info for the static shapes in the
-space. You only need to call this if you move one of the static shapes.
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="step"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">step</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">dt</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  Update the space for the given time step. Using a fixed time step is
-highly recommended. Doing so will increase the efficiency of the
-contact persistence, requiring an order of magnitude fewer iterations
-to resolve the collisions in the usual case.
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
 <a name="add_collision_handler"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -794,25 +809,25 @@ individually to each handler definition.</p>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>a</code></strong> (int) - Collision type of the first shape</li>
         <li><strong class="pname"><code>b</code></strong> (int) - Collision type of the second shape</li>
-        <li><strong class="pname"><code>begin</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></tt>) - Collision handler called when two shapes just started touching
+        <li><strong class="pname"><code>begin</code></strong> (<tt class="rst-docutils literal">func(space, arbiter, *args, **kwargs) <span class="pre">-&gt;</span> bool</tt>) - Collision handler called when two shapes just started touching
 for the first time this step. Return false from the callback
 to make pymunk ignore the collision or true to process it
 normally. Rejecting a collision from a begin() callback
 permanently rejects the collision until separation. Pass
 <code class="link">None</code> if you wish to use the pymunk default.</li>
-        <li><strong class="pname"><code>pre_solve</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></tt>) - Collision handler called when two shapes are touching. Return
+        <li><strong class="pname"><code>pre_solve</code></strong> (<tt class="rst-docutils literal">func(space, arbiter, *args, **kwargs) <span class="pre">-&gt;</span> bool</tt>) - Collision handler called when two shapes are touching. Return
 false from the callback to make pymunk ignore the collision or
 true to process it normally. Additionally, you may override
 collision values such as <a href="pymunk.Arbiter-class.html#elasticity" class="link">Arbiter.elasticity</a> and
 <a href="pymunk.Arbiter-class.html#friction" class="link">Arbiter.friction</a> to provide custom friction or elasticity
 values. See <a href="pymunk.Arbiter-class.html" class="link">Arbiter</a> for more info. Pass <code class="link">None</code> if you wish
 to use the pymunk default.</li>
-        <li><strong class="pname"><code>post_solve</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>) - Collsion handler called when two shapes are touching and their
+        <li><strong class="pname"><code>post_solve</code></strong> (<tt class="rst-docutils literal">func(space, arbiter, *args, **kwargs)</tt>) - Collsion handler called when two shapes are touching and their
 collision response has been processed. You can retrieve the
 collision force at this time if you want to use it to
 calculate sound volumes or damage amounts. Pass <code class="link">None</code> if you
 wish to use the pymunk default.</li>
-        <li><strong class="pname"><code>separate</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>) - Collision handler called when two shapes have just stopped
+        <li><strong class="pname"><code>separate</code></strong> (<tt class="rst-docutils literal">func(space, arbiter, *args, **kwargs)</tt>) - Collision handler called when two shapes have just stopped
 touching for the first time this frame. Pass <code class="link">None</code> if you
 wish to use the pymunk default.</li>
         <li><strong class="pname"><code>args</code></strong> - Optional parameters passed to the collision handler functions.</li>
@@ -850,25 +865,25 @@ callbacks.
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>begin</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></tt>) - Collision handler called when two shapes just started touching
+        <li><strong class="pname"><code>begin</code></strong> (<tt class="rst-docutils literal">func(space, arbiter, *args, **kwargs) <span class="pre">-&gt;</span> bool</tt>) - Collision handler called when two shapes just started touching
 for the first time this step. Return False from the callback
 to make pymunk ignore the collision or True to process it
 normally. Rejecting a collision from a begin() callback
 permanently rejects the collision until separation. Pass
 <code class="link">None</code> if you wish to use the pymunk default.</li>
-        <li><strong class="pname"><code>pre_solve</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></tt>) - Collision handler called when two shapes are touching. Return
+        <li><strong class="pname"><code>pre_solve</code></strong> (<tt class="rst-docutils literal">func(space, arbiter, *args, **kwargs) <span class="pre">-&gt;</span> bool</tt>) - Collision handler called when two shapes are touching. Return
 False from the callback to make pymunk ignore the collision or
 True to process it normally. Additionally, you may override
 collision values such as Arbiter.elasticity and
 Arbiter.friction to provide custom friction or elasticity
 values. See Arbiter for more info. Pass <code class="link">None</code> if you wish to
 use the pymunk default.</li>
-        <li><strong class="pname"><code>post_solve</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>) - Collsion handler called when two shapes are touching and their
+        <li><strong class="pname"><code>post_solve</code></strong> (<tt class="rst-docutils literal">func(space, arbiter, *args, **kwargs)</tt>) - Collsion handler called when two shapes are touching and their
 collision response has been processed. You can retrieve the
 collision force at this time if you want to use it to
 calculate sound volumes or damage amounts. Pass <code class="link">None</code> if you
 wish to use the pymunk default.</li>
-        <li><strong class="pname"><code>separate</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>) - Collision handler called when two shapes have just stopped
+        <li><strong class="pname"><code>separate</code></strong> (<tt class="rst-docutils literal">func(space, arbiter, *args, **kwargs)</tt>) - Collision handler called when two shapes have just stopped
 touching for the first time this frame. Pass <code class="link">None</code> if you wish
 to use the pymunk default.</li>
         <li><strong class="pname"><code>args</code></strong> - Optional parameters passed to the collision handler functions.</li>
@@ -939,7 +954,7 @@ bullet will only be called once!</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>callback_function</code></strong> (<tt class="rst-docutils literal"><span class="pre">func(obj,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>) - The callback function.</li>
+        <li><strong class="pname"><code>callback_function</code></strong> (<tt class="rst-docutils literal">func(obj, *args, **kwargs)</tt>) - The callback function.</li>
         <li><strong class="pname"><code>obj</code></strong> (Any object) - This object is used as a key, you can only have one callback
 for a single object. It is passed on to the callback function.</li>
         <li><strong class="pname"><code>args</code></strong> - Optional parameters passed to the callback function.</li>
@@ -1041,16 +1056,15 @@ aren't using very long segments for your queries.</p>
   </dl>
 </td></tr></table>
 </div>
-<a name="segment_query_first"></a>
+<a name="bb_query"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">segment_query_first</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">start</span>,
-        <span class="sig-arg">end</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">bb_query</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">bb</span>,
         <span class="sig-arg">layers</span>=<span class="sig-default">-1</span>,
         <span class="sig-arg">group</span>=<span class="sig-default">0</span>)</span>
   </h3>
@@ -1059,10 +1073,30 @@ aren't using very long segments for your queries.</p>
     </td>
   </tr></table>
   
-  Query space along the line segment from start to end filtering out
-matches with the given layers and group. Only the first shape
-encountered is returned and the search is short circuited.
-Returns None if no shape was found.
+  <p>Perform a fast rectangle query on the space.</p>
+<p>Only the shape's bounding boxes are checked for overlap, not their
+full shape. Returns a list of shapes.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="shape_query"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">shape_query</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">shape</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Query a space for any shapes overlapping the given shape</p>
+<p>Returns a list of shapes.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -1129,6 +1163,21 @@ Returns None if no shape was found.
   <dl class="fields">
     <dt>Get Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_constraints" class="summary-sig-name" onclick="show_private();">_get_constraints</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="static_body"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">static_body</h3>
+  A convenience static body already added to the space
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Space-class.html#_get_static_body" class="summary-sig-name" onclick="show_private();">_get_static_body</a>(<span class="summary-sig-arg">self</span>)</span>
+        - A convenience static body already added to the space
     </dd>
   </dl>
 </td></tr></table>
@@ -1345,7 +1394,7 @@ overlap each frame at 60Hz.</p>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed May 18 23:07:36 2011
+    Generated by Epydoc 3.0.1 on Sun Sep 04 20:04:29 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

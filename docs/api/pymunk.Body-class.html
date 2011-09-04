@@ -93,8 +93,8 @@ out of sync.</li>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="pymunk.Body-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">mass</span>,
-        <span class="summary-sig-arg">moment</span>)</span><br />
+        <span class="summary-sig-arg">mass</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">moment</span>=<span class="summary-sig-default">None</span>)</span><br />
       Create a new Body</td>
           <td align="right" valign="top">
             
@@ -131,7 +131,7 @@ out of sync.</li>
         <span class="summary-sig-arg">j</span>,
         <span class="summary-sig-arg">r</span>=<span class="summary-sig-default"><code class="variable-group">(</code>0<code class="variable-op">, </code>0<code class="variable-group">)</code></span>)</span><br />
       Apply the impulse j to body at a relative offset (important!) r
-from the center of gravity.</td>
+from the center of gravity. Both r and j are in world coordinates.</td>
           <td align="right" valign="top">
             
             
@@ -454,7 +454,8 @@ specified absolute coordinates in the next timestep.</td>
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Body-class.html#velocity_func" class="summary-name">velocity_func</a><br />
-      The velocity callback function.
+      The velocity callback function. The velocity callback function
+is called each time step, and can be used to set a body's velocity.
     </td>
   </tr>
 <tr>
@@ -462,7 +463,8 @@ specified absolute coordinates in the next timestep.</td>
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="pymunk.Body-class.html#position_func" class="summary-name">position_func</a><br />
-      The position callback function.
+      The position callback function. The position callback function
+is called each time step and can be used to update the body's position.
     </td>
   </tr>
 <tr>
@@ -487,6 +489,14 @@ specified absolute coordinates in the next timestep.</td>
     </td><td class="summary">
         <a href="pymunk.Body-class.html#is_rogue" class="summary-name">is_rogue</a><br />
       Returns true if the body has not been added to a space.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pymunk.Body-class.html#is_static" class="summary-name">is_static</a><br />
+      Returns true if the body is a static body
     </td>
   </tr>
   <tr>
@@ -514,8 +524,8 @@ specified absolute coordinates in the next timestep.</td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">mass</span>,
-        <span class="sig-arg">moment</span>)</span>
+        <span class="sig-arg">mass</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">moment</span>=<span class="sig-default">None</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -523,7 +533,8 @@ specified absolute coordinates in the next timestep.</td>
     </td>
   </tr></table>
   
-  Create a new Body
+  <p>Create a new Body</p>
+<p>To create a static body, pass in None for mass and moment.</p>
   <dl class="fields">
     <dt>Overrides:
         object.__init__
@@ -949,7 +960,8 @@ is called each time step, and can be used to set a body's velocity.</p>
     <dt>Set Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Body-class.html#_set_velocity_func" class="summary-sig-name" onclick="show_private();">_set_velocity_func</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">func</span>)</span>
-        - The velocity callback function.
+        - The velocity callback function. The velocity callback function
+is called each time step, and can be used to set a body's velocity.
     </dd>
   </dl>
 </td></tr></table>
@@ -979,7 +991,8 @@ is called each time step and can be used to update the body's position.</p>
     <dt>Set Method:</dt>
     <dd class="value"><span class="summary-sig"><a href="pymunk.Body-class.html#_set_position_func" class="summary-sig-name" onclick="show_private();">_set_position_func</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">func</span>)</span>
-        - The position callback function.
+        - The position callback function. The position callback function
+is called each time step and can be used to update the body's position.
     </dd>
   </dl>
 </td></tr></table>
@@ -1026,6 +1039,20 @@ is called each time step and can be used to update the body's position.</p>
   </dl>
 </td></tr></table>
 </div>
+<a name="is_static"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">is_static</h3>
+  Returns true if the body is a static body
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="pymunk.Body-class.html#_is_static" class="summary-sig-name" onclick="show_private();">_is_static</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
 <br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
@@ -1058,7 +1085,7 @@ is called each time step and can be used to update the body's position.</p>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed May 18 23:07:36 2011
+    Generated by Epydoc 3.0.1 on Sun Sep 04 20:04:28 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
