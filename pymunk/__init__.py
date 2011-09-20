@@ -355,31 +355,6 @@ class Space(object):
         self._constraints.remove(constraint)
         cp.cpSpaceRemoveConstraint(self._space, constraint._constraint)
 
-    def resize_static_hash(self, dim=100.0, count=1000):
-        """The spatial hashes used by pymunk's collision detection are fairly
-        size sensitive. dim is the size of the hash cells. Setting dim to the
-        average objects size is likely to give the best performance.
-
-        count is the suggested minimum number of cells in the hash table.
-        Bigger is better, but only to a point. Setting count to ~10x the number
-        of objects in the hash is probably a good starting point.
-        
-        Because static shapes are only rehashed when you request it, it's 
-        possible to use a much higher count argument to resize_static_hash() 
-        than to resize_active_hash(). Doing so will use more memory though. 
-        """
-        cp.cpSpaceResizeStaticHash(self._space, dim, count)
-
-    def resize_active_hash(self, dim=100.0, count=1000):
-        """The spatial hashes used by pymunk's collision detection are fairly
-        size sensitive. dim is the size of the hash cells. Setting dim to the
-        average objects size is likely to give the best performance.
-
-        count is the suggested minimum number of cells in the hash table.
-        Bigger is better, but only to a point. Setting count to ~10x the number
-        of objects in the hash is probably a good starting point."""
-        cp.cpSpaceResizeActiveHash(self._space, dim, count)
-
     def reindex_static(self):
         """Update the collision detection info for the static shapes in the 
         space. You only need to call this if you move one of the static shapes.
@@ -922,17 +897,7 @@ class Body(object):
                 The time step to apply the force over.
         """
         cp.cpApplyDampedSpring(self._body, b._body, anchor1, anchor2, rlen, k, dmp, dt)
-        
-        
-    def slew(self, pos, dt):
-        """Modify the velocity of the body so that it will move to the 
-        specified absolute coordinates in the next timestep. 
-        
-        Intended for objects that are moved manually with a custom velocity 
-        integration function.
-        """ 
-        cp.cpBodySlew(self._body, pos, dt)
-        
+                
     def activate(self):
         """Wake up a sleeping or idle body."""
         cp.cpBodyActivate(self._body)
