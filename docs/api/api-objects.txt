@@ -85,7 +85,6 @@ pymunk.Body.sleep	pymunk.Body-class.html#sleep
 pymunk.Body._set_mass	pymunk.Body-class.html#_set_mass
 pymunk.Body._set_angle	pymunk.Body-class.html#_set_angle
 pymunk.Body.angle	pymunk.Body-class.html#angle
-pymunk.Body.slew	pymunk.Body-class.html#slew
 pymunk.Body.__init__	pymunk.Body-class.html#__init__
 pymunk.Body.update_velocity	pymunk.Body-class.html#update_velocity
 pymunk.Body.local_to_world	pymunk.Body-class.html#local_to_world
@@ -283,7 +282,7 @@ pymunk.Shape._hashid_private	pymunk.Shape-class.html#_hashid_private
 pymunk.Space	pymunk.Space-class.html
 pymunk.Space._get_enable_contact_graph	pymunk.Space-class.html#_get_enable_contact_graph
 pymunk.Space.remove_static	pymunk.Space-class.html#remove_static
-pymunk.Space.resize_static_hash	pymunk.Space-class.html#resize_static_hash
+pymunk.Space._add_static_shape	pymunk.Space-class.html#_add_static_shape
 pymunk.Space._get_gravity	pymunk.Space-class.html#_get_gravity
 pymunk.Space.sleep_time_threshold	pymunk.Space-class.html#sleep_time_threshold
 pymunk.Space.reindex_shape	pymunk.Space-class.html#reindex_shape
@@ -319,13 +318,11 @@ pymunk.Space._get_constraints	pymunk.Space-class.html#_get_constraints
 pymunk.Space.__del__	pymunk.Space-class.html#__del__
 pymunk.Space.remove_collision_handler	pymunk.Space-class.html#remove_collision_handler
 pymunk.Space._get_collision_slop	pymunk.Space-class.html#_get_collision_slop
-pymunk.Space._add_static_shape	pymunk.Space-class.html#_add_static_shape
 pymunk.Space._get_idle_speed_threshold	pymunk.Space-class.html#_get_idle_speed_threshold
 pymunk.Space._get_static_body	pymunk.Space-class.html#_get_static_body
 pymunk.Space.step	pymunk.Space-class.html#step
 pymunk.Space._get_bodies	pymunk.Space-class.html#_get_bodies
 pymunk.Space._remove_constraint	pymunk.Space-class.html#_remove_constraint
-pymunk.Space.set_default_collision_handler	pymunk.Space-class.html#set_default_collision_handler
 pymunk.Space._set_iterations	pymunk.Space-class.html#_set_iterations
 pymunk.Space.add_post_step_callback	pymunk.Space-class.html#add_post_step_callback
 pymunk.Space.segment_query	pymunk.Space-class.html#segment_query
@@ -340,7 +337,7 @@ pymunk.Space.remove	pymunk.Space-class.html#remove
 pymunk.Space._add_constraint	pymunk.Space-class.html#_add_constraint
 pymunk.Space.shapes	pymunk.Space-class.html#shapes
 pymunk.Space.shape_query	pymunk.Space-class.html#shape_query
-pymunk.Space.resize_active_hash	pymunk.Space-class.html#resize_active_hash
+pymunk.Space.set_default_collision_handler	pymunk.Space-class.html#set_default_collision_handler
 pymunk.Space._get_iterations	pymunk.Space-class.html#_get_iterations
 pymunk.Space.__init__	pymunk.Space-class.html#__init__
 pymunk.Space._set_damping	pymunk.Space-class.html#_set_damping
@@ -627,7 +624,7 @@ pymunk.vec2d.Vec2d.__rmul__	pymunk.vec2d.Vec2d-class.html#__rmul__
 pymunk.vec2d.Vec2d.__rmod__	pymunk.vec2d.Vec2d-class.html#__rmod__
 pymunk.vec2d.Vec2d.__rshift__	pymunk.vec2d.Vec2d-class.html#__rshift__
 pymunk.vec2d.Vec2d.__rfloordiv__	pymunk.vec2d.Vec2d-class.html#__rfloordiv__
-pymunk.vec2d.Vec2d.get_distance	pymunk.vec2d.Vec2d-class.html#get_distance
+pymunk.vec2d.Vec2d.rotated_degrees	pymunk.vec2d.Vec2d-class.html#rotated_degrees
 pymunk.vec2d.Vec2d.__getitem__	pymunk.vec2d.Vec2d-class.html#__getitem__
 pymunk.vec2d.Vec2d.__setstate__	pymunk.vec2d.Vec2d-class.html#__setstate__
 pymunk.vec2d.Vec2d.rotate_degrees	pymunk.vec2d.Vec2d-class.html#rotate_degrees
@@ -650,6 +647,7 @@ pymunk.vec2d.Vec2d.__setitem__	pymunk.vec2d.Vec2d-class.html#__setitem__
 pymunk.vec2d.Vec2d.__divmod__	pymunk.vec2d.Vec2d-class.html#__divmod__
 pymunk.vec2d.Vec2d.normalize_return_length	pymunk.vec2d.Vec2d-class.html#normalize_return_length
 pymunk.vec2d.Vec2d.__imul__	pymunk.vec2d.Vec2d-class.html#__imul__
+pymunk.vec2d.Vec2d.int_tuple	pymunk.vec2d.Vec2d-class.html#int_tuple
 pymunk.vec2d.Vec2d.__xor__	pymunk.vec2d.Vec2d-class.html#__xor__
 pymunk.vec2d.Vec2d.length	pymunk.vec2d.Vec2d-class.html#length
 pymunk.vec2d.Vec2d.__mul__	pymunk.vec2d.Vec2d-class.html#__mul__
@@ -665,7 +663,7 @@ pymunk.vec2d.Vec2d.__abs__	pymunk.vec2d.Vec2d-class.html#__abs__
 pymunk.vec2d.Vec2d.cpvunrotate	pymunk.vec2d.Vec2d-class.html#cpvunrotate
 pymunk.vec2d.Vec2d.__itruediv__	pymunk.vec2d.Vec2d-class.html#__itruediv__
 pymunk.vec2d.Vec2d.__isub__	pymunk.vec2d.Vec2d-class.html#__isub__
-pymunk.vec2d.Vec2d.__rdivmod__	pymunk.vec2d.Vec2d-class.html#__rdivmod__
+pymunk.vec2d.Vec2d.__get_int_xy	pymunk.vec2d.Vec2d-class.html#__get_int_xy
 pymunk.vec2d.Vec2d._fields_	pymunk.vec2d.Vec2d-class.html#_fields_
 pymunk.vec2d.Vec2d.__invert__	pymunk.vec2d.Vec2d-class.html#__invert__
 pymunk.vec2d.Vec2d.__set_angle_degrees	pymunk.vec2d.Vec2d-class.html#__set_angle_degrees
@@ -685,6 +683,7 @@ pymunk.vec2d.Vec2d.__sub__	pymunk.vec2d.Vec2d-class.html#__sub__
 pymunk.vec2d.Vec2d.__rtruediv__	pymunk.vec2d.Vec2d-class.html#__rtruediv__
 pymunk.vec2d.Vec2d.cpvrotate	pymunk.vec2d.Vec2d-class.html#cpvrotate
 pymunk.vec2d.Vec2d.convert_to_basis	pymunk.vec2d.Vec2d-class.html#convert_to_basis
+pymunk.vec2d.Vec2d.__rdivmod__	pymunk.vec2d.Vec2d-class.html#__rdivmod__
 pymunk.vec2d.Vec2d.get_angle_degrees	pymunk.vec2d.Vec2d-class.html#get_angle_degrees
 pymunk.vec2d.Vec2d.__rrshift__	pymunk.vec2d.Vec2d-class.html#__rrshift__
 pymunk.vec2d.Vec2d.__init__	pymunk.vec2d.Vec2d-class.html#__init__
@@ -703,6 +702,6 @@ pymunk.vec2d.Vec2d._io	pymunk.vec2d.Vec2d-class.html#_io
 pymunk.vec2d.Vec2d.__div__	pymunk.vec2d.Vec2d-class.html#__div__
 pymunk.vec2d.Vec2d.__neg__	pymunk.vec2d.Vec2d-class.html#__neg__
 pymunk.vec2d.Vec2d.y	pymunk.vec2d.Vec2d-class.html#y
-pymunk.vec2d.Vec2d.rotated_degrees	pymunk.vec2d.Vec2d-class.html#rotated_degrees
+pymunk.vec2d.Vec2d.get_distance	pymunk.vec2d.Vec2d-class.html#get_distance
 pymunk.vec2d.Vec2d.__setangle	pymunk.vec2d.Vec2d-class.html#__setangle
 pymunk.vec2d.Vec2d.dot	pymunk.vec2d.Vec2d-class.html#dot

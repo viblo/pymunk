@@ -437,7 +437,8 @@ class Vec2d(ctypes.Structure):
     
     def __get_int_xy(self):
         return int(self.x), int(self.y)
-    int_tuple = property(__get_int_xy, doc=""""Return the x and y values as ints""")
+    int_tuple = property(__get_int_xy, 
+        doc="""Return the x and y values of this vector as ints""")
     
     @staticmethod
     def zero():

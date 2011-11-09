@@ -1,9 +1,13 @@
 
-import os
+import sys, os
 import shutil
 
-chipmunk_svn_path = "../../../chipmunk/branches/Chipmunk-6.x"
 pymunk_src_path = "../chipmunk_src"
+
+if len(sys.argv) > 1:
+    chipmunk_svn_path = sys.argv[1]
+else:
+    chipmunk_svn_path = raw_input('Enter path to chipmunk source')
 
 def copyfiles(basepath, subpath=""):
     path = os.path.join(basepath, subpath)

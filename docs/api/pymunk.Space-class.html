@@ -189,48 +189,6 @@ and joints to it and then step them all forward together through time.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="pymunk.Space-class.html#resize_static_hash" class="summary-sig-name">resize_static_hash</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">dim</span>=<span class="summary-sig-default">100.0</span>,
-        <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">1000</span>)</span><br />
-      The spatial hashes used by pymunk's collision detection are fairly
-size sensitive. dim is the size of the hash cells. Setting dim to the
-average objects size is likely to give the best performance.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="pymunk.Space-class.html#resize_active_hash" class="summary-sig-name">resize_active_hash</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">dim</span>=<span class="summary-sig-default">100.0</span>,
-        <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">1000</span>)</span><br />
-      The spatial hashes used by pymunk's collision detection are fairly
-size sensitive. dim is the size of the hash cells. Setting dim to the
-average objects size is likely to give the best performance.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a name="reindex_static"></a><span class="summary-sig-name">reindex_static</span>(<span class="summary-sig-arg">self</span>)</span><br />
       Update the collision detection info for the static shapes in the
 space. You only need to call this if you move one of the static shapes.</td>
@@ -715,61 +673,6 @@ contacts.</li>
 <p><em>Note</em> When removing objects from the space, make sure you remove any
 other objects that reference it. For instance, when you remove a body,
 remove the joints and shapes attached to it.</p>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="resize_static_hash"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">resize_static_hash</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">dim</span>=<span class="sig-default">100.0</span>,
-        <span class="sig-arg">count</span>=<span class="sig-default">1000</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>The spatial hashes used by pymunk's collision detection are fairly
-size sensitive. dim is the size of the hash cells. Setting dim to the
-average objects size is likely to give the best performance.</p>
-<p>count is the suggested minimum number of cells in the hash table.
-Bigger is better, but only to a point. Setting count to ~10x the number
-of objects in the hash is probably a good starting point.</p>
-<p>Because static shapes are only rehashed when you request it, it's
-possible to use a much higher count argument to resize_static_hash()
-than to resize_active_hash(). Doing so will use more memory though.</p>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="resize_active_hash"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">resize_active_hash</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">dim</span>=<span class="sig-default">100.0</span>,
-        <span class="sig-arg">count</span>=<span class="sig-default">1000</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>The spatial hashes used by pymunk's collision detection are fairly
-size sensitive. dim is the size of the hash cells. Setting dim to the
-average objects size is likely to give the best performance.</p>
-<p>count is the suggested minimum number of cells in the hash table.
-Bigger is better, but only to a point. Setting count to ~10x the number
-of objects in the hash is probably a good starting point.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -1394,7 +1297,7 @@ overlap each frame at 60Hz.</p>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sun Sep 04 20:04:29 2011
+    Generated by Epydoc 3.0.1 on Wed Nov 09 23:11:32 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
