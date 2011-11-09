@@ -435,6 +435,10 @@ class Vec2d(ctypes.Structure):
         y = self.dot(y_vector)/y_vector.get_length_sqrd()
         return Vec2d(x, y)
     
+    def __get_int_xy(self):
+        return int(self.x), int(self.y)
+    int_tuple = property(__get_int_xy, doc=""""Return the x and y values as ints""")
+    
     @staticmethod
     def zero():
         """A vector of zero length"""

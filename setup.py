@@ -93,6 +93,16 @@ long_description = """pymunk is a easy-to-use pythonic 2d physics library that c
 from distutils.command import bdist
 bdist.bdist.format_commands += ['msi']
 bdist.bdist.format_command['msi'] = ('bdist_msi', "Microsoft Installer") 
+
+source_folders = ['chipmunk_src', os.path.join('chipmunk_src','constraints')]
+sources = []
+"""
+for folder in source_folders:
+    for fn in os.listdir(folder):
+        if fn[-1] == 'c':
+            sources.append(fn_path)
+"""
+
 setup(
     name='pymunk'
     , url='http://code.google.com/p/pymunk/'
@@ -107,6 +117,9 @@ setup(
                                 , 'libchipmunk.so'
                                 , 'libchipmunk64.so'
                                 , 'libchipmunk.dylib']}
+    , data_files = [('chipmunk_src', ['*.c','prime.h'])
+                    ,('', ['LICENSE.txt'])]
+                                        
     , license='MIT License'
     , classifiers=classifiers
     , cmdclass={'build_chipmunk':build_chipmunk}
