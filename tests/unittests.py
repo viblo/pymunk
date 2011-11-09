@@ -528,10 +528,10 @@ class UnitTestArbiter(unittest.TestCase):
         self.post_solve_done = False
         self.b1.apply_impulse((10,0))
         def post_solve(space, arb, test_self):
-            self.assertAlmostEqual(arb.total_impulse.x, 11.25)
-            self.assertAlmostEqual(arb.total_impulse.y, -3.75)
-            self.assertAlmostEqual(arb.total_impulse_with_friction.x, 12.05)
-            self.assertAlmostEqual(arb.total_impulse_with_friction.y, -1.35)
+            self.assertAlmostEqual(arb.total_impulse.x, -11.25)
+            self.assertAlmostEqual(arb.total_impulse.y, 3.75)
+            self.assertAlmostEqual(arb.total_impulse_with_friction.x, -12.05)
+            self.assertAlmostEqual(arb.total_impulse_with_friction.y, 1.35)
             self.post_solve_done = True
             return True
         
