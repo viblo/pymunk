@@ -148,7 +148,8 @@ class cpBB(Structure):
 cpMomentForBox2 = chipmunk_lib.cpMomentForBox2
 cpMomentForBox2.restype = cpFloat
 cpMomentForBox2.argtypes = [cpFloat, cpBB]
-uintptr_t = c_uint
+if sizeof(c_void_p) == 4: uintptr_t = c_uint 
+else: uintptr_t = c_ulonglong
 cpHashValue = uintptr_t
 cpBool = c_int
 cpDataPointer = c_void_p
