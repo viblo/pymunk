@@ -11,9 +11,7 @@ from pymunk import Vec2d
 
 class PyramidDemo:
     def flipyv(self, v):
-        v = Vec2d(v)
-        v.y = -v.y+self.h
-        return v
+        return v[0], -v[1]+self.h
         
     def __init__(self):
         self.running = True
@@ -25,7 +23,6 @@ class PyramidDemo:
         ### Init pymunk and create space
         self.space = pymunk.Space()
         self.space.gravity = (0.0, -900.0)
-        
         ### ground
         body = pymunk.Body(pymunk.inf, pymunk.inf)
         shape = pymunk.Segment(body, (50, 100), (550,100), .0)
@@ -43,7 +40,7 @@ class PyramidDemo:
             for j in range(i, 25):
                 size= 5
                 points = [(-size, -size), (-size, size), (size,size), (size, -size)]
-                mass = 10.0
+                mass = 1.0
                 moment = pymunk.moment_for_poly(mass, points, (0,0))
                 body = pymunk.Body(mass, moment)
                 body.position = y
@@ -89,14 +86,14 @@ class PyramidDemo:
             pv1 = self.flipyv(body.position + shape.a.cpvrotate(body.rotation_vector))
             pv2 = self.flipyv(body.position + shape.b.cpvrotate(body.rotation_vector))
             pygame.draw.lines(self.screen, THECOLORS["lightgray"], False, [pv1,pv2])           
-    
+        
         for shape in self.space.shapes:
-            body = shape.body
+            if shape.body.is_sleeping:
+                continue
             ps = shape.get_points()
             ps.append(ps[0])
             ps = map(self.flipyv, ps)
-            color = THECOLORS["green"]
-            #pygame.draw.lines(self.screen, color, False, ps, 1)
+             #pygame.draw.lines(self.screen, color, False, ps, 1)
             pygame.draw.polygon(self.screen, THECOLORS["lightgray"], ps)
             pygame.draw.polygon(self.screen, THECOLORS["darkgrey"], ps,1)
 

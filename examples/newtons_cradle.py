@@ -39,23 +39,18 @@ elif sys.argv[1] == "/i": #interactive
 
 import pymunk as pm
 from pymunk import Vec2d
-
-
-
-def intlist(a):
-    return [int(x) for x in a]
     
 def drawcircle(image, colour, origin, radius, width=0):
     if width == 0:
-        pygame.draw.circle(image,colour,intlist(origin),int(radius))
+        pygame.draw.circle(image,colour,origin,int(radius))
     else:
         if radius > 65534/5: 
             radius = 65534/5
         circle = pygame.Surface([radius*2+width,radius*2+width]).convert_alpha()
         circle.fill([0,0,0,0])
-        pygame.draw.circle(circle, colour, intlist([circle.get_width()/2, circle.get_height()/2]), int(radius+(width/2)))
+        pygame.draw.circle(circle, colour, [circle.get_width()/2, circle.get_height()/2], radius+(width/2))
         if int(radius-(width/2)) > 0: 
-            pygame.draw.circle(circle, [0,0,0,0], intlist([circle.get_width()/2, circle.get_height()/2]), abs(int(radius-(width/2))))
+            pygame.draw.circle(circle, [0,0,0,0], [circle.get_width()/2, circle.get_height()/2], abs(int(radius-(width/2))))
         image.blit(circle, [origin[0] - (circle.get_width()/2), origin[1] - (circle.get_height()/2)])    
 
         print THECOLORS
@@ -104,7 +99,7 @@ def main():
         body.position = (x,-125+offset_y)
         body.start_position = Vec2d(body.position)
         shape = pm.Circle(body, radius)
-        shape.elasticity = 0.999
+        shape.elasticity = 0.9999999
         space.add(body, shape)
         bodies.append(body)
         pj = pm.PinJoint(static_body, body, (x,125+offset_y), (0,0))
@@ -145,7 +140,7 @@ def main():
                 shape = space.point_query_first(p)
                 if shape != None:
                     rest_length = mouse_body.position.get_distance(shape.body.position)
-                    ds = pm.DampedSpring(mouse_body, shape.body, (0,0), (0,0), rest_length, 1000, 1)
+                    ds = pm.DampedSpring(mouse_body, shape.body, (0,0), (0,0), rest_length, 1000, 10)
                     space.add(ds)
                     selected = ds
             

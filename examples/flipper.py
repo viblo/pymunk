@@ -48,7 +48,7 @@ r_flipper_joint_body = pymunk.Body(pymunk.inf, pymunk.inf)
 r_flipper_joint_body.position = r_flipper_body.position 
 j = pymunk.PinJoint(r_flipper_body, r_flipper_joint_body, (0,0), (0,0))
 #todo: tweak values of spring better
-s = pymunk.DampedRotarySpring(r_flipper_body, r_flipper_joint_body, 0.15, 20000000,500000)
+s = pymunk.DampedRotarySpring(r_flipper_body, r_flipper_joint_body, 0.15, 20000000,900000)
 space.add(j, s)
 
 # left flipper
@@ -60,7 +60,7 @@ space.add(l_flipper_body, l_flipper_shape)
 l_flipper_joint_body = pymunk.Body(pymunk.inf, pymunk.inf)
 l_flipper_joint_body.position = l_flipper_body.position 
 j = pymunk.PinJoint(l_flipper_body, l_flipper_joint_body, (0,0), (0,0))
-s = pymunk.DampedRotarySpring(l_flipper_body, l_flipper_joint_body, -0.15, 20000000,500000)
+s = pymunk.DampedRotarySpring(l_flipper_body, l_flipper_joint_body, -0.15, 20000000,900000)
 space.add(j, s)
 
 r_flipper_shape.group = l_flipper_shape.group = 1
