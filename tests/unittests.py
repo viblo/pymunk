@@ -1,4 +1,3 @@
-
 import pymunk as p
 from pymunk.vec2d import Vec2d
 import unittest
@@ -262,6 +261,34 @@ class UnitTestSpace(unittest.TestCase):
         self.s.reindex_shape(c)
         hit = self.s.point_query_first( (50,50) )
         self.assertEqual(hit, c)
+    
+    def testReindexStaticCollision(self):
+        b1 = p.Body(10, p.inf)
+        c1 = p.Circle(b1, 10)
+        b1.position = 20, 20
+        
+        b2 = p.Body(p.inf, p.inf)
+        s2 = p.Segment(b2, (-10,0), (10,0),1)
+        
+        self.s.add(b1,c1)
+        self.s.add_static(s2)
+
+        s2.b = (100,0)
+        self.s.gravity = 0, -100
+        
+        for x in range(10):
+            self.s.step(.1)
+        
+        self.assert_(b1.position.y < 0)
+        
+        b1.position = 20,20
+        b1.velocity = 0,0
+        self.s.reindex_static()
+        
+        for x in range(10):
+            self.s.step(.1)
+        
+        self.assert_(b1.position.y > 10)
     
     def testReindexShape(self):
         b = p.Body(p.inf, p.inf)
