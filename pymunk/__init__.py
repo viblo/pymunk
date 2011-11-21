@@ -752,12 +752,25 @@ class Body(object):
         return self._bodycontents.v
     velocity = property(_get_velocity, _set_velocity)
 
+    def _set_velocity_limit(self, vel):
+        self._bodycontents.v_limit = vel
+    def _get_velocity_limit(self):
+        return self._bodycontents.v_limit
+    velocity_limit = property(_get_velocity_limit, _set_velocity_limit)
+    
     def _set_angular_velocity(self, w):
         self._bodycontents.w = w
     def _get_angular_velocity(self):
         return self._bodycontents.w
     angular_velocity = property(_get_angular_velocity, _set_angular_velocity)
 
+    def _set_angular_velocity_limit(self, w):
+        self._bodycontents.w_limit = w
+    def _get_angular_velocity_limit(self):
+        return self._bodycontents.w_limit
+    angular_velocity_limit = property(_get_angular_velocity_limit, _set_angular_velocity_limit)
+    
+    
     def _set_force(self, f):
         self._bodycontents.f = f
     def _get_force(self):

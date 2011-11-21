@@ -116,6 +116,27 @@ class UnitTestBody(unittest.TestCase):
         s.step(1)
         self.assertEqual(b.velocity.x, 16)
         
+    def testVelocityLimit(self):
+        s = p.Space()
+        s.gravity = 1000,0
+        b = p.Body(1,1)
+        b.velocity_limit = 1
+        s.add(b)
+        s.step(1)
+        self.assertEqual(b.velocity_limit, 1)
+        self.assertEqual(b.velocity.x, 1)
+        
+    def testAngularVelocityLimit(self):
+        s = p.Space()
+        b = p.Body(1,1)
+        b.angular_velocity_limit = 1
+        s.add(b)
+        b.apply_force((1000,0), (0,10))
+        b.apply_force((-1000,0), (0,-10))
+        s.step(1)
+        self.assertEqual(b.angular_velocity_limit, 1)
+        self.assertEqual(abs(b.angular_velocity), 1)
+        
 class UnitTestShape(unittest.TestCase):
     def setUp(self):
         p.reset_shapeid_counter()
