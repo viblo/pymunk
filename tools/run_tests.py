@@ -1,12 +1,15 @@
 
 import sys
 sys.path.insert(0,'..')
-import tests.unittests
-import tests.vec2d_unittest
 import unittest
 
-suite = unittest.TestLoader().loadTestsFromModule(tests.vec2d_unittest)
-suite.addTests(unittest.TestLoader().loadTestsFromModule(tests.unittests))
+import tests
+
+ts = ["test_vec2d", "test_body", "test_common", "test_constraint", "test_shape", "test_space"]
+
+suite = unittest.TestSuite()   
+for t in ts:
+    suite.addTests(unittest.TestLoader().loadTestsFromName("tests." + t))
 
 if len(sys.argv) > 1:
     m = sys.argv[1]
