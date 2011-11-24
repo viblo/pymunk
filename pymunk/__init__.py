@@ -75,7 +75,11 @@ chipmunk_src folder (normally included in the pymunk source distribution).
 
 #inf = float('inf') # works only on python 2.6+
 inf = 1e100
-"""Infinity that can be passed as mass or inertia to Body. 
+"""@deprecated You should create static bodies by invoking the body constructor 
+without any arguments, not using the infinity field. Expect inf to be removed 
+in pymunk 3.0
+
+Infinity that can be passed as mass or inertia to Body. 
 Use this as mass and inertia when you need to create a static body.
 """
 
