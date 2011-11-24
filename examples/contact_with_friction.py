@@ -34,13 +34,13 @@ def main():
     balls = []
        
     ### walls
-    static_body = pm.Body(pm.inf, pm.inf)
+    static_body = pm.Body()
     static_lines = [pm.Segment(static_body, (11.0, 280.0), (407.0, 246.0), 0.0)
                     ,pm.Segment(static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
                     ]
     for l in static_lines:
         l.friction = 0.5
-    space.add_static(static_lines)
+    space.add(static_lines)
     
     ticks_to_next_ball = 10
     

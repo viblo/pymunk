@@ -32,13 +32,13 @@ class Main(pyglet.window.Window):
         self.space = pymunk.Space()
         self.space.gravity = Vec2d(0.,-900.)
         
-        static_body = pymunk.Body(pymunk.inf, pymunk.inf)
+        static_body = pymunk.Body()
         static_lines = [pymunk.Segment(static_body, Vec2d(50,100), Vec2d(550,100), 1),
                         pymunk.Segment(static_body, Vec2d(450,100), Vec2d(450,300), 1)
                         ]
         for l in static_lines:
             l.friction = 0.3
-        self.space.add_static(static_lines)
+        self.space.add(static_lines)
         
         for x in range(5):
             for y in range(12):

@@ -22,7 +22,7 @@ space.gravity = (0.0, -900.0)
 balls = []
    
 ### walls
-static_body = pymunk.Body(pymunk.inf, pymunk.inf)
+static_body = pymunk.Body()
 static_lines = [pymunk.Segment(static_body, (150, 100.0), (50.0, 550.0), 1.0)
                 ,pymunk.Segment(static_body, (450.0, 100.0), (550.0, 550.0), 1.0)
                 ,pymunk.Segment(static_body, (50.0, 550.0), (300.0, 600.0), 1.0)
@@ -32,7 +32,7 @@ static_lines = [pymunk.Segment(static_body, (150, 100.0), (50.0, 550.0), 1.0)
 for line in static_lines:
     line.elasticity = 0.7
     line.group = 1
-space.add_static(static_lines)
+space.add(static_lines)
 
 fp = [(20,-20), (-120, 0), (20,20)]
 mass = 100
@@ -44,7 +44,7 @@ r_flipper_body.position = 450, 100
 r_flipper_shape = pymunk.Poly(r_flipper_body, fp)
 space.add(r_flipper_body, r_flipper_shape)
 
-r_flipper_joint_body = pymunk.Body(pymunk.inf, pymunk.inf)
+r_flipper_joint_body = pymunk.Body()
 r_flipper_joint_body.position = r_flipper_body.position 
 j = pymunk.PinJoint(r_flipper_body, r_flipper_joint_body, (0,0), (0,0))
 #todo: tweak values of spring better
@@ -57,7 +57,7 @@ l_flipper_body.position = 150, 100
 l_flipper_shape = pymunk.Poly(l_flipper_body, [(-x,y) for x,y in fp])
 space.add(l_flipper_body, l_flipper_shape)
 
-l_flipper_joint_body = pymunk.Body(pymunk.inf, pymunk.inf)
+l_flipper_joint_body = pymunk.Body()
 l_flipper_joint_body.position = l_flipper_body.position 
 j = pymunk.PinJoint(l_flipper_body, l_flipper_joint_body, (0,0), (0,0))
 s = pymunk.DampedRotarySpring(l_flipper_body, l_flipper_joint_body, -0.15, 20000000,900000)
@@ -68,11 +68,11 @@ r_flipper_shape.elasticity = l_flipper_shape.elasticity = 0.4
 
 # "bumpers"
 for p in [(240,500), (360,500)]:
-    body = pymunk.Body(pymunk.inf, pymunk.inf)
+    body = pymunk.Body()
     body.position = p
     shape = pymunk.Circle(body, 10)
     shape.elasticity = 1.5
-    space.add_static(shape)
+    space.add(shape)
     balls.append(shape)
 
 while running:

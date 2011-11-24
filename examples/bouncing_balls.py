@@ -22,13 +22,13 @@ space.gravity = (0.0, -900.0)
 balls = []
    
 ### walls
-static_body = pm.Body(pm.inf, pm.inf)
+static_body = pm.Body()
 static_lines = [pm.Segment(static_body, (111.0, 280.0), (407.0, 246.0), 0.0)
                 ,pm.Segment(static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
                 ]  
 for line in static_lines:
     line.elasticity = 0.95
-space.add_static(static_lines)
+space.add(static_lines)
 
 ticks_to_next_ball = 10
 

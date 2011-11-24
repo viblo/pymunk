@@ -17,11 +17,11 @@ def main1():
     balls = []
        
     ### walls
-    #static_body = pm.Body(1e100, 1e100)
+    #static_body = pm.Body()
     #static_lines = [pm.Segment(static_body, Vec2d(111.0, 280.0), Vec2d(407.0, 246.0), 0.0)
     #                ,pm.Segment(static_body, Vec2d(407.0, 246.0), Vec2d(407.0, 343.0), 0.0)
     #                ]    
-    #space.add_static(static_lines)
+    #space.add(static_lines)
     
     ticks_to_next_ball = 10
     sum_of_stuff = 0

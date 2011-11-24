@@ -25,11 +25,11 @@ def main():
     balls = []
        
     ### static stuff
-    rot_center_body = pm.Body(pm.inf, pm.inf)
+    rot_center_body = pm.Body()
     rot_center_body.position = (300,300)
     
     ### To hold back the L
-    rot_limit_body = pm.Body(pm.inf, pm.inf)
+    rot_limit_body = pm.Body()
     rot_limit_body.position = (200,300)
        
     ### The moving L shape

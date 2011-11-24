@@ -36,7 +36,7 @@ def main():
     balls = []
     
     ### Mouse
-    mouse_body = pm.Body(pm.inf, pm.inf)
+    mouse_body = pm.Body()
     mouse_shape = pm.Circle(mouse_body, 3, Vec2d(0,0))
     mouse_shape.collision_type = COLLTYPE_MOUSE
     space.add(mouse_shape)
@@ -72,10 +72,10 @@ def main():
                     
                     line_point2 = Vec2d(event.pos[X], flipy(event.pos[Y]))
                     print line_point1, line_point2
-                    body = pm.Body(pm.inf, pm.inf)
+                    body = pm.Body()
                     shape= pm.Segment(body, line_point1, line_point2, 0.0)
                     shape.friction = 0.99
-                    space.add_static(shape)
+                    space.add(shape)
                     static_lines.append(shape)
                     line_point1 = None
             

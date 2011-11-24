@@ -31,11 +31,11 @@ def main():
     balls = []
        
     ### walls
-    static_body = pm.Body(pm.inf, pm.inf)
+    static_body = pm.Body()
     static_lines = [pm.Segment(static_body, (111.0, 320.0), (407.0, 354.0), 0.0)
                     ,pm.Segment(static_body, (407.0, 354.0), (407.0, 257.0), 0.0)
                     ]    
-    space.add_static(static_lines)
+    space.add(static_lines)
     
     ticks_to_next_ball = 10
 

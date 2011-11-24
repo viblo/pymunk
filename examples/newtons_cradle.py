@@ -85,8 +85,8 @@ def main():
     space = pm.Space(iterations = 1)
     space.gravity = (0.0, -1900.0)
     space.damping = 0.999 # to prevent it from blowing up.
-    static_body = pm.Body(pm.inf, pm.inf)
-    mouse_body = pm.Body(pm.inf, pm.inf)
+    static_body = pm.Body()
+    mouse_body = pm.Body()
    
     bodies = []
     for x in range(-100,150,50):

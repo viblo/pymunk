@@ -110,11 +110,11 @@ class PhysicsDemo:
         for i in range(len(points)-1):
             v1 = Vec2d(points[i].x, points[i].y)
             v2 = Vec2d(points[i+1].x, points[i+1].y)
-            wall_body = pm.Body(pm.inf, pm.inf)
+            wall_body = pm.Body()
             wall_shape = pm.Segment(wall_body, v1, v2, .0)
             wall_shape.friction = 1.0
             wall_shape.collision_type = COLLTYPE_DEFAULT
-            self.space.add_static(wall_shape)
+            self.space.add(wall_shape)
             self.walls.append(wall_shape)
         
     def run(self):
