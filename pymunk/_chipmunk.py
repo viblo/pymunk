@@ -11,82 +11,83 @@ function_pointer = platform_specific_functions()['function_pointer']
 
 
 
+
+def __bos(ptr): return __builtin_object_size (ptr, __USE_FORTIFY_LEVEL > 1) # macro
 def __attribute_format_strfmon__(a,b): return __attribute__ ((__format__ (__strfmon__, a, b))) # macro
-def CP_PRIVATE(symbol): return symbol ##_private # macro
-# cpfsqrt = sqrt # alias
-# def CP_DefineArbiterStructProperty(type,member,name): return CP_DefineArbiterStructGetter(type, member, name) CP_DefineArbiterStructSetter(type, member, name) # macro
-# cprealloc = realloc # alias
-def __REDIRECT_NTH_LDBL(name,proto,alias): return __REDIRECT_NTH (name, proto, alias) # macro
-# def CP_DefineArbiterStructSetter(type,member,name): return static inline void cpArbiterSet ##name(cpArbiter *arb, type value){arb->member = value;} # macro
-cpArbiterStateFirstColl = 0
-cpArbiterStateCached = 3
-# cpfpow = pow # alias
-def __REDIRECT_LDBL(name,proto,alias): return __REDIRECT (name, proto, alias) # macro
-# def __ASMNAME2(prefix,cname): return __STRING (prefix) cname # macro
-def __va_arg_pack_len(): return __builtin_va_arg_pack_len () # macro
+# def CP_ARBITER_GET_BODIES(arb,a,b): return cpBody *a, *b; cpArbiterGetBodies(arb, &a, &b); # macro
+# def __REDIRECT_NTH(name,proto,alias): return name proto __THROW __asm__ (__ASMNAME (#alias)) # macro
+# def CP_DefineSpaceStructSetter(type,member,name): return static inline void cpSpaceSet ##name(cpSpace *space, type value){space->member = value;} # macro
+# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(const cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct); return ((struct *)constraint)->member; } # macro
+# def CP_DefineArbiterStructGetter(type,member,name): return static inline type cpArbiterGet ##name(const cpArbiter *arb){return arb->member;} # macro
+# def __NTH(fct): return fct throw () # macro
+# def CP_DefineBodyStructSetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, const type value){ cpBodyActivate(body); cpBodyAssertSane(body); body->member = value; } # macro
 # def __nonnull(params): return __attribute__ ((__nonnull__ params)) # macro
-# def __REDIRECT(name,proto,alias): return name proto __asm__ (__ASMNAME (#alias)) # macro
-# cpfatan2 = atan2 # alias
-# cpfree = free # alias
-CP_POLY_SHAPE = 2
+def CP_PRIVATE(symbol): return symbol ##_private # macro
 # def CP_DefineConstraintProperty(struct,type,member,name): return CP_DefineConstraintGetter(struct, type, member, name) CP_DefineConstraintSetter(struct, type, member, name) # macro
+# cpfsqrt = sqrt # alias
+# cprealloc = realloc # alias
+# def CP_DefineArbiterStructProperty(type,member,name): return CP_DefineArbiterStructGetter(type, member, name) CP_DefineArbiterStructSetter(type, member, name) # macro
+cpArbiterStateFirstColl = 0
+def __REDIRECT_NTH_LDBL(name,proto,alias): return __REDIRECT_NTH (name, proto, alias) # macro
+cpArbiterStateCached = 3
+def __REDIRECT_LDBL(name,proto,alias): return __REDIRECT (name, proto, alias) # macro
+def __va_arg_pack_len(): return __builtin_va_arg_pack_len () # macro
+cpArbiterStateIgnore = 2
+# def CP_DefineBodyStructProperty(type,member,name): return CP_DefineBodyStructGetter(type, member, name) CP_DefineBodyStructSetter(type, member, name) # macro
+# __WCHAR_MAX = __WCHAR_MAX__ # alias
+def __va_arg_pack(): return __builtin_va_arg_pack () # macro
+# cpfpow = pow # alias
+# def cpConstraintCheckCast(constraint,struct): return cpAssertHard(constraint->CP_PRIVATE(klass) == struct ##GetClass(), "Constraint is not a "#struct) # macro
+# cpfatan2 = atan2 # alias
+CP_POLY_SHAPE = 2
 def __PMT(args): return args # macro
 # def __LDBL_REDIR(name,proto): return name proto # macro
+CP_NUM_SHAPES = 3
 CP_CIRCLE_SHAPE = 0
+def __STRING(x): return #x # macro
+# cpfree = free # alias
 # cpfcos = cos # alias
 # def cpAssertHard(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, 1, __VA_ARGS__) # macro
-cpArbiterStateNormal = 1
-# def CP_DefineConstraintStructGetter(type,member,name): return static inline type cpConstraint ##Get ##name(const cpConstraint *constraint){return constraint->member;} # macro
+# cpfceil = ceil # alias
 # def __errordecl(name,msg): return extern void name (void) __attribute__((__error__ (msg))) # macro
-cpArbiterStateIgnore = 2
-# def CP_DefineBodyStructGetter(type,member,name): return static inline type cpBodyGet ##name(const cpBody *body){return body->member;} # macro
+def __warnattr(msg): return __attribute__((__warning__ (msg))) # macro
 def __P(args): return args # macro
 # def cpAssertWarn(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 0, 0, __VA_ARGS__) # macro
-# def CP_DefineShapeStructSetter(type,member,name,activates): return static inline void cpShapeSet ##name(cpShape *shape, type value){ if(activates && shape->body) cpBodyActivate(shape->body); shape->member = value; } # macro
 def __attribute_format_arg__(x): return __attribute__ ((__format_arg__ (x))) # macro
+# def CP_DefineBodyStructGetter(type,member,name): return static inline type cpBodyGet ##name(const cpBody *body){return body->member;} # macro
 # def __warndecl(name,msg): return extern void name (void) __attribute__((__warning__ (msg))) # macro
-# cpfsin = sin # alias
+# def CP_DefineShapeStructSetter(type,member,name,activates): return static inline void cpShapeSet ##name(cpShape *shape, type value){ if(activates && shape->body) cpBodyActivate(shape->body); shape->member = value; } # macro
+# def __LDBL_REDIR_NTH(name,proto): return name proto __THROW # macro
+# def CP_DefineConstraintStructGetter(type,member,name): return static inline type cpConstraint ##Get ##name(const cpConstraint *constraint){return constraint->member;} # macro
+# def CP_ARBITER_GET_SHAPES(arb,a,b): return cpShape *a, *b; cpArbiterGetShapes(arb, &a, &b); # macro
 # def CP_DefineConstraintStructSetter(type,member,name): return static inline void cpConstraint ##Set ##name(cpConstraint *constraint, type value){ cpConstraintActivateBodies(constraint); constraint->member = value; } # macro
 # cpfacos = acos # alias
 # def cpAssertSoft(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, 0, __VA_ARGS__) # macro
-# __WCHAR_MAX = __WCHAR_MAX__ # alias
+# def __REDIRECT(name,proto,alias): return name proto __asm__ (__ASMNAME (#alias)) # macro
 def __GLIBC_PREREQ(maj,min): return ((__GLIBC__ << 16) + __GLIBC_MINOR__ >= ((maj) << 16) + (min)) # macro
-# cpfmod = fmod # alias
 # def CP_DefineShapeStructProperty(type,member,name,activates): return CP_DefineShapeStructGetter(type, member, name) CP_DefineShapeStructSetter(type, member, name, activates) # macro
-CP_NUM_SHAPES = 3
 def __CONCAT(x,y): return x ## y # macro
-def __STRING(x): return #x # macro
 # def __LDBL_REDIR1_NTH(name,proto,alias): return name proto __THROW # macro
 def __GNUC_PREREQ(maj,min): return ((__GNUC__ << 16) + __GNUC_MINOR__ >= ((maj) << 16) + (min)) # macro
-def __warnattr(msg): return __attribute__((__warning__ (msg))) # macro
+# cpfmod = fmod # alias
 # def CP_DefineSpaceStructGetter(type,member,name): return static inline type cpSpaceGet ##name(const cpSpace *space){return space->member;} # macro
-# def __LDBL_REDIR_NTH(name,proto): return name proto __THROW # macro
+# def CP_DefineShapeStructGetter(type,member,name): return static inline type cpShapeGet ##name(const cpShape *shape){return shape->member;} # macro
+# def __ASMNAME2(prefix,cname): return __STRING (prefix) cname # macro
 def __ASMNAME(cname): return __ASMNAME2 (__USER_LABEL_PREFIX__, cname) # macro
 # cpcalloc = calloc # alias
 # def CP_DefineSpaceStructProperty(type,member,name): return CP_DefineSpaceStructGetter(type, member, name) CP_DefineSpaceStructSetter(type, member, name) # macro
-# def CP_DefineArbiterStructGetter(type,member,name): return static inline type cpArbiterGet ##name(const cpArbiter *arb){return arb->member;} # macro
-# def CP_DefineBodyStructProperty(type,member,name): return CP_DefineBodyStructGetter(type, member, name) CP_DefineBodyStructSetter(type, member, name) # macro
-# def cpConstraintCheckCast(constraint,struct): return cpAssertHard(constraint->CP_PRIVATE(klass) == struct ##GetClass(), "Constraint is not a "#struct) # macro
+cpArbiterStateNormal = 1
 # def CP_DefineConstraintSetter(struct,type,member,name): return static inline void struct ##Set ##name(cpConstraint *constraint, type value){ cpConstraintCheckCast(constraint, struct); cpConstraintActivateBodies(constraint); ((struct *)constraint)->member = value; } # macro
-# def CP_ARBITER_GET_SHAPES(arb,a,b): return cpShape *a, *b; cpArbiterGetShapes(arb, &a, &b); # macro
 def __bos0(ptr): return __builtin_object_size (ptr, 0) # macro
 CP_SEGMENT_SHAPE = 1
-# def CP_DefineShapeStructGetter(type,member,name): return static inline type cpShapeGet ##name(const cpShape *shape){return shape->member;} # macro
+# cpfsin = sin # alias
+# def CP_DefineConstraintStructProperty(type,member,name): return CP_DefineConstraintStructGetter(type, member, name) CP_DefineConstraintStructSetter(type, member, name) # macro
 # cpfexp = exp # alias
 # def __LDBL_REDIR1(name,proto,alias): return name proto # macro
 # cpffloor = floor # alias
 def cpBodyAssertSane(body): return cpBodySanityCheck(body) # macro
-# cpfceil = ceil # alias
-# def CP_DefineConstraintStructProperty(type,member,name): return CP_DefineConstraintStructGetter(type, member, name) CP_DefineConstraintStructSetter(type, member, name) # macro
-def __bos(ptr): return __builtin_object_size (ptr, __USE_FORTIFY_LEVEL > 1) # macro
-# def CP_ARBITER_GET_BODIES(arb,a,b): return cpBody *a, *b; cpArbiterGetBodies(arb, &a, &b); # macro
-# def __REDIRECT_NTH(name,proto,alias): return name proto __THROW __asm__ (__ASMNAME (#alias)) # macro
-# def CP_DefineBodyStructSetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, const type value){ cpBodyActivate(body); cpBodyAssertSane(body); body->member = value; } # macro
+# def CP_DefineArbiterStructSetter(type,member,name): return static inline void cpArbiterSet ##name(cpArbiter *arb, type value){arb->member = value;} # macro
 # def CP_DeclareShapeGetter(struct,type,name): return type struct ##Get ##name(const cpShape *shape) # macro
-# def CP_DefineSpaceStructSetter(type,member,name): return static inline void cpSpaceSet ##name(cpSpace *space, type value){space->member = value;} # macro
-def __va_arg_pack(): return __builtin_va_arg_pack () # macro
-# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(const cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct); return ((struct *)constraint)->member; } # macro
-# def __NTH(fct): return fct throw () # macro
 cpMessage = chipmunk_lib.cpMessage
 cpMessage.restype = None
 cpMessage.argtypes = [STRING, STRING, c_int, c_int, c_int, STRING]
@@ -148,8 +149,10 @@ class cpBB(Structure):
 cpMomentForBox2 = chipmunk_lib.cpMomentForBox2
 cpMomentForBox2.restype = cpFloat
 cpMomentForBox2.argtypes = [cpFloat, cpBB]
+
 if sizeof(c_void_p) == 4: uintptr_t = c_uint 
 else: uintptr_t = c_ulonglong
+
 cpHashValue = uintptr_t
 cpBool = c_int
 cpDataPointer = c_void_p
