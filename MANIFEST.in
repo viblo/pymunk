@@ -1,0 +1,19 @@
+#txts
+include LICENSE.txt
+include README.txt
+include THANKS.txt
+#docs
+recursive-include docs *
+#examples
+recursive-include examples *.py
+recursive-include examples *.png
+#chipmunk src
+recursive-include chipmunk_src *.c
+recursive-include chipmunk_src *.h
+recursive-include chipmunk_src *.txt
+#tests
+recursive-include tests *.py
+#tools
+recursive-include tools *.py
+recursive-include tools *.css
+recursive-include tools *.config

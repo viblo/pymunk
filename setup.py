@@ -88,20 +88,10 @@ classifiers = ['Development Status :: 5 - Production/Stable'
     , 'Topic :: Software Development :: Libraries :: pygame'
 ]
 
-long_description = """pymunk is a easy-to-use pythonic 2d physics library that can be used whenever you need 2d rigid body physics from Python. It is build on top of the very nice 2d physics library Chipmunk, http://code.google.com/p/chipmunk-physics/"""
-
 from distutils.command import bdist
 bdist.bdist.format_commands += ['msi']
 bdist.bdist.format_command['msi'] = ('bdist_msi', "Microsoft Installer") 
 
-source_folders = ['chipmunk_src', os.path.join('chipmunk_src','constraints')]
-sources = []
-"""
-for folder in source_folders:
-    for fn in os.listdir(folder):
-        if fn[-1] == 'c':
-            sources.append(fn_path)
-"""
 
 setup(
     name='pymunk'
@@ -109,17 +99,14 @@ setup(
     , author='Victor Blomqvist'
     , author_email='vb@viblo.se'
     , version='2.1.0' # remember to change me for new versions!
-    , description='A python wrapper for the 2d physics library Chipmunk'
-    , long_description=long_description
+    , description='pymunk is a easy-to-use pythonic 2d physics library built on top of Chipmunk'
+    , long_description=open('README.txt').read()
     , packages=['pymunk']
     , package_data = {'pymunk': ['chipmunk.dll'
                                 , 'chipmunk64.dll'
                                 , 'libchipmunk.so'
                                 , 'libchipmunk64.so'
                                 , 'libchipmunk.dylib']}
-    , data_files = [('chipmunk_src', ['*.c','prime.h'])
-                    ,('', ['LICENSE.txt'])]
-                                        
     , license='MIT License'
     , classifiers=classifiers
     , cmdclass={'build_chipmunk':build_chipmunk}
