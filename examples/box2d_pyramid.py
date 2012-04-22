@@ -27,7 +27,7 @@ class PyramidDemo:
         body = pymunk.Body()
         shape = pymunk.Segment(body, (50, 100), (550,100), .0)
         shape.friction = 1.0
-        self.space.add(shape)
+        self.space.add_static(shape)
         
         ### pyramid
         x=Vec2d(-100, 7.5) + (300,100)
