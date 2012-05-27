@@ -128,6 +128,16 @@ class UnitTestConstraint(unittest.TestCase):
         self.assertEqual(j.bias_coef, 40)
         self.assertEqual(j.max_force, 50)
         
+    def testGrooveJoint(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        a.position = 10,10
+        b.position = 20,20
+        j = p.GrooveJoint(a,b, (5,0), (7,7), (3,3))
+        
+        self.assertEqual(j.anchr2, (3,3))
+        self.assertEqual(j.groove_a, (5,0))
+        self.assertEqual(j.groove_b, (7,7))
+        
 ####################################################################
 if __name__ == "__main__":
     print ("testing pymunk version " + p.version)

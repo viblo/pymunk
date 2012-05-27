@@ -8,7 +8,7 @@ You usually dont need to use this module directly, instead use the high level bi
 from ctypes import *
 from .vec2d import Vec2d
 from ._chipmunk import cpBool, cpFloat
-from ._chipmunk import cpBB, cpBody, cpVect, cpArbiter, cpShape, cpConstraint
+from ._chipmunk import cpBB, cpBody, cpVect, cpArbiter, cpShape, cpConstraint, cpGrooveJoint
 from ._chipmunk import chipmunk_lib
 from ._chipmunk import function_pointer
 
@@ -30,3 +30,7 @@ cpBBContainsBB = (function_pointer(c_int, cpBB, cpBB)).in_dll(chipmunk_lib, '_cp
 cpBBContainsVect = (function_pointer(c_int, cpBB, cpVect)).in_dll(chipmunk_lib, '_cpBBContainsVect')
 cpBBMerge = (function_pointer(cpBB, cpBB, cpBB)).in_dll(chipmunk_lib, '_cpBBMerge')
 cpBBExpand = (function_pointer(cpBB, cpBB, cpVect)).in_dll(chipmunk_lib, '_cpBBExpand')
+
+#unused for now..
+#cpGrooveJointGetGrooveA = (function_pointer(cpVect, POINTER(cpGrooveJoint))).in_dll(chipmunk_lib, '_cpGrooveJointGetGrooveA')
+#cpGrooveJointGetGrooveB = (function_pointer(cpVect, POINTER(cpGrooveJoint))).in_dll(chipmunk_lib, '_cpGrooveJointGetGrooveA')

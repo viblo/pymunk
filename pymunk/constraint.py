@@ -229,12 +229,24 @@ class GrooveJoint(Constraint):
         self._pjc.anchr2 = anchr
     anchr2 = property(_get_anchr2, _set_anchr2)
     
+    def _get_groove_a(self):
+        return self._pjc.grv_a
+    groove_a = property(_get_groove_a)
+    
+    def _get_groove_b(self):
+        return self._pjc.grv_b
+    groove_b = property(_get_groove_b)
+    
 class DampedSpring(Constraint):
     """A damped spring"""
     def __init__(self, a, b, anchr1, anchr2, rest_length, stiffness, damping):
         """Defined much like a slide joint. 
         
         :Parameters:
+            anchr1 : Vec2d or (x,y)
+                Anchor point 1, relative to body a
+            anchr2 : Vec2d or (x,y)
+                Anchor point 2, relative to body b
             rest_length : float
                 The distance the spring wants to be.
             stiffness : float
