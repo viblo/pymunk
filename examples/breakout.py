@@ -1,6 +1,6 @@
 import math, sys, random
 import os
- 
+
 import pygame
 from pygame.locals import *
 from pygame.color import *
@@ -74,7 +74,7 @@ def draw_space(screen, space):
     
     # Constraints
     for c in space.constraints:
-        if isinstance(c, pymunk.GrooveJoint):
+        if isinstance(c, pymunk.GrooveJoint) and hasattr(c, "groove_a"):
             pv1 = c.a.position + c.groove_a
             pv2 = c.a.position + c.groove_b
         else:
@@ -96,15 +96,12 @@ def draw_space(screen, space):
             pygame.draw.lines(screen, shape.color, False, ps, 1)
     
 def main():
-    
     ### PyGame init
     pygame.init()
     screen = pygame.display.set_mode((width,height)) 
-    
     clock = pygame.time.Clock()
     running = True
-    font = pygame.font.Font(None, 16)
-    
+    font = pygame.font.SysFont("Arial", 16)
     ### Physics stuff
     space = pymunk.Space()   
     
