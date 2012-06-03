@@ -65,7 +65,7 @@ class UnitTestBody(unittest.TestCase):
         self.assertEqual(b.local_to_world((1,1)), Vec2d(11,21))
         self.assertEqual(b.world_to_local((1,1)), Vec2d(-9,-19))
         
-    def testPositonFunction(self):
+    def testPositionFunction(self):
         s = p.Space()
         b = p.Body(1,1)
         def f(body, dt):

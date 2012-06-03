@@ -20,7 +20,7 @@ def platform_specific_functions():
     return d
     
  
-def load_library(libname, print_path=True):
+def load_library(libname, debug_lib=True):
     # lib gets loaded from
     # 32bit python: pymunk/libchipmunk.so, libchipmunk.dylib or chipmunk.dll
     # 64 bit python pymunk/libchipmunk64.so, libchipmunk.dylib or chipmunk64.dll
@@ -62,7 +62,7 @@ def load_library(libname, print_path=True):
     libfn = os.path.join(path, libfn)
     
     
-    if print_path:
+    if debug_lib:
         print ("Loading chipmunk for %s (%sbit) [%s]" % (s, arch, libfn))
     try:
         lib = platform_specific_functions()['library_loader'].LoadLibrary(libfn)

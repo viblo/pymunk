@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2011 Victor Blomqvist
+# Copyright (c) 2007-2012 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -45,6 +45,7 @@ __all__ = ["inf", "version", "chipmunk_version"
         , "SegmentQueryInfo", "Contact", "Arbiter", "BB"]
 
 import ctypes as ct
+
 import pymunk._chipmunk as cp 
 import pymunk._chipmunk_ffi as cpffi
 import pymunk.util as u
@@ -81,21 +82,6 @@ in pymunk 3.0
 
 Infinity that can be passed as mass or inertia to Body. 
 Use this as mass and inertia when you need to create a static body.
-"""
-
-options = {
-    "debug_lib" : True
-}
-"""Global dict of pymunk options. TODO: Make me work!
-To change make sure you import pymunk before any sub-packages and then set the 
-option you want. For example::
-    import pymunk
-    pymunk.option["debug_lib"] = False
-    
-The only available currently available option is
-debug_lib
-    Print out useful debug information about where pymunk tries to load 
-    the chipmunk library from.
 """
 
 def _init_pymunk():
@@ -170,7 +156,14 @@ class Space(object):
         # it doesnt is on program exit so should be more or less ok to skip 
         # the call to *free in that case
         if cp is not None: 
-            cp.cpSpaceFree(self._space)
+            #print "Free space", self._space
+            #for b in self.bodies:
+                #self.remove(b)
+                #print "removed", b
+            try:
+                cp.cpSpaceFree(self._space)
+            except Exception, e:
+                pass
 
 
     def _set_iterations(self, iterations):
@@ -708,6 +701,7 @@ class Body(object):
         
     def __del__(self):
         if cp is not None:
+            print "Free body", self._body
             cp.cpBodyFree(self._body)
 
     def _set_mass(self, mass):

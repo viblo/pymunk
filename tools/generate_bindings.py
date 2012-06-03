@@ -61,7 +61,7 @@ STRING = c_char_p
 
 from .libload import load_library, platform_specific_functions
 _lib_debug = True #Set to True to print the Chipmunk path.
-chipmunk_lib = load_library("chipmunk", print_path=_lib_debug)
+chipmunk_lib = load_library("chipmunk", debug_lib=_lib_debug)
 function_pointer = platform_specific_functions()['function_pointer']
 
 """

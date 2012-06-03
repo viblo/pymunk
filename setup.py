@@ -8,23 +8,30 @@ from distutils.core import setup
 class build_chipmunk(distutils.cmd.Command):
     description = """build chipmunk to a shared library"""
     
-    user_options = [('compiler=', 'c', 'specify the compiler type')]
-
+    user_options = [('compiler=', 'c', 'specify the compiler type')
+                    ,('release', 'n', 'build chipmunk without debug asserts')
+                    ]
+    
+    boolean_options = ['release']
+    
     help_options = [
-        ('help-compiler', None,
-         "list available compilers", cc.show_compilers),
+        ('help-compiler', None, "list available compilers", cc.show_compilers)
         ]
 
     compiler = None  
         
     def initialize_options (self):
-        self.compiler= None
+        self.compiler = None
+        self.release = False
         
     def finalize_options (self):
         pass
     
     def compile_chipmunk(self):
-        print("compiling chipmunk...")
+        if self.release:
+            print("compiling chipmunk in Release mode (No debug output or asserts)" )
+        else:
+            print("compiling chipmunk in Debug mode (Defualt, prints debug output and asserts)")
         
         compiler = cc.new_compiler(compiler=self.compiler)
 
@@ -40,7 +47,10 @@ class build_chipmunk(distutils.cmd.Command):
                     
         include_folders = [os.path.join('chipmunk_src','include','chipmunk')]
         
-        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-fPIC', '-DCHIPMUNK_FFI'] #, '-DCP_ALLOW_PRIVATE_ACCESS', '-DNDEBUG']
+        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-DCHIPMUNK_FFI', '-Wno-unknown-pragmas'] #,'-fPIC' '-DCP_ALLOW_PRIVATE_ACCESS']
+        
+        if self.release:
+            compiler_preargs.append('-DNDEBUG')
         
         # check if we are on a 64bit python
         arch = ctypes.sizeof(ctypes.c_voidp) * 8
@@ -55,6 +65,15 @@ class build_chipmunk(distutils.cmd.Command):
         
         if platform.system() in ('Windows', 'Microsoft'):
             compiler_preargs += ['-mrtd'] # compile with stddecl instead of cdecl
+        
+        for x in compiler.executables:
+            args = getattr(compiler, x)
+            try:
+                args.remove('-mno-cygwin')
+                args.remove('-mdll')
+                args.append('-shared')
+            except:
+                pass
         
         objs = compiler.compile(sources, include_dirs=include_folders, extra_preargs=compiler_preargs)
         
@@ -101,7 +120,7 @@ setup(
     , version='2.1.0' # remember to change me for new versions!
     , description='pymunk is a easy-to-use pythonic 2d physics library built on top of Chipmunk'
     , long_description=open('README.txt').read()
-    , packages=['pymunk']
+    , packages=['pymunk','pymunkoptions']
     , package_data = {'pymunk': ['chipmunk.dll'
                                 , 'chipmunk64.dll'
                                 , 'libchipmunk.so'
