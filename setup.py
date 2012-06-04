@@ -47,7 +47,7 @@ class build_chipmunk(distutils.cmd.Command):
                     
         include_folders = [os.path.join('chipmunk_src','include','chipmunk')]
         
-        compiler_preargs = ['-std=gnu99', '-ffast-math', '-DCHIPMUNK_FFI', '-Wno-unknown-pragmas'] #,'-fPIC' '-DCP_ALLOW_PRIVATE_ACCESS']
+        compiler_preargs = ['-std=gnu99', '-ffast-math', '-DCHIPMUNK_FFI', '-Wno-unknown-pragmas', '-fPIC'] # '-DCP_ALLOW_PRIVATE_ACCESS']
         
         if self.release:
             compiler_preargs.append('-DNDEBUG')
