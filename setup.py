@@ -9,7 +9,7 @@ class build_chipmunk(distutils.cmd.Command):
     description = """build chipmunk to a shared library"""
     
     user_options = [('compiler=', 'c', 'specify the compiler type')
-                    ,('release', 'n', 'build chipmunk without debug asserts')
+                    ,('release', 'r', 'build chipmunk without debug asserts')
                     ]
     
     boolean_options = ['release']
@@ -47,7 +47,7 @@ class build_chipmunk(distutils.cmd.Command):
                     
         include_folders = [os.path.join('chipmunk_src','include','chipmunk')]
         
-        compiler_preargs = ['-O3', '-std=gnu99', '-ffast-math', '-DCHIPMUNK_FFI', '-Wno-unknown-pragmas'] #,'-fPIC' '-DCP_ALLOW_PRIVATE_ACCESS']
+        compiler_preargs = ['-std=gnu99', '-ffast-math', '-DCHIPMUNK_FFI', '-Wno-unknown-pragmas'] #,'-fPIC' '-DCP_ALLOW_PRIVATE_ACCESS']
         
         if self.release:
             compiler_preargs.append('-DNDEBUG')
@@ -56,20 +56,22 @@ class build_chipmunk(distutils.cmd.Command):
         arch = ctypes.sizeof(ctypes.c_voidp) * 8
         
         if arch == 64 and platform.system() == 'Linux':
-            compiler_preargs += ['-m64']
+            compiler_preargs += ['-m64', '-O3']
         elif arch == 32 and platform.system() == 'Linux':
-            compiler_preargs += ['-m32']
+            compiler_preargs += ['-m32', '-O3']
         elif platform.system() == 'Darwin':
+            #No -O3 on OSX. There's a bug in the clang compiler when using O3.
             compiler_preargs += ['-arch', 'i386', '-arch', 'x86_64']
         ### because mingw only ships with gcc 3 we don't add any -mXX argument on Windows
         
         if platform.system() in ('Windows', 'Microsoft'):
-            compiler_preargs += ['-mrtd'] # compile with stddecl instead of cdecl
+            # compile with stddecl instead of cdecl (rtd)
+            compiler_preargs += ['-mrtd', '-O3'] 
         
         for x in compiler.executables:
             args = getattr(compiler, x)
             try:
-                args.remove('-mno-cygwin')
+                args.remove('-mno-cygwin') #Not available on newer versions of gcc 
                 args.remove('-mdll')
                 args.append('-shared')
             except:
@@ -89,7 +91,8 @@ class build_chipmunk(distutils.cmd.Command):
         if platform.system() == 'Linux' and platform.machine() == 'x86_64':
             linker_preargs += ['-fPIC']
         if platform.system() in ('Windows', 'Microsoft'):
-            linker_preargs += ['-mrtd'] # link with stddecl instead of cdecl
+            # link with stddecl instead of cdecl
+            linker_preargs += ['-mrtd'] 
             # remove link against msvcr*. this is a bit ugly maybe.. :)
             compiler.dll_libraries = [lib for lib in compiler.dll_libraries if not lib.startswith("msvcr")]
         compiler.link(cc.CCompiler.SHARED_LIBRARY, objs, libname, output_dir = 'pymunk', extra_preargs=linker_preargs)
