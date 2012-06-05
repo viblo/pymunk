@@ -19,9 +19,7 @@
  * SOFTWARE.
  */
  
-#include <stdlib.h>
 #include <float.h>
-#include <math.h>
 
 #include "chipmunk_private.h"
 #include "constraints/util.h"
@@ -88,7 +86,7 @@ cpBodyInitStatic(cpBody *body)
 }
 
 cpBody *
-cpBodyNewStatic()
+cpBodyNewStatic(void)
 {
 	return cpBodyInitStatic(cpBodyAlloc());
 }
@@ -126,7 +124,7 @@ cpBodySanityCheck(cpBody *body)
 	cpAssertSoft(body->w == body->w && cpfabs(body->w) != INFINITY, "Body's angular velocity is invalid.");
 	cpAssertSoft(body->t == body->t && cpfabs(body->t) != INFINITY, "Body's torque is invalid.");
 	
-	cpv_assert_sane(body->rot, "Internal error: Body's rotation vector is invalid.");
+	cpv_assert_sane(body->rot, "Body's rotation vector is invalid.");
 	
 	cpAssertSoft(body->v_limit == body->v_limit, "Body's velocity limit is invalid.");
 	cpAssertSoft(body->w_limit == body->w_limit, "Body's angular velocity limit is invalid.");
@@ -139,6 +137,8 @@ cpBodySanityCheck(cpBody *body)
 void
 cpBodySetMass(cpBody *body, cpFloat mass)
 {
+	cpAssertHard(mass > 0.0f, "Mass must be positive and non-zero.");
+	
 	cpBodyActivate(body);
 	body->m = mass;
 	body->m_inv = 1.0f/mass;
@@ -147,6 +147,8 @@ cpBodySetMass(cpBody *body, cpFloat mass)
 void
 cpBodySetMoment(cpBody *body, cpFloat moment)
 {
+	cpAssertHard(moment > 0.0f, "Moment of Inertia must be positive and non-zero.");
+	
 	cpBodyActivate(body);
 	body->i = moment;
 	body->i_inv = 1.0f/moment;
@@ -269,6 +271,24 @@ cpBodyApplyImpulse(cpBody *body, const cpVect j, const cpVect r)
 {
 	cpBodyActivate(body);
 	apply_impulse(body, j, r);
+}
+
+static inline cpVect
+cpBodyGetVelAtPoint(cpBody *body, cpVect r)
+{
+	return cpvadd(body->v, cpvmult(cpvperp(r), body->w));
+}
+
+cpVect
+cpBodyGetVelAtWorldPoint(cpBody *body, cpVect point)
+{
+	return cpBodyGetVelAtPoint(body, cpvsub(point, body->p));
+}
+
+cpVect
+cpBodyGetVelAtLocalPoint(cpBody *body, cpVect point)
+{
+	return cpBodyGetVelAtPoint(body, cpvrotate(point, body->rot));
 }
 
 void

@@ -22,7 +22,7 @@
 /// @defgroup cpSimpleMotor cpSimpleMotor
 /// @{
 
-const cpConstraintClass *cpSimpleMotorGetClass();
+const cpConstraintClass *cpSimpleMotorGetClass(void);
 
 /// @private
 typedef struct cpSimpleMotor {
@@ -35,11 +35,11 @@ typedef struct cpSimpleMotor {
 } cpSimpleMotor;
 
 /// Allocate a simple motor.
-cpSimpleMotor *cpSimpleMotorAlloc(void);
+cpSimpleMotor* cpSimpleMotorAlloc(void);
 /// initialize a simple motor.
-cpSimpleMotor *cpSimpleMotorInit(cpSimpleMotor *joint, cpBody *a, cpBody *b, cpFloat rate);
+cpSimpleMotor* cpSimpleMotorInit(cpSimpleMotor *joint, cpBody *a, cpBody *b, cpFloat rate);
 /// Allocate and initialize a simple motor.
-cpConstraint *cpSimpleMotorNew(cpBody *a, cpBody *b, cpFloat rate);
+cpConstraint* cpSimpleMotorNew(cpBody *a, cpBody *b, cpFloat rate);
 
 CP_DefineConstraintProperty(cpSimpleMotor, cpFloat, rate, Rate);
 

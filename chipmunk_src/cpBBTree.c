@@ -74,13 +74,7 @@ typedef struct Thread {
 
 struct Pair { Thread a, b; };
 
-#pragma mark Misc Functions
-
-//static inline cpFloat
-//cpBBProximity(cpBB a, cpBB b)
-//{
-//	return cpfabs(a.l + a.r - b.l - b.r) + cpfabs(a.b + b.t - b.b - b.t);
-//}
+//MARK: Misc Functions
 
 static inline cpBB
 GetBB(cpBBTree *tree, void *obj)
@@ -129,7 +123,7 @@ IncrementStamp(cpBBTree *tree)
 	}
 }
 
-#pragma mark Pair/Thread Functions
+//MARK: Pair/Thread Functions
 
 static void
 PairRecycle(cpBBTree *tree, Pair *pair)
@@ -149,7 +143,7 @@ PairFromPool(cpBBTree *tree)
 	} else {
 		// Pool is exhausted, make more
 		int count = CP_BUFFER_BYTES/sizeof(Pair);
-		cpAssertSoft(count, "Buffer size is too small.");
+		cpAssertHard(count, "Internal Error: Buffer size is too small.");
 		
 		Pair *buffer = (Pair *)cpcalloc(1, CP_BUFFER_BYTES);
 		cpArrayPush(tree->allocatedBuffers, buffer);
@@ -218,7 +212,7 @@ PairInsert(Node *a, Node *b, cpBBTree *tree)
 }
 
 
-#pragma mark Node Functions
+//MARK: Node Functions
 
 static void
 NodeRecycle(cpBBTree *tree, Node *node)
@@ -238,7 +232,7 @@ NodeFromPool(cpBBTree *tree)
 	} else {
 		// Pool is exhausted, make more
 		int count = CP_BUFFER_BYTES/sizeof(Node);
-		cpAssertSoft(count, "Buffer size is too small.");
+		cpAssertHard(count, "Internal Error: Buffer size is too small.");
 		
 		Node *buffer = (Node *)cpcalloc(1, CP_BUFFER_BYTES);
 		cpArrayPush(tree->allocatedBuffers, buffer);
@@ -293,8 +287,8 @@ NodeOther(Node *node, Node *child)
 static inline void
 NodeReplaceChild(Node *parent, Node *child, Node *value, cpBBTree *tree)
 {
-	cpAssertSoft(!NodeIsLeaf(parent), "Cannot replace child of a leaf.");
-	cpAssertSoft(child == parent->A || child == parent->B, "Node is not a child of parent.");
+	cpAssertSoft(!NodeIsLeaf(parent), "Internal Error: Cannot replace child of a leaf.");
+	cpAssertSoft(child == parent->A || child == parent->B, "Internal Error: Node is not a child of parent.");
 	
 	if(parent->A == child){
 		NodeRecycle(tree, parent->A);
@@ -309,7 +303,13 @@ NodeReplaceChild(Node *parent, Node *child, Node *value, cpBBTree *tree)
 	}
 }
 
-#pragma mark Subtree Functions
+//MARK: Subtree Functions
+
+static inline cpFloat
+cpBBProximity(cpBB a, cpBB b)
+{
+	return cpfabs(a.l + a.r - b.l - b.r) + cpfabs(a.b + a.t - b.b - b.t);
+}
 
 static Node *
 SubtreeInsert(Node *subtree, Node *leaf, cpBBTree *tree)
@@ -322,8 +322,10 @@ SubtreeInsert(Node *subtree, Node *leaf, cpBBTree *tree)
 		cpFloat cost_a = cpBBArea(subtree->B->bb) + cpBBMergedArea(subtree->A->bb, leaf->bb);
 		cpFloat cost_b = cpBBArea(subtree->A->bb) + cpBBMergedArea(subtree->B->bb, leaf->bb);
 		
-//		cpFloat cost_a = cpBBProximity(subtree->a->bb, leaf->bb);
-//		cpFloat cost_b = cpBBProximity(subtree->b->bb, leaf->bb);
+		if(cost_a == cost_b){
+			cost_a = cpBBProximity(subtree->A->bb, leaf->bb);
+			cost_b = cpBBProximity(subtree->B->bb, leaf->bb);
+		}
 		
 		if(cost_b < cost_a){
 			NodeSetB(subtree, SubtreeInsert(subtree->B, leaf, tree));
@@ -350,17 +352,24 @@ SubtreeQuery(Node *subtree, void *obj, cpBB bb, cpSpatialIndexQueryFunc func, vo
 }
 
 
-// TODO Needs early exit optimization for ray queries
-static void
-SubtreeSegmentQuery(Node *subtree, void *obj, cpVect a, cpVect b, cpSpatialIndexSegmentQueryFunc func, void *data)
+static cpFloat
+SubtreeSegmentQuery(Node *subtree, void *obj, cpVect a, cpVect b, cpFloat t_exit, cpSpatialIndexSegmentQueryFunc func, void *data)
 {
-	if(cpBBIntersectsSegment(subtree->bb, a, b)){
-		if(NodeIsLeaf(subtree)){
-			func(obj, subtree->obj, data);
+	if(NodeIsLeaf(subtree)){
+		return func(obj, subtree->obj, data);
+	} else {
+		cpFloat t_a = cpBBSegmentQuery(subtree->A->bb, a, b);
+		cpFloat t_b = cpBBSegmentQuery(subtree->B->bb, a, b);
+		
+		if(t_a < t_b){
+			if(t_a < t_exit) t_exit = cpfmin(t_exit, SubtreeSegmentQuery(subtree->A, obj, a, b, t_exit, func, data));
+			if(t_b < t_exit) t_exit = cpfmin(t_exit, SubtreeSegmentQuery(subtree->B, obj, a, b, t_exit, func, data));
 		} else {
-			SubtreeSegmentQuery(subtree->A, obj, a, b, func, data);
-			SubtreeSegmentQuery(subtree->B, obj, a, b, func, data);
+			if(t_b < t_exit) t_exit = cpfmin(t_exit, SubtreeSegmentQuery(subtree->B, obj, a, b, t_exit, func, data));
+			if(t_a < t_exit) t_exit = cpfmin(t_exit, SubtreeSegmentQuery(subtree->A, obj, a, b, t_exit, func, data));
 		}
+		
+		return t_exit;
 	}
 }
 
@@ -393,7 +402,7 @@ SubtreeRemove(Node *subtree, Node *leaf, cpBBTree *tree)
 	}
 }
 
-#pragma mark Marking Functions
+//MARK: Marking Functions
 
 typedef struct MarkContext {
 	cpBBTree *tree;
@@ -459,7 +468,7 @@ MarkSubtree(Node *subtree, MarkContext *context)
 	}
 }
 
-#pragma mark Leaf Functions
+//MARK: Leaf Functions
 
 static Node *
 LeafNew(cpBBTree *tree, void *obj, cpBB bb)
@@ -516,7 +525,7 @@ LeafAddPairs(Node *leaf, cpBBTree *tree)
 	}
 }
 
-#pragma mark Memory Management Functions
+//MARK: Memory Management Functions
 
 cpBBTree *
 cpBBTreeAlloc(void)
@@ -580,7 +589,7 @@ cpBBTreeDestroy(cpBBTree *tree)
 	cpArrayFree(tree->allocatedBuffers);
 }
 
-#pragma mark Insert/Remove
+//MARK: Insert/Remove
 
 static void
 cpBBTreeInsert(cpBBTree *tree, void *obj, cpHashValue hashid)
@@ -611,7 +620,7 @@ cpBBTreeContains(cpBBTree *tree, void *obj, cpHashValue hashid)
 	return (cpHashSetFind(tree->leaves, hashid, obj) != NULL);
 }
 
-#pragma mark Reindex
+//MARK: Reindex
 
 static void
 cpBBTreeReindexQuery(cpBBTree *tree, cpSpatialIndexQueryFunc func, void *data)
@@ -647,20 +656,13 @@ cpBBTreeReindexObject(cpBBTree *tree, void *obj, cpHashValue hashid)
 	}
 }
 
-#pragma mark Query
-
-static void
-cpBBTreePointQuery(cpBBTree *tree, cpVect point, cpSpatialIndexQueryFunc func, void *data)
-{
-	Node *root = tree->root;
-	if(root) SubtreeQuery(root, &point, cpBBNew(point.x, point.y, point.x, point.y), func, data);
-}
+//MARK: Query
 
 static void
 cpBBTreeSegmentQuery(cpBBTree *tree, void *obj, cpVect a, cpVect b, cpFloat t_exit, cpSpatialIndexSegmentQueryFunc func, void *data)
 {
 	Node *root = tree->root;
-	if(root) SubtreeSegmentQuery(root, obj, a, b, func, data);
+	if(root) SubtreeSegmentQuery(root, obj, a, b, t_exit, func, data);
 }
 
 static void
@@ -669,7 +671,7 @@ cpBBTreeQuery(cpBBTree *tree, void *obj, cpBB bb, cpSpatialIndexQueryFunc func, 
 	if(tree->root) SubtreeQuery(tree->root, obj, bb, func, data);
 }
 
-#pragma mark Misc
+//MARK: Misc
 
 static int
 cpBBTreeCount(cpBBTree *tree)
@@ -705,15 +707,14 @@ static cpSpatialIndexClass klass = {
 	(cpSpatialIndexReindexObjectImpl)cpBBTreeReindexObject,
 	(cpSpatialIndexReindexQueryImpl)cpBBTreeReindexQuery,
 	
-	(cpSpatialIndexPointQueryImpl)cpBBTreePointQuery,
-	(cpSpatialIndexSegmentQueryImpl)cpBBTreeSegmentQuery,
 	(cpSpatialIndexQueryImpl)cpBBTreeQuery,
+	(cpSpatialIndexSegmentQueryImpl)cpBBTreeSegmentQuery,
 };
 
 static inline cpSpatialIndexClass *Klass(){return &klass;}
 
 
-#pragma mark Tree Optimization
+//MARK: Tree Optimization
 
 static int
 cpfcompare(const cpFloat *a, const cpFloat *b){
@@ -833,7 +834,7 @@ cpBBTreeOptimize(cpSpatialIndex *index)
 	cpfree(nodes);
 }
 
-#pragma mark Debug Draw
+//MARK: Debug Draw
 
 //#define CP_BBTREE_DEBUG_DRAW
 #ifdef CP_BBTREE_DEBUG_DRAW

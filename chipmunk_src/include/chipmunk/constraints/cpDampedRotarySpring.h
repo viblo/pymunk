@@ -24,8 +24,9 @@
 
 typedef cpFloat (*cpDampedRotarySpringTorqueFunc)(struct cpConstraint *spring, cpFloat relativeAngle);
 
-const cpConstraintClass *cpDampedRotarySpringGetClass();
+const cpConstraintClass *cpDampedRotarySpringGetClass(void);
 
+/// @private
 typedef struct cpDampedRotarySpring {
 	cpConstraint constraint;
 	cpFloat restAngle;
@@ -40,11 +41,11 @@ typedef struct cpDampedRotarySpring {
 } cpDampedRotarySpring;
 
 /// Allocate a damped rotary spring.
-cpDampedRotarySpring *cpDampedRotarySpringAlloc(void);
+cpDampedRotarySpring* cpDampedRotarySpringAlloc(void);
 /// Initialize a damped rotary spring.
-cpDampedRotarySpring *cpDampedRotarySpringInit(cpDampedRotarySpring *joint, cpBody *a, cpBody *b, cpFloat restAngle, cpFloat stiffness, cpFloat damping);
+cpDampedRotarySpring* cpDampedRotarySpringInit(cpDampedRotarySpring *joint, cpBody *a, cpBody *b, cpFloat restAngle, cpFloat stiffness, cpFloat damping);
 /// Allocate and initialize a damped rotary spring.
-cpConstraint *cpDampedRotarySpringNew(cpBody *a, cpBody *b, cpFloat restAngle, cpFloat stiffness, cpFloat damping);
+cpConstraint* cpDampedRotarySpringNew(cpBody *a, cpBody *b, cpFloat restAngle, cpFloat stiffness, cpFloat damping);
 
 CP_DefineConstraintProperty(cpDampedRotarySpring, cpFloat, restAngle, RestAngle);
 CP_DefineConstraintProperty(cpDampedRotarySpring, cpFloat, stiffness, Stiffness);

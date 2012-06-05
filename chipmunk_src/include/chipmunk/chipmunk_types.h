@@ -4,11 +4,11 @@
    #import "TargetConditionals.h"
 #endif
 
-#if (defined TARGET_OS_IPHONE) && (!defined CP_USE_CGPOINTS)
-	#define CP_USE_CGPOINTS
+#if (TARGET_OS_IPHONE == 1) || (TARGET_OS_MAC == 1) && (!defined CP_USE_CGPOINTS)
+	#define CP_USE_CGPOINTS 1
 #endif
 
-#ifdef CP_USE_CGPOINTS
+#if CP_USE_CGPOINTS == 1
 	#if TARGET_OS_IPHONE
 		#import <CoreGraphics/CGGeometry.h>
 	#elif TARGET_OS_MAC
@@ -60,7 +60,6 @@
 #endif
 
 #ifndef INFINITY
-	//TODO use C++ infinity
 	#ifdef _MSC_VER
 		union MSVC_EVIL_FLOAT_HACK
 		{
@@ -136,8 +135,8 @@ static inline cpFloat cpflerpconst(cpFloat f1, cpFloat f2, cpFloat d)
 /// Hash value type.
 typedef uintptr_t cpHashValue;
 
+// Oh C, how we love to define our own boolean types to get compiler compatibility
 /// Chipmunk's boolean type.
-/// Oh C, how we love to define our own boolean types to get compiler compatibility
 #ifdef CP_BOOL_TYPE
 	typedef CP_BOOL_TYPE cpBool;
 #else
@@ -202,7 +201,7 @@ typedef uintptr_t cpHashValue;
 
 // CGPoints are structurally the same, and allow
 // easy interoperability with other Cocoa libraries
-#ifdef CP_USE_CGPOINTS
+#if CP_USE_CGPOINTS
 	typedef CGPoint cpVect;
 #else
 /// Chipmunk's 2D vector type.
