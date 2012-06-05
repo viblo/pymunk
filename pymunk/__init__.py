@@ -701,7 +701,6 @@ class Body(object):
         
     def __del__(self):
         if cp is not None:
-            print "Free body", self._body
             cp.cpBodyFree(self._body)
 
     def _set_mass(self, mass):

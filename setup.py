@@ -8,7 +8,7 @@ from distutils.core import setup
 class build_chipmunk(distutils.cmd.Command):
     description = """build chipmunk to a shared library"""
     
-    user_options = [('compiler=', 'c', 'specify the compiler type')
+    user_options = [('compiler=', 'c', 'specify the compiler type. It must understand GCC arguments')
                     ,('release', 'r', 'build chipmunk without debug asserts')
                     ]
     
@@ -65,15 +65,18 @@ class build_chipmunk(distutils.cmd.Command):
         ### because mingw only ships with gcc 3 we don't add any -mXX argument on Windows
         
         if platform.system() in ('Windows', 'Microsoft'):
-            # compile with stddecl instead of cdecl (rtd)
-            compiler_preargs += ['-mrtd', '-O3'] 
-        
+            # Compile with stddecl instead of cdecl (-mrtd). 
+            # Using cdecl cause a missing bytes issue in some cases
+            # Because -mrtd and -fomit-frame-pointer (which is included in -O)
+            # gives problem with frunction pointer to the sdtlib free function
+            # we also have to use -fno-omit-frame-pointer
+            compiler_preargs += ['-mrtd', '-O3', '-shared', '-fno-omit-frame-pointer'] 
+            pass
         for x in compiler.executables:
             args = getattr(compiler, x)
             try:
                 args.remove('-mno-cygwin') #Not available on newer versions of gcc 
                 args.remove('-mdll')
-                args.append('-shared')
             except:
                 pass
         
