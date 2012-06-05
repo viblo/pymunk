@@ -62,7 +62,6 @@ class build_chipmunk(distutils.cmd.Command):
         elif platform.system() == 'Darwin':
             #No -O3 on OSX. There's a bug in the clang compiler when using O3.
             compiler_preargs += ['-arch', 'i386', '-arch', 'x86_64']
-        ### because mingw only ships with gcc 3 we don't add any -mXX argument on Windows
         
         if platform.system() in ('Windows', 'Microsoft'):
             # Compile with stddecl instead of cdecl (-mrtd). 
@@ -71,7 +70,12 @@ class build_chipmunk(distutils.cmd.Command):
             # gives problem with frunction pointer to the sdtlib free function
             # we also have to use -fno-omit-frame-pointer
             compiler_preargs += ['-mrtd', '-O3', '-shared', '-fno-omit-frame-pointer'] 
-            pass
+        
+        if arch == 64 and platform.system() in ('Windows', 'Microsoft'):
+            compiler_preargs += ['-m64']
+        if arch == 32 and platform.system() in ('Windows', 'Microsoft'):
+            compiler_preargs += ['-m32']
+            
         for x in compiler.executables:
             args = getattr(compiler, x)
             try:
