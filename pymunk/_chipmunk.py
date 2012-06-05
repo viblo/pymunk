@@ -14,228 +14,229 @@ STRING = c_char_p
 WSTRING = c_wchar_p
 
 
-def __va_arg_pack_len(): return __builtin_va_arg_pack_len () # macro
-def FD_ZERO(fdsetp): return __FD_ZERO (fdsetp) # macro
-# def CP_DefineSpaceStructGetter(type,member,name): return static inline type cpSpaceGet ##name(const cpSpace *space){return space->member;} # macro
-def __GNUC_PREREQ(maj,min): return ((__GNUC__ << 16) + __GNUC_MINOR__ >= ((maj) << 16) + (min)) # macro
-# def __LDBL_REDIR1_NTH(name,proto,alias): return name proto __THROW # macro
-def FD_CLR(fd,fdsetp): return __FD_CLR (fd, fdsetp) # macro
-# def __bswap_16(x): return (__extension__ ({ register unsigned short int __v, __x = (x); if (__builtin_constant_p (__x)) __v = __bswap_constant_16 (__x); else __asm__ ("rorw $8, %w0" : "=r" (__v) : "0" (__x) : "cc"); __v; })) # macro
-# __WCHAR_MAX = __WCHAR_MAX__ # alias
-# def __REDIRECT(name,proto,alias): return name proto __asm__ (__ASMNAME (#alias)) # macro
-# __TIME_T_TYPE = __SLONGWORD_TYPE # alias
-# __RLIM_T_TYPE = __ULONGWORD_TYPE # alias
-def be32toh(x): return __bswap_32 (x) # macro
-__quad_t = c_longlong
-__SQUAD_TYPE = __quad_t # alias
-# def __warndecl(name,msg): return extern void name (void) __attribute__((__warning__ (msg))) # macro
-CP_SEGMENT_SHAPE = 1
-def __CONCAT(x,y): return x ## y # macro
-# __SWORD_TYPE = int # alias
-# __SSIZE_T_TYPE = __SWORD_TYPE # alias
-__u_quad_t = c_ulonglong
-__UQUAD_TYPE = __u_quad_t # alias
-__INO64_T_TYPE = __UQUAD_TYPE # alias
-# __S32_TYPE = int # alias
-# __PID_T_TYPE = __S32_TYPE # alias
-# def __intN_t(N,MODE): return typedef int int ##N ##_t __attribute__ ((__mode__ (MODE))) # macro
-# def __FDMASK(d): return ((__fd_mask) 1 << ((d) % __NFDBITS)) # macro
-def __LONG_LONG_PAIR(HI,LO): return LO, HI # macro
-def le16toh(x): return (x) # macro
-# NULL = __null # alias
-def WIFSIGNALED(status): return __WIFSIGNALED(__WAIT_INT(status)) # macro
-# def cpConstraintCheckCast(constraint,struct): return cpAssertHard(constraint->CP_PRIVATE(klass) == struct ##GetClass(), "Constraint is not a "#struct) # macro
-def FD_ISSET(fd,fdsetp): return __FD_ISSET (fd, fdsetp) # macro
-__RLIM64_T_TYPE = __UQUAD_TYPE # alias
-# __INO_T_TYPE = __ULONGWORD_TYPE # alias
-# def CP_DefineArbiterStructSetter(type,member,name): return static inline void cpArbiterSet ##name(cpArbiter *arb, type value){arb->member = value;} # macro
-# def __bswap_64(x): return (__extension__ ({ union { __extension__ unsigned long long int __ll; unsigned int __l[2]; } __w, __r; if (__builtin_constant_p (x)) __r.__ll = __bswap_constant_64 (x); else { __w.__ll = (x); __r.__l[0] = __bswap_32 (__w.__l[1]); __r.__l[1] = __bswap_32 (__w.__l[0]); } __r.__ll; })) # macro
-_XOPEN_ = 1
-__BIG_ENDIAN = 4321 # Variable c_int '4321'
-BIG_ENDIAN = __BIG_ENDIAN # alias
-# cpfatan2 = atan2 # alias
-def __PMT(args): return args # macro
-# def fpclassify(x): return (sizeof (x) == sizeof (float) ? __fpclassifyf (x) : sizeof (x) == sizeof (double) ? __fpclassify (x) : __fpclassifyl (x)) # macro
-# cpfexp = exp # alias
-def __WEXITSTATUS(status): return (((status) & 0xff00) >> 8) # macro
-# def __LDBL_REDIR(name,proto): return name proto # macro
-# cpfpow = pow # alias
-def FD_SET(fd,fdsetp): return __FD_SET (fd, fdsetp) # macro
-# __NLINK_T_TYPE = __UWORD_TYPE # alias
-# def __FD_ISSET(fd,fdsp): return (__extension__ ({register char __result; __asm__ __volatile__ (__FD_ISSET_BT " %1,%2 ; setcb %b0" : "=q" (__result) : "r" (((int) (fd)) % __NFDBITS), "m" (__FDS_BITS (fdsp)[__FDELT (fd)]) : "cc"); __result; })) # macro
-# __BLKCNT_T_TYPE = __SLONGWORD_TYPE # alias
-def be64toh(x): return __bswap_64 (x) # macro
-__LITTLE_ENDIAN = 1234 # Variable c_int '1234'
-__BYTE_ORDER = __LITTLE_ENDIAN # alias
-BYTE_ORDER = __BYTE_ORDER # alias
-# def __LDBL_REDIR_NTH(name,proto): return name proto __THROW # macro
-FP_NAN = 0
-FP_NAN = FP_NAN # alias
-# def __WIFSIGNALED(status): return (((signed char) (((status) & 0x7f) + 1) >> 1) > 0) # macro
-_IEEE_ = -1
-# def CP_DefineBodyStructSetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, const type value){ cpBodyActivate(body); cpBodyAssertSane(body); body->member = value; } # macro
-def __W_STOPCODE(sig): return ((sig) << 8 | 0x7f) # macro
-def __REDIRECT_LDBL(name,proto,alias): return __REDIRECT (name, proto, alias) # macro
-# def __FD_ZERO(fdsp): return do { int __d0, __d1; __asm__ __volatile__ ("cld; rep; " __FD_ZERO_STOS : "=c" (__d0), "=D" (__d1) : "a" (0), "0" (sizeof (fd_set) / sizeof (__fd_mask)), "1" (&__FDS_BITS (fdsp)[0]) : "memory"); } while (0) # macro
-# def CP_DefineArbiterStructProperty(type,member,name): return CP_DefineArbiterStructGetter(type, member, name) CP_DefineArbiterStructSetter(type, member, name) # macro
-def major(dev): return gnu_dev_major (dev) # macro
-# def CP_DefineSpaceStructProperty(type,member,name): return CP_DefineSpaceStructGetter(type, member, name) CP_DefineSpaceStructSetter(type, member, name) # macro
-__PDP_ENDIAN = 3412 # Variable c_int '3412'
-PDP_ENDIAN = __PDP_ENDIAN # alias
-cpArbiterStateIgnore = 2
-def __bos0(ptr): return __builtin_object_size (ptr, 0) # macro
-FP_INFINITE = 1
-FP_INFINITE = FP_INFINITE # alias
-def __WCOREDUMP(status): return ((status) & __WCOREFLAG) # macro
-# def cpAssertWarn(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 0, 0, __VA_ARGS__) # macro
-def isgreater(x,y): return __builtin_isgreater(x, y) # macro
-# __ID_T_TYPE = __U32_TYPE # alias
-def __ASMNAME(cname): return __ASMNAME2 (__USER_LABEL_PREFIX__, cname) # macro
-# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(const cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct); return ((struct *)constraint)->member; } # macro
-def __bswap_constant_16(x): return ((((x) >> 8) & 0xff) | (((x) & 0xff) << 8)) # macro
-def __bswap_constant_32(x): return ((((x) & 0xff000000) >> 24) | (((x) & 0x00ff0000) >> 8) | (((x) & 0x0000ff00) << 8) | (((x) & 0x000000ff) << 24)) # macro
-cpArbiterStateNormal = 1
-# def isinf(x): return (sizeof (x) == sizeof (float) ? __isinff (x) : sizeof (x) == sizeof (double) ? __isinf (x) : __isinfl (x)) # macro
-__DEV_T_TYPE = __UQUAD_TYPE # alias
-def islessgreater(x,y): return __builtin_islessgreater(x, y) # macro
-CP_POLY_SHAPE = 2
-def __WIFSTOPPED(status): return (((status) & 0xff) == 0x7f) # macro
-# cpfmod = fmod # alias
-# def CP_DefineArbiterStructGetter(type,member,name): return static inline type cpArbiterGet ##name(const cpArbiter *arb){return arb->member;} # macro
-__S64_TYPE = __quad_t # alias
-def be16toh(x): return __bswap_16 (x) # macro
-cpArbiterStateCached = 3
-def alloca(size): return __builtin_alloca (size) # macro
-# def __MATHDECLX(type,function,suffix,args,attrib): return __MATHDECL_1(type, function,suffix, args) __attribute__ (attrib); __MATHDECL_1(type, __CONCAT(__,function),suffix, args) __attribute__ (attrib) # macro
-__OFF64_T_TYPE = __SQUAD_TYPE # alias
-__FD_SETSIZE = 1024 # Variable c_int '1024'
-FD_SETSIZE = __FD_SETSIZE # alias
-# def CP_DefineConstraintProperty(struct,type,member,name): return CP_DefineConstraintGetter(struct, type, member, name) CP_DefineConstraintSetter(struct, type, member, name) # macro
-# cpfceil = ceil # alias
-def __P(args): return args # macro
-def cpBodyAssertSane(body): return cpBodySanityCheck(body) # macro
 def htole16(x): return (x) # macro
-# __KEY_T_TYPE = __S32_TYPE # alias
-# __USECONDS_T_TYPE = __U32_TYPE # alias
-def WIFSTOPPED(status): return __WIFSTOPPED(__WAIT_INT(status)) # macro
-# __FSFILCNT_T_TYPE = __ULONGWORD_TYPE # alias
-def __FDELT(d): return ((d) / __NFDBITS) # macro
-# __DADDR_T_TYPE = __S32_TYPE # alias
-def makedev(maj,min): return gnu_dev_makedev (maj, min) # macro
-# def __errordecl(name,msg): return extern void name (void) __attribute__((__error__ (msg))) # macro
-def CP_PRIVATE(symbol): return symbol ##_private # macro
-FP_ZERO = 2
-FP_ZERO = FP_ZERO # alias
-def __attribute_format_arg__(x): return __attribute__ ((__format_arg__ (x))) # macro
-def __W_EXITCODE(ret,sig): return ((ret) << 8 | (sig)) # macro
-def __va_arg_pack(): return __builtin_va_arg_pack () # macro
-size_t = c_uint
-calloc = chipmunk_lib.calloc
-calloc.restype = c_void_p
-calloc.argtypes = [size_t, size_t]
-cpcalloc = calloc # alias
-FP_NORMAL = 4
-# __MODE_T_TYPE = __U32_TYPE # alias
-def isgreaterequal(x,y): return __builtin_isgreaterequal(x, y) # macro
-# def CP_DefineBodyStructProperty(type,member,name): return CP_DefineBodyStructGetter(type, member, name) CP_DefineBodyStructSetter(type, member, name) # macro
-CP_NUM_SHAPES = 3
-# def CP_DefineSpaceStructSetter(type,member,name): return static inline void cpSpaceSet ##name(cpSpace *space, type value){space->member = value;} # macro
-# def CP_DefineConstraintStructProperty(type,member,name): return CP_DefineConstraintStructGetter(type, member, name) CP_DefineConstraintStructSetter(type, member, name) # macro
-# def __bswap_32(x): return (__extension__ ({ register unsigned int __v, __x = (x); if (__builtin_constant_p (__x)) __v = __bswap_constant_32 (__x); else __asm__ ("bswap %0" : "=r" (__v) : "0" (__x)); __v; })) # macro
-# def CP_DefineShapeStructSetter(type,member,name,activates): return static inline void cpShapeSet ##name(cpShape *shape, type value){ if(activates && shape->body) cpBodyActivate(shape->body); shape->member = value; } # macro
-# __CLOCK_T_TYPE = __SLONGWORD_TYPE # alias
-# def CP_DeclareShapeGetter(struct,type,name): return type struct ##Get ##name(const cpShape *shape) # macro
-def __warnattr(msg): return __attribute__((__warning__ (msg))) # macro
-def __WTERMSIG(status): return ((status) & 0x7f) # macro
-def WIFEXITED(status): return __WIFEXITED(__WAIT_INT(status)) # macro
-# def __WAIT_INT(status): return (*(int *) &(status)) # macro
-# def CP_CONVEX_HULL(__count__,__verts__,__count_var__,__verts_var__): return cpVect *__verts_var__ = (cpVect *)alloca(__count__*sizeof(cpVect)); int __count_var__ = cpConvexHull(__count__, __verts__, __verts_var__, NULL, 0.0); # macro
-# cpfsin = sin # alias
-# def __LDBL_REDIR1(name,proto,alias): return name proto # macro
-def htobe16(x): return __bswap_16 (x) # macro
-LITTLE_ENDIAN = __LITTLE_ENDIAN # alias
-def le64toh(x): return (x) # macro
-def isless(x,y): return __builtin_isless(x, y) # macro
-# def CP_DefineShapeStructGetter(type,member,name): return static inline type cpShapeGet ##name(const cpShape *shape){return shape->member;} # macro
+_IEEE_ = -1
+# __TIME_T_TYPE = __SLONGWORD_TYPE # alias
+# def CP_DefineSpaceStructProperty(type,member,name): return CP_DefineSpaceStructGetter(type, member, name) CP_DefineSpaceStructSetter(type, member, name) # macro
 FP_SUBNORMAL = 3
-def islessequal(x,y): return __builtin_islessequal(x, y) # macro
-# def __FD_CLR(fd,fdsp): return __asm__ __volatile__ (__FD_CLR_BTR " %1,%0" : "=m" (__FDS_BITS (fdsp)[__FDELT (fd)]) : "r" (((int) (fd)) % __NFDBITS) : "cc","memory") # macro
-__U64_TYPE = __u_quad_t # alias
-# def CP_DefineShapeStructProperty(type,member,name,activates): return CP_DefineShapeStructGetter(type, member, name) CP_DefineShapeStructSetter(type, member, name, activates) # macro
-# cpfcos = cos # alias
-# def __REDIRECT_NTH(name,proto,alias): return name proto __THROW __asm__ (__ASMNAME (#alias)) # macro
-def WEXITSTATUS(status): return __WEXITSTATUS(__WAIT_INT(status)) # macro
-# def cpAssertHard(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, 1, __VA_ARGS__) # macro
-def WTERMSIG(status): return __WTERMSIG(__WAIT_INT(status)) # macro
-__NFDBITS = 32L # Variable c_uint '32u'
-NFDBITS = __NFDBITS # alias
-def WSTOPSIG(status): return __WSTOPSIG(__WAIT_INT(status)) # macro
-_SVID_ = 0
-def le32toh(x): return (x) # macro
-__FSBLKCNT64_T_TYPE = __UQUAD_TYPE # alias
-# def CP_DefineConstraintStructGetter(type,member,name): return static inline type cpConstraint ##Get ##name(const cpConstraint *constraint){return constraint->member;} # macro
+FP_SUBNORMAL = FP_SUBNORMAL # alias
+# def __nonnull(params): return __attribute__ ((__nonnull__ params)) # macro
+def __PMT(args): return args # macro
+# def CP_DefineConstraintSetter(struct,type,member,name): return static inline void struct ##Set ##name(cpConstraint *constraint, type value){ cpConstraintCheckCast(constraint, struct); cpConstraintActivateBodies(constraint); ((struct *)constraint)->member = value; } # macro
+def isgreaterequal(x,y): return __builtin_isgreaterequal(x, y) # macro
+# __BLKSIZE_T_TYPE = __SLONGWORD_TYPE # alias
+def htobe16(x): return __bswap_16 (x) # macro
+size_t = c_uint
 realloc = chipmunk_lib.realloc
 realloc.restype = c_void_p
 realloc.argtypes = [c_void_p, size_t]
 cprealloc = realloc # alias
-__BLKCNT64_T_TYPE = __SQUAD_TYPE # alias
-# def __nonnull(params): return __attribute__ ((__nonnull__ params)) # macro
-def isunordered(u,v): return __builtin_isunordered(u, v) # macro
-FP_NORMAL = FP_NORMAL # alias
-# cpffloor = floor # alias
-def __WSTOPSIG(status): return __WEXITSTATUS(status) # macro
-def isnormal(x): return (fpclassify (x) == FP_NORMAL) # macro
-_POSIX_ = 2
+def __FDELT(d): return ((d) / __NFDBITS) # macro
+def FD_CLR(fd,fdsetp): return __FD_CLR (fd, fdsetp) # macro
+def __LONG_LONG_PAIR(HI,LO): return LO, HI # macro
+# def __REDIRECT(name,proto,alias): return name proto __asm__ (__ASMNAME (#alias)) # macro
 def __attribute_format_strfmon__(a,b): return __attribute__ ((__format__ (__strfmon__, a, b))) # macro
-# def CP_DefineConstraintSetter(struct,type,member,name): return static inline void struct ##Set ##name(cpConstraint *constraint, type value){ cpConstraintCheckCast(constraint, struct); cpConstraintActivateBodies(constraint); ((struct *)constraint)->member = value; } # macro
-# def __FD_SET(fd,fdsp): return __asm__ __volatile__ (__FD_SET_BTS " %1,%0" : "=m" (__FDS_BITS (fdsp)[__FDELT (fd)]) : "r" (((int) (fd)) % __NFDBITS) : "cc","memory") # macro
+# __S32_TYPE = int # alias
+# __DADDR_T_TYPE = __S32_TYPE # alias
+def __ASMNAME(cname): return __ASMNAME2 (__USER_LABEL_PREFIX__, cname) # macro
+FP_INFINITE = 1
+FP_INFINITE = FP_INFINITE # alias
+__u_quad_t = c_ulonglong
+__UQUAD_TYPE = __u_quad_t # alias
+__FSBLKCNT64_T_TYPE = __UQUAD_TYPE # alias
+def __WCOREDUMP(status): return ((status) & __WCOREFLAG) # macro
+# __FSBLKCNT_T_TYPE = __ULONGWORD_TYPE # alias
+# def __intN_t(N,MODE): return typedef int int ##N ##_t __attribute__ ((__mode__ (MODE))) # macro
+# __FSFILCNT_T_TYPE = __ULONGWORD_TYPE # alias
+def WIFSTOPPED(status): return __WIFSTOPPED (__WAIT_INT (status)) # macro
+_SVID_ = 0
+# cpffloor = floor # alias
+def __bos(ptr): return __builtin_object_size (ptr, __USE_FORTIFY_LEVEL > 1) # macro
+# def CP_DeclareShapeGetter(struct,type,name): return type struct ##Get ##name(const cpShape *shape) # macro
+def WIFEXITED(status): return __WIFEXITED (__WAIT_INT (status)) # macro
+# __MATH_INLINE = __extern_inline # alias
+def htole64(x): return (x) # macro
+# def CP_DefineConstraintStructSetter(type,member,name): return static inline void cpConstraint ##Set ##name(cpConstraint *constraint, type value){ cpConstraintActivateBodies(constraint); constraint->member = value; } # macro
+__LITTLE_ENDIAN = 1234 # Variable c_int '1234'
+__BYTE_ORDER = __LITTLE_ENDIAN # alias
+FP_NORMAL = 4
+FP_NORMAL = FP_NORMAL # alias
+# def __MATHDECLX(type,function,suffix,args,attrib): return __MATHDECL_1(type, function,suffix, args) __attribute__ (attrib); __MATHDECL_1(type, __CONCAT(__,function),suffix, args) __attribute__ (attrib) # macro
+def htole32(x): return (x) # macro
+# def __FD_ZERO(fdsp): return do { int __d0, __d1; __asm__ __volatile__ ("cld; rep; " __FD_ZERO_STOS : "=c" (__d0), "=D" (__d1) : "a" (0), "0" (sizeof (fd_set) / sizeof (__fd_mask)), "1" (&__FDS_BITS (fdsp)[0]) : "memory"); } while (0) # macro
+def be32toh(x): return __bswap_32 (x) # macro
+def isgreater(x,y): return __builtin_isgreater(x, y) # macro
+calloc = chipmunk_lib.calloc
+calloc.restype = c_void_p
+calloc.argtypes = [size_t, size_t]
+cpcalloc = calloc # alias
+__PDP_ENDIAN = 3412 # Variable c_int '3412'
+PDP_ENDIAN = __PDP_ENDIAN # alias
+# __WCHAR_MAX = __WCHAR_MAX__ # alias
+def be64toh(x): return __bswap_64 (x) # macro
+# cpfcos = cos # alias
+__FD_SETSIZE = 1024 # Variable c_int '1024'
+FD_SETSIZE = __FD_SETSIZE # alias
+__BIG_ENDIAN = 4321 # Variable c_int '4321'
+BIG_ENDIAN = __BIG_ENDIAN # alias
+__INO64_T_TYPE = __UQUAD_TYPE # alias
+CP_POLY_SHAPE = 2
+# cpfceil = ceil # alias
+__quad_t = c_longlong
+__SQUAD_TYPE = __quad_t # alias
+__OFF64_T_TYPE = __SQUAD_TYPE # alias
+# __OFF_T_TYPE = __SLONGWORD_TYPE # alias
+def isnormal(x): return (fpclassify (x) == FP_NORMAL) # macro
+# def __LDBL_REDIR_NTH(name,proto): return name proto __THROW # macro
+def isunordered(u,v): return __builtin_isunordered(u, v) # macro
+# cpfatan2 = atan2 # alias
+__S64_TYPE = __quad_t # alias
+# def cpConstraintCheckCast(constraint,struct): return cpAssertHard(constraint->CP_PRIVATE(klass) == struct ##GetClass(), "Constraint is not a "#struct) # macro
+# __MODE_T_TYPE = __U32_TYPE # alias
 # _Mfloat_ = float # alias
-def __WIFEXITED(status): return (__WTERMSIG(status) == 0) # macro
-__FSFILCNT64_T_TYPE = __UQUAD_TYPE # alias
-# def cpAssertSoft(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, 0, __VA_ARGS__) # macro
-def __STRING(x): return #x # macro
-# def __FDS_BITS(set): return ((set)->fds_bits) # macro
+# __CLOCKID_T_TYPE = __S32_TYPE # alias
+# def __LDBL_REDIR1(name,proto,alias): return name proto # macro
+# __SWORD_TYPE = int # alias
+# __SSIZE_T_TYPE = __SWORD_TYPE # alias
+def islessequal(x,y): return __builtin_islessequal(x, y) # macro
+# cpfpow = pow # alias
+# __PID_T_TYPE = __S32_TYPE # alias
+def CP_PRIVATE(symbol): return symbol ##_private # macro
+# cpfsin = sin # alias
+# def __WAIT_INT(status): return (*(int *) &(status)) # macro
+# cpfsqrt = sqrt # alias
+# def __bswap_16(x): return (__extension__ ({ register unsigned short int __v, __x = (unsigned short int) (x); if (__builtin_constant_p (__x)) __v = __bswap_constant_16 (__x); else __asm__ ("rorw $8, %w0" : "=r" (__v) : "0" (__x) : "cc"); __v; })) # macro
+def cpBodyAssertSane(body): return cpBodySanityCheck(body) # macro
+def __warnattr(msg): return __attribute__((__warning__ (msg))) # macro
+# def __NTH(fct): return fct throw () # macro
+# def signbit(x): return (sizeof (x) == sizeof (float) ? __signbitf (x) : sizeof (x) == sizeof (double) ? __signbit (x) : __signbitl (x)) # macro
+BYTE_ORDER = __BYTE_ORDER # alias
+def FD_ZERO(fdsetp): return __FD_ZERO (fdsetp) # macro
+# def __WIFSIGNALED(status): return (((signed char) (((status) & 0x7f) + 1) >> 1) > 0) # macro
+# __CLOCK_T_TYPE = __SLONGWORD_TYPE # alias
+__NFDBITS = 32 # Variable c_int '32'
+NFDBITS = __NFDBITS # alias
+def __MATHCALLX(function,suffix,args,attrib): return __MATHDECLX (_Mdouble_,function,suffix, args, attrib) # macro
+def isless(x,y): return __builtin_isless(x, y) # macro
+def htobe32(x): return __bswap_32 (x) # macro
+CP_CIRCLE_SHAPE = 0
+# def CP_DefineConstraintStructGetter(type,member,name): return static inline type cpConstraint ##Get ##name(const cpConstraint *constraint){return constraint->member;} # macro
+# def fpclassify(x): return (sizeof (x) == sizeof (float) ? __fpclassifyf (x) : sizeof (x) == sizeof (double) ? __fpclassify (x) : __fpclassifyl (x)) # macro
+__RLIM64_T_TYPE = __UQUAD_TYPE # alias
+# def isnan(x): return (sizeof (x) == sizeof (float) ? __isnanf (x) : sizeof (x) == sizeof (double) ? __isnan (x) : __isnanl (x)) # macro
+# def isfinite(x): return (sizeof (x) == sizeof (float) ? __finitef (x) : sizeof (x) == sizeof (double) ? __finite (x) : __finitel (x)) # macro
+# def __bswap_64(x): return (__extension__ ({ union { __extension__ unsigned long long int __ll; unsigned int __l[2]; } __w, __r; if (__builtin_constant_p (x)) __r.__ll = __bswap_constant_64 (x); else { __w.__ll = (x); __r.__l[0] = __bswap_32 (__w.__l[1]); __r.__l[1] = __bswap_32 (__w.__l[0]); } __r.__ll; })) # macro
+LITTLE_ENDIAN = __LITTLE_ENDIAN # alias
+def __WSTOPSIG(status): return __WEXITSTATUS(status) # macro
+# __INO_T_TYPE = __ULONGWORD_TYPE # alias
+# def CP_DefineShapeStructProperty(type,member,name,activates): return CP_DefineShapeStructGetter(type, member, name) CP_DefineShapeStructSetter(type, member, name, activates) # macro
+# def CP_DefineShapeStructSetter(type,member,name,activates): return static inline void cpShapeSet ##name(cpShape *shape, type value){ if(activates && shape->body) cpBodyActivate(shape->body); shape->member = value; } # macro
+def WTERMSIG(status): return __WTERMSIG (__WAIT_INT (status)) # macro
+def __GLIBC_PREREQ(maj,min): return ((__GLIBC__ << 16) + __GLIBC_MINOR__ >= ((maj) << 16) + (min)) # macro
+def __REDIRECT_NTH_LDBL(name,proto,alias): return __REDIRECT_NTH (name, proto, alias) # macro
+# __UID_T_TYPE = __U32_TYPE # alias
 free = chipmunk_lib.free
 free.restype = None
 free.argtypes = [c_void_p]
 cpfree = free # alias
-def __GLIBC_PREREQ(maj,min): return ((__GLIBC__ << 16) + __GLIBC_MINOR__ >= ((maj) << 16) + (min)) # macro
-def htobe32(x): return __bswap_32 (x) # macro
-FP_SUBNORMAL = FP_SUBNORMAL # alias
-CP_CIRCLE_SHAPE = 0
-# __BLKSIZE_T_TYPE = __SLONGWORD_TYPE # alias
-# def CP_DefineConstraintStructSetter(type,member,name): return static inline void cpConstraint ##Set ##name(cpConstraint *constraint, type value){ cpConstraintActivateBodies(constraint); constraint->member = value; } # macro
-_ISOC_ = 3
-# def isnan(x): return (sizeof (x) == sizeof (float) ? __isnanf (x) : sizeof (x) == sizeof (double) ? __isnan (x) : __isnanl (x)) # macro
+def be16toh(x): return __bswap_16 (x) # macro
+def WEXITSTATUS(status): return __WEXITSTATUS (__WAIT_INT (status)) # macro
+cpArbiterStateIgnore = 2
+# __RLIM_T_TYPE = __ULONGWORD_TYPE # alias
+__FSFILCNT64_T_TYPE = __UQUAD_TYPE # alias
+def __REDIRECT_LDBL(name,proto,alias): return __REDIRECT (name, proto, alias) # macro
 # def CP_ARBITER_GET_BODIES(arb,a,b): return cpBody *a, *b; cpArbiterGetBodies(arb, &a, &b); # macro
-def __REDIRECT_NTH_LDBL(name,proto,alias): return __REDIRECT_NTH (name, proto, alias) # macro
-# def isfinite(x): return (sizeof (x) == sizeof (float) ? __finitef (x) : sizeof (x) == sizeof (double) ? __finite (x) : __finitel (x)) # macro
-# def signbit(x): return (sizeof (x) == sizeof (float) ? __signbitf (x) : sizeof (x) == sizeof (double) ? __signbit (x) : __signbitl (x)) # macro
-def __WIFCONTINUED(status): return ((status) == __W_CONTINUED) # macro
-# __FSBLKCNT_T_TYPE = __ULONGWORD_TYPE # alias
-def WIFCONTINUED(status): return __WIFCONTINUED(__WAIT_INT(status)) # macro
-# __SUSECONDS_T_TYPE = __SLONGWORD_TYPE # alias
-# __CLOCKID_T_TYPE = __S32_TYPE # alias
-def htole64(x): return (x) # macro
-# def __bswap_constant_64(x): return ((((x) & 0xff00000000000000ull) >> 56) | (((x) & 0x00ff000000000000ull) >> 40) | (((x) & 0x0000ff0000000000ull) >> 24) | (((x) & 0x000000ff00000000ull) >> 8) | (((x) & 0x00000000ff000000ull) << 8) | (((x) & 0x0000000000ff0000ull) << 24) | (((x) & 0x000000000000ff00ull) << 40) | (((x) & 0x00000000000000ffull) << 56)) # macro
-# def __NTH(fct): return fct throw () # macro
-def htobe64(x): return __bswap_64 (x) # macro
-def minor(dev): return gnu_dev_minor (dev) # macro
-# cpfacos = acos # alias
-# __GID_T_TYPE = __U32_TYPE # alias
-# def __ASMNAME2(prefix,cname): return __STRING (prefix) cname # macro
-# __OFF_T_TYPE = __SLONGWORD_TYPE # alias
+def FD_ISSET(fd,fdsetp): return __FD_ISSET (fd, fdsetp) # macro
+def __bswap_constant_32(x): return ((((x) & 0xff000000) >> 24) | (((x) & 0x00ff0000) >> 8) | (((x) & 0x0000ff00) << 8) | (((x) & 0x000000ff) << 24)) # macro
+# cpfmod = fmod # alias
 # def __u_intN_t(N,MODE): return typedef unsigned int u_int ##N ##_t __attribute__ ((__mode__ (MODE))) # macro
-# cpfsqrt = sqrt # alias
-def htole32(x): return (x) # macro
-# __UID_T_TYPE = __U32_TYPE # alias
-# __SWBLK_T_TYPE = __SLONGWORD_TYPE # alias
-def __bos(ptr): return __builtin_object_size (ptr, __USE_FORTIFY_LEVEL > 1) # macro
-# def CP_ARBITER_GET_SHAPES(arb,a,b): return cpShape *a, *b; cpArbiterGetShapes(arb, &a, &b); # macro
+def le32toh(x): return (x) # macro
+# __ID_T_TYPE = __U32_TYPE # alias
+def __WEXITSTATUS(status): return (((status) & 0xff00) >> 8) # macro
+# def __LDBL_REDIR(name,proto): return name proto # macro
+__U64_TYPE = __u_quad_t # alias
+# def CP_DefineShapeStructGetter(type,member,name): return static inline type cpShapeGet ##name(const cpShape *shape){return shape->member;} # macro
+def __WIFEXITED(status): return (__WTERMSIG(status) == 0) # macro
+# def __bswap_constant_64(x): return ((((x) & 0xff00000000000000ull) >> 56) | (((x) & 0x00ff000000000000ull) >> 40) | (((x) & 0x0000ff0000000000ull) >> 24) | (((x) & 0x000000ff00000000ull) >> 8) | (((x) & 0x00000000ff000000ull) << 8) | (((x) & 0x0000000000ff0000ull) << 24) | (((x) & 0x000000000000ff00ull) << 40) | (((x) & 0x00000000000000ffull) << 56)) # macro
+def __va_arg_pack(): return __builtin_va_arg_pack () # macro
+def makedev(maj,min): return gnu_dev_makedev (maj, min) # macro
+FP_NAN = 0
+FP_NAN = FP_NAN # alias
+# def __FDS_BITS(set): return ((set)->fds_bits) # macro
+def major(dev): return gnu_dev_major (dev) # macro
+__BLKCNT64_T_TYPE = __SQUAD_TYPE # alias
+# def isinf(x): return (sizeof (x) == sizeof (float) ? __isinff (x) : sizeof (x) == sizeof (double) ? __isinf (x) : __isinfl (x)) # macro
+# def __errordecl(name,msg): return extern void name (void) __attribute__((__error__ (msg))) # macro
+# def __ASMNAME2(prefix,cname): return __STRING (prefix) cname # macro
+# def CP_DefineArbiterStructProperty(type,member,name): return CP_DefineArbiterStructGetter(type, member, name) CP_DefineArbiterStructSetter(type, member, name) # macro
+# def CP_DefineArbiterStructSetter(type,member,name): return static inline void cpArbiterSet ##name(cpArbiter *arb, type value){arb->member = value;} # macro
+def WIFSIGNALED(status): return __WIFSIGNALED (__WAIT_INT (status)) # macro
+FP_ZERO = 2
+FP_ZERO = FP_ZERO # alias
 # def CP_DefineBodyStructGetter(type,member,name): return static inline type cpBodyGet ##name(const cpBody *body){return body->member;} # macro
-def __MATHCALLX(function,suffix,args,attrib): return __MATHDECLX (_Mdouble_,function,suffix, args, attrib) # macro
-__FLOAT_WORD_ORDER = __BYTE_ORDER # alias
+def le64toh(x): return (x) # macro
+__DEV_T_TYPE = __UQUAD_TYPE # alias
+def __WTERMSIG(status): return ((status) & 0x7f) # macro
+def __FD_ISSET(d,set): return ((__FDS_BITS (set)[__FDELT (d)] & __FDMASK (d)) != 0) # macro
+def __P(args): return args # macro
+# __KEY_T_TYPE = __S32_TYPE # alias
+def WIFCONTINUED(status): return __WIFCONTINUED (__WAIT_INT (status)) # macro
+# def CP_DefineConstraintProperty(struct,type,member,name): return CP_DefineConstraintGetter(struct, type, member, name) CP_DefineConstraintSetter(struct, type, member, name) # macro
+_ISOC_ = 3
+# def cpAssertWarn(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 0, 0, __VA_ARGS__) # macro
+# __USECONDS_T_TYPE = __U32_TYPE # alias
+# def CP_ARBITER_GET_SHAPES(arb,a,b): return cpShape *a, *b; cpArbiterGetShapes(arb, &a, &b); # macro
+def __attribute_format_arg__(x): return __attribute__ ((__format_arg__ (x))) # macro
+# cpfacos = acos # alias
+# def CP_DefineSpaceStructGetter(type,member,name): return static inline type cpSpaceGet ##name(const cpSpace *space){return space->member;} # macro
+# __GID_T_TYPE = __U32_TYPE # alias
+# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(const cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct); return ((struct *)constraint)->member; } # macro
+def le16toh(x): return (x) # macro
+# __BLKCNT_T_TYPE = __SLONGWORD_TYPE # alias
+def __STRING(x): return #x # macro
+# def CP_DefineBodyStructSetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, const type value){ cpBodyActivate(body); cpBodyAssertSane(body); body->member = value; } # macro
+# def __warndecl(name,msg): return extern void name (void) __attribute__((__warning__ (msg))) # macro
+cpArbiterStateCached = 3
+# def __REDIRECT_NTH(name,proto,alias): return name proto __THROW __asm__ (__ASMNAME (#alias)) # macro
+# def cpAssertSoft(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, 0, __VA_ARGS__) # macro
+CP_NUM_SHAPES = 3
+_XOPEN_ = 1
+def FD_SET(fd,fdsetp): return __FD_SET (fd, fdsetp) # macro
+def __bos0(ptr): return __builtin_object_size (ptr, 0) # macro
+def __va_arg_pack_len(): return __builtin_va_arg_pack_len () # macro
+_POSIX_ = 2
+# __SUSECONDS_T_TYPE = __SLONGWORD_TYPE # alias
+# __NLINK_T_TYPE = __UWORD_TYPE # alias
+def __W_EXITCODE(ret,sig): return ((ret) << 8 | (sig)) # macro
 cpArbiterStateFirstColl = 0
+def __WIFCONTINUED(status): return ((status) == __W_CONTINUED) # macro
+__FLOAT_WORD_ORDER = __BYTE_ORDER # alias
+# def CP_DefineBodyStructProperty(type,member,name): return CP_DefineBodyStructGetter(type, member, name) CP_DefineBodyStructSetter(type, member, name) # macro
+# NULL = __null # alias
+def __CONCAT(x,y): return x ## y # macro
+# def CP_DefineArbiterStructGetter(type,member,name): return static inline type cpArbiterGet ##name(const cpArbiter *arb){return arb->member;} # macro
+def htobe64(x): return __bswap_64 (x) # macro
+def WSTOPSIG(status): return __WSTOPSIG (__WAIT_INT (status)) # macro
+# cpfexp = exp # alias
+# def cpAssertHard(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, 1, __VA_ARGS__) # macro
+# def __LDBL_REDIR1_NTH(name,proto,alias): return name proto __THROW # macro
+# def CP_CONVEX_HULL(__count__,__verts__,__count_var__,__verts_var__): return cpVect *__verts_var__ = (cpVect *)alloca(__count__*sizeof(cpVect)); int __count_var__ = cpConvexHull(__count__, __verts__, __verts_var__, NULL, 0.0); # macro
+def __W_STOPCODE(sig): return ((sig) << 8 | 0x7f) # macro
+def __WIFSTOPPED(status): return (((status) & 0xff) == 0x7f) # macro
+cpArbiterStateNormal = 1
+# def __FD_CLR(d,set): return (__FDS_BITS (set)[__FDELT (d)] &= ~__FDMASK (d)) # macro
+# def __FDMASK(d): return ((__fd_mask) 1 << ((d) % __NFDBITS)) # macro
+def alloca(size): return __builtin_alloca (size) # macro
+CP_SEGMENT_SHAPE = 1
+# def CP_DefineSpaceStructSetter(type,member,name): return static inline void cpSpaceSet ##name(cpSpace *space, type value){space->member = value;} # macro
+# def __bswap_32(x): return (__extension__ ({ register unsigned int __v, __x = (x); if (__builtin_constant_p (__x)) __v = __bswap_constant_32 (__x); else __asm__ ("bswap %0" : "=r" (__v) : "0" (__x)); __v; })) # macro
+# __SWBLK_T_TYPE = __SLONGWORD_TYPE # alias
+# def __bswap_constant_16(x): return ((unsigned short int) ((((x) >> 8) & 0xff) | (((x) & 0xff) << 8))) # macro
+def minor(dev): return gnu_dev_minor (dev) # macro
+def __GNUC_PREREQ(maj,min): return ((__GNUC__ << 16) + __GNUC_MINOR__ >= ((maj) << 16) + (min)) # macro
+# def CP_DefineConstraintStructProperty(type,member,name): return CP_DefineConstraintStructGetter(type, member, name) CP_DefineConstraintStructSetter(type, member, name) # macro
+# def __FD_SET(d,set): return (__FDS_BITS (set)[__FDELT (d)] |= __FDMASK (d)) # macro
+def islessgreater(x,y): return __builtin_islessgreater(x, y) # macro
 cpMessage = chipmunk_lib.cpMessage
 cpMessage.restype = None
 cpMessage.argtypes = [STRING, STRING, c_int, c_int, c_int, STRING]
@@ -701,17 +702,17 @@ cpArbiterIgnore.restype = None
 cpArbiterIgnore.argtypes = [POINTER(cpArbiter)]
 class cpContactPointSet(Structure):
     pass
-class N17cpContactPointSet4DOT_22E(Structure):
+class N17cpContactPointSet4DOT_25E(Structure):
     pass
-#N17cpContactPointSet4DOT_22E._pack_ = 4
-N17cpContactPointSet4DOT_22E._fields_ = [
+#N17cpContactPointSet4DOT_25E._pack_ = 4
+N17cpContactPointSet4DOT_25E._fields_ = [
     ('point', cpVect),
     ('normal', cpVect),
     ('dist', cpFloat),
 ]
 cpContactPointSet._fields_ = [
     ('count', c_int),
-    ('points', N17cpContactPointSet4DOT_22E * 4),
+    ('points', N17cpContactPointSet4DOT_25E * 4),
 ]
 cpArbiterGetContactPointSet = chipmunk_lib.cpArbiterGetContactPointSet
 cpArbiterGetContactPointSet.restype = cpContactPointSet
@@ -1321,6 +1322,7 @@ WSTOPPED = 2 # Variable c_int '2'
 _ATFILE_SOURCE = 1 # Variable c_int '1'
 CP_BUFFER_BYTES = 32768 # Variable c_int '32768'
 _POSIX_C_SOURCE = 200809 # Variable c_long '200809l'
+math_errhandling = 3 # Variable c_int '3'
 NAN = 0.0 # Variable c_float '0.0f'
 M_LOG10E = 0.43429448190325182 # Variable c_double '4.34294481903251816667932416748953983187675476074e-1'
 __WCLONE = 2147483648L # Variable c_uint '-2147483648u'
@@ -1334,7 +1336,7 @@ __WCOREFLAG = 128 # Variable c_int '128'
 _STRUCT_TIMEVAL = 1 # Variable c_int '1'
 __USE_POSIX2 = 1 # Variable c_int '1'
 RAND_MAX = 2147483647 # Variable c_int '2147483647'
-__SIZEOF_PTHREAD_RWLOCKATTR_T = 8 # Variable c_int '8'
+__WORDSIZE = 32 # Variable c_int '32'
 CP_MAX_CONTACTS_PER_ARBITER = 4 # Variable c_int '4'
 __SIZEOF_PTHREAD_CONDATTR_T = 4 # Variable c_int '4'
 __STDC_IEC_559__ = 1 # Variable c_int '1'
@@ -1348,7 +1350,6 @@ _SYS_SELECT_H = 1 # Variable c_int '1'
 M_PI = 3.1415926535897931 # Variable c_double '3.14159265358979311599796346854418516159057617188e+0'
 __SIZEOF_PTHREAD_MUTEXATTR_T = 4 # Variable c_int '4'
 _POSIX_SOURCE = 1 # Variable c_int '1'
-__BIT_TYPES_DEFINED__ = 1 # Variable c_int '1'
 _ISOC99_SOURCE = 1 # Variable c_int '1'
 __USE_POSIX = 1 # Variable c_int '1'
 TLOSS = 5 # Variable c_int '5'
@@ -1358,17 +1359,16 @@ _STDLIB_H = 1 # Variable c_int '1'
 M_PI_4 = 0.78539816339744828 # Variable c_double '7.85398163397448278999490867136046290397644042969e-1'
 _ALLOCA_H = 1 # Variable c_int '1'
 __clock_t_defined = 1 # Variable c_int '1'
-WEXITED = 4 # Variable c_int '4'
+_LARGEFILE64_SOURCE = 1 # Variable c_int '1'
 CP_USE_DOUBLES = 1 # Variable c_int '1'
 __USE_POSIX199309 = 1 # Variable c_int '1'
-__FD_ISSET_BT = 'btl' # Variable STRING '(const char*)"btl"'
 _BITS_WCHAR_H = 1 # Variable c_int '1'
-__GLIBC_MINOR__ = 10 # Variable c_int '10'
+__GLIBC_MINOR__ = 11 # Variable c_int '11'
 M_E = 2.7182818284590451 # Variable c_double '2.71828182845904509079559829842764884233474731445e+0'
 __clockid_t_defined = 1 # Variable c_int '1'
 __timer_t_defined = 1 # Variable c_int '1'
 __lldiv_t_defined = 1 # Variable c_int '1'
-__FD_CLR_BTR = 'btrl' # Variable STRING '(const char*)"btrl"'
+__ldiv_t_defined = 1 # Variable c_int '1'
 cpTrue = 1 # Variable c_int '1'
 _SVID_SOURCE = 1 # Variable c_int '1'
 __USE_XOPEN2K = 1 # Variable c_int '1'
@@ -1381,7 +1381,7 @@ __timespec_defined = 1 # Variable c_int '1'
 __USE_GNU = 1 # Variable c_int '1'
 WUNTRACED = 2 # Variable c_int '2'
 __USE_BSD = 1 # Variable c_int '1'
-_SIGSET_NWORDS = 32L # Variable c_uint '32u'
+__USE_ISOC95 = 1 # Variable c_int '1'
 PLOSS = 6 # Variable c_int '6'
 M_LN10 = 2.3025850929940459 # Variable c_double '2.30258509299404590109361379290930926799774169922e+0'
 cpFalse = 0 # Variable c_int '0'
@@ -1394,16 +1394,16 @@ __SIZEOF_PTHREAD_MUTEX_T = 24 # Variable c_int '24'
 __USE_UNIX98 = 1 # Variable c_int '1'
 __USE_ANSI = 1 # Variable c_int '1'
 OVERFLOW = 3 # Variable c_int '3'
+CP_ALLOW_PRIVATE_ACCESS = 0 # Variable c_int '0'
 __USE_MISC = 1 # Variable c_int '1'
 __GLIBC__ = 2 # Variable c_int '2'
-__ldiv_t_defined = 1 # Variable c_int '1'
+__BIT_TYPES_DEFINED__ = 1 # Variable c_int '1'
+__USE_EXTERN_INLINES_IN_LIBC = 1 # Variable c_int '1'
 FP_ILOGB0 = -2147483648 # Variable c_int '-0x080000000'
 M_LOG2E = 1.4426950408889634 # Variable c_double '1.44269504088896338700465094007086008787155151367e+0'
 __W_CONTINUED = 65535 # Variable c_int '65535'
 CP_VERSION_MAJOR = 6 # Variable c_int '6'
-CP_ALLOW_PRIVATE_ACCESS = 0 # Variable c_int '0'
 FP_ILOGBNAN = -2147483648 # Variable c_int '-0x080000000'
-__FD_SET_BTS = 'btsl' # Variable STRING '(const char*)"btsl"'
 M_2_SQRTPI = 1.1283791670955126 # Variable c_double '1.12837916709551255856069928995566442608833312988e+0'
 _ENDIAN_H = 1 # Variable c_int '1'
 _STDINT_H = 1 # Variable c_int '1'
@@ -1417,12 +1417,14 @@ __STDC_IEC_559_COMPLEX__ = 1 # Variable c_int '1'
 _SYS_SYSMACROS_H = 1 # Variable c_int '1'
 __USE_XOPEN_EXTENDED = 1 # Variable c_int '1'
 EXIT_SUCCESS = 0 # Variable c_int '0'
+__USE_POSIX199506 = 1 # Variable c_int '1'
 __USE_LARGEFILE = 1 # Variable c_int '1'
+__USE_EXTERN_INLINES = 1 # Variable c_int '1'
 __SIZEOF_PTHREAD_COND_T = 48 # Variable c_int '48'
 _FEATURES_H = 1 # Variable c_int '1'
 HUGE_VAL = 0.0 # Variable c_double '0.0'
 CP_VERSION_MINOR = 1 # Variable c_int '1'
-__USE_POSIX199506 = 1 # Variable c_int '1'
+__WALL = 1073741824 # Variable c_int '1073741824'
 _BITS_TYPES_H = 1 # Variable c_int '1'
 M_1_PI = 0.31830988618379069 # Variable c_double '3.18309886183790691216444201927515678107738494873e-1'
 UNDERFLOW = 4 # Variable c_int '4'
@@ -1433,15 +1435,14 @@ M_2_PI = 0.63661977236758138 # Variable c_double '6.3661977236758138243288840385
 _XOPEN_SOURCE_EXTENDED = 1 # Variable c_int '1'
 CP_NO_GROUP = 0 # Variable c_uint '0u'
 WNOWAIT = 16777216 # Variable c_int '16777216'
-__WORDSIZE = 32 # Variable c_int '32'
+__SIZEOF_PTHREAD_RWLOCKATTR_T = 8 # Variable c_int '8'
 _SYS_CDEFS_H = 1 # Variable c_int '1'
-_LARGEFILE64_SOURCE = 1 # Variable c_int '1'
+WEXITED = 4 # Variable c_int '4'
 _XOPEN_SOURCE = 700 # Variable c_int '700'
 __SIZEOF_PTHREAD_ATTR_T = 36 # Variable c_int '36'
-__WALL = 1073741824 # Variable c_int '1073741824'
 MATH_ERREXCEPT = 2 # Variable c_int '2'
 HUGE_VALF = 0.0 # Variable c_float '0.0f'
-__USE_ISOC95 = 1 # Variable c_int '1'
+_SIGSET_NWORDS = 32L # Variable c_uint '32u'
 __USE_ISOC99 = 1 # Variable c_int '1'
 WCONTINUED = 8 # Variable c_int '8'
 EXIT_FAILURE = 1 # Variable c_int '1'
@@ -1450,60 +1451,60 @@ _BSD_SOURCE = 1 # Variable c_int '1'
 _XLOCALE_H = 1 # Variable c_int '1'
 _LARGEFILE_SOURCE = 1 # Variable c_int '1'
 __FD_ZERO_STOS = 'stosl' # Variable STRING '(const char*)"stosl"'
-frexpl = chipmunk_lib.frexpl
-frexpl.restype = c_longdouble
-frexpl.argtypes = [c_longdouble, POINTER(c_int)]
-frexpf = chipmunk_lib.frexpf
-frexpf.restype = c_float
-frexpf.argtypes = [c_float, POINTER(c_int)]
 frexp = chipmunk_lib.frexp
 frexp.restype = c_double
 frexp.argtypes = [c_double, POINTER(c_int)]
-ldexpl = chipmunk_lib.ldexpl
-ldexpl.restype = c_longdouble
-ldexpl.argtypes = [c_longdouble, c_int]
+frexpf = chipmunk_lib.frexpf
+frexpf.restype = c_float
+frexpf.argtypes = [c_float, POINTER(c_int)]
+frexpl = chipmunk_lib.frexpl
+frexpl.restype = c_longdouble
+frexpl.argtypes = [c_longdouble, POINTER(c_int)]
 ldexp = chipmunk_lib.ldexp
 ldexp.restype = c_double
 ldexp.argtypes = [c_double, c_int]
 ldexpf = chipmunk_lib.ldexpf
 ldexpf.restype = c_float
 ldexpf.argtypes = [c_float, c_int]
+ldexpl = chipmunk_lib.ldexpl
+ldexpl.restype = c_longdouble
+ldexpl.argtypes = [c_longdouble, c_int]
+modfl = chipmunk_lib.modfl
+modfl.restype = c_longdouble
+modfl.argtypes = [c_longdouble, POINTER(c_longdouble)]
 modff = chipmunk_lib.modff
 modff.restype = c_float
 modff.argtypes = [c_float, POINTER(c_float)]
 modf = chipmunk_lib.modf
 modf.restype = c_double
 modf.argtypes = [c_double, POINTER(c_double)]
-modfl = chipmunk_lib.modfl
-modfl.restype = c_longdouble
-modfl.argtypes = [c_longdouble, POINTER(c_longdouble)]
-__isinff = chipmunk_lib.__isinff
-__isinff.restype = c_int
-__isinff.argtypes = [c_float]
 __isinfl = chipmunk_lib.__isinfl
 __isinfl.restype = c_int
 __isinfl.argtypes = [c_longdouble]
 __isinf = chipmunk_lib.__isinf
 __isinf.restype = c_int
 __isinf.argtypes = [c_double]
+__isinff = chipmunk_lib.__isinff
+__isinff.restype = c_int
+__isinff.argtypes = [c_float]
 __finitef = chipmunk_lib.__finitef
 __finitef.restype = c_int
 __finitef.argtypes = [c_float]
-__finite = chipmunk_lib.__finite
-__finite.restype = c_int
-__finite.argtypes = [c_double]
 __finitel = chipmunk_lib.__finitel
 __finitel.restype = c_int
 __finitel.argtypes = [c_longdouble]
-isinff = chipmunk_lib.isinff
-isinff.restype = c_int
-isinff.argtypes = [c_float]
+__finite = chipmunk_lib.__finite
+__finite.restype = c_int
+__finite.argtypes = [c_double]
 isinf = chipmunk_lib.isinf
 isinf.restype = c_int
 isinf.argtypes = [c_double]
 isinfl = chipmunk_lib.isinfl
 isinfl.restype = c_int
 isinfl.argtypes = [c_longdouble]
+isinff = chipmunk_lib.isinff
+isinff.restype = c_int
+isinff.argtypes = [c_float]
 finite = chipmunk_lib.finite
 finite.restype = c_int
 finite.argtypes = [c_double]
@@ -1513,62 +1514,62 @@ finitef.argtypes = [c_float]
 finitel = chipmunk_lib.finitel
 finitel.restype = c_int
 finitel.argtypes = [c_longdouble]
-copysignl = chipmunk_lib.copysignl
-copysignl.restype = c_longdouble
-copysignl.argtypes = [c_longdouble, c_longdouble]
-copysignf = chipmunk_lib.copysignf
-copysignf.restype = c_float
-copysignf.argtypes = [c_float, c_float]
 copysign = chipmunk_lib.copysign
 copysign.restype = c_double
 copysign.argtypes = [c_double, c_double]
-__isnan = chipmunk_lib.__isnan
-__isnan.restype = c_int
-__isnan.argtypes = [c_double]
-__isnanl = chipmunk_lib.__isnanl
-__isnanl.restype = c_int
-__isnanl.argtypes = [c_longdouble]
+copysignf = chipmunk_lib.copysignf
+copysignf.restype = c_float
+copysignf.argtypes = [c_float, c_float]
+copysignl = chipmunk_lib.copysignl
+copysignl.restype = c_longdouble
+copysignl.argtypes = [c_longdouble, c_longdouble]
 __isnanf = chipmunk_lib.__isnanf
 __isnanf.restype = c_int
 __isnanf.argtypes = [c_float]
-isnanl = chipmunk_lib.isnanl
-isnanl.restype = c_int
-isnanl.argtypes = [c_longdouble]
+__isnanl = chipmunk_lib.__isnanl
+__isnanl.restype = c_int
+__isnanl.argtypes = [c_longdouble]
+__isnan = chipmunk_lib.__isnan
+__isnan.restype = c_int
+__isnan.argtypes = [c_double]
 isnanf = chipmunk_lib.isnanf
 isnanf.restype = c_int
 isnanf.argtypes = [c_float]
 isnan = chipmunk_lib.isnan
 isnan.restype = c_int
 isnan.argtypes = [c_double]
-scalbn = chipmunk_lib.scalbn
-scalbn.restype = c_double
-scalbn.argtypes = [c_double, c_int]
+isnanl = chipmunk_lib.isnanl
+isnanl.restype = c_int
+isnanl.argtypes = [c_longdouble]
 scalbnf = chipmunk_lib.scalbnf
 scalbnf.restype = c_float
 scalbnf.argtypes = [c_float, c_int]
 scalbnl = chipmunk_lib.scalbnl
 scalbnl.restype = c_longdouble
 scalbnl.argtypes = [c_longdouble, c_int]
+scalbn = chipmunk_lib.scalbn
+scalbn.restype = c_double
+scalbn.argtypes = [c_double, c_int]
+scalbln = chipmunk_lib.scalbln
+scalbln.restype = c_double
+scalbln.argtypes = [c_double, c_long]
 scalblnl = chipmunk_lib.scalblnl
 scalblnl.restype = c_longdouble
 scalblnl.argtypes = [c_longdouble, c_long]
 scalblnf = chipmunk_lib.scalblnf
 scalblnf.restype = c_float
 scalblnf.argtypes = [c_float, c_long]
-scalbln = chipmunk_lib.scalbln
-scalbln.restype = c_double
-scalbln.argtypes = [c_double, c_long]
-__signbitl = chipmunk_lib.__signbitl
-__signbitl.restype = c_int
-__signbitl.argtypes = [c_longdouble]
+float_t = c_longdouble
+double_t = c_longdouble
 __signbitf = chipmunk_lib.__signbitf
 __signbitf.restype = c_int
 __signbitf.argtypes = [c_float]
 __signbit = chipmunk_lib.__signbit
 __signbit.restype = c_int
 __signbit.argtypes = [c_double]
-float_t = c_longdouble
-double_t = c_longdouble
+__signbitl = chipmunk_lib.__signbitl
+__signbitl.restype = c_int
+__signbitl.argtypes = [c_longdouble]
 pthread_t = c_ulong
 class pthread_attr_t(Union):
     pass
@@ -1828,18 +1829,6 @@ lldiv_t._fields_ = [
 __ctype_get_mb_cur_max = chipmunk_lib.__ctype_get_mb_cur_max
 __ctype_get_mb_cur_max.restype = size_t
 __ctype_get_mb_cur_max.argtypes = []
-atof = chipmunk_lib.atof
-atof.restype = c_double
-atof.argtypes = [STRING]
-atoi = chipmunk_lib.atoi
-atoi.restype = c_int
-atoi.argtypes = [STRING]
-atol = chipmunk_lib.atol
-atol.restype = c_long
-atol.argtypes = [STRING]
-atoll = chipmunk_lib.atoll
-atoll.restype = c_longlong
-atoll.argtypes = [STRING]
 strtod = chipmunk_lib.strtod
 strtod.restype = c_double
 strtod.argtypes = [STRING, POINTER(STRING)]
@@ -1891,6 +1880,18 @@ strtof_l.argtypes = [STRING, POINTER(STRING), __locale_t]
 strtold_l = chipmunk_lib.strtold_l
 strtold_l.restype = c_longdouble
 strtold_l.argtypes = [STRING, POINTER(STRING), __locale_t]
+atof = chipmunk_lib.atof
+atof.restype = c_double
+atof.argtypes = [STRING]
+atoi = chipmunk_lib.atoi
+atoi.restype = c_int
+atoi.argtypes = [STRING]
+atol = chipmunk_lib.atol
+atol.restype = c_long
+atol.argtypes = [STRING]
+atoll = chipmunk_lib.atoll
+atoll.restype = c_longlong
+atoll.argtypes = [STRING]
 l64a = chipmunk_lib.l64a
 l64a.restype = STRING
 l64a.argtypes = [c_long]
@@ -2060,6 +2061,12 @@ mkstemp.argtypes = [STRING]
 mkstemp64 = chipmunk_lib.mkstemp64
 mkstemp64.restype = c_int
 mkstemp64.argtypes = [STRING]
+mkstemps = chipmunk_lib.mkstemps
+mkstemps.restype = c_int
+mkstemps.argtypes = [STRING, c_int]
+mkstemps64 = chipmunk_lib.mkstemps64
+mkstemps64.restype = c_int
+mkstemps64.argtypes = [STRING, c_int]
 mkdtemp = chipmunk_lib.mkdtemp
 mkdtemp.restype = STRING
 mkdtemp.argtypes = [STRING]
@@ -2069,6 +2076,12 @@ mkostemp.argtypes = [STRING, c_int]
 mkostemp64 = chipmunk_lib.mkostemp64
 mkostemp64.restype = c_int
 mkostemp64.argtypes = [STRING, c_int]
+mkostemps = chipmunk_lib.mkostemps
+mkostemps.restype = c_int
+mkostemps.argtypes = [STRING, c_int, c_int]
+mkostemps64 = chipmunk_lib.mkostemps64
+mkostemps64.restype = c_int
+mkostemps64.argtypes = [STRING, c_int, c_int]
 system = chipmunk_lib.system
 system.restype = c_int
 system.argtypes = [STRING]
@@ -2268,19 +2281,19 @@ __locale_struct._fields_ = [
 locale_data._fields_ = [
 ]
 locale_t = __locale_t
-__all__ = ['_SVID_', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
-           'cpBodyEachShape', 'M_LOG10E', 'int_fast32_t',
+__all__ = ['WTERMSIG', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
+           'cpBodyEachShape', 'mkstemps', 'M_LOG10E', 'int_fast32_t',
            '__OFF64_T_TYPE', 'ldexpl', '__off64_t', '__int16_t',
            'cpSpaceBodyIteratorFunc', 'ldexpf', 'cpContactPointSet',
            '__WCOREFLAG', 'uint8_t', 'qecvt', '__timer_t_defined',
-           'getloadavg', 'cpSpacePointQueryFunc',
+           'math_errhandling', 'cpSpacePointQueryFunc',
            '__SIZEOF_PTHREAD_CONDATTR_T', 'makedev', 'wctomb',
-           'cpConstraintGetImpulseImpl', 'rand_r', 'getpt', 'scalbnf',
-           'scalbnl', '__USE_XOPEN_EXTENDED', 'islessgreater',
-           'cpBodyActivate', 'cpBody', 'cpBodySetMass', '__time_t',
-           '__WSTOPSIG', '__GLIBC_PREREQ', 'cpBoxShapeNew2',
-           '__ASMNAME', 'M_PI', 'mbstowcs', 'htole32',
-           '__SIZEOF_PTHREAD_MUTEXATTR_T', 'cpVect',
+           '__FD_ISSET', 'cpConstraintGetImpulseImpl', 'rand_r',
+           'getpt', 'scalbnf', 'scalbnl', '__USE_XOPEN_EXTENDED',
+           'islessgreater', 'cpBodyActivate', 'cpBody',
+           'cpBodySetMass', '__time_t', '__WSTOPSIG', '__NFDBITS',
+           'cpBoxShapeNew2', '__ASMNAME', 'M_PI', 'mbstowcs',
+           'htole32', '__SIZEOF_PTHREAD_MUTEXATTR_T', 'cpVect',
            'cpDampedRotarySpringGetClass', 'cpPivotJointNew2',
            'cpSpatialIndexQueryFunc', 'cpArbiterGetDepth', 'timer_t',
            'cpBodyNewStatic', 'div', 'gnu_dev_makedev', 'nrand48_r',
@@ -2319,14 +2332,14 @@ __all__ = ['_SVID_', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
            'BIG_ENDIAN', 'off_t', 'pthread_barrierattr_t',
            'cpSpatialIndexSegmentQueryFunc', '__FSBLKCNT64_T_TYPE',
            'cpMomentForCircle', '__uint16_t', 'pid_t',
-           '__lldiv_t_defined', 'cpSpaceRemoveConstraint',
-           'cpBodyActivateStatic', 'cpvtoangle', 'cpSpatialIndex',
-           'cpShapeSegmentQueryImpl', 'HUGE_VAL', 'cpLayers',
-           'u_int8_t', 'cpConstraintFree', '__WALL', 'cpBodyInit',
-           '__ino64_t', 'cpAreaForSegment', 'M_1_PI',
-           'cpSegmentShape', 'cpGrooveJointSetGrooveB', 'UNDERFLOW',
-           'strtold', 'l64a', 'FD_ZERO', '__fsblkcnt_t', 'strtoll',
-           '__locale_t', 'lcong48', 'cpPolyShape', 'HUGE',
+           '__lldiv_t_defined', 'mkostemps',
+           'cpSpaceRemoveConstraint', 'cpBodyActivateStatic',
+           'cpvtoangle', 'cpSpatialIndex', 'cpShapeSegmentQueryImpl',
+           'HUGE_VAL', 'cpLayers', 'u_int8_t', 'cpConstraintFree',
+           '__WALL', 'cpBodyInit', '__ino64_t', 'cpAreaForSegment',
+           'M_1_PI', 'cpSegmentShape', 'cpGrooveJointSetGrooveB',
+           'UNDERFLOW', 'strtold', 'l64a', 'FD_ZERO', '__fsblkcnt_t',
+           'strtoll', '__locale_t', 'lcong48', 'cpPolyShape', 'HUGE',
            '__WIFCONTINUED', 'cpRatchetJointAlloc', 'M_2_PI',
            'lrand48', 'cpBodyApplyForce', 'cpMomentForSegment',
            '__WORDSIZE', '_IEEE_', 'cpBBTreeNew', 'cpPivotJointAlloc',
@@ -2347,9 +2360,9 @@ __all__ = ['_SVID_', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
            'finitef', 'pthread_mutexattr_t', 'size_t', '__USE_XOPEN',
            'cpSpaceShapeIteratorFunc', '__time_t_defined', 'strtol_l',
            'cpSpaceReindexStatic', '__USE_POSIX2', 'blkcnt_t',
-           'uint_least16_t', 'cpArray',
-           'cpSpaceRemoveCollisionHandler', '__qaddr_t', '__NFDBITS',
-           'cpPolyShapeAlloc', 'cpDampedSpringInit',
+           'uint_least16_t', 'mkostemps64', 'cpArray',
+           'cpSpaceRemoveCollisionHandler', '__qaddr_t',
+           '__GLIBC_PREREQ', 'cpPolyShapeAlloc', 'cpDampedSpringInit',
            'cpBBTreeVelocityFunc', 'cpSegmentQueryInfo',
            '__W_EXITCODE', '__key_t', 'islessequal', 'LITTLE_ENDIAN',
            'u_char', 'cpCircleShapeSetOffset', 'uid_t',
@@ -2385,7 +2398,7 @@ __all__ = ['_SVID_', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
            'cpShapeNearestPointQueryImpl', '_ALLOCA_H',
            '__W_CONTINUED', 'system', '__bswap_constant_32',
            'comparison_fn_t', 'cpGearJoint', 'ino64_t',
-           '__USE_ISOC99', 'le16toh', '__DEV_T_TYPE', '__FD_SET_BTS',
+           '__USE_ISOC99', 'le16toh', '__DEV_T_TYPE',
            'cpSpaceAddShape', 'mkstemp64', 'ecvt_r',
            'cpConstraintDestroy', '__uint8_t',
            'cpBodyConstraintIteratorFunc',
@@ -2394,8 +2407,9 @@ __all__ = ['_SVID_', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
            '__STDC_ISO_10646__', 'cpBodyEachArbiter', '_Exit',
            'strtouq', 'cpSegmentShapeGetRadius', 'copysignl',
            'cpGearJointSetRatio', 'cpSpatialIndexRemoveImpl',
-           '__USE_LARGEFILE', '__SIZEOF_PTHREAD_COND_T', 'cpSweep1D',
-           'cpSweep1DInit', '_FEATURES_H', 'cpArbiterStateCached',
+           '__USE_LARGEFILE', '__USE_EXTERN_INLINES',
+           '__SIZEOF_PTHREAD_COND_T', 'cpSweep1D', 'cpSweep1DInit',
+           '_FEATURES_H', 'cpArbiterStateCached',
            'cpRotaryLimitJointNew', 'uint64_t', 'WCONTINUED',
            '__REDIRECT_NTH_LDBL', 'pthread_cond_t', 'cpvforangle',
            'cpGearJointGetClass', '_BITS_TYPES_H', 'cpHashSet',
@@ -2404,29 +2418,28 @@ __all__ = ['_SVID_', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
            '__FLOAT_WORD_ORDER', 'N4wait3DOT_1E',
            'cpSpaceEachConstraint', 'nlink_t', '__UQUAD_TYPE',
            'cpArbiterThread', 'timeval',
-           'cpArbiterTotalImpulseWithFriction',
-           'N17cpContactPointSet4DOT_22E',
+           'cpArbiterTotalImpulseWithFriction', 'WNOWAIT',
            'cpRotaryLimitJointGetClass', 'frexpl', 'cpSpaceEachShape',
-           '__FD_ISSET_BT', 'cpGearJointNew', '__u_char',
-           'cpSpaceRemoveStaticShape', 'frexpf', 'cprealloc',
-           'realpath', 'ulong', 'cpArbiterState', 'HUGE_VALF',
-           '__clock_t', 'fsfilcnt_t', 'int8_t', '__WIFSTOPPED',
-           'cpBB', '__finitel', 'N14pthread_cond_t4DOT_13E',
-           'srand48', '__fsfilcnt_t', 'cpSegmentShapeGetNormal',
-           'cpShapeDestroy', 'cpBodyPositionFunc', '__quad_t',
-           'cpGrooveJointNew', 'cpSpaceSegmentQueryFunc', '__uid_t',
-           'MATH_ERRNO', 'WTERMSIG', '__pthread_mutex_s',
-           'CP_BUFFER_BYTES', 'a64l', '__USE_ATFILE', 'random',
-           'cpvslerp', '__GNU_LIBRARY__', 'cpRatchetJointInit',
-           '__swblk_t', 'mode_t', 'strtoull', '__USE_LARGEFILE64',
-           'cpDampedRotarySpringAlloc', 'cpRotaryLimitJoint',
-           'cpSpatialIndexSegmentQueryImpl', 'htobe64', 'strtod',
-           'gid_t', 'cpDampedSpringNew', 'frexp', 'lrand48_r',
-           'strtof_l', 'posix_memalign', 'strtoq', '__loff_t',
-           'intptr_t', 'cpCollisionHandler', 'FD_CLR', 'int_fast8_t',
-           '__RLIM64_T_TYPE', 'erand48_r', 'cpSpaceSegmentQueryFirst',
-           'cpSpaceAddConstraint', 'cpGearJointInit',
-           'cpGrooveJointInit', 'cpSpaceUseSpatialHash', 'ptsname_r',
+           'cpGearJointNew', '__u_char', 'cpSpaceRemoveStaticShape',
+           'frexpf', 'cprealloc', 'realpath', 'ulong',
+           'cpArbiterState', 'HUGE_VALF', '__clock_t', 'fsfilcnt_t',
+           'int8_t', '__WIFSTOPPED', 'cpBB', 'erand48', '__finitel',
+           'N14pthread_cond_t4DOT_13E', 'srand48', '__fsfilcnt_t',
+           'cpSegmentShapeGetNormal', 'cpShapeDestroy',
+           'cpBodyPositionFunc', '__quad_t', 'cpGrooveJointNew',
+           'cpSpaceSegmentQueryFunc', '__uid_t', 'MATH_ERRNO',
+           '_SVID_', '__pthread_mutex_s', 'CP_BUFFER_BYTES', 'a64l',
+           '__USE_ATFILE', 'random', 'cpvslerp', '__GNU_LIBRARY__',
+           'cpRatchetJointInit', '__swblk_t', 'mode_t', 'strtoull',
+           '__USE_LARGEFILE64', 'cpDampedRotarySpringAlloc',
+           'cpRotaryLimitJoint', 'cpSpatialIndexSegmentQueryImpl',
+           'htobe64', 'strtod', 'gid_t', 'cpDampedSpringNew', 'frexp',
+           'lrand48_r', 'strtof_l', 'posix_memalign', 'strtoq',
+           '__loff_t', 'intptr_t', 'cpCollisionHandler', 'FD_CLR',
+           'int_fast8_t', '__RLIM64_T_TYPE', 'erand48_r',
+           'cpSpaceSegmentQueryFirst', 'cpSpaceAddConstraint',
+           'cpGearJointInit', 'cpGrooveJointInit',
+           'cpSpaceUseSpatialHash', 'ptsname_r',
            '__GLIBC_HAVE_LONG_LONG', 'cpBodySetPos', 'cpvstr',
            'cpMomentForPoly', '__WCLONE', 'FP_NAN', 'cpBodyDestroy',
            'cpDataPointer', 'cpArbiterStateNormal', 'cpPivotJoint',
@@ -2450,11 +2463,11 @@ __all__ = ['_SVID_', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
            '__blkcnt_t', 'PLOSS', 'clockid_t', 'fd_set', 'caddr_t',
            'blkcnt64_t', 'uint16_t', 'cpSpaceRemoveShape', 'srandom',
            '__SIZEOF_PTHREAD_BARRIERATTR_T', 'cpBodySleep',
-           'double_t', 'off64_t', 'ptsname', 'cpSweep1DAlloc',
-           'alloca', 'cpDampedRotarySpringTorqueFunc',
-           'cpSegmentShapeGetA', 'cpSegmentShapeGetB', '__USE_MISC',
-           '__isnanf', '__BIT_TYPES_DEFINED__', 'htole64',
-           'getsubopt', '__compar_d_fn_t',
+           'double_t', 'off64_t', 'cpSweep1DAlloc', 'alloca',
+           'cpDampedRotarySpringTorqueFunc', 'cpSegmentShapeGetA',
+           'cpSegmentShapeGetB', '__USE_MISC', '__isnanf',
+           '__BIT_TYPES_DEFINED__', '__USE_EXTERN_INLINES_IN_LIBC',
+           'htole64', 'getsubopt', '__compar_d_fn_t',
            'cpSpaceNearestPointQueryFunc', 'WIFEXITED',
            'N15pthread_mutex_t17__pthread_mutex_s4DOT_10E',
            '__finite', 'FP_ILOGBNAN', 'gnu_dev_major',
@@ -2489,12 +2502,12 @@ __all__ = ['_SVID_', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
            'cpSweep1DNew', 'uint32_t', 'cpvlength', 'cpPolyValidate',
            'suseconds_t', '__MATHCALLX', 'be16toh', 'WSTOPPED',
            'cpBoxShapeInit', 'cpSpacePointQuery', '__isinff',
-           '__LITTLE_ENDIAN', 'NAN', '__isinfl', 'pthread_condattr_t',
-           'cpBoxShapeInit2', 'pthread_once_t', '__fsid_t', '_ISOC_',
-           'cpBBTreeOptimize', 'cpDampedSpring', 'cpBodySetAngle',
-           'random_data', 'atoll', 'isnormal', '__uint32_t',
-           '__USE_XOPEN2K8', '_STRUCT_TIMEVAL', 'ldiv',
-           'cpSpaceReindexShapesForBody', '_XOPEN_', 'WNOWAIT',
+           '__LITTLE_ENDIAN', 'NAN', '__isinfl', 'mkstemps64',
+           'pthread_condattr_t', 'cpBoxShapeInit2', 'pthread_once_t',
+           '__fsid_t', '_ISOC_', 'cpBBTreeOptimize', 'cpDampedSpring',
+           'cpBodySetAngle', 'random_data', 'atoll', 'isnormal',
+           '__uint32_t', '__USE_XOPEN2K8', '_STRUCT_TIMEVAL', 'ldiv',
+           'cpSpaceReindexShapesForBody', '_XOPEN_', 'ptsname',
            'cpGrooveJointAlloc', 'RAND_MAX', 'setenv',
            'cpBodyVelocityFunc', 'cpSpaceShapeQuery', '__PDP_ENDIAN',
            'cpBodyEachConstraint', 'int32_t', '__u_short', 'loff_t',
@@ -2508,10 +2521,9 @@ __all__ = ['_SVID_', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
            'cpCircleShapeAlloc', 'mrand48', 'llabs', 'seed48',
            '__clock_t_defined', '__pid_t', 'cpContact', '__id_t',
            'cpConstraint', 'cpArbiter', 'cpArbiterStateIgnore',
-           'int_least8_t', 'cpSpaceFree', '__bswap_constant_16',
-           'cpCircleShapeNew', 'qecvt_r', '__signbitf',
-           '_ISOC99_SOURCE', 'exit', '__signbitl', 'cpRecenterPoly',
-           'int_least16_t', '__FD_CLR_BTR',
+           'int_least8_t', 'cpSpaceFree', 'cpCircleShapeNew',
+           'qecvt_r', '__signbitf', '_ISOC99_SOURCE', 'exit',
+           '__signbitl', 'cpRecenterPoly', 'int_least16_t',
            'cpConstraintApplyCachedImpulseImpl', 'cpArbiterGetCount',
            'isgreaterequal', '_SVID_SOURCE', 'FD_ISSET',
            'cpGearJointAlloc', 'cpSpatialIndexCountImpl',
@@ -2529,22 +2541,24 @@ __all__ = ['_SVID_', '_ATFILE_SOURCE', 'cpArbiterIsFirstContact',
            'htobe32', 'atoi', '__fd_mask', 'atol', 'wcstombs',
            'pthread_key_t', '__finitef', 'cpSpaceNearestPointQuery',
            'atof', '__STDC_IEC_559_COMPLEX__', 'strtoull_l',
-           'erand48', 'locale_data', 'cpBBTreeInit', 'cpTimestamp',
-           'intmax_t', 'cpSegmentShapeSetNeighbors', '_ENDIAN_H',
-           'useconds_t', 'cpPivotJointGetClass', 'fd_mask',
-           'cpMessage', '__U64_TYPE', 'cpBodyNew', 'FD_SET',
-           '__isnanl', 'cpConstraintClass', 'cpFloat', 'initstate',
-           '__STRING', 'int64_t', 'cpBodySanityCheck',
+           'N17cpContactPointSet4DOT_25E', 'locale_data',
+           'cpBBTreeInit', 'cpTimestamp', 'intmax_t',
+           'cpSegmentShapeSetNeighbors', '_ENDIAN_H', 'useconds_t',
+           'cpPivotJointGetClass', 'fd_mask', 'cpMessage',
+           '__U64_TYPE', 'cpBodyNew', 'FD_SET', '__isnanl',
+           'cpConstraintClass', 'cpFloat', 'initstate', '__STRING',
+           'int64_t', 'cpBodySanityCheck',
            'cpSpatialIndexReindexQueryImpl', '__WCHAR_MIN',
            'uint_fast32_t', 'WEXITSTATUS', 'le64toh', '__GNUC_PREREQ',
            'BYTE_ORDER', '__BLKCNT64_T_TYPE', 'posix_openpt',
-           'lldiv_t', 'cpBodyResetForces', 'cpSpacePointQueryFirst',
-           'int_least32_t', '__SIZEOF_PTHREAD_RWLOCKATTR_T',
-           '__u_quad_t', 'modff', 'clearenv', 'mkstemp',
-           'cpArbiterTotalImpulse', '_BSD_SOURCE',
-           'cpSpatialIndexClass', 'fsid_t', '_LARGEFILE64_SOURCE',
-           'unsetenv', '__va_arg_pack', 'FD_SETSIZE', 'initstate_r',
-           'cpAreaForPoly', 'cpResetShapeIdCounter', '__ino_t',
+           'lldiv_t', 'cpBodyResetForces', 'getloadavg',
+           'cpSpacePointQueryFirst', 'int_least32_t',
+           '__SIZEOF_PTHREAD_RWLOCKATTR_T', '__u_quad_t', 'modff',
+           'clearenv', 'mkstemp', 'cpArbiterTotalImpulse',
+           '_BSD_SOURCE', 'cpSpatialIndexClass', 'fsid_t',
+           '_LARGEFILE64_SOURCE', 'unsetenv', '__va_arg_pack',
+           'FD_SETSIZE', 'initstate_r', 'cpAreaForPoly',
+           'cpResetShapeIdCounter', '__ino_t',
            'cpDampedRotarySpringInit', '_SIGSET_NWORDS', 'isinf',
            '__va_arg_pack_len', 'cpSpaceSegmentQuery', '__bos0',
            'cpComponentNode', 'cpCircleShapeInit', 'cpRatchetJoint',
