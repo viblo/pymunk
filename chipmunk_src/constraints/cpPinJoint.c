@@ -19,6 +19,9 @@
  * SOFTWARE.
  */
 
+#include <stdlib.h>
+#include <math.h>
+
 #include "chipmunk_private.h"
 #include "constraints/util.h"
 
@@ -109,8 +112,6 @@ cpPinJointInit(cpPinJoint *joint, cpBody *a, cpBody *b, cpVect anchr1, cpVect an
 	cpVect p1 = (a ? cpvadd(a->p, cpvrotate(anchr1, a->rot)) : anchr1);
 	cpVect p2 = (b ? cpvadd(b->p, cpvrotate(anchr2, b->rot)) : anchr2);
 	joint->dist = cpvlength(cpvsub(p2, p1));
-	
-	cpAssertWarn(joint->dist > 0.0, "You created a 0 length pin joint. A pivot joint will be much more stable.");
 
 	joint->jnAcc = 0.0f;
 	

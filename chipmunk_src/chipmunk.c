@@ -19,11 +19,20 @@
  * SOFTWARE.
  */
  
+#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <math.h>
 #include <stdarg.h>
 
 #include "chipmunk_private.h"
+
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
+//	void cpInitCollisionFuncs(void);
+//#ifdef __cplusplus
+//}
+//#endif
 
 void
 cpMessage(const char *condition, const char *file, int line, cpBool isError, cpBool isHardError, const char *message, ...)
@@ -39,7 +48,7 @@ cpMessage(const char *condition, const char *file, int line, cpBool isError, cpB
 	fprintf(stderr, "\tFailed condition: %s\n", condition);
 	fprintf(stderr, "\tSource:%s:%d\n", file, line);
 	
-	if(isError) abort();
+	if(isHardError) abort();
 }
 
 #define STR(s) #s
@@ -50,10 +59,13 @@ const char *cpVersionString = XSTR(CP_VERSION_MAJOR)"."XSTR(CP_VERSION_MINOR)"."
 void
 cpInitChipmunk(void)
 {
-	cpAssertWarn(cpFalse, "cpInitChipmunk is deprecated and no longer required. It will be removed in the future.");
+//#ifndef NDEBUG
+//	printf("Initializing Chipmunk v%s (Debug Enabled)\n", cpVersionString);
+//	printf("Compile with -DNDEBUG defined to disable debug mode and runtime assertion checks\n");
+//#endif
+//	
+//	cpInitCollisionFuncs();
 }
-
-//MARK: Misc Functions
 
 cpFloat
 cpMomentForCircle(cpFloat m, cpFloat r1, cpFloat r2, cpVect offset)
@@ -70,8 +82,10 @@ cpAreaForCircle(cpFloat r1, cpFloat r2)
 cpFloat
 cpMomentForSegment(cpFloat m, cpVect a, cpVect b)
 {
-	cpVect offset = cpvmult(cpvadd(a, b), 0.5f);
-	return m*(cpvdistsq(b, a)/12.0f + cpvlengthsq(offset));
+	cpFloat length = cpvlength(cpvsub(b, a));
+	cpVect offset = cpvmult(cpvadd(a, b), 1.0f/2.0f);
+	
+	return m*(length*length/12.0f + cpvlengthsq(offset));
 }
 
 cpFloat
@@ -150,173 +164,7 @@ cpMomentForBox2(cpFloat m, cpBB box)
 	cpFloat height = box.t - box.b;
 	cpVect offset = cpvmult(cpv(box.l + box.r, box.b + box.t), 0.5f);
 	
-	// TODO NaN when offset is 0 and m is INFINITY
 	return cpMomentForBox(m, width, height) + m*cpvlengthsq(offset);
 }
-
-//MARK: Quick Hull
-
-void
-cpLoopIndexes(cpVect *verts, int count, int *start, int *end)
-{
-	(*start) = (*end) = 0;
-	cpVect min = verts[0];
-	cpVect max = min;
-	
-  for(int i=1; i<count; i++){
-    cpVect v = verts[i];
-		
-    if(v.x < min.x || (v.x == min.x && v.y < min.y)){
-      min = v;
-      (*start) = i;
-    } else if(v.x > max.x || (v.x == max.x && v.y > max.y)){
-			max = v;
-			(*end) = i;
-		}
-	}
-}
-
-#define SWAP(__A__, __B__) {cpVect __TMP__ = __A__; __A__ = __B__; __B__ = __TMP__;}
-
-static int
-QHullPartition(cpVect *verts, int count, cpVect a, cpVect b, cpFloat tol)
-{
-	if(count == 0) return 0;
-	
-	cpFloat max = 0;
-	int pivot = 0;
-	
-	cpVect delta = cpvsub(b, a);
-	cpFloat valueTol = tol*cpvlength(delta);
-	
-	int head = 0;
-	for(int tail = count-1; head <= tail;){
-		cpFloat value = cpvcross(delta, cpvsub(verts[head], a));
-		if(value > valueTol){
-			if(value > max){
-				max = value;
-				pivot = head;
-			}
-			
-			head++;
-		} else {
-			SWAP(verts[head], verts[tail]);
-			tail--;
-		}
-	}
-	
-	// move the new pivot to the front if it's not already there.
-	if(pivot != 0) SWAP(verts[0], verts[pivot]);
-	return head;
-}
-
-static int
-QHullReduce(cpFloat tol, cpVect *verts, int count, cpVect a, cpVect pivot, cpVect b, cpVect *result)
-{
-	if(count < 0){
-		return 0;
-	} else if(count == 0) {
-		result[0] = pivot;
-		return 1;
-	} else {
-		int left_count = QHullPartition(verts, count, a, pivot, tol);
-		int index = QHullReduce(tol, verts + 1, left_count - 1, a, verts[0], pivot, result);
-		
-		result[index++] = pivot;
-		
-		int right_count = QHullPartition(verts + left_count, count - left_count, pivot, b, tol);
-		return index + QHullReduce(tol, verts + left_count + 1, right_count - 1, pivot, verts[left_count], b, result + index);
-	}
-}
-
-// QuickHull seemed like a neat algorithm, and efficient-ish for large input sets.
-// My implementation performs an in place reduction using the result array as scratch space.
-int
-cpConvexHull(int count, cpVect *verts, cpVect *result, int *first, cpFloat tol)
-{
-	if(result){
-		// Copy the line vertexes into the empty part of the result polyline to use as a scratch buffer.
-		memcpy(result, verts, count*sizeof(cpVect));
-	} else {
-		// If a result array was not specified, reduce the input instead.
-		result = verts;
-	}
-	
-	// Degenerate case, all poins are the same.
-	int start, end;
-	cpLoopIndexes(verts, count, &start, &end);
-	if(start == end){
-		if(first) (*first) = 0;
-		return 1;
-	}
-	
-	SWAP(result[0], result[start]);
-	SWAP(result[1], result[end == 0 ? start : end]);
-	
-	cpVect a = result[0];
-	cpVect b = result[1];
-	
-	if(first) (*first) = start;
-	int resultCount = QHullReduce(tol, result + 2, count - 2, a, b, a, result + 1) + 1;
-	cpAssertSoft(cpPolyValidate(result, resultCount),
-		"Internal error: cpConvexHull() and cpPolyValidate() did not agree."
-		"Please report this error with as much info as you can.");
-	return resultCount;
-}
-
-//MARK: Alternate Block Iterators
-
-#if defined(__has_extension)
-#if __has_extension(blocks)
-
-static void IteratorFunc(void *ptr, void (^block)(void *ptr)){block(ptr);}
-
-void cpSpaceEachBody_b(cpSpace *space, void (^block)(cpBody *body)){
-	cpSpaceEachBody(space, (cpSpaceBodyIteratorFunc)IteratorFunc, block);
-}
-
-void cpSpaceEachShape_b(cpSpace *space, void (^block)(cpShape *shape)){
-	cpSpaceEachShape(space, (cpSpaceShapeIteratorFunc)IteratorFunc, block);
-}
-
-void cpSpaceEachConstraint_b(cpSpace *space, void (^block)(cpConstraint *constraint)){
-	cpSpaceEachConstraint(space, (cpSpaceConstraintIteratorFunc)IteratorFunc, block);
-}
-
-static void BodyIteratorFunc(cpBody *body, void *ptr, void (^block)(void *ptr)){block(ptr);}
-
-void cpBodyEachShape_b(cpBody *body, void (^block)(cpShape *shape)){
-	cpBodyEachShape(body, (cpBodyShapeIteratorFunc)BodyIteratorFunc, block);
-}
-
-void cpBodyEachConstraint_b(cpBody *body, void (^block)(cpConstraint *constraint)){
-	cpBodyEachConstraint(body, (cpBodyConstraintIteratorFunc)BodyIteratorFunc, block);
-}
-
-void cpBodyEachArbiter_b(cpBody *body, void (^block)(cpArbiter *arbiter)){
-	cpBodyEachArbiter(body, (cpBodyArbiterIteratorFunc)BodyIteratorFunc, block);
-}
-
-static void NearestPointQueryIteratorFunc(cpShape *shape, cpFloat distance, cpVect point, cpSpaceNearestPointQueryBlock block){block(shape, distance, point);}
-void cpSpaceNearestPointQuery_b(cpSpace *space, cpVect point, cpFloat maxDistance, cpLayers layers, cpGroup group, cpSpaceNearestPointQueryBlock block){
-	cpSpaceNearestPointQuery(space, point, maxDistance, layers, group, (cpSpaceNearestPointQueryFunc)NearestPointQueryIteratorFunc, block);
-}
-
-static void SegmentQueryIteratorFunc(cpShape *shape, cpFloat t, cpVect n, cpSpaceSegmentQueryBlock block){block(shape, t, n);}
-void cpSpaceSegmentQuery_b(cpSpace *space, cpVect start, cpVect end, cpLayers layers, cpGroup group, cpSpaceSegmentQueryBlock block){
-	cpSpaceSegmentQuery(space, start, end, layers, group, (cpSpaceSegmentQueryFunc)SegmentQueryIteratorFunc, block);
-}
-
-void cpSpaceBBQuery_b(cpSpace *space, cpBB bb, cpLayers layers, cpGroup group, cpSpaceBBQueryBlock block){
-	cpSpaceBBQuery(space, bb, layers, group, (cpSpaceBBQueryFunc)IteratorFunc, block);
-}
-
-static void ShapeQueryIteratorFunc(cpShape *shape, cpContactPointSet *points, cpSpaceShapeQueryBlock block){block(shape, points);}
-cpBool cpSpaceShapeQuery_b(cpSpace *space, cpShape *shape, cpSpaceShapeQueryBlock block){
-	return cpSpaceShapeQuery(space, shape, (cpSpaceShapeQueryFunc)ShapeQueryIteratorFunc, block);
-}
-
-#endif
-#endif
 
 #include "chipmunk_ffi.h"

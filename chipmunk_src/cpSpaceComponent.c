@@ -19,16 +19,18 @@
  * SOFTWARE.
  */
  
+#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "chipmunk_private.h"
 
-//MARK: Sleeping Functions
+#pragma mark Sleeping Functions
 
 void
 cpSpaceActivateBody(cpSpace *space, cpBody *body)
 {
-	cpAssertHard(!cpBodyIsRogue(body), "Internal error: Attempting to activate a rouge body.");
+	cpAssertSoft(!cpBodyIsRogue(body), "Internal error: Attempting to activate a rouge body.");
 	
 	if(space->locked){
 		// cpSpaceActivateBody() is called again once the space is unlocked
@@ -55,7 +57,7 @@ cpSpaceActivateBody(cpSpace *space, cpBody *body)
 				// Reinsert the arbiter into the arbiter cache
 				cpShape *a = arb->a, *b = arb->b;
 				cpShape *shape_pair[] = {a, b};
-				cpHashValue arbHashID = CP_HASH_PAIR((cpHashValue)a, (cpHashValue)b);
+				cpHashValue arbHashID = CP_HASH_PAIR((size_t)a, (size_t)b);
 				cpHashSetInsert(space->cachedArbiters, arbHashID, shape_pair, arb, NULL);
 				
 				// Update the arbiter's state
@@ -77,7 +79,7 @@ cpSpaceActivateBody(cpSpace *space, cpBody *body)
 static void
 cpSpaceDeactivateBody(cpSpace *space, cpBody *body)
 {
-	cpAssertHard(!cpBodyIsRogue(body), "Internal error: Attempting to deactivate a rouge body.");
+	cpAssertSoft(!cpBodyIsRogue(body), "Internal error: Attempting to deactivate a rouge body.");
 	
 	cpArrayDeleteObj(space->bodies, body);
 	
@@ -115,7 +117,7 @@ static inline void
 ComponentActivate(cpBody *root)
 {
 	if(!root || !cpBodyIsSleeping(root)) return;
-	cpAssertHard(!cpBodyIsRogue(root), "Internal Error: ComponentActivate() called on a rogue body.");
+	cpAssertSoft(!cpBodyIsRogue(root), "Internal Error: ComponentActivate() called on a rogue body.");
 	
 	cpSpace *space = root->space;
 	cpBody *body = root;
@@ -153,7 +155,7 @@ cpBodyActivateStatic(cpBody *body, cpShape *filter)
 		}
 	}
 	
-	// TODO should also activate joints?
+	// TODO should also activate joints!
 }
 
 static inline void
@@ -210,31 +212,20 @@ ComponentActive(cpBody *root, cpFloat threshold)
 void
 cpSpaceProcessComponents(cpSpace *space, cpFloat dt)
 {
-	cpBool sleep = (space->sleepTimeThreshold != INFINITY);
-	cpArray *bodies = space->bodies;
+	cpFloat dv = space->idleSpeedThreshold;
+	cpFloat dvsq = (dv ? dv*dv : cpvlengthsq(space->gravity)*dt*dt);
 	
-#ifndef NDEBUG
+	// update idling and reset component nodes
+	cpArray *bodies = space->bodies;
 	for(int i=0; i<bodies->num; i++){
 		cpBody *body = (cpBody*)bodies->arr[i];
 		
+		// Need to deal with infinite mass objects
+		cpFloat keThreshold = (dvsq ? body->m*dvsq : 0.0f);
+		body->node.idleTime = (cpBodyKineticEnergy(body) > keThreshold ? 0.0f : body->node.idleTime + dt);
+		
 		cpAssertSoft(body->node.next == NULL, "Internal Error: Dangling next pointer detected in contact graph.");
 		cpAssertSoft(body->node.root == NULL, "Internal Error: Dangling root pointer detected in contact graph.");
-	}
-#endif
-	
-	// Calculate the kinetic energy of all the bodies.
-	if(sleep){
-		cpFloat dv = space->idleSpeedThreshold;
-		cpFloat dvsq = (dv ? dv*dv : cpvlengthsq(space->gravity)*dt*dt);
-		
-		// update idling and reset component nodes
-		for(int i=0; i<bodies->num; i++){
-			cpBody *body = (cpBody*)bodies->arr[i];
-			
-			// Need to deal with infinite mass objects
-			cpFloat keThreshold = (dvsq ? body->m*dvsq : 0.0f);
-			body->node.idleTime = (cpBodyKineticEnergy(body) > keThreshold ? 0.0f : body->node.idleTime + dt);
-		}
 	}
 	
 	// Awaken any sleeping bodies found and then push arbiters to the bodies' lists.
@@ -243,52 +234,48 @@ cpSpaceProcessComponents(cpSpace *space, cpFloat dt)
 		cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
 		cpBody *a = arb->body_a, *b = arb->body_b;
 		
-		if(sleep){
-			if((cpBodyIsRogue(b) && !cpBodyIsStatic(b)) || cpBodyIsSleeping(a)) cpBodyActivate(a);
-			if((cpBodyIsRogue(a) && !cpBodyIsStatic(a)) || cpBodyIsSleeping(b)) cpBodyActivate(b);
-		}
+		if((cpBodyIsRogue(b) && !cpBodyIsStatic(b)) || cpBodyIsSleeping(a)) cpBodyActivate(a);
+		if((cpBodyIsRogue(a) && !cpBodyIsStatic(a)) || cpBodyIsSleeping(b)) cpBodyActivate(b);
 		
 		cpBodyPushArbiter(a, arb);
 		cpBodyPushArbiter(b, arb);
 	}
 	
-	if(sleep){
-		// Bodies should be held active if connected by a joint to a non-static rouge body.
-		cpArray *constraints = space->constraints;
-		for(int i=0; i<constraints->num; i++){
-			cpConstraint *constraint = (cpConstraint *)constraints->arr[i];
-			cpBody *a = constraint->a, *b = constraint->b;
+	// Bodies should be held active if connected by a joint to a non-static rouge body.
+	cpArray *constraints = space->constraints;
+	for(int i=0; i<constraints->num; i++){
+		cpConstraint *constraint = (cpConstraint *)constraints->arr[i];
+		cpBody *a = constraint->a, *b = constraint->b;
+		
+		if(cpBodyIsRogue(b) && !cpBodyIsStatic(b)) cpBodyActivate(a);
+		if(cpBodyIsRogue(a) && !cpBodyIsStatic(a)) cpBodyActivate(b);
+	}
+	
+	// Generate components and deactivate sleeping ones
+	for(int i=0; i<bodies->num;){
+		cpBody *body = (cpBody*)bodies->arr[i];
+		
+		if(ComponentRoot(body) == NULL){
+			// Body not in a component yet. Perform a DFS to flood fill mark 
+			// the component in the contact graph using this body as the root.
+			FloodFillComponent(body, body);
 			
-			if(cpBodyIsRogue(b) && !cpBodyIsStatic(b)) cpBodyActivate(a);
-			if(cpBodyIsRogue(a) && !cpBodyIsStatic(a)) cpBodyActivate(b);
+			// Check if the component should be put to sleep.
+			if(!ComponentActive(body, space->sleepTimeThreshold)){
+				cpArrayPush(space->sleepingComponents, body);
+				CP_BODY_FOREACH_COMPONENT(body, other) cpSpaceDeactivateBody(space, other);
+				
+				// cpSpaceDeactivateBody() removed the current body from the list.
+				// Skip incrementing the index counter.
+				continue;
+			}
 		}
 		
-		// Generate components and deactivate sleeping ones
-		for(int i=0; i<bodies->num;){
-			cpBody *body = (cpBody*)bodies->arr[i];
-			
-			if(ComponentRoot(body) == NULL){
-				// Body not in a component yet. Perform a DFS to flood fill mark 
-				// the component in the contact graph using this body as the root.
-				FloodFillComponent(body, body);
-				
-				// Check if the component should be put to sleep.
-				if(!ComponentActive(body, space->sleepTimeThreshold)){
-					cpArrayPush(space->sleepingComponents, body);
-					CP_BODY_FOREACH_COMPONENT(body, other) cpSpaceDeactivateBody(space, other);
-					
-					// cpSpaceDeactivateBody() removed the current body from the list.
-					// Skip incrementing the index counter.
-					continue;
-				}
-			}
-			
-			i++;
-			
-			// Only sleeping bodies retain their component node pointers.
-			body->node.root = NULL;
-			body->node.next = NULL;
-		}
+		i++;
+		
+		// Only sleeping bodies retain their component node pointers.
+		body->node.root = NULL;
+		body->node.next = NULL;
 	}
 }
 

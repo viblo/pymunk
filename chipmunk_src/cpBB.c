@@ -19,6 +19,9 @@
  * SOFTWARE.
  */
  
+#include <math.h>
+#include <stdlib.h>
+
 #include "chipmunk_private.h"
 
 cpVect

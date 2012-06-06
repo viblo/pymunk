@@ -37,7 +37,7 @@
 	@{
 */
 
-//MARK: Spatial Index
+#pragma mark Spatial Index
 
 /// Spatial index bounding box callback function type.
 /// The spatial index calls this function and passes you a pointer to an object you added
@@ -64,16 +64,16 @@ struct cpSpatialIndex {
 };
 
 
-//MARK: Spatial Hash
+#pragma mark Spatial Hash
 
 typedef struct cpSpaceHash cpSpaceHash;
 
 /// Allocate a spatial hash.
-cpSpaceHash* cpSpaceHashAlloc(void);
+cpSpaceHash *cpSpaceHashAlloc(void);
 /// Initialize a spatial hash. 
-cpSpatialIndex* cpSpaceHashInit(cpSpaceHash *hash, cpFloat celldim, int numcells, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
+cpSpatialIndex *cpSpaceHashInit(cpSpaceHash *hash, cpFloat celldim, int numcells, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
 /// Allocate and initialize a spatial hash.
-cpSpatialIndex* cpSpaceHashNew(cpFloat celldim, int cells, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
+cpSpatialIndex *cpSpaceHashNew(cpFloat celldim, int cells, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
 
 /// Change the cell dimensions and table size of the spatial hash to tune it.
 /// The cell dimensions should roughly match the average size of your objects
@@ -81,16 +81,16 @@ cpSpatialIndex* cpSpaceHashNew(cpFloat celldim, int cells, cpSpatialIndexBBFunc 
 /// Some trial and error is required to find the optimum numbers for efficiency.
 void cpSpaceHashResize(cpSpaceHash *hash, cpFloat celldim, int numcells);
 
-//MARK: AABB Tree
+#pragma mark AABB Tree
 
 typedef struct cpBBTree cpBBTree;
 
 /// Allocate a bounding box tree.
-cpBBTree* cpBBTreeAlloc(void);
+cpBBTree *cpBBTreeAlloc(void);
 /// Initialize a bounding box tree.
-cpSpatialIndex* cpBBTreeInit(cpBBTree *tree, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
+cpSpatialIndex *cpBBTreeInit(cpBBTree *tree, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
 /// Allocate and initialize a bounding box tree.
-cpSpatialIndex* cpBBTreeNew(cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
+cpSpatialIndex *cpBBTreeNew(cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
 
 /// Perform a static top down optimization of the tree.
 void cpBBTreeOptimize(cpSpatialIndex *index);
@@ -101,18 +101,18 @@ typedef cpVect (*cpBBTreeVelocityFunc)(void *obj);
 /// Set the velocity function for the bounding box tree to enable temporal coherence.
 void cpBBTreeSetVelocityFunc(cpSpatialIndex *index, cpBBTreeVelocityFunc func);
 
-//MARK: Single Axis Sweep
+#pragma mark Single Axis Sweep
 
 typedef struct cpSweep1D cpSweep1D;
 
 /// Allocate a 1D sort and sweep broadphase.
-cpSweep1D* cpSweep1DAlloc(void);
+cpSweep1D *cpSweep1DAlloc(void);
 /// Initialize a 1D sort and sweep broadphase.
-cpSpatialIndex* cpSweep1DInit(cpSweep1D *sweep, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
+cpSpatialIndex *cpSweep1DInit(cpSweep1D *sweep, cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
 /// Allocate and initialize a 1D sort and sweep broadphase.
-cpSpatialIndex* cpSweep1DNew(cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
+cpSpatialIndex *cpSweep1DNew(cpSpatialIndexBBFunc bbfunc, cpSpatialIndex *staticIndex);
 
-//MARK: Spatial Index Implementation
+#pragma mark Spatial Index Implementation
 
 typedef void (*cpSpatialIndexDestroyImpl)(cpSpatialIndex *index);
 
@@ -127,8 +127,9 @@ typedef void (*cpSpatialIndexReindexImpl)(cpSpatialIndex *index);
 typedef void (*cpSpatialIndexReindexObjectImpl)(cpSpatialIndex *index, void *obj, cpHashValue hashid);
 typedef void (*cpSpatialIndexReindexQueryImpl)(cpSpatialIndex *index, cpSpatialIndexQueryFunc func, void *data);
 
-typedef void (*cpSpatialIndexQueryImpl)(cpSpatialIndex *index, void *obj, cpBB bb, cpSpatialIndexQueryFunc func, void *data);
+typedef void (*cpSpatialIndexPointQueryImpl)(cpSpatialIndex *index, cpVect point, cpSpatialIndexQueryFunc func, void *data);
 typedef void (*cpSpatialIndexSegmentQueryImpl)(cpSpatialIndex *index, void *obj, cpVect a, cpVect b, cpFloat t_exit, cpSpatialIndexSegmentQueryFunc func, void *data);
+typedef void (*cpSpatialIndexQueryImpl)(cpSpatialIndex *index, void *obj, cpBB bb, cpSpatialIndexQueryFunc func, void *data);
 
 struct cpSpatialIndexClass {
 	cpSpatialIndexDestroyImpl destroy;
@@ -144,8 +145,9 @@ struct cpSpatialIndexClass {
 	cpSpatialIndexReindexObjectImpl reindexObject;
 	cpSpatialIndexReindexQueryImpl reindexQuery;
 	
-	cpSpatialIndexQueryImpl query;
+	cpSpatialIndexPointQueryImpl pointQuery;
 	cpSpatialIndexSegmentQueryImpl segmentQuery;
+	cpSpatialIndexQueryImpl query;
 };
 
 /// Destroy and free a spatial index.
@@ -204,16 +206,23 @@ static inline void cpSpatialIndexReindexObject(cpSpatialIndex *index, void *obj,
 	index->klass->reindexObject(index, obj, hashid);
 }
 
-/// Perform a rectangle query against the spatial index, calling @c func for each potential match.
-static inline void cpSpatialIndexQuery(cpSpatialIndex *index, void *obj, cpBB bb, cpSpatialIndexQueryFunc func, void *data)
+/// Perform a point query against the spatial index, calling @c func for each potential match.
+/// A pointer to the point will be passed as @c obj1 of @c func.
+static inline	void cpSpatialIndexPointQuery(cpSpatialIndex *index, cpVect point, cpSpatialIndexQueryFunc func, void *data)
 {
-	index->klass->query(index, obj, bb, func, data);
+	index->klass->pointQuery(index, point, func, data);
 }
 
 /// Perform a segment query against the spatial index, calling @c func for each potential match.
 static inline void cpSpatialIndexSegmentQuery(cpSpatialIndex *index, void *obj, cpVect a, cpVect b, cpFloat t_exit, cpSpatialIndexSegmentQueryFunc func, void *data)
 {
 	index->klass->segmentQuery(index, obj, a, b, t_exit, func, data);
+}
+
+/// Perform a rectangle query against the spatial index, calling @c func for each potential match.
+static inline void cpSpatialIndexQuery(cpSpatialIndex *index, void *obj, cpBB bb, cpSpatialIndexQueryFunc func, void *data)
+{
+	index->klass->query(index, obj, bb, func, data);
 }
 
 /// Simultaneously reindex and find all colliding objects.

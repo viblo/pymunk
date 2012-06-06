@@ -19,6 +19,9 @@
  * SOFTWARE.
  */
 
+#include <stdlib.h>
+#include <math.h>
+
 #include "chipmunk_private.h"
 #include "constraints/util.h"
 
@@ -65,21 +68,10 @@ cpArbiterUnthread(cpArbiter *arb)
 	unthreadHelper(arb, arb->body_b);
 }
 
-cpBool cpArbiterIsFirstContact(const cpArbiter *arb)
-{
-	return arb->CP_PRIVATE(state) == cpArbiterStateFirstColl;
-}
-
-int cpArbiterGetCount(const cpArbiter *arb)
-{
-	// Return 0 contacts if we are in a separate callback.
-	return (arb->CP_PRIVATE(state) != cpArbiterStateCached ? arb->CP_PRIVATE(numContacts) : 0);
-}
-
 cpVect
 cpArbiterGetNormal(const cpArbiter *arb, int i)
 {
-	cpAssertHard(0 <= i && i < cpArbiterGetCount(arb), "Index error: The specified contact index is invalid for this arbiter");
+	cpAssertHard(0 <= i && i < arb->numContacts, "Index error: The specified contact index is invalid for this arbiter");
 	
 	cpVect n = arb->contacts[i].n;
 	return arb->swappedColl ? cpvneg(n) : n;
@@ -88,7 +80,7 @@ cpArbiterGetNormal(const cpArbiter *arb, int i)
 cpVect
 cpArbiterGetPoint(const cpArbiter *arb, int i)
 {
-	cpAssertHard(0 <= i && i < cpArbiterGetCount(arb), "Index error: The specified contact index is invalid for this arbiter");
+	cpAssertHard(0 <= i && i < arb->numContacts, "Index error: The specified contact index is invalid for this arbiter");
 	
 	return arb->CP_PRIVATE(contacts)[i].CP_PRIVATE(p);
 }
@@ -96,7 +88,7 @@ cpArbiterGetPoint(const cpArbiter *arb, int i)
 cpFloat
 cpArbiterGetDepth(const cpArbiter *arb, int i)
 {
-	cpAssertHard(0 <= i && i < cpArbiterGetCount(arb), "Index error: The specified contact index is invalid for this arbiter");
+	cpAssertHard(0 <= i && i < arb->numContacts, "Index error: The specified contact index is invalid for this arbiter");
 	
 	return arb->CP_PRIVATE(contacts)[i].CP_PRIVATE(dist);
 }
@@ -124,7 +116,7 @@ cpArbiterTotalImpulse(const cpArbiter *arb)
 	cpContact *contacts = arb->contacts;
 	cpVect sum = cpvzero;
 	
-	for(int i=0, count=cpArbiterGetCount(arb); i<count; i++){
+	for(int i=0, count=arb->numContacts; i<count; i++){
 		cpContact *con = &contacts[i];
 		sum = cpvadd(sum, cpvmult(con->n, con->jnAcc));
 	}
@@ -138,7 +130,7 @@ cpArbiterTotalImpulseWithFriction(const cpArbiter *arb)
 	cpContact *contacts = arb->contacts;
 	cpVect sum = cpvzero;
 	
-	for(int i=0, count=cpArbiterGetCount(arb); i<count; i++){
+	for(int i=0, count=arb->numContacts; i<count; i++){
 		cpContact *con = &contacts[i];
 		sum = cpvadd(sum, cpvrotate(con->n, cpv(con->jnAcc, con->jtAcc)));
 	}
@@ -153,7 +145,7 @@ cpArbiterTotalKE(const cpArbiter *arb)
 	cpFloat sum = 0.0;
 	
 	cpContact *contacts = arb->contacts;
-	for(int i=0, count=cpArbiterGetCount(arb); i<count; i++){
+	for(int i=0, count=arb->numContacts; i<count; i++){
 		cpContact *con = &contacts[i];
 		cpFloat jnAcc = con->jnAcc;
 		cpFloat jtAcc = con->jtAcc;
@@ -303,38 +295,48 @@ cpArbiterApplyImpulse(cpArbiter *arb)
 {
 	cpBody *a = arb->body_a;
 	cpBody *b = arb->body_b;
-	cpVect surface_vr = arb->surface_vr;
-	cpFloat friction = arb->u;
 
 	for(int i=0; i<arb->numContacts; i++){
 		cpContact *con = &arb->contacts[i];
-		cpFloat nMass = con->nMass;
 		cpVect n = con->n;
 		cpVect r1 = con->r1;
 		cpVect r2 = con->r2;
 		
+		// Calculate the relative bias velocities.
 		cpVect vb1 = cpvadd(a->v_bias, cpvmult(cpvperp(r1), a->w_bias));
 		cpVect vb2 = cpvadd(b->v_bias, cpvmult(cpvperp(r2), b->w_bias));
-		cpVect vr = relative_velocity(a, b, r1, r2);
-		
 		cpFloat vbn = cpvdot(cpvsub(vb2, vb1), n);
-		cpFloat vrn = cpvdot(vr, n);
-		cpFloat vrt = cpvdot(cpvadd(vr, surface_vr), cpvperp(n));
 		
-		cpFloat jbn = (con->bias - vbn)*nMass;
+		// Calculate and clamp the bias impulse.
+		cpFloat jbn = (con->bias - vbn)*con->nMass;
 		cpFloat jbnOld = con->jBias;
 		con->jBias = cpfmax(jbnOld + jbn, 0.0f);
+		jbn = con->jBias - jbnOld;
 		
-		cpFloat jn = -(con->bounce + vrn)*nMass;
+		// Apply the bias impulse.
+		apply_bias_impulses(a, b, r1, r2, cpvmult(n, jbn));
+
+		// Calculate the relative velocity.
+		cpVect vr = relative_velocity(a, b, r1, r2);
+		cpFloat vrn = cpvdot(vr, n);
+		
+		// Calculate and clamp the normal impulse.
+		cpFloat jn = -(con->bounce + vrn)*con->nMass;
 		cpFloat jnOld = con->jnAcc;
 		con->jnAcc = cpfmax(jnOld + jn, 0.0f);
+		jn = con->jnAcc - jnOld;
 		
-		cpFloat jtMax = friction*con->jnAcc;
+		// Calculate the relative tangent velocity.
+		cpFloat vrt = cpvdot(cpvadd(vr, arb->surface_vr), cpvperp(n));
+		
+		// Calculate and clamp the friction impulse.
+		cpFloat jtMax = arb->u*con->jnAcc;
 		cpFloat jt = -vrt*con->tMass;
 		cpFloat jtOld = con->jtAcc;
 		con->jtAcc = cpfclamp(jtOld + jt, -jtMax, jtMax);
+		jt = con->jtAcc - jtOld;
 		
-		apply_bias_impulses(a, b, r1, r2, cpvmult(n, con->jBias - jbnOld));
-		apply_impulses(a, b, r1, r2, cpvrotate(n, cpv(con->jnAcc - jnOld, con->jtAcc - jtOld)));
+		// Apply the final impulse.
+		apply_impulses(a, b, r1, r2, cpvrotate(n, cpv(jn, jt)));
 	}
 }

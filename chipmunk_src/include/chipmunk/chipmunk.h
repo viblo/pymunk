@@ -19,11 +19,11 @@
  * SOFTWARE.
  */
 
+/// @defgroup misc Misc
+/// @{
+
 #ifndef CHIPMUNK_HEADER
 #define CHIPMUNK_HEADER
-
-#include <stdlib.h>
-#include <math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,26 +58,21 @@ void cpMessage(const char *condition, const char *file, int line, int isError, i
 
 #include "chipmunk_types.h"
 	
-/// @defgroup misc Misc
-/// @{
-
-/// Allocated size for various Chipmunk buffers
+// Allocated size for various Chipmunk buffers
 #ifndef CP_BUFFER_BYTES
 	#define CP_BUFFER_BYTES (32*1024)
 #endif
 
+// Chipmunk memory function aliases.
 #ifndef cpcalloc
-	/// Chipmunk calloc() alias.
 	#define cpcalloc calloc
 #endif
 
 #ifndef cprealloc
-	/// Chipmunk realloc() alias.
 	#define cprealloc realloc
 #endif
 
 #ifndef cpfree
-	/// Chipmunk free() alias.
 	#define cpfree free
 #endif
 
@@ -106,10 +101,9 @@ typedef struct cpSpace cpSpace;
 
 #include "cpSpace.h"
 
-// Chipmunk 6.1.1
 #define CP_VERSION_MAJOR 6
-#define CP_VERSION_MINOR 1
-#define CP_VERSION_RELEASE 1
+#define CP_VERSION_MINOR 0
+#define CP_VERSION_RELEASE 2
 
 /// Version string.
 extern const char *cpVersionString;
@@ -151,56 +145,6 @@ cpFloat cpMomentForBox(cpFloat m, cpFloat width, cpFloat height);
 /// Calculate the moment of inertia for a solid box.
 cpFloat cpMomentForBox2(cpFloat m, cpBB box);
 
-/// Calculate the convex hull of a given set of points. Returns the count of points in the hull.
-/// @c result must be a pointer to a @c cpVect array with at least @c count elements. If @c result is @c NULL, then @c verts will be reduced instead.
-/// @c first is an optional pointer to an integer to store where the first vertex in the hull came from (i.e. verts[first] == result[0])
-/// @c tol is the allowed amount to shrink the hull when simplifying it. A tolerance of 0.0 creates an exact hull.
-int cpConvexHull(int count, cpVect *verts, cpVect *result, int *first, cpFloat tol);
-
-#ifdef _MSC_VER
-#include "malloc.h"
-#endif
-
-/// Convenience macro to work with cpConvexHull.
-/// @c count and @c verts is the input array passed to cpConvexHull().
-/// @c count_var and @c verts_var are the names of the variables the macro creates to store the result.
-/// The output vertex array is allocated on the stack using alloca() so it will be freed automatically, but cannot be returned from the current scope.
-#define CP_CONVEX_HULL(__count__, __verts__, __count_var__, __verts_var__) \
-cpVect *__verts_var__ = (cpVect *)alloca(__count__*sizeof(cpVect)); \
-int __count_var__ = cpConvexHull(__count__, __verts__, __verts_var__, NULL, 0.0); \
-
-#if defined(__has_extension)
-#if __has_extension(blocks)
-// Define alternate block based alternatives for a few of the callback heavy functions.
-// Collision handlers are post-step callbacks are not included to avoid memory management issues.
-// If you want to use blocks for those and are aware of how to correctly manage the memory, the implementation is trivial. 
-
-void cpSpaceEachBody_b(cpSpace *space, void (^block)(cpBody *body));
-void cpSpaceEachShape_b(cpSpace *space, void (^block)(cpShape *shape));
-void cpSpaceEachConstraint_b(cpSpace *space, void (^block)(cpConstraint *constraint));
-
-void cpBodyEachShape_b(cpBody *body, void (^block)(cpShape *shape));
-void cpBodyEachConstraint_b(cpBody *body, void (^block)(cpConstraint *constraint));
-void cpBodyEachArbiter_b(cpBody *body, void (^block)(cpArbiter *arbiter));
-
-typedef void (^cpSpaceNearestPointQueryBlock)(cpShape *shape, cpFloat distance, cpVect point);
-void cpSpaceNearestPointQuery_b(cpSpace *space, cpVect point, cpFloat maxDistance, cpLayers layers, cpGroup group, cpSpaceNearestPointQueryBlock block);
-
-typedef void (^cpSpaceSegmentQueryBlock)(cpShape *shape, cpFloat t, cpVect n);
-void cpSpaceSegmentQuery_b(cpSpace *space, cpVect start, cpVect end, cpLayers layers, cpGroup group, cpSpaceSegmentQueryBlock block);
-
-typedef void (^cpSpaceBBQueryBlock)(cpShape *shape);
-void cpSpaceBBQuery_b(cpSpace *space, cpBB bb, cpLayers layers, cpGroup group, cpSpaceBBQueryBlock block);
-
-typedef void (^cpSpaceShapeQueryBlock)(cpShape *shape, cpContactPointSet *points);
-cpBool cpSpaceShapeQuery_b(cpSpace *space, cpShape *shape, cpSpaceShapeQueryBlock block);
-
-#endif
-#endif
-
-
-//@}
-
 #ifdef __cplusplus
 }
 
@@ -212,3 +156,4 @@ static inline cpVect operator -(const cpVect v){return cpvneg(v);}
 
 #endif
 #endif
+//@}

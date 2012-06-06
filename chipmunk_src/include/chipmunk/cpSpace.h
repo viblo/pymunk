@@ -23,7 +23,6 @@
 /// @{
 
 typedef struct cpContactBufferHeader cpContactBufferHeader;
-typedef void (*cpSpaceArbiterApplyImpulseFunc)(cpArbiter *arb);
 
 /// Basic Unit of Simulation in Chipmunk
 struct cpSpace {
@@ -48,7 +47,7 @@ struct cpSpace {
 	/// The default value of INFINITY disables the sleeping algorithm.
 	cpFloat sleepTimeThreshold;
 	
-	/// Amount of encouraged penetration between colliding shapes.
+	/// Amount of encouraged penetration between colliding shapes..
 	/// Used to reduce oscillating contacts and keep the collision cache warm.
 	/// Defaults to 0.1. If you have poor simulation quality,
 	/// increase this number as much as possible without allowing visible amounts of overlap.
@@ -98,9 +97,7 @@ struct cpSpace {
 	
 	CP_PRIVATE(cpHashSet *collisionHandlers);
 	CP_PRIVATE(cpCollisionHandler defaultHandler);
-	
-	CP_PRIVATE(cpBool skipPostStep);
-	CP_PRIVATE(cpArray *postStepCallbacks);
+	CP_PRIVATE(cpHashSet *postStepCallbacks);
 	
 	CP_PRIVATE(cpBody _staticBody);
 };
@@ -137,7 +134,7 @@ CP_DefineSpaceStructProperty(cpFloat, collisionBias, CollisionBias);
 CP_DefineSpaceStructProperty(cpTimestamp, collisionPersistence, CollisionPersistence);
 CP_DefineSpaceStructProperty(cpBool, enableContactGraph, EnableContactGraph);
 CP_DefineSpaceStructProperty(cpDataPointer, data, UserData);
-CP_DefineSpaceStructGetter(cpBody*, staticBody, StaticBody);
+CP_DefineSpaceStructGetter(cpBody *, staticBody, StaticBody);
 CP_DefineSpaceStructGetter(cpFloat, CP_PRIVATE(curr_dt), CurrentTimeStep);
 
 /// returns true from inside a callback and objects cannot be added/removed.
@@ -177,13 +174,13 @@ void cpSpaceRemoveCollisionHandler(cpSpace *space, cpCollisionType a, cpCollisio
 
 /// Add a collision shape to the simulation.
 /// If the shape is attached to a static body, it will be added as a static shape.
-cpShape* cpSpaceAddShape(cpSpace *space, cpShape *shape);
+cpShape *cpSpaceAddShape(cpSpace *space, cpShape *shape);
 /// Explicity add a shape as a static shape to the simulation.
-cpShape* cpSpaceAddStaticShape(cpSpace *space, cpShape *shape);
+cpShape *cpSpaceAddStaticShape(cpSpace *space, cpShape *shape);
 /// Add a rigid body to the simulation.
-cpBody* cpSpaceAddBody(cpSpace *space, cpBody *body);
+cpBody *cpSpaceAddBody(cpSpace *space, cpBody *body);
 /// Add a constraint to the simulation.
-cpConstraint* cpSpaceAddConstraint(cpSpace *space, cpConstraint *constraint);
+cpConstraint *cpSpaceAddConstraint(cpSpace *space, cpConstraint *constraint);
 
 /// Remove a collision shape from the simulation.
 void cpSpaceRemoveShape(cpSpace *space, cpShape *shape);
@@ -204,8 +201,8 @@ cpBool cpSpaceContainsConstraint(cpSpace *space, cpConstraint *constraint);
 /// Post Step callback function type.
 typedef void (*cpPostStepFunc)(cpSpace *space, void *obj, void *data);
 /// Schedule a post-step callback to be called when cpSpaceStep() finishes.
-/// You can only register one callback per unique value for @c key.
-void cpSpaceAddPostStepCallback(cpSpace *space, cpPostStepFunc func, void *key, void *data);
+/// @c obj is used a key, you can only register one callback per unique value for @c obj
+void cpSpaceAddPostStepCallback(cpSpace *space, cpPostStepFunc func, void *obj, void *data);
 
 /// Point query callback function type.
 typedef void (*cpSpacePointQueryFunc)(cpShape *shape, void *data);
@@ -213,13 +210,6 @@ typedef void (*cpSpacePointQueryFunc)(cpShape *shape, void *data);
 void cpSpacePointQuery(cpSpace *space, cpVect point, cpLayers layers, cpGroup group, cpSpacePointQueryFunc func, void *data);
 /// Query the space at a point and return the first shape found. Returns NULL if no shapes were found.
 cpShape *cpSpacePointQueryFirst(cpSpace *space, cpVect point, cpLayers layers, cpGroup group);
-
-/// Nearest point query callback function type.
-typedef void (*cpSpaceNearestPointQueryFunc)(cpShape *shape, cpFloat distance, cpVect point, void *data);
-/// Query the space at a point and call @c func for each shape found.
-void cpSpaceNearestPointQuery(cpSpace *space, cpVect point, cpFloat maxDistance, cpLayers layers, cpGroup group, cpSpaceNearestPointQueryFunc func, void *data);
-/// Query the space at a point and return the nearest shape found. Returns NULL if no shapes were found.
-cpShape *cpSpaceNearestPointQueryNearest(cpSpace *space, cpVect point, cpFloat maxDistance, cpLayers layers, cpGroup group, cpNearestPointQueryInfo *out);
 
 /// Segment query callback function type.
 typedef void (*cpSpaceSegmentQueryFunc)(cpShape *shape, cpFloat t, cpVect n, void *data);

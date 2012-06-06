@@ -19,6 +19,8 @@
  * SOFTWARE.
  */
  
+#include <stdlib.h>
+
 #include "chipmunk_private.h"
 #include "chipmunk_unsafe.h"
 
@@ -53,8 +55,8 @@ cpPolyShapeTransformVerts(cpPolyShape *poly, cpVect p, cpVect rot)
 static void
 cpPolyShapeTransformAxes(cpPolyShape *poly, cpVect p, cpVect rot)
 {
-	cpSplittingPlane *src = poly->planes;
-	cpSplittingPlane *dst = poly->tPlanes;
+	cpPolyShapeAxis *src = poly->axes;
+	cpPolyShapeAxis *dst = poly->tAxes;
 	
 	for(int i=0; i<poly->numVerts; i++){
 		cpVect n = cpvrotate(src[i].n, rot);
@@ -76,44 +78,21 @@ static void
 cpPolyShapeDestroy(cpPolyShape *poly)
 {
 	cpfree(poly->verts);
-	cpfree(poly->planes);
+	cpfree(poly->tVerts);
+	
+	cpfree(poly->axes);
+	cpfree(poly->tAxes);
 }
 
-static void
-cpPolyShapeNearestPointQuery(cpPolyShape *poly, cpVect p, cpNearestPointQueryInfo *info){
-	int count = poly->numVerts;
-	cpSplittingPlane *planes = poly->tPlanes;
-	cpVect *verts = poly->tVerts;
-	
-	cpVect v0 = verts[count - 1];
-	cpFloat minDist = INFINITY;
-	cpVect closestPoint = cpvzero;
-	cpBool outside = cpFalse;
-	
-	for(int i=0; i<count; i++){
-		if(cpSplittingPlaneCompare(planes[i], p) > 0.0f) outside = cpTrue;
-		
-		cpVect v1 = verts[i];
-		cpVect closest = cpClosetPointOnSegment(p, v0, v1);
-		
-		cpFloat dist = cpvdist(p, closest);
-		if(dist < minDist){
-			minDist = dist;
-			closestPoint = closest;
-		}
-		
-		v0 = v1;
-	}
-	
-	info->shape = (cpShape *)poly;
-	info->p = closestPoint; // TODO div/0
-	info->d = (outside ? minDist : -minDist);
+static cpBool
+cpPolyShapePointQuery(cpPolyShape *poly, cpVect p){
+	return cpBBContainsVect(poly->shape.bb, p) && cpPolyShapeContainsVert(poly, p);
 }
 
 static void
 cpPolyShapeSegmentQuery(cpPolyShape *poly, cpVect a, cpVect b, cpSegmentQueryInfo *info)
 {
-	cpSplittingPlane *axes = poly->tPlanes;
+	cpPolyShapeAxis *axes = poly->tAxes;
 	cpVect *verts = poly->tVerts;
 	int numVerts = poly->numVerts;
 	
@@ -143,7 +122,7 @@ static const cpShapeClass polyClass = {
 	CP_POLY_SHAPE,
 	(cpShapeCacheDataImpl)cpPolyShapeCacheData,
 	(cpShapeDestroyImpl)cpPolyShapeDestroy,
-	(cpShapeNearestPointQueryImpl)cpPolyShapeNearestPointQuery,
+	(cpShapePointQueryImpl)cpPolyShapePointQuery,
 	(cpShapeSegmentQueryImpl)cpPolyShapeSegmentQuery,
 };
 
@@ -155,9 +134,8 @@ cpPolyValidate(const cpVect *verts, const int numVerts)
 		cpVect b = verts[(i+1)%numVerts];
 		cpVect c = verts[(i+2)%numVerts];
 		
-		if(cpvcross(cpvsub(b, a), cpvsub(c, a)) > 0.0f){
+		if(cpvcross(cpvsub(b, a), cpvsub(c, b)) > 0.0f)
 			return cpFalse;
-		}
 	}
 	
 	return cpTrue;
@@ -183,14 +161,12 @@ cpPolyShapeGetVert(cpShape *shape, int idx)
 static void
 setUpVerts(cpPolyShape *poly, int numVerts, cpVect *verts, cpVect offset)
 {
-	// Fail if the user attempts to pass a concave poly, or a bad winding.
-	cpAssertHard(cpPolyValidate(verts, numVerts), "Polygon is concave or has a reversed winding. Consider using cpConvexHull() or CP_CONVEX_HULL().");
-	
 	poly->numVerts = numVerts;
-	poly->verts = (cpVect *)cpcalloc(2*numVerts, sizeof(cpVect));
-	poly->planes = (cpSplittingPlane *)cpcalloc(2*numVerts, sizeof(cpSplittingPlane));
-	poly->tVerts = poly->verts + numVerts;
-	poly->tPlanes = poly->planes + numVerts;
+
+	poly->verts = (cpVect *)cpcalloc(numVerts, sizeof(cpVect));
+	poly->tVerts = (cpVect *)cpcalloc(numVerts, sizeof(cpVect));
+	poly->axes = (cpPolyShapeAxis *)cpcalloc(numVerts, sizeof(cpPolyShapeAxis));
+	poly->tAxes = (cpPolyShapeAxis *)cpcalloc(numVerts, sizeof(cpPolyShapeAxis));
 	
 	for(int i=0; i<numVerts; i++){
 		cpVect a = cpvadd(offset, verts[i]);
@@ -198,15 +174,17 @@ setUpVerts(cpPolyShape *poly, int numVerts, cpVect *verts, cpVect offset)
 		cpVect n = cpvnormalize(cpvperp(cpvsub(b, a)));
 
 		poly->verts[i] = a;
-		poly->planes[i].n = n;
-		poly->planes[i].d = cpvdot(n, a);
+		poly->axes[i].n = n;
+		poly->axes[i].d = cpvdot(n, a);
 	}
-	
 }
 
 cpPolyShape *
 cpPolyShapeInit(cpPolyShape *poly, cpBody *body, int numVerts, cpVect *verts, cpVect offset)
 {
+	// Fail if the user attempts to pass a concave poly, or a bad winding.
+	cpAssertHard(cpPolyValidate(verts, numVerts), "Polygon is concave or has a reversed winding.");
+	
 	setUpVerts(poly, numVerts, verts, offset);
 	cpShapeInit((cpShape *)poly, &polyClass, body);
 

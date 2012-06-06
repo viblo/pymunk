@@ -47,7 +47,6 @@ MAKE_REF(cpflerp);
 MAKE_REF(cpflerpconst);
 
 MAKE_REF(cpBBNew);
-MAKE_REF(cpBBNewForCircle);
 MAKE_REF(cpBBIntersects);
 MAKE_REF(cpBBContainsBB);
 MAKE_REF(cpBBContainsVect);
@@ -55,7 +54,6 @@ MAKE_REF(cpBBMerge);
 MAKE_REF(cpBBExpand);
 MAKE_REF(cpBBArea);
 MAKE_REF(cpBBMergedArea);
-MAKE_REF(cpBBSegmentQuery);
 MAKE_REF(cpBBIntersectsSegment);
 
 MAKE_REF(cpBodyGetMass);
@@ -152,6 +150,7 @@ MAKE_REF(cpSpatialIndexInsert);
 MAKE_REF(cpSpatialIndexRemove);
 MAKE_REF(cpSpatialIndexReindex);
 MAKE_REF(cpSpatialIndexReindexObject);
+MAKE_REF(cpSpatialIndexPointQuery);
 MAKE_REF(cpSpatialIndexSegmentQuery);
 MAKE_REF(cpSpatialIndexQuery);
 MAKE_REF(cpSpatialIndexReindexQuery);

@@ -19,6 +19,7 @@
  * SOFTWARE.
  */
  
+#include <stdlib.h>
 #include <string.h>
 
 #include "chipmunk_private.h"

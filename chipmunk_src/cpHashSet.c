@@ -19,6 +19,9 @@
  * SOFTWARE.
  */
  
+#include <stdlib.h>
+#include <assert.h>
+
 #include "chipmunk_private.h"
 #include "prime.h"
 
@@ -29,7 +32,7 @@ typedef struct cpHashSetBin {
 } cpHashSetBin;
 
 struct cpHashSet {
-	unsigned int entries, size;
+	int entries, size;
 	
 	cpHashSetEqlFunc eql;
 	void *default_value;
@@ -88,18 +91,18 @@ static void
 cpHashSetResize(cpHashSet *set)
 {
 	// Get the next approximate doubled prime.
-	unsigned int newSize = next_prime(set->size + 1);
+	int newSize = next_prime(set->size + 1);
 	// Allocate a new table.
 	cpHashSetBin **newTable = (cpHashSetBin **)cpcalloc(newSize, sizeof(cpHashSetBin *));
 	
 	// Iterate over the chains.
-	for(unsigned int i=0; i<set->size; i++){
+	for(int i=0; i<set->size; i++){
 		// Rehash the bins into the new table.
 		cpHashSetBin *bin = set->table[i];
 		while(bin){
 			cpHashSetBin *next = bin->next;
 			
-			cpHashValue idx = bin->hash%newSize;
+			int idx = bin->hash%newSize;
 			bin->next = newTable[idx];
 			newTable[idx] = bin;
 			
@@ -132,7 +135,7 @@ getUnusedBin(cpHashSet *set)
 	} else {
 		// Pool is exhausted, make more
 		int count = CP_BUFFER_BYTES/sizeof(cpHashSetBin);
-		cpAssertHard(count, "Internal Error: Buffer size is too small.");
+		cpAssertSoft(count, "Buffer size is too small.");
 		
 		cpHashSetBin *buffer = (cpHashSetBin *)cpcalloc(1, CP_BUFFER_BYTES);
 		cpArrayPush(set->allocatedBuffers, buffer);
@@ -152,7 +155,7 @@ cpHashSetCount(cpHashSet *set)
 void *
 cpHashSetInsert(cpHashSet *set, cpHashValue hash, void *ptr, void *data, cpHashSetTransFunc trans)
 {
-	cpHashValue idx = hash%set->size;
+	int idx = hash%set->size;
 	
 	// Find the bin with the matching element.
 	cpHashSetBin *bin = set->table[idx];
@@ -178,7 +181,7 @@ cpHashSetInsert(cpHashSet *set, cpHashValue hash, void *ptr, void *data, cpHashS
 void *
 cpHashSetRemove(cpHashSet *set, cpHashValue hash, void *ptr)
 {
-	cpHashValue idx = hash%set->size;
+	int idx = hash%set->size;
 	
 	cpHashSetBin **prev_ptr = &set->table[idx];
 	cpHashSetBin *bin = set->table[idx];
@@ -207,7 +210,7 @@ cpHashSetRemove(cpHashSet *set, cpHashValue hash, void *ptr)
 void *
 cpHashSetFind(cpHashSet *set, cpHashValue hash, void *ptr)
 {	
-	cpHashValue idx = hash%set->size;
+	int idx = hash%set->size;
 	cpHashSetBin *bin = set->table[idx];
 	while(bin && !set->eql(ptr, bin->elt))
 		bin = bin->next;
@@ -218,7 +221,7 @@ cpHashSetFind(cpHashSet *set, cpHashValue hash, void *ptr)
 void
 cpHashSetEach(cpHashSet *set, cpHashSetIteratorFunc func, void *data)
 {
-	for(unsigned int i=0; i<set->size; i++){
+	for(int i=0; i<set->size; i++){
 		cpHashSetBin *bin = set->table[i];
 		while(bin){
 			cpHashSetBin *next = bin->next;
@@ -231,7 +234,7 @@ cpHashSetEach(cpHashSet *set, cpHashSetIteratorFunc func, void *data)
 void
 cpHashSetFilter(cpHashSet *set, cpHashSetFilterFunc func, void *data)
 {
-	for(unsigned int i=0; i<set->size; i++){
+	for(int i=0; i<set->size; i++){
 		// The rest works similarly to cpHashSetRemove() above.
 		cpHashSetBin **prev_ptr = &set->table[i];
 		cpHashSetBin *bin = set->table[i];

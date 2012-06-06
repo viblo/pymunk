@@ -84,6 +84,15 @@ Infinity that can be passed as mass or inertia to Body.
 Use this as mass and inertia when you need to create a static body.
 """
 
+def _init_pymunk():
+    """Initialize chipmunk. 
+    You shouldn't need to call this method yourself as it is called 
+    automatically on import.
+    """
+    cp.cpInitChipmunk()
+
+_init_pymunk()
+        
 class Space(object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes 
     and joints to it and then step them all forward together through time. 

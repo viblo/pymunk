@@ -25,16 +25,6 @@
 
 typedef struct cpShapeClass cpShapeClass;
 
-/// Nearest point query info struct.
-typedef struct cpNearestPointQueryInfo {
-	/// The nearest shape, NULL if no shape was within range.
-	cpShape *shape;
-	/// The closest point on the shape's surface. (in world space coordinates)
-	cpVect p;
-	/// The distance to the point. The distance is negative if the point is inside the shape.
-	cpFloat d;
-} cpNearestPointQueryInfo;
-
 /// Segment query info struct.
 typedef struct cpSegmentQueryInfo {
 	/// The shape that was hit, NULL if no collision occured.
@@ -55,7 +45,7 @@ typedef enum cpShapeType{
 
 typedef cpBB (*cpShapeCacheDataImpl)(cpShape *shape, cpVect p, cpVect rot);
 typedef void (*cpShapeDestroyImpl)(cpShape *shape);
-typedef void (*cpShapeNearestPointQueryImpl)(cpShape *shape, cpVect p, cpNearestPointQueryInfo *info);
+typedef cpBool (*cpShapePointQueryImpl)(cpShape *shape, cpVect p);
 typedef void (*cpShapeSegmentQueryImpl)(cpShape *shape, cpVect a, cpVect b, cpSegmentQueryInfo *info);
 
 /// @private
@@ -64,7 +54,7 @@ struct cpShapeClass {
 	
 	cpShapeCacheDataImpl cacheData;
 	cpShapeDestroyImpl destroy;
-	cpShapeNearestPointQueryImpl nearestPointQuery;
+	cpShapePointQueryImpl pointQuery;
 	cpShapeSegmentQueryImpl segmentQuery;
 };
 
@@ -122,25 +112,6 @@ cpBB cpShapeUpdate(cpShape *shape, cpVect pos, cpVect rot);
 /// Test if a point lies within a shape.
 cpBool cpShapePointQuery(cpShape *shape, cpVect p);
 
-/// Perform a nearest point query. It finds the closest point on the surface of shape to a specific point.
-/// The value returned is the distance between the points. A negative distance means the point is inside the shape.
-cpFloat cpShapeNearestPointQuery(cpShape *shape, cpVect p, cpNearestPointQueryInfo *out);
-
-/// Perform a segment query against a shape. @c info must be a pointer to a valid cpSegmentQueryInfo structure.
-cpBool cpShapeSegmentQuery(cpShape *shape, cpVect a, cpVect b, cpSegmentQueryInfo *info);
-
-/// Get the hit point for a segment query.
-static inline cpVect cpSegmentQueryHitPoint(const cpVect start, const cpVect end, const cpSegmentQueryInfo info)
-{
-	return cpvlerp(start, end, info.t);
-}
-
-/// Get the hit distance for a segment query.
-static inline cpFloat cpSegmentQueryHitDist(const cpVect start, const cpVect end, const cpSegmentQueryInfo info)
-{
-	return cpvdist(start, end)*info.t;
-}
-
 #define CP_DefineShapeStructGetter(type, member, name) \
 static inline type cpShapeGet##name(const cpShape *shape){return shape->member;}
 
@@ -154,9 +125,7 @@ static inline void cpShapeSet##name(cpShape *shape, type value){ \
 CP_DefineShapeStructGetter(type, member, name) \
 CP_DefineShapeStructSetter(type, member, name, activates)
 
-CP_DefineShapeStructGetter(cpSpace*, CP_PRIVATE(space), Space);
-
-CP_DefineShapeStructGetter(cpBody*, body, Body);
+CP_DefineShapeStructGetter(cpBody *, body, Body);
 void cpShapeSetBody(cpShape *shape, cpBody *body);
 
 CP_DefineShapeStructGetter(cpBB, bb, BB);
@@ -174,6 +143,21 @@ CP_DefineShapeStructProperty(cpLayers, layers, Layers, cpTrue);
 /// when recreating a space. This will make the simulation be deterministic.
 void cpResetShapeIdCounter(void);
 
+/// Perform a segment query against a shape. @c info must be a pointer to a valid cpSegmentQueryInfo structure.
+cpBool cpShapeSegmentQuery(cpShape *shape, cpVect a, cpVect b, cpSegmentQueryInfo *info);
+
+/// Get the hit point for a segment query.
+static inline cpVect cpSegmentQueryHitPoint(const cpVect start, const cpVect end, const cpSegmentQueryInfo info)
+{
+	return cpvlerp(start, end, info.t);
+}
+
+/// Get the hit distance for a segment query.
+static inline cpFloat cpSegmentQueryHitDist(const cpVect start, const cpVect end, const cpSegmentQueryInfo info)
+{
+	return cpvdist(start, end)*info.t;
+}
+
 #define CP_DeclareShapeGetter(struct, type, name) type struct##Get##name(const cpShape *shape)
 
 /// @}
@@ -188,11 +172,11 @@ typedef struct cpCircleShape {
 } cpCircleShape;
 
 /// Allocate a circle shape.
-cpCircleShape* cpCircleShapeAlloc(void);
+cpCircleShape *cpCircleShapeAlloc(void);
 /// Initialize a circle shape.
-cpCircleShape* cpCircleShapeInit(cpCircleShape *circle, cpBody *body, cpFloat radius, cpVect offset);
+cpCircleShape *cpCircleShapeInit(cpCircleShape *circle, cpBody *body, cpFloat radius, cpVect offset);
 /// Allocate and initialize a circle shape.
-cpShape* cpCircleShapeNew(cpBody *body, cpFloat radius, cpVect offset);
+cpShape *cpCircleShapeNew(cpBody *body, cpFloat radius, cpVect offset);
 
 CP_DeclareShapeGetter(cpCircleShape, cpVect, Offset);
 CP_DeclareShapeGetter(cpCircleShape, cpFloat, Radius);

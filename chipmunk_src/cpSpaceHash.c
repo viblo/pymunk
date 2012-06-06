@@ -19,6 +19,9 @@
  * SOFTWARE.
  */
 
+#include <math.h>
+#include <stdlib.h>
+
 #include "chipmunk_private.h"
 #include "prime.h"
 
@@ -42,7 +45,7 @@ struct cpSpaceHash {
 };
 
 
-//MARK: Handle Functions
+#pragma mark Handle Functions
 
 struct cpHandle {
 	void *obj;
@@ -77,7 +80,7 @@ handleSetTrans(void *obj, cpSpaceHash *hash)
 	if(hash->pooledHandles->num == 0){
 		// handle pool is exhausted, make more
 		int count = CP_BUFFER_BYTES/sizeof(cpHandle);
-		cpAssertHard(count, "Internal Error: Buffer size is too small.");
+		cpAssertSoft(count, "Buffer size is too small.");
 		
 		cpHandle *buffer = (cpHandle *)cpcalloc(1, CP_BUFFER_BYTES);
 		cpArrayPush(hash->allocatedBuffers, buffer);
@@ -91,7 +94,7 @@ handleSetTrans(void *obj, cpSpaceHash *hash)
 	return hand;
 }
 
-//MARK: Bin Functions
+#pragma mark Bin Functions
 
 struct cpSpaceHashBin {
 	cpHandle *handle;
@@ -139,7 +142,7 @@ getEmptyBin(cpSpaceHash *hash)
 	} else {
 		// Pool is exhausted, make more
 		int count = CP_BUFFER_BYTES/sizeof(cpSpaceHashBin);
-		cpAssertHard(count, "Internal Error: Buffer size is too small.");
+		cpAssertSoft(count, "Buffer size is too small.");
 		
 		cpSpaceHashBin *buffer = (cpSpaceHashBin *)cpcalloc(1, CP_BUFFER_BYTES);
 		cpArrayPush(hash->allocatedBuffers, buffer);
@@ -150,7 +153,7 @@ getEmptyBin(cpSpaceHash *hash)
 	}
 }
 
-//MARK: Memory Management Functions
+#pragma mark Memory Management Functions
 
 cpSpaceHash *
 cpSpaceHashAlloc(void)
@@ -209,7 +212,7 @@ cpSpaceHashDestroy(cpSpaceHash *hash)
 	cpArrayFree(hash->pooledHandles);
 }
 
-//MARK: Helper Functions
+#pragma mark Helper Functions
 
 static inline cpBool
 containsHandle(cpSpaceHashBin *bin, cpHandle *hand)
@@ -251,7 +254,7 @@ hashHandle(cpSpaceHash *hash, cpHandle *hand, cpBB bb)
 	int n = hash->numcells;
 	for(int i=l; i<=r; i++){
 		for(int j=b; j<=t; j++){
-			cpHashValue idx = hash_func(i,j,n);
+			int idx = hash_func(i,j,n);
 			cpSpaceHashBin *bin = hash->table[idx];
 			
 			// Don't add an object twice to the same cell.
@@ -267,7 +270,7 @@ hashHandle(cpSpaceHash *hash, cpHandle *hand, cpBB bb)
 	}
 }
 
-//MARK: Basic Operations
+#pragma mark Basic Operations
 
 static void
 cpSpaceHashInsert(cpSpaceHash *hash, void *obj, cpHashValue hashid)
@@ -349,7 +352,7 @@ remove_orphaned_handles(cpSpaceHash *hash, cpSpaceHashBin **bin_ptr)
 	}
 }
 
-//MARK: Query Functions
+#pragma mark Query Functions
 
 static inline void
 query_helper(cpSpaceHash *hash, cpSpaceHashBin **bin_ptr, void *obj, cpSpatialIndexQueryFunc func, void *data)
@@ -371,6 +374,16 @@ query_helper(cpSpaceHash *hash, cpSpaceHashBin **bin_ptr, void *obj, cpSpatialIn
 			goto restart; // GCC not smart enough/able to tail call an inlined function.
 		}
 	}
+}
+
+static void
+cpSpaceHashPointQuery(cpSpaceHash *hash, cpVect point, cpSpatialIndexQueryFunc func, void *data)
+{
+	cpFloat dim = hash->celldim;
+	int idx = hash_func(floor_int(point.x/dim), floor_int(point.y/dim), hash->numcells);  // Fix by ShiftZ
+	
+	query_helper(hash, &hash->table[idx], &point, func, data);
+	hash->stamp++;
 }
 
 static void
@@ -426,7 +439,7 @@ queryRehash_helper(cpHandle *hand, queryRehashContext *context)
 
 	for(int i=l; i<=r; i++){
 		for(int j=b; j<=t; j++){
-			cpHashValue idx = hash_func(i,j,n);
+			int idx = hash_func(i,j,n);
 			cpSpaceHashBin *bin = table[idx];
 			
 			if(containsHandle(bin, hand)) continue;
@@ -484,7 +497,7 @@ segmentQuery_helper(cpSpaceHash *hash, cpSpaceHashBin **bin_ptr, void *obj, cpSp
 }
 
 // modified from http://playtechs.blogspot.com/2007/03/raytracing-on-grid.html
-static void
+void
 cpSpaceHashSegmentQuery(cpSpaceHash *hash, void *obj, cpVect a, cpVect b, cpFloat t_exit, cpSpatialIndexSegmentQueryFunc func, void *data)
 {
 	a = cpvmult(a, 1.0f/hash->celldim);
@@ -525,7 +538,7 @@ cpSpaceHashSegmentQuery(cpSpaceHash *hash, void *obj, cpVect a, cpVect b, cpFloa
 	cpSpaceHashBin **table = hash->table;
 
 	while(t < t_exit){
-		cpHashValue idx = hash_func(cell_x, cell_y, n);
+		int idx = hash_func(cell_x, cell_y, n);
 		t_exit = cpfmin(t_exit, segmentQuery_helper(hash, &table[idx], obj, func, data));
 
 		if (next_v < next_h){
@@ -542,7 +555,7 @@ cpSpaceHashSegmentQuery(cpSpaceHash *hash, void *obj, cpVect a, cpVect b, cpFloa
 	hash->stamp++;
 }
 
-//MARK: Misc
+#pragma mark Misc
 
 void
 cpSpaceHashResize(cpSpaceHash *hash, cpFloat celldim, int numcells)
@@ -584,13 +597,14 @@ static cpSpatialIndexClass klass = {
 	(cpSpatialIndexReindexObjectImpl)cpSpaceHashRehashObject,
 	(cpSpatialIndexReindexQueryImpl)cpSpaceHashReindexQuery,
 	
-	(cpSpatialIndexQueryImpl)cpSpaceHashQuery,
+	(cpSpatialIndexPointQueryImpl)cpSpaceHashPointQuery,
 	(cpSpatialIndexSegmentQueryImpl)cpSpaceHashSegmentQuery,
+	(cpSpatialIndexQueryImpl)cpSpaceHashQuery,
 };
 
 static inline cpSpatialIndexClass *Klass(){return &klass;}
 
-//MARK: Debug Drawing
+#pragma mark Debug Drawing
 
 //#define CP_BBTREE_DEBUG_DRAW
 #ifdef CP_BBTREE_DEBUG_DRAW
