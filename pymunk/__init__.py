@@ -994,9 +994,9 @@ class Shape(object):
     def _set_collision_type(self, t):
         self._shapecontents.collision_type = t
     collision_type = property(_get_collision_type, _set_collision_type,
-        doc="""User defined collision type for the shape. See 
-        add_collisionpair_func function for more information on when to use 
-        this property""")
+        doc="""User defined collision type for the shape. See the 
+        Space.add_collision_handler function for more information on when to 
+        use this property""")
 
     def _get_group(self):
         return self._shapecontents.group
