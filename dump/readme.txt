@@ -1,0 +1,2 @@
+Code in this folder contains unfinished, experimental or troubleshooting code not meant for outside use, its just kept here to make it easily shared between my different computers.
+Feel free to take a look, but dont expect anything even working! :)
