@@ -1,0 +1,455 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pymunk.vec2d Module &mdash; pymunk 3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
+    <link rel="top" title="pymunk 3.0.0 documentation" href="index.html" />
+    <link rel="up" title="API Reference" href="pymunk.html" />
+    <link rel="next" title="pymunk.util Module" href="pymunk.util.html" />
+    <link rel="prev" title="pymunk.constraint Module" href="pymunk.constraint.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pymunk.util.html" title="pymunk.util Module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pymunk.constraint.html" title="pymunk.constraint Module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+          <li><a href="pymunk.html" accesskey="U">API Reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pymunk.vec2d">
+<span id="pymunk-vec2d-module"></span><h1><a class="reference internal" href="#module-pymunk.vec2d" title="pymunk.vec2d"><tt class="xref py py-mod docutils literal"><span class="pre">pymunk.vec2d</span></tt></a> Module<a class="headerlink" href="#module-pymunk.vec2d" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pymunk.vec2d.Vec2d">
+<em class="property">class </em><tt class="descclassname">pymunk.vec2d.</tt><tt class="descname">Vec2d</tt><big>(</big><em>x_or_pair=None</em>, <em>y=None</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">_ctypes.Structure</span></tt></p>
+<p>2d vector class, supports vector and scalar operators,
+and also provides some high level functions</p>
+<dl class="attribute">
+<dt id="pymunk.vec2d.Vec2d.angle">
+<tt class="descname">angle</tt><a class="headerlink" href="#pymunk.vec2d.Vec2d.angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets or sets the angle (in radians) of a vector</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.vec2d.Vec2d.angle_degrees">
+<tt class="descname">angle_degrees</tt><a class="headerlink" href="#pymunk.vec2d.Vec2d.angle_degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets or sets the angle (in degrees) of a vector</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.convert_to_basis">
+<tt class="descname">convert_to_basis</tt><big>(</big><em>x_vector</em>, <em>y_vector</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.convert_to_basis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.convert_to_basis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.cpvrotate">
+<tt class="descname">cpvrotate</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.cpvrotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.cpvrotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses complex multiplication to rotate this vector by the other.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.cpvunrotate">
+<tt class="descname">cpvunrotate</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.cpvunrotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.cpvunrotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>The inverse of cpvrotate</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.cross">
+<tt class="descname">cross</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.cross"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.cross" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cross product between the vector and other vector
+v1.cross(v2) -&gt; v1.x*v2.y - v2.y*v1.x</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The cross product</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.dot">
+<tt class="descname">dot</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.dot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dot product between the vector and other vector
+v1.dot(v2) -&gt; v1.x*v2.x + v1.y*v2.y</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The dot product</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pymunk.vec2d.Vec2d.from_param">
+<em class="property">classmethod </em><tt class="descname">from_param</tt><big>(</big><em>arg</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.from_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.from_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used by ctypes to automatically create Vec2ds</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.get_angle">
+<tt class="descname">get_angle</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.get_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.get_angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.get_angle_between">
+<tt class="descname">get_angle_between</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.get_angle_between"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.get_angle_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the angle between the vector and the other in radians</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The angle</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.get_angle_degrees">
+<tt class="descname">get_angle_degrees</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.get_angle_degrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.get_angle_degrees" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.get_angle_degrees_between">
+<tt class="descname">get_angle_degrees_between</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.get_angle_degrees_between"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.get_angle_degrees_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the angle between the vector and the other in degrees</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The angle (in degrees)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.get_dist_sqrd">
+<tt class="descname">get_dist_sqrd</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.get_dist_sqrd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.get_dist_sqrd" title="Permalink to this definition">¶</a></dt>
+<dd><p>The squared distance between the vector and other vector
+It is more efficent to use this method than to call get_distance()
+first and then do a sqrt() on the result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The squared distance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.get_distance">
+<tt class="descname">get_distance</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.get_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.get_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The distance between the vector and other vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The distance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.get_length">
+<tt class="descname">get_length</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.get_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.get_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the length of the vector.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The length</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.get_length_sqrd">
+<tt class="descname">get_length_sqrd</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.get_length_sqrd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.get_length_sqrd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the squared length of the vector.
+It is more efficent to use this method instead of first call 
+get_length() or access .length and then do a sqrt().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The squared length</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.vec2d.Vec2d.int_tuple">
+<tt class="descname">int_tuple</tt><a class="headerlink" href="#pymunk.vec2d.Vec2d.int_tuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the x and y values of this vector as ints</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.interpolate_to">
+<tt class="descname">interpolate_to</tt><big>(</big><em>other</em>, <em>range</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.interpolate_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.interpolate_to" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.vec2d.Vec2d.length">
+<tt class="descname">length</tt><a class="headerlink" href="#pymunk.vec2d.Vec2d.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets or sets the magnitude of the vector</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.normalize_return_length">
+<tt class="descname">normalize_return_length</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.normalize_return_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.normalize_return_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize the vector and return its length before the normalization</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The length before the normalization</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.normalized">
+<tt class="descname">normalized</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.normalized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a normalized copy of the vector
+Note: This function will return 0 if the length of the vector is 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A normalized vector</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymunk.vec2d.Vec2d.ones">
+<em class="property">static </em><tt class="descname">ones</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.ones"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.ones" title="Permalink to this definition">¶</a></dt>
+<dd><p>A vector where both x and y is 1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.perpendicular">
+<tt class="descname">perpendicular</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.perpendicular"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.perpendicular" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.perpendicular_normal">
+<tt class="descname">perpendicular_normal</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.perpendicular_normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.perpendicular_normal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.projection">
+<tt class="descname">projection</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.projection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.projection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.rotate">
+<tt class="descname">rotate</tt><big>(</big><em>angle_radians</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate the vector by angle_radians radians.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.rotate_degrees">
+<tt class="descname">rotate_degrees</tt><big>(</big><em>angle_degrees</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.rotate_degrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.rotate_degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate the vector by angle_degrees degrees.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.rotated">
+<tt class="descname">rotated</tt><big>(</big><em>angle_radians</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.rotated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.rotated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and return a new vector by rotating this vector by 
+angle_radians radians.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rotated vector</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.rotated_degrees">
+<tt class="descname">rotated_degrees</tt><big>(</big><em>angle_degrees</em><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.rotated_degrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.rotated_degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and return a new vector by rotating this vector by 
+angle_degrees degrees.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rotade vector</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymunk.vec2d.Vec2d.unit">
+<em class="property">static </em><tt class="descname">unit</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A unit vector pointing up</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.vec2d.Vec2d.x">
+<tt class="descname">x</tt><a class="headerlink" href="#pymunk.vec2d.Vec2d.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.vec2d.Vec2d.y">
+<tt class="descname">y</tt><a class="headerlink" href="#pymunk.vec2d.Vec2d.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymunk.vec2d.Vec2d.zero">
+<em class="property">static </em><tt class="descname">zero</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.zero"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>A vector of zero length</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pymunk_logo_sphinx.png" alt="Logo"/>
+            </a></p>
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pymunk.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pymunk.html#pymunk-package"><tt class="docutils literal"><span class="pre">pymunk</span></tt> Package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pymunk.constraint.html"><tt class="docutils literal"><span class="pre">pymunk.constraint</span></tt> Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href=""><tt class="docutils literal"><span class="pre">pymunk.vec2d</span></tt> Module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.util.html"><tt class="docutils literal"><span class="pre">pymunk.util</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><tt class="docutils literal"><span class="pre">pymunk.pygame_util</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><tt class="docutils literal"><span class="pre">pymunkoptions</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pymunk.constraint.html"
+                        title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">pymunk.constraint</span></tt> Module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pymunk.util.html"
+                        title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">pymunk.util</span></tt> Module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pymunk.vec2d.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pymunk.util.html" title="pymunk.util Module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pymunk.constraint.html" title="pymunk.constraint Module"
+             >previous</a> |</li>
+        <li><a href="index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+          <li><a href="pymunk.html" >API Reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Victor Blomqvist.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

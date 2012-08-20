@@ -27,7 +27,7 @@ class PyramidDemo:
         body = pymunk.Body()
         shape = pymunk.Segment(body, (50, 100), (550,100), .0)
         shape.friction = 1.0
-        self.space.add_static(shape)
+        self.space.add(shape)
         
         ### pyramid
         x=Vec2d(-100, 7.5) + (300,100)
@@ -63,9 +63,11 @@ class PyramidDemo:
                 self.running = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 self.running = False
+            elif event.type == KEYDOWN and event.key == K_p:
+                pygame.image.save(self.screen, "box2d_pyramid.png")
             elif event.type == KEYDOWN and event.key == K_d:
                 self.drawing = not self.drawing
-        
+            
         steps = 3
         dt = 1.0/120.0/steps            
         for x in range(steps):
@@ -79,23 +81,23 @@ class PyramidDemo:
         
     def draw(self):
         ### Clear the screen
-        self.screen.fill(THECOLORS["white"])
-        
-        for shape in self.space.static_shapes:
-            body = shape.body
-            pv1 = self.flipyv(body.position + shape.a.cpvrotate(body.rotation_vector))
-            pv2 = self.flipyv(body.position + shape.b.cpvrotate(body.rotation_vector))
-            pygame.draw.lines(self.screen, THECOLORS["lightgray"], False, [pv1,pv2])           
+        self.screen.fill(THECOLORS["white"])          
         
         for shape in self.space.shapes:
-            if shape.body.is_sleeping:
-                continue
-            ps = shape.get_points()
-            ps.append(ps[0])
-            ps = map(self.flipyv, ps)
-             #pygame.draw.lines(self.screen, color, False, ps, 1)
-            pygame.draw.polygon(self.screen, THECOLORS["lightgray"], ps)
-            pygame.draw.polygon(self.screen, THECOLORS["darkgrey"], ps,1)
+            if shape.body.is_static:
+                body = shape.body
+                pv1 = self.flipyv(body.position + shape.a.cpvrotate(body.rotation_vector))
+                pv2 = self.flipyv(body.position + shape.b.cpvrotate(body.rotation_vector))
+                pygame.draw.lines(self.screen, THECOLORS["lightgray"], False, [pv1,pv2])           
+            else:
+                if shape.body.is_sleeping:
+                    continue
+                ps = shape.get_points()
+                ps.append(ps[0])
+                ps = map(self.flipyv, ps)
+                 #pygame.draw.lines(self.screen, color, False, ps, 1)
+                pygame.draw.polygon(self.screen, THECOLORS["lightgray"], ps)
+                pygame.draw.polygon(self.screen, THECOLORS["darkgrey"], ps,1)
 
         ### All done, lets flip the display
         pygame.display.flip()        

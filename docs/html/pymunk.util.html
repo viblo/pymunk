@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pymunk.util Module &mdash; pymunk 3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
+    <link rel="top" title="pymunk 3.0.0 documentation" href="index.html" />
+    <link rel="up" title="API Reference" href="pymunk.html" />
+    <link rel="next" title="pymunk.pygame_util Module" href="pymunk.pygame_util.html" />
+    <link rel="prev" title="pymunk.vec2d Module" href="pymunk.vec2d.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pymunk.pygame_util.html" title="pymunk.pygame_util Module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pymunk.vec2d.html" title="pymunk.vec2d Module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+          <li><a href="pymunk.html" accesskey="U">API Reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pymunk.util">
+<span id="pymunk-util-module"></span><h1><a class="reference internal" href="#module-pymunk.util" title="pymunk.util"><tt class="xref py py-mod docutils literal"><span class="pre">pymunk.util</span></tt></a> Module<a class="headerlink" href="#module-pymunk.util" title="Permalink to this headline">¶</a></h1>
+<p>Contains utility functions, mainly to help with polygon creation</p>
+<dl class="function">
+<dt id="pymunk.util.is_clockwise">
+<tt class="descclassname">pymunk.util.</tt><tt class="descname">is_clockwise</tt><big>(</big><em>points</em><big>)</big><a class="reference internal" href="_modules/pymunk/util.html#is_clockwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.util.is_clockwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the points given forms a clockwise polygon</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the points forms a clockwise polygon</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.util.reduce_poly">
+<tt class="descclassname">pymunk.util.</tt><tt class="descname">reduce_poly</tt><big>(</big><em>points</em>, <em>tolerance=0.5</em><big>)</big><a class="reference internal" href="_modules/pymunk/util.html#reduce_poly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.util.reduce_poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove close points to simplify a polyline
+tolerance is the min distance between two points squared.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The reduced polygon as a list of (x,y)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.util.convex_hull">
+<tt class="descclassname">pymunk.util.</tt><tt class="descname">convex_hull</tt><big>(</big><em>points</em><big>)</big><a class="reference internal" href="_modules/pymunk/util.html#convex_hull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.util.convex_hull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a convex hull from a list of points.
+This function uses the Graham Scan Algorithm.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Convex hull as a list of (x,y)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.util.calc_area">
+<tt class="descclassname">pymunk.util.</tt><tt class="descname">calc_area</tt><big>(</big><em>points</em><big>)</big><a class="reference internal" href="_modules/pymunk/util.html#calc_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.util.calc_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the area of a polygon</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Area of polygon</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.util.calc_center">
+<tt class="descclassname">pymunk.util.</tt><tt class="descname">calc_center</tt><big>(</big><em>points</em><big>)</big><a class="reference internal" href="_modules/pymunk/util.html#calc_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.util.calc_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the center of a polygon</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The center (x,y)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.util.poly_vectors_around_center">
+<tt class="descclassname">pymunk.util.</tt><tt class="descname">poly_vectors_around_center</tt><big>(</big><em>pointlist</em>, <em>points_as_Vec2d=True</em><big>)</big><a class="reference internal" href="_modules/pymunk/util.html#poly_vectors_around_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.util.poly_vectors_around_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rearranges vectors around the center
+If points_as_Vec2d, then return points are also Vec2d, else pos</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pointlist ([Vec2d/pos, ...])</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.util.is_convex">
+<tt class="descclassname">pymunk.util.</tt><tt class="descname">is_convex</tt><big>(</big><em>points</em><big>)</big><a class="reference internal" href="_modules/pymunk/util.html#is_convex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.util.is_convex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if a polygon (list of (x,y)) is convex or not</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the polygon is convex, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.util.calc_perimeter">
+<tt class="descclassname">pymunk.util.</tt><tt class="descname">calc_perimeter</tt><big>(</big><em>points</em><big>)</big><a class="reference internal" href="_modules/pymunk/util.html#calc_perimeter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.util.calc_perimeter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the perimeter of a polygon</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Perimeter of polygon</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.util.triangulate">
+<tt class="descclassname">pymunk.util.</tt><tt class="descname">triangulate</tt><big>(</big><em>poly</em><big>)</big><a class="reference internal" href="_modules/pymunk/util.html#triangulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.util.triangulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Triangulates poly and returns a list of triangles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<dt>poly</dt>
+<dd><p class="first last">list of points that form an anticlockwise polygon 
+(self-intersecting polygons won&#8217;t work, results are undefined)</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.util.convexise">
+<tt class="descclassname">pymunk.util.</tt><tt class="descname">convexise</tt><big>(</big><em>triangles</em><big>)</big><a class="reference internal" href="_modules/pymunk/util.html#convexise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.util.convexise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduces a list of triangles (such as returned by triangulate()) to a 
+non-optimum list of convex polygons</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<dt>triangles</dt>
+<dd><p class="first last">list of anticlockwise triangles (a list of three points) to reduce</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pymunk_logo_sphinx.png" alt="Logo"/>
+            </a></p>
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pymunk.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pymunk.html#pymunk-package"><tt class="docutils literal"><span class="pre">pymunk</span></tt> Package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pymunk.constraint.html"><tt class="docutils literal"><span class="pre">pymunk.constraint</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><tt class="docutils literal"><span class="pre">pymunk.vec2d</span></tt> Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href=""><tt class="docutils literal"><span class="pre">pymunk.util</span></tt> Module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><tt class="docutils literal"><span class="pre">pymunk.pygame_util</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><tt class="docutils literal"><span class="pre">pymunkoptions</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pymunk.vec2d.html"
+                        title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">pymunk.vec2d</span></tt> Module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pymunk.pygame_util.html"
+                        title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">pymunk.pygame_util</span></tt> Module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pymunk.util.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pymunk.pygame_util.html" title="pymunk.pygame_util Module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pymunk.vec2d.html" title="pymunk.vec2d Module"
+             >previous</a> |</li>
+        <li><a href="index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+          <li><a href="pymunk.html" >API Reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Victor Blomqvist.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

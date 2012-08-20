@@ -21,9 +21,16 @@
 # SOFTWARE.
 # ----------------------------------------------------------------------------
 
-"""Use to set runtime options of pymunk."""
+"""Use this module to set runtime options of pymunk.
+
+Currently there is one option that can be changed, debug. By setting debug to 
+false debug print outs will be limited. In order to remove all debug prints 
+you will also need to compile chipmunk in release mode. See 
+:ref:`compile-chipmunk` for details on how to compile chipmunk.
+"""
 
 __version__ = "$Id:$"
+__docformat__ = "reStructuredText"
 
 options = {
     "debug" : True
@@ -31,12 +38,16 @@ options = {
 """Global dict of pymunk options.
 To change make sure you import pymunk before any sub-packages and then set the 
 option you want. For example::
+
     import pymunkoptions
     pymunkoptions.options["debug"] = False
     import pymunk
     
+    #..continue to use pymunk as you normally do
+    
 The only available currently available option is
 debug
+
     Print out useful debug information about where pymunk tries to load 
     the chipmunk library from.
 """

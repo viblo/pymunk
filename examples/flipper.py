@@ -1,9 +1,16 @@
+"""A very basic flipper game.
+"""
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
+import random
+
 import pygame
 from pygame.locals import *
 from pygame.color import *
+
 import pymunk
 from pymunk import Vec2d
-import math, sys, random
 
 def to_pygame(p):
     """Small hack to convert pymunk to pygame coordinates"""
@@ -81,6 +88,9 @@ while running:
             running = False
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
             running = False
+        elif event.type == KEYDOWN and event.key == K_p:
+            pygame.image.save(screen, "flipper.png")
+                
         elif event.type == KEYDOWN and event.key == K_j:
             r_flipper_body.apply_impulse(Vec2d.unit() * 40000, (-100,0))
         elif event.type == KEYDOWN and event.key == K_f:

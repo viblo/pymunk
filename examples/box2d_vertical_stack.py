@@ -79,8 +79,9 @@ class Main(pyglet.window.Window):
         self.text.draw()
         self.fps_display.draw()
 
-        for shape in self.space.static_shapes:
-            if isinstance(shape, pymunk.Segment):
+        for shape in self.space.shapes:
+        
+            if shape.body.is_static and isinstance(shape, pymunk.Segment):
                 body = shape.body
                 pv1 = body.position + shape.a.rotated(body.angle)
                 pv2 = body.position + shape.b.rotated(body.angle)

@@ -1,101 +1,50 @@
 
-from ctypes import *
+from ctypes import * 
 from .vec2d import Vec2d
 cpVect = Vec2d
 STRING = c_char_p
 
-debug_lib = True
-try:
-    import pymunkoptions as _pymunkoptions
-    debug_lib = _pymunkoptions.options["debug"]
-except:
-    pass
-
-
-    
 from .libload import load_library, platform_specific_functions
 _lib_debug = True #Set to True to print the Chipmunk path.
-chipmunk_lib = load_library("chipmunk", debug_lib=debug_lib)
+chipmunk_lib = load_library("chipmunk", debug_lib=_lib_debug)
 function_pointer = platform_specific_functions()['function_pointer']
 
 
+STRING = c_char_p
 
-def __bos(ptr): return __builtin_object_size (ptr, __USE_FORTIFY_LEVEL > 1) # macro
-def __attribute_format_strfmon__(a,b): return __attribute__ ((__format__ (__strfmon__, a, b))) # macro
-# def CP_ARBITER_GET_BODIES(arb,a,b): return cpBody *a, *b; cpArbiterGetBodies(arb, &a, &b); # macro
-# def __REDIRECT_NTH(name,proto,alias): return name proto __THROW __asm__ (__ASMNAME (#alias)) # macro
-# def CP_DefineSpaceStructSetter(type,member,name): return static inline void cpSpaceSet ##name(cpSpace *space, type value){space->member = value;} # macro
-# def CP_DefineConstraintGetter(struct,type,member,name): return static inline type struct ##Get ##name(const cpConstraint *constraint){ cpConstraintCheckCast(constraint, struct); return ((struct *)constraint)->member; } # macro
-# def CP_DefineArbiterStructGetter(type,member,name): return static inline type cpArbiterGet ##name(const cpArbiter *arb){return arb->member;} # macro
-# def __NTH(fct): return fct throw () # macro
-# def CP_DefineBodyStructSetter(type,member,name): return static inline void cpBodySet ##name(cpBody *body, const type value){ cpBodyActivate(body); cpBodyAssertSane(body); body->member = value; } # macro
-# def __nonnull(params): return __attribute__ ((__nonnull__ params)) # macro
-def CP_PRIVATE(symbol): return symbol ##_private # macro
-# def CP_DefineConstraintProperty(struct,type,member,name): return CP_DefineConstraintGetter(struct, type, member, name) CP_DefineConstraintSetter(struct, type, member, name) # macro
-# cpfsqrt = sqrt # alias
-# cprealloc = realloc # alias
-# def CP_DefineArbiterStructProperty(type,member,name): return CP_DefineArbiterStructGetter(type, member, name) CP_DefineArbiterStructSetter(type, member, name) # macro
-cpArbiterStateFirstColl = 0
-def __REDIRECT_NTH_LDBL(name,proto,alias): return __REDIRECT_NTH (name, proto, alias) # macro
-cpArbiterStateCached = 3
-def __REDIRECT_LDBL(name,proto,alias): return __REDIRECT (name, proto, alias) # macro
-def __va_arg_pack_len(): return __builtin_va_arg_pack_len () # macro
-cpArbiterStateIgnore = 2
-# def CP_DefineBodyStructProperty(type,member,name): return CP_DefineBodyStructGetter(type, member, name) CP_DefineBodyStructSetter(type, member, name) # macro
-# __WCHAR_MAX = __WCHAR_MAX__ # alias
-def __va_arg_pack(): return __builtin_va_arg_pack () # macro
-# cpfpow = pow # alias
-# def cpConstraintCheckCast(constraint,struct): return cpAssertHard(constraint->CP_PRIVATE(klass) == struct ##GetClass(), "Constraint is not a "#struct) # macro
-# cpfatan2 = atan2 # alias
-CP_POLY_SHAPE = 2
-def __PMT(args): return args # macro
-# def __LDBL_REDIR(name,proto): return name proto # macro
-CP_NUM_SHAPES = 3
-CP_CIRCLE_SHAPE = 0
-def __STRING(x): return #x # macro
-# cpfree = free # alias
+
 # cpfcos = cos # alias
-# def cpAssertHard(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, 1, __VA_ARGS__) # macro
-# cpfceil = ceil # alias
-# def __errordecl(name,msg): return extern void name (void) __attribute__((__error__ (msg))) # macro
-def __warnattr(msg): return __attribute__((__warning__ (msg))) # macro
-def __P(args): return args # macro
-# def cpAssertWarn(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 0, 0, __VA_ARGS__) # macro
-def __attribute_format_arg__(x): return __attribute__ ((__format_arg__ (x))) # macro
-# def CP_DefineBodyStructGetter(type,member,name): return static inline type cpBodyGet ##name(const cpBody *body){return body->member;} # macro
-# def __warndecl(name,msg): return extern void name (void) __attribute__((__warning__ (msg))) # macro
-# def CP_DefineShapeStructSetter(type,member,name,activates): return static inline void cpShapeSet ##name(cpShape *shape, type value){ if(activates && shape->body) cpBodyActivate(shape->body); shape->member = value; } # macro
-# def __LDBL_REDIR_NTH(name,proto): return name proto __THROW # macro
-# def CP_DefineConstraintStructGetter(type,member,name): return static inline type cpConstraint ##Get ##name(const cpConstraint *constraint){return constraint->member;} # macro
-# def CP_ARBITER_GET_SHAPES(arb,a,b): return cpShape *a, *b; cpArbiterGetShapes(arb, &a, &b); # macro
-# def CP_DefineConstraintStructSetter(type,member,name): return static inline void cpConstraint ##Set ##name(cpConstraint *constraint, type value){ cpConstraintActivateBodies(constraint); constraint->member = value; } # macro
+cpArbiterStateIgnore = 2
+size_t = c_uint
+realloc = None # symbol removed
+realloc = None # symbol removed
+realloc = None # symbol removed
+cprealloc = realloc # alias
+calloc = None # symbol removed
+calloc = None # symbol removed
+calloc = None # symbol removed
+cpcalloc = calloc # alias
+# cpfatan2 = atan2 # alias
+# cpfsqrt = sqrt # alias
+cpArbiterStateFirstColl = 0
 # cpfacos = acos # alias
-# def cpAssertSoft(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, 0, __VA_ARGS__) # macro
-# def __REDIRECT(name,proto,alias): return name proto __asm__ (__ASMNAME (#alias)) # macro
-def __GLIBC_PREREQ(maj,min): return ((__GLIBC__ << 16) + __GLIBC_MINOR__ >= ((maj) << 16) + (min)) # macro
-# def CP_DefineShapeStructProperty(type,member,name,activates): return CP_DefineShapeStructGetter(type, member, name) CP_DefineShapeStructSetter(type, member, name, activates) # macro
-def __CONCAT(x,y): return x ## y # macro
-# def __LDBL_REDIR1_NTH(name,proto,alias): return name proto __THROW # macro
-def __GNUC_PREREQ(maj,min): return ((__GNUC__ << 16) + __GNUC_MINOR__ >= ((maj) << 16) + (min)) # macro
-# cpfmod = fmod # alias
-# def CP_DefineSpaceStructGetter(type,member,name): return static inline type cpSpaceGet ##name(const cpSpace *space){return space->member;} # macro
-# def CP_DefineShapeStructGetter(type,member,name): return static inline type cpShapeGet ##name(const cpShape *shape){return shape->member;} # macro
-# def __ASMNAME2(prefix,cname): return __STRING (prefix) cname # macro
-def __ASMNAME(cname): return __ASMNAME2 (__USER_LABEL_PREFIX__, cname) # macro
-# cpcalloc = calloc # alias
-# def CP_DefineSpaceStructProperty(type,member,name): return CP_DefineSpaceStructGetter(type, member, name) CP_DefineSpaceStructSetter(type, member, name) # macro
-cpArbiterStateNormal = 1
-# def CP_DefineConstraintSetter(struct,type,member,name): return static inline void struct ##Set ##name(cpConstraint *constraint, type value){ cpConstraintCheckCast(constraint, struct); cpConstraintActivateBodies(constraint); ((struct *)constraint)->member = value; } # macro
-def __bos0(ptr): return __builtin_object_size (ptr, 0) # macro
-CP_SEGMENT_SHAPE = 1
-# cpfsin = sin # alias
-# def CP_DefineConstraintStructProperty(type,member,name): return CP_DefineConstraintStructGetter(type, member, name) CP_DefineConstraintStructSetter(type, member, name) # macro
-# cpfexp = exp # alias
-# def __LDBL_REDIR1(name,proto,alias): return name proto # macro
-# cpffloor = floor # alias
+# def cpAssertWarn(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 0, 0, __VA_ARGS__) # macro
+cpArbiterStateCached = 3
+# cpfpow = pow # alias
+# def cpAssertHard(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, 1, __VA_ARGS__) # macro
 def cpBodyAssertSane(body): return cpBodySanityCheck(body) # macro
-# def CP_DefineArbiterStructSetter(type,member,name): return static inline void cpArbiterSet ##name(cpArbiter *arb, type value){arb->member = value;} # macro
-# def CP_DeclareShapeGetter(struct,type,name): return type struct ##Get ##name(const cpShape *shape) # macro
+# def cpAssertSoft(condition,...): return if(!(condition)) cpMessage(#condition, __FILE__, __LINE__, 1, 0, __VA_ARGS__) # macro
+# cpfsin = sin # alias
+# cpffloor = floor # alias
+free = None # symbol removed
+free = None # symbol removed
+free = None # symbol removed
+cpfree = free # alias
+# def cpConstraintCheckCast(constraint,struct): return cpAssertHard(constraint->CP_PRIVATE(klass) == struct ##GetClass(), "Constraint is not a "#struct) # macro
+cpArbiterStateNormal = 1
+# cpfexp = exp # alias
+# cpfceil = ceil # alias
+# cpfmod = fmod # alias
 cpMessage = chipmunk_lib.cpMessage
 cpMessage.restype = None
 cpMessage.argtypes = [STRING, STRING, c_int, c_int, c_int, STRING]
@@ -157,6 +106,9 @@ class cpBB(Structure):
 cpMomentForBox2 = chipmunk_lib.cpMomentForBox2
 cpMomentForBox2.restype = cpFloat
 cpMomentForBox2.argtypes = [cpFloat, cpBB]
+cpConvexHull = chipmunk_lib.cpConvexHull
+cpConvexHull.restype = c_int
+cpConvexHull.argtypes = [c_int, POINTER(cpVect), POINTER(cpVect), POINTER(c_int), cpFloat]
 
 if sizeof(c_void_p) == 4: uintptr_t = c_uint 
 else: uintptr_t = c_ulonglong
@@ -558,21 +510,27 @@ cpArbiterIgnore.restype = None
 cpArbiterIgnore.argtypes = [POINTER(cpArbiter)]
 class cpContactPointSet(Structure):
     pass
-class N17cpContactPointSet3DOT_0E(Structure):
+class N17cpContactPointSet4DOT_25E(Structure):
     pass
-#N17cpContactPointSet3DOT_0E._pack_ = 4
-N17cpContactPointSet3DOT_0E._fields_ = [
+#N17cpContactPointSet4DOT_25E._pack_ = 4
+N17cpContactPointSet4DOT_25E._fields_ = [
     ('point', cpVect),
     ('normal', cpVect),
     ('dist', cpFloat),
 ]
 cpContactPointSet._fields_ = [
     ('count', c_int),
-    ('points', N17cpContactPointSet3DOT_0E * 4),
+    ('points', N17cpContactPointSet4DOT_25E * 4),
 ]
 cpArbiterGetContactPointSet = chipmunk_lib.cpArbiterGetContactPointSet
 cpArbiterGetContactPointSet.restype = cpContactPointSet
 cpArbiterGetContactPointSet.argtypes = [POINTER(cpArbiter)]
+cpArbiterIsFirstContact = chipmunk_lib.cpArbiterIsFirstContact
+cpArbiterIsFirstContact.restype = cpBool
+cpArbiterIsFirstContact.argtypes = [POINTER(cpArbiter)]
+cpArbiterGetCount = chipmunk_lib.cpArbiterGetCount
+cpArbiterGetCount.restype = c_int
+cpArbiterGetCount.argtypes = [POINTER(cpArbiter)]
 cpArbiterGetNormal = chipmunk_lib.cpArbiterGetNormal
 cpArbiterGetNormal.restype = cpVect
 cpArbiterGetNormal.argtypes = [POINTER(cpArbiter), c_int]
@@ -694,6 +652,12 @@ cpBodyApplyForce.argtypes = [POINTER(cpBody), cpVect, cpVect]
 cpBodyApplyImpulse = chipmunk_lib.cpBodyApplyImpulse
 cpBodyApplyImpulse.restype = None
 cpBodyApplyImpulse.argtypes = [POINTER(cpBody), cpVect, cpVect]
+cpBodyGetVelAtWorldPoint = chipmunk_lib.cpBodyGetVelAtWorldPoint
+cpBodyGetVelAtWorldPoint.restype = cpVect
+cpBodyGetVelAtWorldPoint.argtypes = [POINTER(cpBody), cpVect]
+cpBodyGetVelAtLocalPoint = chipmunk_lib.cpBodyGetVelAtLocalPoint
+cpBodyGetVelAtLocalPoint.restype = cpVect
+cpBodyGetVelAtLocalPoint.argtypes = [POINTER(cpBody), cpVect]
 cpBodyShapeIteratorFunc = function_pointer(None, POINTER(cpBody), POINTER(cpShape), c_void_p)
 cpBodyEachShape = chipmunk_lib.cpBodyEachShape
 cpBodyEachShape.restype = None
@@ -706,10 +670,10 @@ cpBodyArbiterIteratorFunc = function_pointer(None, POINTER(cpBody), POINTER(cpAr
 cpBodyEachArbiter = chipmunk_lib.cpBodyEachArbiter
 cpBodyEachArbiter.restype = None
 cpBodyEachArbiter.argtypes = [POINTER(cpBody), cpBodyArbiterIteratorFunc, c_void_p]
-class cpPolyShapeAxis(Structure):
+class cpSplittingPlane(Structure):
     pass
-#cpPolyShapeAxis._pack_ = 4
-cpPolyShapeAxis._fields_ = [
+#cpSplittingPlane._pack_ = 4
+cpSplittingPlane._fields_ = [
     ('n', cpVect),
     ('d', cpFloat),
 ]
@@ -740,8 +704,8 @@ cpPolyShape._fields_ = [
     ('numVerts', c_int),
     ('verts', POINTER(cpVect)),
     ('tVerts', POINTER(cpVect)),
-    ('axes', POINTER(cpPolyShapeAxis)),
-    ('tAxes', POINTER(cpPolyShapeAxis)),
+    ('planes', POINTER(cpSplittingPlane)),
+    ('tPlanes', POINTER(cpSplittingPlane)),
 ]
 cpPolyShapeAlloc = chipmunk_lib.cpPolyShapeAlloc
 cpPolyShapeAlloc.restype = POINTER(cpPolyShape)
@@ -773,6 +737,14 @@ cpPolyShapeGetNumVerts.argtypes = [POINTER(cpShape)]
 cpPolyShapeGetVert = chipmunk_lib.cpPolyShapeGetVert
 cpPolyShapeGetVert.restype = cpVect
 cpPolyShapeGetVert.argtypes = [POINTER(cpShape), c_int]
+class cpNearestPointQueryInfo(Structure):
+    pass
+#cpNearestPointQueryInfo._pack_ = 4
+cpNearestPointQueryInfo._fields_ = [
+    ('shape', POINTER(cpShape)),
+    ('p', cpVect),
+    ('d', cpFloat),
+]
 class cpSegmentQueryInfo(Structure):
     pass
 #cpSegmentQueryInfo._pack_ = 4
@@ -783,16 +755,20 @@ cpSegmentQueryInfo._fields_ = [
 ]
 
 # values for enumeration 'cpShapeType'
+CP_CIRCLE_SHAPE = 0
+CP_SEGMENT_SHAPE = 1
+CP_POLY_SHAPE = 2
+CP_NUM_SHAPES = 3
 cpShapeType = c_int # enum
 cpShapeCacheDataImpl = function_pointer(cpBB, POINTER(cpShape), cpVect, cpVect)
 cpShapeDestroyImpl = function_pointer(None, POINTER(cpShape))
-cpShapePointQueryImpl = function_pointer(cpBool, POINTER(cpShape), cpVect)
+cpShapeNearestPointQueryImpl = function_pointer(None, POINTER(cpShape), cpVect, POINTER(cpNearestPointQueryInfo))
 cpShapeSegmentQueryImpl = function_pointer(None, POINTER(cpShape), cpVect, cpVect, POINTER(cpSegmentQueryInfo))
 cpShapeClass._fields_ = [
     ('type', cpShapeType),
     ('cacheData', cpShapeCacheDataImpl),
     ('destroy', cpShapeDestroyImpl),
-    ('pointQuery', cpShapePointQueryImpl),
+    ('nearestPointQuery', cpShapeNearestPointQueryImpl),
     ('segmentQuery', cpShapeSegmentQueryImpl),
 ]
 cpShapeDestroy = chipmunk_lib.cpShapeDestroy
@@ -810,15 +786,18 @@ cpShapeUpdate.argtypes = [POINTER(cpShape), cpVect, cpVect]
 cpShapePointQuery = chipmunk_lib.cpShapePointQuery
 cpShapePointQuery.restype = cpBool
 cpShapePointQuery.argtypes = [POINTER(cpShape), cpVect]
+cpShapeNearestPointQuery = chipmunk_lib.cpShapeNearestPointQuery
+cpShapeNearestPointQuery.restype = cpFloat
+cpShapeNearestPointQuery.argtypes = [POINTER(cpShape), cpVect, POINTER(cpNearestPointQueryInfo)]
+cpShapeSegmentQuery = chipmunk_lib.cpShapeSegmentQuery
+cpShapeSegmentQuery.restype = cpBool
+cpShapeSegmentQuery.argtypes = [POINTER(cpShape), cpVect, cpVect, POINTER(cpSegmentQueryInfo)]
 cpShapeSetBody = chipmunk_lib.cpShapeSetBody
 cpShapeSetBody.restype = None
 cpShapeSetBody.argtypes = [POINTER(cpShape), POINTER(cpBody)]
 cpResetShapeIdCounter = chipmunk_lib.cpResetShapeIdCounter
 cpResetShapeIdCounter.restype = None
 cpResetShapeIdCounter.argtypes = []
-cpShapeSegmentQuery = chipmunk_lib.cpShapeSegmentQuery
-cpShapeSegmentQuery.restype = cpBool
-cpShapeSegmentQuery.argtypes = [POINTER(cpShape), cpVect, cpVect, POINTER(cpSegmentQueryInfo)]
 class cpCircleShape(Structure):
     pass
 #cpCircleShape._pack_ = 4
@@ -886,6 +865,7 @@ class cpContactBufferHeader(Structure):
     pass
 cpContactBufferHeader._fields_ = [
 ]
+cpSpaceArbiterApplyImpulseFunc = function_pointer(None, POINTER(cpArbiter))
 class cpSpatialIndex(Structure):
     pass
 #cpSpace._pack_ = 4
@@ -917,7 +897,8 @@ cpSpace._fields_ = [
     ('locked_private', c_int),
     ('collisionHandlers_private', POINTER(cpHashSet)),
     ('defaultHandler_private', cpCollisionHandler),
-    ('postStepCallbacks_private', POINTER(cpHashSet)),
+    ('skipPostStep_private', cpBool),
+    ('postStepCallbacks_private', POINTER(cpArray)),
     ('_staticBody_private', cpBody),
 ]
 cpSpaceAlloc = chipmunk_lib.cpSpaceAlloc
@@ -988,6 +969,13 @@ cpSpacePointQuery.argtypes = [POINTER(cpSpace), cpVect, cpLayers, cpGroup, cpSpa
 cpSpacePointQueryFirst = chipmunk_lib.cpSpacePointQueryFirst
 cpSpacePointQueryFirst.restype = POINTER(cpShape)
 cpSpacePointQueryFirst.argtypes = [POINTER(cpSpace), cpVect, cpLayers, cpGroup]
+cpSpaceNearestPointQueryFunc = function_pointer(None, POINTER(cpShape), cpFloat, cpVect, c_void_p)
+cpSpaceNearestPointQuery = chipmunk_lib.cpSpaceNearestPointQuery
+cpSpaceNearestPointQuery.restype = None
+cpSpaceNearestPointQuery.argtypes = [POINTER(cpSpace), cpVect, cpFloat, cpLayers, cpGroup, cpSpaceNearestPointQueryFunc, c_void_p]
+cpSpaceNearestPointQueryNearest = chipmunk_lib.cpSpaceNearestPointQueryNearest
+cpSpaceNearestPointQueryNearest.restype = POINTER(cpShape)
+cpSpaceNearestPointQueryNearest.argtypes = [POINTER(cpSpace), cpVect, cpFloat, cpLayers, cpGroup, POINTER(cpNearestPointQueryInfo)]
 cpSpaceSegmentQueryFunc = function_pointer(None, POINTER(cpShape), cpFloat, cpVect, c_void_p)
 cpSpaceSegmentQuery = chipmunk_lib.cpSpaceSegmentQuery
 cpSpaceSegmentQuery.restype = None
@@ -1103,9 +1091,8 @@ cpSpatialIndexRemoveImpl = function_pointer(None, POINTER(cpSpatialIndex), c_voi
 cpSpatialIndexReindexImpl = function_pointer(None, POINTER(cpSpatialIndex))
 cpSpatialIndexReindexObjectImpl = function_pointer(None, POINTER(cpSpatialIndex), c_void_p, cpHashValue)
 cpSpatialIndexReindexQueryImpl = function_pointer(None, POINTER(cpSpatialIndex), cpSpatialIndexQueryFunc, c_void_p)
-cpSpatialIndexPointQueryImpl = function_pointer(None, POINTER(cpSpatialIndex), cpVect, cpSpatialIndexQueryFunc, c_void_p)
-cpSpatialIndexSegmentQueryImpl = function_pointer(None, POINTER(cpSpatialIndex), c_void_p, cpVect, cpVect, cpFloat, cpSpatialIndexSegmentQueryFunc, c_void_p)
 cpSpatialIndexQueryImpl = function_pointer(None, POINTER(cpSpatialIndex), c_void_p, cpBB, cpSpatialIndexQueryFunc, c_void_p)
+cpSpatialIndexSegmentQueryImpl = function_pointer(None, POINTER(cpSpatialIndex), c_void_p, cpVect, cpVect, cpFloat, cpSpatialIndexSegmentQueryFunc, c_void_p)
 cpSpatialIndexClass._fields_ = [
     ('destroy', cpSpatialIndexDestroyImpl),
     ('count', cpSpatialIndexCountImpl),
@@ -1116,9 +1103,8 @@ cpSpatialIndexClass._fields_ = [
     ('reindex', cpSpatialIndexReindexImpl),
     ('reindexObject', cpSpatialIndexReindexObjectImpl),
     ('reindexQuery', cpSpatialIndexReindexQueryImpl),
-    ('pointQuery', cpSpatialIndexPointQueryImpl),
-    ('segmentQuery', cpSpatialIndexSegmentQueryImpl),
     ('query', cpSpatialIndexQueryImpl),
+    ('segmentQuery', cpSpatialIndexSegmentQueryImpl),
 ]
 cpSpatialIndexFree = chipmunk_lib.cpSpatialIndexFree
 cpSpatialIndexFree.restype = None
@@ -1144,246 +1130,140 @@ cpvtoangle.argtypes = [cpVect]
 cpvstr = chipmunk_lib.cpvstr
 cpvstr.restype = STRING
 cpvstr.argtypes = [cpVect]
-_POSIX_C_SOURCE = 200809 # Variable c_long '200809l'
-CP_VERSION_MINOR = 0 # Variable c_int '0'
-_ATFILE_SOURCE = 1 # Variable c_int '1'
-CP_BUFFER_BYTES = 32768 # Variable c_int '32768'
-CP_ALL_LAYERS = 4294967295 # Variable c_uint '-1u'
-__GNU_LIBRARY__ = 6 # Variable c_int '6'
-__USE_SVID = 1 # Variable c_int '1'
-M_E = 2.7182818284590451 # Variable c_double '2.71828182845904509079559829842764884233474731445e+0'
-__USE_UNIX98 = 1 # Variable c_int '1'
-CP_USE_DOUBLES = 1 # Variable c_int '1'
-__USE_ANSI = 1 # Variable c_int '1'
-__USE_LARGEFILE64 = 1 # Variable c_int '1'
-__WCHAR_MIN = -2147483648 # Variable c_int '-0x080000000'
-__USE_MISC = 1 # Variable c_int '1'
-__USE_POSIX199309 = 1 # Variable c_int '1'
-CP_MAX_CONTACTS_PER_ARBITER = 4 # Variable c_int '4'
-_BITS_WCHAR_H = 1 # Variable c_int '1'
-__GLIBC_MINOR__ = 10 # Variable c_int '10'
-__USE_POSIX2 = 1 # Variable c_int '1'
-_XOPEN_SOURCE_EXTENDED = 1 # Variable c_int '1'
-CP_NO_GROUP = 0 # Variable c_uint '0u'
-CP_ALLOW_PRIVATE_ACCESS = 0 # Variable c_int '0'
-__WORDSIZE = 32 # Variable c_int '32'
-__USE_ISOC99 = 1 # Variable c_int '1'
-__USE_FORTIFY_LEVEL = 0 # Variable c_int '0'
-__USE_XOPEN = 1 # Variable c_int '1'
-_SYS_CDEFS_H = 1 # Variable c_int '1'
-_LARGEFILE64_SOURCE = 1 # Variable c_int '1'
-_STDINT_H = 1 # Variable c_int '1'
-_XOPEN_SOURCE = 700 # Variable c_int '700'
-__GLIBC_HAVE_LONG_LONG = 1 # Variable c_int '1'
-_SVID_SOURCE = 1 # Variable c_int '1'
-__USE_XOPEN2K = 1 # Variable c_int '1'
-cpTrue = 1 # Variable c_int '1'
-__STDC_IEC_559__ = 1 # Variable c_int '1'
-CP_VERSION_RELEASE = 2 # Variable c_int '2'
-__USE_ISOC95 = 1 # Variable c_int '1'
-__USE_XOPEN2K8 = 1 # Variable c_int '1'
-__STDC_ISO_10646__ = 200009 # Variable c_long '200009l'
-__USE_ATFILE = 1 # Variable c_int '1'
-__GLIBC__ = 2 # Variable c_int '2'
-__STDC_IEC_559_COMPLEX__ = 1 # Variable c_int '1'
-CP_VERSION_MAJOR = 6 # Variable c_int '6'
-__USE_XOPEN_EXTENDED = 1 # Variable c_int '1'
-M_PI = 3.1415926535897931 # Variable c_double '3.14159265358979311599796346854418516159057617188e+0'
-__USE_GNU = 1 # Variable c_int '1'
-__USE_POSIX199506 = 1 # Variable c_int '1'
-__USE_BSD = 1 # Variable c_int '1'
-_POSIX_SOURCE = 1 # Variable c_int '1'
-__USE_LARGEFILE = 1 # Variable c_int '1'
-_ISOC99_SOURCE = 1 # Variable c_int '1'
-_FEATURES_H = 1 # Variable c_int '1'
-_BSD_SOURCE = 1 # Variable c_int '1'
-__USE_POSIX = 1 # Variable c_int '1'
 cpFalse = 0 # Variable c_int '0'
-_LARGEFILE_SOURCE = 1 # Variable c_int '1'
-int8_t = c_int8
-int16_t = c_int16
-int32_t = c_int32
-int64_t = c_int64
-uint8_t = c_uint8
-uint16_t = c_uint16
-uint32_t = c_uint32
-uint64_t = c_uint64
-int_least8_t = c_byte
-int_least16_t = c_short
-int_least32_t = c_int
-int_least64_t = c_longlong
-uint_least8_t = c_ubyte
-uint_least16_t = c_ushort
-uint_least32_t = c_uint
-uint_least64_t = c_ulonglong
-int_fast8_t = c_byte
-int_fast16_t = c_int
-int_fast32_t = c_int
-int_fast64_t = c_longlong
-uint_fast8_t = c_ubyte
-uint_fast16_t = c_uint
-uint_fast32_t = c_uint
-uint_fast64_t = c_ulonglong
-intptr_t = c_int
-intmax_t = c_longlong
-uintmax_t = c_ulonglong
-__all__ = ['_ATFILE_SOURCE', 'cpBodyEachShape', 'int_fast32_t',
-           'cpContactPointSet', 'uint8_t', 'cpSpacePointQueryFunc',
-           'cpConstraintGetImpulseImpl', 'cpBodyActivate', 'cpBody',
-           'cpBodySetMass', '__GLIBC_PREREQ', 'cpBoxShapeNew2',
-           '__ASMNAME', 'M_PI', 'cpVect',
-           'cpDampedRotarySpringGetClass', 'cpPivotJointNew2',
-           'cpSpatialIndexQueryFunc', 'cpArbiterGetDepth',
-           'cpInitChipmunk', 'cpPinJointAlloc',
-           'cpBodyUpdatePosition', 'cpSpaceDestroy',
-           'cpAreaForCircle', 'cpBodyShapeIteratorFunc',
-           '__USE_POSIX199309', 'cpSlideJointAlloc',
-           'cpConstraintApplyImpulseImpl', 'cpGrooveJoint', 'M_E',
-           'cpSpaceContainsShape', 'cpPivotJointNew',
-           'cpRatchetJointGetClass', 'cpConstraintPreSolveFunc',
-           'cpCentroidForPoly', 'cpBoxShapeNew', 'cpBBTree',
-           'cpCollisionType', 'cpBodyNewStatic',
-           'cpSpatialIndexInsertImpl', 'cpBBClampVect', 'cpFalse',
-           '__PMT', 'uint_fast8_t', '_LARGEFILE_SOURCE',
-           'cpGrooveJointGetClass', 'cpConstraintFree',
-           'cpSpatialIndexCountImpl', 'cpCollisionSeparateFunc',
-           'cpBodyArbiterIteratorFunc', 'CP_VERSION_MAJOR',
-           'CP_ALLOW_PRIVATE_ACCESS', 'cpBodyInitStatic',
-           'cpSpatialIndexQueryImpl', 'cpSpaceHashResize',
-           'uint_least32_t', 'int_least64_t',
-           'cpSpatialIndexCollideStatic', 'cpCollisionPostSolveFunc',
-           '__USE_FORTIFY_LEVEL', 'cpSpatialIndexContainsImpl',
-           'cpSpaceConstraintIteratorFunc', 'cpDampedSpringAlloc',
-           'cpRotaryLimitJointAlloc', 'cpShapeCacheBB',
-           'cpSpaceBodyIteratorFunc',
-           'cpSpatialIndexSegmentQueryFunc', '__USE_XOPEN_EXTENDED',
-           'cpMomentForCircle', 'cpSpaceRemoveConstraint',
-           'cpBodyActivateStatic', 'cpvtoangle', 'cpSpatialIndex',
-           'cpShapeSegmentQueryImpl', 'cpLayers', 'CP_VERSION_MINOR',
-           'cpBodyInit', 'cpAreaForSegment', 'cpSegmentShape',
-           'cpGrooveJointSetGrooveB', 'uint_fast32_t',
-           'cpSpaceShapeQuery', 'cpRatchetJointAlloc',
-           'cpConstraintPostSolveFunc', 'cpBodyApplyForce',
-           'cpPolyShape', '__WORDSIZE',
-           'cpSpaceRemoveCollisionHandler', 'cpBBTreeNew',
-           'cpBBTreeAlloc', 'cpSimpleMotorGetClass', 'cpvslerpconst',
-           '_XOPEN_SOURCE', 'cpTrue', 'cpSegmentShapeInit',
-           '__USE_ISOC95', 'cpSimpleMotor', '__GLIBC__',
-           'cpSpaceAddConstraint', 'cpSlideJointInit',
-           'cpBodyApplyImpulse', 'cpPinJointGetClass',
-           'cpSpaceContainsConstraint', 'cpSpaceBBQueryFunc',
-           'cpSpaceActivateShapesTouchingShape', '__USE_XOPEN',
-           'cpMomentForSegment', 'cpSpaceShapeIteratorFunc',
-           'cpSpaceReindexStatic', '__USE_POSIX2', 'uint_least16_t',
-           'cpArray', 'cpSpatialIndexIteratorFunc',
-           'cpPolyShapeAlloc', 'cpDampedSpringInit',
-           'cpBBTreeVelocityFunc', 'cpSegmentQueryInfo',
-           'cpMomentForBox', 'cpDampedRotarySpringNew',
-           'cpCircleShapeSetOffset', 'cpPivotJointAlloc',
-           'cpBodyEachConstraint', 'CP_SEGMENT_SHAPE',
-           'cpShapeUpdate', '__USE_POSIX', 'cpPolyShapeNew',
-           'cpSlideJoint', 'CP_POLY_SHAPE', 'cpBodyUpdateVelocity',
-           'cpShapeDestroyImpl', '_POSIX_SOURCE', 'CP_NUM_SHAPES',
-           'int_fast64_t', 'uint_fast16_t', '_BITS_WCHAR_H',
-           '__GLIBC_MINOR__', 'cpSpaceNew', 'cpShapeClass',
-           'cpSpaceInit', 'uint_least8_t', 'cpCircleShapeSetRadius',
-           'cpBodyFree', 'cpPivotJointInit', 'CP_VERSION_RELEASE',
-           'cpBBTreeSetVelocityFunc', '__P',
-           'cpConstraintPreStepImpl', '__USE_GNU', 'cpBodySetMoment',
-           '__attribute_format_arg__', 'cpShape', '_POSIX_C_SOURCE',
-           'cpContactBufferHeader', 'cpSpaceHash', 'cpPinJoint',
-           'cpArbiterTotalKE', '__USE_SVID', 'cpBBWrapVect',
-           '__USE_ANSI', 'cpBodySleepWithGroup', 'cpMomentForBox2',
-           'cpPolyShapeGetVert', 'cpGearJoint', '__USE_ISOC99',
-           'cpSpaceAddShape', 'cpConstraintDestroy',
-           'cpBodyConstraintIteratorFunc', 'cpPolyShapeAxis',
-           '__STDC_ISO_10646__', 'cpBodyEachArbiter',
-           'cpSegmentShapeGetRadius', 'cpGearJointSetRatio',
-           'CP_PRIVATE', '__USE_LARGEFILE', 'cpSweep1D',
-           'cpSweep1DInit', '_FEATURES_H', 'cpArbiterStateCached',
-           'cpRotaryLimitJointNew', 'uint64_t', '__REDIRECT_NTH_LDBL',
-           'cpGearJointGetClass', 'cpHashSet', 'cpPinJointNew',
-           'cpSpaceEachConstraint', 'cpBoxShapeInit',
-           'cpArbiterThread', 'cpArbiterTotalImpulseWithFriction',
-           'cpRotaryLimitJointGetClass', 'cpSpaceEachShape',
-           'cpGearJointNew', 'cpSpaceRemoveStaticShape',
-           'cpArbiterState', 'cpBB', 'cpSegmentShapeGetNormal',
-           'cpShapeDestroy', 'cpvforangle', 'cpGrooveJointNew',
-           'cpSpaceSegmentQueryFunc', 'CP_BUFFER_BYTES',
-           '__USE_ATFILE', 'cpvslerp', '__GNU_LIBRARY__',
-           'cpRatchetJointInit', '__USE_LARGEFILE64',
+cpTrue = 1 # Variable c_int '1'
+__all__ = ['cpBodySleep', 'cpBodyResetForces', 'cpShapeUpdate',
+           'cpSpacePointQuery', 'cpSpaceBBQueryFunc',
+           'cpSpaceActivateShapesTouchingShape',
+           'cpArbiterIsFirstContact', 'cpBodyEachShape',
+           'cpCollisionHandler', 'cpfree', 'cpvslerp', 'cpvlength',
+           'cpShapeCacheBB', 'cpBoxShapeInit2', 'cpRatchetJointInit',
+           'cpCircleShapeNew', 'size_t', 'cpDampedSpring',
+           'cpBodySetAngle', 'cpSpatialIndexCountImpl',
+           'cpSpaceShapeIteratorFunc', 'cpSpatialIndexDestroyImpl',
            'cpDampedRotarySpringAlloc', 'cpRotaryLimitJoint',
-           'cpSpatialIndexSegmentQueryImpl', 'cpDampedSpringNew',
-           'intptr_t', 'int_fast8_t', 'cpSpaceSegmentQueryFirst',
-           'cpCircleShapeGetOffset', 'cpGearJointInit',
-           'cpGrooveJointInit', 'cpSpaceUseSpatialHash',
-           'cpPostStepFunc', '__GLIBC_HAVE_LONG_LONG', 'cpBodySetPos',
-           'cpvstr', 'cpMomentForPoly', 'cpBodyDestroy',
-           'cpDataPointer', 'cpArbiterStateNormal', 'cpPivotJoint',
-           'cpSpatialIndexEachImpl', 'cpSpaceHashInit',
-           '__attribute_format_strfmon__', 'cpSpaceReindexShape',
+           'cpSpatialIndexSegmentQueryImpl', 'cpMessage',
+           'cpContactPointSet', 'cpShapeSetBody', 'cpDampedSpringNew',
+           'cpSweep1DNew', 'cpGrooveJointAlloc', 'cpBodyVelocityFunc',
+           'cpArray', 'cpSpacePointQueryFunc', 'cpBodyEachConstraint',
+           'cpSpaceReindexShape', 'cpConstraintGetImpulseImpl',
+           'cpDampedSpringInit', 'cpvforangle', 'cpSpaceContainsBody',
+           'cpSegmentQueryInfo', 'cpMomentForBox', 'cpSpace',
+           'cpDampedRotarySpringNew', 'cpSpaceSegmentQueryFirst',
+           'cpCircleShapeGetOffset', 'cpBodyConstraintIteratorFunc',
+           'cpGearJointInit', 'cpGrooveJointInit',
+           'N17cpContactPointSet4DOT_25E', 'cpBodyActivate', 'cpBody',
+           'cpBodySetMass', 'cpBodySetPos', 'cpvstr',
+           'cpMomentForPoly', 'cpBoxShapeNew2',
+           'cpCircleShapeSetOffset', 'cpBodyDestroy', 'cpDataPointer',
+           'cpArbiterStateNormal', 'cpSweep1DAlloc',
+           'CP_SEGMENT_SHAPE', 'cpArbiterState', 'cpVect',
+           'cpSpaceContainsShape', 'cpDampedRotarySpringGetClass',
+           'cpDampedSpringForceFunc', 'cpSpatialIndexQueryFunc',
+           'cpSplittingPlane', 'cpSpaceHashInit',
+           'cpSpaceRemoveStaticShape', 'cpArbiterGetDepth',
            'cpPolyShapeInit', 'cpSpatialIndexReindexImpl',
-           'cpShapeSegmentQuery', '__bos', 'cpSpaceAlloc',
-           'cpCollisionPreSolveFunc', 'int16_t', 'CP_USE_DOUBLES',
-           '__warnattr', 'cpSpatialIndexPointQueryImpl',
-           'cpArbiterGetNormal', 'cpCircleShape', 'uint_fast64_t',
-           'cpBool', 'cpCollisionBeginFunc', 'cpShapePointQueryImpl',
-           'cpArbiterGetContactPointSet', '__USE_XOPEN2K',
-           'cpSpaceRemoveBody', 'cpSegmentShapeSetRadius', 'uint16_t',
-           'cpSweep1DNew', 'cpBodySleep', 'int32_t', 'cpSweep1DAlloc',
-           'cpDampedRotarySpringTorqueFunc', 'cpSegmentShapeGetA',
-           'cpSegmentShapeGetB', '__USE_MISC',
-           'CP_MAX_CONTACTS_PER_ARBITER', 'cpShapeSetBody',
-           'cpHashValue', '_STDINT_H', 'cpSimpleMotorNew',
-           'cpArbiterStateFirstColl', 'cpSimpleMotorAlloc',
-           'cpSpaceShapeQueryFunc', 'cpSpatialIndexDestroyImpl',
-           'cpGroup', 'cpSpaceHashNew',
-           'cpSpatialIndexReindexObjectImpl',
-           'cpRotaryLimitJointInit', 'cpSpaceAddBody',
-           'cpSpatialIndexBBFunc', '__USE_POSIX199506',
-           'cpSlideJointNew', 'uintmax_t',
-           'cpSpaceSetDefaultCollisionHandler', 'int_fast16_t',
-           'cpArbiterGetPoint', 'cpSpaceAddCollisionHandler',
-           'CP_NO_GROUP', 'cpRatchetJointNew', '_SYS_CDEFS_H',
-           'cpShapeCacheDataImpl', 'CP_ALL_LAYERS', 'cpSpaceBBQuery',
+           'cpPolyShapeNew', 'cpSegmentShapeSetRadius',
+           'cpArbiterIgnore', 'cpSpatialIndexClass', 'cpSlideJoint',
+           'CP_POLY_SHAPE', 'cpcalloc', 'cpSpaceAlloc',
+           'cpCircleShapeAlloc', 'cpPinJointAlloc',
+           'cpBodyUpdatePosition', 'cpCollisionPreSolveFunc',
+           'cpBBTreeOptimize', 'cpShapeSegmentQueryImpl',
+           'cpSpaceDestroy', 'cpAreaForCircle', 'cpContact',
+           'cpBodyShapeIteratorFunc', 'cpSegmentShape',
+           'cpSpaceReindexShapesForBody', 'cpSlideJointAlloc',
+           'cpConstraintApplyImpulseImpl',
+           'cpSegmentShapeSetNeighbors', 'cpSpaceUseSpatialHash',
+           'cpArbiterGetNormal', 'cpConstraint', 'cpArbiter',
+           'cpPivotJointNew2', 'cpGrooveJoint',
+           'cpArbiterStateIgnore', 'cpSpaceAddCollisionHandler',
+           'cpSpaceFree', 'cpCircleShapeInit', 'cpSpaceInit',
+           'cpNearestPointQueryInfo', 'CP_NUM_SHAPES', 'cpBool',
+           'cpCollisionBeginFunc', 'cpSpatialIndexInsertImpl',
+           'cpRecenterPoly', 'cpFalse', 'cpArbiterGetContactPointSet',
+           'cpPivotJointNew', 'cpBBTreeAlloc',
+           'cpConstraintApplyCachedImpulseImpl', 'cpArbiterGetCount',
+           'cpSegmentShapeNew', 'cpCircleShapeSetRadius',
+           'cpBodyFree', 'cpRatchetJointGetClass', 'free',
+           'cpGearJointAlloc', 'cpSpaceRemoveBody',
+           'cpCentroidForPoly', 'cpBoxShapeNew',
+           'cpBodySleepWithGroup', 'cpConstraintPreSolveFunc',
+           'cpSpatialIndexEachImpl', 'cpCollisionType',
+           'cpSpaceReindexStatic', 'cpPivotJointInit',
+           'cpShapeSegmentQuery', 'cpSpatialIndexFree',
+           'cpVersionString', 'cpSpaceArbiterApplyImpulseFunc',
+           'cpSpaceNearestPointQueryFunc', 'cpBodySetMoment',
+           'cpBoxShapeInit', 'cpSegmentShapeAlloc',
+           'cpBBTreeSetVelocityFunc', 'cpBBClampVect',
+           'cpPolyShapeGetVert', 'cpSpaceAddBody', 'cpShapeType',
+           'cpShape', 'cpPolyShapeGetNumVerts',
+           'cpSimpleMotorGetClass', 'cpSpaceRemoveShape', 'cpBBTree',
+           'cpContactBufferHeader', 'cpGrooveJointGetClass',
+           'CP_CIRCLE_SHAPE', 'cpSpaceHash', 'realloc',
+           'cpSpaceSegmentQuery', 'cpSpaceHashAlloc', 'cpPinJoint',
+           'cpConstraintPreStepImpl', 'cpArbiterTotalKE',
+           'cpDampedRotarySpringTorqueFunc', 'cpBBWrapVect',
+           'cpSegmentShapeGetA', 'cpShapeNearestPointQuery',
+           'cpSegmentShapeGetB', 'cpSpaceNew',
+           'cpSpaceConstraintIteratorFunc', 'cpBodyAssertSane',
+           'cpArbiterGetPoint', 'cpCollisionSeparateFunc',
+           'cpMomentForBox2', 'cpBodyArbiterIteratorFunc',
+           'cpShapeNearestPointQueryImpl', 'cpBodyUpdateVelocity',
+           'cpCircleShapeGetRadius', 'cpSpatialIndexQueryImpl',
+           'cpBB', 'cpBodyInitStatic', 'cpPinJointInit',
+           'cpGearJoint', 'cpSpaceHashResize', 'cpSlideJointInit',
+           'cpPolyShapeAlloc', 'cpSpaceAddShape', 'cpAreaForSegment',
+           'cpSpaceSetDefaultCollisionHandler', 'uintptr_t',
+           'cpHashValue', 'cpCollisionPostSolveFunc',
+           'cpConstraintDestroy', 'cpSimpleMotorNew',
+           'cpSpaceEachBody', 'cpSpatialIndexContainsImpl',
+           'cpSlideJointNew', 'cpDampedSpringAlloc',
+           'cpArbiterStateFirstColl', 'cpRotaryLimitJointAlloc',
+           'cpShapeDestroyImpl', 'cpSimpleMotorAlloc',
+           'cpBodyEachArbiter', 'cpSpaceShapeQueryFunc',
+           'cpSpaceBodyIteratorFunc', 'cpSpaceNearestPointQuery',
+           'cpSpaceEachConstraint', 'cpSpatialIndexSegmentQueryFunc',
+           'cpGroup', 'cpMomentForCircle', 'cpSegmentShapeGetRadius',
+           'cpSpatialIndexReindexObjectImpl', 'cpBBTreeInit',
+           'cpTimestamp', 'cpTrue', 'cpGearJointSetRatio',
+           'cpRotaryLimitJointInit', 'cpSpaceRemoveConstraint',
+           'cpBodyActivateStatic', 'cpSweep1D', 'cpSweep1DInit',
+           'cpSpatialIndex', 'cpSpaceAddPostStepCallback',
+           'cpRotaryLimitJointNew', 'cpPivotJointGetClass',
+           'cpBodyNewStatic', 'cpSpaceShapeQuery', 'cpLayers',
+           'cpPivotJointAlloc', 'cpConstraintFree',
+           'cpSpatialIndexBBFunc', 'cpBodyInit',
+           'cpGearJointGetClass', 'cpBodyNew', 'cpSpaceStep',
+           'cpHashSet', 'cpSpaceAddConstraint',
+           'cpGrooveJointSetGrooveA', 'cpGrooveJointSetGrooveB',
+           'cpvtoangle', 'cpConstraintClass', 'cpFloat',
+           'cpShapePointQuery', 'cpPinJointNew', 'cpBodySanityCheck',
+           'cpPostStepFunc', 'cpSpatialIndexReindexQueryImpl',
+           'cpConstraintPostSolveFunc', 'cpPolyShape',
+           'cpShapeCacheDataImpl', 'cpBodyPositionFunc',
+           'cpBodyGetVelAtLocalPoint', 'cpRatchetJointAlloc',
+           'cpSpaceHashNew', 'cpArbiterThread', 'cpBodyApplyForce',
+           'cpSpacePointQueryFirst', 'cpMomentForSegment',
+           'cpArbiterTotalImpulseWithFriction',
+           'cpRotaryLimitJointGetClass',
+           'cpSpaceRemoveCollisionHandler', 'cpBBTreeNew',
+           'cpSpaceEachShape', 'cpConvexHull', 'cpRatchetJointNew',
+           'cpGearJointNew', 'cpArbiterTotalImpulse', 'cpShapeFree',
+           'cprealloc', 'cpvslerpconst',
+           'cpSpatialIndexCollideStatic', 'cpSpaceBBQuery',
+           'cpAreaForPoly', 'cpResetShapeIdCounter', 'cpPivotJoint',
+           'cpDampedRotarySpringInit', 'cpSegmentShapeInit',
            'cpSlideJointGetClass', 'cpDampedRotarySpring',
-           'cpSegmentShapeSetEndpoints', '__REDIRECT_LDBL',
-           'cpPolyShapeSetVerts', 'cpSpaceAddStaticShape',
-           'cpSpatialIndexRemoveImpl', 'cpPolyShapeGetNumVerts',
-           'cpSegmentShapeAlloc', 'cpSpaceStep', 'cpSimpleMotorInit',
-           'cpSpaceRemoveShape', 'uint32_t', 'cpvlength',
-           'cpPolyValidate', '_XOPEN_SOURCE_EXTENDED',
-           'cpSpacePointQuery', 'cpCollisionHandler',
-           'N17cpContactPointSet3DOT_0E', 'cpBoxShapeInit2',
-           'cpBBTreeOptimize', 'cpDampedSpring', 'cpBodySetAngle',
-           '__USE_XOPEN2K8', 'cpSpaceReindexShapesForBody',
-           'cpGrooveJointAlloc', 'cpBodyVelocityFunc', 'cpShapeType',
-           'cpSpaceContainsBody', 'cpSpace', '__STDC_IEC_559__',
-           'cpBodyAlloc', 'cpSpaceHashAlloc',
-           'cpDampedSpringForceFunc', '_ISOC99_SOURCE',
-           'cpSegmentShapeNew', 'cpArbiterIgnore',
-           'cpCircleShapeAlloc', 'intmax_t', 'cpContact',
-           'cpConstraint', 'cpArbiter', 'cpArbiterStateIgnore',
-           'int_least8_t', 'cpSpaceFree', 'cpCircleShapeNew',
-           'cpRecenterPoly', 'int_least16_t',
-           'cpConstraintApplyCachedImpulseImpl', '_SVID_SOURCE',
-           'cpGearJointAlloc', 'cpGrooveJointSetGrooveA',
-           'cpSpatialIndexFree', 'cpVersionString',
-           'cpSpaceAddPostStepCallback', '__USE_BSD', '__CONCAT',
-           'cpShapeFree', 'CP_CIRCLE_SHAPE', 'uint_least64_t',
-           '__USE_UNIX98', 'cpBodyAssertSane',
-           'cpCircleShapeGetRadius', 'cpPinJointInit', 'uintptr_t',
-           'cpShapePointQuery', 'cpSpaceEachBody', 'int8_t',
-           '__STDC_IEC_559_COMPLEX__', 'cpBBTreeInit', 'cpTimestamp',
-           'cpSegmentShapeSetNeighbors', 'cpPivotJointGetClass',
-           'cpMessage', 'cpBodyNew', 'cpConstraintClass', 'cpFloat',
-           '__STRING', 'int64_t', 'cpBodySanityCheck',
-           'cpSpatialIndexReindexQueryImpl', '__WCHAR_MIN',
-           '__GNUC_PREREQ', 'cpBodyPositionFunc', 'cpBodyResetForces',
-           'cpSpacePointQueryFirst', 'cpArbiterTotalImpulse',
-           '_BSD_SOURCE', 'cpSpatialIndexClass',
-           '_LARGEFILE64_SOURCE', '__va_arg_pack', 'cpAreaForPoly',
-           'cpResetShapeIdCounter', 'cpDampedRotarySpringInit',
-           '__va_arg_pack_len', 'cpSpaceSegmentQuery', '__bos0',
-           'cpComponentNode', 'cpCircleShapeInit', 'cpRatchetJoint',
-           'int_least32_t', 'cpDampedSpringGetClass']
+           'cpSimpleMotor', 'calloc', 'cpComponentNode',
+           'cpSegmentShapeSetEndpoints', 'cpPolyShapeSetVerts',
+           'cpRatchetJoint', 'cpSpaceAddStaticShape',
+           'cpSpaceNearestPointQueryNearest',
+           'cpSpatialIndexIteratorFunc', 'cpDampedSpringGetClass',
+           'cpSpatialIndexRemoveImpl', 'cpArbiterStateCached',
+           'cpBodyGetVelAtWorldPoint', 'cpSegmentShapeGetNormal',
+           'cpShapeDestroy', 'cpSimpleMotorInit',
+           'cpBodyApplyImpulse', 'cpInitChipmunk', 'cpShapeClass',
+           'cpBodyAlloc', 'cpGrooveJointNew', 'cpCircleShape',
+           'cpSpaceSegmentQueryFunc', 'cpBBTreeVelocityFunc',
+           'cpPolyValidate', 'cpPinJointGetClass',
+           'cpSpaceContainsConstraint']

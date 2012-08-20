@@ -1,3 +1,10 @@
+"""This example spawns (bouncing) balls randomly on a L-shape constructed of 
+two segment shapes. Not interactive.
+"""
+
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
 import pygame
 from pygame.locals import *
 from pygame.color import *
@@ -38,6 +45,8 @@ while running:
             running = False
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
             running = False
+        elif event.type == KEYDOWN and event.key == K_p:
+            pygame.image.save(screen, "bouncing_balls.png")
             
     ticks_to_next_ball -= 1
     if ticks_to_next_ball <= 0:

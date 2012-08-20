@@ -1,0 +1,84 @@
+**********************************
+Welcome to pymunk's documentation! 
+**********************************
+
+pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
+you need 2d rigid body physics from Python. It is built on top of the very 
+nice 2d physics library Chipmunk.
+
+
+Getting Started
+===============
+
+To get started quickly take a look in the :doc:`readme`, it contains a 
+summary of the most important things and is quick to read. When done its a 
+good idea to take a look at the included :doc:`examples`, read the 
+:doc:`tutorials` and take a look in the :doc:`pymunk`.
+
+
+The pymunk Vision
+=================
+
+    "*Make 2d physics easy to include in your game :)*"
+
+It is (or is striving to be):
+
+* **Easy to use** - It should be easy to use, no complicated stuff should be 
+  needed to add physics to your game/program.
+* **"Pythonic"** - It should not be visible that a c-library (chipmunk) is in 
+  the bottom, it should feel like a python library (no strange naming, OO, 
+  no memory handling and more)
+* **Simple to build & install** - You shouldnt need to have a zillion of 
+  libraries installed to make it install, or do a lot of command line trixs.
+* **Multiplatform** - Should work on both windows, \*nix and OSX.
+* **Non-intrusive** - It should not put restrictions on how you structure 
+  your program and not force you to use a special game loop, it should be 
+  possible to use with other libraries like pygame and pyglet. 
+
+
+Contact & Support
+=================
+
+**Stackoverflow**
+    You can ask questions/browse old ones at stackoverflow, just look for 
+    the pymunk tag. http://stackoverflow.com/questions/tagged/pymunk
+
+**Forum**
+    Currently pymunk has no separate forum, but you can use the general 
+    Chipmunk forum at http://chipmunk-physics.net/forum/index.php Many issues 
+    are the same, like how to create a rag doll or why a fast moving object 
+    pass through a wall. If you have a pymunk specific question you can mark 
+    your post with [pymunk] to make it stand out a bit.
+
+**Mail**
+    You can email me directly: vb@viblo.se
+
+**Issue Tracker**
+    Please use the issue tracker at google code to report any issues you find:
+    http://code.google.com/p/pymunk/
+    
+Regardless of the method you use I will try to answer your questions as soon 
+as I see them. (And if you ask on on SO or the forum other people might help 
+as well!)
+    
+    
+Contents
+========
+ 
+.. toctree::
+    :maxdepth: 4
+    
+    readme
+    installation
+    pymunk
+    examples
+    tutorials
+    advanced
+
+
+Indices and tables
+==================
+ 
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

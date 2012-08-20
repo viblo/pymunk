@@ -22,26 +22,33 @@
 # ----------------------------------------------------------------------------
 
 """A constraint is something that describes how two bodies interact with 
-each other. (how they constraint each other). Constraints can be simple 
+each other. (how they constrain each other). Constraints can be simple 
 joints that allow bodies to pivot around each other like the bones in your 
 body, or they can be more abstract like the gear joint or motors. 
+
+Chipmunk has a good overview of the different joints on youtube which works 
+fine to showcase them in pymunk as well. 
+http://www.youtube.com/watch?v=ZgJJZTS0aMM
+
+.. raw:: html
+    
+    <iframe width="420" height="315" style="display: block; margin: 0 auto;"
+    src="http://www.youtube.com/embed/ZgJJZTS0aMM" frameborder="0" 
+    allowfullscreen></iframe>
+    
 """
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 import ctypes as ct
-import pymunk._chipmunk as cp 
-import pymunk._chipmunk_ffi as cpffi 
+import _chipmunk as cp 
+import _chipmunk_ffi as cpffi 
 
 class Constraint(object):
     """Base class of all constraints. 
     
-    You usually don't want to create instances of this class directly.
-    
-    A constraint is something that describes how two bodies interact with 
-    each other. (how they constraint each other). Constraints can be simple 
-    joints that allow bodies to pivot around each other like the bones in your 
-    body, or they can be more abstract like the gear joint or motors. 
+    You usually don't want to create instances of this class directly, but 
+    instead use one of the specific constraints such as the PinJoint.
     """
     def __init__(self, constraint=None):
         self._constraint = constraint

@@ -27,10 +27,6 @@ you need 2d rigid body physics from Python.
 
 Homepage: http://code.google.com/p/pymunk/
 
-Forum: http://www.slembcke.net/forums/viewforum.php?f=6
-
-Chipmunk documentation: 
-http://code.google.com/p/chipmunk-physics/wiki/Documentation
 """
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
@@ -39,60 +35,58 @@ __all__ = ["inf", "version", "chipmunk_version"
         , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
         , "moment_for_circle", "moment_for_poly", "moment_for_segment"
         , "moment_for_box", "reset_shapeid_counter"
-        , "Constraint", "PinJoint", "SlideJoint", "PivotJoint", "GrooveJoint"
-        , "DampedSpring", "DampedRotarySpring", "RotaryLimitJoint"
-        , "RatchetJoint", "GearJoint", "SimpleMotor"
         , "SegmentQueryInfo", "Contact", "Arbiter", "BB"]
 
 import ctypes as ct
 
-import pymunk._chipmunk as cp 
-import pymunk._chipmunk_ffi as cpffi
-import pymunk.util as u
+import _chipmunk as cp
+import _chipmunk_ffi as cpffi
+import util as u
 from .vec2d import Vec2d
 
 from pymunk.constraint import *
 
-version = "2.1.0"
+version = "3.0.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn).
 """
 
-chipmunk_version = "%sR%s" % (cp.cpVersionString.value.decode(), '82ba83e')
+chipmunk_version = "%sR%s" % (cp.cpVersionString.value.decode(), '')
 """The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not 
 contain any breaking API changes.
+
+This property does not show a valid value in the compiled documentation, only 
+when you actually import pymunk and do pymunk.chipmunk_version
 
 The string is in the following format:
 <cpVersionString>R<svn or github commit of chipmunk>
 where cpVersionString is a version string set by Chipmunk and the svn version 
 corresponds to the svn version of the chipmunk source files included with 
-pymunk or the github commit hash.
+pymunk or the github commit hash. If the Chipmunk version is a release then 
+the second part will be empty
 
-*Note:* This is also the version of the Chipmunk source files included in the 
-chipmunk_src folder (normally included in the pymunk source distribution).
+.. note:: 
+    This is also the version of the Chipmunk source files included in the 
+    chipmunk_src folder (normally included in the pymunk source distribution).
 """
 
 #inf = float('inf') # works only on python 2.6+
 inf = 1e100
-"""@deprecated You should create static bodies by invoking the body constructor 
-without any arguments, not using the infinity field. Expect inf to be removed 
-in pymunk 3.0
+"""Infinity that can be passed as mass or inertia to Body. 
 
-Infinity that can be passed as mass or inertia to Body. 
-Use this as mass and inertia when you need to create a static body.
+Useful when you for example want a body that cannot rotate, just set its 
+moment to inf. Just remember that if two objects with both infinite masses 
+collides the world might explode. Similary effects can happen with infinite 
+moment.
+
+.. note::
+    In previous versions of pymunk you used inf to create static bodies. This
+    has changed and you should instead do it by invoking the body constructor 
+    without any arguments.
 """
 
-def _init_pymunk():
-    """Initialize chipmunk. 
-    You shouldn't need to call this method yourself as it is called 
-    automatically on import.
-    """
-    cp.cpInitChipmunk()
-
-_init_pymunk()
-        
 class Space(object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes 
     and joints to it and then step them all forward together through time. 
@@ -122,19 +116,19 @@ class Space(object):
         self._post_step_callbacks = {}
         
         self._shapes = {}
-        self._static_shapes = {}
+        #self._static_shapes = {}
         self._bodies = set()
         self._constraints = set()
 
     def _get_shapes(self):
         return list(self._shapes.values())
     shapes = property(_get_shapes, 
-        doc="""A list of the shapes added to this space""")
+        doc="""A list of all the shapes added to this space (both static and non-static)""")
 
-    def _get_static_shapes(self):
-        return list(self._static_shapes.values())
-    static_shapes = property(_get_static_shapes,
-        doc="""A list of the static shapes added to this space""")
+    # def _get_static_shapes(self):
+        # return list(self._static_shapes.values())
+    # static_shapes = property(_get_static_shapes,
+        # doc="""A list of the static shapes added to this space""")
 
     def _get_bodies(self):
         return list(self._bodies)
@@ -155,15 +149,9 @@ class Space(object):
         # check if the imported cp still exists.. think the only case when 
         # it doesnt is on program exit so should be more or less ok to skip 
         # the call to *free in that case
-        if cp is not None: 
-            #print "Free space", self._space
-            #for b in self.bodies:
-                #self.remove(b)
-                #print "removed", b
-            try:
-                cp.cpSpaceFree(self._space)
-            except Exception, e:
-                pass
+        if cp is not None:
+            cp.cpSpaceFree(self._space)
+            
 
 
     def _set_iterations(self, iterations):
@@ -251,17 +239,6 @@ class Space(object):
         Defaults to 3. There is probably never a reason to change this value.
         """)
         
-    def _set_enable_contact_graph(self, enable_contact_graph):
-        self._space.contents.enableContactGraph = enable_contact_graph
-    def _get_enable_contact_graph(self):
-        return self._space.contents.enableContactGraph
-    enable_contact_graph = property(_get_enable_contact_graph
-        , _set_enable_contact_graph
-        , doc="""Rebuild the contact graph during each step. 
-        
-        Must be enabled to use the cpBodyEachArbiter() function. Disabled by default for a small performance boost.""")
-        
-        
     def add(self, *objs):
         """Add one or many shapes, bodies or joints to the space"""
         for o in objs:
@@ -275,21 +252,22 @@ class Space(object):
                 for oo in o:
                     self.add(oo)
                     
-    def add_static(self, *objs):
-        """Add one or many static shapes to the space"""
-        for o in objs:
-            if isinstance(o, Shape):
-                self._add_static_shape(o)
-            else:
-                for oo in o:
-                    self.add_static(oo)
+    # def add_static(self, *objs):
+        # """Add one or many static shapes to the space"""
+        # for o in objs:
+            # if isinstance(o, Shape):
+                # self._add_static_shape(o)
+            # else:
+                # for oo in o:
+                    # self.add_static(oo)
                     
     def remove(self, *objs):
         """Remove one or many shapes, bodies or constraints from the space
         
-        *Note* When removing objects from the space, make sure you remove any 
-        other objects that reference it. For instance, when you remove a body, 
-        remove the joints and shapes attached to it. 
+        .. Note:: 
+            When removing objects from the space, make sure you remove any 
+            other objects that reference it. For instance, when you remove a 
+            body, remove the joints and shapes attached to it. 
         """
         for o in objs:
             if isinstance(o, Body):
@@ -302,28 +280,28 @@ class Space(object):
                 for oo in o:
                     self.remove(oo)
                     
-    def remove_static(self, *objs):
-        """Remove one or many static shapes from the space"""
-        for o in objs:
-            if isinstance(o, Shape):
-                self._remove_static_shape(o)
-            else:
-                for oo in o:
-                    self.remove_static(oo)
+    # def remove_static(self, *objs):
+        # """Remove one or many static shapes from the space"""
+        # for o in objs:
+            # if isinstance(o, Shape):
+                # self._remove_static_shape(o)
+            # else:
+                # for oo in o:
+                    # self.remove_static(oo)
                     
     def _add_shape(self, shape):
         """Adds a shape to the space"""
         assert shape._hashid_private not in self._shapes, "shape already added to space"
         self._shapes[shape._hashid_private] = shape
         cp.cpSpaceAddShape(self._space, shape._shape)
-    def _add_static_shape(self, static_shape):
-        """Adds a shape to the space. Static shapes should be be attached to 
-        a rigid body with an infinite mass and moment of inertia. Also, don't 
-        add the rigid body used to the space, as that will cause it to fall 
-        under the effects of gravity."""
-        assert static_shape._hashid_private not in self._static_shapes, "shape already added to space"
-        self._static_shapes[static_shape._hashid_private] = static_shape
-        cp.cpSpaceAddStaticShape(self._space, static_shape._shape)
+    # def _add_static_shape(self, static_shape):
+        # """Adds a shape to the space. Static shapes should be be attached to 
+        # a rigid body with an infinite mass and moment of inertia. Also, don't 
+        # add the rigid body used to the space, as that will cause it to fall 
+        # under the effects of gravity."""
+        # assert static_shape._hashid_private not in self._static_shapes, "shape already added to space"
+        # self._static_shapes[static_shape._hashid_private] = static_shape
+        # cp.cpSpaceAddStaticShape(self._space, static_shape._shape)
     def _add_body(self, body):
         """Adds a body to the space"""
         assert body not in self._bodies, "body already added to space"
@@ -339,10 +317,10 @@ class Space(object):
         """Removes a shape from the space"""
         del self._shapes[shape._hashid_private]
         cp.cpSpaceRemoveShape(self._space, shape._shape)
-    def _remove_static_shape(self, static_shape):
-        """Removes a static shape from the space."""
-        del self._static_shapes[static_shape._hashid_private]
-        cp.cpSpaceRemoveStaticShape(self._space, static_shape._shape)
+    # def _remove_static_shape(self, static_shape):
+        # """Removes a static shape from the space."""
+        # del self._static_shapes[static_shape._hashid_private]
+        # cp.cpSpaceRemoveStaticShape(self._space, static_shape._shape)
     def _remove_body(self, body):
         """Removes a body from the space"""
         self._bodies.remove(body)
@@ -586,6 +564,66 @@ class Space(object):
             shape = self._static_shapes[hashid_private]
         return shape
         
+    def nearest_point_query(self, point, max_distance, layers = -1, group = 0):
+        """Query space at point filtering out matches with the given layers 
+        and group. Return a list of all shapes within max_distance of the point.
+        
+        If you don't want to filter out any matches, use -1 for the layers 
+        and 0 as the group.
+        
+        :Parameters:    
+            point : (x,y) or `Vec2d`
+                Define where to check for collision in the space.
+            max_distance : int
+                Maximumm distance of shape from point
+            layers : int
+                Only pick shapes matching the bit mask. i.e. 
+                (layers & shape.layers) != 0
+            group : int
+                Only pick shapes in this group.
+        
+        :Return: 
+            [dict(shape=`Shape`, distance = distance, point = Vec2d)]
+        """
+        self.__query_hits = []
+        def cf(_shape, distance, point, data):
+            shape = self._get_shape(_shape)
+            self.__query_hits.append(dict(shape=shape, distance=distance, point=point))
+        f = cp.cpSpaceNearestPointQueryFunc(cf)
+        cp.cpSpaceNearestPointQuery(self._space, point, max_distance, layers, group, f, None)
+        
+        return self.__query_hits
+    
+    def nearest_point_query_nearest(self, point, max_distance, layers = -1, group = 0):
+        """Query space at point filtering out matches with the given layers 
+        and group. Return nearest of all shapes within max_distance of the 
+        point.
+        
+        If you don't want to filter out any matches, use -1 for the layers 
+        and 0 as the group.
+        
+        :Parameters:    
+            point : (x,y) or `Vec2d`
+                Define where to check for collision in the space.
+            max_distance : int
+                Maximumm distance of shape from point
+            layers : int
+                Only pick shapes matching the bit mask. i.e. 
+                (layers & shape.layers) != 0
+            group : int
+                Only pick shapes in this group.
+        
+        :Return: 
+            dict(shape=`Shape`, distance = distance, point = Vec2d)
+        """
+        info = cp.cpNearestPointQueryInfo()
+        info_p = ct.POINTER(cp.cpNearestPointQueryInfo)(info)
+        _shape = cp.cpSpaceNearestPointQueryNearest(self._space, point, max_distance, layers, group, info_p)
+        shape = self._get_shape(_shape)
+        if shape != None:
+            return dict(shape=shape, point=info.p, distance=info.d)
+        return None        
+        
     def point_query_first(self, point, layers = -1, group = 0):
         """Query space at point and return the first shape found matching the 
         given layers and group. Returns None if no shape was found.
@@ -639,8 +677,7 @@ class Space(object):
         shape = self._get_shape(_shape)
         if shape != None:
             return SegmentQueryInfo(shape, start, end, info.t, info.n)
-        else:
-            return None
+        return None
     
     def bb_query(self, bb, layers = -1, group = 0):
         """Perform a fast rectangle query on the space.
@@ -722,10 +759,11 @@ class Body(object):
     angle = property(_get_angle, _set_angle, 
         doc="""The rotation of the body. 
         
-        *Note* If you get small/no changes to the angle when for example a 
-        ball is "rolling" down a slope it might be because the Circle shape 
-        attached to the body or the slope shape does not have any friction 
-        set.""")
+        .. Note:: 
+            If you get small/no changes to the angle when for example a 
+            ball is "rolling" down a slope it might be because the Circle shape 
+            attached to the body or the slope shape does not have any friction 
+            set.""")
     
     def _get_rotation_vector(self):
         return self._bodycontents.rot
@@ -881,32 +919,6 @@ class Body(object):
                 Offset in world coordinates
         """
         cp.cpBodyApplyForce(self._body, f, r)
-
-    def apply_damped_spring(self, b, anchor1, anchor2, rlen, k, dmp, dt):
-        """Apply a spring force between this body and b at anchors anchr1 and 
-        anchr2 respectively. 
-        
-        *Note* not solving the damping forces in the impulse solver causes 
-        problems with large damping values. There is a new constraint type 
-        DampedSpring that should be used instead.        
-        
-        :Parameters:
-            b : `Body`
-                The other body
-            anchor1 : (x,y) or `Vec2d`
-                Anchor point on the first body
-            anchor2 : (x,y) or `Vec2d`
-                Anchor point on the second body
-            k : float
-                The spring constant (force/distance) (Young's modulus)
-            rlen : float
-                The rest length of the spring
-            dmp : float
-                The damping constant (force/velocity)
-            dt : float
-                The time step to apply the force over.
-        """
-        cp.cpApplyDampedSpring(self._body, b._body, anchor1, anchor2, rlen, k, dmp, dt)
                 
     def activate(self):
         """Wake up a sleeping or idle body."""
@@ -994,9 +1006,9 @@ class Shape(object):
     def _set_collision_type(self, t):
         self._shapecontents.collision_type = t
     collision_type = property(_get_collision_type, _set_collision_type,
-        doc="""User defined collision type for the shape. See the 
-        Space.add_collision_handler function for more information on when to 
-        use this property""")
+        doc="""User defined collision type for the shape. See 
+        add_collisionpair_func function for more information on when to use 
+        this property""")
 
     def _get_group(self):
         return self._shapecontents.group
@@ -1032,7 +1044,34 @@ class Shape(object):
         self._shapecontents.u = u
     friction = property(_get_friction, _set_friction, 
         doc="""Friction coefficient. pymunk uses the Coulomb friction model, a 
-        value of 0.0 is frictionless.""")
+        value of 0.0 is frictionless.
+        
+        A value over 1.0 is perfectly fine.
+        
+        Some real world example values from wikipedia (Remember that 
+        it is what looks good that is important, not the exact value).
+        
+        ==============  ======  ========
+        Material        Other   Friction
+        ==============  ======  ========
+        Aluminium       Steel   0.61
+        Copper          Steel   0.53
+        Brass           Steel   0.51
+        Cast iron       Copper  1.05
+        Cast iron       Zinc    0.85
+        Concrete (wet)  Rubber  0.30
+        Concrete (dry)  Rubber  1.0 
+        Concrete        Wood    0.62
+        Copper          Glass   0.68
+        Glass           Glass   0.94
+        Metal           Wood    0.5
+        Polyethene      Steel   0.2
+        Steel           Steel   0.80
+        Steel           Teflon  0.04
+        Teflon (PTFE)   Teflon  0.04
+        Wood            Wood    0.4
+        ==============  ======  ========
+        """)
 
     def _get_surface_velocity(self):
         return self._shapecontents.surface_v
@@ -1124,10 +1163,11 @@ class Circle(Shape):
     def unsafe_set_radius(self, r):
         """Unsafe set the radius of the circle. 
     
-        *WARNING:* This change is only picked up as a change to the position 
-        of the shape's surface, but not it's velocity. Changing it will not 
-        result in realistic physical behavior. Only use if you know what you 
-        are doing!
+        .. note:: 
+            This change is only picked up as a change to the position 
+            of the shape's surface, but not it's velocity. Changing it will 
+            not result in realistic physical behavior. Only use if you know 
+            what you are doing!
         """
         cp.cpCircleShapeSetRadius(self._shape, r)
         
@@ -1138,10 +1178,11 @@ class Circle(Shape):
     def unsafe_set_offset(self, o):
         """Unsafe set the offset of the circle. 
     
-        *WARNING:* This change is only picked up as a change to the position 
-        of the shape's surface, but not it's velocity. Changing it will not 
-        result in realistic physical behavior. Only use if you know what you 
-        are doing!
+        .. note:: 
+            This change is only picked up as a change to the position 
+            of the shape's surface, but not it's velocity. Changing it will 
+            not result in realistic physical behavior. Only use if you know 
+            what you are doing!
         """
         cp.cpCircleShapeSetOffset(self._shape, o)
     
@@ -1301,8 +1342,8 @@ class Contact(object):
     def __init__(self, _contact):
         """Initialize a Contact object from the Chipmunk equivalent struct
         
-        *Note:* You should never need to create an instance of this class 
-        directly.
+        .. note:: 
+            You should never need to create an instance of this class directly.
         """
         self._point = _contact.point
         self._normal = _contact.normal
@@ -1339,8 +1380,8 @@ class Arbiter(object):
         """Initialize an Arbiter object from the Chipmunk equivalent struct 
         and the Space.
         
-        *Note:* You should never need to create an instance of this class 
-        directly.
+        .. note::
+            You should never need to create an instance of this class directly.
         """
 
         self._arbiter = _arbiter
@@ -1394,13 +1435,25 @@ class Arbiter(object):
         return cp.cpArbiterTotalImpulse(self._arbiter)
     total_impulse = property(_get_total_impulse,
         doc="""Returns the impulse that was applied this step to resolve the 
-        collision""")
+        collision.
+        
+        This property should only be called from a post-solve, post-step""")
     
     def _get_total_impulse_with_friction(self):
         return cp.cpArbiterTotalImpulseWithFriction(self._arbiter)
     total_impulse_with_friction = property(_get_total_impulse_with_friction,
         doc="""Returns the impulse with friction that was applied this step to 
-        resolve the collision""")
+        resolve the collision.
+        
+        This property should only be called from a post-solve, post-step""")
+        
+    def _get_total_ke(self):
+        return cp.cpArbiterTotalKE(self._arbiter)
+    total_ke = property(_get_total_ke,
+        doc="""The amount of energy lost in a collision including static, but 
+        not dynamic friction.
+        
+        This property should only be called from a post-solve, post-step""")
         
     def _get_stamp(self):
         return self._arbiter.contents.stamp

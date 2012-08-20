@@ -1,9 +1,21 @@
+"""This example spawns (bouncing) balls randomly on a L-shape constructed of 
+two segment shapes. Displays collsion strength and rotating balls thanks to 
+friction. Not interactive.
+"""
+
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
+import math, sys, random
+
 import pygame
 from pygame.locals import *
 from pygame.color import *
+
 import pymunk as pm
 from pymunk import Vec2d
-import math, sys, random
+import pymunk.pygame_util
+
 
 def to_pygame(p):
     """Small hack to convert pymunk to pygame coordinates"""
@@ -14,7 +26,7 @@ def draw_collision(space, arb, surface):
         r = max( 3, abs(c.distance*5) )
         r = int(r)
         p = to_pygame(c.position)
-        pygame.draw.circle(surface, THECOLORS["red"], p, r, 0)
+        pygame.draw.circle(surface, THECOLORS["black"], p, r, 1)
     
 def main():
     
@@ -34,9 +46,8 @@ def main():
     balls = []
        
     ### walls
-    static_body = pm.Body()
-    static_lines = [pm.Segment(static_body, (11.0, 280.0), (407.0, 246.0), 0.0)
-                    ,pm.Segment(static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
+    static_lines = [pm.Segment(space.static_body, (11.0, 280.0), (407.0, 246.0), 0.0)
+                    ,pm.Segment(space.static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
                     ]
     for l in static_lines:
         l.friction = 0.5
@@ -52,6 +63,8 @@ def main():
                 running = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 running = False
+            elif event.type == KEYDOWN and event.key == K_p:
+                pygame.image.save(screen, "contact_with_friction.png")
                 
         ticks_to_next_ball -= 1
         if ticks_to_next_ball <= 0:
@@ -71,25 +84,14 @@ def main():
         screen.fill(THECOLORS["white"])
         
         ### Draw stuff
+        pymunk.pygame_util.draw_space(screen,space)
+        
         balls_to_remove = []
         for ball in balls:
             if ball.body.position.y < 200: balls_to_remove.append(ball)
-            
-            p = to_pygame(ball.body.position)
-            pygame.draw.circle(screen, THECOLORS["blue"], p, int(ball.radius), 2)
-            p = to_pygame(ball.body.position + ball.body.rotation_vector * ball.radius)
-            pygame.draw.circle(screen, THECOLORS["black"], p, 3)
         for ball in balls_to_remove:
             space.remove(ball, ball.body)
             balls.remove(ball)
-
-        for line in static_lines:
-            body = line.body
-            pv1 = body.position + line.a.rotated(body.angle)
-            pv2 = body.position + line.b.rotated(body.angle)
-            p1 = to_pygame(pv1)
-            p2 = to_pygame(pv2)
-            pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])
             
         ### Update physics
         dt = 1.0/60.0

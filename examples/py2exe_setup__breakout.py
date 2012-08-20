@@ -1,3 +1,9 @@
+"""Example script to create a exe of the breakout example using py2exe.
+"""
+
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
 import os
 from distutils.core import setup
 import py2exe

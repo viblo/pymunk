@@ -1,9 +1,16 @@
+"""A L shape attached with a joint and constrained to not tip over. 
+"""
+
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
+import random
+
 import pygame
 from pygame.locals import *
 from pygame.color import *
+
 import pymunk as pm
-import math, sys, random
-X,Y,Z = 0,1,2 # Easy indexing
 
 def to_pygame(p):
     """Small hack to convert pymunk to pygame coordinates"""
@@ -61,6 +68,8 @@ def main():
                 running = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 running = False
+            elif event.type == KEYDOWN and event.key == K_p:
+                pygame.image.save(screen, "slide_and_pinjoint.png")     
                 
         ticks_to_next_ball -= 1
         if ticks_to_next_ball <= 0:

@@ -9,7 +9,7 @@ class UnitTestConstraint(unittest.TestCase):
     
     def testProperties(self):
         a,b = p.Body(p.inf, p.inf), p.Body(10,10)
-        j = p.PinJoint(a,b)
+        j = p.PivotJoint(a,b,(0,0))
         
         self.assertEqual(j.a, a)
         self.assertEqual(j.b, b)
@@ -23,7 +23,7 @@ class UnitTestConstraint(unittest.TestCase):
     
     def testActivate(self):
         a,b = p.Body(p.inf, p.inf), p.Body(10,10)
-        j = p.PinJoint(a,b)
+        j = p.PivotJoint(a,b,(0,0))
         s = p.Space()
         s.add(a,b)
         a.sleep()

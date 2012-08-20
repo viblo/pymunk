@@ -1,11 +1,19 @@
+"""Very basic example of using a sprite image to draw a shape more similar 
+how you would do it in a real game instead of the simple line drawings used 
+by the other examples. 
+"""
+
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
+import math, random
+
 import pygame
 from pygame.locals import *
 from pygame.color import *
+
 import pymunk
 from pymunk import Vec2d
-import math, random
-X,Y = 0,1
-
 
 def flipy(y):
     """Small hack to convert chipmunk physics to pygame coordinates"""
@@ -44,6 +52,8 @@ def main():
                 running = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 running = False
+            elif event.type == KEYDOWN and event.key == K_p:
+                pygame.image.save(screen, "using_sprites.png")  
         
         ticks_to_next_spawn -= 1
         if ticks_to_next_spawn <= 0:
@@ -69,7 +79,7 @@ def main():
             space.step(dt)
             
         ### Draw stuff
-        screen.fill(THECOLORS["white"])
+        screen.fill(THECOLORS["black"])
 
         for logo_shape in logos:
             # image draw

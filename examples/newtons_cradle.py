@@ -1,4 +1,9 @@
-import math, sys, random
+"""A screensaver version of Newton's Cradle with an interactive mode. 
+"""
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
+import sys, random
 import os
 
 description = """
@@ -118,6 +123,8 @@ def main():
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
+            elif event.type == KEYDOWN and event.key == K_p:
+                pygame.image.save(screen, "newtons_cradle.png")
             
             if event.type == pygame.USEREVENT+1:
                 r = random.randint(1,4)

@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Readme &mdash; pymunk 3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
+    <link rel="top" title="pymunk 3.0.0 documentation" href="index.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Welcome to pymunk’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to pymunk’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pymunk 3.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="readme">
+<h1>Readme<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="about">
+<h2>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h2>
+<p>pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
+you need 2d rigid body physics from Python. It is built on top of the very
+nice 2d physics library Chipmunk.</p>
+<p>2007 - 2012, Victor Blomqvist - <a class="reference external" href="mailto:vb&#37;&#52;&#48;viblo&#46;se">vb<span>&#64;</span>viblo<span>&#46;</span>se</a>, MIT License</p>
+<p>This release is based on the latest pymunk release (3.0.0),
+using chipmunk 6.1.1 (source included)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Homepage:</th><td class="field-body"><a class="reference external" href="http://code.google.com/p/pymunk/">http://code.google.com/p/pymunk/</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Forum:</th><td class="field-body"><a class="reference external" href="http://chipmunk-physics.net/forum/">http://chipmunk-physics.net/forum/</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Email:</th><td class="field-body"><a class="reference external" href="mailto:vb&#37;&#52;&#48;viblo&#46;se">vb<span>&#64;</span>viblo<span>&#46;</span>se</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Getting the latest SVN copy:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">svn checkout <a class="reference external" href="http://pymunk.googlecode.com/svn/trunk">http://pymunk.googlecode.com/svn/trunk</a> pymunk-read-only</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Chipmunk:</th><td class="field-body"><a class="reference external" href="http://chipmunk-physics.net/">http://chipmunk-physics.net/</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="how-to-use">
+<h2>How to Use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h2>
+<p>pymunk ships with a number of demos in the examples directory, and its
+complete documentation including API Reference.</p>
+<p>If chipmunk doesnt ship with a chipmunk binary your platform can understand
+(currently Windows and Linux 32bit and 64 bit are included) you will have to
+compile chipmunk before install. See section CHIPMUNK in this readme for
+(very simple) instructions.</p>
+<p>To install you can either run:</p>
+<div class="highlight-python"><pre>&gt; python setup.py install</pre>
+</div>
+<p>or simply put the pymunk folder where your program/game can find it.
+(like /my_python_scripts/yourgame/pymunk). The chipmunk binary library
+is located in the pymunk folder.</p>
+<p>The easy way to get started is to check out the examples/ directory,
+and run &#8216;run.py python arrows.py&#8217; and so on, and see what each one does :)</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Quick code example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pymunk</span>               <span class="c"># Import pymunk..</span>
+
+<span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>      <span class="c"># Create a Space which contain the simulation</span>
+<span class="n">space</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1000</span>     <span class="c"># Set its gravity</span>
+
+<span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1666</span><span class="p">)</span>  <span class="c"># Create a Body with mass and moment</span>
+<span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span><span class="mi">100</span>      <span class="c"># Set the position of the body</span>
+
+<span class="n">poly</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Poly</span><span class="o">.</span><span class="n">create_box</span><span class="p">(</span><span class="n">body</span><span class="p">)</span> <span class="c"># Create a box shape and attach to body</span>
+<span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">poly</span><span class="p">)</span>       <span class="c"># Add both body and shape to the simulation</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>                 <span class="c"># Infinite loop simulation</span>
+    <span class="n">space</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>        <span class="c"># Step the simulation one step forward</span>
+</pre></div>
+</div>
+<p>For more detailed and advanced examples, take a look at the included demos
+(in examples/).</p>
+</div>
+<div class="section" id="dependencies-requirements">
+<h2>Dependencies / Requirements<a class="headerlink" href="#dependencies-requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>python (tested on cpython 2.6, 2.7 and 3.2. Also on pypy 1.9)</li>
+<li>chipmunk (pymunk ships with a set of chipmunk libraries)</li>
+</ul>
+<ul class="simple">
+<li>pygame (optional, you need it to run most of the demos)</li>
+<li>pyglet (optional, you need it to run the moon buggy demo)</li>
+<li>sphinx (optional, you need it to build documentation)</li>
+<li>ctypeslib &amp; GCC_XML (optional, you need them to generate new bindings)</li>
+</ul>
+</div>
+<div class="section" id="chipmunk">
+<h2>Chipmunk<a class="headerlink" href="#chipmunk" title="Permalink to this headline">¶</a></h2>
+<p>Compiled libraries of Chipmunk compatible Windows and Linux 32bit and 64bit
+are distributed with pymunk.
+If pymunk doesnt have your particular platform included, you can compile
+Chipmunk by hand with a custom setup argument:</p>
+<div class="highlight-python"><pre>&gt; python setup.py build_chipmunk</pre>
+</div>
+<p>The compiled file goes into the /pymunk folder (same as _chipmunk.py,
+util.py and others). If the compile fail, please check the readme in
+chipmunk_src for generic instructions on how to compile with gcc,
+or download the relevant release from Chipmunk homepage and follow its
+instructions.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pymunk_logo_sphinx.png" alt="Logo"/>
+            </a></p>
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Readme</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#about">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-use">How to Use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies-requirements">Dependencies / Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chipmunk">Chipmunk</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to pymunk&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Installation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/readme.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to pymunk’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">pymunk 3.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Victor Blomqvist.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

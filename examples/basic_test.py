@@ -1,3 +1,10 @@
+"""Very simple example that does not depend on any third party library such 
+as pygame or pyglet like the other examples. 
+"""
+
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
 import pymunk as pm
 import pymunk.util as u
 from pymunk import Vec2d

@@ -1,0 +1,592 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pymunk.vec2d &mdash; pymunk 3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
+    <link rel="top" title="pymunk 3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="pymunk" href="../pymunk.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for pymunk.vec2d</h1><pre>
+# ----------------------------------------------------------------------------
+# pymunk
+# Copyright (c) 2007-2011 Victor Blomqvist
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# ----------------------------------------------------------------------------
+
+__version__ = "$Id: vec2d.py 385 2012-06-24 00:10:44Z vb@viblo.se $"
+__docformat__ = "reStructuredText"
+
+import operator
+import math
+import ctypes 
+
+float_type = ctypes.c_double
+
+__all__ = ["Vec2d"]
+
+<div class="viewcode-block" id="Vec2d"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d">[docs]</a>class Vec2d(ctypes.Structure):
+    """2d vector class, supports vector and scalar operators,
+       and also provides some high level functions
+       """
+    __slots__ = ['x', 'y']
+     
+    @classmethod
+<div class="viewcode-block" id="Vec2d.from_param"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.from_param">[docs]</a>    def from_param(cls, arg):
+        """Used by ctypes to automatically create Vec2ds"""
+        return cls(arg)
+        </div>
+    def __init__(self, x_or_pair=None, y = None):
+        if x_or_pair != None:
+            if y == None:
+                self.x = x_or_pair[0]
+                self.y = x_or_pair[1]
+            else:
+                self.x = x_or_pair
+                self.y = y
+ 
+    def __len__(self):
+        return 2
+ 
+    def __getitem__(self, key):
+        if key == 0:
+            return self.x
+        elif key == 1:
+            return self.y
+        else:
+            raise IndexError("Invalid subscript "+str(key)+" to Vec2d")
+ 
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.x = value
+        elif key == 1:
+            self.y = value
+        else:
+            raise IndexError("Invalid subscript "+str(key)+" to Vec2d")
+ 
+    # String representaion (for debugging)
+    def __repr__(self):
+        return 'Vec2d(%s, %s)' % (self.x, self.y)
+    
+    # Comparison
+    def __eq__(self, other):
+        if hasattr(other, "__getitem__") and len(other) == 2:
+            return self.x == other[0] and self.y == other[1]
+        else:
+            return False
+    
+    def __ne__(self, other):
+        if hasattr(other, "__getitem__") and len(other) == 2:
+            return self.x != other[0] or self.y != other[1]
+        else:
+            return True
+ 
+    def __nonzero__(self):
+        return self.x != 0.0 or self.y != 0.0
+ 
+    # Generic operator handlers
+    def _o2(self, other, f):
+        "Any two-operator operation where the left operand is a Vec2d"
+        if isinstance(other, Vec2d):
+            return Vec2d(f(self.x, other.x),
+                         f(self.y, other.y))
+        elif (hasattr(other, "__getitem__")):
+            return Vec2d(f(self.x, other[0]),
+                         f(self.y, other[1]))
+        else:
+            return Vec2d(f(self.x, other),
+                         f(self.y, other))
+ 
+    def _r_o2(self, other, f):
+        "Any two-operator operation where the right operand is a Vec2d"
+        if (hasattr(other, "__getitem__")):
+            return Vec2d(f(other[0], self.x),
+                         f(other[1], self.y))
+        else:
+            return Vec2d(f(other, self.x),
+                         f(other, self.y))
+ 
+    def _io(self, other, f):
+        "inplace operator"
+        if (hasattr(other, "__getitem__")):
+            self.x = f(self.x, other[0])
+            self.y = f(self.y, other[1])
+        else:
+            self.x = f(self.x, other)
+            self.y = f(self.y, other)
+        return self
+ 
+    # Addition
+    def __add__(self, other):
+        if isinstance(other, Vec2d):
+            return Vec2d(self.x + other.x, self.y + other.y)
+        elif hasattr(other, "__getitem__"):
+            return Vec2d(self.x + other[0], self.y + other[1])
+        else:
+            return Vec2d(self.x + other, self.y + other)
+    __radd__ = __add__
+    
+    def __iadd__(self, other):
+        if isinstance(other, Vec2d):
+            self.x += other.x
+            self.y += other.y
+        elif hasattr(other, "__getitem__"):
+            self.x += other[0]
+            self.y += other[1]
+        else:
+            self.x += other
+            self.y += other
+        return self
+ 
+    # Subtraction
+    def __sub__(self, other):
+        if isinstance(other, Vec2d):
+            return Vec2d(self.x - other.x, self.y - other.y)
+        elif (hasattr(other, "__getitem__")):
+            return Vec2d(self.x - other[0], self.y - other[1])
+        else:
+            return Vec2d(self.x - other, self.y - other)
+    def __rsub__(self, other):
+        if isinstance(other, Vec2d):
+            return Vec2d(other.x - self.x, other.y - self.y)
+        if (hasattr(other, "__getitem__")):
+            return Vec2d(other[0] - self.x, other[1] - self.y)
+        else:
+            return Vec2d(other - self.x, other - self.y)
+    def __isub__(self, other):
+        if isinstance(other, Vec2d):
+            self.x -= other.x
+            self.y -= other.y
+        elif (hasattr(other, "__getitem__")):
+            self.x -= other[0]
+            self.y -= other[1]
+        else:
+            self.x -= other
+            self.y -= other
+        return self
+ 
+    # Multiplication
+    def __mul__(self, other):
+        if isinstance(other, Vec2d):
+            return Vec2d(self.x*other.x, self.y*other.y)
+        if (hasattr(other, "__getitem__")):
+            return Vec2d(self.x*other[0], self.y*other[1])
+        else:
+            return Vec2d(self.x*other, self.y*other)
+    __rmul__ = __mul__
+    
+    def __imul__(self, other):
+        if isinstance(other, Vec2d):
+            self.x *= other.x
+            self.y *= other.y
+        elif (hasattr(other, "__getitem__")):
+            self.x *= other[0]
+            self.y *= other[1]
+        else:
+            self.x *= other
+            self.y *= other
+        return self
+ 
+    # Division
+    def __div__(self, other):
+        return self._o2(other, operator.div)
+    def __rdiv__(self, other):
+        return self._r_o2(other, operator.div)
+    def __idiv__(self, other):
+        return self._io(other, operator.div)
+ 
+    def __floordiv__(self, other):
+        return self._o2(other, operator.floordiv)
+    def __rfloordiv__(self, other):
+        return self._r_o2(other, operator.floordiv)
+    def __ifloordiv__(self, other):
+        return self._io(other, operator.floordiv)
+ 
+    def __truediv__(self, other):
+        return self._o2(other, operator.truediv)
+    def __rtruediv__(self, other):
+        return self._r_o2(other, operator.truediv)
+    def __itruediv__(self, other):
+        return self._io(other, operator.truediv)
+ 
+    # Modulo
+    def __mod__(self, other):
+        return self._o2(other, operator.mod)
+    def __rmod__(self, other):
+        return self._r_o2(other, operator.mod)
+ 
+    def __divmod__(self, other):
+        return self._o2(other, divmod)
+    def __rdivmod__(self, other):
+        return self._r_o2(other, divmod)
+ 
+    # Exponentation
+    def __pow__(self, other):
+        return self._o2(other, operator.pow)
+    def __rpow__(self, other):
+        return self._r_o2(other, operator.pow)
+ 
+    # Bitwise operators
+    def __lshift__(self, other):
+        return self._o2(other, operator.lshift)
+    def __rlshift__(self, other):
+        return self._r_o2(other, operator.lshift)
+ 
+    def __rshift__(self, other):
+        return self._o2(other, operator.rshift)
+    def __rrshift__(self, other):
+        return self._r_o2(other, operator.rshift)
+ 
+    def __and__(self, other):
+        return self._o2(other, operator.and_)
+    __rand__ = __and__
+ 
+    def __or__(self, other):
+        return self._o2(other, operator.or_)
+    __ror__ = __or__
+ 
+    def __xor__(self, other):
+        return self._o2(other, operator.xor)
+    __rxor__ = __xor__
+ 
+    # Unary operations
+    def __neg__(self):
+        return Vec2d(operator.neg(self.x), operator.neg(self.y))
+ 
+    def __pos__(self):
+        return Vec2d(operator.pos(self.x), operator.pos(self.y))
+ 
+    def __abs__(self):
+        return Vec2d(abs(self.x), abs(self.y))
+ 
+    def __invert__(self):
+        return Vec2d(-self.x, -self.y)
+ 
+    # vectory functions
+<div class="viewcode-block" id="Vec2d.get_length_sqrd"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_length_sqrd">[docs]</a>    def get_length_sqrd(self): 
+        """Get the squared length of the vector.
+        It is more efficent to use this method instead of first call 
+        get_length() or access .length and then do a sqrt().
+        
+        :return: The squared length
+        """
+        return self.x**2 + self.y**2
+ </div>
+<div class="viewcode-block" id="Vec2d.get_length"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_length">[docs]</a>    def get_length(self):
+        """Get the length of the vector.
+        
+        :return: The length
+        """
+        return math.sqrt(self.x**2 + self.y**2)    </div>
+    def __setlength(self, value):
+        length = self.get_length()
+        self.x *= value/length
+        self.y *= value/length
+    length = property(get_length, __setlength, 
+        doc = """Gets or sets the magnitude of the vector""")
+       
+<div class="viewcode-block" id="Vec2d.rotate"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.rotate">[docs]</a>    def rotate(self, angle_radians):
+        """Rotate the vector by angle_radians radians."""
+        cos = math.cos(angle_radians)
+        sin = math.sin(angle_radians)
+        x = self.x*cos - self.y*sin
+        y = self.x*sin + self.y*cos
+        self.x = x
+        self.y = y
+ </div>
+<div class="viewcode-block" id="Vec2d.rotated"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.rotated">[docs]</a>    def rotated(self, angle_radians):
+        """Create and return a new vector by rotating this vector by 
+        angle_radians radians.
+        
+        :return: Rotated vector
+        """
+        cos = math.cos(angle_radians)
+        sin = math.sin(angle_radians)
+        x = self.x*cos - self.y*sin
+        y = self.x*sin + self.y*cos
+        return Vec2d(x, y)
+    </div>
+<div class="viewcode-block" id="Vec2d.rotate_degrees"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.rotate_degrees">[docs]</a>    def rotate_degrees(self, angle_degrees):
+        """Rotate the vector by angle_degrees degrees."""
+        self.rotate(math.radians(angle_degrees))
+    </div>
+<div class="viewcode-block" id="Vec2d.rotated_degrees"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.rotated_degrees">[docs]</a>    def rotated_degrees(self, angle_degrees):
+        """Create and return a new vector by rotating this vector by 
+        angle_degrees degrees.
+        
+        :return: Rotade vector
+        """
+        return self.rotated(math.radians(angle_degrees))
+    </div>
+<div class="viewcode-block" id="Vec2d.get_angle"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_angle">[docs]</a>    def get_angle(self):
+        if (self.get_length_sqrd() == 0):
+            return 0
+        return math.atan2(self.y, self.x)</div>
+    def __setangle(self, angle):
+        self.x = self.length
+        self.y = 0
+        self.rotate(angle)
+    angle = property(get_angle, __setangle, 
+        doc="""Gets or sets the angle (in radians) of a vector""")
+ 
+<div class="viewcode-block" id="Vec2d.get_angle_degrees"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_angle_degrees">[docs]</a>    def get_angle_degrees(self):
+        return math.degrees(self.get_angle())</div>
+    def __set_angle_degrees(self, angle_degrees):
+        self.__setangle(math.radians(angle_degrees))
+    angle_degrees = property(get_angle_degrees, __set_angle_degrees, 
+        doc="""Gets or sets the angle (in degrees) of a vector""")
+    
+<div class="viewcode-block" id="Vec2d.get_angle_between"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_angle_between">[docs]</a>    def get_angle_between(self, other):
+        """Get the angle between the vector and the other in radians
+        
+        :return: The angle
+        """
+        cross = self.x*other[1] - self.y*other[0]
+        dot = self.x*other[0] + self.y*other[1]
+        return math.atan2(cross, dot)
+        </div>
+<div class="viewcode-block" id="Vec2d.get_angle_degrees_between"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_angle_degrees_between">[docs]</a>    def get_angle_degrees_between(self, other):
+        """Get the angle between the vector and the other in degrees
+        
+        :return: The angle (in degrees)
+        """
+        return math.degrees(self.get_angle_between(other))
+        </div>
+<div class="viewcode-block" id="Vec2d.normalized"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.normalized">[docs]</a>    def normalized(self):
+        """Get a normalized copy of the vector
+        Note: This function will return 0 if the length of the vector is 0.
+        
+        :return: A normalized vector
+        """
+        length = self.length
+        if length != 0:
+            return self/length
+        return Vec2d(self)
+ </div>
+<div class="viewcode-block" id="Vec2d.normalize_return_length"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.normalize_return_length">[docs]</a>    def normalize_return_length(self):
+        """Normalize the vector and return its length before the normalization
+        
+        :return: The length before the normalization
+        """
+        length = self.length
+        if length != 0:
+            self.x /= length
+            self.y /= length
+        return length
+ </div>
+<div class="viewcode-block" id="Vec2d.perpendicular"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.perpendicular">[docs]</a>    def perpendicular(self):
+        return Vec2d(-self.y, self.x)
+    </div>
+<div class="viewcode-block" id="Vec2d.perpendicular_normal"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.perpendicular_normal">[docs]</a>    def perpendicular_normal(self):
+        length = self.length
+        if length != 0:
+            return Vec2d(-self.y/length, self.x/length)
+        return Vec2d(self)
+        </div>
+<div class="viewcode-block" id="Vec2d.dot"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.dot">[docs]</a>    def dot(self, other):
+        """The dot product between the vector and other vector
+            v1.dot(v2) -&gt; v1.x*v2.x + v1.y*v2.y
+            
+        :return: The dot product
+        """
+        return float(self.x*other[0] + self.y*other[1])
+        </div>
+<div class="viewcode-block" id="Vec2d.get_distance"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_distance">[docs]</a>    def get_distance(self, other):
+        """The distance between the vector and other vector
+        
+        :return: The distance
+        """
+        return math.sqrt((self.x - other[0])**2 + (self.y - other[1])**2)
+        </div>
+<div class="viewcode-block" id="Vec2d.get_dist_sqrd"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_dist_sqrd">[docs]</a>    def get_dist_sqrd(self, other):
+        """The squared distance between the vector and other vector
+        It is more efficent to use this method than to call get_distance()
+        first and then do a sqrt() on the result.
+        
+        :return: The squared distance
+        """
+        return (self.x - other[0])**2 + (self.y - other[1])**2
+        </div>
+<div class="viewcode-block" id="Vec2d.projection"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.projection">[docs]</a>    def projection(self, other):
+        other_length_sqrd = other[0]*other[0] + other[1]*other[1]
+        projected_length_times_other_length = self.dot(other)
+        return other*(projected_length_times_other_length/other_length_sqrd)
+    </div>
+<div class="viewcode-block" id="Vec2d.cross"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.cross">[docs]</a>    def cross(self, other):
+        """The cross product between the vector and other vector
+            v1.cross(v2) -&gt; v1.x*v2.y - v2.y*v1.x
+        
+        :return: The cross product
+        """
+        return self.x*other[1] - self.y*other[0]
+    </div>
+<div class="viewcode-block" id="Vec2d.interpolate_to"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.interpolate_to">[docs]</a>    def interpolate_to(self, other, range):
+        return Vec2d(self.x + (other[0] - self.x)*range, self.y + (other[1] - self.y)*range)
+    </div>
+<div class="viewcode-block" id="Vec2d.convert_to_basis"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.convert_to_basis">[docs]</a>    def convert_to_basis(self, x_vector, y_vector):
+        x = self.dot(x_vector)/x_vector.get_length_sqrd()
+        y = self.dot(y_vector)/y_vector.get_length_sqrd()
+        return Vec2d(x, y)
+    </div>
+    def __get_int_xy(self):
+        return int(self.x), int(self.y)
+    int_tuple = property(__get_int_xy, 
+        doc="""Return the x and y values of this vector as ints""")
+    
+    @staticmethod
+<div class="viewcode-block" id="Vec2d.zero"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.zero">[docs]</a>    def zero():
+        """A vector of zero length"""
+        return Vec2d(0, 0)
+        </div>
+    @staticmethod
+<div class="viewcode-block" id="Vec2d.unit"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.unit">[docs]</a>    def unit():
+        """A unit vector pointing up"""
+        return Vec2d(0, 1)
+        </div>
+    @staticmethod
+<div class="viewcode-block" id="Vec2d.ones"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.ones">[docs]</a>    def ones():
+        """A vector where both x and y is 1"""
+        return Vec2d(1, 1)
+ 
+    # Extra functions, mainly for chipmunk</div>
+<div class="viewcode-block" id="Vec2d.cpvrotate"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.cpvrotate">[docs]</a>    def cpvrotate(self, other):
+        """Uses complex multiplication to rotate this vector by the other. """
+        return Vec2d(self.x*other.x - self.y*other.y, self.x*other.y + self.y*other.x)</div>
+<div class="viewcode-block" id="Vec2d.cpvunrotate"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.cpvunrotate">[docs]</a>    def cpvunrotate(self, other):
+        """The inverse of cpvrotate"""
+        return Vec2d(self.x*other.x + self.y*other.y, self.y*other.x - self.x*other.y)
+    
+    # Pickle, does not work atm.</div>
+    def __getstate__(self):
+        return [self.x, self.y]
+        
+    def __setstate__(self, dict):
+        self.x, self.y = dict
+    def __newobj__(cls, *args):
+        return cls.__new__(cls, *args)   
+
+       </div>
+Vec2d._fields_ = [
+            ('x', float_type),
+            ('y', float_type),
+        ]
+
+del float_type
+
+</pre>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/pymunk_logo_sphinx.png" alt="Logo"/>
+            </a></p>
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced</a></li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Victor Blomqvist.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

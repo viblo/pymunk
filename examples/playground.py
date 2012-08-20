@@ -1,6 +1,14 @@
+"""A basic playground. Most interesting function is draw a shape, basically 
+move the mouse as you want and pymunk will approximate a Poly shape from the 
+drawing.
+"""
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
 import pygame
 from pygame.locals import *
 from pygame.color import *
+
 import pymunk as pm
 from pymunk import Vec2d
 import pymunk.util as u
@@ -192,6 +200,9 @@ class PhysicsDemo:
                 self.running = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 self.running = False
+            elif event.type == KEYDOWN and event.key == K_p:
+                pygame.image.save(self.screen, "playground.png")
+                
             elif event.type == MOUSEBUTTONDOWN and event.button == 1: # LMB
                 if pygame.key.get_mods() & KMOD_SHIFT:
                     p = self.flipyv(Vec2d(event.pos))

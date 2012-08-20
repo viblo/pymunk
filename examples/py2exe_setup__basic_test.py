@@ -1,3 +1,9 @@
+"""Simple example of py2exe to create a exe of the basic_test example.
+"""
+
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
 import os
 from distutils.core import setup
 import py2exe

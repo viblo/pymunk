@@ -1,9 +1,17 @@
+"""This example lets you dynamically create static walls and dynamic balls
+"""
+
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
 import pygame
 from pygame.locals import *
 from pygame.color import *
+
 import pymunk as pm
 from pymunk import Vec2d
-import math
+
+
 X,Y = 0,1
 ### Physics collision types
 COLLTYPE_DEFAULT = 0
@@ -54,6 +62,8 @@ def main():
                 running = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 running = False
+            elif event.type == KEYDOWN and event.key == K_p:
+                pygame.image.save(screen, "balls_and_lines.png")
             elif event.type == MOUSEBUTTONDOWN and event.button == 1:
                 p = event.pos[X], flipy(event.pos[Y])
                 body = pm.Body(10, 100)

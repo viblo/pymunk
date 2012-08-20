@@ -1,3 +1,11 @@
+"""This example spawns (bouncing) balls randomly on a L-shape constructed of 
+two segment shapes. For each collision it draws a red circle with size 
+depending on collision strength. Not interactive.
+"""
+
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
 import math, sys, random
 
 import pygame
@@ -47,6 +55,8 @@ def main():
                 running = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 running = False
+            elif event.type == KEYDOWN and event.key == K_p:
+                pygame.image.save(screen, "contact_and_no_flipy.png")
                 
         ticks_to_next_ball -= 1
         if ticks_to_next_ball <= 0:

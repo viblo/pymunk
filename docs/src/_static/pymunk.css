@@ -1,0 +1,16 @@
+
+@import url("default.css");
+
+div.section {
+    margin-bottom: 33px;
+}
+
+div.body h1, 
+div.body h2, 
+div.body h3, 
+div.body h4, 
+div.body h5, 
+div.body h6
+{
+    margin-bottom: 20px;
+}

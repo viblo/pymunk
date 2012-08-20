@@ -1,16 +1,20 @@
+"""This example showcase point queries by highlighting the shape under the 
+mouse pointer.
+"""
+
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
+
+import random
+
 import pygame
 from pygame.locals import *
 from pygame.color import *
+
 import pymunk as pm
 from pymunk import Vec2d
-import math, sys, random
+import pymunk.pygame_util
 
-def to_pygame(p):
-    """Small hack to convert pymunk to pygame coordinates"""
-    return int(p.x), int(-p.y+600)
-def flipy(y):
-    """Small hack to convert chipmunk physics to pygame coordinates"""
-    return -y+600
 
 def main():
     pygame.init()
@@ -26,9 +30,8 @@ def main():
     balls = []
        
     ### walls
-    static_body = pm.Body(1e100, 1e100)
-    static_lines = [pm.Segment(static_body, Vec2d(111.0, 280.0), Vec2d(407.0, 246.0), 1.0)
-                    ,pm.Segment(static_body, Vec2d(407.0, 246.0), Vec2d(407.0, 343.0), 1.0)
+    static_lines = [pm.Segment(space.static_body, Vec2d(111.0, 280.0), Vec2d(407.0, 246.0), 1.0)
+                    ,pm.Segment(space.static_body, Vec2d(407.0, 246.0), Vec2d(407.0, 343.0), 1.0)
                     ]    
     space.add(static_lines)
     
@@ -41,6 +44,8 @@ def main():
                 running = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 running = False
+            elif event.type == KEYDOWN and event.key == K_p:
+                pygame.image.save(screen, "point_query.png")
                 
         ticks_to_next_ball -= 1
         if ticks_to_next_ball <= 0:
@@ -52,6 +57,7 @@ def main():
             x = random.randint(115,350)
             body.position = x, 400
             shape = pm.Circle(body, radius, Vec2d(0,0))
+            shape.color = THECOLORS["lightgrey"]
             space.add(body, shape)
             balls.append(shape)
         
@@ -59,27 +65,17 @@ def main():
         screen.fill(THECOLORS["white"])
         
         ### Draw stuff
+        pymunk.pygame_util.draw_space(screen, space)
+        
         balls_to_remove = []
         for ball in balls:
             if ball.body.position.y < 200: balls_to_remove.append(ball)
 
-            p = to_pygame(ball.body.position)
-            pygame.draw.circle(screen, THECOLORS["blue"], p, int(ball.radius), 2)
-    
         for ball in balls_to_remove:
             space.remove(ball, ball.body)
             balls.remove(ball)
 
-        for line in static_lines:
-            body = line.body
-            pv1 = body.position + line.a.rotated(body.angle)
-            pv2 = body.position + line.b.rotated(body.angle)
-            p1 = to_pygame(pv1)
-            p2 = to_pygame(pv2)
-            pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])
-
-        p = pygame.mouse.get_pos()
-        mouse_pos = Vec2d(p[0],flipy(p[1]))
+        mouse_pos = pymunk.pygame_util.get_mouse_pos(screen)
 
         shape = space.point_query_first(mouse_pos)
         if shape is not None:
@@ -87,7 +83,7 @@ def main():
                 r = shape.radius + 4
             else:
                 r = 10
-            p = to_pygame(shape.body.position)
+            p = pymunk.pygame_util.to_pygame(shape.body.position, screen)
             pygame.draw.circle(screen, THECOLORS["red"], p, int(r), 2)
         
         ### Update physics

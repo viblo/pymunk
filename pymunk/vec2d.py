@@ -305,7 +305,7 @@ class Vec2d(ctypes.Structure):
         """Create and return a new vector by rotating this vector by 
         angle_radians radians.
         
-        :return: Rotade vector
+        :return: Rotated vector
         """
         cos = math.cos(angle_radians)
         sin = math.sin(angle_radians)
