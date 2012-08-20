@@ -2,4 +2,4 @@
 Readme
 ======
 
-.. include:: ../../readme.txt
+.. include:: ../../README.txt
