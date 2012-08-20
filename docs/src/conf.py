@@ -32,7 +32,9 @@ class Mock(object):
             return Mock()
 
            
-MOCK_MODULES = ['pymunk._chipmunk', '_chipmunk','pymunk._chipmunk_ffi', '_chipmunk_ffi']
+MOCK_MODULES = ['pymunk._chipmunk', '_chipmunk','pymunk._chipmunk_ffi', 
+                '_chipmunk_ffi','pygame', 'pygame.locals', 'pygame.color'
+                ]
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
 

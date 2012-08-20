@@ -35,8 +35,6 @@ __all__ = ["draw_space", "draw_shape", "draw_circle", "draw_poly"
          , "draw_segment", "draw_constraint", "to_pygame", "from_pygame"]
 
 import pygame
-from pygame.locals import *
-from pygame.color import *
 
 import pymunk
 from pymunk.vec2d import Vec2d
@@ -112,16 +110,16 @@ def draw_circle(surface, circle):
     if hasattr(circle, "color"):
         color = circle.color  
     elif circle.body.is_static:
-        color = THECOLORS["lightgrey"]
+        color = pygame.color.THECOLORS["lightgrey"]
         r = 1
     else:
-        color = THECOLORS["red"]
+        color = pygame.color.THECOLORS["red"]
     pygame.draw.circle(surface, color, p, int(circle.radius), r)
     
     circle_edge = circle_center + Vec2d(circle.radius, 0).rotated(circle.body.angle)
     p2 = to_pygame(circle_edge, surface)
     line_r = 3 if circle.radius > 20 else 1
-    pygame.draw.lines(surface, THECOLORS["blue"], False, [p,p2], line_r)
+    pygame.draw.lines(surface, pygame.color.THECOLORS["blue"], False, [p,p2], line_r)
 
 def draw_poly(surface, poly):
     """Draw a pymunk.Poly object
@@ -140,9 +138,9 @@ def draw_poly(surface, poly):
     if hasattr(poly, "color"):
         color = poly.color  
     elif poly.body.is_static:
-        color = THECOLORS["lightgrey"]
+        color = pygame.color.THECOLORS["lightgrey"]
     else:
-        color = THECOLORS["green"]
+        color = pygame.color.THECOLORS["green"]
     pygame.draw.lines(surface, color, False, ps, 1)
 
 def draw_segment(surface, segment):
@@ -166,9 +164,9 @@ def draw_segment(surface, segment):
     if hasattr(segment, "color"):
         color = segment.color  
     elif segment.body.is_static:
-        color = THECOLORS["lightgrey"]
+        color = pygame.color.THECOLORS["lightgrey"]
     else:
-        color = THECOLORS["blue"]
+        color = pygame.color.THECOLORS["blue"]
     pygame.draw.lines(surface, color, False, [p1,p2], max(int(segment.radius),1))
     
 def draw_constraint(surface, constraint):
@@ -187,32 +185,32 @@ def draw_constraint(surface, constraint):
         pv2 = constraint.a.position + constraint.groove_b
         p1 = to_pygame(pv1, surface)
         p2 = to_pygame(pv2, surface)
-        pygame.draw.aalines(surface, THECOLORS["darkgray"], False, [p1,p2])
+        pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])
     elif isinstance(constraint, pymunk.PinJoint):
         pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
         pv2 = constraint.b.position + constraint.anchr2.rotated(constraint.b.angle)
         p1 = to_pygame(pv1, surface)
         p2 = to_pygame(pv2, surface)
-        pygame.draw.aalines(surface, THECOLORS["darkgray"], False, [p1,p2])    
+        pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])    
     elif isinstance(constraint, pymunk.GearJoint):
         pv1 = constraint.a.position
         pv2 = constraint.a.position
         p1 = to_pygame(pv1, surface)
         p2 = to_pygame(pv2, surface)
-        pygame.draw.circle(surface, THECOLORS["darkgray"], p1, 3)
-        pygame.draw.circle(surface, THECOLORS["darkgray"], p2, 3)
+        pygame.draw.circle(surface, pygame.color.THECOLORS["darkgray"], p1, 3)
+        pygame.draw.circle(surface, pygame.color.THECOLORS["darkgray"], p2, 3)
     elif hasattr(constraint, "anchr1"):
         pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
         pv2 = constraint.b.position + constraint.anchr2.rotated(constraint.b.angle)
         p1 = to_pygame(pv1, surface)
         p2 = to_pygame(pv2, surface)
-        pygame.draw.aalines(surface, THECOLORS["darkgray"], False, [p1,p2])
+        pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])
     else:
         pv1 = constraint.a.position
         pv2 = constraint.b.position
         p1 = to_pygame(pv1, surface)
         p2 = to_pygame(pv2, surface)
-        pygame.draw.aalines(surface, THECOLORS["darkgray"], False, [p1,p2])    
+        pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])    
 
 def get_mouse_pos(surface):
     """Get position of the mouse pointer in pymunk coordinates."""
