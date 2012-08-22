@@ -8,7 +8,7 @@ from docutils.nodes import fully_normalize_name
 def setup(app):
     app.add_directive('autoexample', AutoExampleDirective)
 
-def parse_example(basepath, filename, img_folder):
+def parse_example(basepath, filename, img_folder, img_folder_os):
     path = os.path.join(basepath, filename)
     with open(path) as f:
         content = f.read().strip()
@@ -33,9 +33,11 @@ def parse_example(basepath, filename, img_folder):
     img_name,_ = os.path.splitext(filename)
     img_name += ".png"
     if img_folder != None:
+        #print os.path.abspath(img_folder)
+        #print os.path.abspath(img_folder_os)
         img_path = os.path.join(img_folder, img_name)
-        #img_path = os.path.abspath(img_path)
-        if os.path.isfile(img_path) or True:
+        img_path_os = os.path.join(img_folder_os, img_name)
+        if os.path.isfile(img_path_os):
             s.append("")
             s.append(".. image:: " + img_path)
             s.append("")
@@ -43,7 +45,7 @@ def parse_example(basepath, filename, img_folder):
     s.append("")
     return s
     
-def parse_examples(path, img_folder):
+def parse_examples(path, img_folder, img_folder_os):
     lines = []
     print("autoexample: documenting files in " + path)
     #print os.getcwd()
@@ -56,7 +58,7 @@ def parse_examples(path, img_folder):
             if ext != ".py":
                 continue
             print("autoexample: documenting " + file)
-            lines += parse_example(root, file, img_folder)
+            lines += parse_example(root, file, img_folder, img_folder_os)
 
     return "\n".join(lines)
     
@@ -75,14 +77,14 @@ class AutoExampleDirective(Directive):
         path = utils.relative_path(None, path)
         path = nodes.reprunicode(path)
         img_folder = None
+        img_folder_os = None
         if "image_folder" in self.options:
-            #img_folder = os.path.normpath(os.path.join(source_dir, self.options["image_folder"]))
+            # This is extremly messy.. 
+            # To be able to test if file exist in path we need to use img_path_os
+            # But that cannot be used for the .. image:: tag, instead we need to use the raw option!
+            img_folder_os = os.path.normpath(os.path.join(source_dir, self.options["image_folder"]))
             img_folder = self.options["image_folder"]
-            
-            #print path.join(self.srcdir, imgpath)
-            
-            #print "IMG FOLDER:",img_folder
-        rawtext = parse_examples(path, img_folder)
+        rawtext = parse_examples(path, img_folder, img_folder_os)
 
         include_lines = statemachine.string2lines(rawtext, self.state.document.settings.tab_width,
                                                   convert_whitespace=True)
