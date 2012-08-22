@@ -29,15 +29,6 @@ what happens even if it means that some code is repeated for each example.
 
 .. contents:: Example files
     :local:
-    
-
-.. image:: _static/pymunk_logo_sphinx.png
-.. image:: /_static/pymunk_logo_sphinx.png
-.. image:: _static/examples/breakout.png
-.. image:: /_static/examples/breakout.png
-
-..
-    .. image:: breakout.png
-    
+        
 .. autoexample:: ../../examples
     :image_folder: _static/examples
