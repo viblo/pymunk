@@ -31,7 +31,6 @@ what happens even if it means that some code is repeated for each example.
     :local:
     
 
-.. image:: c:/code/pymunk/trunk/docs/src/_static/pymunk_logo_sphinx.png
 .. image:: _static/pymunk_logo_sphinx.png
 .. image:: /_static/pymunk_logo_sphinx.png
 .. image:: _static/examples/breakout.png

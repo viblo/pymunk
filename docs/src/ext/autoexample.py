@@ -34,8 +34,8 @@ def parse_example(basepath, filename, img_folder):
     img_name += ".png"
     if img_folder != None:
         img_path = os.path.join(img_folder, img_name)
-        img_path = os.path.abspath(img_path)
-        if os.path.isfile(img_path):
+        #img_path = os.path.abspath(img_path)
+        if os.path.isfile(img_path) or True:
             s.append("")
             s.append(".. image:: " + img_path)
             s.append("")
@@ -76,8 +76,8 @@ class AutoExampleDirective(Directive):
         path = nodes.reprunicode(path)
         img_folder = None
         if "image_folder" in self.options:
-            img_folder = os.path.normpath(os.path.join(source_dir, self.options["image_folder"]))
-            #img_folder = self.options["image_folder"]
+            #img_folder = os.path.normpath(os.path.join(source_dir, self.options["image_folder"]))
+            img_folder = self.options["image_folder"]
             
             #print path.join(self.srcdir, imgpath)
             
