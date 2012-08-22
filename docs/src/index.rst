@@ -19,7 +19,7 @@ good idea to take a look at the included :doc:`examples`, read the
 The pymunk Vision
 =================
 
-    "*Make 2d physics easy to include in your game :)*"
+    "*Make 2d physics easy to include in your game*"
 
 It is (or is striving to be):
 
@@ -50,8 +50,8 @@ Contact & Support
     pass through a wall. If you have a pymunk specific question you can mark 
     your post with [pymunk] to make it stand out a bit.
 
-**Mail**
-    You can email me directly: vb@viblo.se
+**E-Mail**
+    You can email me directly at vb@viblo.se
 
 **Issue Tracker**
     Please use the issue tracker at google code to report any issues you find:
@@ -60,6 +60,8 @@ Contact & Support
 Regardless of the method you use I will try to answer your questions as soon 
 as I see them. (And if you ask on on SO or the forum other people might help 
 as well!)
+    
+
     
     
 Contents

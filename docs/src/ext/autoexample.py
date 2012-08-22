@@ -31,11 +31,13 @@ def parse_example(basepath, filename, img_folder):
     
     # Screenshot
     img_name,_ = os.path.splitext(filename)
+    img_name += ".png"
     if img_folder != None:
-        img_folder = os.path.join(img_folder, img_name + ".png")
-        if os.path.isfile(img_folder):
+        img_path = os.path.join(img_folder, img_name)
+        img_path = os.path.abspath(img_path)
+        if os.path.isfile(img_path):
             s.append("")
-            s.append(".. image:: " + img_folder)
+            s.append(".. image:: " + img_path)
             s.append("")
             
     s.append("")
@@ -75,7 +77,11 @@ class AutoExampleDirective(Directive):
         img_folder = None
         if "image_folder" in self.options:
             img_folder = os.path.normpath(os.path.join(source_dir, self.options["image_folder"]))
-        
+            #img_folder = self.options["image_folder"]
+            
+            #print path.join(self.srcdir, imgpath)
+            
+            #print "IMG FOLDER:",img_folder
         rawtext = parse_examples(path, img_folder)
 
         include_lines = statemachine.string2lines(rawtext, self.state.document.settings.tab_width,
