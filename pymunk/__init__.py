@@ -239,6 +239,19 @@ class Space(object):
         Defaults to 3. There is probably never a reason to change this value.
         """)
         
+    def _set_enable_contact_graph(self, enable_contact_graph):
+        self._space.contents.enableContactGraph = enable_contact_graph
+    def _get_enable_contact_graph(self):
+        return self._space.contents.enableContactGraph 
+    enable_contact_graph = property(_get_enable_contact_graph
+        , _set_enable_contact_graph
+        , doc="""Rebuild the contact graph during each step. 
+        
+        Must be enabled to use the each_arbiter() function on Body
+        Disabled by default for a small performance boost. Enabled implicitly 
+        when the sleeping feature is enabled.
+        """)
+        
     def add(self, *objs):
         """Add one or many shapes, bodies or joints to the space"""
         for o in objs:

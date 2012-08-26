@@ -45,8 +45,10 @@ class UnitTestSpace(unittest.TestCase):
         s.collision_persistence = 9
         self.assertEqual(s.collision_persistence, 9)
         
+        self.assertEqual(s.enable_contact_graph, False)
         s.enable_contact_graph = True
         self.assertEqual(s.enable_contact_graph, True)
+        
     
     def testAddRemove(self):
         
