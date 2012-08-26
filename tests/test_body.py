@@ -123,6 +123,24 @@ class UnitTestBody(unittest.TestCase):
         s.step(1)
         self.assertEqual(b.angular_velocity_limit, 1)
         self.assertEqual(abs(b.angular_velocity), 1)
+        
+    def testArbiters(self):
+        s = p.Space()
+        b1 = p.Body(1,1)
+        arbs = b1.get_arbiters()
+        self.assertEqual(arbs, [])
+    
+        b2 = p.Body(1,1)
+        c1 = p.Circle(b1,10)
+        c2 = p.Circle(b2,10)
+        s.add(b1,b2,c1,c2)
+        
+        s.step(1)
+        arbs = b1.get_arbiters()
+        self.assertEqual(arbs[0].shapes[0], c1)
+        self.assertEqual(arbs[0].shapes[1], c2)
+    
+    
 ####################################################################
 if __name__ == "__main__":
     print ("testing pymunk version " + p.version)

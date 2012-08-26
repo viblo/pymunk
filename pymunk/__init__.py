@@ -38,6 +38,7 @@ __all__ = ["inf", "version", "chipmunk_version"
         , "SegmentQueryInfo", "Contact", "Arbiter", "BB"]
 
 import ctypes as ct
+import weakref
 
 import _chipmunk as cp
 import _chipmunk_ffi as cpffi
@@ -247,7 +248,7 @@ class Space(object):
         , _set_enable_contact_graph
         , doc="""Rebuild the contact graph during each step. 
         
-        Must be enabled to use the each_arbiter() function on Body
+        Must be enabled to use the get_arbiter() function on Body
         Disabled by default for a small performance boost. Enabled implicitly 
         when the sleeping feature is enabled.
         """)
@@ -318,6 +319,7 @@ class Space(object):
     def _add_body(self, body):
         """Adds a body to the space"""
         assert body not in self._bodies, "body already added to space"
+        body._space = weakref.proxy(self)
         self._bodies.add(body)
         cp.cpSpaceAddBody(self._space, body._body)
     def _add_constraint(self, constraint):
@@ -336,6 +338,7 @@ class Space(object):
         # cp.cpSpaceRemoveStaticShape(self._space, static_shape._shape)
     def _remove_body(self, body):
         """Removes a body from the space"""
+        body._space = None
         self._bodies.remove(body)
         cp.cpSpaceRemoveBody(self._space, body._body)
     def _remove_constraint(self, constraint):
@@ -749,6 +752,8 @@ class Body(object):
         self._position_callback = None # To prevent the gc to collect the callbacks.
         self._velocity_callback = None # To prevent the gc to collect the callbacks.
         
+        self._space = None # Weak ref to the space holding this body (if any)
+        
     def __del__(self):
         if cp is not None:
             cp.cpBodyFree(self._body)
@@ -965,6 +970,18 @@ class Body(object):
     is_static = property(_is_static,
         doc="""Returns true if the body is a static body""")
     
+    def get_arbiters(self):
+        """Return a list of all the arbiters that are currently active on 
+        the body.
+        """
+        arbs = []
+        def impl(body, _arbiter, _):
+            arbs.append(Arbiter(_arbiter, self._space))
+            return 0
+        f = cp.cpBodyArbiterIteratorFunc(impl)
+        cp.cpBodyEachArbiter(self._body, f, None)
+        return arbs
+        
     
     def local_to_world(self, v):
         """Convert body local coordinates to world space coordinates
