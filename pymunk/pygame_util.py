@@ -70,10 +70,12 @@ def draw_space(surface, space):
     (width, height) = surface.get_size()
     
     for s in space.shapes:
-        draw_shape(surface, s)
+        if not (hasattr(s, "ignore_draw") and s.ignore_draw):
+            draw_shape(surface, s)
             
     for c in space.constraints:
-        draw_constraint(surface, c)
+        if not (hasattr(c, "ignore_draw") and c.ignore_draw):
+            draw_constraint(surface, c)
 
 def draw_shape(surface, shape):
     """Draw a pymunk.Shape object
