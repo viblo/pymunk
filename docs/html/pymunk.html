@@ -105,7 +105,7 @@ distribution (i.e. not in a checked-out copy from svn).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02C3FE10&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02C19F10&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -296,6 +296,15 @@ overlap.</p>
 retain each second.</p>
 <p>A value of 0.9 would mean that each body&#8217;s velocity will drop 10% per 
 second. The default value is 1.0, meaning no damping is applied.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Space.enable_contact_graph">
+<tt class="descname">enable_contact_graph</tt><a class="headerlink" href="#pymunk.Space.enable_contact_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild the contact graph during each step.</p>
+<p>Must be enabled to use the get_arbiter() function on Body
+Disabled by default for a small performance boost. Enabled implicitly 
+when the sleeping feature is enabled.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -713,6 +722,13 @@ from the center of gravity. Both r and j are in world coordinates.</p>
 <dt id="pymunk.Body.force">
 <tt class="descname">force</tt><a class="headerlink" href="#pymunk.Body.force" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.Body.get_arbiters">
+<tt class="descname">get_arbiters</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk.html#Body.get_arbiters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.get_arbiters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all the arbiters that are currently active on 
+the body.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.Body.is_rogue">

@@ -123,10 +123,12 @@ from pymunk.vec2d import Vec2d
     (width, height) = surface.get_size()
     
     for s in space.shapes:
-        draw_shape(surface, s)
+        if not (hasattr(s, "ignore_draw") and s.ignore_draw):
+            draw_shape(surface, s)
             
     for c in space.constraints:
-        draw_constraint(surface, c)
+        if not (hasattr(c, "ignore_draw") and c.ignore_draw):
+            draw_constraint(surface, c)
 </div>
 <div class="viewcode-block" id="draw_shape"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.draw_shape">[docs]</a>def draw_shape(surface, shape):
     """Draw a pymunk.Shape object

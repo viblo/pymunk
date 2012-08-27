@@ -2,6 +2,9 @@
 
 The red girl sprite is taken from Sithjester's RMXP Resources:
 http://untamed.wild-refuge.net/rmxpresources.php?characters
+
+.. warning:: This example is not cleaned up. The code in here does not 
+   represent the best way to structure a platformer.
 """
 
 __version__ = "$Id:$"

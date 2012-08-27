@@ -80,7 +80,7 @@ you need 2d rigid body physics from Python.
 Homepage: http://code.google.com/p/pymunk/
 
 """
-__version__ = "$Id: __init__.py 418 2012-08-20 21:42:37Z vb@viblo.se $"
+__version__ = "$Id: __init__.py 431 2012-08-27 22:03:19Z vb@viblo.se $"
 __docformat__ = "reStructuredText"
 
 __all__ = ["inf", "version", "chipmunk_version"
@@ -90,6 +90,7 @@ __all__ = ["inf", "version", "chipmunk_version"
         , "SegmentQueryInfo", "Contact", "Arbiter", "BB"]
 
 import ctypes as ct
+import weakref
 
 import _chipmunk as cp
 import _chipmunk_ffi as cpffi
@@ -291,6 +292,19 @@ moment.
         Defaults to 3. There is probably never a reason to change this value.
         """)
         
+    def _set_enable_contact_graph(self, enable_contact_graph):
+        self._space.contents.enableContactGraph = enable_contact_graph
+    def _get_enable_contact_graph(self):
+        return self._space.contents.enableContactGraph 
+    enable_contact_graph = property(_get_enable_contact_graph
+        , _set_enable_contact_graph
+        , doc="""Rebuild the contact graph during each step. 
+        
+        Must be enabled to use the get_arbiter() function on Body
+        Disabled by default for a small performance boost. Enabled implicitly 
+        when the sleeping feature is enabled.
+        """)
+        
 <div class="viewcode-block" id="Space.add"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.add">[docs]</a>    def add(self, *objs):
         """Add one or many shapes, bodies or joints to the space"""
         for o in objs:
@@ -357,6 +371,7 @@ moment.
     def _add_body(self, body):
         """Adds a body to the space"""
         assert body not in self._bodies, "body already added to space"
+        body._space = weakref.proxy(self)
         self._bodies.add(body)
         cp.cpSpaceAddBody(self._space, body._body)
     def _add_constraint(self, constraint):
@@ -375,6 +390,7 @@ moment.
         # cp.cpSpaceRemoveStaticShape(self._space, static_shape._shape)
     def _remove_body(self, body):
         """Removes a body from the space"""
+        body._space = None
         self._bodies.remove(body)
         cp.cpSpaceRemoveBody(self._space, body._body)
     def _remove_constraint(self, constraint):
@@ -788,6 +804,8 @@ moment.
         self._position_callback = None # To prevent the gc to collect the callbacks.
         self._velocity_callback = None # To prevent the gc to collect the callbacks.
         
+        self._space = None # Weak ref to the space holding this body (if any)
+        
     def __del__(self):
         if cp is not None:
             cp.cpBodyFree(self._body)
@@ -1004,7 +1022,19 @@ moment.
     is_static = property(_is_static,
         doc="""Returns true if the body is a static body""")
     
-    
+<div class="viewcode-block" id="Body.get_arbiters"><a class="viewcode-back" href="../pymunk.html#pymunk.Body.get_arbiters">[docs]</a>    def get_arbiters(self):
+        """Return a list of all the arbiters that are currently active on 
+        the body.
+        """
+        arbs = []
+        def impl(body, _arbiter, _):
+            arbs.append(Arbiter(_arbiter, self._space))
+            return 0
+        f = cp.cpBodyArbiterIteratorFunc(impl)
+        cp.cpBodyEachArbiter(self._body, f, None)
+        return arbs
+        
+    </div>
 <div class="viewcode-block" id="Body.local_to_world"><a class="viewcode-back" href="../pymunk.html#pymunk.Body.local_to_world">[docs]</a>    def local_to_world(self, v):
         """Convert body local coordinates to world space coordinates
         
@@ -1403,7 +1433,7 @@ moment.
         #self._contact = contact
 
     def __repr__(self):
-        return "Contact(%s, %s, %s)" % (self.position, self.normal, self.distance)
+        return "Contact(p: %s, n: %s, d: %s)" % (self.position, self.normal, self.distance)
         
     def _get_position(self):
         return self._point
