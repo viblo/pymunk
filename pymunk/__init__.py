@@ -1381,7 +1381,7 @@ class Contact(object):
         #self._contact = contact
 
     def __repr__(self):
-        return "Contact(%s, %s, %s)" % (self.position, self.normal, self.distance)
+        return "Contact(p: %s, n: %s, d: %s)" % (self.position, self.normal, self.distance)
         
     def _get_position(self):
         return self._point
