@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>News &mdash; pymunk 3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
+    <link rel="top" title="pymunk 3.0.0 documentation" href="index.html" />
+    <link rel="next" title="Download &amp; Installation" href="installation.html" />
+    <link rel="prev" title="Readme" href="readme.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Download &amp; Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="readme.html" title="Readme"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pymunk 3.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="news">
+<h1>News<a class="headerlink" href="#news" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pymunk-3-0-0">
+<h2>pymunk 3.0.0<a class="headerlink" href="#pymunk-3-0-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Victor - 2012-08-22</em></p>
+<p><strong>Im happy to announce pymunk 3!</strong></p>
+<p>This release is a definite improvement over the 2.x release line of pymunk.
+It features a much improved documentation, an updated Chipmunk version with
+accompanying API adjustments, more and cooler examples. Also, to help to do
+quick prototyping pymunk now includes a new module pymunk.pygame_util that
+can draw most physics objects on a pygame surface. Check out the new
+pygame_util_demo.py example to get an understanding of how it works.</p>
+<p>Another new feature is improved support to run in non-debug mode. Its now
+possible to pass a compile flag to setup.py to build Chipmunk in release mode
+and there&#8217;s a new module, pymunkoptions that can be used to turn pymunk debug
+prints off.</p>
+<p>This release has been tested and runs on CPyhton 2.6, 2.7, 3.2 and Pypy 1.9.
+At least one run of the unit tests have been made on the following
+platforms: 32 bit Python on Windows, 32 and 64 bit Python on Linux, and 32
+and 64 bit Python on OSX.</p>
+<p>Changes</p>
+<ul class="simple">
+<li>Several new and interesting examples added</li>
+<li>New draw module to help with pygame prototyping</li>
+<li>New pymunkoptions module to allow disable of debug</li>
+<li>Tested on OSX, includes a compiled dylib file</li>
+<li>Much extended and reworked documentation</li>
+<li>Update of Chipmunk</li>
+<li>Smaller API changes</li>
+<li>General polish and cleanup</li>
+</ul>
+<p>I hope you will like it!</p>
+</div>
+<div class="section" id="pymunk-2-1-0">
+<h2>pymunk 2.1.0<a class="headerlink" href="#pymunk-2-1-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Victor - 2011-12-03</em></p>
+<p><strong>A bugfix release of pymunk is here!</strong></p>
+<p>The most visible change in this release is that now the source release
+contains all of it including examples and chipmunk src. :) Other fixes
+are a new velocity limit property of the body, and some removed methods
+(Reasoning behind removing them and still on same version: You would get an
+exception calling them anyway. The removal should not affect code that works).
+Note, all users should create static bodies by setting the input parameters
+to None, not using infinity. inf will be removed in an upcoming release.</p>
+<p>Changes</p>
+<ul class="simple">
+<li>Marked pymunk.inf as deprecated</li>
+<li>Added velocity limit property to the body</li>
+<li>Fixed bug on 64bit python</li>
+<li>Recompiled chipmunk.dll with python 2.5</li>
+<li>Updated chipmunk src.</li>
+<li>New method in Vec2d to get int tuple</li>
+<li>Removed slew and resize hash methods</li>
+<li>Removed pymunk.init calls from examples/tests</li>
+<li>Updated examples/tests to create static bodies the good way</li>
+</ul>
+<p>Have fun with it!</p>
+</div>
+<div class="section" id="pymunk-2-0-0">
+<h2>pymunk 2.0.0<a class="headerlink" href="#pymunk-2-0-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Victor - 2012-09-04</em></p>
+<p><strong>Today Im happy to announce the new pymunk 2 release!</strong></p>
+<p>New goodies in this release comes mainly form the updated chipmunk library. Its
+now possible for bodies to sleep, there is a new data structure holding the
+objects and other smaller improvements. The updated version number comes mainly
+from the new sleep methods.</p>
+<p>Another new item in the release is some simplification, you now dont need to
+initialize pymunk on your own, thats done automatically on import. Another cool
+feature is that pymunk passes all its unit tests on the latest pypy source
+which I think is a great thing! Have not had time to do any performance tests,
+but pypy claims improvements of the ctypes library over cpython.</p>
+<p>Note, this release is not completely backwards compatible with pymunk 1.0,
+some minor adjustments will be necessary (one of the reasons the major version
+number were increased).</p>
+<p>Changes from the last release:</p>
+<ul class="simple">
+<li>Removed init pymunk method, its done automatically on import</li>
+<li>Support for sleeping bodies.</li>
+<li>Updated to latest version of Chipmunk</li>
+<li>More API docs, more unittests.</li>
+<li>Only dependent on msvcrt.dll on windows now.</li>
+<li>Removed dependency on setuptools</li>
+<li>Minor updates on other API, added some missing properties and methods.</li>
+</ul>
+<p>Enjoy!</p>
+</div>
+<div class="section" id="older-news">
+<h2>Older news<a class="headerlink" href="#older-news" title="Permalink to this headline">¶</a></h2>
+<p>Older news items have been archived.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/pymunk_logo_sphinx.png" alt="Logo"/>
+            </a></p>
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Readme</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pymunk-3-0-0">pymunk 3.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pymunk-2-1-0">pymunk 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pymunk-2-0-0">pymunk 2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#older-news">Older news</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Download &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/issues/list">Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/source/checkout">Source Repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/downloads/list">Downloads</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="readme.html"
+                        title="previous chapter">Readme</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Download &amp; Installation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/news.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Download &amp; Installation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="readme.html" title="Readme"
+             >previous</a> |</li>
+        <li><a href="index.html">pymunk 3.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Victor Blomqvist.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

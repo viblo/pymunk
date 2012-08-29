@@ -28,9 +28,9 @@ It is (or is striving to be):
 * **"Pythonic"** - It should not be visible that a c-library (chipmunk) is in 
   the bottom, it should feel like a python library (no strange naming, OO, 
   no memory handling and more)
-* **Simple to build & install** - You shouldnt need to have a zillion of 
-  libraries installed to make it install, or do a lot of command line trixs.
-* **Multiplatform** - Should work on both windows, \*nix and OSX.
+* **Simple to build & install** - You shouldn't need to have a zillion of 
+  libraries installed to make it install, or do a lot of command line tricks.
+* **Multi-platform** - Should work on both windows, \*nix and OSX.
 * **Non-intrusive** - It should not put restrictions on how you structure 
   your program and not force you to use a special game loop, it should be 
   possible to use with other libraries like pygame and pyglet. 
@@ -66,11 +66,10 @@ as well!)
     would love to hear from you. What would *really* be nice is a real 
     postcard from the place where you are! :) 
     
-    Please send to 
-    
-        | pymunk C/O Victor Blomqvist
-        | Carl Thunbersg Vag 9
-        | 16969 Solna
+    pymunk's address is:
+        | pymunk c/o Victor Blomqvist
+        | Carl Thunbergs Vag 9
+        | 169 69 Solna
         | SWEDEN
         
 Contents
@@ -86,6 +85,9 @@ Contents
     examples
     tutorials
     advanced
+    Issue Tracker <http://code.google.com/p/pymunk/issues/list>
+    Source Repository <http://code.google.com/p/pymunk/source/checkout>
+    Downloads <http://code.google.com/p/pymunk/downloads/list>
 
 
 Indices and tables

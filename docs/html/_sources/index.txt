@@ -66,8 +66,7 @@ as well!)
     would love to hear from you. What would *really* be nice is a real 
     postcard from the place where you are! :) 
     
-    Please send to 
-    
+    pymunk's address is:
         | pymunk C/O Victor Blomqvist
         | Carl Thunbersg Vag 9
         | 16969 Solna
@@ -86,6 +85,9 @@ Contents
     examples
     tutorials
     advanced
+    Issue Tracker <http://code.google.com/p/pymunk/issues/list>
+    Source Repository <http://code.google.com/p/pymunk/source/checkout>
+    Downloads <http://code.google.com/p/pymunk/downloads/list>
 
 
 Indices and tables
