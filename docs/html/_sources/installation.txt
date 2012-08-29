@@ -1,30 +1,29 @@
-Installation
-============
+Download & Installation
+=======================
+
+.. tip::
+    You will find the latest version at http://code.google.com/p/pymunk/
 
 pymunk does not need to be installed. However, you might need to compile the 
 chipmunk library that pymunk uses internally if a precompiled library was not 
 included for your Platform. The default pymunk distribution ships with at least
 32-bit Windows and 32- and 64-bit Linux versions. However, even if a compiled 
-library is not shipped you should not despair! It is very easy to compile chipmunk 
-as long as you have a gcc-compatible c compiler installed. 
+library is not shipped you should not despair! It is very easy to compile 
+chipmunk as long as you have a gcc-compatible c compiler installed. 
 
 .. _without-install:
 
 Without installation
 --------------------
 
-You might want to test pymunk before you install pymunk on your development 
-machine, or decide to not install it at all. The easiest way to do this is to 
-download the source release of pymunk and extract the archive to the folder 
-where your code is so that the pymunk folder ends up in, or tell python where 
-to find it. 
-
-Either set the python path environment variable to the location of pymunk, or use 
-
+You might want to test pymunk before you install it on your development 
+machine, or maybe decide to not install it at all. The easiest way to do this 
+is to download the source release of pymunk and extract the archive to the 
+folder where your code is and then tell python where to find it. 
 
 For example, lets say you have main.py and a folder named pymunk-3.0.0 that 
 contain the full source of pymunk (files, including setup.py, README.txt and 
-a folder named pymunk). Then you can add this before you include 
+a folder named pymunk). Then you can add this before you include::
 
     import os, sys
 

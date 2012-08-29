@@ -61,9 +61,18 @@ Regardless of the method you use I will try to answer your questions as soon
 as I see them. (And if you ask on on SO or the forum other people might help 
 as well!)
     
-
+.. attention::
+    If you like pymunk and find it useful and have a few minutes to spare I 
+    would love to hear from you. What would *really* be nice is a real 
+    postcard from the place where you are! :) 
     
+    Please send to 
     
+        | pymunk C/O Victor Blomqvist
+        | Carl Thunbersg Vag 9
+        | 16969 Solna
+        | SWEDEN
+        
 Contents
 ========
  
@@ -71,6 +80,7 @@ Contents
     :maxdepth: 4
     
     readme
+    news
     installation
     pymunk
     examples

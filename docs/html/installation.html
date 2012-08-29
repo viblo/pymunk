@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation &mdash; pymunk 3.0.0 documentation</title>
+    <title>Download &amp; Installation &mdash; pymunk 3.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -28,7 +28,7 @@
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
     <link rel="top" title="pymunk 3.0.0 documentation" href="index.html" />
     <link rel="next" title="API Reference" href="pymunk.html" />
-    <link rel="prev" title="Readme" href="readme.html" /> 
+    <link rel="prev" title="News" href="news.html" /> 
   </head>
   <body>
     <div class="related">
@@ -44,7 +44,7 @@
           <a href="pymunk.html" title="API Reference"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="readme.html" title="Readme"
+          <a href="news.html" title="News"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">pymunk 3.0.0 documentation</a> &raquo;</li> 
       </ul>
@@ -55,31 +55,35 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="download-installation">
+<h1>Download &amp; Installation<a class="headerlink" href="#download-installation" title="Permalink to this headline">¶</a></h1>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You will find the latest version at <a class="reference external" href="http://code.google.com/p/pymunk/">http://code.google.com/p/pymunk/</a></p>
+</div>
 <p>pymunk does not need to be installed. However, you might need to compile the
 chipmunk library that pymunk uses internally if a precompiled library was not
 included for your Platform. The default pymunk distribution ships with at least
 32-bit Windows and 32- and 64-bit Linux versions. However, even if a compiled
-library is not shipped you should not despair! It is very easy to compile chipmunk
-as long as you have a gcc-compatible c compiler installed.</p>
+library is not shipped you should not despair! It is very easy to compile
+chipmunk as long as you have a gcc-compatible c compiler installed.</p>
 <div class="section" id="without-installation">
 <span id="without-install"></span><h2>Without installation<a class="headerlink" href="#without-installation" title="Permalink to this headline">¶</a></h2>
-<p>You might want to test pymunk before you install pymunk on your development
-machine, or decide to not install it at all. The easiest way to do this is to
-download the source release of pymunk and extract the archive to the folder
-where your code is so that the pymunk folder ends up in, or tell python where
-to find it.</p>
-<p>Either set the python path environment variable to the location of pymunk, or use</p>
+<p>You might want to test pymunk before you install it on your development
+machine, or maybe decide to not install it at all. The easiest way to do this
+is to download the source release of pymunk and extract the archive to the
+folder where your code is and then tell python where to find it.</p>
 <p>For example, lets say you have main.py and a folder named pymunk-3.0.0 that
 contain the full source of pymunk (files, including setup.py, README.txt and
-a folder named pymunk). Then you can add this before you include</p>
-<blockquote>
-<div><p>import os, sys</p>
-<p>current_path = os.getcwd()
-sys.path.insert(0, os.path.join( current_path, &#8220;pymunk-3.0.0&#8221; ) )</p>
-<p>import pymunk</p>
-</div></blockquote>
+a folder named pymunk). Then you can add this before you include:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+
+<span class="n">current_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">current_path</span><span class="p">,</span> <span class="s">&quot;pymunk-3.0.0&quot;</span> <span class="p">)</span> <span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pymunk</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="install-pymunk">
 <h2>Install pymunk<a class="headerlink" href="#install-pymunk" title="Permalink to this headline">¶</a></h2>
@@ -142,7 +146,8 @@ remove all debugs prints.</dd>
 <h3><a href="index.html">Table Of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Readme</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Installation</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="news.html">News</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Download &amp; Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#without-installation">Without installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-pymunk">Install pymunk</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compile-chipmunk">Compile Chipmunk</a></li>
@@ -155,8 +160,8 @@ remove all debugs prints.</dd>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="readme.html"
-                        title="previous chapter">Readme</a></p>
+  <p class="topless"><a href="news.html"
+                        title="previous chapter">News</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="pymunk.html"
                         title="next chapter">API Reference</a></p>
@@ -195,7 +200,7 @@ remove all debugs prints.</dd>
           <a href="pymunk.html" title="API Reference"
              >next</a> |</li>
         <li class="right" >
-          <a href="readme.html" title="Readme"
+          <a href="news.html" title="News"
              >previous</a> |</li>
         <li><a href="index.html">pymunk 3.0.0 documentation</a> &raquo;</li> 
       </ul>
