@@ -8,7 +8,6 @@ import sys
 
 import pygame
 from pygame.locals import *
-from pygame.color import *
     
 import pymunk
 from pymunk.vec2d import Vec2d
@@ -152,16 +151,33 @@ def main():
     
     # TODO: more stuff here :)
     
+    ### Other
+    
+    # Object not drawn by draw_space
+    b = pymunk.Body()
+    b.position = (500,250)
+    s = pymunk.Circle(b, 40)
+    s.ignore_draw = True
+    space.add(s)
+    
+    # Object in custom color
+    b = pymunk.Body()
+    b.position = (500,200)
+    s = pymunk.Circle(b, 40)
+    s.color = pygame.color.THECOLORS["pink"]
+    space.add(s)
+    
     ### Draw it 
     screen.fill(pygame.color.THECOLORS["black"])
     
     draw_space(screen, space)
                     
     # Info
-    screen.blit(font.render("Demo example of shapes drawn by pygame_util.draw_space()", 1, THECOLORS["darkgray"]), (5, 580))
-    screen.blit(font.render("Static shapes", 1, THECOLORS["white"]), (50, 20))
-    screen.blit(font.render("Dynamic shapes", 1, THECOLORS["white"]), (250, 20))
-    screen.blit(font.render("Constraints", 1, THECOLORS["white"]), (450, 20))
+    screen.blit(font.render("Demo example of shapes drawn by pygame_util.draw_space()", 1, pygame.color.THECOLORS["darkgray"]), (5, 580))
+    screen.blit(font.render("Static shapes", 1, pygame.color.THECOLORS["white"]), (50, 20))
+    screen.blit(font.render("Dynamic shapes", 1, pygame.color.THECOLORS["white"]), (250, 20))
+    screen.blit(font.render("Constraints", 1, pygame.color.THECOLORS["white"]), (450, 20))
+    screen.blit(font.render("Other", 1, pygame.color.THECOLORS["white"]), (450, 300))
    
     pygame.display.flip()
     
