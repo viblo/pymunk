@@ -34,12 +34,12 @@ a folder named pymunk). Then you can add this before you include::
 
 Install pymunk
 ----------------
-To install pymunk, either download one of the prebuild binaries if available 
+To install pymunk, either download one of the prebuilt binaries if available 
 (Windows) or use the standard setup.py way::
 
     > python setup.py install
 
-If you are on Mac OS X or Linux you will probably need to run as a priveleged 
+If you are on Mac OS X or Linux you will probably need to run as a privileged 
 user; for example using sudo::
     
     > sudo python setup.py install
@@ -71,7 +71,7 @@ argument::
 
     > python setup.py build_chipmunk --compiler=mingw32
     
-To compile Chipmunk in Release mode use the release argument (Usefull to 
+To compile Chipmunk in Release mode use the release argument (Useful to 
 avoid some debug prints and asserts)::
 
     > python setup.py build_chipmunk --release
