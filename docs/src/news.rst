@@ -31,10 +31,11 @@ Changes
 - New draw module to help with pygame prototyping
 - New pymunkoptions module to allow disable of debug
 - Tested on OSX, includes a compiled dylib file
-- Much extended and reworked documentation
+- Much extended and reworked documentation and homepage
 - Update of Chipmunk
 - Smaller API changes
 - General polish and cleanup
+- Shining new domain: pymunk.org
 
 I hope you will like it!
 

@@ -21,7 +21,10 @@
 # SOFTWARE.
 # ----------------------------------------------------------------------------
 
-"""Contains utility functions, mainly to help with polygon creation"""
+"""This submodule contains utility functions, mainly to help with polygon 
+creation.
+
+"""
 from __future__ import division
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"

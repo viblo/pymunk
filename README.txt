@@ -10,7 +10,7 @@ nice 2d physics library Chipmunk.
 This release is based on the latest pymunk release (3.0.0), 
 using chipmunk 6.1.1 (source included)
 
-:Homepage: http://code.google.com/p/pymunk/
+:Homepage: http://pymunk.org
 :Forum: http://chipmunk-physics.net/forum/
 :Email: vb@viblo.se
 

@@ -14,3 +14,13 @@ div.body h6
 {
     margin-bottom: 20px;
 }
+
+.custom-index {
+    overflow: hidden;
+    width: 100%
+}
+
+div.attention {
+    background-color: #EEEEEE;
+    border: 1px solid #CCCCCC;
+}

@@ -1,8 +1,9 @@
-Download & Installation
-=======================
+Installation
+============
 
 .. tip::
-    You will find the latest version at http://code.google.com/p/pymunk/
+    You will find the latest version at 
+    http://code.google.com/p/pymunk/downloads/list
 
 pymunk does not need to be installed. However, you might need to compile the 
 chipmunk library that pymunk uses internally if a precompiled library was not 

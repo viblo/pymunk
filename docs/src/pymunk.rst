@@ -5,17 +5,22 @@ API Reference
 :mod:`pymunk` Package 
 =====================
 
-.. rubric:: Submodules
+.. container:: submodule-index
 
-.. toctree::
-    :maxdepth: 6
+    .. rubric:: Submodules
 
-    pymunk.constraint
-    pymunk.vec2d
-    pymunk.util    
-    pymunk.pygame_util
-    pymunkoptions
+    .. toctree::
+        :maxdepth: 6
 
+        pymunk.constraint
+        pymunk.vec2d
+        pymunk.util    
+        pymunk.pygame_util
+        pymunkoptions
+
+.. container:: custom-index
+    
+    .. empty
    
 .. rubric:: pymunk
 

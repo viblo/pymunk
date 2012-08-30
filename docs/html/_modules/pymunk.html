@@ -39,7 +39,12 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+    
         <li><a href="../index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+    
+    <script type="text/javascript" src='_static/pymunk.js'></script>
+    
+
           <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -77,7 +82,17 @@
 pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
 you need 2d rigid body physics from Python.
 
-Homepage: http://code.google.com/p/pymunk/
+Homepage: http://pymunk.org
+
+This is the main containing module of pymunk. It contains among other things 
+the very central Space, Body and Shape classes.
+
+When you import this module it will automatically load the chipmunk library 
+file. As long as you haven't turned off the debug mode a print will show 
+exactly which Chipmunk library file it loaded. For example::
+
+    &gt;&gt;&gt; import pymunk
+    Loading chipmunk for Windows (32bit) [C:\code\pymunk\\trunk\pymunk\chipmunk.dll]
 
 """
 __version__ = "$Id: __init__.py 431 2012-08-27 22:03:19Z vb@viblo.se $"
@@ -1632,7 +1647,7 @@ moment.
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">Readme</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../news.html">News</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Download &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pymunk.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
@@ -1668,7 +1683,12 @@ moment.
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+    
         <li><a href="../index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+    
+    <script type="text/javascript" src='_static/pymunk.js'></script>
+    
+
           <li><a href="index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

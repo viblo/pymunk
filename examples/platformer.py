@@ -227,7 +227,7 @@ def main():
             feet.friction = -PLAYER_GROUND_ACCEL/space.gravity.y
             head.friciton = HEAD_FRICTION
         else:
-            feet.friction,head.friciton = 0,0
+            feet.friction,head.friction = 0,0
         
         # Air control
         if ground_body == None:

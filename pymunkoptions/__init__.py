@@ -45,9 +45,4 @@ option you want. For example::
     
     #..continue to use pymunk as you normally do
     
-The only available currently available option is
-debug
-
-    Print out useful debug information about where pymunk tries to load 
-    the chipmunk library from.
 """
