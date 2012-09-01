@@ -5,7 +5,12 @@ cpVect = Vec2d
 STRING = c_char_p
 
 from .libload import load_library, platform_specific_functions
-_lib_debug = True #Set to True to print the Chipmunk path.
+
+try:
+    import pymunkoptions
+    _lib_debug = pymunkoptions.options["debug"]
+except:
+    _lib_debug = True #Set to True to print the Chipmunk path.
 chipmunk_lib = load_library("chipmunk", debug_lib=_lib_debug)
 function_pointer = platform_specific_functions()['function_pointer']
 
