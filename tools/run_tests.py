@@ -3,7 +3,7 @@ import sys
 sys.path.insert(0,'..')
 import unittest
 
-import tests
+from tests import *
 
 ts = ["test_vec2d", "test_body", "test_common", "test_constraint", "test_shape", "test_space", "test_arbiter"]
 

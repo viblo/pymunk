@@ -127,7 +127,7 @@ setup(
     , url='http://www.pymunk.org'
     , author='Victor Blomqvist'
     , author_email='vb@viblo.se'
-    , version='2.1.0' # remember to change me for new versions!
+    , version='3.0.0' # remember to change me for new versions!
     , description='pymunk is a easy-to-use pythonic 2d physics library built on top of Chipmunk'
     , long_description=open('README.txt').read()
     , packages=['pymunk','pymunkoptions']

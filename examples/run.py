@@ -15,6 +15,7 @@ if len(sys.argv) > 1:
     name = sys.argv[1]
     sys.argv = sys.argv[1:]
     
-    execfile(name)
+    exec(compile(open(name).read(), name, 'exec'))
+    
 else:
-    print __doc__
+    print(__doc__)

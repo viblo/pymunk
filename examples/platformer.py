@@ -161,9 +161,8 @@ def main():
         ground_body = None
         ground_impulse = Vec2d.zero()
         ground_position = Vec2d.zero()
-        arbiters = body.get_arbiters()
         
-        for arbiter in arbiters:
+        for arbiter in body.get_arbiters():
             n = -arbiter.contacts[0].normal
             if n.y > ground_normal.y:
                 ground_normal = n

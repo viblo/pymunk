@@ -43,8 +43,8 @@ __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 import ctypes as ct
-import _chipmunk as cp 
-import _chipmunk_ffi as cpffi 
+from . import _chipmunk as cp 
+from . import _chipmunk_ffi as cpffi 
 
 class Constraint(object):
     """Base class of all constraints. 

@@ -50,9 +50,9 @@ __all__ = ["inf", "version", "chipmunk_version"
 import ctypes as ct
 import weakref
 
-import _chipmunk as cp
-import _chipmunk_ffi as cpffi
-import util as u
+from . import _chipmunk as cp
+from . import _chipmunk_ffi as cpffi
+from . import util as u
 from .vec2d import Vec2d
 
 from pymunk.constraint import *
