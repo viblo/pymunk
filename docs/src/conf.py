@@ -16,6 +16,7 @@ import sys, os
 # To allow readthedocs.org build documentation without the chipmunk library file
 
 class Mock(object):
+    __package__ = 'pymunk'
     def __init__(self, *args, **kwargs):
         pass
 
@@ -30,14 +31,21 @@ class Mock(object):
             return type(name, (), {})
         else:
             return Mock()
+            
 
-           
-MOCK_MODULES = ['pymunk._chipmunk', '_chipmunk','pymunk._chipmunk_ffi', 
-                '_chipmunk_ffi','pygame', 'pygame.locals', 'pygame.color'
+MOCK_MODULES = ['pymunk._chipmunk', 'pymunk._chipmunk_ffi', 
+                'pygame', 'pygame.locals', 'pygame.color'
                 ]
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = Mock()
-
+                
+class MockFinder():
+    def find_module(self, fullname, path=None):
+        if fullname in MOCK_MODULES:
+            return self
+        return None
+    def load_module(self, fullname):
+        return Mock()
+        
+sys.meta_path = [MockFinder()]
 
 
 # If extensions (or modules to document with autodoc) are in another directory,
