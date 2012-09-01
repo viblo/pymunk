@@ -35,7 +35,7 @@ Changes
 - Update of Chipmunk
 - Smaller API changes
 - General polish and cleanup
-- Shining new domain: pymunk.org
+- Shining new domain: www.pymunk.org
 
 I hope you will like it!
 

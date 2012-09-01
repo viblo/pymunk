@@ -1,4 +1,5 @@
-"""Showcase of flying arrows that can stick to objects in a somewhat realistic looking way.
+"""Showcase of flying arrows that can stick to objects in a somewhat 
+realistic looking way.
 """
 
 __version__ = "$Id:$"

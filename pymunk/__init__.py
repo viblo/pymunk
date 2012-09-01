@@ -25,7 +25,7 @@
 pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
 you need 2d rigid body physics from Python.
 
-Homepage: http://pymunk.org
+Homepage: http://www.pymunk.org
 
 This is the main containing module of pymunk. It contains among other things 
 the very central Space, Body and Shape classes.
@@ -35,7 +35,7 @@ file. As long as you haven't turned off the debug mode a print will show
 exactly which Chipmunk library file it loaded. For example::
 
     >>> import pymunk
-    Loading chipmunk for Windows (32bit) [C:\code\pymunk\\trunk\pymunk\chipmunk.dll]
+    Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 
 """
 __version__ = "$Id$"

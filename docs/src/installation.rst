@@ -32,6 +32,10 @@ a folder named pymunk). Then you can add this before you include::
     sys.path.insert(0, os.path.join( current_path, "pymunk-3.0.0" ) )
     
     import pymunk
+    
+For a working demo, check out the run.py file in the examples folder of 
+pymunk. It uses this exact technique to allow running the examples using the 
+pymunk located on level up.
 
 Install pymunk
 ----------------

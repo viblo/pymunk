@@ -124,7 +124,7 @@ bdist.bdist.format_command['msi'] = ('bdist_msi', "Microsoft Installer")
 
 setup(
     name='pymunk'
-    , url='http://pymunk.org'
+    , url='http://www.pymunk.org'
     , author='Victor Blomqvist'
     , author_email='vb@viblo.se'
     , version='2.1.0' # remember to change me for new versions!
