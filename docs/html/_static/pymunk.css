@@ -24,3 +24,25 @@ div.attention {
     background-color: #EEEEEE;
     border: 1px solid #CCCCCC;
 }
+
+div.related {
+    margin: 0 auto;
+    text-align: left;
+    max-width: 960px;
+    border-left: 1px solid #6C9CBE;
+    border-right: 1px solid #6C9CBE;
+}
+
+div.document {
+    margin: 0 auto;
+    text-align: left;
+    max-width: 960px;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    text-align: center; /* !!! */
+}
