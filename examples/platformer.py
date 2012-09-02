@@ -3,8 +3,8 @@
 The red girl sprite is taken from Sithjester's RMXP Resources:
 http://untamed.wild-refuge.net/rmxpresources.php?characters
 
-.. warning:: This example is not cleaned up. The code in here does not 
-   represent the best way to structure a platformer.
+.. note:: The code of this example is a bit messy. If you adapt this to your 
+    own code you might want to structure it a bit differently.
 """
 
 __version__ = "$Id:$"
@@ -31,7 +31,7 @@ def cpflerpconst(f1, f2, d):
 
 
 
-width, height = 800,400
+width, height = 690,400
 fps = 60
 dt = 1./fps
 PLAYER_VELOCITY = 100. *2.
@@ -72,9 +72,9 @@ def main():
                 , pymunk.Segment(space.static_body, (300, 50), (325, 50), 5)
                 , pymunk.Segment(space.static_body, (325, 50), (350, 50), 5)
                 , pymunk.Segment(space.static_body, (350, 50), (375, 50), 5)
-                , pymunk.Segment(space.static_body, (375, 50), (790, 50), 5)
-                , pymunk.Segment(space.static_body, (790, 50), (790, 370), 5)
-                , pymunk.Segment(space.static_body, (790, 370), (10, 370), 5)
+                , pymunk.Segment(space.static_body, (375, 50), (680, 50), 5)
+                , pymunk.Segment(space.static_body, (680, 50), (680, 370), 5)
+                , pymunk.Segment(space.static_body, (680, 370), (10, 370), 5)
                 , pymunk.Segment(space.static_body, (10, 370), (10, 50), 5)
                 ]  
     static[1].color = pygame.color.THECOLORS['red']
@@ -86,12 +86,11 @@ def main():
                 , pymunk.Segment(space.static_body, (520, 60), (540, 80), 5)
                 , pymunk.Segment(space.static_body, (540, 80), (550, 100), 5)
                 , pymunk.Segment(space.static_body, (550, 100), (550, 150), 5)
-                , pymunk.Segment(space.static_body, (550, 125), (600, 125), 5)
                 ]
                 
     # static platforms
     platforms = [pymunk.Segment(space.static_body, (170, 50), (270, 150), 5)
-                , pymunk.Segment(space.static_body, (270, 100), (300, 100), 5)
+                #, pymunk.Segment(space.static_body, (270, 100), (300, 100), 5)
                 , pymunk.Segment(space.static_body, (400, 150), (450, 150), 5)
                 , pymunk.Segment(space.static_body, (400, 200), (450, 200), 5)
                 , pymunk.Segment(space.static_body, (220, 200), (300, 200), 5)
@@ -105,10 +104,10 @@ def main():
     space.add(static, platforms+rounded)
     
     # moving platform
-    platform_path = [(750,100),(650,200),(750,300)]
+    platform_path = [(650,100),(600,200),(650,300)]
     platform_path_index = 0
     platform_body = pymunk.Body(pymunk.inf, pymunk.inf)
-    platform_body.position = 750,100
+    platform_body.position = 650,100
     s = pymunk.Segment(platform_body, (-25, 0), (25, 0), 5)
     s.friction = 1.
     s.group = 1
@@ -116,7 +115,7 @@ def main():
     space.add(s)
     
     # pass through platform
-    passthrough = pymunk.Segment(space.static_body, (600, 100), (650, 100), 5)
+    passthrough = pymunk.Segment(space.static_body, (270, 100), (320, 100), 5)
     passthrough.color = pygame.color.THECOLORS["yellow"]
     passthrough.friction = 1.
     passthrough.collision_type = 2
@@ -155,31 +154,34 @@ def main():
     
     while running:
         
+        grounding = {
+            'normal' : Vec2d.zero(),
+            'penetration' : Vec2d.zero(),
+            'impulse' : Vec2d.zero(),
+            'position' : Vec2d.zero(),
+            'body' : None
+        }
         # find out if player is standing on ground
-        ground_normal = Vec2d.zero()
-        ground_penetration = Vec2d.zero
-        ground_body = None
-        ground_impulse = Vec2d.zero()
-        ground_position = Vec2d.zero()
         
-        for arbiter in body.get_arbiters():
+                
+        def f(arbiter):
             n = -arbiter.contacts[0].normal
-            if n.y > ground_normal.y:
-                ground_normal = n
-                ground_penetration = -arbiter.contacts[0].distance
-                ground_body = arbiter.shapes[1].body
-                ground_impulse = arbiter.total_impulse
-                ground_position = arbiter.contacts[0].position
-                
-                
+            if n.y > grounding['normal'].y:
+                grounding['normal'] = n
+                grounding['penetration'] = -arbiter.contacts[0].distance
+                grounding['body'] = arbiter.shapes[1].body
+                grounding['impulse'] = arbiter.total_impulse
+                grounding['position'] = arbiter.contacts[0].position
+        body.each_arbiter(f)
+            
         well_grounded = False
-        if ground_body != None and abs(ground_normal.x/ground_normal.y) < feet.friction:
+        if grounding['body'] != None and abs(grounding['normal'].x/grounding['normal'].y) < feet.friction:
             well_grounded = True
             remaining_jumps = 2
     
         ground_velocity = Vec2d.zero()
         if well_grounded:
-            ground_velocity = ground_body.velocity
+            ground_velocity = grounding['body'].velocity
     
         for event in pygame.event.get():
             if event.type == QUIT or \
@@ -222,14 +224,14 @@ def main():
         feet.surface_velocity = target_vx,0
 
         
-        if ground_body != None:
+        if grounding['body'] != None:
             feet.friction = -PLAYER_GROUND_ACCEL/space.gravity.y
             head.friciton = HEAD_FRICTION
         else:
             feet.friction,head.friction = 0,0
         
         # Air control
-        if ground_body == None:
+        if grounding['body'] == None:
             body.velocity.x = cpflerpconst(body.velocity.x, target_vx + ground_velocity.x, PLAYER_AIR_ACCEL*dt)
         
         body.velocity.y = max(body.velocity.y, -FALL_VELOCITY) # clamp upwards as well?
@@ -254,16 +256,16 @@ def main():
         ### Helper lines
         for y in [50,100,150,200,250,300]:
             color = pygame.color.THECOLORS['darkgrey']
-            pygame.draw.line(screen, color, (10,y), (790,y), 1)
+            pygame.draw.line(screen, color, (10,y), (680,y), 1)
         
         ### Draw stuff
         draw_space(screen, space)
         
         if feet.ignore_draw:
             direction_offset = 48+(1*direction+1)/2 * 48
-            if ground_body != None and abs(target_vx) > 1:
+            if grounding['body'] != None and abs(target_vx) > 1:
                 animation_offset = 32 * (frame_number / 8 % 4)
-            elif ground_body is None:
+            elif grounding['body'] is None:
                 animation_offset = 32*1
             else:
                 animation_offset = 32*0
@@ -271,9 +273,9 @@ def main():
             screen.blit(img, to_pygame(position, screen), (animation_offset, direction_offset, 32, 48))
 
         # Did we land?
-        if abs(ground_impulse.y) / body.mass > 200 and not landed_previous:
+        if abs(grounding['impulse'].y) / body.mass > 200 and not landed_previous:
             sound.play()
-            landing = {'p':ground_position,'n':5}
+            landing = {'p':grounding['position'],'n':5}
             landed_previous = True
         else:
             landed_previous = False

@@ -38,7 +38,7 @@ if sys.argv[1] == "/s": #fullscreen screensaver mode
     is_interactive = False
     display_flags = display_flags | FULLSCREEN # FULLSCREEN) # | DOUBLEBUF | HWSURFACE     )
 elif sys.argv[1] == "/i": #interactive
-    display_size = (800,600)
+    display_size = (600,600)
     is_interactive = True
     
 

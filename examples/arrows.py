@@ -43,7 +43,7 @@ def post_solve_arrow_hit(space, arbiter):
         arrow_body = b.body
         space.add_post_step_callback(stick_arrow_to_target, arrow_body, other_body, position, space)
     
-width, height = 800,600
+width, height = 690,600
 def main():
     ### PyGame init
     pygame.init()
@@ -57,9 +57,9 @@ def main():
     space.gravity = 0,-1000
     # walls - the left-top-right walls
     static= [pymunk.Segment(space.static_body, (50, 50), (50, 550), 5)
-                ,pymunk.Segment(space.static_body, (50, 550), (750, 550), 5)
-                ,pymunk.Segment(space.static_body, (750, 550), (750, 50), 5)
-                ,pymunk.Segment(space.static_body, (50, 50), (750, 50), 5)
+                ,pymunk.Segment(space.static_body, (50, 550), (650, 550), 5)
+                ,pymunk.Segment(space.static_body, (650, 550), (650, 50), 5)
+                ,pymunk.Segment(space.static_body, (50, 50), (650, 50), 5)
                 ]  
     
     b2 = pymunk.Body()
