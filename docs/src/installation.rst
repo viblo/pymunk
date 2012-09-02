@@ -39,8 +39,13 @@ pymunk located on level up.
 
 Install pymunk
 ----------------
-To install pymunk, either download one of the prebuilt binaries if available 
-(Windows) or use the standard setup.py way::
+
+pymunk can be installed with pip install::
+
+    > pip install pymunk
+
+Another option is to install pymunk with one of the prebuilt installers if 
+available (Windows) or you can use the standard setup.py way::
 
     > python setup.py install
 
@@ -50,7 +55,8 @@ user; for example using sudo::
     > sudo python setup.py install
     
 Once installed you should be able to to import pymunk just as any other 
-installed library.
+installed library. pymunk should also work just fine with virtualenv in case 
+you want it installed in a contained environment.
     
 .. note::
     The setup will not check if the correct Chipmunk library was included or 

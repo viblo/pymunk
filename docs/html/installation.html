@@ -96,8 +96,11 @@ pymunk located on level up.</p>
 </div>
 <div class="section" id="install-pymunk">
 <h2>Install pymunk<a class="headerlink" href="#install-pymunk" title="Permalink to this headline">¶</a></h2>
-<p>To install pymunk, either download one of the prebuilt binaries if available
-(Windows) or use the standard setup.py way:</p>
+<p>pymunk can be installed with pip install:</p>
+<div class="highlight-python"><pre>&gt; pip install pymunk</pre>
+</div>
+<p>Another option is to install pymunk with one of the prebuilt installers if
+available (Windows) or you can use the standard setup.py way:</p>
 <div class="highlight-python"><pre>&gt; python setup.py install</pre>
 </div>
 <p>If you are on Mac OS X or Linux you will probably need to run as a privileged
@@ -105,7 +108,8 @@ user; for example using sudo:</p>
 <div class="highlight-python"><pre>&gt; sudo python setup.py install</pre>
 </div>
 <p>Once installed you should be able to to import pymunk just as any other
-installed library.</p>
+installed library. pymunk should also work just fine with virtualenv in case
+you want it installed in a contained environment.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The setup will not check if the correct Chipmunk library was included or
