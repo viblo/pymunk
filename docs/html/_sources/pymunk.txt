@@ -19,8 +19,10 @@ API Reference
         pymunkoptions
 
 .. container:: custom-index
+
+    .. raw:: html
     
-    .. empty
+        <script type="text/javascript" src='_static/pymunk.js'></script>
    
 .. rubric:: pymunk
 
