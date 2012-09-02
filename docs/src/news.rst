@@ -4,7 +4,7 @@ News
 
 pymunk 3.0.0
 -------------
-*Victor - 2012-08-22*
+*Victor - 2012-09-02*
 
 **I'm happy to announce pymunk 3!**
 
@@ -20,10 +20,12 @@ possible to pass a compile flag to setup.py to build Chipmunk in release mode
 and there's a new module, pymunkoptions that can be used to turn pymunk debug 
 prints off.
 
-This release has been tested and runs on CPython 2.6, 2.7, 3.2 and Pypy 1.9.
+This release has been tested and runs on CPython 2.6, 2.7, 3.2.
 At least one run of the unit tests have been made on the following 
 platforms: 32 bit Python on Windows, 32 and 64 bit Python on Linux, and 32 
 and 64 bit Python on OSX.
+
+This release has also been tested on Pypy 1.9, with all tests passed!
 
 Changes
 

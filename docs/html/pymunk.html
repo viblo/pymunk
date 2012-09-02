@@ -123,7 +123,7 @@ distribution (i.e. not in a checked-out copy from svn).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02DA1E30&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02BE1F90&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -736,17 +736,35 @@ from the center of gravity. Both r and j are in world coordinates.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="pymunk.Body.each_arbiter">
+<tt class="descname">each_arbiter</tt><big>(</big><em>func</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Body.each_arbiter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.each_arbiter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run func on each of the arbiters on this body.</p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">func(arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">None</span></tt></p>
+<dl class="docutils">
+<dt>Callback Parameters</dt>
+<dd><dl class="first last docutils">
+<dt>arbiter <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Arbiter</cite></span></dt>
+<dd>The Arbiter</dd>
+<dt>args</dt>
+<dd>Optional parameters passed to the callback function.</dd>
+<dt>kwargs</dt>
+<dd>Optional keyword parameters passed on to the callback function.</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Do not hold on to the Arbiter after the callback!</p>
+</div>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.Body.force">
 <tt class="descname">force</tt><a class="headerlink" href="#pymunk.Body.force" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="method">
-<dt id="pymunk.Body.get_arbiters">
-<tt class="descname">get_arbiters</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk.html#Body.get_arbiters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.get_arbiters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a list of all the arbiters that are currently active on 
-the body.</p>
-</dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.Body.is_rogue">
@@ -812,7 +830,7 @@ the body.</p>
 <dd><p>The position callback function. The position callback function 
 is called each time step and can be used to update the body&#8217;s position.</p>
 <blockquote>
-<div><p>func(body, dt) -&gt; None</p>
+<div><p><tt class="docutils literal"><span class="pre">func(body,</span> <span class="pre">dt)</span> <span class="pre">-&gt;</span> <span class="pre">None</span></tt></p>
 <dl class="docutils">
 <dt>Callback Parameters</dt>
 <dd><dl class="first last docutils">
@@ -883,7 +901,7 @@ correction process.</p>
 <dd><p>The velocity callback function. The velocity callback function 
 is called each time step, and can be used to set a body&#8217;s velocity.</p>
 <blockquote>
-<div><p>func(body, gravity, damping, dt) -&gt; None</p>
+<div><p><tt class="docutils literal"><span class="pre">func(body,</span> <span class="pre">gravity,</span> <span class="pre">damping,</span> <span class="pre">dt)</span> <span class="pre">-&gt;</span> <span class="pre">None</span></tt></p>
 <dl class="docutils">
 <dt>Callback Parameters</dt>
 <dd><dl class="first last docutils">
@@ -1792,10 +1810,14 @@ intersected with the shape</p>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Arbiters are collision pairs between shapes that are used with the 
 collision callbacks.</p>
-<p><em>IMPORTANT:</em> Because arbiters are handled by the space you should never 
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Because arbiters are handled by the space you should never 
 hold onto a reference to an arbiter as you don&#8217;t know when it will be 
-destroyed! Use them within the callback where they are given to you and 
-then forget about them or copy out the information you need from them.</p>
+destroyed! Use them within the callback where they are given to you 
+and then forget about them or copy out the information you need from 
+them.</p>
+</div>
 <dl class="attribute">
 <dt id="pymunk.Arbiter.contacts">
 <tt class="descname">contacts</tt><a class="headerlink" href="#pymunk.Arbiter.contacts" title="Permalink to this definition">¶</a></dt>

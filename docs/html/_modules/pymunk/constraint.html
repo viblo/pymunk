@@ -97,12 +97,12 @@ http://www.youtube.com/watch?v=ZgJJZTS0aMM
     allowfullscreen&gt;&lt;/iframe&gt;
     
 """
-__version__ = "$Id: constraint.py 439 2012-08-30 22:14:05Z vb@viblo.se $"
+__version__ = "$Id: constraint.py 441 2012-09-01 12:01:08Z vb@viblo.se $"
 __docformat__ = "reStructuredText"
 
 import ctypes as ct
-import _chipmunk as cp 
-import _chipmunk_ffi as cpffi 
+from . import _chipmunk as cp 
+from . import _chipmunk_ffi as cpffi 
 
 <div class="viewcode-block" id="Constraint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint">[docs]</a>class Constraint(object):
     """Base class of all constraints. 

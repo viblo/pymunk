@@ -614,7 +614,7 @@ class Space(object):
         self.__query_hits = []
         def cf(_shape, distance, point, data):
             shape = self._get_shape(_shape)
-            self.__query_hits.append(dict(shape=shape, distance=distance, point=point))
+            self.__query_hits.append(dict(shape=shape, distance=distance, point=Vec2d(point)))
         f = cp.cpSpaceNearestPointQueryFunc(cf)
         cp.cpSpaceNearestPointQuery(self._space, point, max_distance, layers, group, f, None)
         
@@ -844,7 +844,7 @@ class Body(object):
         """The velocity callback function. The velocity callback function 
         is called each time step, and can be used to set a body's velocity.
         
-            func(body, gravity, damping, dt) -> None
+            ``func(body, gravity, damping, dt) -> None``
             
             Callback Parameters
                 body : `Body`
@@ -869,7 +869,7 @@ class Body(object):
         """The position callback function. The position callback function 
         is called each time step and can be used to update the body's position.
         
-            func(body, dt) -> None
+            ``func(body, dt) -> None``
             
             Callback Parameters
                 body : `Body`
@@ -980,17 +980,30 @@ class Body(object):
     is_static = property(_is_static,
         doc="""Returns true if the body is a static body""")
     
-    def get_arbiters(self):
-        """Return a list of all the arbiters that are currently active on 
-        the body.
+    def each_arbiter(self, func, *args, **kwargs):
+        """Run func on each of the arbiters on this body.
+        
+            ``func(arbiter, *args, **kwargs) -> None``
+            
+            Callback Parameters
+                arbiter : `Arbiter`
+                    The Arbiter
+                args
+                    Optional parameters passed to the callback function.
+                kwargs
+                    Optional keyword parameters passed on to the callback function.
+                    
+        .. warning::
+            
+            Do not hold on to the Arbiter after the callback!                
         """
-        arbs = []
+        
         def impl(body, _arbiter, _):
-            arbs.append(Arbiter(_arbiter, self._space))
+            arbiter = Arbiter(_arbiter, self._space)
+            func(arbiter, *args, **kwargs)
             return 0
         f = cp.cpBodyArbiterIteratorFunc(impl)
         cp.cpBodyEachArbiter(self._body, f, None)
-        return arbs
         
     
     def local_to_world(self, v):
@@ -1411,10 +1424,12 @@ class Arbiter(object):
     """Arbiters are collision pairs between shapes that are used with the 
     collision callbacks.
     
-    *IMPORTANT:* Because arbiters are handled by the space you should never 
-    hold onto a reference to an arbiter as you don't know when it will be 
-    destroyed! Use them within the callback where they are given to you and 
-    then forget about them or copy out the information you need from them.
+    .. Warning::
+        Because arbiters are handled by the space you should never 
+        hold onto a reference to an arbiter as you don't know when it will be 
+        destroyed! Use them within the callback where they are given to you 
+        and then forget about them or copy out the information you need from 
+        them.
     """
     def __init__(self, _arbiter, space):
         """Initialize an Arbiter object from the Chipmunk equivalent struct 

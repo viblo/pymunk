@@ -95,7 +95,7 @@ exactly which Chipmunk library file it loaded. For example::
     Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 
 """
-__version__ = "$Id: __init__.py 440 2012-09-01 11:08:15Z vb@viblo.se $"
+__version__ = "$Id: __init__.py 441 2012-09-01 12:01:08Z vb@viblo.se $"
 __docformat__ = "reStructuredText"
 
 __all__ = ["inf", "version", "chipmunk_version"
@@ -107,9 +107,9 @@ __all__ = ["inf", "version", "chipmunk_version"
 import ctypes as ct
 import weakref
 
-import _chipmunk as cp
-import _chipmunk_ffi as cpffi
-import util as u
+from . import _chipmunk as cp
+from . import _chipmunk_ffi as cpffi
+from . import util as u
 from .vec2d import Vec2d
 
 from pymunk.constraint import *
@@ -671,7 +671,7 @@ moment.
         self.__query_hits = []
         def cf(_shape, distance, point, data):
             shape = self._get_shape(_shape)
-            self.__query_hits.append(dict(shape=shape, distance=distance, point=point))
+            self.__query_hits.append(dict(shape=shape, distance=distance, point=Vec2d(point)))
         f = cp.cpSpaceNearestPointQueryFunc(cf)
         cp.cpSpaceNearestPointQuery(self._space, point, max_distance, layers, group, f, None)
         
@@ -901,7 +901,7 @@ moment.
         """The velocity callback function. The velocity callback function 
         is called each time step, and can be used to set a body's velocity.
         
-            func(body, gravity, damping, dt) -&gt; None
+            ``func(body, gravity, damping, dt) -&gt; None``
             
             Callback Parameters
                 body : `Body`
@@ -926,7 +926,7 @@ moment.
         """The position callback function. The position callback function 
         is called each time step and can be used to update the body's position.
         
-            func(body, dt) -&gt; None
+            ``func(body, dt) -&gt; None``
             
             Callback Parameters
                 body : `Body`
@@ -1037,17 +1037,30 @@ moment.
     is_static = property(_is_static,
         doc="""Returns true if the body is a static body""")
     
-<div class="viewcode-block" id="Body.get_arbiters"><a class="viewcode-back" href="../pymunk.html#pymunk.Body.get_arbiters">[docs]</a>    def get_arbiters(self):
-        """Return a list of all the arbiters that are currently active on 
-        the body.
+<div class="viewcode-block" id="Body.each_arbiter"><a class="viewcode-back" href="../pymunk.html#pymunk.Body.each_arbiter">[docs]</a>    def each_arbiter(self, func, *args, **kwargs):
+        """Run func on each of the arbiters on this body.
+        
+            ``func(arbiter, *args, **kwargs) -&gt; None``
+            
+            Callback Parameters
+                arbiter : `Arbiter`
+                    The Arbiter
+                args
+                    Optional parameters passed to the callback function.
+                kwargs
+                    Optional keyword parameters passed on to the callback function.
+                    
+        .. warning::
+            
+            Do not hold on to the Arbiter after the callback!                
         """
-        arbs = []
+        
         def impl(body, _arbiter, _):
-            arbs.append(Arbiter(_arbiter, self._space))
+            arbiter = Arbiter(_arbiter, self._space)
+            func(arbiter, *args, **kwargs)
             return 0
         f = cp.cpBodyArbiterIteratorFunc(impl)
         cp.cpBodyEachArbiter(self._body, f, None)
-        return arbs
         
     </div>
 <div class="viewcode-block" id="Body.local_to_world"><a class="viewcode-back" href="../pymunk.html#pymunk.Body.local_to_world">[docs]</a>    def local_to_world(self, v):
@@ -1468,10 +1481,12 @@ moment.
     """Arbiters are collision pairs between shapes that are used with the 
     collision callbacks.
     
-    *IMPORTANT:* Because arbiters are handled by the space you should never 
-    hold onto a reference to an arbiter as you don't know when it will be 
-    destroyed! Use them within the callback where they are given to you and 
-    then forget about them or copy out the information you need from them.
+    .. Warning::
+        Because arbiters are handled by the space you should never 
+        hold onto a reference to an arbiter as you don't know when it will be 
+        destroyed! Use them within the callback where they are given to you 
+        and then forget about them or copy out the information you need from 
+        them.
     """
     def __init__(self, _arbiter, space):
         """Initialize an Arbiter object from the Chipmunk equivalent struct 
