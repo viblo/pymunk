@@ -59,8 +59,8 @@ Contact & Support
     http://code.google.com/p/pymunk/
     
 Regardless of the method you use I will try to answer your questions as soon 
-as I see them. (And if you ask on on SO or the forum other people might help 
-as well!)
+as I see them. (And if you ask on SO or the forum other people might help as 
+well!)
     
 .. attention::
     If you like pymunk and find it useful and have a few minutes to spare I 
