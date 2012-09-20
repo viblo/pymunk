@@ -40,6 +40,8 @@ import pygame
 import pymunk
 from pymunk.vec2d import Vec2d
 
+flip_y = True
+"""Flip the y cooridnate to make y point upwards"""
 
 
 def draw_space(surface, space):
@@ -224,7 +226,10 @@ def to_pygame(p, surface):
     """Convenience method to convert pymunk coordinates to pygame surface 
     local coordinates
     """
-    return int(p[0]), surface.get_height()-int(p[1])
+    if flip_y:
+        return int(p[0]), surface.get_height()-int(p[1])
+    else:
+        return int(p[0]), int(p[1])
     
 def from_pygame(p, surface):
     """Convenience method to convert pygame surface local coordinates to 
