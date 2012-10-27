@@ -71,10 +71,12 @@ def on_draw():
             
 def update(dt):
     dt = 1.0/60. #override dt to keep physics simulation stable
-    for x in range(1):
-        space.step(dt)
+    space.step(dt)
+    
     for sprite in logos:
-        sprite.rotation = math.degrees(-sprite.body.angle)+180
+        # We need to rotate the image 180 degrees because we have y pointing 
+        # up in pymunk coords.
+        sprite.rotation = math.degrees(-sprite.body.angle) + 180
         sprite.set_position(sprite.body.position.x, sprite.body.position.y)
         
 def spawn_logo(dt):
