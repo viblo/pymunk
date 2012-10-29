@@ -116,7 +116,7 @@ __all__ = ["Vec2d"]
         """Used by ctypes to automatically create Vec2ds"""
         return cls(arg)
         </div>
-    def __init__(self, x_or_pair=None, y = None):
+<div class="viewcode-block" id="Vec2d.__init__"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.__init__">[docs]</a>    def __init__(self, x_or_pair=None, y = None):
         if x_or_pair != None:
             if y == None:
                 self.x = x_or_pair[0]
@@ -124,7 +124,7 @@ __all__ = ["Vec2d"]
             else:
                 self.x = x_or_pair
                 self.y = y
- 
+ </div>
     def __len__(self):
         return 2
  

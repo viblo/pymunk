@@ -118,7 +118,7 @@ distribution (i.e. not in a checked-out copy from svn).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02D58EF0&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02CBF0B0&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -143,6 +143,31 @@ chipmunk_src folder (normally included in the pymunk source distribution).</p>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Spaces are the basic unit of simulation. You add rigid bodies, shapes 
 and joints to it and then step them all forward together through time.</p>
+<dl class="method">
+<dt id="pymunk.Space.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>iterations=10</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new instace of the Space</p>
+<p>Its usually best to keep the elastic_iterations setting to 0. Only 
+change if you have problem with stacking elastic objects on each other. 
+If that is the case, try to raise it. However, a value other than 0 
+will affect other parts, most importantly you wont get reliable 
+total_impulse readings from the <cite>Arbiter</cite> object in collsion callbacks!</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<dt>iterations <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of iterations to use in the impulse solver to solve 
+contacts.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="pymunk.Space.add">
 <tt class="descname">add</tt><big>(</big><em>*objs</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.add" title="Permalink to this definition">¶</a></dt>
@@ -656,6 +681,13 @@ you are doing. Otherwise you&#8217;re likely to get the position/velocity badly
 out of sync.</li>
 </ul>
 <dl class="method">
+<dt id="pymunk.Body.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>mass=None</em>, <em>moment=None</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Body.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new Body</p>
+<p>To create a static body, pass in None for mass and moment.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pymunk.Body.activate">
 <tt class="descname">activate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk.html#Body.activate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wake up a sleeping or idle body.</p>
@@ -947,6 +979,11 @@ is called each time step, and can be used to set a body&#8217;s velocity.</p>
 <p>Base class for all the shapes.</p>
 <p>You usually dont want to create instances of this class directly but use 
 one of the specialized shapes instead.</p>
+<dl class="method">
+<dt id="pymunk.Shape.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>shape=None</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Shape.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Shape.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.Shape.body">
 <tt class="descname">body</tt><a class="headerlink" href="#pymunk.Shape.body" title="Permalink to this definition">¶</a></dt>
@@ -1117,6 +1154,13 @@ when calculating friction, not resolving the collision.</p>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.Shape" title="pymunk.Shape"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.Shape</span></tt></a></p>
 <p>A circle shape defined by a radius</p>
 <p>This is the fastest and simplest collision shape</p>
+<dl class="method">
+<dt id="pymunk.Circle.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>body</em>, <em>radius</em>, <em>offset=(0</em>, <em>0)</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Circle.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Circle.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>body is the body attach the circle to, offset is the offset from the
+body&#8217;s center of gravity in body local coordinates.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.Circle.body">
 <tt class="descname">body</tt><a class="headerlink" href="#pymunk.Circle.body" title="Permalink to this definition">¶</a></dt>
@@ -1325,6 +1369,26 @@ what you are doing!</p>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.Shape" title="pymunk.Shape"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.Shape</span></tt></a></p>
 <p>A convex polygon shape</p>
 <p>Slowest, but most flexible collision shape.</p>
+<dl class="method">
+<dt id="pymunk.Poly.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>body</em>, <em>vertices</em>, <em>offset=(0</em>, <em>0)</em>, <em>auto_order_vertices=True</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Poly.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a polygon</p>
+<dl class="docutils">
+<dt>body <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Body</cite></span></dt>
+<dd>The body to attach the poly to</dd>
+<dt>vertices <span class="classifier-delimiter">:</span> <span class="classifier">[(x,y)] or [<cite>Vec2d</cite>]</span></dt>
+<dd>Define a convex hull of the polygon with a counterclockwise
+winding.</dd>
+<dt>offset <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
+<dd>The offset from the body&#8217;s center of gravity in body local 
+coordinates.</dd>
+<dt>auto_order_vertices <span class="classifier-delimiter">:</span> <span class="classifier">bool </span></dt>
+<dd>Set to True to automatically order the vertices. If you know 
+the vertices are in the correct (clockwise) orded you can gain 
+a little performance by setting this to False.</dd>
+</dl>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.Poly.body">
 <tt class="descname">body</tt><a class="headerlink" href="#pymunk.Poly.body" title="Permalink to this definition">¶</a></dt>
@@ -1517,6 +1581,34 @@ when calculating friction, not resolving the collision.</p>
 <p>This shape can be attached to moving bodies, but don&#8217;t currently generate 
 collisions with other line segments. Can be beveled in order to give it a 
 thickness.</p>
+<dl class="method">
+<dt id="pymunk.Segment.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>body</em>, <em>a</em>, <em>b</em>, <em>radius</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Segment.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Segment.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Segment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<dt>body <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Body</cite></span></dt>
+<dd><p class="first last">The body to attach the segment to</p>
+</dd>
+<dt>a <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
+<dd><p class="first last">The first endpoint of the segment</p>
+</dd>
+<dt>b <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
+<dd><p class="first last">The second endpoint of the segment</p>
+</dd>
+<dt>radius <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The thickness of the segment</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.Segment.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.Segment.a" title="Permalink to this definition">¶</a></dt>
@@ -1742,6 +1834,13 @@ there might be (very) slight differences in the simulation.</p>
 they also return where a shape was hit and it&#8217;s surface normal at the hit 
 point. This object hold that information.</p>
 <dl class="method">
+<dt id="pymunk.SegmentQueryInfo.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>shape</em>, <em>start</em>, <em>end</em>, <em>t</em>, <em>n</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#SegmentQueryInfo.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.SegmentQueryInfo.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>You shouldn&#8217;t need to initialize SegmentQueryInfo objects on your 
+own.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pymunk.SegmentQueryInfo.get_hit_distance">
 <tt class="descname">get_hit_distance</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pymunk.html#SegmentQueryInfo.get_hit_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.SegmentQueryInfo.get_hit_distance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the absolute distance where the segment first hit the shape</p>
@@ -1779,6 +1878,16 @@ intersected with the shape</p>
 <em class="property">class </em><tt class="descclassname">pymunk.</tt><tt class="descname">Contact</tt><big>(</big><em>_contact</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Contact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Contact" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Contact information</p>
+<dl class="method">
+<dt id="pymunk.Contact.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>_contact</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Contact.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Contact.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a Contact object from the Chipmunk equivalent struct</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You should never need to create an instance of this class directly.</p>
+</div>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.Contact.distance">
 <tt class="descname">distance</tt><a class="headerlink" href="#pymunk.Contact.distance" title="Permalink to this definition">¶</a></dt>
@@ -1813,6 +1922,17 @@ destroyed! Use them within the callback where they are given to you
 and then forget about them or copy out the information you need from 
 them.</p>
 </div>
+<dl class="method">
+<dt id="pymunk.Arbiter.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>_arbiter</em>, <em>space</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Arbiter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Arbiter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize an Arbiter object from the Chipmunk equivalent struct 
+and the Space.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You should never need to create an instance of this class directly.</p>
+</div>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.Arbiter.contacts">
 <tt class="descname">contacts</tt><a class="headerlink" href="#pymunk.Arbiter.contacts" title="Permalink to this definition">¶</a></dt>
@@ -1890,6 +2010,14 @@ not dynamic friction.</p>
 <em class="property">class </em><tt class="descclassname">pymunk.</tt><tt class="descname">BB</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#BB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.BB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Simple bounding box class. Stored as left, bottom, right, top values.</p>
+<dl class="method">
+<dt id="pymunk.BB.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#BB.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.BB.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new instance of a bounding box. Can be created with zero 
+size with bb = BB() or with four args defining left, bottom, right and
+top: bb = BB(left, bottom, right, top)</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.BB.bottom">
 <tt class="descname">bottom</tt><a class="headerlink" href="#pymunk.BB.bottom" title="Permalink to this definition">¶</a></dt>

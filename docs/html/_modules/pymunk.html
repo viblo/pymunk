@@ -154,7 +154,7 @@ moment.
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes 
     and joints to it and then step them all forward together through time. 
     """
-    def __init__(self, iterations=10):
+<div class="viewcode-block" id="Space.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.__init__">[docs]</a>    def __init__(self, iterations=10):
         """Create a new instace of the Space
         
         Its usually best to keep the elastic_iterations setting to 0. Only 
@@ -182,7 +182,7 @@ moment.
         #self._static_shapes = {}
         self._bodies = set()
         self._constraints = set()
-
+</div>
     def _get_shapes(self):
         return list(self._shapes.values())
     shapes = property(_get_shapes, 
@@ -801,7 +801,7 @@ moment.
       you are doing. Otherwise you're likely to get the position/velocity badly 
       out of sync. 
     """
-    def __init__(self, mass=None, moment=None):
+<div class="viewcode-block" id="Body.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.Body.__init__">[docs]</a>    def __init__(self, mass=None, moment=None):
         """Create a new Body
         
         To create a static body, pass in None for mass and moment.
@@ -815,7 +815,7 @@ moment.
         self._velocity_callback = None # To prevent the gc to collect the callbacks.
         
         self._space = None # Weak ref to the space holding this body (if any)
-        
+        </div>
     def __del__(self):
         if cp is not None:
             cp.cpBodyFree(self._body)
@@ -1084,12 +1084,12 @@ moment.
     You usually dont want to create instances of this class directly but use 
     one of the specialized shapes instead.
     """
-    def __init__(self, shape=None):
+<div class="viewcode-block" id="Shape.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.Shape.__init__">[docs]</a>    def __init__(self, shape=None):
         self._shape = shape
         self._shapecontents = self._shape.contents
         self._body = shape.body
         self.data = None
-
+</div>
     def __del__(self):
         if cp is not None:
             cp.cpShapeFree(self._shape)
@@ -1216,7 +1216,7 @@ moment.
     they also return where a shape was hit and it's surface normal at the hit 
     point. This object hold that information.
     """
-    def __init__(self, shape, start, end, t, n):
+<div class="viewcode-block" id="SegmentQueryInfo.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.SegmentQueryInfo.__init__">[docs]</a>    def __init__(self, shape, start, end, t, n):
         """You shouldn't need to initialize SegmentQueryInfo objects on your 
         own.
         """
@@ -1225,7 +1225,7 @@ moment.
         self._n = n
         self._start = start
         self._end = end
-        
+        </div>
     def __repr__(self):
         return "SegmentQueryInfo(%s, %s, %s, %s, %s)" % (self.shape, self._start, self._end, self.t, self.n)
             
@@ -1257,14 +1257,14 @@ moment.
     
     This is the fastest and simplest collision shape
     """
-    def __init__(self, body, radius, offset = (0, 0)):
+<div class="viewcode-block" id="Circle.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.Circle.__init__">[docs]</a>    def __init__(self, body, radius, offset = (0, 0)):
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates."""
         self._body = body
         self._shape = cp.cpCircleShapeNew(body._body, radius, offset)
         self._shapecontents = self._shape.contents
         self._cs = ct.cast(self._shape, ct.POINTER(cp.cpCircleShape))
-        
+        </div>
 <div class="viewcode-block" id="Circle.unsafe_set_radius"><a class="viewcode-back" href="../pymunk.html#pymunk.Circle.unsafe_set_radius">[docs]</a>    def unsafe_set_radius(self, r):
         """Unsafe set the radius of the circle. 
     
@@ -1303,7 +1303,7 @@ moment.
     collisions with other line segments. Can be beveled in order to give it a 
     thickness. 
     """
-    def __init__(self, body, a, b, radius):
+<div class="viewcode-block" id="Segment.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.Segment.__init__">[docs]</a>    def __init__(self, body, a, b, radius):
         """Create a Segment
         
         :Parameters:
@@ -1319,7 +1319,7 @@ moment.
         self._body = body
         self._shape = cp.cpSegmentShapeNew(body._body, a, b, radius)
         self._shapecontents = self._shape.contents
-    
+    </div>
     def _set_a(self, a):
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a = a
     def _get_a(self):
@@ -1347,7 +1347,7 @@ moment.
     
     Slowest, but most flexible collision shape. 
     """
-    def __init__(self, body, vertices, offset=(0, 0), auto_order_vertices=True):
+<div class="viewcode-block" id="Poly.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.__init__">[docs]</a>    def __init__(self, body, vertices, offset=(0, 0), auto_order_vertices=True):
         """Create a polygon
         
             body : `Body`
@@ -1380,7 +1380,7 @@ moment.
 
         self._shape = cp.cpPolyShapeNew(body._body, len(vertices), self.verts, offset)
         self._shapecontents = self._shape.contents
-        
+        </div>
     @staticmethod
 <div class="viewcode-block" id="Poly.create_box"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.create_box">[docs]</a>    def create_box(body, size=(10,10)): 
         """Convenience function to create a box centered around the body position."""
@@ -1444,7 +1444,7 @@ moment.
     </div>
 <div class="viewcode-block" id="Contact"><a class="viewcode-back" href="../pymunk.html#pymunk.Contact">[docs]</a>class Contact(object):
     """Contact information"""
-    def __init__(self, _contact):
+<div class="viewcode-block" id="Contact.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.Contact.__init__">[docs]</a>    def __init__(self, _contact):
         """Initialize a Contact object from the Chipmunk equivalent struct
         
         .. note:: 
@@ -1454,7 +1454,7 @@ moment.
         self._normal = _contact.normal
         self._dist = _contact.dist
         #self._contact = contact
-
+</div>
     def __repr__(self):
         return "Contact(p: %s, n: %s, d: %s)" % (self.position, self.normal, self.distance)
         
@@ -1483,7 +1483,7 @@ moment.
         and then forget about them or copy out the information you need from 
         them.
     """
-    def __init__(self, _arbiter, space):
+<div class="viewcode-block" id="Arbiter.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.Arbiter.__init__">[docs]</a>    def __init__(self, _arbiter, space):
         """Initialize an Arbiter object from the Chipmunk equivalent struct 
         and the Space.
         
@@ -1495,7 +1495,7 @@ moment.
         self._arbitercontents = self._arbiter.contents
         self._space = space
         self._contacts = None # keep a lazy loaded cache of converted contacts
-    
+    </div>
     def _get_contacts(self):
         point_set = cp.cpArbiterGetContactPointSet(self._arbiter)
         
@@ -1579,7 +1579,7 @@ moment.
     </div>
 <div class="viewcode-block" id="BB"><a class="viewcode-back" href="../pymunk.html#pymunk.BB">[docs]</a>class BB(object):
     """Simple bounding box class. Stored as left, bottom, right, top values."""
-    def __init__(self, *args):
+<div class="viewcode-block" id="BB.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.BB.__init__">[docs]</a>    def __init__(self, *args):
         """Create a new instance of a bounding box. Can be created with zero 
         size with bb = BB() or with four args defining left, bottom, right and
         top: bb = BB(left, bottom, right, top)
@@ -1590,7 +1590,7 @@ moment.
             self._bb = args[0]
         else:
             self._bb = cpffi.cpBBNew(args[0], args[1], args[2], args[3])
-            
+            </div>
     def __repr__(self):
         return 'BB(%s, %s, %s, %s)' % (self.left, self.bottom, self.right, self.top)
         

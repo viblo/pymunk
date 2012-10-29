@@ -78,6 +78,11 @@ allowfullscreen></iframe><dl class="class">
 <p>Base class of all constraints.</p>
 <p>You usually don&#8217;t want to create instances of this class directly, but 
 instead use one of the specific constraints such as the PinJoint.</p>
+<dl class="method">
+<dt id="pymunk.constraint.Constraint.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>constraint=None</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#Constraint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.Constraint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.Constraint.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.Constraint.a" title="Permalink to this definition">¶</a></dt>
@@ -130,6 +135,31 @@ bodies. Defaults to infinity</p>
 <em class="property">class </em><tt class="descclassname">pymunk.constraint.</tt><tt class="descname">DampedRotarySpring</tt><big>(</big><em>a</em>, <em>b</em>, <em>rest_angle</em>, <em>stiffness</em>, <em>damping</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#DampedRotarySpring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></tt></a></p>
 <p>Like a damped spring, but works in an angular fashion</p>
+<dl class="method">
+<dt id="pymunk.constraint.DampedRotarySpring.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>a</em>, <em>b</em>, <em>rest_angle</em>, <em>stiffness</em>, <em>damping</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#DampedRotarySpring.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like a damped spring, but works in an angular fashion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<dt>rest_angle</dt>
+<dd><p class="first last">The relative angle in radians that the bodies want to have</p>
+</dd>
+<dt>stiffness</dt>
+<dd><p class="first last">The spring constant (Young&#8217;s modulus).</p>
+</dd>
+<dt>damping</dt>
+<dd><p class="first last">How soft to make the damping of the spring.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.DampedRotarySpring.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.a" title="Permalink to this definition">¶</a></dt>
@@ -215,6 +245,37 @@ bodies. Defaults to infinity</p>
 <em class="property">class </em><tt class="descclassname">pymunk.constraint.</tt><tt class="descname">DampedSpring</tt><big>(</big><em>a</em>, <em>b</em>, <em>anchr1</em>, <em>anchr2</em>, <em>rest_length</em>, <em>stiffness</em>, <em>damping</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#DampedSpring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedSpring" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></tt></a></p>
 <p>A damped spring</p>
+<dl class="method">
+<dt id="pymunk.constraint.DampedSpring.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>a</em>, <em>b</em>, <em>anchr1</em>, <em>anchr2</em>, <em>rest_length</em>, <em>stiffness</em>, <em>damping</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#DampedSpring.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedSpring.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defined much like a slide joint.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<dt>anchr1 <span class="classifier-delimiter">:</span> <span class="classifier">Vec2d or (x,y)</span></dt>
+<dd><p class="first last">Anchor point 1, relative to body a</p>
+</dd>
+<dt>anchr2 <span class="classifier-delimiter">:</span> <span class="classifier">Vec2d or (x,y)</span></dt>
+<dd><p class="first last">Anchor point 2, relative to body b</p>
+</dd>
+<dt>rest_length <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The distance the spring wants to be.</p>
+</dd>
+<dt>stiffness <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The spring constant (Young&#8217;s modulus).</p>
+</dd>
+<dt>damping <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">How soft to make the damping of the spring.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.DampedSpring.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.DampedSpring.a" title="Permalink to this definition">¶</a></dt>
@@ -295,6 +356,15 @@ bodies. Defaults to infinity</p>
 <em class="property">class </em><tt class="descclassname">pymunk.constraint.</tt><tt class="descname">GearJoint</tt><big>(</big><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratio</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#GearJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GearJoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></tt></a></p>
 <p>Keeps the angular velocity ratio of a pair of bodies constant.</p>
+<dl class="method">
+<dt id="pymunk.constraint.GearJoint.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratio</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#GearJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GearJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keeps the angular velocity ratio of a pair of bodies constant. 
+ratio is always measured in absolute terms. It is currently not 
+possible to set the ratio in relation to a third body&#8217;s angular 
+velocity. phase is the initial angular offset of the two bodies.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.GearJoint.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.GearJoint.a" title="Permalink to this definition">¶</a></dt>
@@ -358,6 +428,13 @@ bodies. Defaults to infinity</p>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></tt></a></p>
 <p>Similar to a pivot joint, but one of the anchors is
 on a linear slide instead of being fixed.</p>
+<dl class="method">
+<dt id="pymunk.constraint.GrooveJoint.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>a</em>, <em>b</em>, <em>groove_a</em>, <em>groove_b</em>, <em>anchr2</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#GrooveJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GrooveJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>The groove goes from groove_a to groove_b on body a, and the pivot 
+is attached to anchr2 on body b. All coordinates are body local.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.GrooveJoint.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.GrooveJoint.a" title="Permalink to this definition">¶</a></dt>
@@ -425,6 +502,13 @@ bodies. Defaults to infinity</p>
 <em class="property">class </em><tt class="descclassname">pymunk.constraint.</tt><tt class="descname">PinJoint</tt><big>(</big><em>a</em>, <em>b</em>, <em>anchr1=(0</em>, <em>0)</em>, <em>anchr2=(0</em>, <em>0)</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#PinJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.PinJoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></tt></a></p>
 <p>Keeps the anchor points at a set distance from one another.</p>
+<dl class="method">
+<dt id="pymunk.constraint.PinJoint.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>a</em>, <em>b</em>, <em>anchr1=(0</em>, <em>0)</em>, <em>anchr2=(0</em>, <em>0)</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#PinJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.PinJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>a and b are the two bodies to connect, and anchr1 and anchr2 are the
+anchor points on those bodies.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.PinJoint.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.PinJoint.a" title="Permalink to this definition">¶</a></dt>
@@ -492,6 +576,30 @@ bodies. Defaults to infinity</p>
 <em class="property">class </em><tt class="descclassname">pymunk.constraint.</tt><tt class="descname">PivotJoint</tt><big>(</big><em>a</em>, <em>b</em>, <em>*args</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#PivotJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.PivotJoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></tt></a></p>
 <p>Simply allow two objects to pivot about a single point.</p>
+<dl class="method">
+<dt id="pymunk.constraint.PivotJoint.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>a</em>, <em>b</em>, <em>*args</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#PivotJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.PivotJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>a and b are the two bodies to connect, and pivot is the point in
+world coordinates of the pivot. Because the pivot location is given in
+world coordinates, you must have the bodies moved into the correct
+positions already. 
+Alternatively you can specify the joint based on a pair of anchor 
+points, but make sure you have the bodies in the right place as the 
+joint will fix itself as soon as you start simulating the space.</p>
+<p>That is, either create the joint with PivotJoint(a, b, pivot) or 
+PivotJoint(a, b, anchr1, anchr2).</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>a <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Body</cite></span></dt>
+<dd>The first of the two bodies</dd>
+<dt>b <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Body</cite></span></dt>
+<dd>The second of the two bodies</dd>
+<dt>args <span class="classifier-delimiter">:</span> <span class="classifier">[Vec2d] or [Vec2d,Vec2d]</span></dt>
+<dd>Either one pivot point, or two anchor points</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.PivotJoint.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.PivotJoint.a" title="Permalink to this definition">¶</a></dt>
@@ -554,6 +662,14 @@ bodies. Defaults to infinity</p>
 <em class="property">class </em><tt class="descclassname">pymunk.constraint.</tt><tt class="descname">RatchetJoint</tt><big>(</big><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratchet</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#RatchetJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.RatchetJoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></tt></a></p>
 <p>Works like a socket wrench.</p>
+<dl class="method">
+<dt id="pymunk.constraint.RatchetJoint.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratchet</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#RatchetJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.RatchetJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Works like a socket wrench. ratchet is the distance between 
+&#8220;clicks&#8221;, phase is the initial offset to use when deciding where the 
+ratchet angles are.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.RatchetJoint.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.RatchetJoint.a" title="Permalink to this definition">¶</a></dt>
@@ -621,6 +737,14 @@ bodies. Defaults to infinity</p>
 <em class="property">class </em><tt class="descclassname">pymunk.constraint.</tt><tt class="descname">RotaryLimitJoint</tt><big>(</big><em>a</em>, <em>b</em>, <em>min</em>, <em>max</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#RotaryLimitJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.RotaryLimitJoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></tt></a></p>
 <p>Constrains the relative rotations of two bodies.</p>
+<dl class="method">
+<dt id="pymunk.constraint.RotaryLimitJoint.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>a</em>, <em>b</em>, <em>min</em>, <em>max</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#RotaryLimitJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.RotaryLimitJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constrains the relative rotations of two bodies. min and max are 
+the angular limits in radians. It is implemented so that it&#8217;s possible 
+to for the range to be greater than a full revolution.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.RotaryLimitJoint.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.RotaryLimitJoint.a" title="Permalink to this definition">¶</a></dt>
@@ -683,6 +807,15 @@ bodies. Defaults to infinity</p>
 <em class="property">class </em><tt class="descclassname">pymunk.constraint.</tt><tt class="descname">SimpleMotor</tt><big>(</big><em>a</em>, <em>b</em>, <em>rate</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#SimpleMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.SimpleMotor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></tt></a></p>
 <p>Keeps the relative angular velocity of a pair of bodies constant.</p>
+<dl class="method">
+<dt id="pymunk.constraint.SimpleMotor.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>a</em>, <em>b</em>, <em>rate</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#SimpleMotor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.SimpleMotor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keeps the relative angular velocity of a pair of bodies constant. 
+rate is the desired relative angular velocity. You will usually want 
+to set an force (torque) maximum for motors as otherwise they will be 
+able to apply a nearly infinite torque to keep the bodies moving.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.SimpleMotor.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.SimpleMotor.a" title="Permalink to this definition">¶</a></dt>
@@ -743,6 +876,14 @@ bodies. Defaults to infinity</p>
 <p>Like pin joints, but have a minimum and maximum distance.
 A chain could be modeled using this joint. It keeps the anchor points 
 from getting to far apart, but will allow them to get closer together.</p>
+<dl class="method">
+<dt id="pymunk.constraint.SlideJoint.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>a</em>, <em>b</em>, <em>anchr1</em>, <em>anchr2</em>, <em>min</em>, <em>max</em><big>)</big><a class="reference internal" href="_modules/pymunk/constraint.html#SlideJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.SlideJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>a and b are the two bodies to connect, anchr1 and anchr2 are the
+anchor points on those bodies, and min and max define the allowed
+distances of the anchor points.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.SlideJoint.a">
 <tt class="descname">a</tt><a class="headerlink" href="#pymunk.constraint.SlideJoint.a" title="Permalink to this definition">¶</a></dt>

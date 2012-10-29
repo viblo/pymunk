@@ -105,10 +105,10 @@ from . import _chipmunk_ffi as cpffi
     You usually don't want to create instances of this class directly, but 
     instead use one of the specific constraints such as the PinJoint.
     """
-    def __init__(self, constraint=None):
+<div class="viewcode-block" id="Constraint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.__init__">[docs]</a>    def __init__(self, constraint=None):
         self._constraint = constraint
         self._ccontents = self._constraint.contents
-        
+        </div>
     def _get_max_force(self):
         return self._ccontents.maxForce
     def _set_max_force(self, f):
@@ -155,7 +155,7 @@ from . import _chipmunk_ffi as cpffi
 </div>
 <div class="viewcode-block" id="PinJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PinJoint">[docs]</a>class PinJoint(Constraint):
     """Keeps the anchor points at a set distance from one another."""
-    def __init__(self, a, b, anchr1=(0,0), anchr2=(0,0)):
+<div class="viewcode-block" id="PinJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PinJoint.__init__">[docs]</a>    def __init__(self, a, b, anchr1=(0,0), anchr2=(0,0)):
         """a and b are the two bodies to connect, and anchr1 and anchr2 are the
         anchor points on those bodies.
         """
@@ -166,7 +166,7 @@ from . import _chipmunk_ffi as cpffi
         self._a = a
         self._b = b
         
-        
+        </div>
     def _get_anchr1(self):
         return self._pjc.anchr1
     def _set_anchr1(self, anchr):
@@ -190,7 +190,7 @@ from . import _chipmunk_ffi as cpffi
     A chain could be modeled using this joint. It keeps the anchor points 
     from getting to far apart, but will allow them to get closer together.
     """
-    def __init__(self, a, b, anchr1, anchr2, min, max):
+<div class="viewcode-block" id="SlideJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SlideJoint.__init__">[docs]</a>    def __init__(self, a, b, anchr1, anchr2, min, max):
         """a and b are the two bodies to connect, anchr1 and anchr2 are the
         anchor points on those bodies, and min and max define the allowed
         distances of the anchor points.
@@ -200,7 +200,7 @@ from . import _chipmunk_ffi as cpffi
         self._sjc = cp.cast(self._constraint, ct.POINTER(cp.cpSlideJoint)).contents
         self._a = a
         self._b = b
-        
+        </div>
     def _get_anchr1(self):
         return self._sjc.anchr1
     def _set_anchr1(self, anchr):
@@ -227,7 +227,7 @@ from . import _chipmunk_ffi as cpffi
         </div>
 <div class="viewcode-block" id="PivotJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PivotJoint">[docs]</a>class PivotJoint(Constraint):
     """Simply allow two objects to pivot about a single point."""
-    def __init__(self, a, b, *args):
+<div class="viewcode-block" id="PivotJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PivotJoint.__init__">[docs]</a>    def __init__(self, a, b, *args):
         """a and b are the two bodies to connect, and pivot is the point in
         world coordinates of the pivot. Because the pivot location is given in
         world coordinates, you must have the bodies moved into the correct
@@ -258,7 +258,7 @@ from . import _chipmunk_ffi as cpffi
         self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPivotJoint)).contents
         self._a = a
         self._b = b
-    
+    </div>
     def _get_anchr1(self):
         return self._pjc.anchr1
     def _set_anchr1(self, anchr):
@@ -275,7 +275,7 @@ from . import _chipmunk_ffi as cpffi
     """Similar to a pivot joint, but one of the anchors is
     on a linear slide instead of being fixed.
     """
-    def __init__(self, a, b, groove_a, groove_b, anchr2):
+<div class="viewcode-block" id="GrooveJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GrooveJoint.__init__">[docs]</a>    def __init__(self, a, b, groove_a, groove_b, anchr2):
         """The groove goes from groove_a to groove_b on body a, and the pivot 
         is attached to anchr2 on body b. All coordinates are body local. 
         """
@@ -284,7 +284,7 @@ from . import _chipmunk_ffi as cpffi
         self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpGrooveJoint)).contents
         self._a = a
         self._b = b
-        
+        </div>
     def _get_anchr2(self):
         return self._pjc.anchr2
     def _set_anchr2(self, anchr):
@@ -301,7 +301,7 @@ from . import _chipmunk_ffi as cpffi
     </div>
 <div class="viewcode-block" id="DampedSpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring">[docs]</a>class DampedSpring(Constraint):
     """A damped spring"""
-    def __init__(self, a, b, anchr1, anchr2, rest_length, stiffness, damping):
+<div class="viewcode-block" id="DampedSpring.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring.__init__">[docs]</a>    def __init__(self, a, b, anchr1, anchr2, rest_length, stiffness, damping):
         """Defined much like a slide joint. 
         
         :Parameters:
@@ -321,7 +321,7 @@ from . import _chipmunk_ffi as cpffi
         self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedSpring)).contents
         self._a = a
         self._b = b
-        
+        </div>
     def _get_anchr1(self):
         return self._dsc.anchr1
     def _set_anchr1(self, anchr):
@@ -357,7 +357,7 @@ from . import _chipmunk_ffi as cpffi
     </div>
 <div class="viewcode-block" id="DampedRotarySpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedRotarySpring">[docs]</a>class DampedRotarySpring(Constraint):
     """Like a damped spring, but works in an angular fashion"""
-    def __init__(self, a, b, rest_angle, stiffness, damping):
+<div class="viewcode-block" id="DampedRotarySpring.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedRotarySpring.__init__">[docs]</a>    def __init__(self, a, b, rest_angle, stiffness, damping):
         """Like a damped spring, but works in an angular fashion. 
         
         :Parameters:
@@ -373,7 +373,7 @@ from . import _chipmunk_ffi as cpffi
         self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedRotarySpring)).contents
         self._a = a
         self._b = b
-        
+        </div>
     def _get_rest_angle(self):
         return self._dsc.restAngle
     def _set_rest_angle(self, rest_angle):
@@ -416,7 +416,7 @@ from . import _chipmunk_ffi as cpffi
         </div>
 <div class="viewcode-block" id="RotaryLimitJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint">[docs]</a>class RotaryLimitJoint(Constraint):
     """Constrains the relative rotations of two bodies."""
-    def __init__(self, a, b, min, max):
+<div class="viewcode-block" id="RotaryLimitJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint.__init__">[docs]</a>    def __init__(self, a, b, min, max):
         """Constrains the relative rotations of two bodies. min and max are 
         the angular limits in radians. It is implemented so that it's possible 
         to for the range to be greater than a full revolution.
@@ -426,7 +426,7 @@ from . import _chipmunk_ffi as cpffi
         self._rlc = cp.cast(self._constraint, ct.POINTER(cp.cpRotaryLimitJoint)).contents
         self._a = a
         self._b = b
-        
+        </div>
     def _get_min(self):
         return self._rlc.min
     def _set_min(self, min):
@@ -441,7 +441,7 @@ from . import _chipmunk_ffi as cpffi
     </div>
 <div class="viewcode-block" id="RatchetJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint">[docs]</a>class RatchetJoint(Constraint):
     """Works like a socket wrench."""
-    def __init__(self, a, b, phase, ratchet):
+<div class="viewcode-block" id="RatchetJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint.__init__">[docs]</a>    def __init__(self, a, b, phase, ratchet):
         """Works like a socket wrench. ratchet is the distance between 
         "clicks", phase is the initial offset to use when deciding where the 
         ratchet angles are.  
@@ -451,7 +451,7 @@ from . import _chipmunk_ffi as cpffi
         self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpRatchetJoint)).contents
         self._a = a
         self._b = b
-        
+        </div>
     def _get_angle(self):
         return self._dsc.angle
     def _set_angle(self, angle):
@@ -472,7 +472,7 @@ from . import _chipmunk_ffi as cpffi
     </div>
 <div class="viewcode-block" id="GearJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint">[docs]</a>class GearJoint(Constraint):
     """Keeps the angular velocity ratio of a pair of bodies constant."""
-    def __init__(self, a, b, phase, ratio):
+<div class="viewcode-block" id="GearJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint.__init__">[docs]</a>    def __init__(self, a, b, phase, ratio):
         """Keeps the angular velocity ratio of a pair of bodies constant. 
         ratio is always measured in absolute terms. It is currently not 
         possible to set the ratio in relation to a third body's angular 
@@ -483,7 +483,7 @@ from . import _chipmunk_ffi as cpffi
         self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpGearJoint)).contents
         self._a = a
         self._b = b
-        
+        </div>
     def _get_phase(self):
         return self._dsc.phase
     def _set_phase(self, phase):
@@ -498,7 +498,7 @@ from . import _chipmunk_ffi as cpffi
     </div>
 <div class="viewcode-block" id="SimpleMotor"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor">[docs]</a>class SimpleMotor(Constraint):
     """Keeps the relative angular velocity of a pair of bodies constant."""
-    def __init__(self, a, b, rate):
+<div class="viewcode-block" id="SimpleMotor.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor.__init__">[docs]</a>    def __init__(self, a, b, rate):
         """Keeps the relative angular velocity of a pair of bodies constant. 
         rate is the desired relative angular velocity. You will usually want 
         to set an force (torque) maximum for motors as otherwise they will be 
@@ -509,7 +509,7 @@ from . import _chipmunk_ffi as cpffi
         self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpSimpleMotor)).contents
         self._a = a
         self._b = b
-        
+        </div>
     def _get_rate(self):
         return self._dsc.rate
     def _set_rate(self, rate):
