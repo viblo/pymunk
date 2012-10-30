@@ -24,6 +24,25 @@ class UnitTestShape(unittest.TestCase):
         self.assertEqual(info.get_hit_distance(), 45)
         self.assertAlmostEqual(info.n.y, -1.0)
         
+    def testCircleBB(self):
+        s = p.Space()
+        b = p.Body(10,10)
+        c = p.Circle(b,5)
+        
+        c.cache_bb()
+        
+        self.assertEqual(c.bb, p.BB(-5.0, -5.0, 5.0, 5.0))
+        
+    def testSCircleNoBody(self):
+        s = p.Space()
+        c = p.Circle(None,5)
+        
+        c.update((10,10),(1,0))
+        
+        self.assertEqual(c.bb, p.BB(5.0, 5.0, 15.0, 15.0))
+        
+        
+        
     
 ####################################################################
 if __name__ == "__main__":

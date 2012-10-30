@@ -31,6 +31,8 @@ cpBBContainsVect = (function_pointer(c_int, cpBB, cpVect)).in_dll(chipmunk_lib, 
 cpBBMerge = (function_pointer(cpBB, cpBB, cpBB)).in_dll(chipmunk_lib, '_cpBBMerge')
 cpBBExpand = (function_pointer(cpBB, cpBB, cpVect)).in_dll(chipmunk_lib, '_cpBBExpand')
 
+cpShapeGetBB = (function_pointer(cpBB, POINTER(cpShape))).in_dll(chipmunk_lib, '_cpShapeGetBB')
+
 #unused for now..
 #cpGrooveJointGetGrooveA = (function_pointer(cpVect, POINTER(cpGrooveJoint))).in_dll(chipmunk_lib, '_cpGrooveJointGetGrooveA')
 #cpGrooveJointGetGrooveB = (function_pointer(cpVect, POINTER(cpGrooveJoint))).in_dll(chipmunk_lib, '_cpGrooveJointGetGrooveA')

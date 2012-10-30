@@ -1138,10 +1138,29 @@ class Shape(object):
     body = property(lambda self: self._body, 
         doc="""The body this shape is attached to""")
 
+    def update(self, position, rotation_vector):
+        """Update, cache and return the bounding box of a shape with an 
+        explicit transformation.
+        
+        Useful if you have a shape without a body and want to use it for 
+        querying.
+        """
+        return BB(cp.cpShapeUpdate(self._shape, position, rotation_vector))
+        
     def cache_bb(self):
         """Update and returns the bouding box of this shape"""
         return BB(cp.cpShapeCacheBB(self._shape))
 
+    def _get_bb(self):
+        return BB(cpffi.cpShapeGetBB(self._shape))
+        
+    bb = property(_get_bb, doc="""The bounding box of the shape.
+    Only guaranteed to be valid after Shape.cache_bb() or Space.step() is 
+    called. Moving a body that a shape is connected to does not update it's 
+    bounding box. For shapes used for queries that aren't attached to bodies, 
+    you can also use Shape.update().
+    """)
+        
     def point_query(self, p):
         """Check if the given point lies within the shape."""
         return bool(cp.cpShapePointQuery(self._shape, p))
@@ -1209,7 +1228,8 @@ class Circle(Shape):
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates."""
         self._body = body
-        self._shape = cp.cpCircleShapeNew(body._body, radius, offset)
+        body_body = None if body is None else body._body
+        self._shape = cp.cpCircleShapeNew(body_body, radius, offset)
         self._shapecontents = self._shape.contents
         self._cs = ct.cast(self._shape, ct.POINTER(cp.cpCircleShape))
         
@@ -1265,7 +1285,8 @@ class Segment(Shape):
                 The thickness of the segment
         """
         self._body = body
-        self._shape = cp.cpSegmentShapeNew(body._body, a, b, radius)
+        body_body = None if body is None else body._body
+        self._shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
         self._shapecontents = self._shape.contents
     
     def _set_a(self, a):
@@ -1325,8 +1346,9 @@ class Poly(Shape):
         for (i, vertex) in i_vs:
             self.verts[i].x = vertex[0]
             self.verts[i].y = vertex[1]
-
-        self._shape = cp.cpPolyShapeNew(body._body, len(vertices), self.verts, offset)
+        
+        body_body = None if body is None else body._body
+        self._shape = cp.cpPolyShapeNew(body_body, len(vertices), self.verts, offset)
         self._shapecontents = self._shape.contents
         
     @staticmethod
