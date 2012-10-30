@@ -33,15 +33,43 @@ class UnitTestShape(unittest.TestCase):
         
         self.assertEqual(c.bb, p.BB(-5.0, -5.0, 5.0, 5.0))
         
-    def testSCircleNoBody(self):
+    def testSegmentBB(self):
+        s = p.Space()
+        b = p.Body(10,10)
+        c = p.Segment(b,(2,2),(2,3),2)
+        
+        c.cache_bb()
+        
+        self.assertEqual(c.bb, p.BB(0, 0, 4.0, 5.0))
+        
+    def testPolyBB(self):
+        s = p.Space()
+        b = p.Body(10,10)
+        c = p.Poly(b,[(2,2),(4,3),(3,5)])
+        
+        c.cache_bb()
+        
+        self.assertEqual(c.bb, p.BB(2, 2, 4, 5))
+        
+    def testCircleNoBody(self):
         s = p.Space()
         c = p.Circle(None,5)
         
         c.update((10,10),(1,0))
         
-        self.assertEqual(c.bb, p.BB(5.0, 5.0, 15.0, 15.0))
+        self.assertEqual(c.bb, p.BB(5, 5, 15, 15))
         
+    def testPolyUnsafeSet(self):
+        s = p.Space()
+        b = p.Body(10,10)
+        c = p.Poly(b,[(2,2), (4,3), (3,5)])
         
+        c.cache_bb()
+        
+        c.unsafe_set_vertices([(0,0), (1,0), (1,1)])
+        c.cache_bb()
+        
+        self.assertEqual(c.bb, p.BB(0, 0, 1, 1))
         
     
 ####################################################################

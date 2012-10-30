@@ -1289,6 +1289,8 @@ class Segment(Shape):
         self._shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
         self._shapecontents = self._shape.contents
     
+    #TODO: Add/rename set methods to unsafe in next major release?
+    
     def _set_a(self, a):
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a = a
     def _get_a(self):
@@ -1335,7 +1337,13 @@ class Poly(Shape):
         
         self._body = body
         self.offset = offset
-        #self.verts = (Vec2d * len(vertices))(*vertices)
+        self._set_verts(vertices, auto_order_vertices)
+                
+        body_body = None if body is None else body._body
+        self._shape = cp.cpPolyShapeNew(body_body, len(vertices), self.verts, offset)
+        self._shapecontents = self._shape.contents
+        
+    def _set_verts(self, vertices, auto_order_vertices):
         self.verts = (Vec2d * len(vertices))
         self.verts = self.verts(Vec2d(0, 0))
         
@@ -1347,10 +1355,6 @@ class Poly(Shape):
             self.verts[i].x = vertex[0]
             self.verts[i].y = vertex[1]
         
-        body_body = None if body is None else body._body
-        self._shape = cp.cpPolyShapeNew(body_body, len(vertices), self.verts, offset)
-        self._shapecontents = self._shape.contents
-        
     @staticmethod
     def create_box(body, size=(10,10)): 
         """Convenience function to create a box centered around the body position."""
@@ -1359,7 +1363,8 @@ class Poly(Shape):
     
         return Poly(body,vs)
         
-    def get_points(self):
+        
+    def get_points(self): #TODO: Rename to get_vertices in next major version?
         """Get the points in world coordinates for the polygon
         
         :return: [`Vec2d`] in world coords
@@ -1378,6 +1383,17 @@ class Poly(Shape):
             
         return points
 
+    def unsafe_set_vertices(self, vertices, offset=(0, 0), auto_order_vertices=True):
+        """Unsafe set the vertices of the poly. 
+    
+        .. note:: 
+            This change is only picked up as a change to the position 
+            of the shape's surface, but not it's velocity. Changing it will 
+            not result in realistic physical behavior. Only use if you know 
+            what you are doing!
+        """
+        self._set_verts(vertices, auto_order_vertices)
+        cp.cpPolyShapeSetVerts(self._shape, len(vertices), self.verts, offset)
         
 def moment_for_circle(mass, inner_radius, outer_radius, offset=(0, 0)):
     """Calculate the moment of inertia for a circle"""
