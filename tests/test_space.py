@@ -68,11 +68,11 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(len(self.s.bodies), 2)
         self.assertEqual(len(self.s.shapes), 0)
         
-    def testPointQuery(self):
+    def testPointQueryFirst(self):
         self.assertEqual(self.s.point_query_first((31,0)), None)
         self.assertEqual(self.s.point_query_first((10,0)), self.s1)
 
-    def testPointQueryFirst(self):       
+    def testPointQuery(self):       
         b3 = p.Body(1,1)
         b3.position = 19,1
         s3 = p.Circle(b3, 10)

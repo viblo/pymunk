@@ -57,7 +57,7 @@ from .vec2d import Vec2d
 
 from pymunk.constraint import *
 
-version = "3.0.0"
+version = "3.1.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn).
@@ -125,9 +125,11 @@ class Space(object):
         self._default_handler = None
         
         self._post_step_callbacks = {}
+        self._post_callback_keys = {}
+        self._post_last_callback_key = 0
+        self._removed_shapes = {}
         
         self._shapes = {}
-        #self._static_shapes = {}
         self._bodies = set()
         self._constraints = set()
 
@@ -135,11 +137,6 @@ class Space(object):
         return list(self._shapes.values())
     shapes = property(_get_shapes, 
         doc="""A list of all the shapes added to this space (both static and non-static)""")
-
-    # def _get_static_shapes(self):
-        # return list(self._static_shapes.values())
-    # static_shapes = property(_get_static_shapes,
-        # doc="""A list of the static shapes added to this space""")
 
     def _get_bodies(self):
         return list(self._bodies)
@@ -276,15 +273,6 @@ class Space(object):
                 for oo in o:
                     self.add(oo)
                     
-    # def add_static(self, *objs):
-        # """Add one or many static shapes to the space"""
-        # for o in objs:
-            # if isinstance(o, Shape):
-                # self._add_static_shape(o)
-            # else:
-                # for oo in o:
-                    # self.add_static(oo)
-                    
     def remove(self, *objs):
         """Remove one or many shapes, bodies or constraints from the space
         
@@ -303,29 +291,12 @@ class Space(object):
             else:
                 for oo in o:
                     self.remove(oo)
-                    
-    # def remove_static(self, *objs):
-        # """Remove one or many static shapes from the space"""
-        # for o in objs:
-            # if isinstance(o, Shape):
-                # self._remove_static_shape(o)
-            # else:
-                # for oo in o:
-                    # self.remove_static(oo)
-                    
+                                        
     def _add_shape(self, shape):
         """Adds a shape to the space"""
         assert shape._hashid_private not in self._shapes, "shape already added to space"
         self._shapes[shape._hashid_private] = shape
         cp.cpSpaceAddShape(self._space, shape._shape)
-    # def _add_static_shape(self, static_shape):
-        # """Adds a shape to the space. Static shapes should be be attached to 
-        # a rigid body with an infinite mass and moment of inertia. Also, don't 
-        # add the rigid body used to the space, as that will cause it to fall 
-        # under the effects of gravity."""
-        # assert static_shape._hashid_private not in self._static_shapes, "shape already added to space"
-        # self._static_shapes[static_shape._hashid_private] = static_shape
-        # cp.cpSpaceAddStaticShape(self._space, static_shape._shape)
     def _add_body(self, body):
         """Adds a body to the space"""
         assert body not in self._bodies, "body already added to space"
@@ -340,12 +311,11 @@ class Space(object):
 
     def _remove_shape(self, shape):
         """Removes a shape from the space"""
+        #print "REMOVE1", shape._shape.contents.hashid_private
+        #print "REMOVE2", [s._shape.contents.hashid_private for s in self.shapes]
+        self._removed_shapes[shape._hashid_private] = shape
         del self._shapes[shape._hashid_private]
         cp.cpSpaceRemoveShape(self._space, shape._shape)
-    # def _remove_static_shape(self, static_shape):
-        # """Removes a static shape from the space."""
-        # del self._static_shapes[static_shape._hashid_private]
-        # cp.cpSpaceRemoveStaticShape(self._space, static_shape._shape)
     def _remove_body(self, body):
         """Removes a body from the space"""
         body._space = None
@@ -374,10 +344,10 @@ class Space(object):
         contact persistence, requiring an order of magnitude fewer iterations
         to resolve the collisions in the usual case."""
         cp.cpSpaceStep(self._space, dt)
-        
-        for obj, (func, args, kwargs) in self._post_step_callbacks.items():
-            func(obj, *args, **kwargs)
-        self._post_step_callbacks = {}
+        self._removed_shapes = {}
+        #for obj, (func, args, kwargs) in self._post_step_callbacks.items():
+        #    func(obj, *args, **kwargs)
+        #self._post_step_callbacks = {}
     
     def add_collision_handler(self, a, b, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
         """Add a collision handler for given collision type pair. 
@@ -549,9 +519,38 @@ class Space(object):
                 Optional keyword parameters passed on to the callback function.
         
         """
-        if obj in self._post_step_callbacks:
-            return
-        self._post_step_callbacks[obj] = callback_function, args, kwargs
+        
+        
+        def cf(_space, key, data):
+            #print "CALLBACK", key,args[1]
+            #print [s._shape.contents.hashid_private for s in self.shapes]
+            #print key, obj, args, kwargs
+            #print args[1]
+            callback_function(obj, *(args[0],), **kwargs)
+            
+        f = cp.cpPostStepFunc(cf)
+        
+        
+        if obj not in self._post_callback_keys:
+            self._post_last_callback_key += 1
+            self._post_callback_keys[obj] = self._post_last_callback_key
+        
+            self._post_step_callbacks[obj] = [f]
+        else:
+            f = self._post_step_callbacks[obj][0]
+            #self._post_step_callbacks[obj].append(f)
+            
+        #print "ADD CALLBACK", self._post_step_callbacks
+        #key = self._post_callback_keys[obj]
+        key = ct.cast(obj._shape, ct.c_void_p)
+        #print key
+        x = cp.cpSpaceAddPostStepCallback(self._space, f, key, None)
+        # y = cp.cpSpaceAddPostStepCallback(self._space, f, key, None)
+        #print x,y
+        
+        #if obj in self._post_step_callbacks:
+        #    return
+        #self._post_step_callbacks[obj] = callback_function, args, kwargs
         
     def point_query(self, point, layers = -1, group = 0):
         """Query space at point filtering out matches with the given layers 
@@ -572,7 +571,6 @@ class Space(object):
         """
         self.__query_hits = []
         def cf(_shape, data):
-            
             shape = self._get_shape(_shape)
             self.__query_hits.append(shape)
         f = cp.cpSpacePointQueryFunc(cf)
@@ -580,14 +578,30 @@ class Space(object):
         
         return self.__query_hits
     
+    def point_query_first(self, point, layers = -1, group = 0):
+        """Query space at point and return the first shape found matching the 
+        given layers and group. Returns None if no shape was found.
+        
+        :Parameters:    
+            point : (x,y) or `Vec2d`
+                Define where to check for collision in the space.
+            layers : int
+                Only pick shapes matching the bit mask. i.e. 
+                (layers & shape.layers) != 0
+            group : int
+                Only pick shapes in this group.
+        """
+        _shape = cp.cpSpacePointQueryFirst(self._space, point, layers, group)
+        return self._get_shape(_shape)
+        
     def _get_shape(self, _shape):
         if not bool(_shape):
             return None
         hashid_private = _shape.contents.hashid_private
         if hashid_private in self._shapes:
-            shape = self._shapes[hashid_private]
-        elif hashid_private in self._static_shapes:
-            shape = self._static_shapes[hashid_private]
+            shape = self._shapes[hashid_private]        
+        elif hashid_private in self._removed_shapes:
+            shape = self._removed_shapes[hashid_private]
         return shape
         
     def nearest_point_query(self, point, max_distance, layers = -1, group = 0):
@@ -650,21 +664,7 @@ class Space(object):
             return dict(shape=shape, point=info.p, distance=info.d)
         return None        
         
-    def point_query_first(self, point, layers = -1, group = 0):
-        """Query space at point and return the first shape found matching the 
-        given layers and group. Returns None if no shape was found.
-        
-        :Parameters:    
-            point : (x,y) or `Vec2d`
-                Define where to check for collision in the space.
-            layers : int
-                Only pick shapes matching the bit mask. i.e. 
-                (layers & shape.layers) != 0
-            group : int
-                Only pick shapes in this group.
-        """
-        _shape = cp.cpSpacePointQueryFirst(self._space, point, layers, group)
-        return self._get_shape(_shape)
+
         
     def segment_query(self, start, end, layers = -1, group = 0):
         """Query space along the line segment from start to end filtering out 
@@ -1618,7 +1618,7 @@ class BB(object):
     
     def clamp_vect(self, v):
         """Returns a copy of the vector v clamped to the bounding box"""
-        return cp.cpBBClampVect(self._bb, v)
+        return cpffi.cpBBClampVect(self._bb, v)
     
     def wrap_vect(self, v):
         """Returns a copy of v wrapped to the bounding box.

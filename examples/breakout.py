@@ -20,6 +20,11 @@ from pymunk import Vec2d
 import pymunk.pygame_util
 width, height = 600,600
 
+
+import pymunk._chipmunk as cp
+import pymunk._chipmunk_ffi as cpffi
+import ctypes as ct
+
 def spawn_ball(space, position, direction):
     ball_body = pymunk.Body(1, pymunk.inf)
     ball_body.position = position
@@ -62,7 +67,26 @@ def setup_level(space, player_body):
             space.add(brick_body, brick_shape)
     # Make bricks be removed when hit by ball
     def remove_first(space, arbiter):
-        first_shape = arbiter.shapes[0]
+        #print space, arbiter
+        try:
+            first_shape = arbiter.shapes[0] 
+        except Exception, e:
+            print "ERROR"
+            print "ERROR"
+            shapeA_p = ct.POINTER(cp.cpShape)()
+            shapeB_p = ct.POINTER(cp.cpShape)()
+            
+            cpffi.cpArbiterGetShapes(arbiter._arbiter, shapeA_p, shapeB_p)
+            print "A", shapeA_p.contents.hashid_private
+            print "B", shapeB_p.contents.hashid_private
+            for s in space.shapes:
+                print s._shape.contents.hashid_private
+            print "ERROR DONE"
+            print "ERROR DONE"    
+            #print e
+       
+            sys.exit()
+        print "will remove ", first_shape._shape.contents.hashid_private
         space.add_post_step_callback(space.remove, first_shape, first_shape.body)
     space.add_collision_handler(2, 0, separate = remove_first)
 
@@ -109,10 +133,10 @@ def main():
     # restrict movement of player to a straigt line 
     move_joint = pymunk.GrooveJoint(space.static_body, player_body, (100,100), (500,100), (0,0))
     space.add(player_body, player_shape, move_joint)
-    
+    global state
     # Start game
     setup_level(space, player_body)
-    
+    i = 0
     while running:
         for event in pygame.event.get():
             if event.type == QUIT: 
@@ -142,12 +166,19 @@ def main():
         
         ### Draw stuff
         pymunk.pygame_util.draw_space(screen, space)
-           
+        
+
+        state = []
+        for x in space.shapes:
+            s = "%s %s %s" % (x, x.body.position, x.body.velocity)
+            state.append(s)
         ### Update physics
         fps = 60
         dt = 1./fps
+        print "frame #", i, "start"
         space.step(dt)
-        
+        print "frame #", i, "done"
+        i += 1
         ### Info and flip screen
         screen.blit(font.render("fps: " + str(clock.get_fps()), 1, THECOLORS["white"]), (0,0))
         screen.blit(font.render("Move with left/right arrows, space to spawn a ball", 1, THECOLORS["darkgrey"]), (5,height - 35))

@@ -40,9 +40,9 @@
      objecttolerance="10"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.8576723"
-     inkscape:cx="106.5674"
-     inkscape:cy="8.2154989"
+     inkscape:zoom="9.7153446"
+     inkscape:cx="82.228053"
+     inkscape:cy="36.397998"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -59,6 +59,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -113,7 +114,10 @@
        height="21.259544"
        x="4.6177487"
        y="27.094376"
-       ry="0" />
+       ry="0"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\rect3329.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke:#f31700;stroke-width:2.63859582;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3333"
@@ -168,7 +172,10 @@
        sodipodi:start="0.013071863"
        sodipodi:end="6.2959382"
        sodipodi:open="true"
-       transform="matrix(0.05277191,0,0,0.05277191,-72.333638,10.81466)" />
+       transform="matrix(0.05277191,0,0,0.05277191,-72.333638,10.81466)"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3364.png" />
     <path
        sodipodi:type="arc"
        style="fill:#008013;fill-opacity:1;stroke:#000000;stroke-width:16.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -181,7 +188,10 @@
        sodipodi:start="0.013071863"
        sodipodi:end="6.2959382"
        sodipodi:open="true"
-       transform="matrix(0.08465385,0,0,0.05196035,-122.9681,-28.20057)" />
+       transform="matrix(0.08465385,0,0,0.05196035,-122.9681,-28.20057)"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3392b.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
     <path
        transform="matrix(0.07251807,-0.02051282,0.02442251,0.09679253,-58.616082,9.4094902)"
        sodipodi:open="true"
@@ -194,7 +204,10 @@
        sodipodi:cx="968.57141"
        id="path3370"
        style="fill:#ffffff;fill-opacity:1;stroke:none"
-       sodipodi:type="arc" />
+       sodipodi:type="arc"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3392b.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
     <path
        sodipodi:type="arc"
        style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -207,7 +220,10 @@
        sodipodi:start="0.013071863"
        sodipodi:end="6.2959382"
        sodipodi:open="true"
-       transform="matrix(0.06549103,0.0274829,-0.02610833,0.09128204,-33.75314,-36.427591)" />
+       transform="matrix(0.06549103,0.0274829,-0.02610833,0.09128204,-33.75314,-36.427591)"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3392b.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
     <path
        sodipodi:type="arc"
        style="fill:#000000;fill-opacity:1;stroke:none"
@@ -220,30 +236,150 @@
        sodipodi:start="0.013071863"
        sodipodi:end="6.2959382"
        sodipodi:open="true"
-       transform="matrix(0.0579533,0,0,0.05870107,-41.636384,-8.4638113)" />
+       transform="matrix(0.0579533,0,0,0.05870107,-41.636384,-8.4638113)"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3392b.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.26282728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 17.12074,4.8612942 c 1.404194,0.9877931 4.375271,1.7598451 6.801797,0"
        id="path3392"
        sodipodi:nodetypes="cc"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3392b.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
     <path
        style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       d="m 176.37634,11.985583 0,25.927425 5.68272,0 0,-6.550918 6.23522,6.550918 7.93213,0 -8.5241,-8.642476 8.05053,-7.379648 -7.77428,0 -5.9195,5.761651 0,-15.666952 -5.68272,0 z M 70.772399,21.377861 c -1.231597,1.6e-5 -2.348079,0.248306 -3.314921,0.789268 -0.587028,0.3223 -1.111561,0.832034 -1.618,1.499606 l 0,-1.775851 -5.682721,0 0,24.033184 5.682721,0 0,-9.589595 c 0.61003,0.633059 1.200337,1.104973 1.775851,1.381217 1.001375,0.483426 2.057017,0.71034 3.196533,0.71034 1.956711,0 3.701318,-0.67252 5.209163,-1.973168 1.899155,-1.634436 2.841341,-3.811496 2.841361,-6.550916 -2e-5,-2.693363 -0.948784,-4.837537 -2.801899,-6.47199 -1.553885,-1.369692 -3.296847,-2.052079 -5.288088,-2.052095 z m 95.659181,0.157853 c -1.34671,1.8e-5 -2.45661,0.243374 -3.3544,0.749805 -0.5525,0.310788 -1.15924,0.858342 -1.81531,1.617997 l 0,-2.012632 -5.64325,0 0,9.352817 c 1.95374,0.55158 3.84643,1.107739 5.64325,1.657459 l 0,-3.591164 c -2e-5,-1.127985 0.25979,-1.956714 0.78926,-2.486192 0.58702,-0.587007 1.30723,-0.868182 2.1705,-0.868194 0.94382,1.2e-5 1.65907,0.346961 2.13102,1.026048 0.32227,0.460416 0.47353,1.38616 0.47356,2.801898 l 0,4.853993 c 2.1229,0.702028 3.98119,1.357339 5.68271,1.973168 l 0,-8.918718 c 0,-2.117855 -0.6232,-3.716119 -1.85477,-4.775067 -1.08195,-0.932306 -2.49607,-1.3812 -4.22257,-1.381218 z m -51.93378,0.07893 c -1.2316,1.8e-5 -2.35302,0.28777 -3.35439,0.828731 -0.52226,0.282904 -1.07182,0.750328 -1.69692,1.341755 3.30372,-0.044 6.71705,0.08886 10.22101,0.394633 -0.38902,-0.541711 -0.80573,-1.014887 -1.22337,-1.341757 -1.04744,-0.817203 -2.36946,-1.223347 -3.94633,-1.223364 z m 10.85242,0 c -1.46181,1.8e-5 -2.76739,0.427537 -3.90687,1.302291 -0.43624,0.33414 -0.81505,0.813049 -1.1839,1.341754 3.41212,0.314028 6.87556,0.778723 10.33939,1.341755 -0.0345,-0.184164 -0.0724,-0.388465 -0.11826,-0.552486 -0.3108,-1.081941 -0.93234,-1.932046 -1.9337,-2.565119 -0.93234,-0.575491 -1.9995,-0.868177 -3.19653,-0.868195 z m -45.14608,0.276244 4.893457,8.760865 c 1.371383,-1.190572 2.932906,-2.183975 4.656676,-3.038677 l -2.999215,-5.722188 -6.550918,0 z m 14.996076,0 -2.209949,4.380433 c 2.258761,-0.794267 4.721908,-1.372998 7.340183,-1.775851 l 1.38122,-2.604582 -6.511454,0 z m 8.484624,0 0,2.170486 c 1.825,-0.171149 3.71116,-0.247744 5.64326,-0.276244 l 0,-1.894242 -5.64326,0 z m 30.97873,0 0,4.380433 c 1.91498,0.355102 3.7979,0.739871 5.68273,1.144438 l 0,-5.524871 -5.68273,0 z m 11.40491,0 0,6.827161 c 1.94507,0.469179 3.82245,0.965223 5.68273,1.460145 l 0,-8.287306 -5.68273,0 z m -34.5699,3.709556 c -2.69376,-0.0029 -5.29797,0.124736 -7.81374,0.394634 l 0,11.917933 5.64326,0 0,-7.932135 c -1e-5,-0.771171 0.0378,-1.372164 0.11838,-1.815314 0.0806,-0.44313 0.21046,-0.812277 0.39463,-1.06551 0.49493,-0.713618 1.20527,-1.0655 2.09156,-1.065512 0.95533,1.2e-5 1.63114,0.43411 2.09156,1.262827 0.23019,0.414377 0.35515,1.302301 0.35517,2.683509 l 0,7.932135 5.68272,0 0,-7.932135 c -2e-5,-1.243087 0.15619,-2.147454 0.51302,-2.722971 0.36127,-0.582966 0.83682,-0.937867 1.42068,-1.104974 -3.57247,-0.354367 -7.09157,-0.548978 -10.49725,-0.552487 z m -42.186325,0.631409 c 1.139492,1.2e-5 2.076746,0.450551 2.801898,1.302291 0.575494,0.667598 0.868179,1.458509 0.868194,2.367802 -1.5e-5,0.886288 -0.320655,1.677198 -0.907657,2.367801 -0.713643,0.851755 -1.622943,1.262831 -2.762435,1.262827 -1.012903,4e-6 -1.890962,-0.357632 -2.604582,-1.065512 -0.713636,-0.707866 -1.065518,-1.552216 -1.06551,-2.565116 -8e-6,-1.024395 0.357628,-1.902454 1.06551,-2.604583 0.707864,-0.702107 1.580168,-1.065498 2.604582,-1.06551 z M 123.969,26.350249 c 0.28736,0.185937 0.51373,0.443896 0.71034,0.789267 0.28773,0.506456 0.43407,1.460152 0.4341,2.84136 l 0,7.932136 5.64326,0 0,-10.418326 c 0,-0.07189 0.001,-0.127181 0,-0.197318 -2.26361,-0.356803 -4.53811,-0.69097 -6.7877,-0.947119 z m -24.782985,0.276243 c -2.685268,0.519059 -5.179455,1.281365 -7.498039,2.24941 l -0.631413,1.223366 -0.434097,-0.789267 c -1.682033,0.778299 -3.272029,1.695314 -4.696139,2.762435 l 2.012631,3.630628 -5.445943,10.221009 6.3536,0 10.3394,-19.297579 z m 35.477555,1.341754 0,4.064726 c 0,1.691995 0.46041,3.068278 1.38123,4.104189 1.45026,1.63444 3.85588,2.446725 7.18232,2.446726 1.69197,-10e-7 3.12745,-0.189096 4.30152,-0.591949 2.81996,-0.978361 4.22254,-2.977836 4.22257,-5.958966 l 0,-0.394635 c -1.86809,-0.465402 -3.74247,-0.896359 -5.68273,-1.341754 l 0,0.670879 c -2e-5,1.001387 -0.22693,1.738036 -0.71034,2.209945 -0.51797,0.506453 -1.22173,0.749809 -2.13102,0.749805 -0.92082,4e-6 -1.65253,-0.243352 -2.17049,-0.749805 -0.48343,-0.471909 -0.71034,-1.208558 -0.71033,-2.209945 l 0,-1.933706 c -1.88374,-0.388656 -3.77433,-0.723775 -5.68273,-1.06551 z m 20.95505,4.696139 0,5.248627 5.64325,0 0,-3.749019 c -1.85079,-0.506393 -3.65557,-0.982004 -5.64325,-1.499608 z m 11.20759,3.038678 0,2.209949 5.68271,0 0,-0.631415 c -1.69529,-0.473944 -3.70151,-1.021344 -5.68271,-1.578534 z"
+       d="m 176.37634,11.985583 0,25.927425 5.68272,0 0,-6.550918 6.23522,6.550918 7.93213,0 -8.5241,-8.642476 8.05053,-7.379648 -7.77428,0 -5.9195,5.761651 0,-15.666952 -5.68272,0 z"
+       id="path3089"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3089.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="M 70.78125 38.375 C 69.549653 38.375016 68.435592 38.615288 67.46875 39.15625 C 66.881722 39.47855 66.350189 39.988678 65.84375 40.65625 L 65.84375 38.90625 L 60.15625 38.90625 L 60.15625 62.9375 L 65.84375 62.9375 L 65.84375 53.34375 C 66.45378 53.976809 67.049486 54.442506 67.625 54.71875 C 68.626375 55.202176 69.672984 55.4375 70.8125 55.4375 C 72.769211 55.4375 74.523405 54.738148 76.03125 53.4375 C 77.930405 51.803064 78.87498 49.64567 78.875 46.90625 C 78.87498 44.212887 77.915615 42.071953 76.0625 40.4375 C 74.508615 39.067808 72.772491 38.375016 70.78125 38.375 z M 69.3125 43.21875 C 70.451992 43.218762 71.399848 43.67951 72.125 44.53125 C 72.700494 45.198848 72.968735 45.996957 72.96875 46.90625 C 72.968735 47.792538 72.649502 48.590647 72.0625 49.28125 C 71.348857 50.133005 70.451992 50.531254 69.3125 50.53125 C 68.299597 50.531254 67.43237 50.17663 66.71875 49.46875 C 66.005114 48.760884 65.656242 47.91915 65.65625 46.90625 C 65.656242 45.881855 66.010868 45.014629 66.71875 44.3125 C 67.426614 43.610393 68.288086 43.218762 69.3125 43.21875 z "
+       id="path3087"
+       transform="translate(0,-17)"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3087.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 166.43158,21.535714 c -1.34671,1.8e-5 -2.45661,0.243374 -3.3544,0.749805 -0.5525,0.310788 -1.15924,0.858342 -1.81531,1.617997 l 0,-2.012632 -5.64325,0 0,9.352817 c 1.95374,0.55158 3.84643,1.107739 5.64325,1.657459 l 0,-3.591164 c -2e-5,-1.127985 0.25979,-1.956714 0.78926,-2.486192 0.58702,-0.587007 1.30723,-0.868182 2.1705,-0.868194 0.94382,1.2e-5 1.65907,0.346961 2.13102,1.026048 0.32227,0.460416 0.47353,1.38616 0.47356,2.801898 l 0,4.853993 c 2.1229,0.702028 3.98119,1.357339 5.68271,1.973168 l 0,-8.918718 c 0,-2.117855 -0.6232,-3.716119 -1.85477,-4.775067 -1.08195,-0.932306 -2.49607,-1.3812 -4.22257,-1.381218 z"
+       id="path3085"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3085.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 114.4978,21.614644 c -1.2316,1.8e-5 -2.35302,0.28777 -3.35439,0.828731 -0.52226,0.282904 -1.07182,0.750328 -1.69692,1.341755 3.30372,-0.044 6.71705,0.08886 10.22101,0.394633 -0.38902,-0.541711 -0.80573,-1.014887 -1.22337,-1.341757 -1.04744,-0.817203 -2.36946,-1.223347 -3.94633,-1.223364 z"
+       id="path3083"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3083.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 125.35022,21.614644 c -1.46181,1.8e-5 -2.76739,0.427537 -3.90687,1.302291 -0.43624,0.33414 -0.81505,0.813049 -1.1839,1.341754 3.41212,0.314028 6.87556,0.778723 10.33939,1.341755 -0.0345,-0.184164 -0.0724,-0.388465 -0.11826,-0.552486 -0.3108,-1.081941 -0.93234,-1.932046 -1.9337,-2.565119 -0.93234,-0.575491 -1.9995,-0.868177 -3.19653,-0.868195 z"
+       id="path3081"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3081.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 80.20414,21.890888 4.893457,8.760865 c 1.371383,-1.190572 2.932906,-2.183975 4.656676,-3.038677 l -2.999215,-5.722188 -6.550918,0 z"
+       id="path3079"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3079.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 95.200216,21.890888 -2.209949,4.380433 c 2.258761,-0.794267 4.721908,-1.372998 7.340183,-1.775851 l 1.38122,-2.604582 -6.511454,0 z"
+       id="path3077"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3077.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 103.68484,21.890888 0,2.170486 c 1.825,-0.171149 3.71116,-0.247744 5.64326,-0.276244 l 0,-1.894242 -5.64326,0 z"
+       id="path3075"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3075.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 134.66357,21.890888 0,4.380433 c 1.91498,0.355102 3.7979,0.739871 5.68273,1.144438 l 0,-5.524871 -5.68273,0 z"
+       id="path3073"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3073.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 146.06848,21.890888 0,6.827161 c 1.94507,0.469179 3.82245,0.965223 5.68273,1.460145 l 0,-8.287306 -5.68273,0 z"
+       id="path3071"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3071.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 111.49858,25.600444 c -2.69376,-0.0029 -5.29797,0.124736 -7.81374,0.394634 l 0,11.917933 5.64326,0 0,-7.932135 c -1e-5,-0.771171 0.0378,-1.372164 0.11838,-1.815314 0.0806,-0.44313 0.21046,-0.812277 0.39463,-1.06551 0.49493,-0.713618 1.20527,-1.0655 2.09156,-1.065512 0.95533,1.2e-5 1.63114,0.43411 2.09156,1.262827 0.23019,0.414377 0.35515,1.302301 0.35517,2.683509 l 0,7.932135 5.68272,0 0,-7.932135 c -2e-5,-1.243087 0.15619,-2.147454 0.51302,-2.722971 0.36127,-0.582966 0.83682,-0.937867 1.42068,-1.104974 -3.57247,-0.354367 -7.09157,-0.548978 -10.49725,-0.552487 z"
+       id="path3069"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3069.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 123.969,26.350249 c 0.28736,0.185937 0.51373,0.443896 0.71034,0.789267 0.28773,0.506456 0.43407,1.460152 0.4341,2.84136 l 0,7.932136 5.64326,0 0,-10.418326 c 0,-0.07189 0.001,-0.127181 0,-0.197318 -2.26361,-0.356803 -4.53811,-0.69097 -6.7877,-0.947119 z"
+       id="path3065"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3065.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 99.186015,26.626492 c -2.685268,0.519059 -5.179455,1.281365 -7.498039,2.24941 l -0.631413,1.223366 -0.434097,-0.789267 c -1.682033,0.778299 -3.272029,1.695314 -4.696139,2.762435 l 2.012631,3.630628 -5.445943,10.221009 6.3536,0 10.3394,-19.297579 z"
+       id="path3063"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3063.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 134.66357,27.968246 0,4.064726 c 0,1.691995 0.46041,3.068278 1.38123,4.104189 1.45026,1.63444 3.85588,2.446725 7.18232,2.446726 1.69197,-10e-7 3.12745,-0.189096 4.30152,-0.591949 2.81996,-0.978361 4.22254,-2.977836 4.22257,-5.958966 l 0,-0.394635 c -1.86809,-0.465402 -3.74247,-0.896359 -5.68273,-1.341754 l 0,0.670879 c -2e-5,1.001387 -0.22693,1.738036 -0.71034,2.209945 -0.51797,0.506453 -1.22173,0.749809 -2.13102,0.749805 -0.92082,4e-6 -1.65253,-0.243352 -2.17049,-0.749805 -0.48343,-0.471909 -0.71034,-1.208558 -0.71033,-2.209945 l 0,-1.933706 c -1.88374,-0.388656 -3.77433,-0.723775 -5.68273,-1.06551 z"
+       id="path3061"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3061.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 155.61862,32.664385 0,5.248627 5.64325,0 0,-3.749019 c -1.85079,-0.506393 -3.65557,-0.982004 -5.64325,-1.499608 z"
+       id="path3059"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3059.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
+    <path
+       style="font-size:40px;font-style:normal;font-weight:bold;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       d="m 166.82621,35.703063 0,2.209949 5.68271,0 0,-0.631415 c -1.69529,-0.473944 -3.70151,-1.021344 -5.68271,-1.578534 z"
        id="text2431"
-       inkscape:connector-curvature="0" />
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\text2431.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.26282728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 20.465078,6.0724257 c 0,2.9198862 2.2e-4,1.7518593 2.2e-4,4.7819053 0,1.187798 -0.894265,3.112533 -2.577511,3.610043"
        id="path2413"
        sodipodi:nodetypes="ccc"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path_t.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
     <path
        sodipodi:nodetypes="ccc"
        id="path2417"
        d="m 20.474027,6.0725684 c 0,2.9198849 -2.22e-4,1.751858 -2.22e-4,4.7819026 0,1.187798 0.894266,3.112534 2.577512,3.610045"
        style="fill:none;stroke:#000000;stroke-width:1.26282728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path_t.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
     <path
        transform="matrix(0.0579533,0,0,0.05870107,-53.059217,-8.3897974)"
        sodipodi:open="true"
@@ -256,6 +392,9 @@
        sodipodi:cx="1173.3553"
        id="path2419"
        style="fill:#000000;fill-opacity:1;stroke:none"
-       sodipodi:type="arc" />
+       sodipodi:type="arc"
+       inkscape:export-filename="C:\code\pymunk\trunk\examples\path3392b.png"
+       inkscape:export-xdpi="232.9993"
+       inkscape:export-ydpi="232.9993" />
   </g>
 </svg>

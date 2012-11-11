@@ -63,6 +63,7 @@ class UnitTestBB(unittest.TestCase):
         
         self.assertEqual(bb1.wrap_vect((11,11)), (1,1))
 
+        
 class UnitTestBugs(unittest.TestCase):
     def testManyBoxCrash(self):
         space = p.Space()
@@ -74,6 +75,53 @@ class UnitTestBugs(unittest.TestCase):
                 shape = p.Poly(body, list(box_points), Vec2d(0,0))
                 space.add(body, shape)
             space.step(1/50.0)
+            
+           
+    def testNoStaticShape(self):
+        space = p.Space()
+        
+        b1 = p.Body(1, p.inf)
+        c1 = p.Circle(b1, 10)
+        c1.name = "c1"
+        c1.collision_type = 2
+        
+        b2 = p.Body(1, p.inf)
+        c2 = p.Circle(b2, 10)
+        c2.name = "c2"
+        
+        b3 = p.Body(1, p.inf)
+        c3 = p.Circle(b3, 10)
+        c3.name = "c3"
+        
+        b1.position = 0,0
+        b2.position = 9,0
+        b3.position = -9,0
+        
+        space.add(b1,c1,b2,c2) #,b3,c3)
+        
+        def remove_first(space, arbiter):
+            print "remove_first", arbiter.shapes[0].name, arbiter.shapes[0]._shape.contents.hashid_private, arbiter.shapes[1].name
+            try:
+                first_shape = arbiter.shapes[0] 
+            except Exception, e:
+                print "ERROR", e
+                sys.exit()
+            space.add_post_step_callback(space.remove, first_shape, first_shape.body)
+            space.add_post_step_callback(space.remove, first_shape, first_shape.body)
+            space.add_post_step_callback(space.remove, first_shape, first_shape.body)
+            return True
+        #space.add_collision_handler(2, 0, separate = remove_first)
+        space.add_collision_handler(2, 0, begin = remove_first)
+        
+               
+        space.step(1./60)
+        b2.position = 22,0
+        space.step(1./60)
+        
+        
+        
+        
+            
 ####################################################################
 if __name__ == "__main__":
     print ("testing pymunk version " + p.version)

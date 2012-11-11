@@ -90,7 +90,7 @@ exactly which Chipmunk library file it loaded. For example::
     Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 
 """
-__version__ = "$Id: __init__.py 446 2012-09-02 13:06:12Z vb@viblo.se $"
+__version__ = "$Id: __init__.py 466 2012-10-30 21:53:37Z vb@viblo.se $"
 __docformat__ = "reStructuredText"
 
 __all__ = ["inf", "version", "chipmunk_version"
@@ -1190,10 +1190,29 @@ moment.
     body = property(lambda self: self._body, 
         doc="""The body this shape is attached to""")
 
+<div class="viewcode-block" id="Shape.update"><a class="viewcode-back" href="../pymunk.html#pymunk.Shape.update">[docs]</a>    def update(self, position, rotation_vector):
+        """Update, cache and return the bounding box of a shape with an 
+        explicit transformation.
+        
+        Useful if you have a shape without a body and want to use it for 
+        querying.
+        """
+        return BB(cp.cpShapeUpdate(self._shape, position, rotation_vector))
+        </div>
 <div class="viewcode-block" id="Shape.cache_bb"><a class="viewcode-back" href="../pymunk.html#pymunk.Shape.cache_bb">[docs]</a>    def cache_bb(self):
         """Update and returns the bouding box of this shape"""
         return BB(cp.cpShapeCacheBB(self._shape))
 </div>
+    def _get_bb(self):
+        return BB(cpffi.cpShapeGetBB(self._shape))
+        
+    bb = property(_get_bb, doc="""The bounding box of the shape.
+    Only guaranteed to be valid after Shape.cache_bb() or Space.step() is 
+    called. Moving a body that a shape is connected to does not update it's 
+    bounding box. For shapes used for queries that aren't attached to bodies, 
+    you can also use Shape.update().
+    """)
+        
 <div class="viewcode-block" id="Shape.point_query"><a class="viewcode-back" href="../pymunk.html#pymunk.Shape.point_query">[docs]</a>    def point_query(self, p):
         """Check if the given point lies within the shape."""
         return bool(cp.cpShapePointQuery(self._shape, p))
@@ -1261,7 +1280,8 @@ moment.
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates."""
         self._body = body
-        self._shape = cp.cpCircleShapeNew(body._body, radius, offset)
+        body_body = None if body is None else body._body
+        self._shape = cp.cpCircleShapeNew(body_body, radius, offset)
         self._shapecontents = self._shape.contents
         self._cs = ct.cast(self._shape, ct.POINTER(cp.cpCircleShape))
         </div>
@@ -1317,8 +1337,11 @@ moment.
                 The thickness of the segment
         """
         self._body = body
-        self._shape = cp.cpSegmentShapeNew(body._body, a, b, radius)
+        body_body = None if body is None else body._body
+        self._shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
         self._shapecontents = self._shape.contents
+    
+    #TODO: Add/rename set methods to unsafe in next major release?
     </div>
     def _set_a(self, a):
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a = a
@@ -1366,7 +1389,13 @@ moment.
         
         self._body = body
         self.offset = offset
-        #self.verts = (Vec2d * len(vertices))(*vertices)
+        self._set_verts(vertices, auto_order_vertices)
+                
+        body_body = None if body is None else body._body
+        self._shape = cp.cpPolyShapeNew(body_body, len(vertices), self.verts, offset)
+        self._shapecontents = self._shape.contents
+        </div>
+    def _set_verts(self, vertices, auto_order_vertices):
         self.verts = (Vec2d * len(vertices))
         self.verts = self.verts(Vec2d(0, 0))
         
@@ -1377,10 +1406,7 @@ moment.
         for (i, vertex) in i_vs:
             self.verts[i].x = vertex[0]
             self.verts[i].y = vertex[1]
-
-        self._shape = cp.cpPolyShapeNew(body._body, len(vertices), self.verts, offset)
-        self._shapecontents = self._shape.contents
-        </div>
+        
     @staticmethod
 <div class="viewcode-block" id="Poly.create_box"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.create_box">[docs]</a>    def create_box(body, size=(10,10)): 
         """Convenience function to create a box centered around the body position."""
@@ -1388,8 +1414,9 @@ moment.
         vs = [(-x,-y),(-x,y),(x,y),(x,-y)]
     
         return Poly(body,vs)
+        
         </div>
-<div class="viewcode-block" id="Poly.get_points"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.get_points">[docs]</a>    def get_points(self):
+<div class="viewcode-block" id="Poly.get_points"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.get_points">[docs]</a>    def get_points(self): #TODO: Rename to get_vertices in next major version?
         """Get the points in world coordinates for the polygon
         
         :return: [`Vec2d`] in world coords
@@ -1407,7 +1434,18 @@ moment.
             points.append(Vec2d(p))
             
         return points
-
+</div>
+<div class="viewcode-block" id="Poly.unsafe_set_vertices"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.unsafe_set_vertices">[docs]</a>    def unsafe_set_vertices(self, vertices, offset=(0, 0), auto_order_vertices=True):
+        """Unsafe set the vertices of the poly. 
+    
+        .. note:: 
+            This change is only picked up as a change to the position 
+            of the shape's surface, but not it's velocity. Changing it will 
+            not result in realistic physical behavior. Only use if you know 
+            what you are doing!
+        """
+        self._set_verts(vertices, auto_order_vertices)
+        cp.cpPolyShapeSetVerts(self._shape, len(vertices), self.verts, offset)
         </div></div>
 <div class="viewcode-block" id="moment_for_circle"><a class="viewcode-back" href="../pymunk.html#pymunk.moment_for_circle">[docs]</a>def moment_for_circle(mass, inner_radius, outer_radius, offset=(0, 0)):
     """Calculate the moment of inertia for a circle"""

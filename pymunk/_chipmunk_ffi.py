@@ -33,6 +33,11 @@ cpBBExpand = (function_pointer(cpBB, cpBB, cpVect)).in_dll(chipmunk_lib, '_cpBBE
 
 cpShapeGetBB = (function_pointer(cpBB, POINTER(cpShape))).in_dll(chipmunk_lib, '_cpShapeGetBB')
 
+#TODO: Use cpBBClampVect from Chipmunk when its available.
+cpfclamp = (function_pointer(cpFloat, cpFloat, cpFloat, cpFloat)).in_dll(chipmunk_lib, '_cpfclamp')
+def cpBBClampVect(bb, v):
+    return Vec2d(cpfclamp(v.x, bb.l, bb.r), cpfclamp(v.y, bb.b, bb.t))
+
 #unused for now..
 #cpGrooveJointGetGrooveA = (function_pointer(cpVect, POINTER(cpGrooveJoint))).in_dll(chipmunk_lib, '_cpGrooveJointGetGrooveA')
 #cpGrooveJointGetGrooveB = (function_pointer(cpVect, POINTER(cpGrooveJoint))).in_dll(chipmunk_lib, '_cpGrooveJointGetGrooveA')
