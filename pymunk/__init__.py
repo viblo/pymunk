@@ -311,8 +311,6 @@ class Space(object):
 
     def _remove_shape(self, shape):
         """Removes a shape from the space"""
-        #print "REMOVE1", shape._shape.contents.hashid_private
-        #print "REMOVE2", [s._shape.contents.hashid_private for s in self.shapes]
         self._removed_shapes[shape._hashid_private] = shape
         del self._shapes[shape._hashid_private]
         cp.cpSpaceRemoveShape(self._space, shape._shape)
@@ -345,9 +343,9 @@ class Space(object):
         to resolve the collisions in the usual case."""
         cp.cpSpaceStep(self._space, dt)
         self._removed_shapes = {}
-        #for obj, (func, args, kwargs) in self._post_step_callbacks.items():
-        #    func(obj, *args, **kwargs)
-        #self._post_step_callbacks = {}
+        self._post_step_callbacks = {}
+        self._post_callback_keys = {}
+        self._post_last_callback_key = 0
     
     def add_collision_handler(self, a, b, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
         """Add a collision handler for given collision type pair. 
@@ -507,6 +505,11 @@ class Space(object):
         bullet. This is actually just fine, and the callback to remove the 
         bullet will only be called once! 
         
+        .. Note::
+            If you remove a shape from the callback it will trigger the
+            collision handler for the 'separate' event if it the shape was 
+            touching when removed.
+        
         :Parameters:
             callback_function : ``func(obj, *args, **kwargs)``
                 The callback function.
@@ -517,41 +520,26 @@ class Space(object):
                 Optional parameters passed to the callback function.
             kwargs
                 Optional keyword parameters passed on to the callback function.
-        
+                
+        :Return: 
+            True if key was not previously added, False otherwise
         """
         
-        
+        if obj in self._post_callback_keys:
+            return False
+            
         def cf(_space, key, data):
-            #print "CALLBACK", key,args[1]
-            #print [s._shape.contents.hashid_private for s in self.shapes]
-            #print key, obj, args, kwargs
-            #print args[1]
-            callback_function(obj, *(args[0],), **kwargs)
+            callback_function(obj, *args, **kwargs)
             
         f = cp.cpPostStepFunc(cf)
+                
+        self._post_last_callback_key += 1
+        self._post_callback_keys[obj] = self._post_last_callback_key    
+        self._post_step_callbacks[obj] = f
         
-        
-        if obj not in self._post_callback_keys:
-            self._post_last_callback_key += 1
-            self._post_callback_keys[obj] = self._post_last_callback_key
-        
-            self._post_step_callbacks[obj] = [f]
-        else:
-            f = self._post_step_callbacks[obj][0]
-            #self._post_step_callbacks[obj].append(f)
-            
-        #print "ADD CALLBACK", self._post_step_callbacks
-        #key = self._post_callback_keys[obj]
-        key = ct.cast(obj._shape, ct.c_void_p)
-        #print key
-        x = cp.cpSpaceAddPostStepCallback(self._space, f, key, None)
-        # y = cp.cpSpaceAddPostStepCallback(self._space, f, key, None)
-        #print x,y
-        
-        #if obj in self._post_step_callbacks:
-        #    return
-        #self._post_step_callbacks[obj] = callback_function, args, kwargs
-        
+        key = self._post_callback_keys[obj]
+        return bool(cp.cpSpaceAddPostStepCallback(self._space, f, key, None))
+                
     def point_query(self, point, layers = -1, group = 0):
         """Query space at point filtering out matches with the given layers 
         and group. Return a list of found shapes.
@@ -598,6 +586,7 @@ class Space(object):
         if not bool(_shape):
             return None
         hashid_private = _shape.contents.hashid_private
+        #return self._shapes[hashid_private]  
         if hashid_private in self._shapes:
             shape = self._shapes[hashid_private]        
         elif hashid_private in self._removed_shapes:

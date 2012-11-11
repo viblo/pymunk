@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Slide and Pin Joint Demo Step by Step &mdash; pymunk 3.0.0 documentation</title>
+    <title>Slide and Pin Joint Demo Step by Step &mdash; pymunk 3.1.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '3.0.0',
+        VERSION:     '3.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 3.0.0 documentation" href="../index.html" />
+    <link rel="top" title="pymunk 3.1.0 documentation" href="../index.html" />
     <link rel="up" title="Tutorials" href="../tutorials.html" />
     <link rel="next" title="Advanced" href="../advanced.html" />
     <link rel="prev" title="Arrows and other pointy sticky things" href="Arrows.html" /> 
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="Arrows.html" title="Arrows and other pointy sticky things"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+        <li><a href="../index.html">pymunk 3.1.0 documentation</a> &raquo;</li>
           <li><a href="../tutorials.html" accesskey="U">Tutorials</a> &raquo;</li> 
       </ul>
     </div>  
@@ -243,7 +243,7 @@ static lines forming an L. As with the balls we start with a function to add an 
     <span class="n">l1</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mf">255.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mf">5.0</span><span class="p">)</span> <span class="c"># 2</span>
     <span class="n">l2</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mf">150.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">),</span> <span class="mf">5.0</span><span class="p">)</span>
 
-    <span class="n">space</span><span class="o">.</span><span class="n">add_static</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="c"># 3</span>
+    <span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="c"># 3</span>
     <span class="k">return</span> <span class="n">l1</span><span class="p">,</span><span class="n">l2</span>
 </pre></div>
 </div>
@@ -624,7 +624,7 @@ comment here and I will try my best to create it.</p>
         <li class="right" >
           <a href="Arrows.html" title="Arrows and other pointy sticky things"
              >previous</a> |</li>
-        <li><a href="../index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+        <li><a href="../index.html">pymunk 3.1.0 documentation</a> &raquo;</li>
           <li><a href="../tutorials.html" >Tutorials</a> &raquo;</li> 
       </ul>
     </div>

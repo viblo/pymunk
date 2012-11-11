@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk &mdash; pymunk 3.0.0 documentation</title>
+    <title>pymunk &mdash; pymunk 3.1.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '3.0.0',
+        VERSION:     '3.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 3.0.0 documentation" href="../index.html" />
+    <link rel="top" title="pymunk 3.1.0 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body>
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+        <li><a href="../index.html">pymunk 3.1.0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -90,7 +90,7 @@ exactly which Chipmunk library file it loaded. For example::
     Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 
 """
-__version__ = "$Id: __init__.py 466 2012-10-30 21:53:37Z vb@viblo.se $"
+__version__ = "$Id: __init__.py 469 2012-11-11 02:32:01Z vb@viblo.se $"
 __docformat__ = "reStructuredText"
 
 __all__ = ["inf", "version", "chipmunk_version"
@@ -109,7 +109,7 @@ from .vec2d import Vec2d
 
 from pymunk.constraint import *
 
-version = "3.0.0"
+version = "3.1.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn).
@@ -177,9 +177,11 @@ moment.
         self._default_handler = None
         
         self._post_step_callbacks = {}
+        self._post_callback_keys = {}
+        self._post_last_callback_key = 0
+        self._removed_shapes = {}
         
         self._shapes = {}
-        #self._static_shapes = {}
         self._bodies = set()
         self._constraints = set()
 </div>
@@ -187,11 +189,6 @@ moment.
         return list(self._shapes.values())
     shapes = property(_get_shapes, 
         doc="""A list of all the shapes added to this space (both static and non-static)""")
-
-    # def _get_static_shapes(self):
-        # return list(self._static_shapes.values())
-    # static_shapes = property(_get_static_shapes,
-        # doc="""A list of the static shapes added to this space""")
 
     def _get_bodies(self):
         return list(self._bodies)
@@ -327,15 +324,6 @@ moment.
             else:
                 for oo in o:
                     self.add(oo)
-                    
-    # def add_static(self, *objs):
-        # """Add one or many static shapes to the space"""
-        # for o in objs:
-            # if isinstance(o, Shape):
-                # self._add_static_shape(o)
-            # else:
-                # for oo in o:
-                    # self.add_static(oo)
                     </div>
 <div class="viewcode-block" id="Space.remove"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.remove">[docs]</a>    def remove(self, *objs):
         """Remove one or many shapes, bodies or constraints from the space
@@ -355,29 +343,12 @@ moment.
             else:
                 for oo in o:
                     self.remove(oo)
-                    
-    # def remove_static(self, *objs):
-        # """Remove one or many static shapes from the space"""
-        # for o in objs:
-            # if isinstance(o, Shape):
-                # self._remove_static_shape(o)
-            # else:
-                # for oo in o:
-                    # self.remove_static(oo)
-                    </div>
+                                        </div>
     def _add_shape(self, shape):
         """Adds a shape to the space"""
         assert shape._hashid_private not in self._shapes, "shape already added to space"
         self._shapes[shape._hashid_private] = shape
         cp.cpSpaceAddShape(self._space, shape._shape)
-    # def _add_static_shape(self, static_shape):
-        # """Adds a shape to the space. Static shapes should be be attached to 
-        # a rigid body with an infinite mass and moment of inertia. Also, don't 
-        # add the rigid body used to the space, as that will cause it to fall 
-        # under the effects of gravity."""
-        # assert static_shape._hashid_private not in self._static_shapes, "shape already added to space"
-        # self._static_shapes[static_shape._hashid_private] = static_shape
-        # cp.cpSpaceAddStaticShape(self._space, static_shape._shape)
     def _add_body(self, body):
         """Adds a body to the space"""
         assert body not in self._bodies, "body already added to space"
@@ -392,12 +363,9 @@ moment.
 
     def _remove_shape(self, shape):
         """Removes a shape from the space"""
+        self._removed_shapes[shape._hashid_private] = shape
         del self._shapes[shape._hashid_private]
         cp.cpSpaceRemoveShape(self._space, shape._shape)
-    # def _remove_static_shape(self, static_shape):
-        # """Removes a static shape from the space."""
-        # del self._static_shapes[static_shape._hashid_private]
-        # cp.cpSpaceRemoveStaticShape(self._space, static_shape._shape)
     def _remove_body(self, body):
         """Removes a body from the space"""
         body._space = None
@@ -426,10 +394,10 @@ moment.
         contact persistence, requiring an order of magnitude fewer iterations
         to resolve the collisions in the usual case."""
         cp.cpSpaceStep(self._space, dt)
-        
-        for obj, (func, args, kwargs) in self._post_step_callbacks.items():
-            func(obj, *args, **kwargs)
+        self._removed_shapes = {}
         self._post_step_callbacks = {}
+        self._post_callback_keys = {}
+        self._post_last_callback_key = 0
     </div>
 <div class="viewcode-block" id="Space.add_collision_handler"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.add_collision_handler">[docs]</a>    def add_collision_handler(self, a, b, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
         """Add a collision handler for given collision type pair. 
@@ -589,6 +557,11 @@ moment.
         bullet. This is actually just fine, and the callback to remove the 
         bullet will only be called once! 
         
+        .. Note::
+            If you remove a shape from the callback it will trigger the
+            collision handler for the 'separate' event if it the shape was 
+            touching when removed.
+        
         :Parameters:
             callback_function : ``func(obj, *args, **kwargs)``
                 The callback function.
@@ -599,12 +572,26 @@ moment.
                 Optional parameters passed to the callback function.
             kwargs
                 Optional keyword parameters passed on to the callback function.
-        
+                
+        :Return: 
+            True if key was not previously added, False otherwise
         """
-        if obj in self._post_step_callbacks:
-            return
-        self._post_step_callbacks[obj] = callback_function, args, kwargs
-        </div>
+        
+        if obj in self._post_callback_keys:
+            return False
+            
+        def cf(_space, key, data):
+            callback_function(obj, *args, **kwargs)
+            
+        f = cp.cpPostStepFunc(cf)
+                
+        self._post_last_callback_key += 1
+        self._post_callback_keys[obj] = self._post_last_callback_key    
+        self._post_step_callbacks[obj] = f
+        
+        key = self._post_callback_keys[obj]
+        return bool(cp.cpSpaceAddPostStepCallback(self._space, f, key, None))
+                </div>
 <div class="viewcode-block" id="Space.point_query"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.point_query">[docs]</a>    def point_query(self, point, layers = -1, group = 0):
         """Query space at point filtering out matches with the given layers 
         and group. Return a list of found shapes.
@@ -624,7 +611,6 @@ moment.
         """
         self.__query_hits = []
         def cf(_shape, data):
-            
             shape = self._get_shape(_shape)
             self.__query_hits.append(shape)
         f = cp.cpSpacePointQueryFunc(cf)
@@ -632,14 +618,31 @@ moment.
         
         return self.__query_hits
     </div>
+<div class="viewcode-block" id="Space.point_query_first"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.point_query_first">[docs]</a>    def point_query_first(self, point, layers = -1, group = 0):
+        """Query space at point and return the first shape found matching the 
+        given layers and group. Returns None if no shape was found.
+        
+        :Parameters:    
+            point : (x,y) or `Vec2d`
+                Define where to check for collision in the space.
+            layers : int
+                Only pick shapes matching the bit mask. i.e. 
+                (layers &amp; shape.layers) != 0
+            group : int
+                Only pick shapes in this group.
+        """
+        _shape = cp.cpSpacePointQueryFirst(self._space, point, layers, group)
+        return self._get_shape(_shape)
+        </div>
     def _get_shape(self, _shape):
         if not bool(_shape):
             return None
         hashid_private = _shape.contents.hashid_private
+        #return self._shapes[hashid_private]  
         if hashid_private in self._shapes:
-            shape = self._shapes[hashid_private]
-        elif hashid_private in self._static_shapes:
-            shape = self._static_shapes[hashid_private]
+            shape = self._shapes[hashid_private]        
+        elif hashid_private in self._removed_shapes:
+            shape = self._removed_shapes[hashid_private]
         return shape
         
 <div class="viewcode-block" id="Space.nearest_point_query"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.nearest_point_query">[docs]</a>    def nearest_point_query(self, point, max_distance, layers = -1, group = 0):
@@ -701,22 +704,8 @@ moment.
         if shape != None:
             return dict(shape=shape, point=info.p, distance=info.d)
         return None        
-        </div>
-<div class="viewcode-block" id="Space.point_query_first"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.point_query_first">[docs]</a>    def point_query_first(self, point, layers = -1, group = 0):
-        """Query space at point and return the first shape found matching the 
-        given layers and group. Returns None if no shape was found.
         
-        :Parameters:    
-            point : (x,y) or `Vec2d`
-                Define where to check for collision in the space.
-            layers : int
-                Only pick shapes matching the bit mask. i.e. 
-                (layers &amp; shape.layers) != 0
-            group : int
-                Only pick shapes in this group.
-        """
-        _shape = cp.cpSpacePointQueryFirst(self._space, point, layers, group)
-        return self._get_shape(_shape)
+
         </div>
 <div class="viewcode-block" id="Space.segment_query"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.segment_query">[docs]</a>    def segment_query(self, start, end, layers = -1, group = 0):
         """Query space along the line segment from start to end filtering out 
@@ -1670,7 +1659,7 @@ moment.
     
 <div class="viewcode-block" id="BB.clamp_vect"><a class="viewcode-back" href="../pymunk.html#pymunk.BB.clamp_vect">[docs]</a>    def clamp_vect(self, v):
         """Returns a copy of the vector v clamped to the bounding box"""
-        return cp.cpBBClampVect(self._bb, v)
+        return cpffi.cpBBClampVect(self._bb, v)
     </div>
 <div class="viewcode-block" id="BB.wrap_vect"><a class="viewcode-back" href="../pymunk.html#pymunk.BB.wrap_vect">[docs]</a>    def wrap_vect(self, v):
         """Returns a copy of v wrapped to the bounding box.
@@ -1731,7 +1720,7 @@ moment.
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">pymunk 3.0.0 documentation</a> &raquo;</li>
+        <li><a href="../index.html">pymunk 3.1.0 documentation</a> &raquo;</li>
           <li><a href="index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

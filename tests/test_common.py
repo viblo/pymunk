@@ -97,22 +97,13 @@ class UnitTestBugs(unittest.TestCase):
         b2.position = 9,0
         b3.position = -9,0
         
-        space.add(b1,c1,b2,c2) #,b3,c3)
+        space.add(b1,c1,b2,c2,b3,c3)
         
         def remove_first(space, arbiter):
-            print "remove_first", arbiter.shapes[0].name, arbiter.shapes[0]._shape.contents.hashid_private, arbiter.shapes[1].name
-            try:
-                first_shape = arbiter.shapes[0] 
-            except Exception, e:
-                print "ERROR", e
-                sys.exit()
+            first_shape = arbiter.shapes[0]
             space.add_post_step_callback(space.remove, first_shape, first_shape.body)
-            space.add_post_step_callback(space.remove, first_shape, first_shape.body)
-            space.add_post_step_callback(space.remove, first_shape, first_shape.body)
-            return True
-        #space.add_collision_handler(2, 0, separate = remove_first)
-        space.add_collision_handler(2, 0, begin = remove_first)
-        
+
+        space.add_collision_handler(2, 0, separate = remove_first)       
                
         space.step(1./60)
         b2.position = 22,0

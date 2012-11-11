@@ -200,7 +200,7 @@ static lines forming an L. As with the balls we start with a function to add an 
         l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 5.0) # 2
         l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, 50.0), 5.0)
                 
-        space.add_static(l1, l2) # 3
+        space.add(l1, l2) # 3
         return l1,l2
 
 #. We create a "static" body. The important step is to never add it to the space. Note how static bodies are created by not passing any arguments to the Body constructor.
