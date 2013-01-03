@@ -16,7 +16,7 @@ window = pyglet.window.Window(width=600,height=600)
 
 fps_display = pyglet.clock.ClockDisplay()
 
-logo_img = pyglet.image.load('pymunk_logo_googlecode.png')
+logo_img = pyglet.resource.image('pymunk_logo_googlecode.png')
 logo_img.anchor_x = logo_img.width/2
 logo_img.anchor_y = logo_img.height/2
 logos = []
@@ -64,7 +64,7 @@ def on_draw():
         n = len(ps)
         ps = [c for p in ps for c in p]
         
-        pyglet.graphics.draw(len(ps)/2, pyglet.gl.GL_LINE_LOOP,
+        pyglet.graphics.draw(n, pyglet.gl.GL_LINE_LOOP,
             ('v2f', ps),
             ('c3f', (1,0,0)*n)
             )

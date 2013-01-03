@@ -14,7 +14,7 @@ sys.path.insert(0,'..')
 if len(sys.argv) > 1:
     name = sys.argv[1]
     sys.argv = sys.argv[1:]
-    
+    del sys
     exec(compile(open(name).read(), name, 'exec'))
     
 else:
