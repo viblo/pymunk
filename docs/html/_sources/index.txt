@@ -37,6 +37,14 @@ It is (or is striving to be):
   possible to use with other libraries like pygame and pyglet. 
 
 
+Python 2 & Python 3
+===================
+
+pymunk has been tested and runs fine on both Python 2 and Python 3. It has 
+been tested on recent versions of cpython (2 and 3) and pypy. For an exact 
+list of tested versions see the :doc:`readme`.
+  
+  
 Contact & Support
 =================
 
@@ -45,11 +53,11 @@ Contact & Support
     the pymunk tag. http://stackoverflow.com/questions/tagged/pymunk
 
 **Forum**
-    Currently pymunk has no separate forum, but you can use the general 
-    Chipmunk forum at http://chipmunk-physics.net/forum/index.php Many issues 
+    Currently pymunk has no separate forum, but uses the general Chipmunk 
+    forum at http://chipmunk-physics.net/forum/index.php Many issues 
     are the same, like how to create a rag doll or why a fast moving object 
-    pass through a wall. If you have a pymunk specific question you can mark 
-    your post with [pymunk] to make it stand out a bit.
+    pass through a wall. If you have a pymunk specific question feel free to 
+    mark your post with [pymunk] to make it stand out a bit.
 
 **E-Mail**
     You can email me directly at vb@viblo.se

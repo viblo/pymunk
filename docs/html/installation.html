@@ -64,8 +64,8 @@
 </div>
 <p>pymunk does not need to be installed. However, you might need to compile the
 chipmunk library that pymunk uses internally if a precompiled library was not
-included for your Platform. The default pymunk distribution ships with at least
-32-bit Windows and 32- and 64-bit Linux versions. However, even if a compiled
+included for your platform. The default pymunk distribution ships with at least
+32-bit Windows and 32- and 64-bit Linux versions. But even if a compiled
 library is not shipped you should not despair! It is very easy to compile
 chipmunk as long as you have a gcc-compatible c compiler installed.</p>
 <div class="section" id="without-installation">
@@ -114,9 +114,10 @@ pymunk works before you actually install it. See <a class="reference internal" h
 </div>
 <div class="section" id="compile-chipmunk">
 <span id="id1"></span><h2>Compile Chipmunk<a class="headerlink" href="#compile-chipmunk" title="Permalink to this headline">¶</a></h2>
-<p>If a compiled binary library of Chipmunk that works on your platform you will
-need to compile Chipmunk. Another reason to compile chipmunk is if you want to
-run it in release mode to get rid of the debug prints it generates.</p>
+<p>If a compiled binary library of Chipmunk that works on your platform is not
+included in the release you will need to compile Chipmunk yourself. Another
+reason to compile chipmunk is if you want to run it in release mode to get
+rid of the debug prints it generates.</p>
 <p>To compile Chipmunk:</p>
 <div class="highlight-python"><pre>&gt; python setup.py build_chipmunk</pre>
 </div>
@@ -217,7 +218,7 @@ remove all debugs prints.</dd>
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2012, Victor Blomqvist.
+        &copy; Copyright 2013, Victor Blomqvist.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
