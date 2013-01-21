@@ -1,4 +1,5 @@
 import math
+import pickle
 import unittest
 
 import pymunk as p
@@ -130,7 +131,6 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertEquals(inplace_vec, alternate)
     
     def testPickle(self):
-        return # pickling does not work atm
         testvec = Vec2d(5, .3)
         testvec_str = pickle.dumps(testvec)
         loaded_vec = pickle.loads(testvec_str)
