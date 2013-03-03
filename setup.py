@@ -67,7 +67,7 @@ class build_chipmunk(distutils.cmd.Command):
             # Compile with stddecl instead of cdecl (-mrtd). 
             # Using cdecl cause a missing bytes issue in some cases
             # Because -mrtd and -fomit-frame-pointer (which is included in -O)
-            # gives problem with frunction pointer to the sdtlib free function
+            # gives problem with function pointer to the sdtlib free function
             # we also have to use -fno-omit-frame-pointer
             compiler_preargs += ['-mrtd', '-O3', '-shared', '-fno-omit-frame-pointer'] 
         

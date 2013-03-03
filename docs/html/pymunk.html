@@ -118,7 +118,7 @@ distribution (i.e. not in a checked-out copy from svn).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02C271D0&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02C5FF90&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -772,6 +772,12 @@ from the center of gravity. Both r and j are in world coordinates.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pymunk.Body.constraints">
+<tt class="descname">constraints</tt><a class="headerlink" href="#pymunk.Body.constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the constraints this body is attached to.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pymunk.Body.each_arbiter">
 <tt class="descname">each_arbiter</tt><big>(</big><em>func</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Body.each_arbiter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.each_arbiter" title="Permalink to this definition">¶</a></dt>
@@ -890,6 +896,12 @@ is called each time step and can be used to update the body&#8217;s position.</p
 <dt id="pymunk.Body.rotation_vector">
 <tt class="descname">rotation_vector</tt><a class="headerlink" href="#pymunk.Body.rotation_vector" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Body.shapes">
+<tt class="descname">shapes</tt><a class="headerlink" href="#pymunk.Body.shapes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the shapes attached to this body.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pymunk.Body.sleep">

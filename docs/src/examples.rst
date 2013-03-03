@@ -26,6 +26,9 @@ self contained. Except for external libraries (such as pygame) and pymunk each
 example can be run directly to make it easy to read the code and understand 
 what happens even if it means that some code is repeated for each example.
 
+If you have made something that uses pymunk and would like it displayed here 
+or in a showcase section of the site, feel free to contact me!
+
 
 .. contents:: Example files
     :local:

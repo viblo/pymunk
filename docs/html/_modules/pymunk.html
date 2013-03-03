@@ -102,6 +102,12 @@ __all__ = ["inf", "version", "chipmunk_version"
 import ctypes as ct
 import weakref
 
+try:
+    #Python 2.7+ 
+    from weakref import WeakSet
+except ImportError:
+    from .weakrefset import WeakSet
+
 from . import _chipmunk as cp
 from . import _chipmunk_ffi as cpffi
 from . import util as u
@@ -804,6 +810,9 @@ moment.
         self._velocity_callback = None # To prevent the gc to collect the callbacks.
         
         self._space = None # Weak ref to the space holding this body (if any)
+        
+        self._constraints = WeakSet() # weak refs to any constraints attached
+        self._shapes = WeakSet() # weak refs to any shapes attached
         </div>
     def __del__(self):
         if cp is not None:
@@ -1045,8 +1054,19 @@ moment.
             return 0
         f = cp.cpBodyArbiterIteratorFunc(impl)
         cp.cpBodyEachArbiter(self._body, f, None)
-        
-    </div>
+        </div>
+    def _get_constraints(self):
+        return set(self._constraints)
+    
+    constraints = property(_get_constraints, 
+        doc="""Get the constraints this body is attached to.""")
+    
+    def _get_shapes(self):
+        return set(self._shapes)
+    
+    shapes = property(_get_shapes, 
+        doc="""Get the shapes attached to this body.""")
+    
 <div class="viewcode-block" id="Body.local_to_world"><a class="viewcode-back" href="../pymunk.html#pymunk.Body.local_to_world">[docs]</a>    def local_to_world(self, v):
         """Convert body local coordinates to world space coordinates
         
@@ -1270,9 +1290,13 @@ moment.
         body's center of gravity in body local coordinates."""
         self._body = body
         body_body = None if body is None else body._body
+        if body != None: 
+            body._shapes.add(self)
+        
         self._shape = cp.cpCircleShapeNew(body_body, radius, offset)
         self._shapecontents = self._shape.contents
         self._cs = ct.cast(self._shape, ct.POINTER(cp.cpCircleShape))
+        
         </div>
 <div class="viewcode-block" id="Circle.unsafe_set_radius"><a class="viewcode-back" href="../pymunk.html#pymunk.Circle.unsafe_set_radius">[docs]</a>    def unsafe_set_radius(self, r):
         """Unsafe set the radius of the circle. 
@@ -1327,6 +1351,8 @@ moment.
         """
         self._body = body
         body_body = None if body is None else body._body
+        if body != None: 
+            body._shapes.add(self)
         self._shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
         self._shapecontents = self._shape.contents
     
@@ -1381,6 +1407,8 @@ moment.
         self._set_verts(vertices, auto_order_vertices)
                 
         body_body = None if body is None else body._body
+        if body != None: 
+            body._shapes.add(self)
         self._shape = cp.cpPolyShapeNew(body_body, len(vertices), self.verts, offset)
         self._shapecontents = self._shape.contents
         </div>

@@ -50,6 +50,12 @@ __all__ = ["inf", "version", "chipmunk_version"
 import ctypes as ct
 import weakref
 
+try:
+    #Python 2.7+ 
+    from weakref import WeakSet
+except ImportError:
+    from .weakrefset import WeakSet
+
 from . import _chipmunk as cp
 from . import _chipmunk_ffi as cpffi
 from . import util as u
@@ -753,6 +759,9 @@ class Body(object):
         
         self._space = None # Weak ref to the space holding this body (if any)
         
+        self._constraints = WeakSet() # weak refs to any constraints attached
+        self._shapes = WeakSet() # weak refs to any shapes attached
+        
     def __del__(self):
         if cp is not None:
             cp.cpBodyFree(self._body)
@@ -994,6 +1003,17 @@ class Body(object):
         f = cp.cpBodyArbiterIteratorFunc(impl)
         cp.cpBodyEachArbiter(self._body, f, None)
         
+    def _get_constraints(self):
+        return set(self._constraints)
+    
+    constraints = property(_get_constraints, 
+        doc="""Get the constraints this body is attached to.""")
+    
+    def _get_shapes(self):
+        return set(self._shapes)
+    
+    shapes = property(_get_shapes, 
+        doc="""Get the shapes attached to this body.""")
     
     def local_to_world(self, v):
         """Convert body local coordinates to world space coordinates
@@ -1218,9 +1238,13 @@ class Circle(Shape):
         body's center of gravity in body local coordinates."""
         self._body = body
         body_body = None if body is None else body._body
+        if body != None: 
+            body._shapes.add(self)
+        
         self._shape = cp.cpCircleShapeNew(body_body, radius, offset)
         self._shapecontents = self._shape.contents
         self._cs = ct.cast(self._shape, ct.POINTER(cp.cpCircleShape))
+        
         
     def unsafe_set_radius(self, r):
         """Unsafe set the radius of the circle. 
@@ -1275,6 +1299,8 @@ class Segment(Shape):
         """
         self._body = body
         body_body = None if body is None else body._body
+        if body != None: 
+            body._shapes.add(self)
         self._shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
         self._shapecontents = self._shape.contents
     
@@ -1329,6 +1355,8 @@ class Poly(Shape):
         self._set_verts(vertices, auto_order_vertices)
                 
         body_body = None if body is None else body._body
+        if body != None: 
+            body._shapes.add(self)
         self._shape = cp.cpPolyShapeNew(body_body, len(vertices), self.verts, offset)
         self._shapecontents = self._shape.contents
         

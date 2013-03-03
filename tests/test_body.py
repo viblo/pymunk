@@ -140,6 +140,29 @@ class UnitTestBody(unittest.TestCase):
         self.assertEqual(shapes[0], c1)
         self.assertEqual(shapes[1], c2)
     
+    def testGetConstraints(self):
+        s = p.Space()
+        b1 = p.Body(1,1)
+        b2 = p.Body(1,1)
+        s.add(b1)
+        j1 = p.PivotJoint(b1,s.static_body,(0,0))
+        j2 = p.PivotJoint(b2,s.static_body,(0,0))
+        
+        self.assert_(j1 in b1.constraints)
+        self.assert_(j1 not in b2.constraints)
+        self.assert_(j1 in s.static_body.constraints)
+        self.assert_(j2 in s.static_body.constraints)
+                
+    def testGetShapes(self):
+        s = p.Space()
+        b1 = p.Body(1,1)
+        s.add(b1)
+        s1 = p.Circle(b1,3)
+        s2 = p.Segment(b1,(0,0), (1,2),1)
+        
+        self.assert_(s1 in b1.shapes)
+        self.assert_(s2 in b1.shapes)   
+        self.assert_(s1 not in s.static_body.shapes)
     
 ####################################################################
 if __name__ == "__main__":

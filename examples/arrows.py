@@ -132,6 +132,8 @@ def main():
             flight_direction = Vec2d(flying_arrow.velocity)
             flight_speed = flight_direction.normalize_return_length()
             dot = flight_direction.dot(pointing_direction)
+            # (1-abs(dot)) can be replaced with (1-dot) to make arrows turn around even when fired straight up. 
+            # Might not be as accurate, but maybe look better.
             drag_force_magnitude = (1-abs(dot)) * flight_speed **2 * drag_constant * flying_arrow.mass
             
             arrow_tail_position = Vec2d(-50, 0).rotated(flying_arrow.angle)

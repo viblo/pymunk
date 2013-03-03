@@ -43,6 +43,7 @@ __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 import ctypes as ct
+
 from . import _chipmunk as cp 
 from . import _chipmunk_ffi as cpffi 
 
@@ -93,9 +94,16 @@ class Constraint(object):
         doc="""The second of the two bodies constrained""")
         
     def activate_bodies(self):
+        """Activate the bodies this constraint is attached to"""
         self._a.activate()
         self._b.activate()
-        
+    
+    def _set_bodies(self, a, b):
+        self._a = a
+        self._b = b
+        a._constraints.add(self)
+        b._constraints.add(self)
+    
     def __del__(self):
         if cp is not None:
             cp.cpConstraintFree(self._constraint)
@@ -110,9 +118,7 @@ class PinJoint(Constraint):
         self._constraint = cp.cpPinJointNew(a._body, b._body, anchr1, anchr2)
         self._ccontents = self._constraint.contents
         self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPinJoint)).contents
-        self._a = a
-        self._b = b
-        
+        self._set_bodies(a,b)        
         
     def _get_anchr1(self):
         return self._pjc.anchr1
@@ -145,8 +151,7 @@ class SlideJoint(Constraint):
         self._constraint = cp.cpSlideJointNew(a._body, b._body, anchr1, anchr2, min, max)
         self._ccontents = self._constraint.contents
         self._sjc = cp.cast(self._constraint, ct.POINTER(cp.cpSlideJoint)).contents
-        self._a = a
-        self._b = b
+        self._set_bodies(a,b)
         
     def _get_anchr1(self):
         return self._sjc.anchr1
@@ -203,8 +208,7 @@ class PivotJoint(Constraint):
             
         self._ccontents = self._constraint.contents
         self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPivotJoint)).contents
-        self._a = a
-        self._b = b
+        self._set_bodies(a,b)
     
     def _get_anchr1(self):
         return self._pjc.anchr1
@@ -229,8 +233,7 @@ class GrooveJoint(Constraint):
         self._constraint = cp.cpGrooveJointNew(a._body, b._body, groove_a, groove_b, anchr2)
         self._ccontents = self._constraint.contents
         self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpGrooveJoint)).contents
-        self._a = a
-        self._b = b
+        self._set_bodies(a,b)
         
     def _get_anchr2(self):
         return self._pjc.anchr2
@@ -266,8 +269,7 @@ class DampedSpring(Constraint):
         self._constraint = cp.cpDampedSpringNew(a._body, b._body, anchr1, anchr2, rest_length, stiffness, damping)
         self._ccontents = self._constraint.contents
         self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedSpring)).contents
-        self._a = a
-        self._b = b
+        self._set_bodies(a,b)
         
     def _get_anchr1(self):
         return self._dsc.anchr1
@@ -318,8 +320,7 @@ class DampedRotarySpring(Constraint):
         self._constraint = cp.cpDampedRotarySpringNew(a._body, b._body, rest_angle, stiffness, damping)
         self._ccontents = self._constraint.contents
         self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedRotarySpring)).contents
-        self._a = a
-        self._b = b
+        self._set_bodies(a,b)
         
     def _get_rest_angle(self):
         return self._dsc.restAngle
@@ -371,8 +372,7 @@ class RotaryLimitJoint(Constraint):
         self._constraint = cp.cpRotaryLimitJointNew(a._body, b._body, min, max)
         self._ccontents = self._constraint.contents
         self._rlc = cp.cast(self._constraint, ct.POINTER(cp.cpRotaryLimitJoint)).contents
-        self._a = a
-        self._b = b
+        self._set_bodies(a,b)
         
     def _get_min(self):
         return self._rlc.min
@@ -396,8 +396,7 @@ class RatchetJoint(Constraint):
         self._constraint = cp.cpRatchetJointNew(a._body, b._body, phase, ratchet)
         self._ccontents = self._constraint.contents
         self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpRatchetJoint)).contents
-        self._a = a
-        self._b = b
+        self._set_bodies(a,b)
         
     def _get_angle(self):
         return self._dsc.angle
@@ -428,8 +427,7 @@ class GearJoint(Constraint):
         self._constraint = cp.cpGearJointNew(a._body, b._body, phase, ratio)
         self._ccontents = self._constraint.contents
         self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpGearJoint)).contents
-        self._a = a
-        self._b = b
+        self._set_bodies(a,b)
         
     def _get_phase(self):
         return self._dsc.phase
@@ -454,8 +452,7 @@ class SimpleMotor(Constraint):
         self._constraint = cp.cpSimpleMotorNew(a._body, b._body, rate)
         self._ccontents = self._constraint.contents
         self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpSimpleMotor)).contents
-        self._a = a
-        self._b = b
+        self._set_bodies(a,b)
         
     def _get_rate(self):
         return self._dsc.rate
