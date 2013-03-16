@@ -90,7 +90,7 @@ exactly which Chipmunk library file it loaded. For example::
     Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 
 """
-__version__ = "$Id: __init__.py 472 2012-11-11 03:16:40Z vb@viblo.se $"
+__version__ = "$Id: __init__.py 480 2013-03-03 23:55:20Z vb@viblo.se $"
 __docformat__ = "reStructuredText"
 
 __all__ = ["inf", "version", "chipmunk_version"
@@ -190,6 +190,10 @@ moment.
         self._shapes = {}
         self._bodies = set()
         self._constraints = set()
+        
+        self._locked = False
+        self._add_later = set()
+        self._remove_later = set()
 </div>
     def _get_shapes(self):
         return list(self._shapes.values())
@@ -319,7 +323,17 @@ moment.
         """)
         
 <div class="viewcode-block" id="Space.add"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.add">[docs]</a>    def add(self, *objs):
-        """Add one or many shapes, bodies or joints to the space"""
+        """Add one or many shapes, bodies or joints to the space
+        
+        Unlike Chipmunk and earlier versions of pymunk its now allowed to add 
+        objects even from a callback during the simulation step. However, the 
+        add will not be performed until the end of the step.
+        """
+        
+        if self._locked:
+            self._add_later.add(objs)
+            return
+            
         for o in objs:
             if isinstance(o, Body):
                 self._add_body(o)
@@ -334,11 +348,20 @@ moment.
 <div class="viewcode-block" id="Space.remove"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.remove">[docs]</a>    def remove(self, *objs):
         """Remove one or many shapes, bodies or constraints from the space
         
+        Unlike Chipmunk and earlier versions of pymunk its now allowed to 
+        remove objects even from a callback during the simulation step. 
+        However, the removal will not be performed until the end of the step.
+        
         .. Note:: 
             When removing objects from the space, make sure you remove any 
             other objects that reference it. For instance, when you remove a 
             body, remove the joints and shapes attached to it. 
         """
+        
+        if self._locked:
+            self._remove_later.add(objs)
+            return
+            
         for o in objs:
             if isinstance(o, Body):
                 self._remove_body(o)
@@ -399,11 +422,22 @@ moment.
         highly recommended. Doing so will increase the efficiency of the
         contact persistence, requiring an order of magnitude fewer iterations
         to resolve the collisions in the usual case."""
+        
+        self._locked = True
         cp.cpSpaceStep(self._space, dt)
         self._removed_shapes = {}
         self._post_step_callbacks = {}
         self._post_callback_keys = {}
         self._post_last_callback_key = 0
+        self._locked = False
+        
+        for objs in self._add_later:
+            self.add(objs)
+        self._add_later.clear()
+        
+        for objs in self._remove_later:
+            self.remove(objs)
+        self._remove_later.clear()
     </div>
 <div class="viewcode-block" id="Space.add_collision_handler"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.add_collision_handler">[docs]</a>    def add_collision_handler(self, a, b, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
         """Add a collision handler for given collision type pair. 
@@ -547,21 +581,14 @@ moment.
     
 <div class="viewcode-block" id="Space.add_post_step_callback"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.add_post_step_callback">[docs]</a>    def add_post_step_callback(self, callback_function, obj, *args, **kwargs):
         """Add a function to be called last in the next simulation step.
-        
-        Post step callbacks are the place where you can break the rules about 
-        removing objects from within a callback. In fact, their primary 
-        function is to help you safely remove objects from the space that were 
-        destroyed or disabled during the step.
-        
+                
         Post step callbacks are registered as a function and an object used as 
-        a key. You can only register one post step callback per object. This 
-        prevents you from removing an object more than once. For instance, say 
-        that you get a collision callback between a bullet and object A. The 
-        bullet and object A are destroyed, so you add a post step callback for 
-        each to remove. In the same step, the same bullet also hit object B 
-        and you add two more callbacks, one for object B and a second for the 
-        bullet. This is actually just fine, and the callback to remove the 
-        bullet will only be called once! 
+        a key. You can only register one post step callback per object. 
+        
+        This function was more useful with earlier versions of pymunk where 
+        you weren't allowed to use the add and remove methods on the space 
+        during a simulation step. But this function is still available for 
+        other uses and to keep backwards compatibility. 
         
         .. Note::
             If you remove a shape from the callback it will trigger the

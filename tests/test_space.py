@@ -52,21 +52,52 @@ class UnitTestSpace(unittest.TestCase):
     
     def testAddRemove(self):
         
-        self.s.remove(self.b1)
-        self.s.add(self.b1)
+        s = self.s
+        
+        s.remove(self.b1)
+        s.add(self.b1)
         b = p.Body()
         s3 = p.Circle(b,2)
-        self.s.add(s3)
+        s.add(s3)
         b3 = p.Body(1,1)
-        self.s.add(b3)
+        s.add(b3)
         
-        self.assertEqual(len(self.s.bodies), 3)
-        self.assertEqual(len(self.s.shapes), 3)
+        self.assertEqual(len(s.bodies), 3)
+        self.assertEqual(len(s.shapes), 3)
         
-        self.s.remove(self.s2,self.b1,self.s1)
-        self.s.remove(s3)
-        self.assertEqual(len(self.s.bodies), 2)
-        self.assertEqual(len(self.s.shapes), 0)
+        s.remove(self.s2,self.b1,self.s1)
+        s.remove(s3)
+        self.assertEqual(len(s.bodies), 2)
+        self.assertEqual(len(s.shapes), 0)
+        
+    def testAddInStep(self):
+        s = self.s
+        b = p.Body(1,2)
+        c = p.Circle(b,2)
+        def pre_solve(space, arbiter):
+            space.add(b,c)
+            return True
+        
+        s.add_collision_handler(0, 0, pre_solve = pre_solve)
+        
+        s.step(.1)
+        
+        self.assert_(b in s.bodies)
+        self.assert_(c in s.shapes)
+    
+    def testRemoveInStep(self):
+        s = self.s
+        
+        def pre_solve(space, arbiter):
+            space.remove(arbiter.shapes)
+            return True
+        
+        s.add_collision_handler(0, 0, pre_solve = pre_solve)
+        
+        s.step(.1)
+        
+        self.assert_(self.s1 not in s.bodies)
+        self.assert_(self.s2 not in s.shapes)
         
     def testPointQueryFirst(self):
         self.assertEqual(self.s.point_query_first((31,0)), None)

@@ -118,7 +118,7 @@ distribution (i.e. not in a checked-out copy from svn).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02C5FF90&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02D43F30&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -172,6 +172,9 @@ contacts.</p>
 <dt id="pymunk.Space.add">
 <tt class="descname">add</tt><big>(</big><em>*objs</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.add" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add one or many shapes, bodies or joints to the space</p>
+<p>Unlike Chipmunk and earlier versions of pymunk its now allowed to add 
+objects even from a callback during the simulation step. However, the 
+add will not be performed until the end of the step.</p>
 </dd></dl>
 
 <dl class="method">
@@ -243,19 +246,12 @@ functions.</p>
 <dt id="pymunk.Space.add_post_step_callback">
 <tt class="descname">add_post_step_callback</tt><big>(</big><em>callback_function</em>, <em>obj</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.add_post_step_callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.add_post_step_callback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a function to be called last in the next simulation step.</p>
-<p>Post step callbacks are the place where you can break the rules about 
-removing objects from within a callback. In fact, their primary 
-function is to help you safely remove objects from the space that were 
-destroyed or disabled during the step.</p>
 <p>Post step callbacks are registered as a function and an object used as 
-a key. You can only register one post step callback per object. This 
-prevents you from removing an object more than once. For instance, say 
-that you get a collision callback between a bullet and object A. The 
-bullet and object A are destroyed, so you add a post step callback for 
-each to remove. In the same step, the same bullet also hit object B 
-and you add two more callbacks, one for object B and a second for the 
-bullet. This is actually just fine, and the callback to remove the 
-bullet will only be called once!</p>
+a key. You can only register one post step callback per object.</p>
+<p>This function was more useful with earlier versions of pymunk where 
+you weren&#8217;t allowed to use the add and remove methods on the space 
+during a simulation step. But this function is still available for 
+other uses and to keep backwards compatibility.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you remove a shape from the callback it will trigger the
@@ -520,6 +516,9 @@ space. You only need to call this if you move one of the static shapes.</p>
 <dt id="pymunk.Space.remove">
 <tt class="descname">remove</tt><big>(</big><em>*objs</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.remove" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove one or many shapes, bodies or constraints from the space</p>
+<p>Unlike Chipmunk and earlier versions of pymunk its now allowed to 
+remove objects even from a callback during the simulation step. 
+However, the removal will not be performed until the end of the step.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">When removing objects from the space, make sure you remove any 
