@@ -57,6 +57,10 @@ def draw_space(surface, space):
     you want it drawn in.
     
     >>> my_shape.color = pygame.color.THECOLORS["pink"]
+    
+    If you do not want a shape to be drawn, set shape.ignore_draw to True.
+    
+    >>> my_shape.ignore_draw = True
         
     Not all constraints are currently drawn in a very clear way, but all the 
     different shapes should look fine both as static and dynamic objects.
