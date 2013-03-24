@@ -71,6 +71,16 @@ class UnitTestShape(unittest.TestCase):
         
         self.assertEqual(c.bb, p.BB(0, 0, 1, 1))
         
+        
+    def testCreateBox(self):
+        s = p.Space()
+        b = p.Body(1,1)
+        
+        c = p.Poly.create_box(b, (4,2), (10,10))
+        
+        ps = c.get_points()
+        print help(self.assertEqual)
+        self.assertEqual(ps, [(8,9), (8,11),(12,11),(12,9)])
     
 ####################################################################
 if __name__ == "__main__":

@@ -1400,12 +1400,12 @@ class Poly(Shape):
             self.verts[i].y = vertex[1]
         
     @staticmethod
-    def create_box(body, size=(10,10)): 
+    def create_box(body, size=(10,10), offset=(0,0)): 
         """Convenience function to create a box centered around the body position."""
         x,y = size[0]*.5,size[1]*.5
         vs = [(-x,-y),(-x,y),(x,y),(x,-y)]
     
-        return Poly(body,vs)
+        return Poly(body, vs, offset)
         
         
     def get_points(self): #TODO: Rename to get_vertices in next major version?
