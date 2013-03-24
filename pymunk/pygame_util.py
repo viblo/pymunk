@@ -176,7 +176,7 @@ def draw_segment(surface, segment):
         color = pygame.color.THECOLORS["lightgrey"]
     else:
         color = pygame.color.THECOLORS["blue"]
-    pygame.draw.lines(surface, color, False, [p1,p2], max(int(segment.radius),1))
+    pygame.draw.lines(surface, color, False, [p1,p2], max(int(segment.radius*2),1))
     
 def draw_constraint(surface, constraint):
     """Draw a pymunk.Constraint object
