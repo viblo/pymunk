@@ -85,6 +85,10 @@ you want it drawn in.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;pink&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
+<p>If you do not want a shape to be drawn, set shape.ignore_draw to True.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">ignore_draw</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
 <p>Not all constraints are currently drawn in a very clear way, but all the 
 different shapes should look fine both as static and dynamic objects.</p>
 <p>See pygame_util.demo.py for a full example</p>

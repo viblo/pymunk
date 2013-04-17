@@ -90,7 +90,7 @@ exactly which Chipmunk library file it loaded. For example::
     Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 
 """
-__version__ = "$Id: __init__.py 480 2013-03-03 23:55:20Z vb@viblo.se $"
+__version__ = "$Id: __init__.py 486 2013-03-24 20:19:26Z vb@viblo.se $"
 __docformat__ = "reStructuredText"
 
 __all__ = ["inf", "version", "chipmunk_version"
@@ -1452,12 +1452,12 @@ moment.
             self.verts[i].y = vertex[1]
         
     @staticmethod
-<div class="viewcode-block" id="Poly.create_box"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.create_box">[docs]</a>    def create_box(body, size=(10,10)): 
+<div class="viewcode-block" id="Poly.create_box"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.create_box">[docs]</a>    def create_box(body, size=(10,10), offset=(0,0)): 
         """Convenience function to create a box centered around the body position."""
         x,y = size[0]*.5,size[1]*.5
         vs = [(-x,-y),(-x,y),(x,y),(x,-y)]
     
-        return Poly(body,vs)
+        return Poly(body, vs, offset)
         
         </div>
 <div class="viewcode-block" id="Poly.get_points"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.get_points">[docs]</a>    def get_points(self): #TODO: Rename to get_vertices in next major version?

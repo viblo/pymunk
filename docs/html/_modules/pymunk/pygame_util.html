@@ -110,6 +110,10 @@ flip_y = True
     you want it drawn in.
     
     &gt;&gt;&gt; my_shape.color = pygame.color.THECOLORS["pink"]
+    
+    If you do not want a shape to be drawn, set shape.ignore_draw to True.
+    
+    &gt;&gt;&gt; my_shape.ignore_draw = True
         
     Not all constraints are currently drawn in a very clear way, but all the 
     different shapes should look fine both as static and dynamic objects.
@@ -225,7 +229,7 @@ flip_y = True
         color = pygame.color.THECOLORS["lightgrey"]
     else:
         color = pygame.color.THECOLORS["blue"]
-    pygame.draw.lines(surface, color, False, [p1,p2], max(int(segment.radius),1))
+    pygame.draw.lines(surface, color, False, [p1,p2], max(int(segment.radius*2),1))
     </div>
 <div class="viewcode-block" id="draw_constraint"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.draw_constraint">[docs]</a>def draw_constraint(surface, constraint):
     """Draw a pymunk.Constraint object
