@@ -79,8 +79,28 @@ class UnitTestShape(unittest.TestCase):
         c = p.Poly.create_box(b, (4,2), (10,10))
         
         ps = c.get_points()
-        print help(self.assertEqual)
+        #print help(self.assertEqual)
         self.assertEqual(ps, [(8,9), (8,11),(12,11),(12,9)])
+    
+    def testGroup(self):
+        s = p.Space()
+        b1 = p.Body(1,1)
+        b2 = p.Body(1,1)
+        b3 = p.Body(1,1)
+        
+        c1 = p.Circle(b1,2)
+        c2 = p.Circle(b2,2)
+        c3 = p.Circle(b3,2)
+        
+        c1.group = 5
+        c2.group = 5
+        c3.group = 6
+        
+        s.add(b2,b3,c2,c3)
+        
+        self.assertEqual(s.shape_query(c1)[0], c3)
+        
+        
     
 ####################################################################
 if __name__ == "__main__":
