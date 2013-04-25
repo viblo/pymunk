@@ -113,7 +113,7 @@ def draw_circle(surface, circle):
             shape : pymunk.Circle
                 The circle shape to draw
     """
-    circle_center = circle.body.position + circle.offset
+    circle_center = circle.body.position + ircle.offset.rotated(circle.body.angle)
     p = to_pygame(circle_center, surface)
     r = 0
     if hasattr(circle, "color"):
