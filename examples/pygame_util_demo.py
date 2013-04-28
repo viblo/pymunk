@@ -1,4 +1,6 @@
-"""Showcase what the output of pymunk.pygame_util draw methods will look like
+"""Showcase what the output of pymunk.pygame_util draw methods will look like.
+
+See pyglet_util_demo.py for a comparison to pyglet.
 """
 
 __version__ = "$Id:$"
