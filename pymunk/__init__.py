@@ -1171,8 +1171,22 @@ class Shape(object):
         conveyor belts or players that move around. This value is only used 
         when calculating friction, not resolving the collision.""")
 
-    body = property(lambda self: self._body, 
-        doc="""The body this shape is attached to""")
+    def _get_body(self):
+        return self._body
+    def _set_body(self, body):
+        if self._body != None:
+            self._body._shapes.remove(self)
+        if body != None:
+            body._shapes.add(self)
+            self._shapecontents.body = body._body
+        else:
+            self._shapecontents.body = None
+            
+        self._body = body
+        
+    body = property(_get_body, _set_body,
+        doc="""The body this shape is attached to. Can be set to None to 
+        indicate that this shape doesnt belong to a body.""")
 
     def update(self, position, rotation_vector):
         """Update, cache and return the bounding box of a shape with an 
@@ -1214,46 +1228,7 @@ class Shape(object):
         else:
             return None
     
-class SegmentQueryInfo(object):
-    """Segment queries return more information than just a simple yes or no, 
-    they also return where a shape was hit and it's surface normal at the hit 
-    point. This object hold that information.
-    """
-    def __init__(self, shape, start, end, t, n):
-        """You shouldn't need to initialize SegmentQueryInfo objects on your 
-        own.
-        """
-        self._shape = shape
-        self._t = t
-        self._n = n
-        self._start = start
-        self._end = end
-        
-    def __repr__(self):
-        return "SegmentQueryInfo(%s, %s, %s, %s, %s)" % (self.shape, self._start, self._end, self.t, self.n)
-            
-    shape = property(lambda self: self._shape
-        , doc = """Shape that was hit""")
-        
-    t = property(lambda self: self._t
-        , doc = """Distance along query segment, will always be in the range [0, 1]""")
-        
-    n = property(lambda self: self._n
-        , doc = """Normal of hit surface""")
-        
-    def get_hit_point(self):
-        """Return the hit point in world coordinates where the segment first 
-        intersected with the shape
-        """
-        #todo: use ffi function
-        return Vec2d(self._start).interpolate_to(self._end, self.t)
-        
-    def get_hit_distance(self):
-        """Return the absolute distance where the segment first hit the shape
-        """
-        #todo: use ffi function
-        return Vec2d(self._start).get_distance(self._end) * self.t
-    
+
     
 class Circle(Shape):
     """A circle shape defined by a radius
@@ -1262,7 +1237,11 @@ class Circle(Shape):
     """
     def __init__(self, body, radius, offset = (0, 0)):
         """body is the body attach the circle to, offset is the offset from the
-        body's center of gravity in body local coordinates."""
+        body's center of gravity in body local coordinates.
+        
+        It is legal to send in None as body argument to indicate that this 
+        shape is not attached to a body.
+        """
         self._body = body
         body_body = None if body is None else body._body
         if body != None: 
@@ -1310,6 +1289,9 @@ class Segment(Shape):
     This shape can be attached to moving bodies, but don't currently generate 
     collisions with other line segments. Can be beveled in order to give it a 
     thickness. 
+    
+    It is legal to send in None as body argument to indicate that this 
+    shape is not attached to a body.
     """
     def __init__(self, body, a, b, radius):
         """Create a Segment
@@ -1358,7 +1340,10 @@ class Segment(Shape):
 class Poly(Shape):
     """A convex polygon shape
     
-    Slowest, but most flexible collision shape. 
+    Slowest, but most flexible collision shape.
+
+    It is legal to send in None as body argument to indicate that this 
+    shape is not attached to a body.    
     """
     def __init__(self, body, vertices, offset=(0, 0), auto_order_vertices=True):
         """Create a polygon
@@ -1439,6 +1424,48 @@ class Poly(Shape):
         self._set_verts(vertices, auto_order_vertices)
         cp.cpPolyShapeSetVerts(self._shape, len(vertices), self.verts, offset)
         
+        
+class SegmentQueryInfo(object):
+    """Segment queries return more information than just a simple yes or no, 
+    they also return where a shape was hit and it's surface normal at the hit 
+    point. This object hold that information.
+    """
+    def __init__(self, shape, start, end, t, n):
+        """You shouldn't need to initialize SegmentQueryInfo objects on your 
+        own.
+        """
+        self._shape = shape
+        self._t = t
+        self._n = n
+        self._start = start
+        self._end = end
+        
+    def __repr__(self):
+        return "SegmentQueryInfo(%s, %s, %s, %s, %s)" % (self.shape, self._start, self._end, self.t, self.n)
+            
+    shape = property(lambda self: self._shape
+        , doc = """Shape that was hit""")
+        
+    t = property(lambda self: self._t
+        , doc = """Distance along query segment, will always be in the range [0, 1]""")
+        
+    n = property(lambda self: self._n
+        , doc = """Normal of hit surface""")
+        
+    def get_hit_point(self):
+        """Return the hit point in world coordinates where the segment first 
+        intersected with the shape
+        """
+        #todo: use ffi function
+        return Vec2d(self._start).interpolate_to(self._end, self.t)
+        
+    def get_hit_distance(self):
+        """Return the absolute distance where the segment first hit the shape
+        """
+        #todo: use ffi function
+        return Vec2d(self._start).get_distance(self._end) * self.t
+    
+    
 def moment_for_circle(mass, inner_radius, outer_radius, offset=(0, 0)):
     """Calculate the moment of inertia for a circle"""
     return cp.cpMomentForCircle(mass, inner_radius, outer_radius, offset)

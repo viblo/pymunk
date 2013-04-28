@@ -100,7 +100,28 @@ class UnitTestShape(unittest.TestCase):
         
         self.assertEqual(s.shape_query(c1)[0], c3)
         
+    def testNoBody(self):
+        c = p.Circle(None, 1)        
+        self.assertEqual(c.body, None)
         
+    def testRemoveBody(self):
+        b = p.Body(1,1)
+        c = p.Circle(b,1)
+        c.body = None
+        
+        self.assertEqual(c.body, None)
+        self.assertEqual(len(b.shapes), 0)
+        
+    def testSwitchBody(self):
+        b1 = p.Body(1,1)
+        b2 = p.Body(1,1)
+        c = p.Circle(b1,1)
+        self.assertEqual(c.body, b1)
+        self.assert_(c in b1.shapes)
+        self.assert_(c not in b2.shapes)
+        c.body = b2
+        self.assert_(c not in b1.shapes)
+        self.assert_(c in b2.shapes)
     
 ####################################################################
 if __name__ == "__main__":
