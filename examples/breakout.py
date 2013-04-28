@@ -1,7 +1,7 @@
 """Very simple breakout clone. A circle shape serves as the paddle, then 
 breakable bricks constructed of Poly-shapes. 
 
-The code showcases severaly pymunk concepts such as elasitcity, impulses, 
+The code showcases several pymunk concepts such as elasitcity, impulses, 
 constant object speed, joints, collision handlers and post step callbacks.
 """
 
