@@ -100,6 +100,28 @@ class UnitTestShape(unittest.TestCase):
         
         self.assertEqual(s.shape_query(c1)[0], c3)
         
+    def testLayer(self):
+        s = p.Space()
+        b1 = p.Body(1,1)
+        b2 = p.Body(1,1)
+        b3 = p.Body(1,1)
+        b4 = p.Body(1,1)
+        
+        c1 = p.Circle(b1,2)
+        c2 = p.Circle(b2,2)
+        c3 = p.Circle(b3,2)
+        c4 = p.Circle(b4,2)
+        
+        c1.layers = 0b10
+        c2.layers = 0b01
+        c3.layers = 0b11
+        
+        s.add(b2,b3,b4,c2,c3,c4)
+        shapes = s.shape_query(c1)
+        self.assertEqual(len(shapes), 2)
+        self.assert_(c3 in shapes)
+        self.assert_(c4 in shapes)
+        
     def testNoBody(self):
         c = p.Circle(None, 1)        
         self.assertEqual(c.body, None)
