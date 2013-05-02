@@ -4,15 +4,16 @@ Showcase of a spiderweb (drawing with pyglet)"""
 __version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
-import math
+import math, random
 
 import pyglet
     
 import pymunk
 from pymunk.vec2d import Vec2d
-from pymunk.pyglet_util import draw_space
+from pymunk.pyglet_util import draw_space, draw_segment, draw_circle, draw_shape, draw_poly
 
-window = pyglet.window.Window()
+config = pyglet.gl.Config(sample_buffers=1, samples=2, double_buffer=True)
+window = pyglet.window.Window(config=config, vsync = False)
 space = pymunk.Space()
 
 space.gravity = 0,-900
@@ -21,12 +22,35 @@ print space.damping
 c = Vec2d(window.width /2., window.height / 2.)
 print "center", c
 
+### CONTAINER
+ss = [
+        pymunk.Segment(space.static_body, (0,0), (window.width,0),5)
+        ,pymunk.Segment(space.static_body, (window.width,0), (window.width,window.height),5)
+        ,pymunk.Segment(space.static_body, (window.width,window.height), (0,window.height),5)
+        ,pymunk.Segment(space.static_body, (0,window.height), (0,0),5)
+        ]
+
+for s in ss:
+    s.friction = .5
+    s.layers = s.layers ^ 0b100
+        
+space.add(ss)
+        
+        
+### WEB
+web_group = 1
+web_collision_type = 1
+web_layers = 0b101
 bs = []
 dist = .3
 
 cb = pymunk.Body(1,1)
 cb.position = c
-s = pymunk.Circle(cb, 1) # to have something to grab
+s = pymunk.Circle(cb, 15) # to have something to grab
+s.group = web_group
+s.layers = web_layers
+s.collision_type = web_collision_type
+s.ignore_draw = True
 space.add(cb, s)
 
 
@@ -35,7 +59,6 @@ for x in range(0,101):
     b = pymunk.Body(1, 1)
     v = Vec2d.unit()
     v.angle_degrees = x*18
-    print "angle", round(v.angle_degrees), 
     scale = window.height / 2. / 6. * .5
     
     dist += 1/18. 
@@ -47,12 +70,16 @@ for x in range(0,101):
     
     offset *= dist**2.8 / 100.
     
-    print "offset", offset
+    #print "offset", offset
     
     v.length = scale * (dist + offset) 
     
     b.position = c + v
-    s = pymunk.Circle(b, 1)
+    s = pymunk.Circle(b, 15)
+    s.group = web_group
+    s.layers = web_layers
+    s.collision_type = web_collision_type
+    s.ignore_draw = True
     space.add(b,s)
     bs.append(b)
     
@@ -74,8 +101,9 @@ for i in range(len(bs)-1):
     i2 = i+20
     if len(bs) > i2:
         add_joint(bs[i], bs[i2])   
-    
-#the attach points
+
+        
+### WEB ATTACH POINTS
 static_bs = []
 for b in bs[-17::4]:
     static_body = pymunk.Body()
@@ -83,16 +111,20 @@ for b in bs[-17::4]:
     static_bs.append(static_body)
     
     j = pymunk.PivotJoint(static_body, b, static_body.position)
+    j = pymunk.DampedSpring(static_body, b, (0,0), (0,0), 0, 0, 0)
+    j.damping = 100
+    j.stiffness = 20000
     space.add(j)
 
+### ALL SETUP DONE 
+    
 def update(dt):
     # Note that we dont use dt as input into step. That is because the 
     # simulation will behave much better if the step size doesnt change 
     # between frames.
     r = 10
     for x in range(r):
-        space.step(1./30./r)
-    
+        space.step(1./30./r)                
 
 pyglet.clock.schedule_interval(update, 1/30.)
 
@@ -102,15 +134,12 @@ mouse_body = pymunk.Body()
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
-    print "press", x,y
     mouse_body.position = x,y
     hit = space.nearest_point_query_nearest((x,y),10)
     if hit != None:
         global selected
         body = hit['shape'].body
-        print "GOT ONE!", body
         rest_length = mouse_body.position.get_distance(body.position)
-        print rest_length
         stiffness = 1000
         damping = 10
         selected = pymunk.DampedSpring(mouse_body, body, (0,0), (0,0), rest_length, stiffness, damping)
@@ -118,52 +147,25 @@ def on_mouse_press(x, y, button, modifiers):
         
 @window.event
 def on_mouse_release(x, y, button, modifiers):
-    print "release", x,y
     global selected
     if selected != None:
         space.remove(selected)
         selected = None
     
-
 @window.event
 def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
     mouse_body.position = x,y
-    print x,y
-    
+   
+fps_display = pyglet.clock.ClockDisplay()
+
 @window.event
 def on_draw():
+    pyglet.gl.glClearColor(240,240,240,255)
     window.clear()
-    pyglet.gl.glColor3f(1,1,1)
-    a = []
-    for b in bs:
-        a += [b.position.x, b.position.y]
-    pyglet.gl.glPointSize(4)
-    pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_POINTS, ('v2f',a))
-    #pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_LINE_STRIP, ('v2f',a))
     
-    a = []
-    for j in space.constraints:
-        a += [j.a.position.x, j.a.position.y, j.b.position.x, j.b.position.y]
-        pass
+    fps_display.draw()
     
-    pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_LINES, ('v2f',a))
- 
-    
-    for x in range(20):
-        l = []
-        for b in bs[x::20]:
-            l += [b.position.x, b.position.y]
-        #pyglet.graphics.draw(len(l)/2, pyglet.gl.GL_LINE_STRIP, ('v2f',l))
-    a = []
-    for x in range(5):
-        v = Vec2d.unit()
-        v.angle_degrees = x * 360 / 5
-        v.length = 500
-        v += c
-        a += [c.x, c.y, v.x, v.y]
-    
-    #pyglet.graphics.draw(len(a), pyglet.gl.GL_LINES, ('v2f',a))
-    
+    # static attach points
     pyglet.gl.glColor3f(1,0,1)
     pyglet.gl.glPointSize(6)
     a = []
@@ -171,5 +173,24 @@ def on_draw():
         a += [b.position.x, b.position.y]
         pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_POINTS, ('v2f',a))
     
-        
+    # web crossings / bodies
+    pyglet.gl.glColor3f(.8,.8,.8)
+    a = []
+    for b in bs:
+        a += [b.position.x, b.position.y]
+    pyglet.gl.glPointSize(4)
+    pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_POINTS, ('v2f',a))
+    
+    
+    # web net / constraints
+    a = []
+    for j in space.constraints:
+        a += [j.a.position.x, j.a.position.y, j.b.position.x, j.b.position.y]
+        pass
+    
+    pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_LINES, ('v2f',a))
+     
+    # anything else
+    draw_space(space)
+    
 pyglet.app.run()

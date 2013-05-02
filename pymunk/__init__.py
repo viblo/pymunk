@@ -587,7 +587,7 @@ class Space(object):
                 Only pick shapes matching the bit mask. i.e. 
                 (layers & shape.layers) != 0
             group : int
-                Only pick shapes in this group.
+                Only pick shapes not in this group.
                 
         """
         self.__query_hits = []
@@ -610,7 +610,7 @@ class Space(object):
                 Only pick shapes matching the bit mask. i.e. 
                 (layers & shape.layers) != 0
             group : int
-                Only pick shapes in this group.
+                Only pick shapes not in this group.
         """
         _shape = cp.cpSpacePointQueryFirst(self._space, point, layers, group)
         return self._get_shape(_shape)
@@ -642,7 +642,7 @@ class Space(object):
                 Only pick shapes matching the bit mask. i.e. 
                 (layers & shape.layers) != 0
             group : int
-                Only pick shapes in this group.
+                Only pick shapes not in this group.
         
         :Return: 
             [dict(shape=`Shape`, distance = distance, point = Vec2d)]
@@ -673,7 +673,7 @@ class Space(object):
                 Only pick shapes matching the bit mask. i.e. 
                 (layers & shape.layers) != 0
             group : int
-                Only pick shapes in this group.
+                Only pick shapes not in this group.
         
         :Return: 
             dict(shape=`Shape`, distance = distance, point = Vec2d)
