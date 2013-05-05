@@ -228,8 +228,8 @@ def draw_segment(segment, batch = None):
     pv1 = body.position + segment.a.rotated(body.angle)
     pv2 = body.position + segment.b.rotated(body.angle)
     
-    d = pv2-pv1
-    a = math.atan2(d.x, d.y)
+    d = pv2 - pv1
+    a = -math.atan2(d.x, d.y)
     dx = segment.radius * math.cos(a)
     dy = segment.radius * math.sin(a)
     
@@ -239,6 +239,7 @@ def draw_segment(segment, batch = None):
     p4 = pv2 - Vec2d(dx,dy)
            
     vs = [i for xy in [p1,p2,p3]+[p2,p3,p4] for i in xy]
+    
     
     if hasattr(segment, "color"):
         color = segment.color  
