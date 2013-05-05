@@ -13,7 +13,7 @@ from pygame.locals import *
     
 import pymunk
 from pymunk.vec2d import Vec2d
-from pymunk.pygame_util import draw_space
+import pymunk.pygame_util
 
 from shapes_for_draw_demos import add_objects
 
@@ -30,10 +30,10 @@ def main():
     ### Draw it 
     screen.fill(pygame.color.THECOLORS["black"])
     
-    draw_space(screen, space)
+    pymunk.pygame_util.draw(screen, space)
                     
     # Info
-    screen.blit(font.render("Demo example of shapes drawn by pygame_util.draw_space()", 1, pygame.color.THECOLORS["darkgray"]), (5, 580))
+    screen.blit(font.render("Demo example of shapes drawn by pygame_util.draw()", 1, pygame.color.THECOLORS["darkgray"]), (5, 580))
     screen.blit(font.render("Static shapes", 1, pygame.color.THECOLORS["white"]), (50, 20))
     screen.blit(font.render("Dynamic shapes", 1, pygame.color.THECOLORS["white"]), (250, 20))
     screen.blit(font.render("Constraints", 1, pygame.color.THECOLORS["white"]), (450, 20))

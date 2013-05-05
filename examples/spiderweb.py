@@ -1,5 +1,7 @@
-"""THIS IS WORK IN PROGRESS.
-Showcase of a spiderweb (drawing with pyglet)"""
+"""Showcase of a elastic spiderweb (drawing with pyglet)
+
+It is possible to grab one of the crossings with the mouse
+"""
 
 __version__ = "$Id:$"
 __docformat__ = "reStructuredText"
@@ -10,7 +12,7 @@ import pyglet
     
 import pymunk
 from pymunk.vec2d import Vec2d
-from pymunk.pyglet_util import draw_space, draw_segment, draw_circle, draw_shape, draw_poly
+from pymunk.pyglet_util import draw
 
 config = pyglet.gl.Config(sample_buffers=1, samples=2, double_buffer=True)
 window = pyglet.window.Window(config=config, vsync = False)
@@ -18,9 +20,7 @@ space = pymunk.Space()
 
 space.gravity = 0,-900
 space.damping = .999
-print space.damping
 c = Vec2d(window.width /2., window.height / 2.)
-print "center", c
 
 ### CONTAINER
 ss = [
@@ -156,6 +156,12 @@ def on_mouse_release(x, y, button, modifiers):
 def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
     mouse_body.position = x,y
    
+@window.event
+def on_key_press(symbol, modifiers):
+    if symbol == pyglet.window.key.P:
+        pyglet.image.get_buffer_manager().get_color_buffer().save('spiderweb.png')
+
+   
 fps_display = pyglet.clock.ClockDisplay()
 
 @window.event
@@ -191,6 +197,6 @@ def on_draw():
     pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_LINES, ('v2f',a))
      
     # anything else
-    draw_space(space)
+    draw(space)
     
 pyglet.app.run()

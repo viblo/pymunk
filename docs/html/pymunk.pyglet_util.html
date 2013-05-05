@@ -68,19 +68,28 @@ in a full application. The methods contained in this module is opinionated
 about your coordinate system and not very optimized (they use batched 
 drawing, but there is probably room for optimizations still).</p>
 <dl class="function">
-<dt id="pymunk.pyglet_util.draw_space">
-<tt class="descclassname">pymunk.pyglet_util.</tt><tt class="descname">draw_space</tt><big>(</big><em>space</em>, <em>batch=None</em><big>)</big><a class="reference internal" href="_modules/pymunk/pyglet_util.html#draw_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.draw_space" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw the contents of a pymunk.Space object</p>
+<dt id="pymunk.pyglet_util.draw">
+<tt class="descclassname">pymunk.pyglet_util.</tt><tt class="descname">draw</tt><big>(</big><em>*objs</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pymunk/pyglet_util.html#draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw one or many pymunk objects. It is perfectly fine to pass in a 
+whole Space object.</p>
 <dl class="docutils">
-<dt>This method currently supports drawing of</dt>
+<dt>Objects that can be handled are:</dt>
 <dd><ul class="first last simple">
+<li>pymunk.Space</li>
 <li>pymunk.Segment</li>
 <li>pymunk.Circle</li>
 <li>pymunk.Poly</li>
 </ul>
 </dd>
 </dl>
-<p>You can control the color of a shape by setting shape.color to the color 
+<p>If a Space is passed in all shapes in that space will be drawn. 
+Unrecognized objects will be ignored (for example if you pass in a 
+constraint).</p>
+<p>Typical usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pymunk</span><span class="o">.</span><span class="n">pyglet_util</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">my_space</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can control the color of a Shape by setting shape.color to the color 
 you want it drawn in.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c"># will draw my_shape in red</span>
 </pre></div>
@@ -89,102 +98,29 @@ you want it drawn in.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">ignore_draw</span> <span class="o">=</span> <span class="bp">True</span>
 </pre></div>
 </div>
+<p>(However, if you want to ignore most shapes its probably more performant 
+to only pass in those shapes that you want to be drawn to the draw method)</p>
+<p>You can optionally pass in a batch to use. Just remember that you need to 
+call draw yourself.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pymunk</span><span class="o">.</span><span class="n">pyglet_util</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">my_shape</span><span class="p">,</span> <span class="n">batch</span> <span class="o">=</span> <span class="n">my_batch</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_batch</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>See pyglet_util.demo.py for a full example</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
-<dt>space <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Space</span></dt>
-<dd><p class="first last">The contents of this Space will be drawn on the surface.</p>
+<tr class="field-odd field"><th class="field-name">Param :</th><td class="field-body"><dl class="first last docutils">
+<dt>objs <span class="classifier-delimiter">:</span> <span class="classifier">One or many objects to draw.</span></dt>
+<dd><p class="first last">Can be either a single object or a list like container with 
+objects.</p>
 </dd>
-<dt>batch <span class="classifier-delimiter">:</span> <span class="classifier">pyglet.graphics.Batch</span></dt>
-<dd><p class="first last">Use this batch to draw on. You can pass None to have it 
-create a new batch. If you pass in your own batch you need 
+<dt>kwargs <span class="classifier-delimiter">:</span> <span class="classifier">You can optionally pass in a pyglet.graphics.Batch</span></dt>
+<dd><p class="first last">If a batch is given all drawing will use this batch to draw 
+on. If no batch is given a a new batch will be used for the
+drawing. Remember that if you pass in your own batch you need 
 to call draw on it yourself.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.pyglet_util.draw_shape">
-<tt class="descclassname">pymunk.pyglet_util.</tt><tt class="descname">draw_shape</tt><big>(</big><em>shape</em>, <em>batch=None</em><big>)</big><a class="reference internal" href="_modules/pymunk/pyglet_util.html#draw_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.draw_shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a pymunk.Shape object</p>
-<p>See the documentation of draw_space for full details</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
-<dt>surface <span class="classifier-delimiter">:</span> <span class="classifier">pygame.Surface</span></dt>
-<dd><p class="first last">Surface that the space will be drawn on</p>
-</dd>
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Shape</span></dt>
-<dd><p class="first last">The Shape object to draw</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.pyglet_util.draw_circle">
-<tt class="descclassname">pymunk.pyglet_util.</tt><tt class="descname">draw_circle</tt><big>(</big><em>circle</em>, <em>batch=None</em><big>)</big><a class="reference internal" href="_modules/pymunk/pyglet_util.html#draw_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.draw_circle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a pymunk.Circle object</p>
-<p>See help of draw_space for full details</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Circle</span></dt>
-<dd><p class="first last">The circle shape to draw</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.pyglet_util.draw_poly">
-<tt class="descclassname">pymunk.pyglet_util.</tt><tt class="descname">draw_poly</tt><big>(</big><em>poly</em>, <em>batch=None</em><big>)</big><a class="reference internal" href="_modules/pymunk/pyglet_util.html#draw_poly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.draw_poly" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a pymunk.Poly object</p>
-<p>See help of draw_space for full details</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Poly</span></dt>
-<dd><p class="first last">The poly shape to draw</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.pyglet_util.draw_segment">
-<tt class="descclassname">pymunk.pyglet_util.</tt><tt class="descname">draw_segment</tt><big>(</big><em>segment</em>, <em>batch=None</em><big>)</big><a class="reference internal" href="_modules/pymunk/pyglet_util.html#draw_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.draw_segment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a pymunk.Segment object</p>
-<p>See help of draw_space for full details</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Segment</span></dt>
-<dd><p class="first last">The segment shape to draw</p>
 </dd>
 </dl>
 </td>

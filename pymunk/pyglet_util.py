@@ -33,8 +33,8 @@ drawing, but there is probably room for optimizations still).
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-__all__ = ["draw_space", "draw_shape", "draw_circle", "draw_poly"
-         , "draw_segment"]
+__all__ = ["draw"]
+
 
 import math
 
@@ -44,15 +44,25 @@ from pyglet.gl import *
 import pymunk
 from pymunk.vec2d import Vec2d
 
-def draw_space(space, batch = None):
-    """Draw the contents of a pymunk.Space object
+def draw(*objs, **kwargs):
+    """Draw one or many pymunk objects. It is perfectly fine to pass in a 
+    whole Space object.
     
-    This method currently supports drawing of
+    Objects that can be handled are:
+        * pymunk.Space
         * pymunk.Segment
         * pymunk.Circle
         * pymunk.Poly
-
-    You can control the color of a shape by setting shape.color to the color 
+    
+    If a Space is passed in all shapes in that space will be drawn. 
+    Unrecognized objects will be ignored (for example if you pass in a 
+    constraint).
+    
+    Typical usage::
+    
+    >>> pymunk.pyglet_util.draw(my_space)
+    
+    You can control the color of a Shape by setting shape.color to the color 
     you want it drawn in.
     
     >>> my_shape.color = (255, 0, 0) # will draw my_shape in red
@@ -60,56 +70,66 @@ def draw_space(space, batch = None):
     If you do not want a shape to be drawn, set shape.ignore_draw to True.
     
     >>> my_shape.ignore_draw = True
-        
+    
+    (However, if you want to ignore most shapes its probably more performant 
+    to only pass in those shapes that you want to be drawn to the draw method)
+    
+    You can optionally pass in a batch to use. Just remember that you need to 
+    call draw yourself.
+    
+    >>> pymunk.pyglet_util.draw(my_shape, batch = my_batch)
+    >>> my_batch.draw()
     
     See pyglet_util.demo.py for a full example
     
-    :Parameters:
-            space : pymunk.Space
-                The contents of this Space will be drawn on the surface. 
-            batch : pyglet.graphics.Batch
-                Use this batch to draw on. You can pass None to have it 
-                create a new batch. If you pass in your own batch you need 
+    :Param:
+            objs : One or many objects to draw.
+                Can be either a single object or a list like container with 
+                objects.
+            kwargs : You can optionally pass in a pyglet.graphics.Batch
+                If a batch is given all drawing will use this batch to draw 
+                on. If no batch is given a a new batch will be used for the
+                drawing. Remember that if you pass in your own batch you need 
                 to call draw on it yourself.
+    
     """
     new_batch = False
-    if batch == None:
+    
+    if "batch" not in kwargs:
         new_batch = True
         batch = pyglet.graphics.Batch()
-    for s in space.shapes:
-        if not (hasattr(s, "ignore_draw") and s.ignore_draw):
-            draw_shape(s, batch)
+    else:
+        batch = kwargs["batch"]
+        
+    for o in objs:
+        if isinstance(o, pymunk.Space):
+            _draw_space(o)
+        elif isinstance(o, pymunk.Shape):
+            _draw_shape(o)
+        elif isinstance(o, pymunk.Constraint):
+            _draw_constraint(o)
+        elif hasattr(o, '__iter__'):
+            for oo in o:
+                draw(oo, **kwargs)
+    
     if new_batch:
         batch.draw()
+
+def _draw_space(space, batch = None):
+    for s in space.shapes:
+        if not (hasattr(s, "ignore_draw") and s.ignore_draw):
+            _draw_shape(s, batch)
             
             
-def draw_shape(shape, batch = None):
-    """Draw a pymunk.Shape object
-    
-    See the documentation of draw_space for full details
-    
-    :Parameters:
-            surface : pygame.Surface
-                Surface that the space will be drawn on
-            shape : pymunk.Shape
-                The Shape object to draw
-    """
+def _draw_shape(shape, batch = None):
     if isinstance(shape, pymunk.Circle):
-        draw_circle(shape, batch)
+        _draw_circle(shape, batch)
     elif isinstance(shape, pymunk.Segment):
-        draw_segment(shape, batch)
-    elif  isinstance(shape, pymunk.Poly):
-        draw_poly(shape, batch)
+        _draw_segment(shape, batch)
+    elif isinstance(shape, pymunk.Poly):
+        _draw_poly(shape, batch)
     
-def draw_circle(circle, batch = None):
-    """Draw a pymunk.Circle object
-    
-    See help of draw_space for full details
-    
-    :Parameters:
-            shape : pymunk.Circle
-                The circle shape to draw
-    """
+def _draw_circle(circle, batch = None):
     circle_center = circle.body.position + circle.offset.rotated(circle.body.angle)
     
     r = 0
@@ -138,7 +158,6 @@ def draw_circle(circle, batch = None):
         x = c * x - s * y
         y = s * t + c * y
                
-    
     
     if circle.body.is_static:
         mode = pyglet.gl.GL_LINES
@@ -176,15 +195,7 @@ def draw_circle(circle, batch = None):
                  ('c3B', (0,0,255)*2))
     return
 
-def draw_poly(poly, batch = None):
-    """Draw a pymunk.Poly object
-    
-    See help of draw_space for full details
-    
-    :Parameters:
-            shape : pymunk.Poly
-                The poly shape to draw
-    """
+def _draw_poly(poly, batch = None):
     ps = poly.get_points()
     
     if hasattr(poly, "color"):
@@ -215,15 +226,7 @@ def draw_poly(poly, batch = None):
                  ('v2f', vs),
                  ('c3B', color*l))
 
-def draw_segment(segment, batch = None):
-    """Draw a pymunk.Segment object
-    
-    See help of draw_space for full details
-    
-    :Parameters:
-            shape : pymunk.Segment
-                The segment shape to draw
-    """
+def _draw_segment(segment, batch = None):
     body = segment.body
     pv1 = body.position + segment.a.rotated(body.angle)
     pv2 = body.position + segment.b.rotated(body.angle)
@@ -239,7 +242,6 @@ def draw_segment(segment, batch = None):
     p4 = pv2 - Vec2d(dx,dy)
            
     vs = [i for xy in [p1,p2,p3]+[p2,p3,p4] for i in xy]
-    
     
     if hasattr(segment, "color"):
         color = segment.color  
