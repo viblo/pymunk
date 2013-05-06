@@ -164,13 +164,10 @@ class Space(object):
     static_body = property(_get_static_body, doc=_get_static_body.__doc__)
         
     def __del__(self):
-        # check if the imported cp still exists.. think the only case when 
-        # it doesnt is on program exit so should be more or less ok to skip 
-        # the call to *free in that case
-        if cp is not None:
+        try:
             cp.cpSpaceFree(self._space)
-            
-
+        except:
+            pass
 
     def _set_iterations(self, iterations):
         self._space.contents.iterations = iterations
@@ -790,8 +787,10 @@ class Body(object):
         self._shapes = WeakSet() # weak refs to any shapes attached
         
     def __del__(self):
-        if cp is not None:
+        try:
             cp.cpBodyFree(self._body)
+        except: 
+            pass
 
     def _set_mass(self, mass):
         cp.cpBodySetMass(self._body, mass)
@@ -1075,9 +1074,11 @@ class Shape(object):
         self.data = None
 
     def __del__(self):
-        if cp is not None:
+        try:
             cp.cpShapeFree(self._shape)
-
+        except:
+            pass
+            
     def _get_hashid_private(self):
         return self._shapecontents.hashid_private
     _hashid_private = property(_get_hashid_private)
