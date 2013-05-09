@@ -10,18 +10,18 @@ from pyglet.window import key, mouse
 
 import pymunk
 from pymunk import Vec2d
+import pymunk.pyglet_util
 
 class Main(pyglet.window.Window):
     def __init__(self):
         
-        pyglet.window.Window.__init__(self)
+        pyglet.window.Window.__init__(self, vsync=False)
         self.set_caption('Vertical stack from box2d')
 
         pyglet.clock.schedule_interval(self.update, 1/60.0)
         self.fps_display = pyglet.clock.ClockDisplay()
         
         self.text = pyglet.text.Label('Press space to fire bullet',
-                          font_name='TArial',
                           font_size=10,
                           x=10, y=400)
         self.create_world()
@@ -43,7 +43,7 @@ class Main(pyglet.window.Window):
         for x in range(5):
             for y in range(12):
                 size= 5
-                points = [(-size, -size), (-size, size), (size,size)] #, (size, -size)]
+                points = [(-size, -size), (-size, size), (size,size), (size, -size)]
                 mass = 10.0
                 moment = pymunk.moment_for_poly(mass, points, (0,0))
                 body = pymunk.Body(mass, moment)
@@ -72,57 +72,16 @@ class Main(pyglet.window.Window):
             body.apply_impulse((f,0), (0,0))
         elif symbol == key.ESCAPE:
             pyglet.app.exit()
+        elif symbol == pyglet.window.key.P:
+            pyglet.image.get_buffer_manager().get_color_buffer().save('box2d_vertical_stack.png')
             
 
     def on_draw(self):
         self.clear()
         self.text.draw()
-        self.fps_display.draw()
-
-        for shape in self.space.shapes:
+        self.fps_display.draw()       
+        pymunk.pyglet_util.draw(self.space)
         
-            if shape.body.is_static and isinstance(shape, pymunk.Segment):
-                body = shape.body
-                pv1 = body.position + shape.a.rotated(body.angle)
-                pv2 = body.position + shape.b.rotated(body.angle)
-                pyglet.graphics.draw(2, GL_LINES,
-                                     ('v2f', (pv1.x, pv1.y, pv2.x, pv2.y)),
-                                      ('c4f', (1.0, 1.0, 1.0, 1.) * 2))
-        
-        b = pyglet.graphics.Batch()
-        
-        for shape in self.space.shapes:
-            if isinstance(shape, pymunk.Poly):
-                ps = shape.get_points()
-                ps = [ps[0]] + ps + [ps[0], ps[0]]
-                xs = []
-                for p in ps:
-                    xs.append(p.x)
-                    xs.append(p.y)
-                b.add(len(ps), GL_LINE_STRIP, None, 
-                        ('v2f', xs),
-                         ('c4f', (0.0, 1.0, 0.0, 1.0) * len(ps)))
-                #pyglet.graphics.draw(len(ps), GL_LINE_STRIP,
-                #                     ('v2f', xs),
-                #                      ('c4f', (0.0, 1.0, 0.0, 1.0) * len(ps)))
-                                      
-            if isinstance(shape, pymunk.Circle):
-                p = shape.body.position
-                ps = [p + (0,shape.radius), p + (shape.radius,0),
-                        p + (0,-shape.radius), p + (-shape.radius,0)]
-                ps += [ps[0]]
-                xs = []
-                for p in ps:
-                    xs.append(p.x)
-                    xs.append(p.y)
-                pyglet.graphics.draw(len(ps), GL_LINE_STRIP,
-                                     ('v2f', xs),
-                                      ('c4f', (0.0, 0.0, 1.0, 1.0) * len(ps)))
-        
-        b.draw()
 if __name__ == '__main__':
-    doprof = 0
-    
     main = Main()
-    if not doprof: 
-        pyglet.app.run()
+    pyglet.app.run()
