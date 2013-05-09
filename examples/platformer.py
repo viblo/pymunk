@@ -18,7 +18,7 @@ from pygame.color import *
     
 import pymunk
 from pymunk.vec2d import Vec2d
-from pymunk.pygame_util import draw_space, from_pygame, to_pygame
+from pymunk.pygame_util import draw, from_pygame, to_pygame
 
 
 def cpfclamp(f, min_, max_):
@@ -259,7 +259,7 @@ def main():
             pygame.draw.line(screen, color, (10,y), (680,y), 1)
         
         ### Draw stuff
-        draw_space(screen, space)
+        draw(screen, space)
         
         if feet.ignore_draw:
             direction_offset = 48+(1*direction+1)/2 * 48
