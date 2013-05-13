@@ -63,13 +63,13 @@ from .vec2d import Vec2d
 
 from pymunk.constraint import *
 
-version = "3.1.0"
+version = "4.0.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
 distribution (i.e. not in a checked-out copy from svn).
 """
 
-chipmunk_version = "%sR%s" % (cp.cpVersionString.value.decode(), '')
+chipmunk_version = "%sR%s" % (cp.cpVersionString.value.decode(), 'b6bdcb7')
 """The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not 
 contain any breaking API changes.

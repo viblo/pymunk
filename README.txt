@@ -7,8 +7,8 @@ nice 2d physics library Chipmunk.
 
 2007 - 2013, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest pymunk release (3.0.0), 
-using chipmunk 6.1.2 (source included)
+This release is based on the latest pymunk release (4.0.0), 
+using chipmunk 6.2 rev b6bdcb7 (source included)
 
 :Homepage: http://www.pymunk.org
 :Forum: http://chipmunk-physics.net/forum/
@@ -69,7 +69,7 @@ For more detailed and advanced examples, take a look at the included demos
 Dependencies / Requirements
 ---------------------------
 
-- python (tested on cpython 2.6, 2.7 and 3.2. Also on pypy 1.9)
+- python (tested on cpython 2.6, 2.7 and 3.2. Also on pypy 2.0)
 - chipmunk (pymunk ships with a set of chipmunk libraries)
 
 * pygame (optional, you need it to run most of the demos)

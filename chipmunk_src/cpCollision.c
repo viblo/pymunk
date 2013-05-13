@@ -23,7 +23,7 @@
 #include <string.h>
 
 #include "chipmunk_private.h"
-#include "ChipmunkDemo.h"
+//#include "ChipmunkDemo.h"
 
 #if DEBUG
 #define DRAW_ALL 0
