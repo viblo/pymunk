@@ -102,7 +102,10 @@ class UnitTestSpace(unittest.TestCase):
     def testPointQueryFirst(self):
         self.assertEqual(self.s.point_query_first((31,0)), None)
         self.assertEqual(self.s.point_query_first((10,0)), self.s1)
-
+        self.s1.group = 1
+        self.assertEqual(self.s.point_query_first((10,0)), self.s1)
+        self.assertEqual(self.s.point_query_first((10,0), group=1), None)
+        
     def testPointQuery(self):       
         b3 = p.Body(1,1)
         b3.position = 19,1

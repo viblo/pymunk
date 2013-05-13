@@ -73,6 +73,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pymunk.pygame_util.html"><tt class="docutils literal"><span class="pre">pymunk.pygame_util</span></tt> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.pyglet_util.html"><tt class="docutils literal"><span class="pre">pymunk.pyglet_util</span></tt> Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pymunkoptions.html"><tt class="docutils literal"><span class="pre">pymunkoptions</span></tt> Module</a></li>
 </ul>
 </div>
@@ -118,7 +119,7 @@ distribution (i.e. not in a checked-out copy from svn).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02D43F30&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x02C5EFF0&gt;R'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -394,7 +395,7 @@ and 0 as the group.</p>
 (layers &amp; shape.layers) != 0</p>
 </dd>
 <dt>group <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes in this group.</p>
+<dd><p class="first last">Only pick shapes not in this group.</p>
 </dd>
 </dl>
 </td>
@@ -430,7 +431,7 @@ and 0 as the group.</p>
 (layers &amp; shape.layers) != 0</p>
 </dd>
 <dt>group <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes in this group.</p>
+<dd><p class="first last">Only pick shapes not in this group.</p>
 </dd>
 </dl>
 </td>
@@ -462,7 +463,7 @@ and 0 as the group.</p>
 (layers &amp; shape.layers) != 0</p>
 </dd>
 <dt>group <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes in this group.</p>
+<dd><p class="first last">Only pick shapes not in this group.</p>
 </dd>
 </dl>
 </td>
@@ -489,7 +490,7 @@ given layers and group. Returns None if no shape was found.</p>
 (layers &amp; shape.layers) != 0</p>
 </dd>
 <dt>group <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes in this group.</p>
+<dd><p class="first last">Only pick shapes not in this group.</p>
 </dd>
 </dl>
 </td>
@@ -1017,7 +1018,8 @@ you can also use Shape.update().</p>
 <dl class="attribute">
 <dt id="pymunk.Shape.body">
 <tt class="descname">body</tt><a class="headerlink" href="#pymunk.Shape.body" title="Permalink to this definition">¶</a></dt>
-<dd><p>The body this shape is attached to</p>
+<dd><p>The body this shape is attached to. Can be set to None to 
+indicate that this shape doesnt belong to a body.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1198,6 +1200,8 @@ querying.</p>
 <tt class="descname">__init__</tt><big>(</big><em>body</em>, <em>radius</em>, <em>offset=(0</em>, <em>0)</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Circle.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Circle.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>body is the body attach the circle to, offset is the offset from the
 body&#8217;s center of gravity in body local coordinates.</p>
+<p>It is legal to send in None as body argument to indicate that this 
+shape is not attached to a body.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1213,7 +1217,8 @@ you can also use Shape.update().</p>
 <dl class="attribute">
 <dt id="pymunk.Circle.body">
 <tt class="descname">body</tt><a class="headerlink" href="#pymunk.Circle.body" title="Permalink to this definition">¶</a></dt>
-<dd><p>The body this shape is attached to</p>
+<dd><p>The body this shape is attached to. Can be set to None to 
+indicate that this shape doesnt belong to a body.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1427,6 +1432,8 @@ querying.</p>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.Shape" title="pymunk.Shape"><tt class="xref py py-class docutils literal"><span class="pre">pymunk.Shape</span></tt></a></p>
 <p>A convex polygon shape</p>
 <p>Slowest, but most flexible collision shape.</p>
+<p>It is legal to send in None as body argument to indicate that this 
+shape is not attached to a body.</p>
 <dl class="method">
 <dt id="pymunk.Poly.__init__">
 <tt class="descname">__init__</tt><big>(</big><em>body</em>, <em>vertices</em>, <em>offset=(0</em>, <em>0)</em>, <em>auto_order_vertices=True</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Poly.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.__init__" title="Permalink to this definition">¶</a></dt>
@@ -1460,7 +1467,8 @@ you can also use Shape.update().</p>
 <dl class="attribute">
 <dt id="pymunk.Poly.body">
 <tt class="descname">body</tt><a class="headerlink" href="#pymunk.Poly.body" title="Permalink to this definition">¶</a></dt>
-<dd><p>The body this shape is attached to</p>
+<dd><p>The body this shape is attached to. Can be set to None to 
+indicate that this shape doesnt belong to a body.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1479,7 +1487,7 @@ this property</p>
 
 <dl class="staticmethod">
 <dt id="pymunk.Poly.create_box">
-<em class="property">static </em><tt class="descname">create_box</tt><big>(</big><em>body</em>, <em>size=(10</em>, <em>10)</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Poly.create_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.create_box" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><tt class="descname">create_box</tt><big>(</big><em>body</em>, <em>size=(10</em>, <em>10)</em>, <em>offset=(0</em>, <em>0)</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Poly.create_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.create_box" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience function to create a box centered around the body position.</p>
 </dd></dl>
 
@@ -1671,6 +1679,8 @@ querying.</p>
 <p>This shape can be attached to moving bodies, but don&#8217;t currently generate 
 collisions with other line segments. Can be beveled in order to give it a 
 thickness.</p>
+<p>It is legal to send in None as body argument to indicate that this 
+shape is not attached to a body.</p>
 <dl class="method">
 <dt id="pymunk.Segment.__init__">
 <tt class="descname">__init__</tt><big>(</big><em>body</em>, <em>a</em>, <em>b</em>, <em>radius</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Segment.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Segment.__init__" title="Permalink to this definition">¶</a></dt>
@@ -1724,7 +1734,8 @@ you can also use Shape.update().</p>
 <dl class="attribute">
 <dt id="pymunk.Segment.body">
 <tt class="descname">body</tt><a class="headerlink" href="#pymunk.Segment.body" title="Permalink to this definition">¶</a></dt>
-<dd><p>The body this shape is attached to</p>
+<dd><p>The body this shape is attached to. Can be set to None to 
+indicate that this shape doesnt belong to a body.</p>
 </dd></dl>
 
 <dl class="method">
@@ -2217,6 +2228,7 @@ That is, BB(0,0,10,10).wrap_vect((5,5)) == Vec2d(10,10)</p>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><tt class="docutils literal"><span class="pre">pymunk.vec2d</span></tt> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.util.html"><tt class="docutils literal"><span class="pre">pymunk.util</span></tt> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><tt class="docutils literal"><span class="pre">pymunk.pygame_util</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><tt class="docutils literal"><span class="pre">pymunk.pyglet_util</span></tt> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><tt class="docutils literal"><span class="pre">pymunkoptions</span></tt> Module</a></li>
 </ul>
 </li>

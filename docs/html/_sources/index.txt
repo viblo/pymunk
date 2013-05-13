@@ -47,6 +47,7 @@ list of tested versions see the :doc:`readme`.
   
 Contact & Support
 =================
+.. _contact-support:
 
 **Stackoverflow**
     You can ask questions/browse old ones at stackoverflow, just look for 

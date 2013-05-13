@@ -103,7 +103,7 @@ cpShapeUpdate(cpShape *shape, cpVect pos, cpVect rot)
 
 cpBool
 cpShapePointQuery(cpShape *shape, cpVect p){
-	cpNearestPointQueryInfo info = {NULL, cpvzero, INFINITY};
+	cpNearestPointQueryInfo info = {NULL, cpvzero, INFINITY, cpvzero};
 	cpShapeNearestPointQuery(shape, p, &info);
 	
 	return (info.d < 0.0f);
@@ -112,7 +112,7 @@ cpShapePointQuery(cpShape *shape, cpVect p){
 cpFloat
 cpShapeNearestPointQuery(cpShape *shape, cpVect p, cpNearestPointQueryInfo *info)
 {
-	cpNearestPointQueryInfo blank = {NULL, cpvzero, INFINITY};
+	cpNearestPointQueryInfo blank = {NULL, cpvzero, INFINITY, cpvzero};
 	if(info){
 		(*info) = blank;
 	} else {
@@ -133,7 +133,16 @@ cpShapeSegmentQuery(cpShape *shape, cpVect a, cpVect b, cpSegmentQueryInfo *info
 		info = &blank;
 	}
 	
-	shape->klass->segmentQuery(shape, a, b, info);
+	cpNearestPointQueryInfo nearest;
+	shape->klass->nearestPointQuery(shape, a, &nearest);
+	if(nearest.d <= 0.0){
+		info->shape = shape;
+		info->t = 0.0;
+		info->n = cpvnormalize(cpvsub(a, nearest.p));
+	} else {
+		shape->klass->segmentQuery(shape, a, b, info);
+	}
+	
 	return (info->shape != NULL);
 }
 
@@ -160,18 +169,20 @@ cpCicleShapeNearestPointQuery(cpCircleShape *circle, cpVect p, cpNearestPointQue
 	info->shape = (cpShape *)circle;
 	info->p = cpvadd(circle->tc, cpvmult(delta, r/d)); // TODO div/0
 	info->d = d - r;
+	
+	// Use up for the gradient if the distance is very small.
+	info->g = (d > MAGIC_EPSILON ? cpvmult(delta, 1.0f/d) : cpv(0.0f, 1.0f));
 }
 
 static void
 circleSegmentQuery(cpShape *shape, cpVect center, cpFloat r, cpVect a, cpVect b, cpSegmentQueryInfo *info)
 {
-	// offset the line to be relative to the circle
-	a = cpvsub(a, center);
-	b = cpvsub(b, center);
+	cpVect da = cpvsub(a, center);
+	cpVect db = cpvsub(b, center);
 	
-	cpFloat qa = cpvdot(a, a) - 2.0f*cpvdot(a, b) + cpvdot(b, b);
-	cpFloat qb = -2.0f*cpvdot(a, a) + 2.0f*cpvdot(a, b);
-	cpFloat qc = cpvdot(a, a) - r*r;
+	cpFloat qa = cpvdot(da, da) - 2.0f*cpvdot(da, db) + cpvdot(db, db);
+	cpFloat qb = -2.0f*cpvdot(da, da) + 2.0f*cpvdot(da, db);
+	cpFloat qc = cpvdot(da, da) - r*r;
 	
 	cpFloat det = qb*qb - 4.0f*qa*qc;
 	
@@ -180,7 +191,7 @@ circleSegmentQuery(cpShape *shape, cpVect center, cpFloat r, cpVect a, cpVect b,
 		if(0.0f<= t && t <= 1.0f){
 			info->shape = shape;
 			info->t = t;
-			info->n = cpvnormalize(cpvlerp(a, b, t));
+			info->n = cpvnormalize(cpvlerp(da, db, t));
 		}
 	}
 }
@@ -262,10 +273,14 @@ cpSegmentShapeNearestPointQuery(cpSegmentShape *seg, cpVect p, cpNearestPointQue
 	cpVect delta = cpvsub(p, closest);
 	cpFloat d = cpvlength(delta);
 	cpFloat r = seg->r;
+	cpVect g = cpvmult(delta, 1.0f/d);
 	
 	info->shape = (cpShape *)seg;
-	info->p = (d ? cpvadd(closest, cpvmult(delta, r/d)) : closest);
+	info->p = (d ? cpvadd(closest, cpvmult(g, r)) : closest);
 	info->d = d - r;
+	
+	// Use the segment's normal if the distance is very small.
+	info->g = (d > MAGIC_EPSILON ? g : seg->n);
 }
 
 static void

@@ -32,8 +32,7 @@ about your coordinate system and not in any way optimized.
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-__all__ = ["draw_space", "draw_shape", "draw_circle", "draw_poly"
-         , "draw_segment", "draw_constraint", "to_pygame", "from_pygame"]
+__all__ = ["draw", "get_mouse_pos", "to_pygame", "from_pygame"]
 
 import pygame
 
@@ -43,16 +42,24 @@ from pymunk.vec2d import Vec2d
 flip_y = True
 """Flip the y cooridnate to make y point upwards"""
 
-
-def draw_space(surface, space):
-    """Draw the contents of a pymunk.Space object on a pygame.Surface object
-    
+def draw(surface, *objs):
+    """Draw one or many pymunk objects on a pygame.Surface object.
+        
     This method currently supports drawing of
+        * pymunk.Space
         * pymunk.Segment
         * pymunk.Circle
         * pymunk.Poly
-        * pymunk.Constraint objects
+        * pymunk.Constraint objects 
 
+    If a Space is passed in all shapes in that space will be drawn. 
+    Unrecognized objects will be ignored (for example if you pass in a 
+    constraint).
+    
+    Typical usage::
+    
+    >>> pymunk.pygame_util.draw(screen, my_space)
+        
     You can control the color of a shape by setting shape.color to the color 
     you want it drawn in.
     
@@ -69,60 +76,57 @@ def draw_space(surface, space):
     
     :Parameters:
             surface : pygame.Surface
-                Surface that the space will be drawn on
-            space : pymunk.Space
-                The contents of this Space will be drawn on the surface. 
+                Surface that the objects will be drawn on
+            objs : One or many objects to draw
+                Can be either a single object or a list like container with 
+                objects.
     """
+    
+    for o in objs:
+        if isinstance(o, pymunk.Space):
+            _draw_space(surface, o)
+        elif isinstance(o, pymunk.Shape):
+            _draw_shape(surface, o)
+        elif isinstance(o, pymunk.Constraint):
+            _draw_constraint(surface, o)
+        elif hasattr(o, '__iter__'):
+            for oo in o:
+                draw(surface, oo)
+                
+def _draw_space(surface, space):
     
     (width, height) = surface.get_size()
     
     for s in space.shapes:
         if not (hasattr(s, "ignore_draw") and s.ignore_draw):
-            draw_shape(surface, s)
+            _draw_shape(surface, s)
             
     for c in space.constraints:
         if not (hasattr(c, "ignore_draw") and c.ignore_draw):
-            draw_constraint(surface, c)
+            _draw_constraint(surface, c)
 
-def draw_shape(surface, shape):
-    """Draw a pymunk.Shape object
+def _draw_shape(surface, shape):
     
-    See the documentation of draw_space for full details
-    
-    :Parameters:
-            surface : pygame.Surface
-                Surface that the space will be drawn on
-            shape : pymunk.Shape
-                The Shape object to draw
-    """
     if isinstance(shape, pymunk.Circle):
-        draw_circle(surface, shape)
+        _draw_circle(surface, shape)
     elif isinstance(shape, pymunk.Segment):
-        draw_segment(surface, shape)
+        _draw_segment(surface, shape)
     elif  isinstance(shape, pymunk.Poly):
-        draw_poly(surface, shape)
+        _draw_poly(surface, shape)
         
-def draw_circle(surface, circle):
-    """Draw a pymunk.Circle object
+def _draw_circle(surface, circle):
     
-    See help of draw_space for full details
-    
-    :Parameters:
-            surface : pygame.Surface
-                Surface that the space will be drawn on
-            shape : pymunk.Circle
-                The circle shape to draw
-    """
-    circle_center = circle.body.position + circle.offset
+    circle_center = circle.body.position + circle.offset.rotated(circle.body.angle)
     p = to_pygame(circle_center, surface)
+   
     r = 0
-    if hasattr(circle, "color"):
-        color = circle.color  
-    elif circle.body.is_static:
+    color = pygame.color.THECOLORS["red"]
+    if circle.body.is_static:
         color = pygame.color.THECOLORS["lightgrey"]
         r = 1
-    else:
-        color = pygame.color.THECOLORS["red"]
+    if hasattr(circle, "color"):
+        color = circle.color  
+        
     pygame.draw.circle(surface, color, p, int(circle.radius), r)
     
     circle_edge = circle_center + Vec2d(circle.radius, 0).rotated(circle.body.angle)
@@ -130,17 +134,8 @@ def draw_circle(surface, circle):
     line_r = 3 if circle.radius > 20 else 1
     pygame.draw.lines(surface, pygame.color.THECOLORS["blue"], False, [p,p2], line_r)
 
-def draw_poly(surface, poly):
-    """Draw a pymunk.Poly object
+def _draw_poly(surface, poly):
     
-    See help of draw_space for full details
-    
-    :Parameters:
-            surface : pygame.Surface
-                Surface that the space will be drawn on
-            shape : pymunk.Poly
-                The poly shape to draw
-    """
     ps = poly.get_points()
     ps = [to_pygame(p, surface) for p in ps]
     ps += [ps[0]]
@@ -152,17 +147,8 @@ def draw_poly(surface, poly):
         color = pygame.color.THECOLORS["green"]
     pygame.draw.lines(surface, color, False, ps, 1)
 
-def draw_segment(surface, segment):
-    """Draw a pymunk.Segment object
+def _draw_segment(surface, segment):
     
-    See help of draw_space for full details
-    
-    :Parameters:
-            surface : pygame.Surface
-                Surface that the space will be drawn on
-            shape : pymunk.Segment
-                The segment shape to draw
-    """
     body = segment.body
     pv1 = body.position + segment.a.rotated(body.angle)
     pv2 = body.position + segment.b.rotated(body.angle)
@@ -178,17 +164,8 @@ def draw_segment(surface, segment):
         color = pygame.color.THECOLORS["blue"]
     pygame.draw.lines(surface, color, False, [p1,p2], max(int(segment.radius*2),1))
     
-def draw_constraint(surface, constraint):
-    """Draw a pymunk.Constraint object
+def _draw_constraint(surface, constraint):
     
-    See the documentation of draw_space for full details
-    
-    :Parameters:
-            surface : pygame.Surface
-                Surface that the space will be drawn on
-            shape : pymunk.Shape
-                The Shape object to draw
-    """
     if isinstance(constraint, pymunk.GrooveJoint) and hasattr(constraint, "groove_a"):
         pv1 = constraint.a.position + constraint.groove_a
         pv2 = constraint.a.position + constraint.groove_b

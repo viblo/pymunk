@@ -1,6 +1,6 @@
 """Use to run examples using pymunk located one folder level up.
 Useful if you have the whole pymunk source tree and want to run the examples 
-in a quick and dirty way.
+in a quick and dirty way. (a poor man's virtualenv if you like)
 
 For example, to run the breakout demo::
 
@@ -9,13 +9,15 @@ For example, to run the breakout demo::
 """
 
 import sys
-sys.path.insert(0,'..')
+sys.path.insert(1,'..')
+sys.path.insert(1,'../../../pyglet')
 
 if len(sys.argv) > 1:
     name = sys.argv[1]
     sys.argv = sys.argv[1:]
     del sys
-    exec(compile(open(name).read(), name, 'exec'))
+    
+    execfile(name)
     
 else:
     print(__doc__)

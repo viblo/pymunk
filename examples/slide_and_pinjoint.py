@@ -4,7 +4,7 @@
 __version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
-import random
+import random, sys
 
 import pygame
 from pygame.locals import *

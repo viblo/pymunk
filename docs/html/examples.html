@@ -100,10 +100,14 @@ or in a showcase section of the site, feel free to contact me!</p>
 <li><a class="reference internal" href="#py2exe-setup-basic-test-py" id="id19">py2exe_setup__basic_test.py</a></li>
 <li><a class="reference internal" href="#py2exe-setup-breakout-py" id="id20">py2exe_setup__breakout.py</a></li>
 <li><a class="reference internal" href="#pygame-util-demo-py" id="id21">pygame_util_demo.py</a></li>
-<li><a class="reference internal" href="#run-py" id="id22">run.py</a></li>
-<li><a class="reference internal" href="#slide-and-pinjoint-py" id="id23">slide_and_pinjoint.py</a></li>
-<li><a class="reference internal" href="#using-sprites-py" id="id24">using_sprites.py</a></li>
-<li><a class="reference internal" href="#using-sprites-pyglet-py" id="id25">using_sprites_pyglet.py</a></li>
+<li><a class="reference internal" href="#pyglet-util-demo-py" id="id22">pyglet_util_demo.py</a></li>
+<li><a class="reference internal" href="#run-py" id="id23">run.py</a></li>
+<li><a class="reference internal" href="#shapes-for-draw-demos-py" id="id24">shapes_for_draw_demos.py</a></li>
+<li><a class="reference internal" href="#slide-and-pinjoint-py" id="id25">slide_and_pinjoint.py</a></li>
+<li><a class="reference internal" href="#spiderweb-py" id="id26">spiderweb.py</a></li>
+<li><a class="reference internal" href="#spiderweb-w-spider-py" id="id27">spiderweb_w_spider.py</a></li>
+<li><a class="reference internal" href="#using-sprites-py" id="id28">using_sprites.py</a></li>
+<li><a class="reference internal" href="#using-sprites-pyglet-py" id="id29">using_sprites_pyglet.py</a></li>
 </ul>
 </div>
 <div class="section" id="arrows-py">
@@ -142,13 +146,14 @@ two segment shapes. Not interactive.</p>
 <h2><a class="toc-backref" href="#id7">box2d_vertical_stack.py</a><a class="headerlink" href="#box2d-vertical-stack-py" title="Permalink to this headline">¶</a></h2>
 <p>Location: <em>examples/box2d_vertical_stack.py</em></p>
 <p>Remake of the veritcal stack demo from the box2d testbed.</p>
+<img alt="_images/box2d_vertical_stack.png" src="_images/box2d_vertical_stack.png" />
 </div>
 <div class="section" id="breakout-py">
 <h2><a class="toc-backref" href="#id8">breakout.py</a><a class="headerlink" href="#breakout-py" title="Permalink to this headline">¶</a></h2>
 <p>Location: <em>examples/breakout.py</em></p>
 <p>Very simple breakout clone. A circle shape serves as the paddle, then
 breakable bricks constructed of Poly-shapes.</p>
-<p>The code showcases severaly pymunk concepts such as elasitcity, impulses,
+<p>The code showcases several pymunk concepts such as elasitcity, impulses,
 constant object speed, joints, collision handlers and post step callbacks.</p>
 <img alt="_images/breakout.png" src="_images/breakout.png" />
 </div>
@@ -250,11 +255,19 @@ so click clockwise to compensate :)</li>
 <div class="section" id="pygame-util-demo-py">
 <h2><a class="toc-backref" href="#id21">pygame_util_demo.py</a><a class="headerlink" href="#pygame-util-demo-py" title="Permalink to this headline">¶</a></h2>
 <p>Location: <em>examples/pygame_util_demo.py</em></p>
-<p>Showcase what the output of pymunk.pygame_util draw methods will look like</p>
+<p>Showcase what the output of pymunk.pygame_util draw methods will look like.</p>
+<p>See pyglet_util_demo.py for a comparison to pyglet.</p>
 <img alt="_images/pygame_util_demo.png" src="_images/pygame_util_demo.png" />
 </div>
+<div class="section" id="pyglet-util-demo-py">
+<h2><a class="toc-backref" href="#id22">pyglet_util_demo.py</a><a class="headerlink" href="#pyglet-util-demo-py" title="Permalink to this headline">¶</a></h2>
+<p>Location: <em>examples/pyglet_util_demo.py</em></p>
+<p>Showcase what the output of pymunk.pyglet_util draw methods will look like.</p>
+<p>See pygame_util_demo.py for a comparison to pygame.</p>
+<img alt="_images/pyglet_util_demo.png" src="_images/pyglet_util_demo.png" />
+</div>
 <div class="section" id="run-py">
-<h2><a class="toc-backref" href="#id22">run.py</a><a class="headerlink" href="#run-py" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id23">run.py</a><a class="headerlink" href="#run-py" title="Permalink to this headline">¶</a></h2>
 <p>Location: <em>examples/run.py</em></p>
 <p>Use to run examples using pymunk located one folder level up.
 Useful if you have the whole pymunk source tree and want to run the examples
@@ -264,14 +277,33 @@ in a quick and dirty way.</p>
 &gt; python run.py breakout.py</pre>
 </div>
 </div>
+<div class="section" id="shapes-for-draw-demos-py">
+<h2><a class="toc-backref" href="#id24">shapes_for_draw_demos.py</a><a class="headerlink" href="#shapes-for-draw-demos-py" title="Permalink to this headline">¶</a></h2>
+<p>Location: <em>examples/shapes_for_draw_demos.py</em></p>
+<p>Helper function add_objects for the draw demos.
+Adds a lot of stuff to a space.</p>
+</div>
 <div class="section" id="slide-and-pinjoint-py">
-<h2><a class="toc-backref" href="#id23">slide_and_pinjoint.py</a><a class="headerlink" href="#slide-and-pinjoint-py" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id25">slide_and_pinjoint.py</a><a class="headerlink" href="#slide-and-pinjoint-py" title="Permalink to this headline">¶</a></h2>
 <p>Location: <em>examples/slide_and_pinjoint.py</em></p>
 <p>A L shape attached with a joint and constrained to not tip over.</p>
 <img alt="_images/slide_and_pinjoint.png" src="_images/slide_and_pinjoint.png" />
 </div>
+<div class="section" id="spiderweb-py">
+<h2><a class="toc-backref" href="#id26">spiderweb.py</a><a class="headerlink" href="#spiderweb-py" title="Permalink to this headline">¶</a></h2>
+<p>Location: <em>examples/spiderweb.py</em></p>
+<p>Showcase of a elastic spiderweb (drawing with pyglet)</p>
+<p>It is possible to grab one of the crossings with the mouse</p>
+<img alt="_images/spiderweb.png" src="_images/spiderweb.png" />
+</div>
+<div class="section" id="spiderweb-w-spider-py">
+<h2><a class="toc-backref" href="#id27">spiderweb_w_spider.py</a><a class="headerlink" href="#spiderweb-w-spider-py" title="Permalink to this headline">¶</a></h2>
+<p>Location: <em>examples/spiderweb_w_spider.py</em></p>
+<p>THIS IS WORK IN PROGRESS.
+Showcase of a spiderweb (drawing with pyglet)</p>
+</div>
 <div class="section" id="using-sprites-py">
-<h2><a class="toc-backref" href="#id24">using_sprites.py</a><a class="headerlink" href="#using-sprites-py" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id28">using_sprites.py</a><a class="headerlink" href="#using-sprites-py" title="Permalink to this headline">¶</a></h2>
 <p>Location: <em>examples/using_sprites.py</em></p>
 <p>Very basic example of using a sprite image to draw a shape more similar
 how you would do it in a real game instead of the simple line drawings used
@@ -279,7 +311,7 @@ by the other examples.</p>
 <img alt="_images/using_sprites.png" src="_images/using_sprites.png" />
 </div>
 <div class="section" id="using-sprites-pyglet-py">
-<h2><a class="toc-backref" href="#id25">using_sprites_pyglet.py</a><a class="headerlink" href="#using-sprites-pyglet-py" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id29">using_sprites_pyglet.py</a><a class="headerlink" href="#using-sprites-pyglet-py" title="Permalink to this headline">¶</a></h2>
 <p>Location: <em>examples/using_sprites_pyglet.py</em></p>
 <p>This example is a clone of the using_sprites example with the difference
 that it uses pyglet instead of pygame to showcase sprite drawing.</p>
@@ -323,8 +355,12 @@ that it uses pyglet instead of pygame to showcase sprite drawing.</p>
 <li class="toctree-l2"><a class="reference internal" href="#py2exe-setup-basic-test-py">py2exe_setup__basic_test.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#py2exe-setup-breakout-py">py2exe_setup__breakout.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pygame-util-demo-py">pygame_util_demo.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyglet-util-demo-py">pyglet_util_demo.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#run-py">run.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shapes-for-draw-demos-py">shapes_for_draw_demos.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#slide-and-pinjoint-py">slide_and_pinjoint.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spiderweb-py">spiderweb.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spiderweb-w-spider-py">spiderweb_w_spider.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-sprites-py">using_sprites.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-sprites-pyglet-py">using_sprites_pyglet.py</a></li>
 </ul>

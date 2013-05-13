@@ -16,6 +16,7 @@ API Reference
         pymunk.vec2d
         pymunk.util    
         pymunk.pygame_util
+        pymunk.pyglet_util
         pymunkoptions
 
 .. container:: custom-index

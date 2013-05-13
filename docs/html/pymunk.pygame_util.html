@@ -28,7 +28,7 @@
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
     <link rel="top" title="pymunk 3.1.0 documentation" href="index.html" />
     <link rel="up" title="API Reference" href="pymunk.html" />
-    <link rel="next" title="pymunkoptions Module" href="pymunkoptions.html" />
+    <link rel="next" title="pymunk.pyglet_util Module" href="pymunk.pyglet_util.html" />
     <link rel="prev" title="pymunk.util Module" href="pymunk.util.html" /> 
   </head>
   <body>
@@ -42,7 +42,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pymunkoptions.html" title="pymunkoptions Module"
+          <a href="pymunk.pyglet_util.html" title="pymunk.pyglet_util Module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pymunk.util.html" title="pymunk.util Module"
@@ -67,12 +67,13 @@ using pymunk together with pygame.</p>
 in a full application. The methods contained in this module is opinionated 
 about your coordinate system and not in any way optimized.</p>
 <dl class="function">
-<dt id="pymunk.pygame_util.draw_space">
-<tt class="descclassname">pymunk.pygame_util.</tt><tt class="descname">draw_space</tt><big>(</big><em>surface</em>, <em>space</em><big>)</big><a class="reference internal" href="_modules/pymunk/pygame_util.html#draw_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pygame_util.draw_space" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw the contents of a pymunk.Space object on a pygame.Surface object</p>
+<dt id="pymunk.pygame_util.draw">
+<tt class="descclassname">pymunk.pygame_util.</tt><tt class="descname">draw</tt><big>(</big><em>surface</em>, <em>*objs</em><big>)</big><a class="reference internal" href="_modules/pymunk/pygame_util.html#draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pygame_util.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw one or many pymunk objects on a pygame.Surface object.</p>
 <dl class="docutils">
 <dt>This method currently supports drawing of</dt>
 <dd><ul class="first last simple">
+<li>pymunk.Space</li>
 <li>pymunk.Segment</li>
 <li>pymunk.Circle</li>
 <li>pymunk.Poly</li>
@@ -80,9 +81,20 @@ about your coordinate system and not in any way optimized.</p>
 </ul>
 </dd>
 </dl>
+<p>If a Space is passed in all shapes in that space will be drawn. 
+Unrecognized objects will be ignored (for example if you pass in a 
+constraint).</p>
+<p>Typical usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pymunk</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">my_space</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>You can control the color of a shape by setting shape.color to the color 
 you want it drawn in.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;pink&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>If you do not want a shape to be drawn, set shape.ignore_draw to True.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">ignore_draw</span> <span class="o">=</span> <span class="bp">True</span>
 </pre></div>
 </div>
 <p>Not all constraints are currently drawn in a very clear way, but all the 
@@ -94,33 +106,11 @@ different shapes should look fine both as static and dynamic objects.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
 <dt>surface <span class="classifier-delimiter">:</span> <span class="classifier">pygame.Surface</span></dt>
-<dd><p class="first last">Surface that the space will be drawn on</p>
+<dd><p class="first last">Surface that the objects will be drawn on</p>
 </dd>
-<dt>space <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Space</span></dt>
-<dd><p class="first last">The contents of this Space will be drawn on the surface.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.pygame_util.draw_shape">
-<tt class="descclassname">pymunk.pygame_util.</tt><tt class="descname">draw_shape</tt><big>(</big><em>surface</em>, <em>shape</em><big>)</big><a class="reference internal" href="_modules/pymunk/pygame_util.html#draw_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pygame_util.draw_shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a pymunk.Shape object</p>
-<p>See the documentation of draw_space for full details</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
-<dt>surface <span class="classifier-delimiter">:</span> <span class="classifier">pygame.Surface</span></dt>
-<dd><p class="first last">Surface that the space will be drawn on</p>
-</dd>
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Shape</span></dt>
-<dd><p class="first last">The Shape object to draw</p>
+<dt>objs <span class="classifier-delimiter">:</span> <span class="classifier">One or many objects to draw</span></dt>
+<dd><p class="first last">Can be either a single object or a list like container with 
+objects.</p>
 </dd>
 </dl>
 </td>
@@ -130,95 +120,9 @@ different shapes should look fine both as static and dynamic objects.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pymunk.pygame_util.draw_circle">
-<tt class="descclassname">pymunk.pygame_util.</tt><tt class="descname">draw_circle</tt><big>(</big><em>surface</em>, <em>circle</em><big>)</big><a class="reference internal" href="_modules/pymunk/pygame_util.html#draw_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pygame_util.draw_circle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a pymunk.Circle object</p>
-<p>See help of draw_space for full details</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
-<dt>surface <span class="classifier-delimiter">:</span> <span class="classifier">pygame.Surface</span></dt>
-<dd><p class="first last">Surface that the space will be drawn on</p>
-</dd>
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Circle</span></dt>
-<dd><p class="first last">The circle shape to draw</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.pygame_util.draw_poly">
-<tt class="descclassname">pymunk.pygame_util.</tt><tt class="descname">draw_poly</tt><big>(</big><em>surface</em>, <em>poly</em><big>)</big><a class="reference internal" href="_modules/pymunk/pygame_util.html#draw_poly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pygame_util.draw_poly" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a pymunk.Poly object</p>
-<p>See help of draw_space for full details</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
-<dt>surface <span class="classifier-delimiter">:</span> <span class="classifier">pygame.Surface</span></dt>
-<dd><p class="first last">Surface that the space will be drawn on</p>
-</dd>
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Poly</span></dt>
-<dd><p class="first last">The poly shape to draw</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.pygame_util.draw_segment">
-<tt class="descclassname">pymunk.pygame_util.</tt><tt class="descname">draw_segment</tt><big>(</big><em>surface</em>, <em>segment</em><big>)</big><a class="reference internal" href="_modules/pymunk/pygame_util.html#draw_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pygame_util.draw_segment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a pymunk.Segment object</p>
-<p>See help of draw_space for full details</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
-<dt>surface <span class="classifier-delimiter">:</span> <span class="classifier">pygame.Surface</span></dt>
-<dd><p class="first last">Surface that the space will be drawn on</p>
-</dd>
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Segment</span></dt>
-<dd><p class="first last">The segment shape to draw</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.pygame_util.draw_constraint">
-<tt class="descclassname">pymunk.pygame_util.</tt><tt class="descname">draw_constraint</tt><big>(</big><em>surface</em>, <em>constraint</em><big>)</big><a class="reference internal" href="_modules/pymunk/pygame_util.html#draw_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pygame_util.draw_constraint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a pymunk.Constraint object</p>
-<p>See the documentation of draw_space for full details</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
-<dt>surface <span class="classifier-delimiter">:</span> <span class="classifier">pygame.Surface</span></dt>
-<dd><p class="first last">Surface that the space will be drawn on</p>
-</dd>
-<dt>shape <span class="classifier-delimiter">:</span> <span class="classifier">pymunk.Shape</span></dt>
-<dd><p class="first last">The Shape object to draw</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dt id="pymunk.pygame_util.get_mouse_pos">
+<tt class="descclassname">pymunk.pygame_util.</tt><tt class="descname">get_mouse_pos</tt><big>(</big><em>surface</em><big>)</big><a class="reference internal" href="_modules/pymunk/pygame_util.html#get_mouse_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pygame_util.get_mouse_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get position of the mouse pointer in pymunk coordinates.</p>
 </dd></dl>
 
 <dl class="function">
@@ -257,6 +161,7 @@ pymunk coordinates</p>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><tt class="docutils literal"><span class="pre">pymunk.vec2d</span></tt> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.util.html"><tt class="docutils literal"><span class="pre">pymunk.util</span></tt> Module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href=""><tt class="docutils literal"><span class="pre">pymunk.pygame_util</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><tt class="docutils literal"><span class="pre">pymunk.pyglet_util</span></tt> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><tt class="docutils literal"><span class="pre">pymunkoptions</span></tt> Module</a></li>
 </ul>
 </li>
@@ -274,8 +179,8 @@ pymunk coordinates</p>
   <p class="topless"><a href="pymunk.util.html"
                         title="previous chapter"><tt class="docutils literal"><span class="pre">pymunk.util</span></tt> Module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pymunkoptions.html"
-                        title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">pymunkoptions</span></tt> Module</a></p>
+  <p class="topless"><a href="pymunk.pyglet_util.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">pymunk.pyglet_util</span></tt> Module</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/pymunk.pygame_util.txt"
@@ -308,7 +213,7 @@ pymunk coordinates</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pymunkoptions.html" title="pymunkoptions Module"
+          <a href="pymunk.pyglet_util.html" title="pymunk.pyglet_util Module"
              >next</a> |</li>
         <li class="right" >
           <a href="pymunk.util.html" title="pymunk.util Module"

@@ -1,5 +1,6 @@
 Installation
 ============
+.. _installation:
 
 .. tip::
     You will find the latest version at 
