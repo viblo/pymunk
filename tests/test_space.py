@@ -1,4 +1,5 @@
 import pymunk as p
+from pymunk import *
 from pymunk.vec2d import Vec2d
 import unittest
 
@@ -23,6 +24,18 @@ class UnitTestSpace(unittest.TestCase):
         del self.b1, self.b2
         del self.s1, self.s2
     
+    def testX(self):
+        
+        space = Space()
+        body = Body(1,1)
+        body.position = 10,0
+        circle = Circle(body, 5)
+        space.add(circle)
+        
+    
+        x = space.segment_query( (5.1,0), (131.01,0) )
+        print x
+        
     
     def testProperties(self):
         s = p.Space(15)
