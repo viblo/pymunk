@@ -177,6 +177,7 @@ def _draw_circle(circle, batch = None):
     cvs = [circle_center.x, circle_center.y, c.x, c.y]
         
     bg = pyglet.graphics.OrderedGroup(0)
+    fg = pyglet.graphics.OrderedGroup(1)
         
     l = len(vs)/2
     if batch == None:
@@ -190,7 +191,7 @@ def _draw_circle(circle, batch = None):
         batch.add(len(vs)/2, mode, bg,
                  ('v2f', vs),
                  ('c3B', color*l))
-        batch.add(2, pyglet.gl.GL_LINES, None,
+        batch.add(2, pyglet.gl.GL_LINES, fg,
                  ('v2f', cvs),
                  ('c3B', (0,0,255)*2))
     return
