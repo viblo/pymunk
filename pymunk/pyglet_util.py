@@ -103,11 +103,11 @@ def draw(*objs, **kwargs):
         
     for o in objs:
         if isinstance(o, pymunk.Space):
-            _draw_space(o)
+            _draw_space(o, batch)
         elif isinstance(o, pymunk.Shape):
-            _draw_shape(o)
+            _draw_shape(o, batch)
         elif isinstance(o, pymunk.Constraint):
-            _draw_constraint(o)
+            _draw_constraint(o, batch)
         elif hasattr(o, '__iter__'):
             for oo in o:
                 draw(oo, **kwargs)
