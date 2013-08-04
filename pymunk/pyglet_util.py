@@ -39,7 +39,6 @@ __all__ = ["draw"]
 import math
 
 import pyglet
-from pyglet.gl import *
 
 import pymunk
 from pymunk.vec2d import Vec2d
