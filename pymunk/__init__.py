@@ -104,6 +104,8 @@ moment.
     without any arguments.
 """
 
+cp.cpEnableSegmentToSegmentCollisions()
+
 class Space(object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes 
     and joints to it and then step them all forward together through time. 
@@ -122,6 +124,7 @@ class Space(object):
                 Number of iterations to use in the impulse solver to solve 
                 contacts.
         """
+
         self._space = cp.cpSpaceNew()
         self._space.contents.iterations = iterations
         
@@ -1387,7 +1390,10 @@ class Poly(Shape):
         
     @staticmethod
     def create_box(body, size=(10,10), offset=(0,0)): 
-        """Convenience function to create a box centered around the body position."""
+        """Convenience function to create a box centered around the body position.
+
+        The size is given as as (w,h) tuple.
+        """
         x,y = size[0]*.5,size[1]*.5
         vs = [(-x,-y),(-x,y),(x,y),(x,-y)]
     
