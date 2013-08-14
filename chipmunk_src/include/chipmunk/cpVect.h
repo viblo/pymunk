@@ -151,14 +151,13 @@ static inline cpVect cpvlerp(const cpVect v1, const cpVect v2, const cpFloat t)
 /// Returns a normalized copy of v.
 static inline cpVect cpvnormalize(const cpVect v)
 {
-	// Neat trick I saw somewhere to avoid div/0.
-	return cpvmult(v, 1.0f/(cpvlength(v) + CPFLOAT_MIN));
+	return cpvmult(v, 1.0f/cpvlength(v));
 }
 
-/// @deprecated Just an alias for cpvnormalize() now.
+/// Returns a normalized copy of v or cpvzero if v was already cpvzero. Protects against divide by zero errors.
 static inline cpVect cpvnormalize_safe(const cpVect v)
 {
-	return cpvnormalize(v);
+	return (v.x == 0.0f && v.y == 0.0f ? cpvzero : cpvnormalize(v));
 }
 
 /// Clamp v to length len.

@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.constraint &mdash; pymunk 3.1.0 documentation</title>
+    <title>pymunk.constraint &mdash; pymunk 4.0.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '3.1.0',
+        VERSION:     '4.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 3.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="pymunk 4.0.0 documentation" href="../../index.html" />
     <link rel="up" title="pymunk" href="../pymunk.html" /> 
   </head>
   <body>
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">pymunk 3.1.0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">pymunk 4.0.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" >Module code</a> &raquo;</li>
           <li><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
       </ul>
@@ -50,472 +50,470 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <h1>Source code for pymunk.constraint</h1><pre>
-# ----------------------------------------------------------------------------
-# pymunk
-# Copyright (c) 2007-2011 Victor Blomqvist
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-# ----------------------------------------------------------------------------
+  <h1>Source code for pymunk.constraint</h1><div class="highlight"><pre>
+<span class="c"># ----------------------------------------------------------------------------</span>
+<span class="c"># pymunk</span>
+<span class="c"># Copyright (c) 2007-2011 Victor Blomqvist</span>
+<span class="c">#</span>
+<span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c"># in the Software without restriction, including without limitation the rights</span>
+<span class="c"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c"># copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c"># furnished to do so, subject to the following conditions:</span>
+<span class="c">#</span>
+<span class="c"># The above copyright notice and this permission notice shall be included in</span>
+<span class="c"># all copies or substantial portions of the Software.</span>
+<span class="c">#</span>
+<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c"># SOFTWARE.</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
-"""A constraint is something that describes how two bodies interact with 
-each other. (how they constrain each other). Constraints can be simple 
-joints that allow bodies to pivot around each other like the bones in your 
-body, or they can be more abstract like the gear joint or motors. 
+<span class="sd">&quot;&quot;&quot;A constraint is something that describes how two bodies interact with </span>
+<span class="sd">each other. (how they constrain each other). Constraints can be simple </span>
+<span class="sd">joints that allow bodies to pivot around each other like the bones in your </span>
+<span class="sd">body, or they can be more abstract like the gear joint or motors. </span>
 
-This submodule contain all the constraints that are supported by pymunk.
+<span class="sd">This submodule contain all the constraints that are supported by pymunk.</span>
 
-Chipmunk has a good overview of the different constraint on youtube which 
-works fine to showcase them in pymunk as well. 
-http://www.youtube.com/watch?v=ZgJJZTS0aMM
+<span class="sd">Chipmunk has a good overview of the different constraint on youtube which </span>
+<span class="sd">works fine to showcase them in pymunk as well. </span>
+<span class="sd">http://www.youtube.com/watch?v=ZgJJZTS0aMM</span>
 
-.. raw:: html
-    
-    &lt;iframe width="420" height="315" style="display: block; margin: 0 auto;"
-    src="http://www.youtube.com/embed/ZgJJZTS0aMM" frameborder="0" 
-    allowfullscreen&gt;&lt;/iframe&gt;
-    
-"""
-__version__ = "$Id: constraint.py 480 2013-03-03 23:55:20Z vb@viblo.se $"
-__docformat__ = "reStructuredText"
+<span class="sd">.. raw:: html</span>
+<span class="sd">    </span>
+<span class="sd">    &lt;iframe width=&quot;420&quot; height=&quot;315&quot; style=&quot;display: block; margin: 0 auto;&quot;</span>
+<span class="sd">    src=&quot;http://www.youtube.com/embed/ZgJJZTS0aMM&quot; frameborder=&quot;0&quot; </span>
+<span class="sd">    allowfullscreen&gt;&lt;/iframe&gt;</span>
+<span class="sd">    </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id: constraint.py 480 2013-03-03 23:55:20Z vb@viblo.se $&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
-import ctypes as ct
+<span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">ct</span>
 
-from . import _chipmunk as cp 
-from . import _chipmunk_ffi as cpffi 
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk</span> <span class="k">as</span> <span class="n">cp</span> 
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_ffi</span> <span class="k">as</span> <span class="n">cpffi</span> 
 
-<div class="viewcode-block" id="Constraint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint">[docs]</a>class Constraint(object):
-    """Base class of all constraints. 
-    
-    You usually don't want to create instances of this class directly, but 
-    instead use one of the specific constraints such as the PinJoint.
-    """
-<div class="viewcode-block" id="Constraint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.__init__">[docs]</a>    def __init__(self, constraint=None):
-        self._constraint = constraint
-        self._ccontents = self._constraint.contents
+<div class="viewcode-block" id="Constraint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint">[docs]</a><span class="k">class</span> <span class="nc">Constraint</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class of all constraints. </span>
+<span class="sd">    </span>
+<span class="sd">    You usually don&#39;t want to create instances of this class directly, but </span>
+<span class="sd">    instead use one of the specific constraints such as the PinJoint.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Constraint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constraint</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">constraint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
         </div>
-    def _get_max_force(self):
-        return self._ccontents.maxForce
-    def _set_max_force(self, f):
-        self._ccontents.maxForce = f
-    max_force = property(_get_max_force, _set_max_force,
-        doc="""The maximum force that the constraint can use to act on the two 
-        bodies. Defaults to infinity""")
+    <span class="k">def</span> <span class="nf">_get_max_force</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span><span class="o">.</span><span class="n">maxForce</span>
+    <span class="k">def</span> <span class="nf">_set_max_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span><span class="o">.</span><span class="n">maxForce</span> <span class="o">=</span> <span class="n">f</span>
+    <span class="n">max_force</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_max_force</span><span class="p">,</span> <span class="n">_set_max_force</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The maximum force that the constraint can use to act on the two </span>
+<span class="s">        bodies. Defaults to infinity&quot;&quot;&quot;</span><span class="p">)</span>
         
-    def _get_error_bias(self):
-        return self._ccontents.errorBias
-    def _set_error_bias(self, error_bias):
-        self._ccontents.errorBias = error_bias
-    error_bias = property(_get_error_bias, _set_error_bias,
-        doc="""The rate at which joint error is corrected.
+    <span class="k">def</span> <span class="nf">_get_error_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span><span class="o">.</span><span class="n">errorBias</span>
+    <span class="k">def</span> <span class="nf">_set_error_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_bias</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span><span class="o">.</span><span class="n">errorBias</span> <span class="o">=</span> <span class="n">error_bias</span>
+    <span class="n">error_bias</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_error_bias</span><span class="p">,</span> <span class="n">_set_error_bias</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The rate at which joint error is corrected.</span>
 
-        Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of 
-        the error every 1/60th of a second.""")
+<span class="s">        Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10</span><span class="si">% o</span><span class="s">f </span>
+<span class="s">        the error every 1/60th of a second.&quot;&quot;&quot;</span><span class="p">)</span>
         
-    def _get_max_bias(self):
-        return self._ccontents.maxBias
-    def _set_max_bias(self, max_bias):
-        self._ccontents.maxBias = max_bias
-    max_bias = property(_get_max_bias, _set_max_bias,
-        doc="""The maximum rate at which joint error is corrected. Defaults 
-        to infinity""")
+    <span class="k">def</span> <span class="nf">_get_max_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span><span class="o">.</span><span class="n">maxBias</span>
+    <span class="k">def</span> <span class="nf">_set_max_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_bias</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span><span class="o">.</span><span class="n">maxBias</span> <span class="o">=</span> <span class="n">max_bias</span>
+    <span class="n">max_bias</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_max_bias</span><span class="p">,</span> <span class="n">_set_max_bias</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The maximum rate at which joint error is corrected. Defaults </span>
+<span class="s">        to infinity&quot;&quot;&quot;</span><span class="p">)</span>
 
-    def _get_impulse(self):
-        return cpffi.cpConstraintGetImpulse(self._constraint)
-    impulse = property(_get_impulse,
-        doc="""Get the last impulse applied by this constraint.""")
+    <span class="k">def</span> <span class="nf">_get_impulse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cpffi</span><span class="o">.</span><span class="n">cpConstraintGetImpulse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
+    <span class="n">impulse</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_impulse</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the last impulse applied by this constraint.&quot;&quot;&quot;</span><span class="p">)</span>
         
-    a = property(lambda self: self._a, 
-        doc="""The first of the two bodies constrained""")
-    b = property(lambda self: self._b,
-        doc="""The second of the two bodies constrained""")
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The first of the two bodies constrained&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The second of the two bodies constrained&quot;&quot;&quot;</span><span class="p">)</span>
         
-<div class="viewcode-block" id="Constraint.activate_bodies"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.activate_bodies">[docs]</a>    def activate_bodies(self):
-        """Activate the bodies this constraint is attached to"""
-        self._a.activate()
-        self._b.activate()
+<div class="viewcode-block" id="Constraint.activate_bodies"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.activate_bodies">[docs]</a>    <span class="k">def</span> <span class="nf">activate_bodies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Activate the bodies this constraint is attached to&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
     </div>
-    def _set_bodies(self, a, b):
-        self._a = a
-        self._b = b
-        a._constraints.add(self)
-        b._constraints.add(self)
+    <span class="k">def</span> <span class="nf">_set_bodies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_a</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_b</span> <span class="o">=</span> <span class="n">b</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
     
-    def __del__(self):
-        if cp is not None:
-            cp.cpConstraintFree(self._constraint)
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="PinJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PinJoint">[docs]</a>class PinJoint(Constraint):
-    """Keeps the anchor points at a set distance from one another."""
-<div class="viewcode-block" id="PinJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PinJoint.__init__">[docs]</a>    def __init__(self, a, b, anchr1=(0,0), anchr2=(0,0)):
-        """a and b are the two bodies to connect, and anchr1 and anchr2 are the
-        anchor points on those bodies.
-        """
+<div class="viewcode-block" id="PinJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PinJoint">[docs]</a><span class="k">class</span> <span class="nc">PinJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Keeps the anchor points at a set distance from one another.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PinJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PinJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">anchr1</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">anchr2</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;a and b are the two bodies to connect, and anchr1 and anchr2 are the</span>
+<span class="sd">        anchor points on those bodies.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        self._constraint = cp.cpPinJointNew(a._body, b._body, anchr1, anchr2)
-        self._ccontents = self._constraint.contents
-        self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPinJoint)).contents
-        self._set_bodies(a,b)        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">anchr1</span><span class="p">,</span> <span class="n">anchr2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPinJoint</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>        
         </div>
-    def _get_anchr1(self):
-        return self._pjc.anchr1
-    def _set_anchr1(self, anchr):
-        self._pjc.anchr1 = anchr
-    anchr1 = property(_get_anchr1, _set_anchr1)
+    <span class="k">def</span> <span class="nf">_get_anchr1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">anchr1</span>
+    <span class="k">def</span> <span class="nf">_set_anchr1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">anchr1</span> <span class="o">=</span> <span class="n">anchr</span>
+    <span class="n">anchr1</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchr1</span><span class="p">,</span> <span class="n">_set_anchr1</span><span class="p">)</span>
     
-    def _get_anchr2(self):
-        return self._pjc.anchr2
-    def _set_anchr2(self, anchr):
-        self._pjc.anchr2 = anchr
-    anchr2 = property(_get_anchr2, _set_anchr2)
+    <span class="k">def</span> <span class="nf">_get_anchr2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">anchr2</span>
+    <span class="k">def</span> <span class="nf">_set_anchr2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">anchr2</span> <span class="o">=</span> <span class="n">anchr</span>
+    <span class="n">anchr2</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchr2</span><span class="p">,</span> <span class="n">_set_anchr2</span><span class="p">)</span>
     
-    def _get_dist(self):
-        return self._pjc.dist
-    def _set_dist(self, dist):
-        self._pjc.dist = dist
-    distance = property(_get_dist, _set_dist)
+    <span class="k">def</span> <span class="nf">_get_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">dist</span>
+    <span class="k">def</span> <span class="nf">_set_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dist</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">dist</span> <span class="o">=</span> <span class="n">dist</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_dist</span><span class="p">,</span> <span class="n">_set_dist</span><span class="p">)</span>
     </div>
-<div class="viewcode-block" id="SlideJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SlideJoint">[docs]</a>class SlideJoint(Constraint):
-    """Like pin joints, but have a minimum and maximum distance.
-    A chain could be modeled using this joint. It keeps the anchor points 
-    from getting to far apart, but will allow them to get closer together.
-    """
-<div class="viewcode-block" id="SlideJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SlideJoint.__init__">[docs]</a>    def __init__(self, a, b, anchr1, anchr2, min, max):
-        """a and b are the two bodies to connect, anchr1 and anchr2 are the
-        anchor points on those bodies, and min and max define the allowed
-        distances of the anchor points.
-        """
-        self._constraint = cp.cpSlideJointNew(a._body, b._body, anchr1, anchr2, min, max)
-        self._ccontents = self._constraint.contents
-        self._sjc = cp.cast(self._constraint, ct.POINTER(cp.cpSlideJoint)).contents
-        self._set_bodies(a,b)
+<div class="viewcode-block" id="SlideJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SlideJoint">[docs]</a><span class="k">class</span> <span class="nc">SlideJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Like pin joints, but have a minimum and maximum distance.</span>
+<span class="sd">    A chain could be modeled using this joint. It keeps the anchor points </span>
+<span class="sd">    from getting to far apart, but will allow them to get closer together.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SlideJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SlideJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">anchr1</span><span class="p">,</span> <span class="n">anchr2</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;a and b are the two bodies to connect, anchr1 and anchr2 are the</span>
+<span class="sd">        anchor points on those bodies, and min and max define the allowed</span>
+<span class="sd">        distances of the anchor points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">anchr1</span><span class="p">,</span> <span class="n">anchr2</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sjc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJoint</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
         </div>
-    def _get_anchr1(self):
-        return self._sjc.anchr1
-    def _set_anchr1(self, anchr):
-        self._sjc.anchr1 = anchr
-    anchr1 = property(_get_anchr1, _set_anchr1)
+    <span class="k">def</span> <span class="nf">_get_anchr1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sjc</span><span class="o">.</span><span class="n">anchr1</span>
+    <span class="k">def</span> <span class="nf">_set_anchr1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sjc</span><span class="o">.</span><span class="n">anchr1</span> <span class="o">=</span> <span class="n">anchr</span>
+    <span class="n">anchr1</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchr1</span><span class="p">,</span> <span class="n">_set_anchr1</span><span class="p">)</span>
     
-    def _get_anchr2(self):
-        return self._sjc.anchr2
-    def _set_anchr2(self, anchr):
-        self._sjc.anchr2 = anchr
-    anchr2 = property(_get_anchr2, _set_anchr2)
+    <span class="k">def</span> <span class="nf">_get_anchr2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sjc</span><span class="o">.</span><span class="n">anchr2</span>
+    <span class="k">def</span> <span class="nf">_set_anchr2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sjc</span><span class="o">.</span><span class="n">anchr2</span> <span class="o">=</span> <span class="n">anchr</span>
+    <span class="n">anchr2</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchr2</span><span class="p">,</span> <span class="n">_set_anchr2</span><span class="p">)</span>
 
-    def _get_min(self):
-        return self._sjc.min
-    def _set_min(self, min):
-        self._sjc.min = min
-    min = property(_get_min, _set_min)
+    <span class="k">def</span> <span class="nf">_get_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sjc</span><span class="o">.</span><span class="n">min</span>
+    <span class="k">def</span> <span class="nf">_set_min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sjc</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+    <span class="nb">min</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_min</span><span class="p">,</span> <span class="n">_set_min</span><span class="p">)</span>
     
-    def _get_max(self):
-        return self._sjc.max
-    def _set_max(self, max):
-        self._sjc.max = max
-    max = property(_get_max, _set_max)    
+    <span class="k">def</span> <span class="nf">_get_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sjc</span><span class="o">.</span><span class="n">max</span>
+    <span class="k">def</span> <span class="nf">_set_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sjc</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+    <span class="nb">max</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_max</span><span class="p">,</span> <span class="n">_set_max</span><span class="p">)</span>    
         </div>
-<div class="viewcode-block" id="PivotJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PivotJoint">[docs]</a>class PivotJoint(Constraint):
-    """Simply allow two objects to pivot about a single point."""
-<div class="viewcode-block" id="PivotJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PivotJoint.__init__">[docs]</a>    def __init__(self, a, b, *args):
-        """a and b are the two bodies to connect, and pivot is the point in
-        world coordinates of the pivot. Because the pivot location is given in
-        world coordinates, you must have the bodies moved into the correct
-        positions already. 
-        Alternatively you can specify the joint based on a pair of anchor 
-        points, but make sure you have the bodies in the right place as the 
-        joint will fix itself as soon as you start simulating the space. 
+<div class="viewcode-block" id="PivotJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PivotJoint">[docs]</a><span class="k">class</span> <span class="nc">PivotJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simply allow two objects to pivot about a single point.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PivotJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PivotJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;a and b are the two bodies to connect, and pivot is the point in</span>
+<span class="sd">        world coordinates of the pivot. Because the pivot location is given in</span>
+<span class="sd">        world coordinates, you must have the bodies moved into the correct</span>
+<span class="sd">        positions already. </span>
+<span class="sd">        Alternatively you can specify the joint based on a pair of anchor </span>
+<span class="sd">        points, but make sure you have the bodies in the right place as the </span>
+<span class="sd">        joint will fix itself as soon as you start simulating the space. </span>
+<span class="sd">        </span>
+<span class="sd">        That is, either create the joint with PivotJoint(a, b, pivot) or </span>
+<span class="sd">        PivotJoint(a, b, anchr1, anchr2).</span>
+<span class="sd">        </span>
+<span class="sd">            a : `Body`</span>
+<span class="sd">                The first of the two bodies</span>
+<span class="sd">            b : `Body`</span>
+<span class="sd">                The second of the two bodies</span>
+<span class="sd">            args : [Vec2d] or [Vec2d,Vec2d]</span>
+<span class="sd">                Either one pivot point, or two anchor points</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
-        That is, either create the joint with PivotJoint(a, b, pivot) or 
-        PivotJoint(a, b, anchr1, anchr2).
-        
-            a : `Body`
-                The first of the two bodies
-            b : `Body`
-                The second of the two bodies
-            args : [Vec2d] or [Vec2d,Vec2d]
-                Either one pivot point, or two anchor points
-        """
-        
-        if len(args) == 1:
-            self._constraint = cp.cpPivotJointNew(a._body, b._body, args[0])
-        elif len(args) == 2:
-            self._constraint = cp.cpPivotJointNew2(a._body, b._body, args[0], args[1])
-        else:
-            raise Exception("You must specify either one pivot point or two anchor points")
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointNew2</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;You must specify either one pivot point or two anchor points&quot;</span><span class="p">)</span>
             
-        self._ccontents = self._constraint.contents
-        self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPivotJoint)).contents
-        self._set_bodies(a,b)
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJoint</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
     </div>
-    def _get_anchr1(self):
-        return self._pjc.anchr1
-    def _set_anchr1(self, anchr):
-        self._pjc.anchr1 = anchr
-    anchr1 = property(_get_anchr1, _set_anchr1)
+    <span class="k">def</span> <span class="nf">_get_anchr1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">anchr1</span>
+    <span class="k">def</span> <span class="nf">_set_anchr1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">anchr1</span> <span class="o">=</span> <span class="n">anchr</span>
+    <span class="n">anchr1</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchr1</span><span class="p">,</span> <span class="n">_set_anchr1</span><span class="p">)</span>
     
-    def _get_anchr2(self):
-        return self._pjc.anchr2
-    def _set_anchr2(self, anchr):
-        self._pjc.anchr2 = anchr
-    anchr2 = property(_get_anchr2, _set_anchr2)
+    <span class="k">def</span> <span class="nf">_get_anchr2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">anchr2</span>
+    <span class="k">def</span> <span class="nf">_set_anchr2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">anchr2</span> <span class="o">=</span> <span class="n">anchr</span>
+    <span class="n">anchr2</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchr2</span><span class="p">,</span> <span class="n">_set_anchr2</span><span class="p">)</span>
     </div>
-<div class="viewcode-block" id="GrooveJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GrooveJoint">[docs]</a>class GrooveJoint(Constraint):
-    """Similar to a pivot joint, but one of the anchors is
-    on a linear slide instead of being fixed.
-    """
-<div class="viewcode-block" id="GrooveJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GrooveJoint.__init__">[docs]</a>    def __init__(self, a, b, groove_a, groove_b, anchr2):
-        """The groove goes from groove_a to groove_b on body a, and the pivot 
-        is attached to anchr2 on body b. All coordinates are body local. 
-        """
-        self._constraint = cp.cpGrooveJointNew(a._body, b._body, groove_a, groove_b, anchr2)
-        self._ccontents = self._constraint.contents
-        self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpGrooveJoint)).contents
-        self._set_bodies(a,b)
+<div class="viewcode-block" id="GrooveJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GrooveJoint">[docs]</a><span class="k">class</span> <span class="nc">GrooveJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Similar to a pivot joint, but one of the anchors is</span>
+<span class="sd">    on a linear slide instead of being fixed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="GrooveJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GrooveJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">groove_a</span><span class="p">,</span> <span class="n">groove_b</span><span class="p">,</span> <span class="n">anchr2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The groove goes from groove_a to groove_b on body a, and the pivot </span>
+<span class="sd">        is attached to anchr2 on body b. All coordinates are body local. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">groove_a</span><span class="p">,</span> <span class="n">groove_b</span><span class="p">,</span> <span class="n">anchr2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJoint</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
         </div>
-    def _get_anchr2(self):
-        return self._pjc.anchr2
-    def _set_anchr2(self, anchr):
-        self._pjc.anchr2 = anchr
-    anchr2 = property(_get_anchr2, _set_anchr2)
+    <span class="k">def</span> <span class="nf">_get_anchr2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">anchr2</span>
+    <span class="k">def</span> <span class="nf">_set_anchr2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">anchr2</span> <span class="o">=</span> <span class="n">anchr</span>
+    <span class="n">anchr2</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchr2</span><span class="p">,</span> <span class="n">_set_anchr2</span><span class="p">)</span>
     
-    def _get_groove_a(self):
-        return self._pjc.grv_a
-    groove_a = property(_get_groove_a)
+    <span class="k">def</span> <span class="nf">_get_groove_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">grv_a</span>
+    <span class="n">groove_a</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_groove_a</span><span class="p">)</span>
     
-    def _get_groove_b(self):
-        return self._pjc.grv_b
-    groove_b = property(_get_groove_b)
+    <span class="k">def</span> <span class="nf">_get_groove_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pjc</span><span class="o">.</span><span class="n">grv_b</span>
+    <span class="n">groove_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_groove_b</span><span class="p">)</span>
     </div>
-<div class="viewcode-block" id="DampedSpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring">[docs]</a>class DampedSpring(Constraint):
-    """A damped spring"""
-<div class="viewcode-block" id="DampedSpring.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring.__init__">[docs]</a>    def __init__(self, a, b, anchr1, anchr2, rest_length, stiffness, damping):
-        """Defined much like a slide joint. 
-        
-        :Parameters:
-            anchr1 : Vec2d or (x,y)
-                Anchor point 1, relative to body a
-            anchr2 : Vec2d or (x,y)
-                Anchor point 2, relative to body b
-            rest_length : float
-                The distance the spring wants to be.
-            stiffness : float
-                The spring constant (Young's modulus). 
-            damping : float
-                How soft to make the damping of the spring. 
-        """
-        self._constraint = cp.cpDampedSpringNew(a._body, b._body, anchr1, anchr2, rest_length, stiffness, damping)
-        self._ccontents = self._constraint.contents
-        self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedSpring)).contents
-        self._set_bodies(a,b)
+<div class="viewcode-block" id="DampedSpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring">[docs]</a><span class="k">class</span> <span class="nc">DampedSpring</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A damped spring&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DampedSpring.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">anchr1</span><span class="p">,</span> <span class="n">anchr2</span><span class="p">,</span> <span class="n">rest_length</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Defined much like a slide joint. </span>
+<span class="sd">        </span>
+<span class="sd">        :Parameters:</span>
+<span class="sd">            anchr1 : Vec2d or (x,y)</span>
+<span class="sd">                Anchor point 1, relative to body a</span>
+<span class="sd">            anchr2 : Vec2d or (x,y)</span>
+<span class="sd">                Anchor point 2, relative to body b</span>
+<span class="sd">            rest_length : float</span>
+<span class="sd">                The distance the spring wants to be.</span>
+<span class="sd">            stiffness : float</span>
+<span class="sd">                The spring constant (Young&#39;s modulus). </span>
+<span class="sd">            damping : float</span>
+<span class="sd">                How soft to make the damping of the spring. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">anchr1</span><span class="p">,</span> <span class="n">anchr2</span><span class="p">,</span> <span class="n">rest_length</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpring</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
         </div>
-    def _get_anchr1(self):
-        return self._dsc.anchr1
-    def _set_anchr1(self, anchr):
-        self._dsc.anchr1 = anchr
-    anchr1 = property(_get_anchr1, _set_anchr1)
+    <span class="k">def</span> <span class="nf">_get_anchr1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">anchr1</span>
+    <span class="k">def</span> <span class="nf">_set_anchr1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">anchr1</span> <span class="o">=</span> <span class="n">anchr</span>
+    <span class="n">anchr1</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchr1</span><span class="p">,</span> <span class="n">_set_anchr1</span><span class="p">)</span>
     
-    def _get_anchr2(self):
-        return self._dsc.anchr2
-    def _set_anchr2(self, anchr):
-        self._dsc.anchr2 = anchr
-    anchr2 = property(_get_anchr2, _set_anchr2)
+    <span class="k">def</span> <span class="nf">_get_anchr2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">anchr2</span>
+    <span class="k">def</span> <span class="nf">_set_anchr2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">anchr2</span> <span class="o">=</span> <span class="n">anchr</span>
+    <span class="n">anchr2</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchr2</span><span class="p">,</span> <span class="n">_set_anchr2</span><span class="p">)</span>
 
-    def _get_rest_length(self):
-        return self._dsc.restLength
-    def _set_rest_length(self, rest_length):
-        self._dsc.restLength = rest_length
-    rest_length = property(_get_rest_length, _set_rest_length,
-        doc="""The distance the spring wants to be.""")
+    <span class="k">def</span> <span class="nf">_get_rest_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">restLength</span>
+    <span class="k">def</span> <span class="nf">_set_rest_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rest_length</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">restLength</span> <span class="o">=</span> <span class="n">rest_length</span>
+    <span class="n">rest_length</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_rest_length</span><span class="p">,</span> <span class="n">_set_rest_length</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The distance the spring wants to be.&quot;&quot;&quot;</span><span class="p">)</span>
     
-    def _get_stiffness(self):
-        return self._dsc.stiffness
-    def _set_stiffness(self, stiffness):
-        self._dsc.stiffness = stiffness
-    stiffness = property(_get_stiffness, _set_stiffness,
-        doc="""The spring constant (Young's modulus).""")    
+    <span class="k">def</span> <span class="nf">_get_stiffness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">stiffness</span>
+    <span class="k">def</span> <span class="nf">_set_stiffness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">stiffness</span> <span class="o">=</span> <span class="n">stiffness</span>
+    <span class="n">stiffness</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_stiffness</span><span class="p">,</span> <span class="n">_set_stiffness</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The spring constant (Young&#39;s modulus).&quot;&quot;&quot;</span><span class="p">)</span>    
     
-    def _get_damping(self):
-        return self._dsc.damping
-    def _set_damping(self, damping):
-        self._dsc.damping = damping
-    damping = property(_get_damping, _set_damping, 
-        doc="""How soft to make the damping of the spring.""")   
+    <span class="k">def</span> <span class="nf">_get_damping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">damping</span>
+    <span class="k">def</span> <span class="nf">_set_damping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span>
+    <span class="n">damping</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_damping</span><span class="p">,</span> <span class="n">_set_damping</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;How soft to make the damping of the spring.&quot;&quot;&quot;</span><span class="p">)</span>   
     </div>
-<div class="viewcode-block" id="DampedRotarySpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedRotarySpring">[docs]</a>class DampedRotarySpring(Constraint):
-    """Like a damped spring, but works in an angular fashion"""
-<div class="viewcode-block" id="DampedRotarySpring.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedRotarySpring.__init__">[docs]</a>    def __init__(self, a, b, rest_angle, stiffness, damping):
-        """Like a damped spring, but works in an angular fashion. 
-        
-        :Parameters:
-            rest_angle
-                The relative angle in radians that the bodies want to have
-            stiffness
-                The spring constant (Young's modulus). 
-            damping
-                How soft to make the damping of the spring. 
-        """
-        self._constraint = cp.cpDampedRotarySpringNew(a._body, b._body, rest_angle, stiffness, damping)
-        self._ccontents = self._constraint.contents
-        self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedRotarySpring)).contents
-        self._set_bodies(a,b)
+<div class="viewcode-block" id="DampedRotarySpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedRotarySpring">[docs]</a><span class="k">class</span> <span class="nc">DampedRotarySpring</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Like a damped spring, but works in an angular fashion&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DampedRotarySpring.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedRotarySpring.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rest_angle</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Like a damped spring, but works in an angular fashion. </span>
+<span class="sd">        </span>
+<span class="sd">        :Parameters:</span>
+<span class="sd">            rest_angle</span>
+<span class="sd">                The relative angle in radians that the bodies want to have</span>
+<span class="sd">            stiffness</span>
+<span class="sd">                The spring constant (Young&#39;s modulus). </span>
+<span class="sd">            damping</span>
+<span class="sd">                How soft to make the damping of the spring. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedRotarySpringNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">rest_angle</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpDampedRotarySpring</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
         </div>
-    def _get_rest_angle(self):
-        return self._dsc.restAngle
-    def _set_rest_angle(self, rest_angle):
-        self._dsc.restAngle = rest_angle
-    rest_angle = property(_get_rest_angle, _set_rest_angle, 
-        doc="""The relative angle in radians that the bodies want to have""")
+    <span class="k">def</span> <span class="nf">_get_rest_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">restAngle</span>
+    <span class="k">def</span> <span class="nf">_set_rest_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rest_angle</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">restAngle</span> <span class="o">=</span> <span class="n">rest_angle</span>
+    <span class="n">rest_angle</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_rest_angle</span><span class="p">,</span> <span class="n">_set_rest_angle</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The relative angle in radians that the bodies want to have&quot;&quot;&quot;</span><span class="p">)</span>
     
-    def _get_stiffness(self):
-        return self._dsc.stiffness
-    def _set_stiffness(self, stiffness):
-        self._dsc.stiffness = stiffness
-    stiffness = property(_get_stiffness, _set_stiffness,
-        doc="""The spring constant (Young's modulus).""")  
+    <span class="k">def</span> <span class="nf">_get_stiffness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">stiffness</span>
+    <span class="k">def</span> <span class="nf">_set_stiffness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">stiffness</span> <span class="o">=</span> <span class="n">stiffness</span>
+    <span class="n">stiffness</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_stiffness</span><span class="p">,</span> <span class="n">_set_stiffness</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The spring constant (Young&#39;s modulus).&quot;&quot;&quot;</span><span class="p">)</span>  
     
-    def _get_damping(self):
-        return self._dsc.damping
-    def _set_damping(self, damping):
-        self._dsc.damping = damping
-    damping = property(_get_damping, _set_damping, 
-        doc="""How soft to make the damping of the spring.""") 
+    <span class="k">def</span> <span class="nf">_get_damping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">damping</span>
+    <span class="k">def</span> <span class="nf">_set_damping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span>
+    <span class="n">damping</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_damping</span><span class="p">,</span> <span class="n">_set_damping</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;How soft to make the damping of the spring.&quot;&quot;&quot;</span><span class="p">)</span> 
 
-    def _set_torque_func(self, func):
-        """Set the torque function
-            
-            func(self, relative_angle) -&gt; torque
-            
-            Callback Parameters
-                relative_angle : float
-                    The relative angle
+    <span class="k">def</span> <span class="nf">_set_torque_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the torque function</span>
+<span class="sd">            </span>
+<span class="sd">            func(self, relative_angle) -&gt; torque</span>
+<span class="sd">            </span>
+<span class="sd">            Callback Parameters</span>
+<span class="sd">                relative_angle : float</span>
+<span class="sd">                    The relative angle</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">_impl</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">relative_angle</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relative_angle</span><span class="p">)</span>
         
-        """
-        def _impl(_, relative_angle):
-            return func(self, relative_angle)
-        
-        self._torque_func_callback = cp.cpDampedRotarySpringTorqueFunc(_impl)
-        self._dsc.springTorqueFunc = self._torque_func_callback
-    torque_func = property(fset=_set_torque_func, 
-        doc=_set_torque_func.__doc__)
+        <span class="bp">self</span><span class="o">.</span><span class="n">_torque_func_callback</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedRotarySpringTorqueFunc</span><span class="p">(</span><span class="n">_impl</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">springTorqueFunc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torque_func_callback</span>
+    <span class="n">torque_func</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fset</span><span class="o">=</span><span class="n">_set_torque_func</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="n">_set_torque_func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
         
         </div>
-<div class="viewcode-block" id="RotaryLimitJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint">[docs]</a>class RotaryLimitJoint(Constraint):
-    """Constrains the relative rotations of two bodies."""
-<div class="viewcode-block" id="RotaryLimitJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint.__init__">[docs]</a>    def __init__(self, a, b, min, max):
-        """Constrains the relative rotations of two bodies. min and max are 
-        the angular limits in radians. It is implemented so that it's possible 
-        to for the range to be greater than a full revolution.
-        """
-        self._constraint = cp.cpRotaryLimitJointNew(a._body, b._body, min, max)
-        self._ccontents = self._constraint.contents
-        self._rlc = cp.cast(self._constraint, ct.POINTER(cp.cpRotaryLimitJoint)).contents
-        self._set_bodies(a,b)
+<div class="viewcode-block" id="RotaryLimitJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint">[docs]</a><span class="k">class</span> <span class="nc">RotaryLimitJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Constrains the relative rotations of two bodies.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="RotaryLimitJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constrains the relative rotations of two bodies. min and max are </span>
+<span class="sd">        the angular limits in radians. It is implemented so that it&#39;s possible </span>
+<span class="sd">        to for the range to be greater than a full revolution.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rlc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJoint</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
         </div>
-    def _get_min(self):
-        return self._rlc.min
-    def _set_min(self, min):
-        self._rlc.min = min
-    min = property(_get_min, _set_min)
+    <span class="k">def</span> <span class="nf">_get_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rlc</span><span class="o">.</span><span class="n">min</span>
+    <span class="k">def</span> <span class="nf">_set_min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rlc</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+    <span class="nb">min</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_min</span><span class="p">,</span> <span class="n">_set_min</span><span class="p">)</span>
     
-    def _get_max(self):
-        return self._rlc.max
-    def _set_max(self, max):
-        self._rlc.max = max
-    max = property(_get_max, _set_max)    
+    <span class="k">def</span> <span class="nf">_get_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rlc</span><span class="o">.</span><span class="n">max</span>
+    <span class="k">def</span> <span class="nf">_set_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rlc</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+    <span class="nb">max</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_max</span><span class="p">,</span> <span class="n">_set_max</span><span class="p">)</span>    
     </div>
-<div class="viewcode-block" id="RatchetJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint">[docs]</a>class RatchetJoint(Constraint):
-    """Works like a socket wrench."""
-<div class="viewcode-block" id="RatchetJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint.__init__">[docs]</a>    def __init__(self, a, b, phase, ratchet):
-        """Works like a socket wrench. ratchet is the distance between 
-        "clicks", phase is the initial offset to use when deciding where the 
-        ratchet angles are.  
-        """
-        self._constraint = cp.cpRatchetJointNew(a._body, b._body, phase, ratchet)
-        self._ccontents = self._constraint.contents
-        self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpRatchetJoint)).contents
-        self._set_bodies(a,b)
+<div class="viewcode-block" id="RatchetJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint">[docs]</a><span class="k">class</span> <span class="nc">RatchetJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Works like a socket wrench.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="RatchetJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Works like a socket wrench. ratchet is the distance between </span>
+<span class="sd">        &quot;clicks&quot;, phase is the initial offset to use when deciding where the </span>
+<span class="sd">        ratchet angles are.  </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJoint</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
         </div>
-    def _get_angle(self):
-        return self._dsc.angle
-    def _set_angle(self, angle):
-        self._dsc.angle = angle
-    angle = property(_get_angle, _set_angle)
+    <span class="k">def</span> <span class="nf">_get_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">angle</span>
+    <span class="k">def</span> <span class="nf">_set_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">angle</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_angle</span><span class="p">,</span> <span class="n">_set_angle</span><span class="p">)</span>
     
-    def _get_phase(self):
-        return self._dsc.phase
-    def _set_phase(self, phase):
-        self._dsc.phase = phase
-    phase = property(_get_phase, _set_phase)  
+    <span class="k">def</span> <span class="nf">_get_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">phase</span>
+    <span class="k">def</span> <span class="nf">_set_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phase</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span>
+    <span class="n">phase</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_phase</span><span class="p">,</span> <span class="n">_set_phase</span><span class="p">)</span>  
     
-    def _get_ratchet(self):
-        return self._dsc.ratchet
-    def _set_ratchet(self, ratchet):
-        self._dsc.ratchet = ratchet
-    ratchet = property(_get_ratchet, _set_ratchet) 
+    <span class="k">def</span> <span class="nf">_get_ratchet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">ratchet</span>
+    <span class="k">def</span> <span class="nf">_set_ratchet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">ratchet</span> <span class="o">=</span> <span class="n">ratchet</span>
+    <span class="n">ratchet</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_ratchet</span><span class="p">,</span> <span class="n">_set_ratchet</span><span class="p">)</span> 
     </div>
-<div class="viewcode-block" id="GearJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint">[docs]</a>class GearJoint(Constraint):
-    """Keeps the angular velocity ratio of a pair of bodies constant."""
-<div class="viewcode-block" id="GearJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint.__init__">[docs]</a>    def __init__(self, a, b, phase, ratio):
-        """Keeps the angular velocity ratio of a pair of bodies constant. 
-        ratio is always measured in absolute terms. It is currently not 
-        possible to set the ratio in relation to a third body's angular 
-        velocity. phase is the initial angular offset of the two bodies.  
-        """
-        self._constraint = cp.cpGearJointNew(a._body, b._body, phase, ratio)
-        self._ccontents = self._constraint.contents
-        self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpGearJoint)).contents
-        self._set_bodies(a,b)
+<div class="viewcode-block" id="GearJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint">[docs]</a><span class="k">class</span> <span class="nc">GearJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Keeps the angular velocity ratio of a pair of bodies constant.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="GearJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratio</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Keeps the angular velocity ratio of a pair of bodies constant. </span>
+<span class="sd">        ratio is always measured in absolute terms. It is currently not </span>
+<span class="sd">        possible to set the ratio in relation to a third body&#39;s angular </span>
+<span class="sd">        velocity. phase is the initial angular offset of the two bodies.  </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratio</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGearJoint</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
         </div>
-    def _get_phase(self):
-        return self._dsc.phase
-    def _set_phase(self, phase):
-        self._dsc.phase = phase
-    phase = property(_get_phase, _set_phase)  
+    <span class="k">def</span> <span class="nf">_get_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">phase</span>
+    <span class="k">def</span> <span class="nf">_set_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phase</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span>
+    <span class="n">phase</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_phase</span><span class="p">,</span> <span class="n">_set_phase</span><span class="p">)</span>  
     
-    def _get_ratio(self):
-        return self._dsc.ratio
-    def _set_ratio(self, ratio):
-        self._dsc.ratio = ratio
-    ratio = property(_get_ratio, _set_ratio) 
+    <span class="k">def</span> <span class="nf">_get_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">ratio</span>
+    <span class="k">def</span> <span class="nf">_set_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratio</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">ratio</span> <span class="o">=</span> <span class="n">ratio</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_ratio</span><span class="p">,</span> <span class="n">_set_ratio</span><span class="p">)</span> 
     </div>
-<div class="viewcode-block" id="SimpleMotor"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor">[docs]</a>class SimpleMotor(Constraint):
-    """Keeps the relative angular velocity of a pair of bodies constant."""
-<div class="viewcode-block" id="SimpleMotor.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor.__init__">[docs]</a>    def __init__(self, a, b, rate):
-        """Keeps the relative angular velocity of a pair of bodies constant. 
-        rate is the desired relative angular velocity. You will usually want 
-        to set an force (torque) maximum for motors as otherwise they will be 
-        able to apply a nearly infinite torque to keep the bodies moving.  
-        """
-        self._constraint = cp.cpSimpleMotorNew(a._body, b._body, rate)
-        self._ccontents = self._constraint.contents
-        self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpSimpleMotor)).contents
-        self._set_bodies(a,b)
+<div class="viewcode-block" id="SimpleMotor"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor">[docs]</a><span class="k">class</span> <span class="nc">SimpleMotor</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Keeps the relative angular velocity of a pair of bodies constant.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SimpleMotor.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Keeps the relative angular velocity of a pair of bodies constant. </span>
+<span class="sd">        rate is the desired relative angular velocity. You will usually want </span>
+<span class="sd">        to set an force (torque) maximum for motors as otherwise they will be </span>
+<span class="sd">        able to apply a nearly infinite torque to keep the bodies moving.  </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSimpleMotorNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSimpleMotor</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
         </div>
-    def _get_rate(self):
-        return self._dsc.rate
-    def _set_rate(self, rate):
-        self._dsc.rate = rate
-    rate = property(_get_rate, _set_rate,
-        doc="""The desired relative angular velocity""")  
-
-</div>
-</pre>
+    <span class="k">def</span> <span class="nf">_get_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">rate</span>
+    <span class="k">def</span> <span class="nf">_set_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="n">rate</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_rate</span><span class="p">,</span> <span class="n">_set_rate</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The desired relative angular velocity&quot;&quot;&quot;</span><span class="p">)</span>  
+</pre></div></div>
 
           </div>
         </div>
@@ -565,7 +563,7 @@ from . import _chipmunk_ffi as cpffi
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">pymunk 3.1.0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">pymunk 4.0.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" >Module code</a> &raquo;</li>
           <li><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
       </ul>

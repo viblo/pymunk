@@ -10,7 +10,9 @@ For example, to run the breakout demo::
 
 import sys
 sys.path.insert(1,'..')
+# some extra things for pyglet
 sys.path.insert(1,'../../../pyglet')
+sys.path.insert(1,'../../../../pyglet')
 
 if len(sys.argv) > 1:
     name = sys.argv[1]

@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>News &mdash; pymunk 3.1.0 documentation</title>
+    <title>News &mdash; pymunk 4.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '3.1.0',
+        VERSION:     '4.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 3.1.0 documentation" href="index.html" />
+    <link rel="top" title="pymunk 4.0.0 documentation" href="index.html" />
     <link rel="next" title="Installation" href="installation.html" />
     <link rel="prev" title="Readme" href="readme.html" /> 
   </head>
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="readme.html" title="Readme"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">pymunk 3.1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">pymunk 4.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -57,6 +57,51 @@
             
   <div class="section" id="news">
 <h1>News<a class="headerlink" href="#news" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pymunk-4-0-0">
+<h2>pymunk 4.0.0<a class="headerlink" href="#pymunk-4-0-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Victor - 2013-XX-XX</em></p>
+<p><strong>DRAFT</strong></p>
+<p><strong>A new release of pymunk is here!</strong></p>
+<p>This release is definatley a milestone, pymunk is now over 5 years old!
+(first version was released in February 2008, for the pyweek competition)</p>
+<p>In this release a number of improvements have been made to pymunk. It
+includes debug drawing for pyglet (debug draw for pygame was introduced in
+pymunk 3), an updated Chipmunk version with the resulting API adjustments,
+more and better examples and overall polish as usual.</p>
+<p>With the new Chipmunk version (6.2 beta), collision detection might behave a
+little bit differently as it uses a different algorithm compared to earlier
+versions. The new algorithm means that segments to segment collisions will be
+detected now. If you have some segments that you dont want to collide then
+you can use the sensor property, or a custom collision callback function.</p>
+<p>To see the new pymunk.pyglet_util module in action check out the
+pyglet_util_demo.py example. It has an interface similar to the pygame_util,
+with a couple of changes because of differences between pyglet and pygame.</p>
+<p>Some API additions and changes have been made. Its now legal to add and remove
+objects such as bodies and shapes during the simulation step (for example in a
+callback). The actual removal will be scheduled to occur as soon as the
+simulation step is complete. Other changes are the possibility to change
+body of a shape, to get the BB of a shape, and create a shape with empty body.
+On a body you can now retrieve the shapes and constraints attached to it.</p>
+<p>This release has been tested and runs on CPython. At least one run of the unit
+tests have been made on the following platforms: 32 bit Python on Windows, 32
+and 64 bit python on Linux, and 64 bit Pytohn on OSX.</p>
+<p>This release has also been tested on Pypy 2.1, with all tests passed!</p>
+<p>Changes</p>
+<ul class="simple">
+<li>New draw module to help with pyglet prototyping</li>
+<li>Updated Chipmunk verison, with new collision detected code.</li>
+<li>Added, improved and fixed broken examples</li>
+<li>Possible to switch bodies on shapes</li>
+<li>Made it legal do add and remove bodies during a simulation step</li>
+<li>Added shapes and constraints properties to Body</li>
+<li>Possible to get BB of a Shape, and they now allow empty body in constructor</li>
+<li>Added example of using pyinstaller</li>
+<li>Fixed a number of bugs reported</li>
+<li>Improved docs in various places</li>
+<li>General polish and cleanup</li>
+</ul>
+<p>I hope you will enjoy this new release!</p>
+</div>
 <div class="section" id="pymunk-3-0-0">
 <h2>pymunk 3.0.0<a class="headerlink" href="#pymunk-3-0-0" title="Permalink to this headline">¶</a></h2>
 <p><em>Victor - 2012-09-02</em></p>
@@ -117,7 +162,7 @@ to None, not using infinity. inf will be removed in an upcoming release.</p>
 </div>
 <div class="section" id="pymunk-2-0-0">
 <h2>pymunk 2.0.0<a class="headerlink" href="#pymunk-2-0-0" title="Permalink to this headline">¶</a></h2>
-<p><em>Victor - 2012-09-04</em></p>
+<p><em>Victor - 2011-09-04</em></p>
 <p><strong>Today I&#8217;m happy to announce the new pymunk 2 release!</strong></p>
 <p>New goodies in this release comes mainly form the updated chipmunk library. Its
 now possible for bodies to sleep, there is a new data structure holding the
@@ -162,6 +207,7 @@ number were increased).</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Readme</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pymunk-4-0-0">pymunk 4.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-3-0-0">pymunk 3.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-2-1-0">pymunk 2.1.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-2-0-0">pymunk 2.0.0</a></li>
@@ -221,7 +267,7 @@ number were increased).</p>
         <li class="right" >
           <a href="readme.html" title="Readme"
              >previous</a> |</li>
-        <li><a href="index.html">pymunk 3.1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">pymunk 4.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

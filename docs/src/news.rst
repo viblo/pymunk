@@ -10,6 +10,10 @@ pymunk 4.0.0
 
 **A new release of pymunk is here!**
 
+This release is definatley a milestone, pymunk is now over 5 years old! 
+(first version was released in February 2008, for the pyweek competition)
+
+
 In this release a number of improvements have been made to pymunk. It 
 includes debug drawing for pyglet (debug draw for pygame was introduced in 
 pymunk 3), an updated Chipmunk version with the resulting API adjustments, 
@@ -34,7 +38,7 @@ On a body you can now retrieve the shapes and constraints attached to it.
 
 This release has been tested and runs on CPython. At least one run of the unit 
 tests have been made on the following platforms: 32 bit Python on Windows, 32 
-and 64 bit python on Linux, and 64 bit Pytohn on OSX. 
+and 64 bit Python on Linux, and 64 bit Python on OSX. 
 
 This release has also been tested on Pypy 2.1, with all tests passed!
 

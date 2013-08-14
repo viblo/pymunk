@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Examples &mdash; pymunk 3.1.0 documentation</title>
+    <title>Examples &mdash; pymunk 4.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '3.1.0',
+        VERSION:     '4.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 3.1.0 documentation" href="index.html" />
+    <link rel="top" title="pymunk 4.0.0 documentation" href="index.html" />
     <link rel="next" title="Tutorials" href="tutorials.html" />
     <link rel="prev" title="pymunkoptions Module" href="pymunkoptions.html" /> 
   </head>
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="pymunkoptions.html" title="pymunkoptions Module"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">pymunk 3.1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">pymunk 4.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -102,10 +102,10 @@ or in a showcase section of the site, feel free to contact me!</p>
 <li><a class="reference internal" href="#pygame-util-demo-py" id="id21">pygame_util_demo.py</a></li>
 <li><a class="reference internal" href="#pyglet-util-demo-py" id="id22">pyglet_util_demo.py</a></li>
 <li><a class="reference internal" href="#run-py" id="id23">run.py</a></li>
-<li><a class="reference internal" href="#shapes-for-draw-demos-py" id="id24">shapes_for_draw_demos.py</a></li>
-<li><a class="reference internal" href="#slide-and-pinjoint-py" id="id25">slide_and_pinjoint.py</a></li>
-<li><a class="reference internal" href="#spiderweb-py" id="id26">spiderweb.py</a></li>
-<li><a class="reference internal" href="#spiderweb-w-spider-py" id="id27">spiderweb_w_spider.py</a></li>
+<li><a class="reference internal" href="#segment-collisions-py" id="id24">segment_collisions.py</a></li>
+<li><a class="reference internal" href="#shapes-for-draw-demos-py" id="id25">shapes_for_draw_demos.py</a></li>
+<li><a class="reference internal" href="#slide-and-pinjoint-py" id="id26">slide_and_pinjoint.py</a></li>
+<li><a class="reference internal" href="#spiderweb-py" id="id27">spiderweb.py</a></li>
 <li><a class="reference internal" href="#using-sprites-py" id="id28">using_sprites.py</a></li>
 <li><a class="reference internal" href="#using-sprites-pyglet-py" id="id29">using_sprites_pyglet.py</a></li>
 </ul>
@@ -271,36 +271,36 @@ so click clockwise to compensate :)</li>
 <p>Location: <em>examples/run.py</em></p>
 <p>Use to run examples using pymunk located one folder level up.
 Useful if you have the whole pymunk source tree and want to run the examples
-in a quick and dirty way.</p>
+in a quick and dirty way. (a poor man&#8217;s virtualenv if you like)</p>
 <p>For example, to run the breakout demo:</p>
 <div class="highlight-python"><pre>&gt; cd examples
 &gt; python run.py breakout.py</pre>
 </div>
 </div>
+<div class="section" id="segment-collisions-py">
+<h2><a class="toc-backref" href="#id24">segment_collisions.py</a><a class="headerlink" href="#segment-collisions-py" title="Permalink to this headline">¶</a></h2>
+<p>Location: <em>examples/segment_collisions.py</em></p>
+<p>Showcase of a the new segment - segment collision detection</p>
+<p>NOTE:: Doesnt work at the moment!</p>
+</div>
 <div class="section" id="shapes-for-draw-demos-py">
-<h2><a class="toc-backref" href="#id24">shapes_for_draw_demos.py</a><a class="headerlink" href="#shapes-for-draw-demos-py" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id25">shapes_for_draw_demos.py</a><a class="headerlink" href="#shapes-for-draw-demos-py" title="Permalink to this headline">¶</a></h2>
 <p>Location: <em>examples/shapes_for_draw_demos.py</em></p>
 <p>Helper function add_objects for the draw demos.
 Adds a lot of stuff to a space.</p>
 </div>
 <div class="section" id="slide-and-pinjoint-py">
-<h2><a class="toc-backref" href="#id25">slide_and_pinjoint.py</a><a class="headerlink" href="#slide-and-pinjoint-py" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id26">slide_and_pinjoint.py</a><a class="headerlink" href="#slide-and-pinjoint-py" title="Permalink to this headline">¶</a></h2>
 <p>Location: <em>examples/slide_and_pinjoint.py</em></p>
 <p>A L shape attached with a joint and constrained to not tip over.</p>
 <img alt="_images/slide_and_pinjoint.png" src="_images/slide_and_pinjoint.png" />
 </div>
 <div class="section" id="spiderweb-py">
-<h2><a class="toc-backref" href="#id26">spiderweb.py</a><a class="headerlink" href="#spiderweb-py" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id27">spiderweb.py</a><a class="headerlink" href="#spiderweb-py" title="Permalink to this headline">¶</a></h2>
 <p>Location: <em>examples/spiderweb.py</em></p>
 <p>Showcase of a elastic spiderweb (drawing with pyglet)</p>
 <p>It is possible to grab one of the crossings with the mouse</p>
 <img alt="_images/spiderweb.png" src="_images/spiderweb.png" />
-</div>
-<div class="section" id="spiderweb-w-spider-py">
-<h2><a class="toc-backref" href="#id27">spiderweb_w_spider.py</a><a class="headerlink" href="#spiderweb-w-spider-py" title="Permalink to this headline">¶</a></h2>
-<p>Location: <em>examples/spiderweb_w_spider.py</em></p>
-<p>THIS IS WORK IN PROGRESS.
-Showcase of a spiderweb (drawing with pyglet)</p>
 </div>
 <div class="section" id="using-sprites-py">
 <h2><a class="toc-backref" href="#id28">using_sprites.py</a><a class="headerlink" href="#using-sprites-py" title="Permalink to this headline">¶</a></h2>
@@ -357,10 +357,10 @@ that it uses pyglet instead of pygame to showcase sprite drawing.</p>
 <li class="toctree-l2"><a class="reference internal" href="#pygame-util-demo-py">pygame_util_demo.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyglet-util-demo-py">pyglet_util_demo.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#run-py">run.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#segment-collisions-py">segment_collisions.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#shapes-for-draw-demos-py">shapes_for_draw_demos.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#slide-and-pinjoint-py">slide_and_pinjoint.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#spiderweb-py">spiderweb.py</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#spiderweb-w-spider-py">spiderweb_w_spider.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-sprites-py">using_sprites.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-sprites-pyglet-py">using_sprites_pyglet.py</a></li>
 </ul>
@@ -415,7 +415,7 @@ that it uses pyglet instead of pygame to showcase sprite drawing.</p>
         <li class="right" >
           <a href="pymunkoptions.html" title="pymunkoptions Module"
              >previous</a> |</li>
-        <li><a href="index.html">pymunk 3.1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">pymunk 4.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
