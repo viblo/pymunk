@@ -47,7 +47,8 @@ cpPolyShapeTransformVerts(cpPolyShape *poly, cpVect p, cpVect rot)
 		t = cpfmax(t, v.y);
 	}
 	
-	return cpBBNew(l, b, r, t);
+	cpFloat radius = poly->r;
+	return cpBBNew(l - radius, b - radius, r + radius, t + radius);
 }
 
 static void
@@ -88,6 +89,7 @@ cpPolyShapeNearestPointQuery(cpPolyShape *poly, cpVect p, cpNearestPointQueryInf
 	cpVect v0 = verts[count - 1];
 	cpFloat minDist = INFINITY;
 	cpVect closestPoint = cpvzero;
+	cpVect closestNormal = cpvzero;
 	cpBool outside = cpFalse;
 	
 	for(int i=0; i<count; i++){
@@ -100,14 +102,20 @@ cpPolyShapeNearestPointQuery(cpPolyShape *poly, cpVect p, cpNearestPointQueryInf
 		if(dist < minDist){
 			minDist = dist;
 			closestPoint = closest;
+			closestNormal = planes[i].n;
 		}
 		
 		v0 = v1;
 	}
 	
+	cpFloat dist = (outside ? minDist : -minDist);
+	
 	info->shape = (cpShape *)poly;
-	info->p = closestPoint; // TODO div/0
-	info->d = (outside ? minDist : -minDist);
+	info->p = closestPoint;
+	info->d = dist;
+	
+	// Use the normal of the closest segment if the distance is small.
+	info->g = (minDist > MAGIC_EPSILON ? cpvmult(cpvsub(p, closestPoint), 1.0f/dist) : closestNormal);
 }
 
 static void
@@ -128,8 +136,8 @@ cpPolyShapeSegmentQuery(cpPolyShape *poly, cpVect a, cpVect b, cpSegmentQueryInf
 		
 		cpVect point = cpvlerp(a, b, t);
 		cpFloat dt = -cpvcross(n, point);
-		cpFloat dtMin = -cpvcross(n, verts[i]);
-		cpFloat dtMax = -cpvcross(n, verts[(i+1)%numVerts]);
+		cpFloat dtMin = -cpvcross(n, verts[(i - 1 + numVerts)%numVerts]);
+		cpFloat dtMax = -cpvcross(n, verts[i]);
 		
 		if(dtMin <= dt && dt <= dtMax){
 			info->shape = (cpShape *)poly;
@@ -164,19 +172,26 @@ cpPolyValidate(const cpVect *verts, const int numVerts)
 }
 
 int
-cpPolyShapeGetNumVerts(cpShape *shape)
+cpPolyShapeGetNumVerts(const cpShape *shape)
 {
 	cpAssertHard(shape->klass == &polyClass, "Shape is not a poly shape.");
 	return ((cpPolyShape *)shape)->numVerts;
 }
 
 cpVect
-cpPolyShapeGetVert(cpShape *shape, int idx)
+cpPolyShapeGetVert(const cpShape *shape, int idx)
 {
 	cpAssertHard(shape->klass == &polyClass, "Shape is not a poly shape.");
 	cpAssertHard(0 <= idx && idx < cpPolyShapeGetNumVerts(shape), "Index out of range.");
 	
 	return ((cpPolyShape *)shape)->verts[idx];
+}
+
+cpFloat
+cpPolyShapeGetRadius(const cpShape *shape)
+{
+	cpAssertHard(shape->klass == &polyClass, "Shape is not a poly shape.");
+	return ((cpPolyShape *)shape)->r;
 }
 
 
@@ -202,19 +217,37 @@ setUpVerts(cpPolyShape *poly, int numVerts, const cpVect *verts, cpVect offset)
 		poly->planes[i].d = cpvdot(n, a);
 	}
 	
+	// TODO: Why did I add this? It duplicates work from above.
+	for(int i=0; i<numVerts; i++){
+		poly->planes[i] = cpSplittingPlaneNew(poly->verts[(i - 1 + numVerts)%numVerts], poly->verts[i]);
+	}
 }
 
 cpPolyShape *
 cpPolyShapeInit(cpPolyShape *poly, cpBody *body, int numVerts, const cpVect *verts, cpVect offset)
 {
+	return cpPolyShapeInit2(poly, body, numVerts, verts, offset, 0.0f);
+}
+
+cpPolyShape *
+cpPolyShapeInit2(cpPolyShape *poly, cpBody *body, int numVerts, const cpVect *verts, cpVect offset, cpFloat radius)
+{
 	setUpVerts(poly, numVerts, verts, offset);
 	cpShapeInit((cpShape *)poly, &polyClass, body);
+	poly->r = radius;
 
 	return poly;
 }
 
+
 cpShape *
-cpPolyShapeNew(cpBody *body, int numVerts, const cpVect *verts, cpVect offset)
+cpPolyShapeNew(cpBody *body, int numVerts, cpVect *verts, cpVect offset)
+{
+	return cpPolyShapeNew2(body, numVerts, verts, offset, 0.0f);
+}
+
+cpShape *
+cpPolyShapeNew2(cpBody *body, int numVerts, cpVect *verts, cpVect offset, cpFloat radius)
 {
 	return (cpShape *)cpPolyShapeInit(cpPolyShapeAlloc(), body, numVerts, verts, offset);
 }
@@ -231,6 +264,12 @@ cpBoxShapeInit(cpPolyShape *poly, cpBody *body, cpFloat width, cpFloat height)
 cpPolyShape *
 cpBoxShapeInit2(cpPolyShape *poly, cpBody *body, cpBB box)
 {
+	return cpBoxShapeInit3(poly, body, box, 0.0f);
+}
+
+cpPolyShape *
+cpBoxShapeInit3(cpPolyShape *poly, cpBody *body, cpBB box, cpFloat radius)
+{
 	cpVect verts[] = {
 		cpv(box.l, box.b),
 		cpv(box.l, box.t),
@@ -238,7 +277,7 @@ cpBoxShapeInit2(cpPolyShape *poly, cpBody *body, cpBB box)
 		cpv(box.r, box.b),
 	};
 	
-	return cpPolyShapeInit(poly, body, 4, verts, cpvzero);
+	return cpPolyShapeInit2(poly, body, 4, verts, cpvzero, radius);
 }
 
 cpShape *
@@ -261,4 +300,11 @@ cpPolyShapeSetVerts(cpShape *shape, int numVerts, cpVect *verts, cpVect offset)
 	cpAssertHard(shape->klass == &polyClass, "Shape is not a poly shape.");
 	cpPolyShapeDestroy((cpPolyShape *)shape);
 	setUpVerts((cpPolyShape *)shape, numVerts, verts, offset);
+}
+
+void
+cpPolyShapeSetRadius(cpShape *shape, cpFloat radius)
+{
+	cpAssertHard(shape->klass == &polyClass, "Shape is not a poly shape.");
+	((cpPolyShape *)shape)->r = radius;
 }
