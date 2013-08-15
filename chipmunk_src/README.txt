@@ -1,4 +1,4 @@
-Chipmunk 6.2.0rev3a0bb909ec
+Chipmunk 6.2.0rev845d0a0c35
                  
 see http://chipmunk-physics.net/
 

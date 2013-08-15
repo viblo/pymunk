@@ -23,13 +23,13 @@
 #include <string.h>
 
 #include "chipmunk_private.h"
-//#include "ChipmunkDemo.h"
 
-#if DEBUG
+#if DEBUG && 0
+#include "ChipmunkDemo.h"
 #define DRAW_ALL 0
 #define DRAW_GJK (0 || DRAW_ALL)
 #define DRAW_EPA (0 || DRAW_ALL)
-#define DRAW_CLOSEST (1 || DRAW_ALL)
+#define DRAW_CLOSEST (0 || DRAW_ALL)
 #define DRAW_CLIP (0 || DRAW_ALL)
 
 #define PRINT_LOG 0
