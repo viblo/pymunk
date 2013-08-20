@@ -85,6 +85,7 @@ cpPolyShapeNearestPointQuery(cpPolyShape *poly, cpVect p, cpNearestPointQueryInf
 	int count = poly->numVerts;
 	cpSplittingPlane *planes = poly->tPlanes;
 	cpVect *verts = poly->tVerts;
+	cpFloat r = poly->r;
 	
 	cpVect v0 = verts[count - 1];
 	cpFloat minDist = INFINITY;
@@ -109,13 +110,14 @@ cpPolyShapeNearestPointQuery(cpPolyShape *poly, cpVect p, cpNearestPointQueryInf
 	}
 	
 	cpFloat dist = (outside ? minDist : -minDist);
+	cpVect g = cpvmult(cpvsub(p, closestPoint), 1.0f/dist);
 	
 	info->shape = (cpShape *)poly;
-	info->p = closestPoint;
-	info->d = dist;
+	info->p = cpvadd(closestPoint, cpvmult(g, r));
+	info->d = dist - r;
 	
 	// Use the normal of the closest segment if the distance is small.
-	info->g = (minDist > MAGIC_EPSILON ? cpvmult(cpvsub(p, closestPoint), 1.0f/dist) : closestNormal);
+	info->g = (minDist > MAGIC_EPSILON ? g : closestNormal);
 }
 
 static void
@@ -124,14 +126,16 @@ cpPolyShapeSegmentQuery(cpPolyShape *poly, cpVect a, cpVect b, cpSegmentQueryInf
 	cpSplittingPlane *axes = poly->tPlanes;
 	cpVect *verts = poly->tVerts;
 	int numVerts = poly->numVerts;
+	cpFloat r = poly->r;
 	
 	for(int i=0; i<numVerts; i++){
 		cpVect n = axes[i].n;
 		cpFloat an = cpvdot(a, n);
-		if(axes[i].d > an) continue;
+		cpFloat d = axes[i].d + r - an;
+		if(d > 0.0f) continue;
 		
 		cpFloat bn = cpvdot(b, n);
-		cpFloat t = (axes[i].d - an)/(bn - an);
+		cpFloat t = d/(bn - an);
 		if(t < 0.0f || 1.0f < t) continue;
 		
 		cpVect point = cpvlerp(a, b, t);
@@ -143,6 +147,15 @@ cpPolyShapeSegmentQuery(cpPolyShape *poly, cpVect a, cpVect b, cpSegmentQueryInf
 			info->shape = (cpShape *)poly;
 			info->t = t;
 			info->n = n;
+		}
+	}
+	
+	// Also check against the beveled vertexes.
+	if(r > 0.0f){
+		for(int i=0; i<numVerts; i++){
+			cpSegmentQueryInfo circle_info = {NULL, 1.0f, cpvzero};
+			CircleSegmentQuery(&poly->shape, verts[i], r, a, b, &circle_info);
+			if(circle_info.t < info->t) (*info) = circle_info;
 		}
 	}
 }
@@ -249,7 +262,7 @@ cpPolyShapeNew(cpBody *body, int numVerts, cpVect *verts, cpVect offset)
 cpShape *
 cpPolyShapeNew2(cpBody *body, int numVerts, cpVect *verts, cpVect offset, cpFloat radius)
 {
-	return (cpShape *)cpPolyShapeInit(cpPolyShapeAlloc(), body, numVerts, verts, offset);
+	return (cpShape *)cpPolyShapeInit2(cpPolyShapeAlloc(), body, numVerts, verts, offset, radius);
 }
 
 cpPolyShape *
@@ -290,6 +303,12 @@ cpShape *
 cpBoxShapeNew2(cpBody *body, cpBB box)
 {
 	return (cpShape *)cpBoxShapeInit2(cpPolyShapeAlloc(), body, box);
+}
+
+cpShape *
+cpBoxShapeNew3(cpBody *body, cpBB box, cpFloat radius)
+{
+	return (cpShape *)cpBoxShapeInit3(cpPolyShapeAlloc(), body, box, radius);
 }
 
 // Unsafe API (chipmunk_unsafe.h)

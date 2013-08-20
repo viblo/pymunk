@@ -79,11 +79,14 @@ class UnitTestShape(unittest.TestCase):
         
     def testPolyRadius(self):
         b = p.Body(1,1)
+        
         c = p.Poly(b, [(2,2), (4,3), (3,5)], radius=10)
-
-        c.unsafe_set_radius(10)
-
+       
         self.assertEqual(c.radius, 10)
+
+        c.unsafe_set_radius(20)
+
+        self.assertEqual(c.radius, 20)
 
     def testPolyUnsafeSet(self):
         s = p.Space()
