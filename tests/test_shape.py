@@ -77,6 +77,14 @@ class UnitTestShape(unittest.TestCase):
         
         self.assertEqual(c.bb, p.BB(5, 5, 15, 15))
         
+    def testPolyRadius(self):
+        b = p.Body(1,1)
+        c = p.Poly(b, [(2,2), (4,3), (3,5)], radius=10)
+
+        c.unsafe_set_radius(10)
+
+        self.assertEqual(c.radius, 10)
+
     def testPolyUnsafeSet(self):
         s = p.Space()
         b = p.Body(10,10)
@@ -96,7 +104,7 @@ class UnitTestShape(unittest.TestCase):
         
         c = p.Poly.create_box(b, (4,2), (10,10))
         
-        ps = c.get_points()
+        ps = c.get_vertices()
         #print help(self.assertEqual)
         self.assertEqual(ps, [(8,9), (8,11),(12,11),(12,9)])
     

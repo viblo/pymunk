@@ -1349,7 +1349,7 @@ class Poly(Shape):
     It is legal to send in None as body argument to indicate that this 
     shape is not attached to a body.    
     """
-    def __init__(self, body, vertices, offset=(0, 0), auto_order_vertices=True):
+    def __init__(self, body, vertices, offset=(0, 0), auto_order_vertices=True, radius=0):
         """Create a polygon
         
             body : `Body`
@@ -1364,6 +1364,8 @@ class Poly(Shape):
                 Set to True to automatically order the vertices. If you know 
                 the vertices are in the correct (clockwise) orded you can gain 
                 a little performance by setting this to False.
+            radius : int
+                Set the radius of the poly shape.
         """
         
         self._body = body
@@ -1373,9 +1375,26 @@ class Poly(Shape):
         body_body = None if body is None else body._body
         if body != None: 
             body._shapes.add(self)
-        self._shape = cp.cpPolyShapeNew(body_body, len(vertices), self.verts, offset)
+        self._shape = cp.cpPolyShapeNew2(body_body, len(vertices), self.verts, offset, radius)
         self._shapecontents = self._shape.contents
-        
+
+    def unsafe_set_radius(self, radius):
+        """Unsafe set the radius of the poly.
+
+        .. note:: 
+            This change is only picked up as a change to the position 
+            of the shape's surface, but not it's velocity. Changing it will 
+            not result in realistic physical behavior. Only use if you know 
+            what you are doing!
+        """
+        cp.cpPolyShapeSetRadius(self._shape, radius)    
+    
+    def _get_radius(self):
+        return cp.cpPolyShapeGetRadius(self._shape)
+    radius = property(_get_radius, 
+        doc="""The radius of the poly shape. Extends the poly in all 
+        directions with the given radius""")
+
     def _set_verts(self, vertices, auto_order_vertices):
         self.verts = (Vec2d * len(vertices))
         self.verts = self.verts(Vec2d(0, 0))
@@ -1389,7 +1408,7 @@ class Poly(Shape):
             self.verts[i].y = vertex[1]
         
     @staticmethod
-    def create_box(body, size=(10,10), offset=(0,0)): 
+    def create_box(body, size=(10,10), offset=(0,0), radius=0): 
         """Convenience function to create a box centered around the body position.
 
         The size is given as as (w,h) tuple.
@@ -1397,11 +1416,11 @@ class Poly(Shape):
         x,y = size[0]*.5,size[1]*.5
         vs = [(-x,-y),(-x,y),(x,y),(x,-y)]
     
-        return Poly(body, vs, offset)
+        return Poly(body, vs, offset, radius)
         
         
-    def get_points(self): #TODO: Rename to get_vertices in next major version?
-        """Get the points in world coordinates for the polygon
+    def get_vertices(self): 
+        """Get the vertices in world coordinates for the polygon
         
         :return: [`Vec2d`] in world coords
         """
