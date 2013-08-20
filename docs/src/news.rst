@@ -51,6 +51,8 @@ Changes
 - Made it legal do add and remove bodies during a simulation step
 - Added shapes and constraints properties to Body
 - Possible to get BB of a Shape, and they now allow empty body in constructor
+- Added radius property to Poly shapes
+- Renamed Poly.get_points to get_vertices
 - Added example of using pyinstaller
 - Fixed a number of bugs reported
 - Improved docs in various places

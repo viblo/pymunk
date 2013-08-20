@@ -90,7 +90,7 @@
 <span class="sd">    Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id: __init__.py 520 2013-08-07 17:28:59Z vb@viblo.se $&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id: __init__.py 527 2013-08-20 17:05:25Z vb@viblo.se $&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;inf&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;chipmunk_version&quot;</span>
@@ -121,7 +121,7 @@
 <span class="sd">distribution (i.e. not in a checked-out copy from svn).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">chipmunk_version</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">R</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpVersionString</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span> <span class="s">&#39;b6bdcb7&#39;</span><span class="p">)</span>
+<span class="n">chipmunk_version</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">R</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpVersionString</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span> <span class="s">&#39;3bdf1b7b3c&#39;</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;The Chipmunk version compatible with this pymunk version.</span>
 <span class="sd">Other (newer) Chipmunk versions might also work if the new version does not </span>
 <span class="sd">contain any breaking API changes.</span>
@@ -1401,7 +1401,7 @@
 <span class="sd">    It is legal to send in None as body argument to indicate that this </span>
 <span class="sd">    shape is not attached to a body.    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="Poly.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">auto_order_vertices</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Poly.__init__"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">auto_order_vertices</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a polygon</span>
 <span class="sd">        </span>
 <span class="sd">            body : `Body`</span>
@@ -1416,6 +1416,8 @@
 <span class="sd">                Set to True to automatically order the vertices. If you know </span>
 <span class="sd">                the vertices are in the correct (clockwise) orded you can gain </span>
 <span class="sd">                a little performance by setting this to False.</span>
+<span class="sd">            radius : int</span>
+<span class="sd">                Set the radius of the poly shape.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">body</span>
@@ -1425,9 +1427,26 @@
         <span class="n">body_body</span> <span class="o">=</span> <span class="bp">None</span> <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span>
         <span class="k">if</span> <span class="n">body</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> 
             <span class="n">body</span><span class="o">.</span><span class="n">_shapes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">verts</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeNew2</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">verts</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shapecontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="o">.</span><span class="n">contents</span>
-        </div>
+</div>
+<div class="viewcode-block" id="Poly.unsafe_set_radius"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.unsafe_set_radius">[docs]</a>    <span class="k">def</span> <span class="nf">unsafe_set_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Unsafe set the radius of the poly.</span>
+
+<span class="sd">        .. note:: </span>
+<span class="sd">            This change is only picked up as a change to the position </span>
+<span class="sd">            of the shape&#39;s surface, but not it&#39;s velocity. Changing it will </span>
+<span class="sd">            not result in realistic physical behavior. Only use if you know </span>
+<span class="sd">            what you are doing!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeSetRadius</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>    
+    </div>
+    <span class="k">def</span> <span class="nf">_get_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeGetRadius</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_radius</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The radius of the poly shape. Extends the poly in all </span>
+<span class="s">        directions with the given radius&quot;&quot;&quot;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_set_verts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">auto_order_vertices</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verts</span> <span class="o">=</span> <span class="p">(</span><span class="n">Vec2d</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verts</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -1441,7 +1460,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">vertex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Poly.create_box"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.create_box">[docs]</a>    <span class="k">def</span> <span class="nf">create_box</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)):</span> 
+<div class="viewcode-block" id="Poly.create_box"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.create_box">[docs]</a>    <span class="k">def</span> <span class="nf">create_box</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span> 
         <span class="sd">&quot;&quot;&quot;Convenience function to create a box centered around the body position.</span>
 
 <span class="sd">        The size is given as as (w,h) tuple.</span>
@@ -1449,11 +1468,11 @@
         <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*.</span><span class="mi">5</span><span class="p">,</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*.</span><span class="mi">5</span>
         <span class="n">vs</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="n">y</span><span class="p">),(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),(</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="n">y</span><span class="p">)]</span>
     
-        <span class="k">return</span> <span class="n">Poly</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">vs</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Poly</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">vs</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
         
         </div>
-<div class="viewcode-block" id="Poly.get_points"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.get_points">[docs]</a>    <span class="k">def</span> <span class="nf">get_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c">#TODO: Rename to get_vertices in next major version?</span>
-        <span class="sd">&quot;&quot;&quot;Get the points in world coordinates for the polygon</span>
+<div class="viewcode-block" id="Poly.get_vertices"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly.get_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="sd">&quot;&quot;&quot;Get the vertices in world coordinates for the polygon</span>
 <span class="sd">        </span>
 <span class="sd">        :return: [`Vec2d`] in world coords</span>
 <span class="sd">        &quot;&quot;&quot;</span>
