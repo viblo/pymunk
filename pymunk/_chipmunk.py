@@ -17,38 +17,38 @@ function_pointer = platform_specific_functions()['function_pointer']
 STRING = c_char_p
 
 
-# def cpAssertHard(__condition__,...): return if(!(__condition__)) cpMessage(#__condition__, __FILE__, __LINE__, 1, 1, __VA_ARGS__) # macro
-# def cpAssertWarn(__condition__,...): return if(!(__condition__)) cpMessage(#__condition__, __FILE__, __LINE__, 0, 0, __VA_ARGS__) # macro
-# def cpConstraintCheckCast(constraint,struct): return cpAssertHard(constraint->CP_PRIVATE(klass) == struct ##GetClass(), "Constraint is not a "#struct) # macro
-def cpBodyAssertSane(body): return cpBodySanityCheck(body) # macro
-# def cpAssertSoft(__condition__,...): return if(!(__condition__)) cpMessage(#__condition__, __FILE__, __LINE__, 1, 0, __VA_ARGS__) # macro
-# cpfsqrt = sqrt # alias
-# cpfsin = sin # alias
-# cpfpow = pow # alias
-cpArbiterStateFirstColl = 0
-cpArbiterStateIgnore = 2
-cpArbiterStateNormal = 1
-cpArbiterStateCached = 3
-size_t = c_uint
-realloc = None # symbol removed
-realloc = None # symbol removed
-realloc = None # symbol removed
-cprealloc = realloc # alias
 free = None # symbol removed
 free = None # symbol removed
 free = None # symbol removed
 cpfree = free # alias
+cpArbiterStateIgnore = 2
+cpArbiterStateCached = 3
+cpArbiterStateNormal = 1
+# cpfpow = pow # alias
 # cpfmod = fmod # alias
-# cpffloor = floor # alias
 # cpfexp = exp # alias
 # cpfcos = cos # alias
 # cpfceil = ceil # alias
 # cpfatan2 = atan2 # alias
 # cpfacos = acos # alias
+size_t = c_uint
 calloc = None # symbol removed
 calloc = None # symbol removed
 calloc = None # symbol removed
 cpcalloc = calloc # alias
+# def cpAssertSoft(__condition__,...): return if(!(__condition__)) cpMessage(#__condition__, __FILE__, __LINE__, 1, 0, __VA_ARGS__) # macro
+# def cpAssertHard(__condition__,...): return if(!(__condition__)) cpMessage(#__condition__, __FILE__, __LINE__, 1, 1, __VA_ARGS__) # macro
+# def cpConstraintCheckCast(constraint,struct): return cpAssertHard(constraint->CP_PRIVATE(klass) == struct ##GetClass(), "Constraint is not a "#struct) # macro
+def cpBodyAssertSane(body): return cpBodySanityCheck(body) # macro
+# def cpAssertWarn(__condition__,...): return if(!(__condition__)) cpMessage(#__condition__, __FILE__, __LINE__, 0, 0, __VA_ARGS__) # macro
+# cpffloor = floor # alias
+cpArbiterStateFirstColl = 0
+# cpfsqrt = sqrt # alias
+# cpfsin = sin # alias
+realloc = None # symbol removed
+realloc = None # symbol removed
+realloc = None # symbol removed
+cprealloc = realloc # alias
 cpMessage = chipmunk_lib.cpMessage
 cpMessage.restype = None
 cpMessage.argtypes = [STRING, STRING, c_int, c_int, c_int, STRING]
