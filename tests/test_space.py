@@ -238,8 +238,8 @@ class UnitTestSpace(unittest.TestCase):
     
     def testSegmentQueries(self):
         
-        self.assertEqual(self.s.segment_query_first( (13,1), (131.01,2) ), None)
-        self.assertEqual(self.s.segment_query_first( (13,0),(131.01,0) ), None)
+        self.assertEqual(self.s.segment_query_first( (13,11), (131.01,12) ), None)
+        self.assertEqual(self.s.segment_query_first( (13,-11),(131.01,-11) ), None)
         r = self.s.segment_query_first( (10,-100), (10,100) )
         
         self.assertEqual(r.shape, self.s1)

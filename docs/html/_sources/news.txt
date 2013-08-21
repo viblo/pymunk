@@ -2,6 +2,65 @@
 News 
 ****
 
+pymunk 4.0.0
+-------------
+*Victor - 2013-XX-XX*
+
+**DRAFT**
+
+**A new release of pymunk is here!**
+
+This release is definatley a milestone, pymunk is now over 5 years old! 
+(first version was released in February 2008, for the pyweek competition)
+
+
+In this release a number of improvements have been made to pymunk. It 
+includes debug drawing for pyglet (debug draw for pygame was introduced in 
+pymunk 3), an updated Chipmunk version with the resulting API adjustments, 
+more and better examples and overall polish as usual.
+
+With the new Chipmunk version (6.2 beta), collision detection might behave a 
+little bit differently as it uses a different algorithm compared to earlier 
+versions. The new algorithm means that segments to segment collisions will be 
+detected now. If you have some segments that you dont want to collide then 
+you can use the sensor property, or a custom collision callback function.
+
+To see the new pymunk.pyglet_util module in action check out the 
+pyglet_util_demo.py example. It has an interface similar to the pygame_util, 
+with a couple of changes because of differences between pyglet and pygame.
+
+Some API additions and changes have been made. Its now legal to add and remove 
+objects such as bodies and shapes during the simulation step (for example in a 
+callback). The actual removal will be scheduled to occur as soon as the 
+simulation step is complete. Other changes are the possibility to change 
+body of a shape, to get the BB of a shape, and create a shape with empty body.
+On a body you can now retrieve the shapes and constraints attached to it.
+
+This release has been tested and runs on CPython. At least one run of the unit 
+tests have been made on the following platforms: 32 bit Python on Windows, 32 
+and 64 bit Python on Linux, and 64 bit Python on OSX. 
+
+This release has also been tested on Pypy 2.1, with all tests passed!
+
+Changes
+
+- New draw module to help with pyglet prototyping
+- Updated Chipmunk verison, with new collision detected code.
+- Added, improved and fixed broken examples
+- Possible to switch bodies on shapes
+- Made it legal do add and remove bodies during a simulation step
+- Added shapes and constraints properties to Body
+- Possible to get BB of a Shape, and they now allow empty body in constructor
+- Added radius property to Poly shapes
+- Renamed Poly.get_points to get_vertices
+- Added example of using pyinstaller
+- Fixed a number of bugs reported
+- Improved docs in various places
+- General polish and cleanup
+
+I hope you will enjoy this new release!
+
+
 pymunk 3.0.0
 -------------
 *Victor - 2012-09-02*
@@ -73,7 +132,7 @@ Have fun with it!
 
 pymunk 2.0.0
 -------------
-*Victor - 2012-09-04*
+*Victor - 2011-09-04*
     
 **Today I'm happy to announce the new pymunk 2 release!**
 

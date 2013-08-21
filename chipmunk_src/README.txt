@@ -1,4 +1,5 @@
-Chipmunk 6.1.2
+Chipmunk 6.2.0rev3bdf1b7b3c
+                 
 see http://chipmunk-physics.net/
 
   Compiling:

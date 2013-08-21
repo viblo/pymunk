@@ -42,6 +42,24 @@ class UnitTestShape(unittest.TestCase):
         
         self.assertEqual(c.bb, p.BB(0, 0, 4.0, 5.0))
         
+    def testSegmentSegmentCollision(self):
+        s = p.Space()
+        b1 = p.Body(10,10)
+        b2 = p.Body(10,10)
+        c1 = p.Segment(b1, (-1,-1), (1,1), 1)
+        c2 = p.Segment(b2, (1,-1), (-1,1), 1)
+
+        s.add(b1,b2,c1,c2)
+
+        self.num_of_begins = 0
+        def begin(space, arb):
+            self.num_of_begins += 1
+            return True
+        s.set_default_collision_handler(begin=begin)
+        s.step(.1)
+
+        self.assertEqual(1, self.num_of_begins)
+
     def testPolyBB(self):
         s = p.Space()
         b = p.Body(10,10)
@@ -59,6 +77,17 @@ class UnitTestShape(unittest.TestCase):
         
         self.assertEqual(c.bb, p.BB(5, 5, 15, 15))
         
+    def testPolyRadius(self):
+        b = p.Body(1,1)
+        
+        c = p.Poly(b, [(2,2), (4,3), (3,5)], radius=10)
+       
+        self.assertEqual(c.radius, 10)
+
+        c.unsafe_set_radius(20)
+
+        self.assertEqual(c.radius, 20)
+
     def testPolyUnsafeSet(self):
         s = p.Space()
         b = p.Body(10,10)
@@ -78,7 +107,7 @@ class UnitTestShape(unittest.TestCase):
         
         c = p.Poly.create_box(b, (4,2), (10,10))
         
-        ps = c.get_points()
+        ps = c.get_vertices()
         #print help(self.assertEqual)
         self.assertEqual(ps, [(8,9), (8,11),(12,11),(12,9)])
     

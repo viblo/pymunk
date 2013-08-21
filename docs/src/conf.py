@@ -34,7 +34,8 @@ class Mock(object):
             
 
 MOCK_MODULES = ['pymunk._chipmunk', 'pymunk._chipmunk_ffi', 
-                'pygame', 'pygame.locals', 'pygame.color'
+                'pygame', 'pygame.locals', 'pygame.color',
+                'pyglet'
                 ]
                 
 class MockFinder():
