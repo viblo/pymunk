@@ -92,7 +92,7 @@ class PyramidDemo:
             else:
                 if shape.body.is_sleeping:
                     continue
-                ps = shape.get_points()
+                ps = shape.get_vertices()
                 ps.append(ps[0])
                 ps = map(self.flipyv, ps)
                  #pygame.draw.lines(self.screen, color, False, ps, 1)

@@ -130,7 +130,7 @@ while running:
     l_flipper_body.position = 150, 100
     r_flipper_body.velocity = l_flipper_body.velcoty = 0,0
     for f in [r_flipper_shape, l_flipper_shape]:
-        ps = f.get_points()
+        ps = f.get_vertices()
         ps.append(ps[0])
         ps = map(to_pygame, ps)
         

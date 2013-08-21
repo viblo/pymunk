@@ -96,7 +96,7 @@ def main():
             screen.blit(rotated_logo_img, p)
             
             # debug draw
-            ps = logo_shape.get_points()
+            ps = logo_shape.get_vertices()
             ps = [(p.x, flipy(p.y)) for p in ps]
             ps += [ps[0]]
             pygame.draw.lines(screen, THECOLORS["red"], False, ps, 1)

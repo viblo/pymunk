@@ -144,7 +144,7 @@ class PhysicsDemo:
 
     def draw_poly(self, poly):
         body = poly.body
-        ps = poly.get_points()
+        ps = poly.get_vertices()
         ps.append(ps[0])
         ps = map(self.flipyv, ps)
         if u.is_clockwise(ps):

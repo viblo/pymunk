@@ -197,7 +197,7 @@ def _draw_circle(circle, batch = None):
     return
 
 def _draw_poly(poly, batch = None):
-    ps = poly.get_points()
+    ps = poly.get_vertices()
     
     if hasattr(poly, "color"):
         color = poly.color  

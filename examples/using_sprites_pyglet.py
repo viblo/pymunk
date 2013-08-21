@@ -60,7 +60,7 @@ def on_draw():
     #debug draw
     for logo_sprite in logos:
         
-        ps = logo_sprite.shape.get_points()
+        ps = logo_sprite.shape.get_vertices()
         n = len(ps)
         ps = [c for p in ps for c in p]
         
