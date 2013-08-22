@@ -84,7 +84,7 @@ def main():
         screen.fill(THECOLORS["white"])
         
         ### Draw stuff
-        pymunk.pygame_util.draw_space(screen,space)
+        pymunk.pygame_util.draw(screen, space)
         
         balls_to_remove = []
         for ball in balls:

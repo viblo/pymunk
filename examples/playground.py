@@ -134,7 +134,7 @@ class PhysicsDemo:
         v = body.position + ball.offset.cpvrotate(body.rotation_vector)
         p = self.flipyv(v)
         r = ball.radius
-        pygame.draw.circle(self.screen, THECOLORS["blue"], p, r, 2)
+        pygame.draw.circle(self.screen, THECOLORS["blue"], p, int(r), 2)
 
     def draw_wall(self, wall):
         body = wall.body

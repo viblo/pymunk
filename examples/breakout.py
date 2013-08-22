@@ -146,7 +146,7 @@ def main():
         screen.fill(THECOLORS["black"])
         
         ### Draw stuff
-        pymunk.pygame_util.draw_space(screen, space)
+        pymunk.pygame_util.draw(screen, space)
         
 
         state = []

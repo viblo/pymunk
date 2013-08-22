@@ -13,7 +13,7 @@ from pygame.color import *
     
 import pymunk
 from pymunk.vec2d import Vec2d
-from pymunk.pygame_util import draw_space, from_pygame
+from pymunk.pygame_util import draw, from_pygame
 
 def create_arrow():
     vs = [(-30,0), (0,3), (10,0), (0,-3)]
@@ -145,7 +145,7 @@ def main():
         screen.fill(pygame.color.THECOLORS["black"])
         
         ### Draw stuff
-        draw_space(screen, space)
+        draw(screen, space)
         
         # Power meter
         if pygame.mouse.get_pressed()[0]:

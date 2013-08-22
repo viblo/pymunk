@@ -4,6 +4,7 @@
 __version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
+import sys
 import random
 import math
 
@@ -74,7 +75,7 @@ def main():
         screen.fill(THECOLORS["white"])
         
         ### Draw stuff
-        pymunk.pygame_util.draw_space(screen, space)
+        pymunk.pygame_util.draw(screen, space)
         
         ### Update physics
         dt = 1.0/60.0
