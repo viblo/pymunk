@@ -193,7 +193,7 @@ class UnitTestSpace(unittest.TestCase):
         self.s.add(b1,c1)
         self.s.add(s2)
 
-        s2.b = (100,0)
+        s2.unsafe_set_b((100,0))
         self.s.gravity = 0, -100
         
         for x in range(10):

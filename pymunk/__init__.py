@@ -1324,7 +1324,7 @@ class Segment(Shape):
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a = a
     def _get_a(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a
-    a = property(_get_a, _set_a, 
+    a = property(_get_a,  
         doc="""The first of the two endpoints for this segment""")
 
     def unsafe_set_b(self, b):
@@ -1339,7 +1339,7 @@ class Segment(Shape):
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b = b
     def _get_b(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b
-    b = property(_get_b, _set_b, 
+    b = property(_get_b,  
         doc="""The second of the two endpoints for this segment""")
         
     def unsafe_set_radius(self, r):
