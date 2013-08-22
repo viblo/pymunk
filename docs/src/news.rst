@@ -36,11 +36,12 @@ simulation step is complete. Other changes are the possibility to change
 body of a shape, to get the BB of a shape, and create a shape with empty body.
 On a body you can now retrieve the shapes and constraints attached to it.
 
-This release has been tested and runs on CPython. At least one run of the unit 
-tests have been made on the following platforms: 32 bit Python on Windows, 32 
-and 64 bit Python on Linux, and 64 bit Python on OSX. 
+This release has been tested and runs on CPython and Pypy. At least one run 
+of the unit tests have been made on the following platforms: 32 bit CPython 
+on Windows, 32 and 64 bit CPython on Linux, and 64 bit CPython on OSX. 
+Pypy 2.1 on one of the above platforms.
 
-This release has also been tested on Pypy 2.1, with all tests passed!
+
 
 Changes
 
@@ -53,6 +54,7 @@ Changes
 - Possible to get BB of a Shape, and they now allow empty body in constructor
 - Added radius property to Poly shapes
 - Renamed Poly.get_points to get_vertices
+- Renamed the Segment.a and Segment.b properties to unsafe_set
 - Added example of using pyinstaller
 - Fixed a number of bugs reported
 - Improved docs in various places

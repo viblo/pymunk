@@ -989,15 +989,11 @@ class Body(object):
         
     def _is_sleeping(self):
         return cpffi.cpBodyIsSleeping(self._body)
-        #todo: use ffi function
-        #return bool(self._bodycontents.node_private.root)
     is_sleeping = property(_is_sleeping, 
         doc="""Returns true if the body is sleeping.""")
     
     def _is_rogue(self):
         return cpffi.cpBodyIsRogue(self._body)
-        #todo: use ffi function
-        return not bool(self._bodycontents.space_private)
     is_rogue = property(_is_rogue,
         doc="""Returns true if the body has not been added to a space.""")
     
@@ -1316,28 +1312,50 @@ class Segment(Shape):
         self._shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
         self._shapecontents = self._shape.contents
     
-    #TODO: Add/rename set methods to unsafe in next major release?
-    
-    def _set_a(self, a):
+    def unsafe_set_a(self, a):
+        """Set the first of the two endpoints for this segment
+
+        .. note:: 
+            This change is only picked up as a change to the position 
+            of the shape's surface, but not it's velocity. Changing it will 
+            not result in realistic physical behavior. Only use if you know 
+            what you are doing!
+        """
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a = a
     def _get_a(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a
     a = property(_get_a, _set_a, 
         doc="""The first of the two endpoints for this segment""")
 
-    def _set_b(self, b):
+    def unsafe_set_b(self, b):
+        """Set the second of the two endpoints for this segment
+
+        .. note:: 
+            This change is only picked up as a change to the position 
+            of the shape's surface, but not it's velocity. Changing it will 
+            not result in realistic physical behavior. Only use if you know 
+            what you are doing!
+        """
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b = b
     def _get_b(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b
     b = property(_get_b, _set_b, 
         doc="""The second of the two endpoints for this segment""")
         
-    def _set_radius(self, r):
+    def unsafe_set_radius(self, r):
+        """Set the radius of the segment
+
+        .. note:: 
+            This change is only picked up as a change to the position 
+            of the shape's surface, but not it's velocity. Changing it will 
+            not result in realistic physical behavior. Only use if you know 
+            what you are doing!
+        """
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.r = r
     def _get_radius(self):
         return ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.r
-    radius = property(_get_radius, _set_radius, 
-        doc="""The thickness of the segment""")
+    radius = property(_get_radius,  
+        doc="""The radius/thickness of the segment""")
 
 
 class Poly(Shape):
