@@ -49,7 +49,6 @@ __all__ = ["inf", "version", "chipmunk_version"
 
 import ctypes as ct
 import weakref
-
 try:
     #Python 2.7+ 
     from weakref import WeakSet

@@ -101,7 +101,7 @@ class UnitTestBugs(unittest.TestCase):
         
         def remove_first(space, arbiter):
             first_shape = arbiter.shapes[0]
-            print "REMOVE FIRST", first_shape.name
+            #print "REMOVE FIRST", first_shape.name
             if c1 in space.shapes:
                 space.remove(c1)
             #space.add_post_step_callback(space.remove, first_shape, first_shape.body)
