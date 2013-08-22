@@ -1376,11 +1376,7 @@ class Poly(Shape):
                 winding.
             offset : (x,y) or `Vec2d`
                 The offset from the body's center of gravity in body local 
-                coordinates. 
-            auto_order_vertices : bool 
-                Set to True to automatically order the vertices. If you know 
-                the vertices are in the correct (clockwise) orded you can gain 
-                a little performance by setting this to False.
+                coordinates.
             radius : int
                 Set the radius of the poly shape.
         """
