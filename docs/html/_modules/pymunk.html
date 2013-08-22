@@ -90,7 +90,7 @@
 <span class="sd">    Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id: __init__.py 527 2013-08-20 17:05:25Z vb@viblo.se $&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id: __init__.py 537 2013-08-22 14:38:06Z vb@viblo.se $&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;inf&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;chipmunk_version&quot;</span>
@@ -101,7 +101,6 @@
 
 <span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">ct</span>
 <span class="kn">import</span> <span class="nn">weakref</span>
-
 <span class="k">try</span><span class="p">:</span>
     <span class="c">#Python 2.7+ </span>
     <span class="kn">from</span> <span class="nn">weakref</span> <span class="kn">import</span> <span class="n">WeakSet</span>
@@ -846,8 +845,6 @@
             <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyFree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span> 
             <span class="k">pass</span>
-        except: 
-            pass
 
     <span class="k">def</span> <span class="nf">_set_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mass</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetMass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">mass</span><span class="p">)</span>
@@ -1044,15 +1041,11 @@
         </div>
     <span class="k">def</span> <span class="nf">_is_sleeping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cpffi</span><span class="o">.</span><span class="n">cpBodyIsSleeping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
-        <span class="c">#todo: use ffi function</span>
-        <span class="c">#return bool(self._bodycontents.node_private.root)</span>
     <span class="n">is_sleeping</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_is_sleeping</span><span class="p">,</span> 
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns true if the body is sleeping.&quot;&quot;&quot;</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="nf">_is_rogue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cpffi</span><span class="o">.</span><span class="n">cpBodyIsRogue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
-        <span class="c">#todo: use ffi function</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bodycontents</span><span class="o">.</span><span class="n">space_private</span><span class="p">)</span>
     <span class="n">is_rogue</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_is_rogue</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns true if the body has not been added to a space.&quot;&quot;&quot;</span><span class="p">)</span>
     
@@ -1370,29 +1363,51 @@
             <span class="n">body</span><span class="o">.</span><span class="n">_shapes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shapecontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="o">.</span><span class="n">contents</span>
-    
-    <span class="c">#TODO: Add/rename set methods to unsafe in next major release?</span>
     </div>
-    <span class="k">def</span> <span class="nf">_set_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
-        <span class="n">ct</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShape</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+<div class="viewcode-block" id="Segment.unsafe_set_a"><a class="viewcode-back" href="../pymunk.html#pymunk.Segment.unsafe_set_a">[docs]</a>    <span class="k">def</span> <span class="nf">unsafe_set_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the first of the two endpoints for this segment</span>
+
+<span class="sd">        .. note:: </span>
+<span class="sd">            This change is only picked up as a change to the position </span>
+<span class="sd">            of the shape&#39;s surface, but not it&#39;s velocity. Changing it will </span>
+<span class="sd">            not result in realistic physical behavior. Only use if you know </span>
+<span class="sd">            what you are doing!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ct</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShape</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span></div>
     <span class="k">def</span> <span class="nf">_get_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">ct</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShape</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">a</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_a</span><span class="p">,</span> <span class="n">_set_a</span><span class="p">,</span> 
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_a</span><span class="p">,</span>  
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The first of the two endpoints for this segment&quot;&quot;&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_set_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="n">ct</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShape</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
+<div class="viewcode-block" id="Segment.unsafe_set_b"><a class="viewcode-back" href="../pymunk.html#pymunk.Segment.unsafe_set_b">[docs]</a>    <span class="k">def</span> <span class="nf">unsafe_set_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the second of the two endpoints for this segment</span>
+
+<span class="sd">        .. note:: </span>
+<span class="sd">            This change is only picked up as a change to the position </span>
+<span class="sd">            of the shape&#39;s surface, but not it&#39;s velocity. Changing it will </span>
+<span class="sd">            not result in realistic physical behavior. Only use if you know </span>
+<span class="sd">            what you are doing!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ct</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShape</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span></div>
     <span class="k">def</span> <span class="nf">_get_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">ct</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShape</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">b</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_b</span><span class="p">,</span> <span class="n">_set_b</span><span class="p">,</span> 
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_b</span><span class="p">,</span>  
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The second of the two endpoints for this segment&quot;&quot;&quot;</span><span class="p">)</span>
         
-    <span class="k">def</span> <span class="nf">_set_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
-        <span class="n">ct</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShape</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span>
+<div class="viewcode-block" id="Segment.unsafe_set_radius"><a class="viewcode-back" href="../pymunk.html#pymunk.Segment.unsafe_set_radius">[docs]</a>    <span class="k">def</span> <span class="nf">unsafe_set_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the radius of the segment</span>
+
+<span class="sd">        .. note:: </span>
+<span class="sd">            This change is only picked up as a change to the position </span>
+<span class="sd">            of the shape&#39;s surface, but not it&#39;s velocity. Changing it will </span>
+<span class="sd">            not result in realistic physical behavior. Only use if you know </span>
+<span class="sd">            what you are doing!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ct</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShape</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span></div>
     <span class="k">def</span> <span class="nf">_get_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">ct</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShape</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">r</span>
-    <span class="n">radius</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_radius</span><span class="p">,</span> <span class="n">_set_radius</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The thickness of the segment&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_radius</span><span class="p">,</span>  
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The radius/thickness of the segment&quot;&quot;&quot;</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="Poly"><a class="viewcode-back" href="../pymunk.html#pymunk.Poly">[docs]</a><span class="k">class</span> <span class="nc">Poly</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>

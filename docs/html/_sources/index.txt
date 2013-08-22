@@ -41,7 +41,7 @@ Python 2 & Python 3
 ===================
 
 pymunk has been tested and runs fine on both Python 2 and Python 3. It has 
-been tested on recent versions of cpython (2 and 3) and pypy. For an exact 
+been tested on recent versions of CPython (2 and 3) and Pypy. For an exact 
 list of tested versions see the :doc:`readme`.
   
   

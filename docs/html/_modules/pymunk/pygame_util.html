@@ -189,7 +189,7 @@
 
 <span class="k">def</span> <span class="nf">_draw_poly</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">poly</span><span class="p">):</span>
     
-    <span class="n">ps</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
+    <span class="n">ps</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">()</span>
     <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ps</span><span class="p">]</span>
     <span class="n">ps</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="s">&quot;color&quot;</span><span class="p">):</span>
@@ -250,7 +250,7 @@
         <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;darkgray&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span>    
-</div>
+
 <div class="viewcode-block" id="get_mouse_pos"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.get_mouse_pos">[docs]</a><span class="k">def</span> <span class="nf">get_mouse_pos</span><span class="p">(</span><span class="n">surface</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get position of the mouse pointer in pymunk coordinates.&quot;&quot;&quot;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
