@@ -47,7 +47,7 @@ def add_objects(space):
     b = pymunk.Body()
     b.position = (150,300)
     b.angle = 3.14/2
-    s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)], (-100,0))
+    s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)], (-100,0), radius=3)
     space.add(s)
     
     b = pymunk.Body()
@@ -72,7 +72,7 @@ def add_objects(space):
     s = pymunk.Segment(b, (-30,0), (30,0), 2)
     space.add(s)
     
-    # Static Circles
+    # Dynamic Circles
     b = pymunk.Body(1,1)
     b.position = (350,500)
     s = pymunk.Circle(b, 10)
@@ -89,7 +89,7 @@ def add_objects(space):
     s = pymunk.Circle(b, 40)
     space.add(s)
     
-    # Static Polys
+    # Dynamic Polys
     b = pymunk.Body(1,1)
     b.position = (350,300)
     b.angle = 3.14/4
@@ -99,7 +99,7 @@ def add_objects(space):
     b = pymunk.Body(1,1)
     b.position = (350,300)
     b.angle = 3.14/2
-    s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)], (-100,0))
+    s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)], (-100,0), radius=3)
     space.add(s)
     
     b = pymunk.Body(1,1)

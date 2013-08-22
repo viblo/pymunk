@@ -1366,7 +1366,7 @@ class Poly(Shape):
     It is legal to send in None as body argument to indicate that this 
     shape is not attached to a body.    
     """
-    def __init__(self, body, vertices, offset=(0, 0), auto_order_vertices=True, radius=0):
+    def __init__(self, body, vertices, offset=(0, 0), radius=0):
         """Create a polygon
         
             body : `Body`
@@ -1387,7 +1387,7 @@ class Poly(Shape):
         
         self._body = body
         self.offset = offset
-        self._set_verts(vertices, auto_order_vertices)
+        self._set_verts(vertices)
                 
         body_body = None if body is None else body._body
         if body != None: 
@@ -1412,7 +1412,8 @@ class Poly(Shape):
         doc="""The radius of the poly shape. Extends the poly in all 
         directions with the given radius""")
 
-    def _set_verts(self, vertices, auto_order_vertices):
+    def _set_verts(self, vertices):
+        auto_order_vertices = True
         self.verts = (Vec2d * len(vertices))
         self.verts = self.verts(Vec2d(0, 0))
         
@@ -1455,7 +1456,7 @@ class Poly(Shape):
             
         return points
 
-    def unsafe_set_vertices(self, vertices, offset=(0, 0), auto_order_vertices=True):
+    def unsafe_set_vertices(self, vertices, offset=(0, 0)):
         """Unsafe set the vertices of the poly. 
     
         .. note:: 
@@ -1464,7 +1465,7 @@ class Poly(Shape):
             not result in realistic physical behavior. Only use if you know 
             what you are doing!
         """
-        self._set_verts(vertices, auto_order_vertices)
+        self._set_verts(vertices)
         cp.cpPolyShapeSetVerts(self._shape, len(vertices), self.verts, offset)
         
         
