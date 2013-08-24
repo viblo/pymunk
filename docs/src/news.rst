@@ -4,9 +4,7 @@ News
 
 pymunk 4.0.0
 -------------
-*Victor - 2013-XX-XX*
-
-**DRAFT**
+*Victor - 2013-08-25*
 
 **A new release of pymunk is here!**
 
