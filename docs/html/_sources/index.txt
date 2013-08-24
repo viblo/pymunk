@@ -31,7 +31,7 @@ It is (or is striving to be):
   no memory handling and more)
 * **Simple to build & install** - You shouldn't need to have a zillion of 
   libraries installed to make it install, or do a lot of command line tricks.
-* **Multi-platform** - Should work on both windows, \*nix and OSX.
+* **Multi-platform** - Should work on both Windows, \*nix and OSX.
 * **Non-intrusive** - It should not put restrictions on how you structure 
   your program and not force you to use a special game loop, it should be 
   possible to use with other libraries like pygame and pyglet. 
@@ -98,7 +98,7 @@ Contents
     Issue Tracker <http://code.google.com/p/pymunk/issues/list>
     Source Repository <http://code.google.com/p/pymunk/source/checkout>
     Downloads <http://code.google.com/p/pymunk/downloads/list>
-
+    license
 
 Indices and tables
 ==================

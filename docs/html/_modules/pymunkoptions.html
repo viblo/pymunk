@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -49,56 +47,56 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <h1>Source code for pymunkoptions</h1><div class="highlight"><pre>
-<span class="c"># ----------------------------------------------------------------------------</span>
-<span class="c"># pymunk</span>
-<span class="c"># Copyright (c) 2007-2012 Victor Blomqvist</span>
-<span class="c">#</span>
-<span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-<span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-<span class="c"># in the Software without restriction, including without limitation the rights</span>
-<span class="c"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-<span class="c"># copies of the Software, and to permit persons to whom the Software is</span>
-<span class="c"># furnished to do so, subject to the following conditions:</span>
-<span class="c">#</span>
-<span class="c"># The above copyright notice and this permission notice shall be included in</span>
-<span class="c"># all copies or substantial portions of the Software.</span>
-<span class="c">#</span>
-<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-<span class="c"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-<span class="c"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-<span class="c"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-<span class="c"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-<span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
-<span class="c"># SOFTWARE.</span>
-<span class="c"># ----------------------------------------------------------------------------</span>
+  <h1>Source code for pymunkoptions</h1><pre>
+# ----------------------------------------------------------------------------
+# pymunk
+# Copyright (c) 2007-2012 Victor Blomqvist
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# ----------------------------------------------------------------------------
 
-<span class="sd">&quot;&quot;&quot;Use this module to set runtime options of pymunk.</span>
+"""Use this module to set runtime options of pymunk.
 
-<span class="sd">Currently there is one option that can be changed, debug. By setting debug to </span>
-<span class="sd">false debug print outs will be limited. In order to remove all debug prints </span>
-<span class="sd">you will also need to compile chipmunk in release mode. See </span>
-<span class="sd">:ref:`compile-chipmunk` for details on how to compile chipmunk.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+Currently there is one option that can be changed, debug. By setting debug to 
+false debug print outs will be limited. In order to remove all debug prints 
+you will also need to compile chipmunk in release mode. See 
+:ref:`compile-chipmunk` for details on how to compile chipmunk.
+"""
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id:$&quot;</span>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
+__version__ = "$Id:$"
+__docformat__ = "reStructuredText"
 
-<span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&quot;debug&quot;</span> <span class="p">:</span> <span class="bp">True</span>
-<span class="p">}</span>
-<span class="sd">&quot;&quot;&quot;Global dict of pymunk options.</span>
-<span class="sd">To change make sure you import pymunk before any sub-packages and then set the </span>
-<span class="sd">option you want. For example::</span>
+options = {
+    "debug" : True
+}
+"""Global dict of pymunk options.
+To change make sure you import pymunk before any sub-packages and then set the 
+option you want. For example::
 
-<span class="sd">    import pymunkoptions</span>
-<span class="sd">    pymunkoptions.options[&quot;debug&quot;] = False</span>
-<span class="sd">    import pymunk</span>
-<span class="sd">    </span>
-<span class="sd">    #..continue to use pymunk as you normally do</span>
-<span class="sd">    </span>
-<span class="sd">&quot;&quot;&quot;</span>
-</pre></div>
+    import pymunkoptions
+    pymunkoptions.options["debug"] = False
+    import pymunk
+    
+    #..continue to use pymunk as you normally do
+    
+"""
+</pre>
 
           </div>
         </div>
@@ -120,6 +118,7 @@
 <li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/issues/list">Issue Tracker</a></li>
 <li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/source/checkout">Source Repository</a></li>
 <li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/downloads/list">Downloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
 <div id="searchbox" style="display: none">
@@ -154,7 +153,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
     </div>
   </body>
 </html>

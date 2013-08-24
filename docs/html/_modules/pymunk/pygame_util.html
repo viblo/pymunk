@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -50,229 +48,230 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <h1>Source code for pymunk.pygame_util</h1><div class="highlight"><pre>
-<span class="c"># ----------------------------------------------------------------------------</span>
-<span class="c"># pymunk</span>
-<span class="c"># Copyright (c) 2007-2012 Victor Blomqvist</span>
-<span class="c">#</span>
-<span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-<span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-<span class="c"># in the Software without restriction, including without limitation the rights</span>
-<span class="c"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-<span class="c"># copies of the Software, and to permit persons to whom the Software is</span>
-<span class="c"># furnished to do so, subject to the following conditions:</span>
-<span class="c">#</span>
-<span class="c"># The above copyright notice and this permission notice shall be included in</span>
-<span class="c"># all copies or substantial portions of the Software.</span>
-<span class="c">#</span>
-<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-<span class="c"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-<span class="c"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-<span class="c"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-<span class="c"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-<span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
-<span class="c"># SOFTWARE.</span>
-<span class="c"># ----------------------------------------------------------------------------</span>
+  <h1>Source code for pymunk.pygame_util</h1><pre>
+# ----------------------------------------------------------------------------
+# pymunk
+# Copyright (c) 2007-2012 Victor Blomqvist
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# ----------------------------------------------------------------------------
 
-<span class="sd">&quot;&quot;&quot;This submodule contains helper functions to help with quick prototyping </span>
-<span class="sd">using pymunk together with pygame.</span>
+"""This submodule contains helper functions to help with quick prototyping 
+using pymunk together with pygame.
 
-<span class="sd">Intended to help with debugging and prototyping, not for actual production use</span>
-<span class="sd">in a full application. The methods contained in this module is opinionated </span>
-<span class="sd">about your coordinate system and not in any way optimized. </span>
-<span class="sd">&quot;&quot;&quot;</span>
+Intended to help with debugging and prototyping, not for actual production use
+in a full application. The methods contained in this module is opinionated 
+about your coordinate system and not in any way optimized. 
+"""
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
+__version__ = "$Id$"
+__docformat__ = "reStructuredText"
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;draw&quot;</span><span class="p">,</span> <span class="s">&quot;get_mouse_pos&quot;</span><span class="p">,</span> <span class="s">&quot;to_pygame&quot;</span><span class="p">,</span> <span class="s">&quot;from_pygame&quot;</span><span class="p">]</span>
+__all__ = ["draw", "get_mouse_pos", "to_pygame", "from_pygame"]
 
-<span class="kn">import</span> <span class="nn">pygame</span>
+import pygame
 
-<span class="kn">import</span> <span class="nn">pymunk</span>
-<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
+import pymunk
+from pymunk.vec2d import Vec2d
 
-<span class="n">flip_y</span> <span class="o">=</span> <span class="bp">True</span>
-<span class="sd">&quot;&quot;&quot;Flip the y cooridnate to make y point upwards&quot;&quot;&quot;</span>
+flip_y = True
+"""Flip the y cooridnate to make y point upwards"""
 
-<div class="viewcode-block" id="draw"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.draw">[docs]</a><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="o">*</span><span class="n">objs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Draw one or many pymunk objects on a pygame.Surface object.</span>
-<span class="sd">        </span>
-<span class="sd">    This method currently supports drawing of</span>
-<span class="sd">        * pymunk.Space</span>
-<span class="sd">        * pymunk.Segment</span>
-<span class="sd">        * pymunk.Circle</span>
-<span class="sd">        * pymunk.Poly</span>
-<span class="sd">        * pymunk.Constraint objects </span>
+<div class="viewcode-block" id="draw"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.draw">[docs]</a>def draw(surface, *objs):
+    """Draw one or many pymunk objects on a pygame.Surface object.
+        
+    This method currently supports drawing of
+        * pymunk.Space
+        * pymunk.Segment
+        * pymunk.Circle
+        * pymunk.Poly
+        * pymunk.Constraint objects 
 
-<span class="sd">    If a Space is passed in all shapes in that space will be drawn. </span>
-<span class="sd">    Unrecognized objects will be ignored (for example if you pass in a </span>
-<span class="sd">    constraint).</span>
-<span class="sd">    </span>
-<span class="sd">    Typical usage::</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; pymunk.pygame_util.draw(screen, my_space)</span>
-<span class="sd">        </span>
-<span class="sd">    You can control the color of a shape by setting shape.color to the color </span>
-<span class="sd">    you want it drawn in.</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; my_shape.color = pygame.color.THECOLORS[&quot;pink&quot;]</span>
-<span class="sd">    </span>
-<span class="sd">    If you do not want a shape to be drawn, set shape.ignore_draw to True.</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; my_shape.ignore_draw = True</span>
-<span class="sd">        </span>
-<span class="sd">    Not all constraints are currently drawn in a very clear way, but all the </span>
-<span class="sd">    different shapes should look fine both as static and dynamic objects.</span>
-<span class="sd">    </span>
-<span class="sd">    See pygame_util.demo.py for a full example</span>
-<span class="sd">    </span>
-<span class="sd">    :Parameters:</span>
-<span class="sd">            surface : pygame.Surface</span>
-<span class="sd">                Surface that the objects will be drawn on</span>
-<span class="sd">            objs : One or many objects to draw</span>
-<span class="sd">                Can be either a single object or a list like container with </span>
-<span class="sd">                objects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    If a Space is passed in all shapes in that space will be drawn. 
+    Unrecognized objects will be ignored (for example if you pass in a 
+    constraint).
     
-    <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">):</span>
-            <span class="n">_draw_space</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Shape</span><span class="p">):</span>
-            <span class="n">_draw_shape</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Constraint</span><span class="p">):</span>
-            <span class="n">_draw_constraint</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s">&#39;__iter__&#39;</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">oo</span> <span class="ow">in</span> <span class="n">o</span><span class="p">:</span>
-                <span class="n">draw</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">oo</span><span class="p">)</span>
+    Typical usage::
+    
+    &gt;&gt;&gt; pymunk.pygame_util.draw(screen, my_space)
+        
+    You can control the color of a shape by setting shape.color to the color 
+    you want it drawn in.
+    
+    &gt;&gt;&gt; my_shape.color = pygame.color.THECOLORS["pink"]
+    
+    If you do not want a shape to be drawn, set shape.ignore_draw to True.
+    
+    &gt;&gt;&gt; my_shape.ignore_draw = True
+        
+    Not all constraints are currently drawn in a very clear way, but all the 
+    different shapes should look fine both as static and dynamic objects.
+    
+    See pygame_util.demo.py for a full example
+    
+    :Parameters:
+            surface : pygame.Surface
+                Surface that the objects will be drawn on
+            objs : One or many objects to draw
+                Can be either a single object or a list like container with 
+                objects.
+    """
+    
+    for o in objs:
+        if isinstance(o, pymunk.Space):
+            _draw_space(surface, o)
+        elif isinstance(o, pymunk.Shape):
+            _draw_shape(surface, o)
+        elif isinstance(o, pymunk.Constraint):
+            _draw_constraint(surface, o)
+        elif hasattr(o, '__iter__'):
+            for oo in o:
+                draw(surface, oo)
                 </div>
-<span class="k">def</span> <span class="nf">_draw_space</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">space</span><span class="p">):</span>
+def _draw_space(surface, space):
     
-    <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+    (width, height) = surface.get_size()
     
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">shapes</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&quot;ignore_draw&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">ignore_draw</span><span class="p">):</span>
-            <span class="n">_draw_shape</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    for s in space.shapes:
+        if not (hasattr(s, "ignore_draw") and s.ignore_draw):
+            _draw_shape(surface, s)
             
-    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">constraints</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s">&quot;ignore_draw&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">ignore_draw</span><span class="p">):</span>
-            <span class="n">_draw_constraint</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+    for c in space.constraints:
+        if not (hasattr(c, "ignore_draw") and c.ignore_draw):
+            _draw_constraint(surface, c)
 
-<span class="k">def</span> <span class="nf">_draw_shape</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+def _draw_shape(surface, shape):
     
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">):</span>
-        <span class="n">_draw_circle</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">):</span>
-        <span class="n">_draw_segment</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
-    <span class="k">elif</span>  <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Poly</span><span class="p">):</span>
-        <span class="n">_draw_poly</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+    if isinstance(shape, pymunk.Circle):
+        _draw_circle(surface, shape)
+    elif isinstance(shape, pymunk.Segment):
+        _draw_segment(surface, shape)
+    elif  isinstance(shape, pymunk.Poly):
+        _draw_poly(surface, shape)
         
-<span class="k">def</span> <span class="nf">_draw_circle</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">circle</span><span class="p">):</span>
+def _draw_circle(surface, circle):
     
-    <span class="n">circle_center</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">circle</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">circle_center</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
+    circle_center = circle.body.position + circle.offset.rotated(circle.body.angle)
+    p = to_pygame(circle_center, surface)
    
-    <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">color</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;red&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">circle</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">is_static</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;lightgrey&quot;</span><span class="p">]</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="s">&quot;color&quot;</span><span class="p">):</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">color</span>  
+    r = 0
+    color = pygame.color.THECOLORS["red"]
+    if circle.body.is_static:
+        color = pygame.color.THECOLORS["lightgrey"]
+        r = 1
+    if hasattr(circle, "color"):
+        color = circle.color  
         
-    <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">radius</span><span class="p">),</span> <span class="n">r</span><span class="p">)</span>
+    pygame.draw.circle(surface, color, p, int(circle.radius), r)
     
-    <span class="n">circle_edge</span> <span class="o">=</span> <span class="n">circle_center</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-    <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">circle_edge</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-    <span class="n">line_r</span> <span class="o">=</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">circle</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="k">else</span> <span class="mi">1</span>
-    <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;blue&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">line_r</span><span class="p">)</span>
+    circle_edge = circle_center + Vec2d(circle.radius, 0).rotated(circle.body.angle)
+    p2 = to_pygame(circle_edge, surface)
+    line_r = 3 if circle.radius &gt; 20 else 1
+    pygame.draw.lines(surface, pygame.color.THECOLORS["blue"], False, [p,p2], line_r)
 
-<span class="k">def</span> <span class="nf">_draw_poly</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">poly</span><span class="p">):</span>
+def _draw_poly(surface, poly):
     
-    <span class="n">ps</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">()</span>
-    <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ps</span><span class="p">]</span>
-    <span class="n">ps</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="s">&quot;color&quot;</span><span class="p">):</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">color</span>  
-    <span class="k">elif</span> <span class="n">poly</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">is_static</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;lightgrey&quot;</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;green&quot;</span><span class="p">]</span>
-    <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    ps = poly.get_vertices()
+    ps = [to_pygame(p, surface) for p in ps]
+    ps += [ps[0]]
+    if hasattr(poly, "color"):
+        color = poly.color  
+    elif poly.body.is_static:
+        color = pygame.color.THECOLORS["lightgrey"]
+    else:
+        color = pygame.color.THECOLORS["green"]
+    print poly.radius
+    pygame.draw.lines(surface, color, False, ps, max(int(poly.radius*2),1))
 
-<span class="k">def</span> <span class="nf">_draw_segment</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
+def _draw_segment(surface, segment):
     
-    <span class="n">body</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">body</span>
-    <span class="n">pv1</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">segment</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-    <span class="n">pv2</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">segment</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
+    body = segment.body
+    pv1 = body.position + segment.a.rotated(body.angle)
+    pv2 = body.position + segment.b.rotated(body.angle)
 
-    <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-    <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
+    p1 = to_pygame(pv1, surface)
+    p2 = to_pygame(pv2, surface)
     
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="s">&quot;color&quot;</span><span class="p">):</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">color</span>  
-    <span class="k">elif</span> <span class="n">segment</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">is_static</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;lightgrey&quot;</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;blue&quot;</span><span class="p">]</span>
-    <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span><span class="mi">1</span><span class="p">))</span>
+    if hasattr(segment, "color"):
+        color = segment.color  
+    elif segment.body.is_static:
+        color = pygame.color.THECOLORS["lightgrey"]
+    else:
+        color = pygame.color.THECOLORS["blue"]
+    pygame.draw.lines(surface, color, False, [p1,p2], max(int(segment.radius*2),1))
     
-<span class="k">def</span> <span class="nf">_draw_constraint</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">constraint</span><span class="p">):</span>
+def _draw_constraint(surface, constraint):
     
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">GrooveJoint</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="s">&quot;groove_a&quot;</span><span class="p">):</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">groove_a</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">groove_b</span>
-        <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-        <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;darkgray&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">PinJoint</span><span class="p">):</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">anchr1</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">anchr2</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-        <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;darkgray&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span>    
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">GearJoint</span><span class="p">):</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span>
-        <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-        <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;darkgray&quot;</span><span class="p">],</span> <span class="n">p1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;darkgray&quot;</span><span class="p">],</span> <span class="n">p2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="s">&quot;anchr1&quot;</span><span class="p">):</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">anchr1</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">anchr2</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-        <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;darkgray&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">position</span>
-        <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-        <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;darkgray&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span>    
+    if isinstance(constraint, pymunk.GrooveJoint) and hasattr(constraint, "groove_a"):
+        pv1 = constraint.a.position + constraint.groove_a
+        pv2 = constraint.a.position + constraint.groove_b
+        p1 = to_pygame(pv1, surface)
+        p2 = to_pygame(pv2, surface)
+        pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])
+    elif isinstance(constraint, pymunk.PinJoint):
+        pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
+        pv2 = constraint.b.position + constraint.anchr2.rotated(constraint.b.angle)
+        p1 = to_pygame(pv1, surface)
+        p2 = to_pygame(pv2, surface)
+        pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])    
+    elif isinstance(constraint, pymunk.GearJoint):
+        pv1 = constraint.a.position
+        pv2 = constraint.a.position
+        p1 = to_pygame(pv1, surface)
+        p2 = to_pygame(pv2, surface)
+        pygame.draw.circle(surface, pygame.color.THECOLORS["darkgray"], p1, 3)
+        pygame.draw.circle(surface, pygame.color.THECOLORS["darkgray"], p2, 3)
+    elif hasattr(constraint, "anchr1"):
+        pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
+        pv2 = constraint.b.position + constraint.anchr2.rotated(constraint.b.angle)
+        p1 = to_pygame(pv1, surface)
+        p2 = to_pygame(pv2, surface)
+        pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])
+    else:
+        pv1 = constraint.a.position
+        pv2 = constraint.b.position
+        p1 = to_pygame(pv1, surface)
+        p2 = to_pygame(pv2, surface)
+        pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])    
 
-<div class="viewcode-block" id="get_mouse_pos"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.get_mouse_pos">[docs]</a><span class="k">def</span> <span class="nf">get_mouse_pos</span><span class="p">(</span><span class="n">surface</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get position of the mouse pointer in pymunk coordinates.&quot;&quot;&quot;</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">from_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
+<div class="viewcode-block" id="get_mouse_pos"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.get_mouse_pos">[docs]</a>def get_mouse_pos(surface):
+    """Get position of the mouse pointer in pymunk coordinates."""
+    p = pygame.mouse.get_pos()
+    return from_pygame(p, surface)
 </div>
-<div class="viewcode-block" id="to_pygame"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.to_pygame">[docs]</a><span class="k">def</span> <span class="nf">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convenience method to convert pymunk coordinates to pygame surface </span>
-<span class="sd">    local coordinates</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">flip_y</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">surface</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<div class="viewcode-block" id="to_pygame"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.to_pygame">[docs]</a>def to_pygame(p, surface):
+    """Convenience method to convert pymunk coordinates to pygame surface 
+    local coordinates
+    """
+    if flip_y:
+        return int(p[0]), surface.get_height()-int(p[1])
+    else:
+        return int(p[0]), int(p[1])
     </div>
-<div class="viewcode-block" id="from_pygame"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.from_pygame">[docs]</a><span class="k">def</span> <span class="nf">from_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convenience method to convert pygame surface local coordinates to </span>
-<span class="sd">    pymunk coordinates    </span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">surface</span><span class="p">)</span>
+<div class="viewcode-block" id="from_pygame"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.from_pygame">[docs]</a>def from_pygame(p, surface):
+    """Convenience method to convert pygame surface local coordinates to 
+    pymunk coordinates    
+    """
+    return to_pygame(p,surface)
 
             </div>
-</pre></div>
+</pre>
 
           </div>
         </div>
@@ -294,6 +293,7 @@
 <li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/issues/list">Issue Tracker</a></li>
 <li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/source/checkout">Source Repository</a></li>
 <li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/downloads/list">Downloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
 <div id="searchbox" style="display: none">
@@ -329,7 +329,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
     </div>
   </body>
 </html>
