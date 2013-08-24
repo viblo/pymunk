@@ -141,9 +141,9 @@ class UnitTestShape(unittest.TestCase):
         c3 = p.Circle(b3,2)
         c4 = p.Circle(b4,2)
         
-        c1.layers = 0b10
-        c2.layers = 0b01
-        c3.layers = 0b11
+        c1.layers = 2 #0b10
+        c2.layers = 1 #0b01
+        c3.layers = 3 #0b11
         
         s.add(b2,b3,b4,c2,c3,c4)
         shapes = s.shape_query(c1)
