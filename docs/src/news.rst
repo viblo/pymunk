@@ -4,9 +4,7 @@ News
 
 pymunk 4.0.0
 -------------
-*Victor - 2013-XX-XX*
-
-**DRAFT**
+*Victor - 2013-08-25*
 
 **A new release of pymunk is here!**
 
@@ -36,9 +34,9 @@ simulation step is complete. Other changes are the possibility to change
 body of a shape, to get the BB of a shape, and create a shape with empty body.
 On a body you can now retrieve the shapes and constraints attached to it.
 
-This release has been tested and runs on CPython and Pypy. At least one run 
-of the unit tests have been made on the following platforms: 32 bit CPython 
-on Windows, 32 and 64 bit CPython on Linux, and 64 bit CPython on OSX. 
+This release has been tested and runs on CPython 2.5, 2.6, 2.7, 3.3 and Pypy 2.1. 
+At least one run of the unit tests have been made on the following platforms: 
+32 bit CPython on Windows, 32 and 64 bit CPython on Linux, and 64 bit CPython on OSX. 
 Pypy 2.1 on one of the above platforms.
 
 
