@@ -145,7 +145,6 @@ def _draw_poly(surface, poly):
         color = pygame.color.THECOLORS["lightgrey"]
     else:
         color = pygame.color.THECOLORS["green"]
-    print poly.radius
     pygame.draw.lines(surface, color, False, ps, max(int(poly.radius*2),1))
 
 def _draw_segment(surface, segment):
