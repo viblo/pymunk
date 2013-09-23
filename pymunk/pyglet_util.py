@@ -164,7 +164,7 @@ def _draw_circle(circle, batch = None):
     else:
         mode = pyglet.gl.GL_TRIANGLE_STRIP
         ps2 = [ps[0]]
-        for i in range(1, len(ps)+1/2):
+        for i in range(1, int(len(ps)+1/2)):
             ps2.append(ps[i])
             ps2.append(ps[-i])
         ps = ps2
@@ -178,7 +178,7 @@ def _draw_circle(circle, batch = None):
     bg = pyglet.graphics.OrderedGroup(0)
     fg = pyglet.graphics.OrderedGroup(1)
         
-    l = len(vs)/2
+    l = len(vs)//2
     if batch == None:
         pyglet.graphics.draw(l, mode,
                             ('v2f', vs),
@@ -187,7 +187,7 @@ def _draw_circle(circle, batch = None):
                             ('v2f', cvs),
                             ('c3B', (0,0,255)*2))
     else:
-        batch.add(len(vs)/2, mode, bg,
+        batch.add(len(vs)//2, mode, bg,
                  ('v2f', vs),
                  ('c3B', color*l))
         batch.add(2, pyglet.gl.GL_LINES, fg,
@@ -216,7 +216,7 @@ def _draw_poly(poly, batch = None):
     for p in [ps[0]] + ps + [ps[-1]]:
             vs += [p.x, p.y]
         
-    l = len(vs)/2
+    l = len(vs)//2
     if batch == None:
         pyglet.graphics.draw(l, mode,
                             ('v2f', vs),
@@ -250,7 +250,7 @@ def _draw_segment(segment, batch = None):
     else:
         color = (0, 0, 255)
         
-    l = len(vs)/2
+    l = len(vs)//2
     if batch == None:
         pyglet.graphics.draw(l, pyglet.gl.GL_TRIANGLES,
                             ('v2f', vs),
