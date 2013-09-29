@@ -72,8 +72,8 @@ Dependencies / Requirements
 - python (tested on cpython 2.6, 2.7 and 3.2, 3.3. Also on pypy 2.1)
 - chipmunk (pymunk ships with a set of chipmunk libraries)
 
-* pygame (optional, you need it to run most of the demos)
-* pyglet (optional, you need it to run the moon buggy demo)
+* pygame (optional, you need it to run the pygame based demos)
+* pyglet (optional, you need it to run the pyglet based demos)
 * sphinx (optional, you need it to build documentation)
 * ctypeslib & GCC_XML (optional, you need them to generate new bindings)
 

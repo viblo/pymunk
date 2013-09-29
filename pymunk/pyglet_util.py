@@ -52,6 +52,7 @@ def draw(*objs, **kwargs):
         * pymunk.Segment
         * pymunk.Circle
         * pymunk.Poly
+        * pymunk.Constraint
     
     If a Space is passed in all shapes in that space will be drawn. 
     Unrecognized objects will be ignored (for example if you pass in a 
@@ -118,7 +119,9 @@ def _draw_space(space, batch = None):
     for s in space.shapes:
         if not (hasattr(s, "ignore_draw") and s.ignore_draw):
             _draw_shape(s, batch)
-            
+    for c in space.constraints:
+        if not (hasattr(c, "ignore_draw") and c.ignore_draw):
+            _draw_constraint(c, batch)
             
 def _draw_shape(shape, batch = None):
     if isinstance(shape, pymunk.Circle):
@@ -259,3 +262,34 @@ def _draw_segment(segment, batch = None):
         batch.add(l,pyglet.gl.GL_TRIANGLES, None,
                  ('v2f', vs),
                  ('c3B', color * l))
+
+def _draw_constraint(constraint, batch=None):
+    darkgrey = (169, 169, 169)
+
+    if isinstance(constraint, pymunk.GrooveJoint) and hasattr(constraint, "groove_a"):
+        pv1 = constraint.a.position + constraint.groove_a
+        pv2 = constraint.a.position + constraint.groove_b
+        _draw_line(pv1, pv2, darkgrey, batch)
+    elif isinstance(constraint, pymunk.PinJoint):
+        pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
+        pv2 = constraint.b.position + constraint.anchr2.rotated(constraint.b.angle)
+        _draw_line(pv1, pv2, darkgrey, batch)
+    elif hasattr(constraint, "anchr1"):
+        pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
+        pv2 = constraint.b.position + constraint.anchr2.rotated(constraint.b.angle)
+        _draw_line(pv1, pv2, darkgrey, batch)
+    else:
+        pv1 = constraint.a.position
+        pv2 = constraint.b.position
+        _draw_line(pv1, pv2, darkgrey, batch)
+
+def _draw_line(pv1, pv2, color, batch):
+    line = (int(pv1.x), int(pv1.y), int(pv2.x), int(pv2.y))
+    if batch == None:
+        pyglet.graphics.draw(2, pyglet.gl.GL_LINES,
+                            ('v2f', line),
+                            ('c3B', color * 2))
+    else:
+        batch.add(2, pyglet.gl.GL_LINES, None,
+                  ('v2i', line),
+                  ('c3B', color * 2))
