@@ -14,8 +14,8 @@ using chipmunk 6.2 rev 3bdf1b7b3c (source included)
 :Forum: http://chipmunk-physics.net/forum/
 :Email: vb@viblo.se
 
-:Getting the latest SVN copy:
-    svn checkout http://pymunk.googlecode.com/svn/trunk pymunk-read-only
+:Getting the latest source:
+    git clone https://github.com/viblo/pymunk.git
 
 :Chipmunk: http://chipmunk-physics.net/
 
