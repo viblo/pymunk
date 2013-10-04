@@ -129,7 +129,7 @@ setup(
     , author_email='vb@viblo.se'
     , version='4.0.0' # remember to change me for new versions!
     , description='pymunk is a easy-to-use pythonic 2d physics library built on top of Chipmunk'
-    , long_description=open('README.rst.txt').read()
+    , long_description=open('README.rst').read()
     , packages=['pymunk','pymunkoptions']
     , package_data = {'pymunk': ['chipmunk.dll'
                                 , 'chipmunk64.dll'
