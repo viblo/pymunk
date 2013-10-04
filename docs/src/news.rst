@@ -2,6 +2,42 @@
 News 
 ****
 
+Move to Github
+--------------
+*Victor - 2013-10-04*
+
+**pymunk has moved its source and issue list to Github!**
+
+From the start pymunk has been hosted at Google Code, in the beginning using 
+it for everything, source control, issue tracker, documentation and so on. 
+During that time Github has become more and more popular and overall a better 
+hosting platform. 
+
+At the same time distributed version control systems have risen in popularity 
+over traditional ones like Subversion.
+
+Adding to this Google Code will stop hosting binaries in January 2014.
+
+Because of this I have been thinking a while about moving pymunk away from 
+svn and google code. I had an issue open on google code in which all feedback 
+proposed git and github, and that has been my own thought as well. And so, 
+today the move has been completed!
+
+To get the latest source you will need a git client and then do::
+    
+    > git clone https://github.com/viblo/pymunk.git
+
+If you prefer a graphical client (I do) I find SourceTree very good. 
+
+Issues have been migrated to https://github.com/viblo/pymunk/issues
+
+Binaries will be available from Pypi just like before, but the binary 
+hosting at Google Code will not get any updates.
+
+The google code page will from now on only have a redirect to pymunk.org and 
+github.
+
+
 pymunk 4.0.0
 -------------
 *Victor - 2013-08-25*

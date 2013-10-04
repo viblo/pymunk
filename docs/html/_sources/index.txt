@@ -64,8 +64,8 @@ Contact & Support
     You can email me directly at vb@viblo.se
 
 **Issue Tracker**
-    Please use the issue tracker at google code to report any issues you find:
-    http://code.google.com/p/pymunk/
+    Please use the issue tracker at github to report any issues you find:
+    https://github.com/viblo/pymunk/issues
     
 Regardless of the method you use I will try to answer your questions as soon 
 as I see them. (And if you ask on SO or the forum other people might help as 
@@ -95,9 +95,9 @@ Contents
     examples
     tutorials
     advanced
-    Issue Tracker <http://code.google.com/p/pymunk/issues/list>
-    Source Repository <http://code.google.com/p/pymunk/source/checkout>
-    Downloads <http://code.google.com/p/pymunk/downloads/list>
+    Issue Tracker <https://github.com/viblo/pymunk/issues>
+    Source Repository <https://github.com/viblo/pymunk>
+    Downloads <https://pypi.python.org/pypi/pymunk/>
     license
 
 Indices and tables

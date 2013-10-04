@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -48,403 +50,403 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <h1>Source code for pymunk.util</h1><pre>
-# ----------------------------------------------------------------------------
-# pymunk
-# Copyright (c) 2007-2011 Victor Blomqvist
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-# ----------------------------------------------------------------------------
+  <h1>Source code for pymunk.util</h1><div class="highlight"><pre>
+<span class="c"># ----------------------------------------------------------------------------</span>
+<span class="c"># pymunk</span>
+<span class="c"># Copyright (c) 2007-2011 Victor Blomqvist</span>
+<span class="c">#</span>
+<span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c"># in the Software without restriction, including without limitation the rights</span>
+<span class="c"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c"># copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c"># furnished to do so, subject to the following conditions:</span>
+<span class="c">#</span>
+<span class="c"># The above copyright notice and this permission notice shall be included in</span>
+<span class="c"># all copies or substantial portions of the Software.</span>
+<span class="c">#</span>
+<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c"># SOFTWARE.</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
-"""This submodule contains utility functions, mainly to help with polygon 
-creation.
+<span class="sd">&quot;&quot;&quot;This submodule contains utility functions, mainly to help with polygon </span>
+<span class="sd">creation.</span>
 
-"""
-from __future__ import division
-__version__ = "$Id: util.py 439 2012-08-30 22:14:05Z vb@viblo.se $"
-__docformat__ = "reStructuredText"
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
-from math import sqrt
-from .vec2d import Vec2d
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 
-X, Y = 0, 1 
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> 
 
-try:
-    from functools import partial
-except ImportError:
-    # Python 2.4 support
-    def partial(func, *args, **keywords):
-        def newfunc(*fargs, **fkeywords):
-            newkeywords = keywords.copy()
-            newkeywords.update(fkeywords)
-            return func(*(args + fargs), **newkeywords)
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c"># Python 2.4 support</span>
+    <span class="k">def</span> <span class="nf">partial</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">keywords</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">newfunc</span><span class="p">(</span><span class="o">*</span><span class="n">fargs</span><span class="p">,</span> <span class="o">**</span><span class="n">fkeywords</span><span class="p">):</span>
+            <span class="n">newkeywords</span> <span class="o">=</span> <span class="n">keywords</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">newkeywords</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">fkeywords</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">args</span> <span class="o">+</span> <span class="n">fargs</span><span class="p">),</span> <span class="o">**</span><span class="n">newkeywords</span><span class="p">)</span>
 
-        newfunc.func = func
-        newfunc.args = args
-        newfunc.keywords = keywords
-        return newfunc
+        <span class="n">newfunc</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="n">newfunc</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="n">newfunc</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="n">keywords</span>
+        <span class="k">return</span> <span class="n">newfunc</span>
 
-<div class="viewcode-block" id="is_clockwise"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.is_clockwise">[docs]</a>def is_clockwise(points): 
-    """
-    Check if the points given forms a clockwise polygon
-    
-    :return: True if the points forms a clockwise polygon
-    """
-    a = 0
-    i, j = 0, 0
-    for i in range(len(points)):
-        j = i + 1
-        if j == len(points): j = 0
-        a += points[i][X]*points[j][Y] - points[i][Y]*points[j][X]
-    return a &lt;= 0 #or is it the other way around?
+<div class="viewcode-block" id="is_clockwise"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.is_clockwise">[docs]</a><span class="k">def</span> <span class="nf">is_clockwise</span><span class="p">(</span><span class="n">points</span><span class="p">):</span> 
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if the points given forms a clockwise polygon</span>
+<span class="sd">    </span>
+<span class="sd">    :return: True if the points forms a clockwise polygon</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)):</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">):</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">a</span> <span class="o">+=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">X</span><span class="p">]</span><span class="o">*</span><span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">Y</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">Y</span><span class="p">]</span><span class="o">*</span><span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">X</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="c">#or is it the other way around?</span>
     </div>
-def is_left(p0, p1, p2):
-    """Test if p2 is left, on or right of the (infinite) line (p0,p1).
-    
-    :return: &gt; 0 for p2 left of the line through p0 and p1
-        = 0 for p2 on the line
-        &lt; 0 for p2 right of the line
-    """
-    # cast the answer to an int so it can be used directly from sort()
-    # cast is not a good idea.. use something else
-    #return int((p1.x - p0.x)*(p2.y-p0.y) - (p2.x-p0.x)*(p1.y-p0.y))
-    sorting = (p1[X] - p0[X])*(p2[Y]-p0[Y]) - (p2[X]-p0[X])*(p1[Y]-p0[Y])
-    if sorting &gt; 0: return 1
-    elif sorting &lt; 0: return -1 
-    else: return 0
+<span class="k">def</span> <span class="nf">is_left</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test if p2 is left, on or right of the (infinite) line (p0,p1).</span>
+<span class="sd">    </span>
+<span class="sd">    :return: &gt; 0 for p2 left of the line through p0 and p1</span>
+<span class="sd">        = 0 for p2 on the line</span>
+<span class="sd">        &lt; 0 for p2 right of the line</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># cast the answer to an int so it can be used directly from sort()</span>
+    <span class="c"># cast is not a good idea.. use something else</span>
+    <span class="c">#return int((p1.x - p0.x)*(p2.y-p0.y) - (p2.x-p0.x)*(p1.y-p0.y))</span>
+    <span class="n">sorting</span> <span class="o">=</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="n">X</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span><span class="o">-</span><span class="n">p0</span><span class="p">[</span><span class="n">Y</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="n">X</span><span class="p">]</span><span class="o">-</span><span class="n">p0</span><span class="p">[</span><span class="n">X</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span><span class="o">-</span><span class="n">p0</span><span class="p">[</span><span class="n">Y</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">sorting</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">sorting</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> 
+    <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
 
-<div class="viewcode-block" id="is_convex"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.is_convex">[docs]</a>def is_convex(points):
-    """Test if a polygon (list of (x,y)) is convex or not
+<div class="viewcode-block" id="is_convex"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.is_convex">[docs]</a><span class="k">def</span> <span class="nf">is_convex</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test if a polygon (list of (x,y)) is convex or not</span>
+<span class="sd">    </span>
+<span class="sd">    :return: True if the polygon is convex, False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     
-    :return: True if the polygon is convex, False otherwise
-    """
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;need at least 3 points to form a polygon&quot;</span>
     
-    assert len(points) &gt; 2, "need at least 3 points to form a polygon"
-    
-    p0 = points[0]
-    p1 = points[1]
-    p2 = points[2]
-    xc, yc = 0, 0
-    is_same_winding = is_left(p0, p1, p2)
-    for p2 in points[2:] + [p0] + [p1]:
-        if is_same_winding != is_left(p0, p1, p2): 
-            return False
-        a = p1[X] - p0[X], p1[Y] - p0[Y] # p1-p0
-        b = p2[X] - p1[X], p2[Y] - p1[Y] # p2-p1
-        if sign(a[X]) != sign(b[X]): xc +=1
-        if sign(a[Y]) != sign(b[Y]): yc +=1
-        p0, p1 = p1, p2
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">xc</span><span class="p">,</span> <span class="n">yc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">is_same_winding</span> <span class="o">=</span> <span class="n">is_left</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="o">+</span> <span class="p">[</span><span class="n">p0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">p1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">is_same_winding</span> <span class="o">!=</span> <span class="n">is_left</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span> 
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="n">X</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">-</span> <span class="n">p0</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="c"># p1-p0</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="n">X</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="c"># p2-p1</span>
+        <span class="k">if</span> <span class="n">sign</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">X</span><span class="p">])</span> <span class="o">!=</span> <span class="n">sign</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">X</span><span class="p">]):</span> <span class="n">xc</span> <span class="o">+=</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">sign</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">Y</span><span class="p">])</span> <span class="o">!=</span> <span class="n">sign</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">Y</span><span class="p">]):</span> <span class="n">yc</span> <span class="o">+=</span><span class="mi">1</span>
+        <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span>
    
-    return xc &lt;= 2 and yc &lt;= 2
+    <span class="k">return</span> <span class="n">xc</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">yc</span> <span class="o">&lt;=</span> <span class="mi">2</span>
 </div>
-def sign(x): 
-    """Sign function. 
-    
-    :return -1 if x &lt; 0, else return 1
-    """
-    if x &lt; 0: return -1 
-    else: return 1
+<span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> 
+    <span class="sd">&quot;&quot;&quot;Sign function. </span>
+<span class="sd">    </span>
+<span class="sd">    :return -1 if x &lt; 0, else return 1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> 
+    <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>
                 
-<div class="viewcode-block" id="reduce_poly"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.reduce_poly">[docs]</a>def reduce_poly(points, tolerance=0.5):
-    """Remove close points to simplify a polyline
-    tolerance is the min distance between two points squared.
+<div class="viewcode-block" id="reduce_poly"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.reduce_poly">[docs]</a><span class="k">def</span> <span class="nf">reduce_poly</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove close points to simplify a polyline</span>
+<span class="sd">    tolerance is the min distance between two points squared.</span>
+<span class="sd">    </span>
+<span class="sd">    :return: The reduced polygon as a list of (x,y)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     
-    :return: The reduced polygon as a list of (x,y)
-    """
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;reduce_poly can not simplify an empty points list&quot;</span>
     
-    assert len(points) &gt; 0, "reduce_poly can not simplify an empty points list"
+    <span class="n">curr_p</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">reduced_ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
     
-    curr_p = points[0]
-    reduced_ps = [points[0]]
-    
-    for p in points[1:]:
-        distance = (curr_p[X] - p[X])**2 + (curr_p[Y] - p[Y])**2
-        if distance &gt; tolerance:
-            curr_p = p
-            reduced_ps.append(p)
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="p">(</span><span class="n">curr_p</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="n">X</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">curr_p</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="n">Y</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">:</span>
+            <span class="n">curr_p</span> <span class="o">=</span> <span class="n">p</span>
+            <span class="n">reduced_ps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
             
-    return reduced_ps
+    <span class="k">return</span> <span class="n">reduced_ps</span>
         </div>
-<div class="viewcode-block" id="convex_hull"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.convex_hull">[docs]</a>def convex_hull(points):
-    """Create a convex hull from a list of points.
-    This function uses the Graham Scan Algorithm.
+<div class="viewcode-block" id="convex_hull"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.convex_hull">[docs]</a><span class="k">def</span> <span class="nf">convex_hull</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a convex hull from a list of points.</span>
+<span class="sd">    This function uses the Graham Scan Algorithm.</span>
+<span class="sd">    </span>
+<span class="sd">    :return: Convex hull as a list of (x,y)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     
-    :return: Convex hull as a list of (x,y)
-    """
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;need at least 3 points to form a convex hull&quot;</span>
     
-    assert len(points) &gt; 2, "need at least 3 points to form a convex hull"
+    <span class="c">### Find lowest rightmost point</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">p0</span><span class="p">[</span><span class="n">Y</span><span class="p">]:</span>
+            <span class="n">p0</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="k">elif</span> <span class="n">p</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">==</span> <span class="n">p0</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">p0</span><span class="p">[</span><span class="n">X</span><span class="p">]:</span>
+            <span class="n">p0</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="n">points</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">p0</span><span class="p">)</span>
     
-    ### Find lowest rightmost point
-    p0 = points[0]
-    for p in points[1:]:
-        if p[Y] &lt; p0[Y]:
-            p0 = p
-        elif p[Y] == p0[Y] and p[X] &gt; p0[X]:
-            p0 = p
-    points.remove(p0)
+    <span class="c">### Sort the points angularly about p0 as center</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">is_left</span><span class="p">,</span> <span class="n">p0</span><span class="p">)</span>
+    <span class="n">points</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="nb">cmp</span> <span class="o">=</span> <span class="n">f</span><span class="p">)</span>
+    <span class="n">points</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+    <span class="n">points</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p0</span><span class="p">)</span>
     
-    ### Sort the points angularly about p0 as center
-    f = partial(is_left, p0)
-    points.sort(cmp = f)
-    points.reverse()
-    points.insert(0, p0)
+    <span class="c">### Find the hull points</span>
+    <span class="n">hull</span> <span class="o">=</span> <span class="p">[</span><span class="n">p0</span><span class="p">,</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
     
-    ### Find the hull points
-    hull = [p0, points[1]]
-    
-    for p in points[2:]:
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">:]:</span>
         
-        pt1 = hull[-1]
-        pt2 = hull[-2]
-        l = is_left(pt2, pt1, p) 
-        if l &gt; 0:
-            hull.append(p)
-        else:
-            while l &lt;= 0 and len(hull) &gt; 2:
-                hull.pop()
-                pt1 = hull[-1]
-                pt2 = hull[-2]
-                l = is_left(pt2, pt1, p)
-            hull.append(p)
-    return hull 
+        <span class="n">pt1</span> <span class="o">=</span> <span class="n">hull</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">pt2</span> <span class="o">=</span> <span class="n">hull</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">is_left</span><span class="p">(</span><span class="n">pt2</span><span class="p">,</span> <span class="n">pt1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> 
+        <span class="k">if</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">hull</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">hull</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">hull</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="n">pt1</span> <span class="o">=</span> <span class="n">hull</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">pt2</span> <span class="o">=</span> <span class="n">hull</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">is_left</span><span class="p">(</span><span class="n">pt2</span><span class="p">,</span> <span class="n">pt1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="n">hull</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">hull</span> 
     </div>
-<div class="viewcode-block" id="calc_center"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.calc_center">[docs]</a>def calc_center(points):
-    """Calculate the center of a polygon
+<div class="viewcode-block" id="calc_center"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.calc_center">[docs]</a><span class="k">def</span> <span class="nf">calc_center</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the center of a polygon</span>
+<span class="sd">    </span>
+<span class="sd">    :return: The center (x,y)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     
-    :return: The center (x,y)
-    """
+    <span class="c">#ref: http://en.wikipedia.org/wiki/Polygon</span>
     
-    #ref: http://en.wikipedia.org/wiki/Polygon
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;need at least 1 points to calculate the center&quot;</span>
     
-    assert len(points) &gt; 0, "need at least 1 points to calculate the center"
+    <span class="n">area</span> <span class="o">=</span> <span class="n">calc_area</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
     
-    area = calc_area(points)
-    
-    p1 = points[0]
-    cx = cy = 0
-    for p2 in points[1:] + [points[0]]:       
-        tmp = (p1[X]*p2[Y] - p2[X]*p1[Y])
-        cx += (p1[X] + p2[X]) * tmp
-        cy += (p1[Y] + p2[Y]) * tmp
-        p1 = p2
-    c = 1 / (6. * area) * cx, 1 / (6. * area) * cy
-    return c
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]]:</span>       
+        <span class="n">tmp</span> <span class="o">=</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="n">X</span><span class="p">]</span><span class="o">*</span><span class="n">p2</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="n">X</span><span class="p">]</span><span class="o">*</span><span class="n">p1</span><span class="p">[</span><span class="n">Y</span><span class="p">])</span>
+        <span class="n">cx</span> <span class="o">+=</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="n">X</span><span class="p">])</span> <span class="o">*</span> <span class="n">tmp</span>
+        <span class="n">cy</span> <span class="o">+=</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="n">Y</span><span class="p">])</span> <span class="o">*</span> <span class="n">tmp</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">p2</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">6.</span> <span class="o">*</span> <span class="n">area</span><span class="p">)</span> <span class="o">*</span> <span class="n">cx</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">6.</span> <span class="o">*</span> <span class="n">area</span><span class="p">)</span> <span class="o">*</span> <span class="n">cy</span>
+    <span class="k">return</span> <span class="n">c</span>
    </div>
-<div class="viewcode-block" id="poly_vectors_around_center"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.poly_vectors_around_center">[docs]</a>def poly_vectors_around_center(pointlist, points_as_Vec2d=True):
-    """Rearranges vectors around the center
-    If points_as_Vec2d, then return points are also Vec2d, else pos
+<div class="viewcode-block" id="poly_vectors_around_center"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.poly_vectors_around_center">[docs]</a><span class="k">def</span> <span class="nf">poly_vectors_around_center</span><span class="p">(</span><span class="n">pointlist</span><span class="p">,</span> <span class="n">points_as_Vec2d</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rearranges vectors around the center</span>
+<span class="sd">    If points_as_Vec2d, then return points are also Vec2d, else pos</span>
+<span class="sd">    </span>
+<span class="sd">    :return: pointlist ([Vec2d/pos, ...])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     
-    :return: pointlist ([Vec2d/pos, ...])
-    """
-    
-    poly_points_center = []
-    cx, cy = calc_center(pointlist)
+    <span class="n">poly_points_center</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">calc_center</span><span class="p">(</span><span class="n">pointlist</span><span class="p">)</span>
 
-    if points_as_Vec2d:
-        for p in pointlist:
-            x = p[X] - cx
-            y = p[Y] - cy
-            poly_points_center.append(Vec2d((x, y)))
+    <span class="k">if</span> <span class="n">points_as_Vec2d</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pointlist</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span>
+            <span class="n">poly_points_center</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span>
 
-    else:
-        for p in pointlist:
-            x = p[X] - cx
-            y = cy - p[Y]
-            poly_points_center.append((x, y))
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pointlist</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span>
+            <span class="n">poly_points_center</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
     
-    return poly_points_center
+    <span class="k">return</span> <span class="n">poly_points_center</span>
 </div>
-<div class="viewcode-block" id="calc_area"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.calc_area">[docs]</a>def calc_area(points):
-    """Calculate the area of a polygon
+<div class="viewcode-block" id="calc_area"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.calc_area">[docs]</a><span class="k">def</span> <span class="nf">calc_area</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the area of a polygon</span>
+<span class="sd">    </span>
+<span class="sd">    :return: Area of polygon</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     
-    :return: Area of polygon
-    """
+    <span class="c">#ref: http://en.wikipedia.org/wiki/Polygon</span>
     
-    #ref: http://en.wikipedia.org/wiki/Polygon
-    
-    if len(points) &lt; 3: return 0
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
 
-    p1 = points[0]
-    a = 0
-    for p2 in points[1:] + [points[0]]:       
-        a += p1[X] * p2[Y] - p2[X] * p1[Y]
-        p1 = p2
-    a = 0.5 * a
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]]:</span>       
+        <span class="n">a</span> <span class="o">+=</span> <span class="n">p1</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">*</span> <span class="n">p2</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">*</span> <span class="n">p1</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">p2</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">a</span>
     
-    return a
+    <span class="k">return</span> <span class="n">a</span>
 </div>
-<div class="viewcode-block" id="calc_perimeter"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.calc_perimeter">[docs]</a>def calc_perimeter(points):
-    """Calculate the perimeter of a polygon
+<div class="viewcode-block" id="calc_perimeter"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.calc_perimeter">[docs]</a><span class="k">def</span> <span class="nf">calc_perimeter</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the perimeter of a polygon</span>
+<span class="sd">    </span>
+<span class="sd">    :return: Perimeter of polygon</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     
-    :return: Perimeter of polygon
-    """
-    
-    if len(points) &lt; 2: return 0
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
        
-    p1 = points[0]
-    c = 0
-    for p2 in points[1:] + [points[0]]:
-        c += sqrt((p2[X] - p1[X])**2 + (p2[Y] - p1[Y])**2) 
-        p1 = p2
-    return c
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]]:</span>
+        <span class="n">c</span> <span class="o">+=</span> <span class="n">sqrt</span><span class="p">((</span><span class="n">p2</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="n">X</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="n">Y</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> 
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">p2</span>
+    <span class="k">return</span> <span class="n">c</span>
 
-### "hidden" functions
+<span class="c">### &quot;hidden&quot; functions</span>
 </div>
-def _is_corner(a, b, c):
-    # returns if point b is an outer corner
-    return not(is_clockwise([a, b, c]))
+<span class="k">def</span> <span class="nf">_is_corner</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="c"># returns if point b is an outer corner</span>
+    <span class="k">return</span> <span class="ow">not</span><span class="p">(</span><span class="n">is_clockwise</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">]))</span>
     
-def _point_in_triangle(p, a, b, c):
-    # measure area of whole triangle
-    whole = abs(calc_area([a, b, c]))
-    # measure areas of inner triangles formed by p
-    parta = abs(calc_area([a, b, p]))
-    partb = abs(calc_area([b, c, p]))
-    partc = abs(calc_area([c, a, p]))
-    # allow for potential rounding error in area calcs
-    # (not that i've encountered one yet, but just in case...)
-    thresh = 0.0000001
-    # return if the sum of the inner areas = the whole area
-    return ((parta+partb+partc) &lt; (whole+thresh))
+<span class="k">def</span> <span class="nf">_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="c"># measure area of whole triangle</span>
+    <span class="n">whole</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">calc_area</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">]))</span>
+    <span class="c"># measure areas of inner triangles formed by p</span>
+    <span class="n">parta</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">calc_area</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">p</span><span class="p">]))</span>
+    <span class="n">partb</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">calc_area</span><span class="p">([</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">]))</span>
+    <span class="n">partc</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">calc_area</span><span class="p">([</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="p">]))</span>
+    <span class="c"># allow for potential rounding error in area calcs</span>
+    <span class="c"># (not that i&#39;ve encountered one yet, but just in case...)</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="mf">0.0000001</span>
+    <span class="c"># return if the sum of the inner areas = the whole area</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">parta</span><span class="o">+</span><span class="n">partb</span><span class="o">+</span><span class="n">partc</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">whole</span><span class="o">+</span><span class="n">thresh</span><span class="p">))</span>
         
-def _get_ear(poly):
-    count = len(poly)
-    # not even a poly
-    if count &lt; 3:
-        return [], []
-    # only a triangle anyway
-    if count == 3:
-        return poly, []
+<span class="k">def</span> <span class="nf">_get_ear</span><span class="p">(</span><span class="n">poly</span><span class="p">):</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
+    <span class="c"># not even a poly</span>
+    <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="c"># only a triangle anyway</span>
+    <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">poly</span><span class="p">,</span> <span class="p">[]</span>
 
-    # start checking points
-    for i in range(count):
-        ia = (i-1) % count
-        ib = i
-        ic = (i+1) % count
-        a = poly[ia]
-        b = poly[ib]
-        c = poly[ic]
-        # is point b an outer corner?
-        if _is_corner(a,b,c):
-            # are there any other points inside triangle abc?
-            valid = True
-            for j in range(count):
-                if not(j in (ia,ib,ic)):
-                    p = poly[j]
-                    if _point_in_triangle(p,a,b,c):
-                        valid = False
-            # if no such point found, abc must be an "ear"
-            if valid:
-                remaining = []
-                for j in range(count):
-                    if j != ib:
-                        remaining.append(poly[j])
-                # return the ear, and what's left of the polygon after the ear is clipped
-                return [a,b,c], remaining
+    <span class="c"># start checking points</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+        <span class="n">ia</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">count</span>
+        <span class="n">ib</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">ic</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">count</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">poly</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">poly</span><span class="p">[</span><span class="n">ib</span><span class="p">]</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">poly</span><span class="p">[</span><span class="n">ic</span><span class="p">]</span>
+        <span class="c"># is point b an outer corner?</span>
+        <span class="k">if</span> <span class="n">_is_corner</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+            <span class="c"># are there any other points inside triangle abc?</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">j</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ia</span><span class="p">,</span><span class="n">ib</span><span class="p">,</span><span class="n">ic</span><span class="p">)):</span>
+                    <span class="n">p</span> <span class="o">=</span> <span class="n">poly</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">_point_in_triangle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+                        <span class="n">valid</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="c"># if no such point found, abc must be an &quot;ear&quot;</span>
+            <span class="k">if</span> <span class="n">valid</span><span class="p">:</span>
+                <span class="n">remaining</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">ib</span><span class="p">:</span>
+                        <span class="n">remaining</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poly</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                <span class="c"># return the ear, and what&#39;s left of the polygon after the ear is clipped</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">],</span> <span class="n">remaining</span>
                 
-    # no ear was found, so something is wrong with the given poly (not anticlockwise? self-intersects?)
-    return [], []
+    <span class="c"># no ear was found, so something is wrong with the given poly (not anticlockwise? self-intersects?)</span>
+    <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
     
-def _attempt_reduction(hulla, hullb):
-    inter = [vec for vec in hulla if vec in hullb]
-    if len(inter) == 2:
-        starta = hulla.index(inter[1])
-        tempa = hulla[starta:]+hulla[:starta]
-        tempa = tempa[1:]
-        startb = hullb.index(inter[0])
-        tempb = hullb[startb:]+hullb[:startb]
-        tempb = tempb[1:]
-        reduced = tempa+tempb
-        if is_convex(reduced):
-            return reduced
-    # reduction failed, return None
-    return None
+<span class="k">def</span> <span class="nf">_attempt_reduction</span><span class="p">(</span><span class="n">hulla</span><span class="p">,</span> <span class="n">hullb</span><span class="p">):</span>
+    <span class="n">inter</span> <span class="o">=</span> <span class="p">[</span><span class="n">vec</span> <span class="k">for</span> <span class="n">vec</span> <span class="ow">in</span> <span class="n">hulla</span> <span class="k">if</span> <span class="n">vec</span> <span class="ow">in</span> <span class="n">hullb</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inter</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">starta</span> <span class="o">=</span> <span class="n">hulla</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">inter</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">tempa</span> <span class="o">=</span> <span class="n">hulla</span><span class="p">[</span><span class="n">starta</span><span class="p">:]</span><span class="o">+</span><span class="n">hulla</span><span class="p">[:</span><span class="n">starta</span><span class="p">]</span>
+        <span class="n">tempa</span> <span class="o">=</span> <span class="n">tempa</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">startb</span> <span class="o">=</span> <span class="n">hullb</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">inter</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">tempb</span> <span class="o">=</span> <span class="n">hullb</span><span class="p">[</span><span class="n">startb</span><span class="p">:]</span><span class="o">+</span><span class="n">hullb</span><span class="p">[:</span><span class="n">startb</span><span class="p">]</span>
+        <span class="n">tempb</span> <span class="o">=</span> <span class="n">tempb</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">reduced</span> <span class="o">=</span> <span class="n">tempa</span><span class="o">+</span><span class="n">tempb</span>
+        <span class="k">if</span> <span class="n">is_convex</span><span class="p">(</span><span class="n">reduced</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">reduced</span>
+    <span class="c"># reduction failed, return None</span>
+    <span class="k">return</span> <span class="bp">None</span>
     
-def _reduce_hulls(hulls):
-    count = len(hulls)
-    # 1 or less hulls passed
-    if count &lt; 2:
-        return hulls, False
+<span class="k">def</span> <span class="nf">_reduce_hulls</span><span class="p">(</span><span class="n">hulls</span><span class="p">):</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hulls</span><span class="p">)</span>
+    <span class="c"># 1 or less hulls passed</span>
+    <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">hulls</span><span class="p">,</span> <span class="bp">False</span>
         
-    # check all hulls in the list against each other
-    for ia in range(count-1):
-        for ib in range(ia+1, count):
-            # see if hulls can be reduced to one
-            reduction = _attempt_reduction(hulls[ia], hulls[ib])
-            if reduction != None:
-                # they can so return a new list of hulls and a True
-                newhulls = [reduction]
-                for j in range(count):
-                    if not(j in (ia,ib)):
-                        newhulls.append(hulls[j])
-                return newhulls, True
+    <span class="c"># check all hulls in the list against each other</span>
+    <span class="k">for</span> <span class="n">ia</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">ib</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ia</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+            <span class="c"># see if hulls can be reduced to one</span>
+            <span class="n">reduction</span> <span class="o">=</span> <span class="n">_attempt_reduction</span><span class="p">(</span><span class="n">hulls</span><span class="p">[</span><span class="n">ia</span><span class="p">],</span> <span class="n">hulls</span><span class="p">[</span><span class="n">ib</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">reduction</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c"># they can so return a new list of hulls and a True</span>
+                <span class="n">newhulls</span> <span class="o">=</span> <span class="p">[</span><span class="n">reduction</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">j</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ia</span><span class="p">,</span><span class="n">ib</span><span class="p">)):</span>
+                        <span class="n">newhulls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hulls</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">newhulls</span><span class="p">,</span> <span class="bp">True</span>
                 
-    # nothing was reduced, send the original hull list back with a False
-    return hulls, False
+    <span class="c"># nothing was reduced, send the original hull list back with a False</span>
+    <span class="k">return</span> <span class="n">hulls</span><span class="p">,</span> <span class="bp">False</span>
    
-### major functions
+<span class="c">### major functions</span>
    
-<div class="viewcode-block" id="triangulate"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.triangulate">[docs]</a>def triangulate(poly):
-    """Triangulates poly and returns a list of triangles
-    
-    :Parameters:
-        poly
-            list of points that form an anticlockwise polygon 
-            (self-intersecting polygons won't work, results are undefined)
-    """
-    triangles = []
-    remaining = poly[:]
-    # while the poly still needs clipping
-    while len(remaining) &gt; 2:
-        # rotate the list:
-        # this stops the starting point from getting stale which sometimes 
-        # a "fan" of polys, which often leads to poor convexisation
-        remaining = remaining[1:]+remaining[:1]
-        # clip the ear, store it
-        ear, remaining = _get_ear(remaining)
-        if ear != []:
-            triangles.append(ear)
-    # return stored triangles
-    return triangles
+<div class="viewcode-block" id="triangulate"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.triangulate">[docs]</a><span class="k">def</span> <span class="nf">triangulate</span><span class="p">(</span><span class="n">poly</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Triangulates poly and returns a list of triangles</span>
+<span class="sd">    </span>
+<span class="sd">    :Parameters:</span>
+<span class="sd">        poly</span>
+<span class="sd">            list of points that form an anticlockwise polygon </span>
+<span class="sd">            (self-intersecting polygons won&#39;t work, results are undefined)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">triangles</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">remaining</span> <span class="o">=</span> <span class="n">poly</span><span class="p">[:]</span>
+    <span class="c"># while the poly still needs clipping</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">remaining</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c"># rotate the list:</span>
+        <span class="c"># this stops the starting point from getting stale which sometimes </span>
+        <span class="c"># a &quot;fan&quot; of polys, which often leads to poor convexisation</span>
+        <span class="n">remaining</span> <span class="o">=</span> <span class="n">remaining</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">+</span><span class="n">remaining</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c"># clip the ear, store it</span>
+        <span class="n">ear</span><span class="p">,</span> <span class="n">remaining</span> <span class="o">=</span> <span class="n">_get_ear</span><span class="p">(</span><span class="n">remaining</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ear</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">triangles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ear</span><span class="p">)</span>
+    <span class="c"># return stored triangles</span>
+    <span class="k">return</span> <span class="n">triangles</span>
    </div>
-<div class="viewcode-block" id="convexise"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.convexise">[docs]</a>def convexise(triangles):
-    """Reduces a list of triangles (such as returned by triangulate()) to a 
-    non-optimum list of convex polygons 
-        
-    :Parameters:
-        triangles
-            list of anticlockwise triangles (a list of three points) to reduce
-    """
-    # fun fact: convexise probably isn't a real word
-    hulls = triangles[:]
-    reduced = True
-    # keep trying to reduce until it won't reduce any more
-    while reduced:
-        hulls, reduced = _reduce_hulls(hulls)
-    # return reduced hull list
-    return hulls
+<div class="viewcode-block" id="convexise"><a class="viewcode-back" href="../../pymunk.util.html#pymunk.util.convexise">[docs]</a><span class="k">def</span> <span class="nf">convexise</span><span class="p">(</span><span class="n">triangles</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reduces a list of triangles (such as returned by triangulate()) to a </span>
+<span class="sd">    non-optimum list of convex polygons </span>
+<span class="sd">        </span>
+<span class="sd">    :Parameters:</span>
+<span class="sd">        triangles</span>
+<span class="sd">            list of anticlockwise triangles (a list of three points) to reduce</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># fun fact: convexise probably isn&#39;t a real word</span>
+    <span class="n">hulls</span> <span class="o">=</span> <span class="n">triangles</span><span class="p">[:]</span>
+    <span class="n">reduced</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="c"># keep trying to reduce until it won&#39;t reduce any more</span>
+    <span class="k">while</span> <span class="n">reduced</span><span class="p">:</span>
+        <span class="n">hulls</span><span class="p">,</span> <span class="n">reduced</span> <span class="o">=</span> <span class="n">_reduce_hulls</span><span class="p">(</span><span class="n">hulls</span><span class="p">)</span>
+    <span class="c"># return reduced hull list</span>
+    <span class="k">return</span> <span class="n">hulls</span>
     </div>
-__all__ = ["is_clockwise", "reduce_poly", "convex_hull", "calc_area",
-        "calc_center", "poly_vectors_around_center", "is_convex", 
-        "calc_perimeter", 
-        "triangulate", "convexise"]
-</pre>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;is_clockwise&quot;</span><span class="p">,</span> <span class="s">&quot;reduce_poly&quot;</span><span class="p">,</span> <span class="s">&quot;convex_hull&quot;</span><span class="p">,</span> <span class="s">&quot;calc_area&quot;</span><span class="p">,</span>
+        <span class="s">&quot;calc_center&quot;</span><span class="p">,</span> <span class="s">&quot;poly_vectors_around_center&quot;</span><span class="p">,</span> <span class="s">&quot;is_convex&quot;</span><span class="p">,</span> 
+        <span class="s">&quot;calc_perimeter&quot;</span><span class="p">,</span> 
+        <span class="s">&quot;triangulate&quot;</span><span class="p">,</span> <span class="s">&quot;convexise&quot;</span><span class="p">]</span>
+</pre></div>
 
           </div>
         </div>
@@ -463,9 +465,9 @@ __all__ = ["is_clockwise", "reduce_poly", "convex_hull", "calc_area",
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced</a></li>
-<li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/issues/list">Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/source/checkout">Source Repository</a></li>
-<li class="toctree-l1"><a class="reference external" href="http://code.google.com/p/pymunk/downloads/list">Downloads</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk">Source Repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/pymunk/">Downloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
@@ -502,7 +504,7 @@ __all__ = ["is_clockwise", "reduce_poly", "convex_hull", "calc_area",
     </div>
     <div class="footer">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
