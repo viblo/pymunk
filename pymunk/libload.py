@@ -87,7 +87,7 @@ and then continue as usual with
 (for complete instructions please see the readme file)
 
 If it still doesnt work, please report as a bug on the issue tracker at 
-http://code.google.com/p/pymunk/issues
+https://github.com/viblo/pymunk/issues
 Remember to include information about your OS, which version of python you use 
 and the version of pymunk you tried to run. A description of what you did to 
 trigger the error is also good. Please include the exception traceback if any 
