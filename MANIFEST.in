@@ -1,6 +1,6 @@
 #txts
 include LICENSE.txt
-include README.txt
+include README.rst
 include THANKS.txt
 #docs
 recursive-include docs *
