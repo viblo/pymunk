@@ -14,9 +14,9 @@ def platform_specific_functions():
         }
     
     if platform.system() in ('Windows', 'Microsoft'):
-        d['library_loader'] = ctypes.windll
-        d['function_pointer'] = ctypes.WINFUNCTYPE
-        
+        #d['library_loader'] = ctypes.windll
+        #d['function_pointer'] = ctypes.WINFUNCTYPE
+        pass
     return d
     
  

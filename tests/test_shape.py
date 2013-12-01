@@ -98,8 +98,10 @@ class UnitTestShape(unittest.TestCase):
         c.unsafe_set_vertices([(0,0), (1,0), (1,1)])
         c.cache_bb()
         
-        self.assertEqual(c.bb, p.BB(0, 0, 1, 1))
-        
+        self.assertAlmostEqual(c.bb.top, 1)
+        self.assertAlmostEqual(c.bb.left, 0)
+        self.assertAlmostEqual(c.bb.right, 1)
+        self.assertAlmostEqual(c.bb.bottom, 0)
         
     def testCreateBox(self):
         s = p.Space()

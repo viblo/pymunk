@@ -47,7 +47,12 @@ class build_chipmunk(distutils.cmd.Command):
                     
         include_folders = [os.path.join('chipmunk_src','include','chipmunk')]
         
-        compiler_preargs = ['-std=gnu99', '-ffast-math', '-DCHIPMUNK_FFI', '-Wno-unknown-pragmas', '-fPIC', '-DCP_USE_CGPOINTS=0'] # '-DCP_ALLOW_PRIVATE_ACCESS']
+        compiler_preargs = ['-std=gnu99', 
+                            '-ffast-math', 
+                            '-DCHIPMUNK_FFI', 
+                            '-Wno-unknown-pragmas', 
+                            #'-fPIC', 
+                            '-DCP_USE_CGPOINTS=0'] # '-DCP_ALLOW_PRIVATE_ACCESS']
         
         if self.release:
             compiler_preargs.append('-DNDEBUG')
@@ -69,12 +74,16 @@ class build_chipmunk(distutils.cmd.Command):
             # Because -mrtd and -fomit-frame-pointer (which is included in -O)
             # gives problem with function pointer to the sdtlib free function
             # we also have to use -fno-omit-frame-pointer
-            compiler_preargs += ['-mrtd', '-O3', '-shared', '-fno-omit-frame-pointer'] 
-        
+            compiler_preargs += [#'-mrtd', 
+                                #'-O1', 
+                                '-shared']
+                                #'-fno-omit-frame-pointer'] 
+            #O1 and O2 works on 32bit, not O3 and maybe not O0?
+            
         if arch == 64 and platform.system() in ('Windows', 'Microsoft'):
             compiler_preargs += ['-m64']
         if arch == 32 and platform.system() in ('Windows', 'Microsoft'):
-            compiler_preargs += ['-m32']
+            compiler_preargs += ['-O2', '-m32']
             
         for x in compiler.executables:
             args = getattr(compiler, x)
@@ -99,7 +108,11 @@ class build_chipmunk(distutils.cmd.Command):
             linker_preargs += ['-fPIC']
         if platform.system() in ('Windows', 'Microsoft'):
             # link with stddecl instead of cdecl
-            linker_preargs += ['-mrtd'] 
+            #linker_preargs += ['-mrtd'] 
+            if arch == 32:
+                linker_preargs += ['-m32']
+            else:
+                linker_preargs += ['-m64']
             # remove link against msvcr*. this is a bit ugly maybe.. :)
             compiler.dll_libraries = [lib for lib in compiler.dll_libraries if not lib.startswith("msvcr")]
         compiler.link(cc.CCompiler.SHARED_LIBRARY, objs, libname, output_dir = 'pymunk', extra_preargs=linker_preargs)
