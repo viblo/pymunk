@@ -267,8 +267,8 @@ def _draw_constraint(constraint, batch=None):
     darkgrey = (169, 169, 169)
 
     if isinstance(constraint, pymunk.GrooveJoint) and hasattr(constraint, "groove_a"):
-        pv1 = constraint.a.position + constraint.groove_a
-        pv2 = constraint.a.position + constraint.groove_b
+        pv1 = constraint.a.position + constraint.groove_a.rotated(constraint.a.angle)
+        pv2 = constraint.a.position + constraint.groove_b.rotated(constraint.a.angle)
         _draw_line(pv1, pv2, darkgrey, batch)
     elif isinstance(constraint, pymunk.PinJoint):
         pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
