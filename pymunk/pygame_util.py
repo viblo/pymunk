@@ -167,8 +167,8 @@ def _draw_segment(surface, segment):
 def _draw_constraint(surface, constraint):
     
     if isinstance(constraint, pymunk.GrooveJoint) and hasattr(constraint, "groove_a"):
-        pv1 = constraint.a.position + constraint.groove_a
-        pv2 = constraint.a.position + constraint.groove_b
+        pv1 = constraint.a.position + constraint.groove_a.rotated(constraint.a.angle)
+        pv2 = constraint.a.position + constraint.groove_b.rotated(constraint.a.angle)
         p1 = to_pygame(pv1, surface)
         p2 = to_pygame(pv2, surface)
         pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])
