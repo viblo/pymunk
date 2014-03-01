@@ -1,7 +1,11 @@
+from __future__ import with_statement
+import sys
+import unittest
+import warnings
+
 import pymunk as p
 from pymunk import *
 from pymunk.vec2d import Vec2d
-import unittest
 
 ####################################################################
  
@@ -269,7 +273,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(self.num_of_begins, 1)
 
     def testCollisionHandlerBeginNoReturn(self):
-        import warnings
+        if sys.version_info < (2, 6): return
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
             
@@ -309,7 +313,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(self.begin_space, self.s)
         
     def testCollisionHandlerPreSolveNoReturn(self):
-        import warnings
+        if sys.version_info < (2, 6): return
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
         
