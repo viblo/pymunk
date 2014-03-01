@@ -267,7 +267,23 @@ class UnitTestSpace(unittest.TestCase):
         self.s.step(0.1)
         self.s.step(0.1)
         self.assertEqual(self.num_of_begins, 1)
-        
+
+    def testCollisionHandlerBeginNoReturn(self):
+        import warnings
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            
+            def begin(space, arb, data):
+                return
+                
+            self.b1.position = self.b2.position
+            self.s.add_collision_handler(0,0, begin, None, None, None, None)
+            self.s.step(0.1)
+            self.s.step(0.1)
+            
+            self.assertEqual(len(w),1)
+            self.assertTrue(issubclass(w[-1].category,UserWarning))
+    
     def testCollisionHandlerPreSolve(self):
     
         self.begin_shapes = None
@@ -292,6 +308,20 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(self.s2, self.begin_shapes[1])
         self.assertEqual(self.begin_space, self.s)
         
+    def testCollisionHandlerPreSolveNoReturn(self):
+        import warnings
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+        
+            def pre_solve(space, arb, test_self):
+                return
+            
+            self.s.add_collision_handler(0,0, None, pre_solve, None, None, self)
+            self.s.step(0.1)
+            
+            self.assertEqual(len(w),1)
+            self.assertTrue(issubclass(w[-1].category,UserWarning))
+            
     def testCollisionHandlerPostSolve(self):  
         self.first_contact = None
         def post_solve(space, arb, test_self):
@@ -303,6 +333,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assert_(self.first_contact)
         self.s.step(0.1)
         self.assertFalse(self.first_contact)
+
         
     def testPostStepCallback(self):
         self.number_of_calls = 0

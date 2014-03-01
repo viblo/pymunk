@@ -48,6 +48,7 @@ __all__ = ["inf", "version", "chipmunk_version"
         , "SegmentQueryInfo", "Contact", "Arbiter", "BB"]
 
 import ctypes as ct
+import warnings
 import weakref
 try:
     #Python 2.7+ 
@@ -522,7 +523,20 @@ class Space(object):
     def _get_cf1(self, func, function_type, *args, **kwargs):
         def cf(_arbiter, _space, _data):
             arbiter = Arbiter(_arbiter, self)
-            return func(self, arbiter, *args, **kwargs)
+            x = func(self, arbiter, *args, **kwargs)
+            
+            if function_type not in [cp.cpCollisionBeginFunc, cp.cpCollisionPreSolveFunc]:
+                return
+            if isinstance(x,int):
+                return x
+                      
+            warnings.warn_explicit(
+                "Function '" + func.func_name + "' should return a bool to" +
+                " indicate if the collision should be processed or not when" +
+                " used as 'begin' or 'pre_solve' collision callback.", 
+                UserWarning, 
+                func.func_code.co_filename, func.func_code.co_firstlineno, func.__module__)
+            return True
         return function_type(cf)
         
     
