@@ -49,6 +49,7 @@ __all__ = ["inf", "version", "chipmunk_version"
 
 import ctypes as ct
 import warnings
+import sys
 import weakref
 try:
     #Python 2.7+ 
@@ -529,13 +530,21 @@ class Space(object):
                 return
             if isinstance(x,int):
                 return x
-                      
+                
+            if sys.version_info[0] >= 3:
+                func_name = func.__code__.co_name
+                filename = func.__code__.co_filename
+                lineno = func.__code__.co_firstlineno
+            else:
+                func_name = func.func_name
+                filename = func.func_code.co_filename
+                lineno = func.func_code.co_firstlineno
+                
             warnings.warn_explicit(
-                "Function '" + func.func_name + "' should return a bool to" +
+                "Function '" + func_name + "' should return a bool to" +
                 " indicate if the collision should be processed or not when" +
                 " used as 'begin' or 'pre_solve' collision callback.", 
-                UserWarning, 
-                func.func_code.co_filename, func.func_code.co_firstlineno, func.__module__)
+                UserWarning, filename, lineno, func.__module__)
             return True
         return function_type(cf)
         
