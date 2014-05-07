@@ -81,8 +81,12 @@ Dependencies / Requirements
 Chipmunk
 --------
 
-Compiled libraries of Chipmunk compatible Windows and Linux 32bit and 64bit 
-are distributed with pymunk.
+Compiled libraries of Chipmunk compatible Windows 32bit and Linux 32bit and 
+64bit are distributed with pymunk.
+
+**Warning** There are known blocker bugs in 64-bit pymunk on Windows. Use 
+at your own risk.
+
 If pymunk doesnt have your particular platform included, you can compile 
 Chipmunk by hand with a custom setup argument::
 

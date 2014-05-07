@@ -50,6 +50,12 @@ def load_library(libname, debug_lib=True):
         libfn = "lib%s%s.so" % (libname, arch_param)
         
     elif s in ('Windows', 'Microsoft'):
+        if arch == "32" and debug_lib:
+            print ("""
+WARNING! 
+There are known blocker bugs in 64-bit pymunk on Windows.
+Use at your own risk. 
+""")
         libfn = "%s%s.dll" % (libname, arch_param)
         
     elif s == 'Darwin':
