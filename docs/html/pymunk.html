@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '4.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -119,7 +117,7 @@ distribution (i.e. not in a checked-out copy from svn).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x10e305710&gt;R3bdf1b7b3c'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x10f98a6d0&gt;R3bdf1b7b3c'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -157,7 +155,7 @@ total_impulse readings from the <cite>Arbiter</cite> object in collsion callback
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>iterations <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
 <dd><p class="first last">Number of iterations to use in the impulse solver to solve 
 contacts.</p>
@@ -193,7 +191,7 @@ individually to each handler definition.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>a <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
 <dd><p class="first last">Collision type of the first shape</p>
 </dd>
@@ -263,7 +261,7 @@ touching when removed.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt>callback_function <span class="classifier-delimiter">:</span> <span class="classifier"><tt class="docutils literal"><span class="pre">func(obj,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt></span></dt>
 <dd><p class="first last">The callback function.</p>
 </dd>
@@ -280,7 +278,7 @@ for a single object. It is passed on to the callback function.</p>
 </dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return :</th><td class="field-body"><p class="first last">True if key was not previously added, False otherwise</p>
+<tr class="field-even field"><th class="field-name">Return:</th><td class="field-body"><p class="first last">True if key was not previously added, False otherwise</p>
 </td>
 </tr>
 </tbody>
@@ -383,7 +381,7 @@ and 0 as the group.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt>point <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
 <dd><p class="first last">Define where to check for collision in the space.</p>
 </dd>
@@ -400,7 +398,7 @@ and 0 as the group.</p>
 </dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return :</th><td class="field-body"><p class="first last">[dict(shape=`Shape`, distance = distance, point = Vec2d)]</p>
+<tr class="field-even field"><th class="field-name">Return:</th><td class="field-body"><p class="first last">[dict(shape=`Shape`, distance = distance, point = Vec2d)]</p>
 </td>
 </tr>
 </tbody>
@@ -419,7 +417,7 @@ and 0 as the group.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt>point <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
 <dd><p class="first last">Define where to check for collision in the space.</p>
 </dd>
@@ -436,7 +434,7 @@ and 0 as the group.</p>
 </dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return :</th><td class="field-body"><p class="first last">dict(shape=`Shape`, distance = distance, point = Vec2d)</p>
+<tr class="field-even field"><th class="field-name">Return:</th><td class="field-body"><p class="first last">dict(shape=`Shape`, distance = distance, point = Vec2d)</p>
 </td>
 </tr>
 </tbody>
@@ -454,7 +452,7 @@ and 0 as the group.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>point <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
 <dd><p class="first last">Define where to check for collision in the space.</p>
 </dd>
@@ -481,7 +479,7 @@ given layers and group. Returns None if no shape was found.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>point <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
 <dd><p class="first last">Define where to check for collision in the space.</p>
 </dd>
@@ -536,7 +534,7 @@ body, remove the joints and shapes attached to it.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>a <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
 <dd><p class="first last">Collision type of the first shape</p>
 </dd>
@@ -564,7 +562,7 @@ aren&#8217;t using very long segments for your queries.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return :</th><td class="field-body">[<cite>SegmentQueryInfo</cite>] - One SegmentQueryInfo object for each hit.</td>
+<tr class="field-odd field"><th class="field-name">Return:</th><td class="field-body">[<cite>SegmentQueryInfo</cite>] - One SegmentQueryInfo object for each hit.</td>
 </tr>
 </tbody>
 </table>
@@ -591,7 +589,7 @@ callbacks.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>begin <span class="classifier-delimiter">:</span> <span class="classifier"><tt class="docutils literal"><span class="pre">func(space,</span> <span class="pre">arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></tt></span></dt>
 <dd><p class="first last">Collision handler called when two shapes just started touching 
 for the first time this step. Return False from the callback 
@@ -735,7 +733,7 @@ set.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>f <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
 <dd><p class="first last">Force in world coordinates</p>
 </dd>
@@ -758,7 +756,7 @@ from the center of gravity. Both r and j are in world coordinates.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>j <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
 <dd><p class="first last">Impulse to be applied</p>
 </dd>
@@ -776,6 +774,8 @@ from the center of gravity. Both r and j are in world coordinates.</p>
 <dt id="pymunk.Body.constraints">
 <tt class="descname">constraints</tt><a class="headerlink" href="#pymunk.Body.constraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the constraints this body is attached to.</p>
+<p>The body only keeps a weak referenece to the constraints and a 
+live body wont prevent GC of the attached constraints</p>
 </dd></dl>
 
 <dl class="method">
@@ -840,7 +840,7 @@ from the center of gravity. Both r and j are in world coordinates.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>v <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
 <dd><p class="first last">Vector in body local coordinates</p>
 </dd>
@@ -901,6 +901,8 @@ is called each time step and can be used to update the body&#8217;s position.</p
 <dt id="pymunk.Body.shapes">
 <tt class="descname">shapes</tt><a class="headerlink" href="#pymunk.Body.shapes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the shapes attached to this body.</p>
+<p>The body only keeps a weak reference to the shapes and a live 
+body wont prevent GC of the attached shapes</p>
 </dd></dl>
 
 <dl class="method">
@@ -980,7 +982,7 @@ is called each time step, and can be used to set a body&#8217;s velocity.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>v <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
 <dd><p class="first last">Vector in world space coordinates</p>
 </dd>
@@ -1708,7 +1710,7 @@ shape is not attached to a body.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>body <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Body</cite></span></dt>
 <dd><p class="first last">The body to attach the segment to</p>
 </dd>
@@ -2349,7 +2351,7 @@ That is, BB(0,0,10,10).wrap_vect((5,5)) == Vec2d(10,10)</p>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

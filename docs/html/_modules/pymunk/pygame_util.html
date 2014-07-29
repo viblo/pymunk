@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -220,8 +218,8 @@
 <span class="k">def</span> <span class="nf">_draw_constraint</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">constraint</span><span class="p">):</span>
     
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">GrooveJoint</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="s">&quot;groove_a&quot;</span><span class="p">):</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">groove_a</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">groove_b</span>
+        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">groove_a</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">groove_b</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
         <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;darkgray&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span>
@@ -330,7 +328,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

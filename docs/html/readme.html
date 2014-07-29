@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '4.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -92,7 +90,8 @@ complete documentation including API Reference.</p>
 compile chipmunk before install. See section CHIPMUNK in this readme for
 (very simple) instructions.</p>
 <p>To install you can either run:</p>
-<div class="highlight-python"><pre>&gt; python setup.py install</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py install
+</pre></div>
 </div>
 <p>or simply put the pymunk folder where your program/game can find it.
 (like /my_python_scripts/yourgame/pymunk). The chipmunk binary library
@@ -136,11 +135,14 @@ and run &#8216;run.py python arrows.py&#8217; and so on, and see what each one d
 </div>
 <div class="section" id="chipmunk">
 <h2>Chipmunk<a class="headerlink" href="#chipmunk" title="Permalink to this headline">¶</a></h2>
-<p>Compiled libraries of Chipmunk compatible Windows and Linux 32bit and 64bit
-are distributed with pymunk.
-If pymunk doesnt have your particular platform included, you can compile
+<p>Compiled libraries of Chipmunk compatible Windows 32bit and Linux 32bit and
+64bit are distributed with pymunk.</p>
+<p><strong>Warning</strong> There are known blocker bugs in 64-bit pymunk on Windows. Use
+at your own risk.</p>
+<p>If pymunk doesnt have your particular platform included, you can compile
 Chipmunk by hand with a custom setup argument:</p>
-<div class="highlight-python"><pre>&gt; python setup.py build_chipmunk</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py build_chipmunk
+</pre></div>
 </div>
 <p>The compiled file goes into the /pymunk folder (same as _chipmunk.py,
 util.py and others). If the compile fail, please check the readme in
@@ -229,7 +231,7 @@ instructions.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

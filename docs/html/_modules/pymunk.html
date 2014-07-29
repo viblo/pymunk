@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -100,6 +98,8 @@
         <span class="p">,</span> <span class="s">&quot;SegmentQueryInfo&quot;</span><span class="p">,</span> <span class="s">&quot;Contact&quot;</span><span class="p">,</span> <span class="s">&quot;Arbiter&quot;</span><span class="p">,</span> <span class="s">&quot;BB&quot;</span><span class="p">]</span>
 
 <span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">ct</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">weakref</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="c">#Python 2.7+ </span>
@@ -574,7 +574,28 @@
     <span class="k">def</span> <span class="nf">_get_cf1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">function_type</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">arbiter</span> <span class="o">=</span> <span class="n">Arbiter</span><span class="p">(</span><span class="n">_arbiter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arbiter</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arbiter</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">function_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">cp</span><span class="o">.</span><span class="n">cpCollisionBeginFunc</span><span class="p">,</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpCollisionPreSolveFunc</span><span class="p">]:</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">x</span>
+                
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_name</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_filename</span>
+                <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_firstlineno</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_name</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_filename</span>
+                <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_firstlineno</span>
+                
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn_explicit</span><span class="p">(</span>
+                <span class="s">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s">&quot;&#39; should return a bool to&quot;</span> <span class="o">+</span>
+                <span class="s">&quot; indicate if the collision should be processed or not when&quot;</span> <span class="o">+</span>
+                <span class="s">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span> 
+                <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
         <span class="k">return</span> <span class="n">function_type</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
         
     
@@ -1083,13 +1104,19 @@
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span><span class="p">)</span>
     
     <span class="n">constraints</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_constraints</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the constraints this body is attached to.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the constraints this body is attached to. </span>
+<span class="s">        </span>
+<span class="s">        The body only keeps a weak referenece to the constraints and a </span>
+<span class="s">        live body wont prevent GC of the attached constraints&quot;&quot;&quot;</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="nf">_get_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">)</span>
     
     <span class="n">shapes</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_shapes</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the shapes attached to this body.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the shapes attached to this body.</span>
+<span class="s">        </span>
+<span class="s">        The body only keeps a weak reference to the shapes and a live </span>
+<span class="s">        body wont prevent GC of the attached shapes&quot;&quot;&quot;</span><span class="p">)</span>
     
 <div class="viewcode-block" id="Body.local_to_world"><a class="viewcode-back" href="../pymunk.html#pymunk.Body.local_to_world">[docs]</a>    <span class="k">def</span> <span class="nf">local_to_world</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert body local coordinates to world space coordinates</span>
@@ -1848,7 +1875,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

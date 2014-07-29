@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '4.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -92,15 +90,18 @@ pymunk located on level up.</p>
 <div class="section" id="install-pymunk">
 <h2>Install pymunk<a class="headerlink" href="#install-pymunk" title="Permalink to this headline">¶</a></h2>
 <p>pymunk can be installed with pip install:</p>
-<div class="highlight-python"><pre>&gt; pip install pymunk</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; pip install pymunk
+</pre></div>
 </div>
 <p>Another option is to install pymunk with one of the prebuilt installers if
 available (Windows) or you can use the standard setup.py way:</p>
-<div class="highlight-python"><pre>&gt; python setup.py install</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py install
+</pre></div>
 </div>
 <p>If you are on Mac OS X or Linux you will probably need to run as a privileged
 user; for example using sudo:</p>
-<div class="highlight-python"><pre>&gt; sudo python setup.py install</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; sudo python setup.py install
+</pre></div>
 </div>
 <p>Once installed you should be able to to import pymunk just as any other
 installed library. pymunk should also work just fine with virtualenv in case
@@ -119,19 +120,22 @@ included in the release you will need to compile Chipmunk yourself. Another
 reason to compile chipmunk is if you want to run it in release mode to get
 rid of the debug prints it generates.</p>
 <p>To compile Chipmunk:</p>
-<div class="highlight-python"><pre>&gt; python setup.py build_chipmunk</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py build_chipmunk
+</pre></div>
 </div>
 <p>On Windows you will need to use a gcc-compatible compiler. The precompiled
 included windows binaries were compiled with a GCC installed from the TDM-GCC
 package <a class="reference external" href="http://tdm-gcc.tdragon.net/">http://tdm-gcc.tdragon.net/</a> To set the compiler use the compiler
 argument:</p>
-<div class="highlight-python"><pre>&gt; python setup.py build_chipmunk --compiler=mingw32</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py build_chipmunk --compiler=mingw32
+</pre></div>
 </div>
 <p>To compile Chipmunk in Release mode use the release argument (Useful to
 avoid some debug prints and asserts):</p>
-<div class="highlight-python"><pre>&gt; python setup.py build_chipmunk --release</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py build_chipmunk --release
+</pre></div>
 </div>
-<div class="admonition-see-also admonition seealso">
+<div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
 <dt>Module <a class="reference internal" href="pymunkoptions.html#module-pymunkoptions" title="pymunkoptions"><tt class="xref py py-mod docutils literal"><span class="pre">pymunkoptions</span></tt></a></dt>
@@ -220,7 +224,7 @@ remove all debugs prints.</dd>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
