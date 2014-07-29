@@ -211,9 +211,9 @@ Body struct is created from inside the constructor method when a pymunk.Body is
 created. Because of this most pymunk objects uses a __del__() method that cleans 
 up the underlying c struct when the object is deleted. 
 
-Use of a __del__ method prevents the normal CPython GC (garbage collection) from 
-handling cyclic references since it wont know in which order to run the 
-__del__ methods. Some pymunk objects naturally keeps cyclic references to each 
+Use of a __del__() method prevents the normal CPython GC (garbage collection) 
+from handling cyclic references since it wont know in which order to run the 
+__del__() methods. Some pymunk objects naturally keeps cyclic references to each 
 other to make them easier to use. One such example is the body and shape object. 
 A shape is attached to a body, and a body has a set of all shapes that has been 
 attached. To make it easier for the user of the library these cyclic references 
