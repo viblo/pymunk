@@ -1054,13 +1054,19 @@ class Body(object):
         return set(self._constraints)
     
     constraints = property(_get_constraints, 
-        doc="""Get the constraints this body is attached to.""")
+        doc="""Get the constraints this body is attached to. 
+        
+        The body only keeps a weak referenece to the constraints and a 
+        live body wont prevent GC of the attached constraints""")
     
     def _get_shapes(self):
         return set(self._shapes)
     
     shapes = property(_get_shapes, 
-        doc="""Get the shapes attached to this body.""")
+        doc="""Get the shapes attached to this body.
+        
+        The body only keeps a weak reference to the shapes and a live 
+        body wont prevent GC of the attached shapes""")
     
     def local_to_world(self, v):
         """Convert body local coordinates to world space coordinates
