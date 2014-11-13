@@ -3,7 +3,7 @@ import os, os.path
 import platform
 import ctypes
 import distutils.cmd
-from distutils.core import setup
+from setuptools import setup
 
 class build_chipmunk(distutils.cmd.Command):
     description = """build chipmunk to a shared library"""
@@ -121,7 +121,9 @@ class build_chipmunk(distutils.cmd.Command):
         self.compile_chipmunk()
         
 # todo: add/remove/think about this list
-classifiers = ['Development Status :: 5 - Production/Stable'
+classifiers = [
+    'Development Status :: 5 - Production/Stable'
+    , 'Intended Audience :: Developers'
     , 'License :: OSI Approved :: MIT License'
     , 'Operating System :: OS Independent'
     , 'Programming Language :: Python'
@@ -134,6 +136,8 @@ from distutils.command import bdist
 bdist.bdist.format_commands += ['msi']
 bdist.bdist.format_command['msi'] = ('bdist_msi', "Microsoft Installer") 
 
+with(open('README.rst')) as f:
+    long_description = f.read()
 
 setup(
     name='pymunk'
@@ -142,7 +146,7 @@ setup(
     , author_email='vb@viblo.se'
     , version='4.0.0' # remember to change me for new versions!
     , description='pymunk is a easy-to-use pythonic 2d physics library built on top of Chipmunk'
-    , long_description=open('README.rst').read()
+    , long_description=long_description
     , packages=['pymunk','pymunkoptions']
     , package_data = {'pymunk': ['chipmunk.dll'
                                 , 'chipmunk64.dll'
@@ -152,4 +156,6 @@ setup(
     , license='MIT License'
     , classifiers=classifiers
     , cmdclass={'build_chipmunk':build_chipmunk}
-    )
+    , extras_require = {'dev': ['pyglet','pygame','sphinx','ctypeslib']}    
+    , test_suite="tests"
+)
