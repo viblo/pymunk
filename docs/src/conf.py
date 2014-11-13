@@ -200,7 +200,7 @@ html_style = "pymunk.css"
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-html_sidebars = {'**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
+html_sidebars = {'**': ['badges.html', 'globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
                  }
 
 #html_sidebars = {'[rieta]*': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
