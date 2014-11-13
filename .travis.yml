@@ -1,0 +1,18 @@
+language: python
+python: 2.7
+
+env:
+  - TOXENV=py34
+  - TOXENV=py33
+  - TOXENV=py32
+  - TOXENV=pypy3
+  - TOXENV=py27
+  - TOXENV=py26
+  - TOXENV=pypy
+  - TOXENV=docs
+
+install:
+  - pip install tox
+
+script: 
+  - tox
