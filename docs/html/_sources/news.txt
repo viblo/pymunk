@@ -2,6 +2,17 @@
 News 
 ****
 
+Travis-ci & tox
+---------------
+*Victor - 2014-11-13*
+
+**pymunk is now using travis-ci for continuous integration**
+
+In an effort to make testing and building of pymunk easier travis has been 
+configured to build pymunk. At the same time support for tox was added to 
+streamline local testing.
+
+
 Move to Github
 --------------
 *Victor - 2013-10-04*
