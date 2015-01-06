@@ -19,7 +19,6 @@ if len(sys.argv) > 1:
     sys.argv = sys.argv[1:]
     del sys
     
-    execfile(name)
-    
+    exec(compile(open(name, "rb").read(), name, 'exec'))
 else:
     print(__doc__)
