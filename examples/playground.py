@@ -36,7 +36,7 @@ class PhysicsDemo:
         
         ### Walls
         self.walls = [] 
-        self.create_wall_segments( map(Vec2d, [(100, 50), (500, 50)]) )
+        self.create_wall_segments( [(100, 50), (500, 50)] )
         
         ## Balls
         #balls = [createBall(space, (100,300))]
@@ -94,16 +94,15 @@ class PhysicsDemo:
         return ball_shape
 
     def create_box(self, pos, size = 10, mass = 5.0):
-        box_points = map(Vec2d, [(-size, -size), (-size, size), (size,size), (size, -size)])
+        box_points = [(-size, -size), (-size, size), (size,size), (size, -size)]
         return self.create_poly(box_points, mass = mass, pos = pos)
 
     def create_poly(self, points, mass = 5.0, pos = (0,0)):
           
-        moment = pm.moment_for_poly(mass,points, Vec2d(0,0))    
+        moment = pm.moment_for_poly(mass, points, Vec2d(0,0))    
         #moment = 1000
         body = pm.Body(mass, moment)
         body.position = Vec2d(pos)       
-        print body.position
         shape = pm.Poly(body, points, Vec2d(0,0))
         shape.friction = 0.5
         shape.collision_type = COLLTYPE_DEFAULT
@@ -114,7 +113,7 @@ class PhysicsDemo:
         """Create a number of wall segments connecting the points"""
         if len(points) < 2:
             return []
-        points = map(Vec2d, points)
+        points = list(map(Vec2d, points))
         for i in range(len(points)-1):
             v1 = Vec2d(points[i].x, points[i].y)
             v2 = Vec2d(points[i+1].x, points[i+1].y)
@@ -146,7 +145,7 @@ class PhysicsDemo:
         body = poly.body
         ps = poly.get_vertices()
         ps.append(ps[0])
-        ps = map(self.flipyv, ps)
+        ps = list(map(self.flipyv, ps))
         if u.is_clockwise(ps):
             color = THECOLORS["green"]
         else:
@@ -211,7 +210,7 @@ class PhysicsDemo:
                     #t = -10000
                     p = self.flipyv(Vec2d(event.pos))
                     self.balls.append(self.create_ball(p))
-                    print p
+                    
             elif event.type == MOUSEBUTTONDOWN and event.button == 3: #RMB
                 if pygame.key.get_mods() & KMOD_SHIFT:
                     pass
@@ -220,7 +219,6 @@ class PhysicsDemo:
                     p = self.flipyv(Vec2d(event.pos))
                     self.wall_points.append(p)
                 elif self.shape_to_remove is not None:
-                    print self.shape_to_remove
                     
                     self.balls = filter(lambda a: a != self.shape_to_remove, self.balls)
                     self.walls = filter(lambda a: a != self.shape_to_remove, self.walls)
