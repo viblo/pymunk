@@ -3,7 +3,10 @@ import os, os.path
 import platform
 import ctypes
 import distutils.cmd
-from setuptools import setup
+try:
+    from setuptools import setup
+except:
+    from distutils.core import setup
 
 class build_chipmunk(distutils.cmd.Command):
     description = """build chipmunk to a shared library"""
@@ -61,9 +64,9 @@ class build_chipmunk(distutils.cmd.Command):
         arch = ctypes.sizeof(ctypes.c_voidp) * 8
         
         if arch == 64 and platform.system() == 'Linux':
-            compiler_preargs += ['-m64', '-O3']
+            compiler_preargs += ['-m64', '-fPIC', '-O3']
         elif arch == 32 and platform.system() == 'Linux':
-            compiler_preargs += ['-m32', '-O3']
+            compiler_preargs += ['-m32', '-fPIC', '-O3']
         elif platform.system() == 'Darwin':
             #No -O3 on OSX. There's a bug in the clang compiler when using O3.
             compiler_preargs += ['-arch', 'i386', '-arch', 'x86_64']
