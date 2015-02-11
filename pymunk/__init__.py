@@ -64,13 +64,13 @@ from .vec2d import Vec2d
 
 from pymunk.constraint import *
 
-version = "4.0.0"
+version = "5.0.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary 
-distribution (i.e. not in a checked-out copy from svn).
+distribution (i.e. not in a checked-out copy from git).
 """
 
-chipmunk_version = "%sR%s" % (cp.cpVersionString.value.decode(), '3bdf1b7b3c')
+chipmunk_version = "%sR%s" % (cp.cpVersionString.value.decode(), 'd7603e392782079b691d7948405af2dd66648a7a')
 """The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not 
 contain any breaking API changes.
@@ -79,11 +79,11 @@ This property does not show a valid value in the compiled documentation, only
 when you actually import pymunk and do pymunk.chipmunk_version
 
 The string is in the following format:
-<cpVersionString>R<svn or github commit of chipmunk>
-where cpVersionString is a version string set by Chipmunk and the svn version 
-corresponds to the svn version of the chipmunk source files included with 
-pymunk or the github commit hash. If the Chipmunk version is a release then 
-the second part will be empty
+<cpVersionString>R<github commit of chipmunk>
+where cpVersionString is a version string set by Chipmunk and the git commit
+hash corresponds to the git hash of the chipmunk source from
+github.com/slembcke/Chipmunk2D included with pymunk. If the Chipmunk version 
+is a release then the second part will be empty
 
 .. note:: 
     This is also the version of the Chipmunk source files included in the 

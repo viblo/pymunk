@@ -1,7 +1,31 @@
+/* Copyright (c) 2013 Scott Lembcke and Howling Moon Software
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #ifdef CHIPMUNK_FFI
 
 // Create non static inlined copies of Chipmunk functions, useful for working with dynamic FFIs
 // This file should only be included in chipmunk.c
+
+// TODO: get rid of the reliance on static inlines.
+// They make a mess for FFIs.
 
 #ifdef _MSC_VER
  #if _MSC_VER >= 1600
@@ -35,7 +59,6 @@ MAKE_REF(cpvlengthsq);
 MAKE_REF(cpvlength);
 MAKE_REF(cpvlerp);
 MAKE_REF(cpvnormalize);
-MAKE_REF(cpvnormalize_safe);
 MAKE_REF(cpvclamp);
 MAKE_REF(cpvlerpconst);
 MAKE_REF(cpvdist);
@@ -62,92 +85,6 @@ MAKE_REF(cpBBSegmentQuery);
 MAKE_REF(cpBBIntersectsSegment);
 MAKE_REF(cpBBClampVect);
 
-MAKE_REF(cpBodyGetMass);
-MAKE_REF(cpBodyGetMoment);
-MAKE_REF(cpBodyGetPos);
-MAKE_REF(cpBodyGetAngle);
-MAKE_REF(cpBodyGetRot);
-MAKE_PROPERTIES_REF(cpBody, Vel);
-MAKE_PROPERTIES_REF(cpBody, Force);
-MAKE_PROPERTIES_REF(cpBody, AngVel);
-MAKE_PROPERTIES_REF(cpBody, Torque);
-MAKE_PROPERTIES_REF(cpBody, VelLimit);
-MAKE_PROPERTIES_REF(cpBody, AngVelLimit);
-MAKE_PROPERTIES_REF(cpBody, UserData);
-MAKE_REF(cpBodyIsSleeping);
-MAKE_REF(cpBodyIsStatic);
-MAKE_REF(cpBodyIsRogue);
-MAKE_REF(cpBodyLocal2World);
-MAKE_REF(cpBodyWorld2Local);
-MAKE_REF(cpBodyKineticEnergy);
-
-MAKE_REF(cpShapeGetBB);
-MAKE_PROPERTIES_REF(cpShape, Body);
-MAKE_PROPERTIES_REF(cpShape, Sensor);
-MAKE_PROPERTIES_REF(cpShape, Elasticity);
-MAKE_PROPERTIES_REF(cpShape, Friction);
-MAKE_PROPERTIES_REF(cpShape, SurfaceVelocity);
-MAKE_PROPERTIES_REF(cpShape, UserData);
-MAKE_PROPERTIES_REF(cpShape, CollisionType);
-MAKE_PROPERTIES_REF(cpShape, Group);
-MAKE_PROPERTIES_REF(cpShape, Layers);
-
-MAKE_REF(cpArbiterGetShapes);
-MAKE_REF(cpArbiterGetBodies);
-MAKE_REF(cpArbiterIsFirstContact);
-MAKE_REF(cpArbiterGetCount);
-
-MAKE_REF(cpConstraintGetA);
-MAKE_REF(cpConstraintGetB);
-MAKE_PROPERTIES_REF(cpConstraint, MaxForce);
-MAKE_PROPERTIES_REF(cpConstraint, ErrorBias);
-MAKE_PROPERTIES_REF(cpConstraint, MaxBias);
-MAKE_PROPERTIES_REF(cpConstraint, UserData);
-MAKE_REF(cpConstraintGetImpulse);
-
-MAKE_PROPERTIES_REF(cpDampedRotarySpring, RestAngle);
-MAKE_PROPERTIES_REF(cpDampedRotarySpring, Stiffness);
-MAKE_PROPERTIES_REF(cpDampedRotarySpring, Damping);
-//MAKE_PROPERTIES_REF(cpDampedRotarySpring, SpringTorqueFunc);
-
-MAKE_PROPERTIES_REF(cpDampedSpring, Anchr1);
-MAKE_PROPERTIES_REF(cpDampedSpring, Anchr2);
-MAKE_PROPERTIES_REF(cpDampedSpring, RestLength);
-MAKE_PROPERTIES_REF(cpDampedSpring, Stiffness);
-MAKE_PROPERTIES_REF(cpDampedSpring, Damping);
-//MAKE_PROPERTIES_REF(cpDampedSpring, SpringForceFunc);
-
-MAKE_PROPERTIES_REF(cpGearJoint, Phase);
-MAKE_REF(cpGearJointGetRatio);
-
-MAKE_PROPERTIES_REF(cpGrooveJoint, Anchr2);
-MAKE_REF(cpGrooveJointGetGrooveA);
-MAKE_REF(cpGrooveJointGetGrooveB);
-
-MAKE_PROPERTIES_REF(cpPinJoint, Anchr1);
-MAKE_PROPERTIES_REF(cpPinJoint, Anchr2);
-MAKE_PROPERTIES_REF(cpPinJoint, Dist);
-
-MAKE_PROPERTIES_REF(cpPivotJoint, Anchr1);
-MAKE_PROPERTIES_REF(cpPivotJoint, Anchr2);
-
-MAKE_PROPERTIES_REF(cpRatchetJoint, Angle);
-MAKE_PROPERTIES_REF(cpRatchetJoint, Phase);
-MAKE_PROPERTIES_REF(cpRatchetJoint, Ratchet);
-
-MAKE_PROPERTIES_REF(cpRotaryLimitJoint, Min);
-MAKE_PROPERTIES_REF(cpRotaryLimitJoint, Max);
-
-MAKE_PROPERTIES_REF(cpSimpleMotor, Rate);
-
-MAKE_PROPERTIES_REF(cpSlideJoint, Anchr1);
-MAKE_PROPERTIES_REF(cpSlideJoint, Anchr2);
-MAKE_PROPERTIES_REF(cpSlideJoint, Min);
-MAKE_PROPERTIES_REF(cpSlideJoint, Max);
-
-MAKE_REF(cpSegmentQueryHitPoint);
-MAKE_REF(cpSegmentQueryHitDist);
-
 MAKE_REF(cpSpatialIndexDestroy);
 MAKE_REF(cpSpatialIndexCount);
 MAKE_REF(cpSpatialIndexEach);
@@ -159,19 +96,5 @@ MAKE_REF(cpSpatialIndexReindexObject);
 MAKE_REF(cpSpatialIndexSegmentQuery);
 MAKE_REF(cpSpatialIndexQuery);
 MAKE_REF(cpSpatialIndexReindexQuery);
-
-MAKE_PROPERTIES_REF(cpSpace, Iterations);
-MAKE_PROPERTIES_REF(cpSpace, Gravity);
-MAKE_PROPERTIES_REF(cpSpace, Damping);
-MAKE_PROPERTIES_REF(cpSpace, IdleSpeedThreshold);
-MAKE_PROPERTIES_REF(cpSpace, SleepTimeThreshold);
-MAKE_PROPERTIES_REF(cpSpace, CollisionSlop);
-MAKE_PROPERTIES_REF(cpSpace, CollisionBias);
-MAKE_PROPERTIES_REF(cpSpace, CollisionPersistence);
-MAKE_PROPERTIES_REF(cpSpace, EnableContactGraph);
-MAKE_PROPERTIES_REF(cpSpace, UserData);
-MAKE_REF(cpSpaceGetStaticBody);
-MAKE_REF(cpSpaceGetCurrentTimeStep);
-MAKE_REF(cpSpaceIsLocked);
 
 #endif

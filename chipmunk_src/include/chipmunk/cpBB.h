@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Scott Lembcke
+/* Copyright (c) 2013 Scott Lembcke and Howling Moon Software
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,6 +19,12 @@
  * SOFTWARE.
  */
 
+#ifndef CHIPMUNK_BB_H
+#define CHIPMUNK_BB_H
+
+#include "chipmunk_types.h"
+#include "cpVect.h"
+
 /// @defgroup cpBBB cpBB
 /// Chipmunk's axis-aligned 2D bounding box type along with a few handy routines.
 /// @{
@@ -35,10 +41,17 @@ static inline cpBB cpBBNew(const cpFloat l, const cpFloat b, const cpFloat r, co
 	return bb;
 }
 
+/// Constructs a cpBB centered on a point with the given extents (half sizes).
+static inline cpBB
+cpBBNewForExtents(const cpVect c, const cpFloat hw, const cpFloat hh)
+{
+	return cpBBNew(c.x - hw, c.y - hh, c.x + hw, c.y + hh);
+}
+
 /// Constructs a cpBB for a circle with the given position and radius.
 static inline cpBB cpBBNewForCircle(const cpVect p, const cpFloat r)
 {
-	return cpBBNew(p.x - r, p.y - r, p.x + r, p.y + r);
+	return cpBBNewForExtents(p, r, r);
 }
 
 /// Returns true if @c a and @c b intersect.
@@ -102,6 +115,9 @@ static inline cpFloat cpBBMergedArea(cpBB a, cpBB b)
 static inline cpFloat cpBBSegmentQuery(cpBB bb, cpVect a, cpVect b)
 {
 	cpFloat idx = 1.0f/(b.x - a.x);
+#ifdef _MSC_VER
+#pragma warning(disable: 4056)
+#endif
 	cpFloat tx1 = (bb.l == a.x ? -INFINITY : (bb.l - a.x)*idx);
 	cpFloat tx2 = (bb.r == a.x ?  INFINITY : (bb.r - a.x)*idx);
 	cpFloat txmin = cpfmin(tx1, tx2);
@@ -110,6 +126,9 @@ static inline cpFloat cpBBSegmentQuery(cpBB bb, cpVect a, cpVect b)
 	cpFloat idy = 1.0f/(b.y - a.y);
 	cpFloat ty1 = (bb.b == a.y ? -INFINITY : (bb.b - a.y)*idy);
 	cpFloat ty2 = (bb.t == a.y ?  INFINITY : (bb.t - a.y)*idy);
+#ifdef _MSC_VER
+#pragma warning(default: 4056)
+#endif
 	cpFloat tymin = cpfmin(ty1, ty2);
 	cpFloat tymax = cpfmax(ty1, ty2);
 	
@@ -136,8 +155,33 @@ cpBBClampVect(const cpBB bb, const cpVect v)
 	return cpv(cpfclamp(v.x, bb.l, bb.r), cpfclamp(v.y, bb.b, bb.t));
 }
 
-// TODO edge case issue
 /// Wrap a vector to a bounding box.
-cpVect cpBBWrapVect(const cpBB bb, const cpVect v); // wrap a vector to a bbox
+static inline cpVect
+cpBBWrapVect(const cpBB bb, const cpVect v)
+{
+	cpFloat dx = cpfabs(bb.r - bb.l);
+	cpFloat modx = cpfmod(v.x - bb.l, dx);
+	cpFloat x = (modx > 0.0f) ? modx : modx + dx;
+	
+	cpFloat dy = cpfabs(bb.t - bb.b);
+	cpFloat mody = cpfmod(v.y - bb.b, dy);
+	cpFloat y = (mody > 0.0f) ? mody : mody + dy;
+	
+	return cpv(x + bb.l, y + bb.b);
+}
+
+/// Returns a bounding box offseted by @c v.
+static inline cpBB
+cpBBOffset(const cpBB bb, const cpVect v)
+{
+	return cpBBNew(
+		bb.l + v.x,
+		bb.b + v.y,
+		bb.r + v.x,
+		bb.t + v.y
+	);
+}
 
 ///@}
+
+#endif

@@ -35,7 +35,7 @@ class build_chipmunk(distutils.cmd.Command):
         
         compiler = cc.new_compiler(compiler=self.compiler)
 
-        source_folders = ['chipmunk_src', os.path.join('chipmunk_src','constraints')]
+        source_folders = [os.path.join('chipmunk_src','src')]
         sources = []
         for folder in source_folders:
             for fn in os.listdir(folder):
@@ -45,7 +45,7 @@ class build_chipmunk(distutils.cmd.Command):
                 elif fn_path[-1] == 'o':
                     os.remove(fn_path)
                     
-        include_folders = [os.path.join('chipmunk_src','include','chipmunk')]
+        include_folders = [os.path.join('chipmunk_src','include')]
         
         compiler_preargs = ['-std=gnu99', 
                             '-ffast-math', 
@@ -144,7 +144,7 @@ setup(
     , url='http://www.pymunk.org'
     , author='Victor Blomqvist'
     , author_email='vb@viblo.se'
-    , version='4.0.0' # remember to change me for new versions!
+    , version='5.0.0' # remember to change me for new versions!
     , description='pymunk is a easy-to-use pythonic 2d physics library built on top of Chipmunk'
     , long_description=long_description
     , packages=['pymunk','pymunkoptions']
