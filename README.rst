@@ -19,6 +19,13 @@ using chipmunk 7.0 rev d7603e3927 (source included)
 
 :Chipmunk: http://chipmunk-physics.net/
 
+TODO v7
+-------
+- Think about split between pymunk.util and pymunk modules
+- Update examples with new api
+- do we still need pymunk.inf?
+- replace references to Chipmunk in api docs to references to pymunk
+- http://code.activestate.com/recipes/500261/ for pickle of vec2d
 
 How to Use
 ----------
@@ -74,6 +81,7 @@ Dependencies / Requirements
 
 * pygame (optional, you need it to run the pygame based demos)
 * pyglet (optional, you need it to run the pyglet based demos)
+* setuptools (optional, for some uses of setup.py)
 * sphinx (optional, you need it to build documentation)
 * ctypeslib & GCC_XML (optional, you need them to generate new bindings)
 

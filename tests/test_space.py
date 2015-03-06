@@ -29,57 +29,103 @@ class UnitTestSpace(unittest.TestCase):
         del self.s1, self.s2       
     
     def testProperties(self):
-        s = p.Space(15)
+        s = p.Space()
+        
+        self.assertEqual(s.iterations, 10)
+        s.iterations = 15
         self.assertEqual(s.iterations, 15)
+        
+        self.assertEqual(s.gravity, (0,0))
         s.gravity = 10,2
+        self.assertEqual(s.gravity, (10,2))
         self.assertEqual(s.gravity.x, 10)
+        
+        self.assertEqual(s.damping, 1)
         s.damping = 3
         self.assertEqual(s.damping, 3)
         
+        self.assertEqual(s.idle_speed_threshold, 0)
         s.idle_speed_threshold = 4
         self.assertEqual(s.idle_speed_threshold, 4)
+        
+        self.assertEqual(str(s.sleep_time_threshold), 'inf')
         s.sleep_time_threshold = 5
         self.assertEqual(s.sleep_time_threshold, 5)
+        
+        self.assertAlmostEqual(s.collision_slop, 0.1)
         s.collision_slop = 6
         self.assertEqual(s.collision_slop, 6)
         
+        self.assertAlmostEqual(s.collision_bias, 0.0017970074436)
+        s.collision_bias = 0.2
+        self.assertEqual(s.collision_bias, 0.2)
         
-        s.collision_bias = 8
-        self.assertEqual(s.collision_bias, 8)
+        self.assertEqual(s.collision_persistence, 3)
         s.collision_persistence = 9
         self.assertEqual(s.collision_persistence, 9)
         
-        self.assertEqual(s.enable_contact_graph, False)
-        s.enable_contact_graph = True
-        self.assertEqual(s.enable_contact_graph, True)
+        self.assertEqual(s.current_time_step, 0)
+        s.step(0.1)
+        self.assertEqual(s.current_time_step, 0.1)
         
+        self.assertTrue(s.static_body != None)
+        self.assertEqual(s.static_body.body_type, p.Body.STATIC)
     
     def testAddRemove(self):
+        s = p.Space()
         
-        s = self.s
+        self.assertEqual(s.bodies, [])
+        self.assertEqual(s.shapes, [])
         
-        s.remove(self.b1)
-        s.add(self.b1)
-        b = p.Body()
-        s3 = p.Circle(b,2)
-        s.add(s3)
-        b3 = p.Body(1,1)
-        s.add(b3)
-        
-        self.assertEqual(len(s.bodies), 3)
-        self.assertEqual(len(s.shapes), 3)
-        
-        s.remove(self.s2,self.b1,self.s1)
-        s.remove(s3)
-        self.assertEqual(len(s.bodies), 2)
-        self.assertEqual(len(s.shapes), 0)
-        
-    def testAddInStep(self):
-        s = self.s
         b = p.Body(1,2)
-        c = p.Circle(b,2)
+        s.add(b)
+        self.assertEqual(s.bodies, [b])
+        self.assertEqual(s.shapes, [])
+        
+        c1 = p.Circle(b, 10)
+        s.add(c1)
+        self.assertEqual(s.bodies, [b])
+        self.assertEqual(s.shapes, [c1])
+        
+        c2 = p.Circle(b, 15)
+        s.add(c2)
+        self.assertEqual(s.shapes, [c1,c2])
+        
+        s.remove(c1)
+        self.assertEqual(s.shapes, [c2])
+        
+        s.remove(c2, b)
+        self.assertEqual(s.bodies, [])
+        self.assertEqual(s.shapes, [])
+        
+        s.add(c2, b)
+        self.assertEqual(s.bodies, [b])
+        self.assertEqual(s.shapes, [c2])
+                        
+    def testAddRemoveInStep(self):
+        s = p.Space()
+        
+        b1 = p.Body(1, 2)
+        c1 = p.Circle(b1, 2)
+        
+        b2 = p.Body(1, 2)
+        c2 = p.Circle(b2, 2)
+        
+        s.add(b1, b2, c1, c2)
+        
+        b = p.Body(1, 2)
+        c = p.Circle(b, 2)
         def pre_solve(space, arbiter):
-            space.add(b,c)
+            print "XXX"
+            space.add(b, c)
+            self.assertTrue(b in s.bodies)
+            self.assertTrue(c in s.shapes)
+            
+            space.remove(b, c)
+            self.assertTrue(b not in s.bodies)
+            self.assertTrue(c not in s.shapes)
+            
+            space.add(b, c)
             return True
         
         s.add_collision_handler(0, 0, pre_solve = pre_solve)

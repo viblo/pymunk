@@ -11,14 +11,28 @@ class UnitTestGeneral(unittest.TestCase):
         p.inf
         p.chipmunk_version
         
+    def testMomentHelpers(self):
+        m = p.moment_for_circle(1,2,3,(1,2))
+        self.assertAlmostEqual(m, 11.5)
+        
+        m = p.moment_for_segment(1, (-10,0), (10,0), 1)
+        self.assertAlmostEqual(m, 40.6666666666)
+        
+        m = p.moment_for_poly(1, [(0,0), (10,10), (10,0)], (1,2), 3)
+        self.assertAlmostEqual(m, 98.3333333333)
+        
         m = p.moment_for_box(1, 2, 3)
         self.assertAlmostEqual(m, 1.08333333333)
         
-        m = p.moment_for_segment(1, Vec2d(-1,0), Vec2d(1,0))
-        self.assertAlmostEqual(m, 0.33333333333)
+    def testAreaHelpers(self):
+        a = p.area_for_circle(1,2)
+        self.assertAlmostEqual(a, 9.4247779607)
         
-           
+        a = p.area_for_segment((-10,0), (10,0), 3)
+        self.assertAlmostEqual(a, 148.27433388)
         
+        a = p.area_for_poly([(0,0), (10,10), (10,0)], 3)
+        self.assertAlmostEqual(a, 80.700740753)
         
 class UnitTestBB(unittest.TestCase):
     def setUp(self):
@@ -39,17 +53,29 @@ class UnitTestBB(unittest.TestCase):
         self.assertEqual(bb_defined.bottom, -5)
         self.assertEqual(bb_defined.right, 15)
         self.assertEqual(bb_defined.top, 20)
-            
+        
+        bb_circle = p.BB.newForCircle((3,3),3)
+        self.assertEqual(bb_circle.left, 0)
+        self.assertEqual(bb_circle.bottom, 0)
+        self.assertEqual(bb_circle.right, 6)
+        self.assertEqual(bb_circle.top, 6)
+        
     def testMethods(self):
         bb1 = p.BB(0,0,10,10)
         bb2 = p.BB(10,10,20,20)
         bb3 = p.BB(4,4,5,5)
+        bb4 = p.BB(2,0,10,10)
+        
         v1 = Vec2d(1,1)
         v2 = Vec2d(100,5)
         self.assert_(bb1.intersects(bb2))
+        self.assertFalse(bb3.intersects(bb2))
 
-        self.assertFalse(bb1.contains(bb2))
+        self.assert_(bb1.intersects_segment(v1,v2))
+        self.assertFalse(bb3.intersects_segment(v1,v2))
+        
         self.assert_(bb1.contains(bb3))
+        self.assertFalse(bb1.contains(bb2))
         
         self.assert_(bb1.contains_vect(v1))
         self.assertFalse(bb1.contains_vect(v2))
@@ -59,10 +85,65 @@ class UnitTestBB(unittest.TestCase):
         self.assertEqual(bb1.expand(v1), bb1)
         self.assertEqual(bb1.expand(-v2), p.BB(-100,-5,10,10))
         
+        self.assertEqual(bb1.center(), (5,5))
+        self.assertEqual(bb1.area(), 100)
+        
+        self.assertEqual(bb1.merged_area(bb2), 400)
+        
+        self.assertEqual(bb2.segment_query(v1, v2), p.inf)
+        self.assertEqual(bb1.segment_query((-1,1), (99,1)), 0.01)
+        
+        
         self.assertEqual(bb1.clamp_vect(v2), Vec2d(10,5))
         
         self.assertEqual(bb1.wrap_vect((11,11)), (1,1))
-
+        
+class UnitTestShapeFilter(unittest.TestCase):
+    def testInit(self):
+        f = p.ShapeFilter()
+        self.assertEqual(f.group, 0)
+        self.assertEqual(f.categories, 0)
+        self.assertEqual(f.mask, 0)
+        
+        f = p.ShapeFilter(1,2,3)
+        self.assertEqual(f.group, 1)
+        self.assertEqual(f.categories, 2)
+        self.assertEqual(f.mask, 3)
+        
+    def testEq(self):
+        f1 = p.ShapeFilter(1,2,3)
+        f2 = p.ShapeFilter(1,2,3)
+        f3 = p.ShapeFilter(2,3,4)
+        self.assertTrue(f1 == f2)
+        self.assertTrue(f1 != f3)
+        
+class UnitTestTransform(unittest.TestCase):
+    def testInit(self):
+        t = p.Transform()
+        self.assertEqual(t.a, 0)
+        self.assertEqual(t.b, 0)
+        self.assertEqual(t.c, 0)
+        self.assertEqual(t.d, 0)
+        self.assertEqual(t.tx, 0)
+        self.assertEqual(t.ty, 0)
+        
+        t = p.Transform(1,2,3,4,5,6)
+        self.assertEqual(t.a, 1)
+        self.assertEqual(t.b, 2)
+        self.assertEqual(t.c, 3)
+        self.assertEqual(t.d, 4)
+        self.assertEqual(t.tx, 5)
+        self.assertEqual(t.ty, 6)
+        self.assertEqual(str(t), "Transform(1.0,2.0,3.0,4.0,5.0,6.0)")
+        
+    def testIdentity(self):
+        t = p.Transform.identity()
+        self.assertEqual(t.a, 1)
+        self.assertEqual(t.b, 0)
+        self.assertEqual(t.c, 0)
+        self.assertEqual(t.d, 1)
+        self.assertEqual(t.tx, 0)
+        self.assertEqual(t.ty, 0)
         
 class UnitTestBugs(unittest.TestCase):
     def testManyBoxCrash(self):
