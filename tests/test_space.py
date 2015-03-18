@@ -244,10 +244,11 @@ class UnitTestSpace(unittest.TestCase):
         
         self.s.add(c)
         
-        hit = self.s.point_query_first( (-50,-55) )
-        self.assertEqual(hit, c)
-        hits = self.s.point_query( (-50,-55) )
-        self.assertEqual(hits[0], c)
+        hit = self.s.point_query_nearest( (-50,-55), 0, p.ShapeFilter() )
+        self.assertEqual(hit.shape, c)
+        
+        hits = self.s.point_query( (-50,-55), 0, p.ShapeFilter())
+        self.assertEqual(hits[0].shape, c)
     
     def testReindexStatic(self):
         b = p.Body()
@@ -366,9 +367,9 @@ class UnitTestSpace(unittest.TestCase):
         
         self.s.add(c)
         
-        hit = self.s.segment_query_first( (-70,-50), (-30, -50) )
+        hit = self.s.segment_query_first( (-70,-50), (-30, -50), 0, p.ShapeFilter() )
         self.assertEqual(hit.shape, c)
-        hits = self.s.segment_query( (-70,-50), (-30, -50) )
+        hits = self.s.segment_query( (-70,-50), (-30, -50), 0, p.ShapeFilter() )
         self.assertEqual(hits[0].shape, c)
     
     def testCollisionHandlerBegin(self):
