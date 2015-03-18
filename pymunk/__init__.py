@@ -642,7 +642,7 @@ class Space(object):
     def point_query(self, point, max_distance, shape_filter):
         """Query space at point for shapes within the given distance range.
         
-        Return a list of `ShapeFilter`.
+        Return a list of `PointQueryInfo`.
         
         The filter is applied to the query and follows the same rules as the 
         collision detection. Sensor shapes are included. If a maxDistance of 
@@ -683,26 +683,25 @@ class Space(object):
         return shape
            
     def point_query_nearest(self, point, max_distance, shape_filter):
-        """Query space at point filtering out matches with the given layers 
-        and group. Return nearest of all shapes within max_distance of the 
-        point.
+        """Query space at point the nearest shape within the given distance 
+        range.
         
-        If you don't want to filter out any matches, use -1 for the layers 
-        and 0 as the group.
+        Return a `PointQueryInfo`. PointQueryInfo.shape will be None in case
+        no object was found.
+        
+        The filter is applied to the query and follows the same rules as the 
+        collision detection. Sensor shapes are included. If a maxDistance of 
+        0.0 is used, the point must lie inside a shape. Negative max_distance 
+        is also allowed meaning that the point must be a under a certain 
+        depth within a shape to be considered a match.
         
         :Parameters:    
             point : (x,y) or `Vec2d`
                 Define where to check for collision in the space.
-            max_distance : int
-                Maximumm distance of shape from point
-            layers : int
-                Only pick shapes matching the bit mask. i.e. 
-                (layers & shape.layers) != 0
-            group : int
-                Only pick shapes not in this group.
-        
-        :Return: 
-            dict(shape=`Shape`, distance = distance, point = Vec2d)
+            max_distnace : int
+                Match only within this distance.
+            shape_filter : ShapeFilter
+                Only pick shapes matching the filter.
         """
         info = cp.cpPointQueryInfo()
         info_p = ct.POINTER(cp.cpPointQueryInfo)(info)

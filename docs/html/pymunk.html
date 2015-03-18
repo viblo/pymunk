@@ -101,7 +101,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x106686610&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x10f280650&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -287,26 +287,40 @@ full shape. Returns a list of shapes.</p>
 <dt id="pymunk.Space.collision_bias">
 <tt class="descname">collision_bias</tt><a class="headerlink" href="#pymunk.Space.collision_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines how fast overlapping shapes are pushed apart.</p>
-<p>Expressed as a fraction of the error remaining after each second. 
-Defaults to pow(1.0 - 0.1, 60.0) meaning that pymunk fixes 10% of 
-overlap each frame at 60Hz.</p>
+<p>Pymunk allows fast moving objects to overlap, then fixes the overlap 
+over time. Overlapping objects are unavoidable even if swept 
+collisions are supported, and this is an efficient and stable way to 
+deal with overlapping objects. The bias value controls what 
+percentage of overlap remains unfixed after a second and defaults 
+to ~0.2%. Valid values are in the range from 0 to 1, but using 0 is 
+not recommended for stability reasons. The default value is 
+calculated as cpfpow(1.0f - 0.1f, 60.0f) meaning that pymunk attempts 
+to correct 10% of error ever 1/60th of a second.</p>
+<dl class="docutils">
+<dt>..Note:: </dt>
+<dd>Very very few games will need to change this value.</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.Space.collision_persistence">
 <tt class="descname">collision_persistence</tt><a class="headerlink" href="#pymunk.Space.collision_persistence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Number of frames that contact information should persist.</p>
-<p>Defaults to 3. There is probably never a reason to change this value.</p>
+<dd><p>The number of frames the space keeps collision solutions 
+around for.</p>
+<p>Helps prevent jittering contacts from getting worse. This defaults 
+to 3.</p>
+<dl class="docutils">
+<dt>..Note::</dt>
+<dd>Very very few games will need to change this value.</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.Space.collision_slop">
 <tt class="descname">collision_slop</tt><a class="headerlink" href="#pymunk.Space.collision_slop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Amount of allowed penetration.</p>
-<p>Used to reduce oscillating contacts and keep the collision cache warm. 
-Defaults to 0.1. If you have poor simulation quality, increase this 
-number as much as possible without allowing visible amounts of 
-overlap.</p>
+<dd><p>Amount of overlap between shapes that is allowed.</p>
+<p>To improve stability, set this as high as you can without noticable 
+overlapping. It defaults to 0.1.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -316,21 +330,20 @@ overlap.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pymunk.Space.current_time_step">
+<tt class="descname">current_time_step</tt><a class="headerlink" href="#pymunk.Space.current_time_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the current (if you are in a callback from 
+Space.step()) or most recent (outside of a Space.step() call) 
+timestep.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pymunk.Space.damping">
 <tt class="descname">damping</tt><a class="headerlink" href="#pymunk.Space.damping" title="Permalink to this definition">¶</a></dt>
 <dd><p>Amount of simple damping to apply to the space.</p>
 <p>A value of 0.9 means that each body will lose 10% of its velocity per 
 second. Defaults to 1. Like gravity, it can be overridden on a per 
 body basis.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.Space.enable_contact_graph">
-<tt class="descname">enable_contact_graph</tt><a class="headerlink" href="#pymunk.Space.enable_contact_graph" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rebuild the contact graph during each step.</p>
-<p>Must be enabled to use the get_arbiter() function on Body
-Disabled by default for a small performance boost. Enabled implicitly 
-when the sleeping feature is enabled.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -344,8 +357,8 @@ custom integration functions.</p>
 <dl class="attribute">
 <dt id="pymunk.Space.idle_speed_threshold">
 <tt class="descname">idle_speed_threshold</tt><a class="headerlink" href="#pymunk.Space.idle_speed_threshold" title="Permalink to this definition">¶</a></dt>
-<dd><p>Speed threshold for a body to be considered idle.
-The default value of 0 means to let the space guess a good threshold 
+<dd><p>Speed threshold for a body to be considered idle.</p>
+<p>The default value of 0 means the space estimates a good threshold 
 based on gravity.</p>
 </dd></dl>
 
@@ -369,83 +382,15 @@ sufficient for most simple games.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pymunk.Space.nearest_point_query">
-<tt class="descname">nearest_point_query</tt><big>(</big><em>point</em>, <em>max_distance</em>, <em>layers=-1</em>, <em>group=0</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.nearest_point_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.nearest_point_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query space at point filtering out matches with the given layers 
-and group. Return a list of all shapes within max_distance of the point.</p>
-<p>If you don&#8217;t want to filter out any matches, use -1 for the layers 
-and 0 as the group.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt>point <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
-<dd><p class="first last">Define where to check for collision in the space.</p>
-</dd>
-<dt>max_distance <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Maximumm distance of shape from point</p>
-</dd>
-<dt>layers <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes matching the bit mask. i.e. 
-(layers &amp; shape.layers) != 0</p>
-</dd>
-<dt>group <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes not in this group.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return:</th><td class="field-body"><p class="first last">[dict(shape=`Shape`, distance = distance, point = Vec2d)]</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymunk.Space.nearest_point_query_nearest">
-<tt class="descname">nearest_point_query_nearest</tt><big>(</big><em>point</em>, <em>max_distance</em>, <em>layers=-1</em>, <em>group=0</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.nearest_point_query_nearest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.nearest_point_query_nearest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query space at point filtering out matches with the given layers 
-and group. Return nearest of all shapes within max_distance of the 
-point.</p>
-<p>If you don&#8217;t want to filter out any matches, use -1 for the layers 
-and 0 as the group.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt>point <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
-<dd><p class="first last">Define where to check for collision in the space.</p>
-</dd>
-<dt>max_distance <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Maximumm distance of shape from point</p>
-</dd>
-<dt>layers <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes matching the bit mask. i.e. 
-(layers &amp; shape.layers) != 0</p>
-</dd>
-<dt>group <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes not in this group.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return:</th><td class="field-body"><p class="first last">dict(shape=`Shape`, distance = distance, point = Vec2d)</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pymunk.Space.point_query">
-<tt class="descname">point_query</tt><big>(</big><em>point</em>, <em>layers=-1</em>, <em>group=0</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.point_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.point_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query space at point filtering out matches with the given layers 
-and group. Return a list of found shapes.</p>
-<p>If you don&#8217;t want to filter out any matches, use -1 for the layers 
-and 0 as the group.</p>
+<tt class="descname">point_query</tt><big>(</big><em>point</em>, <em>max_distance</em>, <em>shape_filter</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.point_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.point_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query space at point for shapes within the given distance range.</p>
+<p>Return a list of <cite>PointQueryInfo</cite>.</p>
+<p>The filter is applied to the query and follows the same rules as the 
+collision detection. Sensor shapes are included. If a maxDistance of 
+0.0 is used, the point must lie inside a shape. Negative max_distance 
+is also allowed meaning that the point must be a under a certain 
+depth within a shape to be considered a match.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -454,12 +399,11 @@ and 0 as the group.</p>
 <dt>point <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
 <dd><p class="first last">Define where to check for collision in the space.</p>
 </dd>
-<dt>layers <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes matching the bit mask. i.e. 
-(layers &amp; shape.layers) != 0</p>
+<dt>max_distnace <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Match only within this distance.</p>
 </dd>
-<dt>group <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes not in this group.</p>
+<dt>shape_filter <span class="classifier-delimiter">:</span> <span class="classifier">ShapeFilter</span></dt>
+<dd><p class="first last">Only pick shapes matching the filter.</p>
 </dd>
 </dl>
 </td>
@@ -469,10 +413,17 @@ and 0 as the group.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pymunk.Space.point_query_first">
-<tt class="descname">point_query_first</tt><big>(</big><em>point</em>, <em>layers=-1</em>, <em>group=0</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.point_query_first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.point_query_first" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query space at point and return the first shape found matching the 
-given layers and group. Returns None if no shape was found.</p>
+<dt id="pymunk.Space.point_query_nearest">
+<tt class="descname">point_query_nearest</tt><big>(</big><em>point</em>, <em>max_distance</em>, <em>shape_filter</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.point_query_nearest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.point_query_nearest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query space at point the nearest shape within the given distance 
+range.</p>
+<p>Return a <cite>PointQueryInfo</cite>. PointQueryInfo.shape will be None in case
+no object was found.</p>
+<p>The filter is applied to the query and follows the same rules as the 
+collision detection. Sensor shapes are included. If a maxDistance of 
+0.0 is used, the point must lie inside a shape. Negative max_distance 
+is also allowed meaning that the point must be a under a certain 
+depth within a shape to be considered a match.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -481,12 +432,11 @@ given layers and group. Returns None if no shape was found.</p>
 <dt>point <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span></dt>
 <dd><p class="first last">Define where to check for collision in the space.</p>
 </dd>
-<dt>layers <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes matching the bit mask. i.e. 
-(layers &amp; shape.layers) != 0</p>
+<dt>max_distnace <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Match only within this distance.</p>
 </dd>
-<dt>group <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Only pick shapes not in this group.</p>
+<dt>shape_filter <span class="classifier-delimiter">:</span> <span class="classifier">ShapeFilter</span></dt>
+<dd><p class="first last">Only pick shapes matching the filter.</p>
 </dd>
 </dl>
 </td>
@@ -655,8 +605,7 @@ functions.</p>
 <tt class="descname">sleep_time_threshold</tt><a class="headerlink" href="#pymunk.Space.sleep_time_threshold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Time a group of bodies must remain idle in order to fall 
 asleep.</p>
-<p>Enabling sleeping also implicitly enables the the contact graph. The 
-default value of <cite>inf</cite> disables the sleeping algorithm.</p>
+<p>The default value of <cite>inf</cite> disables the sleeping algorithm.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2581,7 +2530,10 @@ using groups or category masks is preferred.</p>
 <dl class="method">
 <dt id="pymunk.ShapeFilter.__init__">
 <tt class="descname">__init__</tt><big>(</big><em>group_or_tuple=None</em>, <em>categories=None</em>, <em>mask=None</em><big>)</big><a class="headerlink" href="#pymunk.ShapeFilter.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>ShapeFilter constructor.</p>
+<p>Call with empty arguments (<cite>f = ShapeFilter()</cite>) to create a 
+filter that dont filter out any categories or masks.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.ShapeFilter.categories">

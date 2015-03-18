@@ -2,6 +2,31 @@
 News 
 ****
 
+pymunk 5.0.0
+*Victor - X*
+
+**A new version of pymunk!**
+
+API Changes
+- New property Body.body_type
+- Update Body constructor to allow creation of DYNAMIC, KINEMATIC and STATIC bodies
+- New method Space.reindex_shapes_for_body()
+- New property Body.center_of_gravity
+- New property Body.space
+- Changed signature of moment_for_{circle,segment,box,poly} methods
+- Added area_for_{circle, segment, poly} methods to caculate area of shape
+- Added Body.velocity_at_world_point & Body.velocity_at_local_point
+- Removed Body.apply_impulse and Body.apply_force. Added Body.apply_force_at_world_point, Body.apply_force_at_local_point, Body.apply_impulse_at_world_point, Body.apply_impulse_at_local_point
+- New methods on BB.
+- New ShapeFilter class. Removed Shape.group and Shape.layers properties. Added Shape.filter property.
+- New Transform class. Changed signature of Shape.update()
+- New Segment.normal property.
+- New method Segment.set_neighbors()
+- Updated constructor for Poly. Updated signature of Poly.create_box() method.
+- New class PointQueryInfo. Changed returned data from Shape.point_query.
+- Updated signature of Shape.segment_query() method. Updated properties of SegmentQueryInfo object.
+- Removed Space.enable_contact_graph. New Space.current_time_step property.
+
 Travis-ci & tox
 ---------------
 *Victor - 2014-11-13*
