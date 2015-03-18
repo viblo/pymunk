@@ -70,7 +70,10 @@ class ShapeFilter(Structure):
         return cls(arg)
         
     def __init__(self, group_or_tuple=None, categories = None, mask = None):
-        """        
+        """ShapeFilter constructor. 
+        
+        Call with empty arguments (`f = ShapeFilter()`) to create a 
+        filter that dont filter out any categories or masks.
         """
         if group_or_tuple != None:
             if categories == None:
@@ -81,6 +84,10 @@ class ShapeFilter(Structure):
                 self.group = group_or_tuple
                 self.categories = categories
                 self.mask = mask
+        if group_or_tuple == None and categories == None and mask == None:
+            self.group = 0
+            self.categories = 0xffffffff
+            self.mask = 0xffffffff
  
     def __len__(self):
         return 3

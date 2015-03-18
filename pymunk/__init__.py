@@ -639,48 +639,37 @@ class Space(object):
         key = self._post_callback_keys[obj]
         return bool(cp.cpSpaceAddPostStepCallback(self._space, f, key, None))
                 
-    def point_query(self, point, layers = -1, group = 0):
-        """Query space at point filtering out matches with the given layers 
-        and group. Return a list of found shapes.
+    def point_query(self, point, max_distance, shape_filter):
+        """Query space at point for shapes within the given distance range.
         
-        If you don't want to filter out any matches, use -1 for the layers 
-        and 0 as the group.
+        Return a list of `ShapeFilter`.
+        
+        The filter is applied to the query and follows the same rules as the 
+        collision detection. Sensor shapes are included. If a maxDistance of 
+        0.0 is used, the point must lie inside a shape. Negative max_distance 
+        is also allowed meaning that the point must be a under a certain 
+        depth within a shape to be considered a match.
         
         :Parameters:    
             point : (x,y) or `Vec2d`
                 Define where to check for collision in the space.
-            layers : int
-                Only pick shapes matching the bit mask. i.e. 
-                (layers & shape.layers) != 0
-            group : int
-                Only pick shapes not in this group.
-                
+            max_distnace : int
+                Match only within this distance.
+            shape_filter : ShapeFilter
+                Only pick shapes matching the filter.
         """
+              
         self.__query_hits = []
-        def cf(_shape, data):
+        def cf(_shape, point, distance, gradient, data):
+            
             shape = self._get_shape(_shape)
-            self.__query_hits.append(shape)
+            p = PointQueryInfo(shape, point, distance, gradient)
+            self.__query_hits.append(p)
         f = cp.cpSpacePointQueryFunc(cf)
-        cp.cpSpacePointQuery(self._space, point, layers, group, f, None)
+        cp.cpSpacePointQuery(self._space, point, max_distance, shape_filter, f, None)
         
         return self.__query_hits
-    
-    def point_query_first(self, point, layers = -1, group = 0):
-        """Query space at point and return the first shape found matching the 
-        given layers and group. Returns None if no shape was found.
-        
-        :Parameters:    
-            point : (x,y) or `Vec2d`
-                Define where to check for collision in the space.
-            layers : int
-                Only pick shapes matching the bit mask. i.e. 
-                (layers & shape.layers) != 0
-            group : int
-                Only pick shapes not in this group.
-        """
-        _shape = cp.cpSpacePointQueryFirst(self._space, point, layers, group)
-        return self._get_shape(_shape)
-        
+            
     def _get_shape(self, _shape):
         if not bool(_shape):
             return None

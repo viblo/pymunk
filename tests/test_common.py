@@ -102,8 +102,8 @@ class UnitTestShapeFilter(unittest.TestCase):
     def testInit(self):
         f = p.ShapeFilter()
         self.assertEqual(f.group, 0)
-        self.assertEqual(f.categories, 0)
-        self.assertEqual(f.mask, 0)
+        self.assertEqual(f.categories, 0xffffffff)
+        self.assertEqual(f.mask, 0xffffffff)
         
         f = p.ShapeFilter(1,2,3)
         self.assertEqual(f.group, 1)
