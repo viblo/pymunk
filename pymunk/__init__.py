@@ -681,38 +681,8 @@ class Space(object):
         elif shapeid in self._removed_shapes:
             shape = self._removed_shapes[shapeid]
         return shape
-        
-    def nearest_point_query(self, point, max_distance, layers = -1, group = 0):
-        """Query space at point filtering out matches with the given layers 
-        and group. Return a list of all shapes within max_distance of the point.
-        
-        If you don't want to filter out any matches, use -1 for the layers 
-        and 0 as the group.
-        
-        :Parameters:    
-            point : (x,y) or `Vec2d`
-                Define where to check for collision in the space.
-            max_distance : int
-                Maximumm distance of shape from point
-            layers : int
-                Only pick shapes matching the bit mask. i.e. 
-                (layers & shape.layers) != 0
-            group : int
-                Only pick shapes not in this group.
-        
-        :Return: 
-            [dict(shape=`Shape`, distance = distance, point = Vec2d)]
-        """
-        self.__query_hits = []
-        def cf(_shape, distance, point, data):
-            shape = self._get_shape(_shape)
-            self.__query_hits.append(dict(shape=shape, distance=distance, point=Vec2d(point)))
-        f = cp.cpSpaceNearestPointQueryFunc(cf)
-        cp.cpSpaceNearestPointQuery(self._space, point, max_distance, layers, group, f, None)
-        
-        return self.__query_hits
-    
-    def nearest_point_query_nearest(self, point, max_distance, layers = -1, group = 0):
+           
+    def point_query_nearest(self, point, max_distance, shape_filter):
         """Query space at point filtering out matches with the given layers 
         and group. Return nearest of all shapes within max_distance of the 
         point.
@@ -734,13 +704,14 @@ class Space(object):
         :Return: 
             dict(shape=`Shape`, distance = distance, point = Vec2d)
         """
-        info = cp.cpNearestPointQueryInfo()
-        info_p = ct.POINTER(cp.cpNearestPointQueryInfo)(info)
-        _shape = cp.cpSpaceNearestPointQueryNearest(self._space, point, max_distance, layers, group, info_p)
+        info = cp.cpPointQueryInfo()
+        info_p = ct.POINTER(cp.cpPointQueryInfo)(info)
+        _shape = cp.cpSpacePointQueryNearest(self._space, point, max_distance, shape_filter, info_p)
         shape = self._get_shape(_shape)
-        if shape != None:
-            return dict(shape=shape, point=info.p, distance=info.d)
-        return None        
+        
+        info = PointQueryInfo(shape, info.point, info.distance, info.gradient)
+        
+        return info       
         
 
         
