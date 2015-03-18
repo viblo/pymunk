@@ -207,11 +207,24 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hit.gradient, (1,0))
         
     def testBBQuery(self):
-        bb = p.BB(-7,-7,7,7)
+        s = p.Space()     
         
-        hits = self.s.bb_query(bb)        
-        self.assert_(self.s1 in hits)
-        self.assert_(self.s2 not in hits)
+        b1 = p.Body(1,1)
+        b1.position = 19,0
+        s1 = p.Circle(b1, 10)
+        s.add(s1)
+        
+        b2 = p.Body(1, 1)
+        b2.position = 0, 0
+        s2 = p.Circle(b2, 10)
+        s.add(s2)
+        
+        bb = p.BB(-7, -7, 7, 7)
+        
+        hits = s.bb_query(bb, p.ShapeFilter()) 
+        self.assertEqual(len(hits), 1)
+        self.assert_(s2 in hits)
+        self.assert_(s1 not in hits)
     
     def testShapeQuery(self):
         

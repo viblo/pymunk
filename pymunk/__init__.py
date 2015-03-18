@@ -712,7 +712,6 @@ class Space(object):
         
         return info       
         
-
         
     def segment_query(self, start, end, layers = -1, group = 0):
         """Query space along the line segment from start to end filtering out 
@@ -753,20 +752,22 @@ class Space(object):
             return SegmentQueryInfo(shape, start, end, info.t, info.n)
         return None
     
-    def bb_query(self, bb, layers = -1, group = 0):
-        """Perform a fast rectangle query on the space.
+    
+    def bb_query(self, bb, shape_filter):
+        """Query space to find all shapes near bb. 
         
-        Only the shape's bounding boxes are checked for overlap, not their 
-        full shape. Returns a list of shapes.
+        The filter is applied to the query and follows the same rules as the 
+        collision detection. Sensor shapes are included.
+        
+        Returns a list of shapes hit.
         """
         
         self.__query_hits = []
         def cf(_shape, data):
-            
             shape = self._get_shape(_shape)
             self.__query_hits.append(shape)
         f = cp.cpSpaceBBQueryFunc(cf)
-        cp.cpSpaceBBQuery(self._space, bb._bb, layers, group, f, None)
+        cp.cpSpaceBBQuery(self._space, bb._bb, shape_filter, f, None)
         return self.__query_hits 
     
     
