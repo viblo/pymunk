@@ -713,14 +713,11 @@ class Space(object):
         
         
     def segment_query(self, start, end, radius, shape_filter):
-        """Query space along the line segment from start to end filtering out 
-        matches with the given layers and group. 
+        """Query space along the line segment from start to end with the 
+        given radius.
         
-        Segment queries are like ray casting, but because pymunk uses a 
-        spatial hash to process collisions, it cannot process infinitely 
-        long queries like a ray. In practice this is still very fast and you 
-        don't need to worry too much about the performance as long as you 
-        aren't using very long segments for your queries. 
+        The filter is applied to the query and follows the same rules as the 
+        collision detection. Sensor shapes are included.
         
         :Return: 
             [`SegmentQueryInfo`] - One SegmentQueryInfo object for each hit.
@@ -738,10 +735,15 @@ class Space(object):
         return self.__query_hits
             
     def segment_query_first(self, start, end, radius,  shape_filter):
-        """Query space along the line segment from start to end filtering out 
-        matches with the given layers and group. Only the first shape 
-        encountered is returned and the search is short circuited. 
-        Returns None if no shape was found.
+        """Query space along the line segment from start to end with the 
+        given radius.
+        
+        The filter is applied to the query and follows the same rules as the 
+        collision detection. Sensor shapes are included.
+        
+        :Return: 
+            `SegmentQueryInfo` - SegmentQueryInfo object or None if nothing 
+            was hit.
         """
         info = cp.cpSegmentQueryInfo()
         info_p = ct.POINTER(cp.cpSegmentQueryInfo)(info)

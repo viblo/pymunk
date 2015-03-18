@@ -101,7 +101,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x10f523650&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pymunk.</tt><tt class="descname">chipmunk_version</tt><em class="property"> = '&lt;Mock object at 0x10ba13690&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -271,10 +271,11 @@ for a single object. It is passed on to the callback function.</p>
 
 <dl class="method">
 <dt id="pymunk.Space.bb_query">
-<tt class="descname">bb_query</tt><big>(</big><em>bb</em>, <em>layers=-1</em>, <em>group=0</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.bb_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.bb_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform a fast rectangle query on the space.</p>
-<p>Only the shape&#8217;s bounding boxes are checked for overlap, not their 
-full shape. Returns a list of shapes.</p>
+<tt class="descname">bb_query</tt><big>(</big><em>bb</em>, <em>shape_filter</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.bb_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.bb_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query space to find all shapes near bb.</p>
+<p>The filter is applied to the query and follows the same rules as the 
+collision detection. Sensor shapes are included.</p>
+<p>Returns a list of shapes hit.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -417,8 +418,7 @@ depth within a shape to be considered a match.</p>
 <tt class="descname">point_query_nearest</tt><big>(</big><em>point</em>, <em>max_distance</em>, <em>shape_filter</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.point_query_nearest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.point_query_nearest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query space at point the nearest shape within the given distance 
 range.</p>
-<p>Return a <cite>PointQueryInfo</cite>. PointQueryInfo.shape will be None in case
-no object was found.</p>
+<p>Return a <cite>PointQueryInfo</cite> or None if nothing was hit.</p>
 <p>The filter is applied to the query and follows the same rules as the 
 collision detection. Sensor shapes are included. If a maxDistance of 
 0.0 is used, the point must lie inside a shape. Negative max_distance 
@@ -504,14 +504,11 @@ body, remove the joints and shapes attached to it.</p>
 
 <dl class="method">
 <dt id="pymunk.Space.segment_query">
-<tt class="descname">segment_query</tt><big>(</big><em>start</em>, <em>end</em>, <em>layers=-1</em>, <em>group=0</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.segment_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.segment_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query space along the line segment from start to end filtering out 
-matches with the given layers and group.</p>
-<p>Segment queries are like ray casting, but because pymunk uses a 
-spatial hash to process collisions, it cannot process infinitely 
-long queries like a ray. In practice this is still very fast and you 
-don&#8217;t need to worry too much about the performance as long as you 
-aren&#8217;t using very long segments for your queries.</p>
+<tt class="descname">segment_query</tt><big>(</big><em>start</em>, <em>end</em>, <em>radius</em>, <em>shape_filter</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.segment_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.segment_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query space along the line segment from start to end with the 
+given radius.</p>
+<p>The filter is applied to the query and follows the same rules as the 
+collision detection. Sensor shapes are included.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -524,11 +521,20 @@ aren&#8217;t using very long segments for your queries.</p>
 
 <dl class="method">
 <dt id="pymunk.Space.segment_query_first">
-<tt class="descname">segment_query_first</tt><big>(</big><em>start</em>, <em>end</em>, <em>layers=-1</em>, <em>group=0</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.segment_query_first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.segment_query_first" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query space along the line segment from start to end filtering out 
-matches with the given layers and group. Only the first shape 
-encountered is returned and the search is short circuited. 
-Returns None if no shape was found.</p>
+<tt class="descname">segment_query_first</tt><big>(</big><em>start</em>, <em>end</em>, <em>radius</em>, <em>shape_filter</em><big>)</big><a class="reference internal" href="_modules/pymunk.html#Space.segment_query_first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.segment_query_first" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query space along the line segment from start to end with the 
+given radius.</p>
+<p>The filter is applied to the query and follows the same rules as the 
+collision detection. Sensor shapes are included.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return:</th><td class="field-body"><cite>SegmentQueryInfo</cite> - SegmentQueryInfo object or None if nothing 
+was hit.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

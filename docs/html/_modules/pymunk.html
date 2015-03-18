@@ -736,8 +736,7 @@
         <span class="sd">&quot;&quot;&quot;Query space at point the nearest shape within the given distance </span>
 <span class="sd">        range.</span>
 <span class="sd">        </span>
-<span class="sd">        Return a `PointQueryInfo`. PointQueryInfo.shape will be None in case</span>
-<span class="sd">        no object was found.</span>
+<span class="sd">        Return a `PointQueryInfo` or None if nothing was hit.</span>
 <span class="sd">        </span>
 <span class="sd">        The filter is applied to the query and follows the same rules as the </span>
 <span class="sd">        collision detection. Sensor shapes are included. If a maxDistance of </span>
@@ -758,65 +757,69 @@
         <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQueryNearest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">info_p</span><span class="p">)</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
         
-        <span class="n">info</span> <span class="o">=</span> <span class="n">PointQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PointQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>       
         
-        <span class="k">return</span> <span class="n">info</span>       
-        
-
         </div>
-<div class="viewcode-block" id="Space.segment_query"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.segment_query">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">layers</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">group</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Query space along the line segment from start to end filtering out </span>
-<span class="sd">        matches with the given layers and group. </span>
+<div class="viewcode-block" id="Space.segment_query"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.segment_query">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query space along the line segment from start to end with the </span>
+<span class="sd">        given radius.</span>
 <span class="sd">        </span>
-<span class="sd">        Segment queries are like ray casting, but because pymunk uses a </span>
-<span class="sd">        spatial hash to process collisions, it cannot process infinitely </span>
-<span class="sd">        long queries like a ray. In practice this is still very fast and you </span>
-<span class="sd">        don&#39;t need to worry too much about the performance as long as you </span>
-<span class="sd">        aren&#39;t using very long segments for your queries. </span>
+<span class="sd">        The filter is applied to the query and follows the same rules as the </span>
+<span class="sd">        collision detection. Sensor shapes are included.</span>
 <span class="sd">        </span>
 <span class="sd">        :Return: </span>
 <span class="sd">            [`SegmentQueryInfo`] - One SegmentQueryInfo object for each hit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
-            <span class="n">info</span> <span class="o">=</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
         
         <span class="n">f</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQueryFunc</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span>
             </div>
-<div class="viewcode-block" id="Space.segment_query_first"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.segment_query_first">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query_first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">layers</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">group</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Query space along the line segment from start to end filtering out </span>
-<span class="sd">        matches with the given layers and group. Only the first shape </span>
-<span class="sd">        encountered is returned and the search is short circuited. </span>
-<span class="sd">        Returns None if no shape was found.</span>
+<div class="viewcode-block" id="Space.segment_query_first"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.segment_query_first">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query_first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span>  <span class="n">shape_filter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query space along the line segment from start to end with the </span>
+<span class="sd">        given radius.</span>
+<span class="sd">        </span>
+<span class="sd">        The filter is applied to the query and follows the same rules as the </span>
+<span class="sd">        collision detection. Sensor shapes are included.</span>
+<span class="sd">        </span>
+<span class="sd">        :Return: </span>
+<span class="sd">            `SegmentQueryInfo` - SegmentQueryInfo object or None if nothing </span>
+<span class="sd">            was hit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentQueryInfo</span><span class="p">()</span>
         <span class="n">info_p</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentQueryInfo</span><span class="p">)(</span><span class="n">info</span><span class="p">)</span>
-        <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQueryFirst</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">info_p</span><span class="p">)</span>
+        <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQueryFirst</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">info_p</span><span class="p">)</span>
+        
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">None</span>
+    
     </div>
-<div class="viewcode-block" id="Space.bb_query"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.bb_query">[docs]</a>    <span class="k">def</span> <span class="nf">bb_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">layers</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">group</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform a fast rectangle query on the space.</span>
+<div class="viewcode-block" id="Space.bb_query"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.bb_query">[docs]</a>    <span class="k">def</span> <span class="nf">bb_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query space to find all shapes near bb. </span>
 <span class="sd">        </span>
-<span class="sd">        Only the shape&#39;s bounding boxes are checked for overlap, not their </span>
-<span class="sd">        full shape. Returns a list of shapes.</span>
+<span class="sd">        The filter is applied to the query and follows the same rules as the </span>
+<span class="sd">        collision detection. Sensor shapes are included.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns a list of shapes hit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-            
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceBBQueryFunc</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceBBQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceBBQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> 
     
     </div>
