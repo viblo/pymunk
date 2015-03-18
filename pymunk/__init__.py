@@ -686,8 +686,7 @@ class Space(object):
         """Query space at point the nearest shape within the given distance 
         range.
         
-        Return a `PointQueryInfo`. PointQueryInfo.shape will be None in case
-        no object was found.
+        Return a `PointQueryInfo` or None if nothing was hit.
         
         The filter is applied to the query and follows the same rules as the 
         collision detection. Sensor shapes are included. If a maxDistance of 
@@ -708,12 +707,12 @@ class Space(object):
         _shape = cp.cpSpacePointQueryNearest(self._space, point, max_distance, shape_filter, info_p)
         shape = self._get_shape(_shape)
         
-        info = PointQueryInfo(shape, info.point, info.distance, info.gradient)
+        if shape != None:
+            return PointQueryInfo(shape, info.point, info.distance, info.gradient)
+        return None       
         
-        return info       
         
-        
-    def segment_query(self, start, end, layers = -1, group = 0):
+    def segment_query(self, start, end, radius, shape_filter):
         """Query space along the line segment from start to end filtering out 
         matches with the given layers and group. 
         
@@ -728,17 +727,17 @@ class Space(object):
         """
         
         self.__query_hits = []
-        def cf(_shape, t, n, data):
+        def cf(_shape, point, normal, alpha, data):
             shape = self._get_shape(_shape)
-            info = SegmentQueryInfo(shape, start, end, t, n)
+            info = SegmentQueryInfo(shape, point, normal, alpha)
             self.__query_hits.append(info)
         
         f = cp.cpSpaceSegmentQueryFunc(cf)
-        cp.cpSpaceSegmentQuery(self._space, start, end, layers, group, f, None)
+        cp.cpSpaceSegmentQuery(self._space, start, end, radius, shape_filter, f, None)
         
         return self.__query_hits
             
-    def segment_query_first(self, start, end, layers = -1, group = 0):
+    def segment_query_first(self, start, end, radius,  shape_filter):
         """Query space along the line segment from start to end filtering out 
         matches with the given layers and group. Only the first shape 
         encountered is returned and the search is short circuited. 
@@ -746,10 +745,11 @@ class Space(object):
         """
         info = cp.cpSegmentQueryInfo()
         info_p = ct.POINTER(cp.cpSegmentQueryInfo)(info)
-        _shape = cp.cpSpaceSegmentQueryFirst(self._space, start, end, layers, group, info_p)
+        _shape = cp.cpSpaceSegmentQueryFirst(self._space, start, end, radius, shape_filter, info_p)
+        
         shape = self._get_shape(_shape)
         if shape != None:
-            return SegmentQueryInfo(shape, start, end, info.t, info.n)
+            return SegmentQueryInfo(shape, info.point, info.normal, info.alpha)
         return None
     
     

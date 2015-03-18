@@ -198,7 +198,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hit.gradient, (1,0))
         
         hit = s.point_query_nearest((30,0), 0, p.ShapeFilter())
-        self.assertEqual(hit.shape, None)
+        self.assertEqual(hit, None)
         
         hit = s.point_query_nearest((30,0), 10, p.ShapeFilter())
         self.assertEqual(hit.shape, s1)
@@ -307,27 +307,58 @@ class UnitTestSpace(unittest.TestCase):
         hit = self.s.point_query_first( (-50,-55) )
         self.assertEqual(hit, c)
     
-    def testSegmentQueries(self):
+    def testSegmentQuery(self):
+        s = p.Space()     
         
-        self.assertEqual(self.s.segment_query_first( (13,11), (131.01,12) ), None)
-        self.assertEqual(self.s.segment_query_first( (13,-11),(131.01,-11) ), None)
-        r = self.s.segment_query_first( (10,-100), (10,100) )
+        b1 = p.Body(1,1)
+        b1.position = 19,0
+        s1 = p.Circle(b1, 10)
+        s.add(s1)
         
-        self.assertEqual(r.shape, self.s1)
-        self.assertEqual(r.t, 0.475)
-        self.assertEqual(r.n, Vec2d(0,-1))
+        b2 = p.Body(1, 1)
+        b2.position = 0, 0
+        s2 = p.Circle(b2, 10)
+        s.add(s2)
         
-        b3 = p.Body(1,1)
-        b3.position = 19,1
-        s3 = p.Circle(b3, 10)
-        self.s.add(s3)
-        hits = self.s.segment_query((16,-100), (16,100))
+        hits = s.segment_query((-13, 0), (131,0), 0, p.ShapeFilter())
         
-        hit_shapes = [hit.shape for hit in hits]
-        self.assert_(self.s1 not in hit_shapes)
-        self.assert_(self.s2 in hit_shapes)
-        self.assert_(s3 in hit_shapes)
+        self.assertEqual(len(hits), 2)
+        self.assertEqual(hits[0].shape, s2)
+        self.assertEqual(hits[0].point, (-10,0))
+        self.assertEqual(hits[0].normal, (-1,0))
+        self.assertAlmostEqual(hits[0].alpha, 0.0208333333333)
+        
+        self.assertEqual(hits[1].shape, s1)
+        self.assertEqual(hits[1].point, (9,0))
+        self.assertEqual(hits[1].normal, (-1,0))
+        self.assertAlmostEqual(hits[1].alpha, 0.1527777777777)
+        
+        hits = s.segment_query((-13, 50), (131,50), 0, p.ShapeFilter())
+        self.assertEqual(len(hits), 0)
 
+    def testSegmentQueryFirst(self):
+        s = p.Space()     
+        
+        b1 = p.Body(1,1)
+        b1.position = 19,0
+        s1 = p.Circle(b1, 10)
+        s.add(s1)
+        
+        b2 = p.Body(1, 1)
+        b2.position = 0, 0
+        s2 = p.Circle(b2, 10)
+        s.add(s2)
+        
+        hit = s.segment_query_first((-13, 0), (131,0), 0, p.ShapeFilter())
+        
+        self.assertEqual(hit.shape, s2)
+        self.assertEqual(hit.point, (-10,0))
+        self.assertEqual(hit.normal, (-1,0))
+        self.assertAlmostEqual(hit.alpha, 0.0208333333333)
+                
+        hit = s.segment_query_first((-13, 50), (131,50), 0, p.ShapeFilter())
+        self.assertEqual(hit, None)
+        
     def testStaticSegmentQueries(self):
         b = p.Body()
         c = p.Circle(b, 10)
