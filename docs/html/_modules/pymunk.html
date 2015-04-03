@@ -534,9 +534,11 @@
         <span class="n">_functions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collision_function_helper</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">pre_solve</span><span class="p">,</span> <span class="n">post_solve</span><span class="p">,</span> <span class="n">separate</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)]</span> <span class="o">=</span> <span class="n">_functions</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddCollisionHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> 
-            <span class="n">_functions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">_functions</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">_functions</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">_functions</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="bp">None</span><span class="p">)</span>
-            </div>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddCollisionHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        
+        <span class="n">h</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">beginFunc</span> <span class="o">=</span> <span class="n">_functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c">#    _functions[0], _functions[1], _functions[2], _functions[3], None)</span>
+        <span class="k">return</span> <span class="n">h</span>    </div>
 <div class="viewcode-block" id="Space.set_default_collision_handler"><a class="viewcode-back" href="../pymunk.html#pymunk.Space.set_default_collision_handler">[docs]</a>    <span class="k">def</span> <span class="nf">set_default_collision_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pre_solve</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">post_solve</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">separate</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Register a default collision handler to be used when no specific </span>
 <span class="sd">        collision handler is found. If you do nothing, the space will be given </span>
@@ -2173,9 +2175,102 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">cpffi</span><span class="o">.</span><span class="n">cpBBWrapVect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
  
+    </div></div>
+<span class="k">class</span> <span class="nc">CollisionHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A collision handler is a set of 4 function callbacks for the different </span>
+<span class="sd">    collision events that pymunk recognizes.</span>
+<span class="sd">    </span>
+<span class="sd">    Collision callbacks are closely associated with Arbiter structs. You </span>
+<span class="sd">    should familiarize yourself with those as well.</span>
+<span class="sd">    </span>
+<span class="sd">    Note: Shapes tagged as sensors (Shape.sensor == true) never generate </span>
+<span class="sd">    collisions that get processed, so collisions between sensors shapes and </span>
+<span class="sd">    other shapes will never call the postSolve() callback. They still </span>
+<span class="sd">    generate begin(), and separate() callbacks, and the preSolve() callback </span>
+<span class="sd">    is also called every frame even though there is no collision response. </span>
+<span class="sd">    Note #2: preSolve() callbacks are called before the sleeping algorithm </span>
+<span class="sd">    runs. If an object falls asleep, its postSolve() callback won&#39;t be </span>
+<span class="sd">    called until it&#39;s reawoken.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_handler</span><span class="p">,</span> <span class="n">space</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a CollisionHandler object from the Chipmunk equivalent </span>
+<span class="sd">        struct and the Space.</span>
+<span class="sd">        </span>
+<span class="sd">        .. note::</span>
+<span class="sd">            You should never need to create an instance of this class directly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="n">_handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span> <span class="o">=</span> <span class="bp">None</span>
+    
+    <span class="k">def</span> <span class="nf">_set_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">_get_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span>
+        
+    <span class="n">begin</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_begin</span><span class="p">,</span> <span class="n">_set_begin</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes just started touching for the first time this step. </span>
+<span class="s">        </span>
+<span class="s">        ``func(space, arbiter, *args, **kwargs) -&gt; bool``</span>
+<span class="s">        </span>
+<span class="s">        Return true from the callback to process the collision normally or </span>
+<span class="s">        false to cause pymunk to ignore the collision entirely. If you return </span>
+<span class="s">        false, the preSolve() and postSolve() callbacks will never be run, </span>
+<span class="s">        but you will still recieve a separate event when the shapes stop </span>
+<span class="s">        overlapping.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_set_pre_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">_get_pre_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span>
+    <span class="n">pre_solve</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_pre_solve</span><span class="p">,</span> <span class="n">_set_pre_solve</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes are touching during this step. </span>
+<span class="s">        </span>
+<span class="s">        ``func(space, arbiter, *args, **kwargs) -&gt; bool``</span>
+<span class="s">        </span>
+<span class="s">        Return false from the callback to make pymunk ignore the collision </span>
+<span class="s">        this step or true to process it normally. Additionally, you may </span>
+<span class="s">        override collision values using Arbiter.friction, Arbiter.elasticity</span>
+<span class="s">        or Arbiter.surfaceVelocity to provide custom friction, elasticity, </span>
+<span class="s">        or surface velocity values. See Arbiter for more info.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_set_post_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">_get_post_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span>
+    <span class="n">post_solve</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_post_solve</span><span class="p">,</span> <span class="n">_set_post_solve</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes are touching and their collision response has been </span>
+<span class="s">        processed. </span>
+<span class="s">        </span>
+<span class="s">        ``func(space, arbiter, *args, **kwargs)``</span>
+<span class="s">        </span>
+<span class="s">        You can retrieve the collision impulse or kinetic energy at this </span>
+<span class="s">        time if you want to use it to calculate sound volumes or damage </span>
+<span class="s">        amounts. See Arbiter for more info.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_set_separate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">_get_separate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span>
+    <span class="n">separate</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_separate</span><span class="p">,</span> <span class="n">_set_separate</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes have just stopped touching for the first time this </span>
+<span class="s">        step. </span>
+<span class="s">        </span>
+<span class="s">        ``func(space, arbiter, *args, **kwargs)``</span>
+<span class="s">        </span>
+<span class="s">        To ensure that begin()/separate() are always called in balanced </span>
+<span class="s">        pairs, it will also be called when removing a shape while its in </span>
+<span class="s">        contact with something or when deallocating the space.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
         
 <span class="c">#del cp, ct, u</span>
-</pre></div></div></div>
+</pre></div>
 
           </div>
         </div>

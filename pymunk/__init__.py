@@ -432,6 +432,16 @@ class Space(object):
             self.remove(objs)
         self._remove_later.clear()
     
+        
+    def collision_handler(self, a=None, b=None):
+        
+        return 1
+    
+    def wildcard_collision_handler(a):
+        pass
+    def default_collision_handler():
+        pass
+        
     def add_collision_handler(self, a, b, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
         """Add a collision handler for given collision type pair. 
         
@@ -484,9 +494,11 @@ class Space(object):
         _functions = self._collision_function_helper(begin, pre_solve, post_solve, separate, *args, **kwargs)
         
         self._handlers[(a, b)] = _functions
-        cp.cpSpaceAddCollisionHandler(self._space, a, b, 
-            _functions[0], _functions[1], _functions[2], _functions[3], None)
-            
+        h = cp.cpSpaceAddCollisionHandler(self._space, a, b)
+        
+        h.contents.beginFunc = _functions[0]
+        #    _functions[0], _functions[1], _functions[2], _functions[3], None)
+        return h    
     def set_default_collision_handler(self, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
         """Register a default collision handler to be used when no specific 
         collision handler is found. If you do nothing, the space will be given 
@@ -2123,6 +2135,99 @@ class BB(object):
         """
         return cpffi.cpBBWrapVect(self._bb, v)
  
+    
+class CollisionHandler(object):
+    """A collision handler is a set of 4 function callbacks for the different 
+    collision events that pymunk recognizes.
+    
+    Collision callbacks are closely associated with Arbiter structs. You 
+    should familiarize yourself with those as well.
+    
+    Note: Shapes tagged as sensors (Shape.sensor == true) never generate 
+    collisions that get processed, so collisions between sensors shapes and 
+    other shapes will never call the postSolve() callback. They still 
+    generate begin(), and separate() callbacks, and the preSolve() callback 
+    is also called every frame even though there is no collision response. 
+    Note #2: preSolve() callbacks are called before the sleeping algorithm 
+    runs. If an object falls asleep, its postSolve() callback won't be 
+    called until it's reawoken.
+    """
+    def __init__(self, _handler, space):
+        """Initialize a CollisionHandler object from the Chipmunk equivalent 
+        struct and the Space.
+        
+        .. note::
+            You should never need to create an instance of this class directly.
+        """
+        self._handler = _handler
+        self._begin = None
+        self._pre_solve = None
+        self._post_solve = None
+        self._separate = None
+    
+    def _set_begin(self, f):
+        self._begin = f
+        pass
+    def _get_begin(self):
+        return self._begin
+        
+    begin = property(_get_begin, _set_begin,
+        doc="""Two shapes just started touching for the first time this step. 
+        
+        ``func(space, arbiter, *args, **kwargs) -> bool``
+        
+        Return true from the callback to process the collision normally or 
+        false to cause pymunk to ignore the collision entirely. If you return 
+        false, the preSolve() and postSolve() callbacks will never be run, 
+        but you will still recieve a separate event when the shapes stop 
+        overlapping.
+        """)
+        
+    def _set_pre_solve(self, f):
+        pass
+    def _get_pre_solve(self):
+        return self._pre_solve
+    pre_solve = property(_get_pre_solve, _set_pre_solve,
+        doc="""Two shapes are touching during this step. 
+        
+        ``func(space, arbiter, *args, **kwargs) -> bool``
+        
+        Return false from the callback to make pymunk ignore the collision 
+        this step or true to process it normally. Additionally, you may 
+        override collision values using Arbiter.friction, Arbiter.elasticity
+        or Arbiter.surfaceVelocity to provide custom friction, elasticity, 
+        or surface velocity values. See Arbiter for more info.
+        """)
+        
+    def _set_post_solve(self, f):
+        pass
+    def _get_post_solve(self):
+        return self._post_solve
+    post_solve = property(_get_post_solve, _set_post_solve,
+        doc="""Two shapes are touching and their collision response has been 
+        processed. 
+        
+        ``func(space, arbiter, *args, **kwargs)``
+        
+        You can retrieve the collision impulse or kinetic energy at this 
+        time if you want to use it to calculate sound volumes or damage 
+        amounts. See Arbiter for more info.
+        """)
+        
+    def _set_separate(self, f):
+        pass
+    def _get_separate(self):
+        return self._separate
+    separate = property(_get_separate, _set_separate,
+        doc="""Two shapes have just stopped touching for the first time this 
+        step. 
+        
+        ``func(space, arbiter, *args, **kwargs)``
+        
+        To ensure that begin()/separate() are always called in balanced 
+        pairs, it will also be called when removing a shape while its in 
+        contact with something or when deallocating the space.
+        """)
         
 #del cp, ct, u
 

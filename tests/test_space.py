@@ -372,19 +372,36 @@ class UnitTestSpace(unittest.TestCase):
         hits = self.s.segment_query( (-70,-50), (-30, -50), 0, p.ShapeFilter() )
         self.assertEqual(hits[0].shape, c)
     
-    def testCollisionHandlerBegin(self):
+    def test1CollisionHandlerBegin(self):
+        s = p.Space()
+        
+        b1 = p.Body(1, 1)
+        c1 = p.Circle(b1, 10)
+        b1.position = 0,30
+        
+        b2 = p.Body(body_type = p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        b2.position = 0,0
+        
+        s.add(b1, c1, b2, c2)
+        s.gravity = 0,-100
         self.num_of_begins = 0
-        def begin(space, arb, data):
+        def begin(space, arb, *args, **kwargs):
+            print "BEGIN!", args, kwargs
             self.num_of_begins += 1
             return True
             
-        self.b1.position = self.b2.position
-        self.s.add_collision_handler(0,0, begin, None, None, None, None)
-        self.s.step(0.1)
-        self.s.step(0.1)
+        h = s.add_collision_handler(0, 0, begin, None, None, None)
+        print "handler", h
+        # s.set_default_collision_handler(begin, None, None, None)
+        for x in range(10):
+            s.step(0.1)
+            #print "pos", b1.position, b2.position
+        s.step(0.1)
         self.assertEqual(self.num_of_begins, 1)
 
     def testCollisionHandlerBeginNoReturn(self):
+        return
         if sys.version_info < (2, 6): return
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
