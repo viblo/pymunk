@@ -372,7 +372,7 @@ class UnitTestSpace(unittest.TestCase):
         hits = self.s.segment_query( (-70,-50), (-30, -50), 0, p.ShapeFilter() )
         self.assertEqual(hits[0].shape, c)
     
-    def test1CollisionHandlerBegin(self):
+    def testCollisionHandlerBegin(self):
         s = p.Space()
         
         b1 = p.Body(1, 1)
@@ -386,31 +386,29 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         s.gravity = 0,-100
         self.num_of_begins = 0
-        def begin(space, arb, *args, **kwargs):
-            print "BEGIN!", args, kwargs
+        def begin(space, arb):
             self.num_of_begins += 1
             return True
-            
-        h = s.add_collision_handler(0, 0, begin, None, None, None)
-        print "handler", h
-        # s.set_default_collision_handler(begin, None, None, None)
+        
+        h = s.collision_handler(0, 0)
+        h.begin = begin
+        
         for x in range(10):
             s.step(0.1)
-            #print "pos", b1.position, b2.position
+            
         s.step(0.1)
         self.assertEqual(self.num_of_begins, 1)
 
     def testCollisionHandlerBeginNoReturn(self):
-        return
         if sys.version_info < (2, 6): return
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
             
-            def begin(space, arb, data):
+            def begin(space, arb):
                 return
                 
             self.b1.position = self.b2.position
-            self.s.add_collision_handler(0,0, begin, None, None, None, None)
+            self.s.collision_handler(0,0).begin = begin
             self.s.step(0.1)
             self.s.step(0.1)
             
@@ -426,16 +424,16 @@ class UnitTestSpace(unittest.TestCase):
         self.s1.collision_type = 1
         self.s2.collision_type = 2
         
-        def pre_solve(space, arb, test_self):
-            test_self.begin_shapes = arb.shapes
-            test_self.begin_contacts = arb.contacts
-            test_self.begin_space = space
+        def pre_solve(space, arb):
+            self.begin_shapes = arb.shapes
+            self.begin_contacts = arb.contacts
+            self.begin_space = space
             return True
             
         for x in range(100): 
             self.s.step(0.1)
         
-        self.s.add_collision_handler(1,2, None, pre_solve, None, None, self)
+        self.s.collision_handler(1,2).pre_solve = pre_solve
         self.s.step(0.1)
         self.assertEqual(self.s1, self.begin_shapes[0])
         self.assertEqual(self.s2, self.begin_shapes[1])
@@ -446,27 +444,48 @@ class UnitTestSpace(unittest.TestCase):
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
         
-            def pre_solve(space, arb, test_self):
+            def pre_solve(space, arb):
                 return
             
-            self.s.add_collision_handler(0,0, None, pre_solve, None, None, self)
+            self.s.collision_handler(0,0).pre_solve = pre_solve
             self.s.step(0.1)
             
             self.assertEqual(len(w),1)
             self.assertTrue(issubclass(w[-1].category,UserWarning))
             
     def testCollisionHandlerPostSolve(self):  
-        self.first_contact = None
-        def post_solve(space, arb, test_self):
-            self.first_contact = arb.is_first_contact
-            return True
+        self.hit = 0
+        def post_solve(space, arb):
+            self.hit += 1
             
-        self.s.add_collision_handler(0,0, None, None, post_solve, None, self)
+        self.s.collision_handler(0,0).post_solve = post_solve
         self.s.step(0.1)
-        self.assert_(self.first_contact)
-        self.s.step(0.1)
-        self.assertFalse(self.first_contact)
+        self.assertEqual(self.hit, 1)
 
+    def testCollisionHandlerSeparate(self):  
+        s = p.Space()
+        
+        b1 = p.Body(1, 1)
+        c1 = p.Circle(b1, 10)
+        b1.position = 9,11
+        
+        b2 = p.Body(body_type = p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        b2.position = 0,0
+        
+        s.add(b1, c1, b2, c2)
+        s.gravity = 0,-100
+        
+        self.separated = False
+        def separate(space, arb):
+            self.separated = True
+            
+        s.collision_handler(0,0).separate = separate
+        
+        for x in range(10):
+            s.step(0.1)
+            
+        self.assert_(self.separated)
         
     def testPostStepCallback(self):
         self.number_of_calls = 0

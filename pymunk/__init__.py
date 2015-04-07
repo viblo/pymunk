@@ -135,6 +135,7 @@ class Space(object):
         self._static_body = Body(body_type=Body.STATIC)
         
         self._handlers = {} # To prevent the gc to collect the callbacks.
+        self._handlers_key = 0
         self._default_handler = None
         
         self._post_step_callbacks = {}
@@ -433,72 +434,35 @@ class Space(object):
         self._remove_later.clear()
     
         
-    def collision_handler(self, a=None, b=None):
+    def collision_handler(self, collision_type_a, collision_type_b):
+        """Return the CollisionHandler for collisions between objects ot 
+        type collision_type_a and collision_type_b.
         
-        return 1
-    
-    def wildcard_collision_handler(a):
-        pass
-    def default_collision_handler():
-        pass
+        Fill the desired collision callback functions, for details see the 
+        CollisionHandler object.
         
-    def add_collision_handler(self, a, b, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
-        """Add a collision handler for given collision type pair. 
-        
-        Whenever a shapes with collision_type a and collision_type b collide, 
-        these callbacks will be used to process the collision. 
-        None can be provided for callbacks you do not wish to implement, 
-        however pymunk will call it's own default versions for these and not 
-        the default ones you've set up for the Space. If you need to fall back 
-        on the space's default callbacks, you'll have to provide them 
-        individually to each handler definition.
-        
-        :Parameters:
-            a : int
-                Collision type of the first shape
-            b : int 
-                Collision type of the second shape
-            begin : ``func(space, arbiter, *args, **kwargs) -> bool``
-                Collision handler called when two shapes just started touching 
-                for the first time this step. Return false from the callback 
-                to make pymunk ignore the collision or true to process it 
-                normally. Rejecting a collision from a begin() callback 
-                permanently rejects the collision until separation. Pass 
-                `None` if you wish to use the pymunk default.
-            pre_solve : ``func(space, arbiter, *args, **kwargs) -> bool``
-                Collision handler called when two shapes are touching. Return 
-                false from the callback to make pymunk ignore the collision or 
-                true to process it normally. Additionally, you may override 
-                collision values such as `Arbiter.elasticity` and 
-                `Arbiter.friction` to provide custom friction or elasticity 
-                values. See `Arbiter` for more info. Pass `None` if you wish 
-                to use the pymunk default.
-            post_solve : ``func(space, arbiter, *args, **kwargs)``
-                Collsion handler called when two shapes are touching and their 
-                collision response has been processed. You can retrieve the 
-                collision force at this time if you want to use it to 
-                calculate sound volumes or damage amounts. Pass `None` if you 
-                wish to use the pymunk default.
-            separate : ``func(space, arbiter, *args, **kwargs)``
-                Collision handler called when two shapes have just stopped 
-                touching for the first time this frame. Pass `None` if you 
-                wish to use the pymunk default.
-            args
-                Optional parameters passed to the collision handler functions.
-            kwargs
-                Optional keyword parameters passed on to the collision handler 
-                functions.
-                
+        Whenever shapes with collision types (Shape.collision_type) a and b 
+        collide, this handler will be used to process the collision events. 
+        When a new collision handler is created, the callbacks will all be 
+        set to builtin callbacks that perform the default behavior (call the 
+        wildcard handlers, and accept all collisions).
         """
         
-        _functions = self._collision_function_helper(begin, pre_solve, post_solve, separate, *args, **kwargs)
+        h = cp.cpSpaceAddCollisionHandler(self._space, collision_type_a, collision_type_b)
+        p = h.contents.userData
+        if p == None:
+            p = self._handlers_key
+            self._handlers_key += 1
+            self._handlers[p] = CollisionHandler(h, self)
+            
+        return self._handlers[p]
+    
+    def wildcard_collision_handler(collision_type_a):
+        pass
         
-        self._handlers[(a, b)] = _functions
-        h = cp.cpSpaceAddCollisionHandler(self._space, a, b)
-        
-        h.contents.beginFunc = _functions[0]
-        #    _functions[0], _functions[1], _functions[2], _functions[3], None)
-        return h    
+    def default_collision_handler():
+        pass
+     
     def set_default_collision_handler(self, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
         """Register a default collision handler to be used when no specific 
         collision handler is found. If you do nothing, the space will be given 
@@ -2160,14 +2124,44 @@ class CollisionHandler(object):
             You should never need to create an instance of this class directly.
         """
         self._handler = _handler
+        self._space = space
         self._begin = None
         self._pre_solve = None
         self._post_solve = None
         self._separate = None
     
+    def _get_cf(self, func, function_type, *args, **kwargs):
+        def cf(_arbiter, _space, _data):
+            arbiter = Arbiter(_arbiter, self._space)
+            x = func(self, arbiter, *args, **kwargs)
+            
+            if function_type not in [cp.cpCollisionBeginFunc, cp.cpCollisionPreSolveFunc]:
+                return
+            if isinstance(x,int):
+                return x
+                
+            if sys.version_info[0] >= 3:
+                func_name = func.__code__.co_name
+                filename = func.__code__.co_filename
+                lineno = func.__code__.co_firstlineno
+            else:
+                func_name = func.func_name
+                filename = func.func_code.co_filename
+                lineno = func.func_code.co_firstlineno
+                
+            warnings.warn_explicit(
+                "Function '" + func_name + "' should return a bool to" +
+                " indicate if the collision should be processed or not when" +
+                " used as 'begin' or 'pre_solve' collision callback.", 
+                UserWarning, filename, lineno, func.__module__)
+            return True
+        return function_type(cf)
+    
     def _set_begin(self, f):
         self._begin = f
-        pass
+        cf = self._get_cf(f, cp.cpCollisionBeginFunc)
+        self._handler.contents.beginFunc = cf
+        
     def _get_begin(self):
         return self._begin
         
@@ -2184,9 +2178,13 @@ class CollisionHandler(object):
         """)
         
     def _set_pre_solve(self, f):
-        pass
+        self._pre_solve = f
+        cf = self._get_cf(f, cp.cpCollisionPreSolveFunc)
+        self._handler.contents.preSolveFunc = cf
+        
     def _get_pre_solve(self):
         return self._pre_solve
+        
     pre_solve = property(_get_pre_solve, _set_pre_solve,
         doc="""Two shapes are touching during this step. 
         
@@ -2200,9 +2198,13 @@ class CollisionHandler(object):
         """)
         
     def _set_post_solve(self, f):
-        pass
+        self._post_solve = f
+        cf = self._get_cf(f, cp.cpCollisionPostSolveFunc)
+        self._handler.contents.postSolveFunc = cf
+        
     def _get_post_solve(self):
         return self._post_solve
+        
     post_solve = property(_get_post_solve, _set_post_solve,
         doc="""Two shapes are touching and their collision response has been 
         processed. 
@@ -2215,9 +2217,13 @@ class CollisionHandler(object):
         """)
         
     def _set_separate(self, f):
-        pass
+        self._separate = f
+        cf = self._get_cf(f, cp.cpCollisionSeparateFunc)
+        self._handler.contents.separateFunc = cf
+        
     def _get_separate(self):
         return self._separate
+        
     separate = property(_get_separate, _set_separate,
         doc="""Two shapes have just stopped touching for the first time this 
         step. 
