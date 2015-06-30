@@ -457,12 +457,51 @@ class Space(object):
             
         return self._handlers[p]
     
-    def wildcard_collision_handler(collision_type_a):
-        pass
+    def wildcard_collision_handler(self, collision_type_a):
+        """Add a wildcard collision handler for given collision type. 
         
-    def default_collision_handler():
-        pass
-     
+        This handler will be used any time an object with this type collides 
+        with another object, regardless of its type. A good example is a 
+        projectile that should be destroyed the first time it hits anything. 
+        There may be a specific collision handler and two wildcard handlers. 
+        It's up to the specific handler to decide if and when to call the 
+        wildcard handlers and what to do with their return values. (See 
+        Arbiter.call_wildcard*())
+        
+        When a new wildcard handler is created, the callbacks will all be 
+        set to builtin callbacks that perform the default behavior. (accept 
+        all collisions in begin() and pre_solve(), or do nothing for 
+        post_solve() and separate().
+        """
+        
+        h = cp.cpSpaceAddWildcardHandler(self._space, collision_type_a)
+        p = h.contents.userData
+        if p == None:
+            p = self._handlers_key
+            self._handlers_key += 1
+            self._handlers[p] = CollisionHandler(h, self)
+            
+        return self._handlers[p]
+        
+    def default_collision_handler(self):
+        """Return a reference to the default collision handler or that is 
+        used to process all collisions that don't have a more specific 
+        handler. 
+        
+        The default behavior for each of the callbacks is to call 
+        the wildcard handlers, ANDing their return values together if 
+        applicable.
+        """
+        
+        h = cp.cpSpaceAddDefaultCollisionHandler(self._space)
+        p = h.contents.userData
+        if p == None:
+            p = self._handlers_key
+            self._handlers_key += 1
+            self._handlers[p] = CollisionHandler(h, self)
+            
+        return self._handlers[p]
+        
     def set_default_collision_handler(self, begin=None, pre_solve=None, post_solve=None, separate=None, *args, **kwargs):
         """Register a default collision handler to be used when no specific 
         collision handler is found. If you do nothing, the space will be given 

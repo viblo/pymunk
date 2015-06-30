@@ -487,6 +487,9 @@ class UnitTestSpace(unittest.TestCase):
             
         self.assert_(self.separated)
         
+    def testWildcardCollisionHandler(self):
+        pass
+        
     def testPostStepCallback(self):
         self.number_of_calls = 0
         def f(obj, shapes, test_self):
