@@ -1,5 +1,5 @@
 
-from ctypes import * 
+from ctypes import *
 from .vec2d import Vec2d
 from ._chipmunk_manual import ShapeFilter, uintptr_t, cpGroup, cpBitmask, Transform, cpFloat
 cpVect = Vec2d
@@ -167,7 +167,7 @@ cpConvexHull = chipmunk_lib.cpConvexHull
 cpConvexHull.restype = c_int
 cpConvexHull.argtypes = [c_int, POINTER(cpVect), POINTER(cpVect), POINTER(c_int), cpFloat]
 
-if sizeof(c_void_p) == 4: uintptr_t = c_uint 
+if sizeof(c_void_p) == 4: uintptr_t = c_uint
 else: uintptr_t = c_ulonglong
 
 cpHashValue = uintptr_t
@@ -867,7 +867,7 @@ class ShapeFilter1(collections.namedtuple('ShapeFilter', ['group','categories','
         print "XXXXXXXXXXXXXXX"
         return cls(1,2,3)
 
-cpShapeFilter = ShapeFilter        
+cpShapeFilter = ShapeFilter
 """
 class cpShapeFilter(Structure):
     pass
