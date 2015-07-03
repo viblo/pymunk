@@ -22,7 +22,7 @@
 # ----------------------------------------------------------------------------
 
 """A constraint is something that describes how two bodies interact with
-each other. (how they constrain each other). Constraints can be simple 
+each other. (how they constrain each other). Constraints can be simple
 joints that allow bodies to pivot around each other like the bones in your
 body, or they can be more abstract like the gear joint or motors.
 
@@ -58,35 +58,65 @@ class Constraint(object):
         self._ccontents = self._constraint.contents
 
     def _get_max_force(self):
-        return self._ccontents.maxForce
+        return cp.cpConstraintGetMaxForce(self._constraint)
     def _set_max_force(self, f):
-        self._ccontents.maxForce = f
+        cp.cpConstraintSetMaxForce(self._constraint, f)
     max_force = property(_get_max_force, _set_max_force,
         doc="""The maximum force that the constraint can use to act on the two
-        bodies. Defaults to infinity""")
+        bodies.
+
+        Defaults to infinity
+        """)
 
     def _get_error_bias(self):
-        return self._ccontents.errorBias
+        return cp.cpConstraintGetErrorBias(self._constraint)
     def _set_error_bias(self, error_bias):
-        self._ccontents.errorBias = error_bias
+        cp.cpConstraintSetErrorBias(self._constraint, error_bias)
     error_bias = property(_get_error_bias, _set_error_bias,
-        doc="""The rate at which joint error is corrected.
+        doc="""The percentage of joint error that remains unfixed after a
+        second.
+
+        This works exactly the same as the collision bias property of a space,
+        but applies to fixing error (stretching) of joints instead of
+        overlapping collisions.
 
         Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
-        the error every 1/60th of a second.""")
+        the error every 1/60th of a second.
+        """)
 
     def _get_max_bias(self):
-        return self._ccontents.maxBias
+        return cp.cpConstraintGetMaxBias(self._constraint)
     def _set_max_bias(self, max_bias):
-        self._ccontents.maxBias = max_bias
+        cp.cpConstraintSetMaxBias(self._constraint, max_bias)
     max_bias = property(_get_max_bias, _set_max_bias,
-        doc="""The maximum rate at which joint error is corrected. Defaults
-        to infinity""")
+        doc="""The maximum speed at which the constraint can apply error
+        correction.
+
+        Defaults to infinity
+        """)
+
+    def _get_collide_bodies(self):
+        return cp.cpConstraintGetCollideBodies(self._constraint)
+    def _set_collide_bodies(self, collide_bodies):
+        cp.cpConstraintSetCollideBodies(self._constraint, collide_bodies)
+    collide_bodies = property(_get_collide_bodies, _set_collide_bodies,
+        doc="""Constraints can be used for filtering collisions too.
+
+        When two bodies collide, Pymunk ignores the collisions if this property
+        is set to False on any constraint that connects the two bodies.
+        Defaults to True. This can be used to create a chain that self
+        collides, but adjacent links in the chain do not collide.
+        """)
 
     def _get_impulse(self):
-        return cpffi.cpConstraintGetImpulse(self._constraint)
+        return cp.cpConstraintGetImpulse(self._constraint)
     impulse = property(_get_impulse,
-        doc="""Get the last impulse applied by this constraint.""")
+        doc="""The most recent impulse that constraint applied.
+
+        To convert this to a force, divide by the timestep passed to
+        space.step(). You can use this to implement breakable joints to check
+        if the force they attempted to apply exceeded a certain threshold.
+        """)
 
     a = property(lambda self: self._a,
         doc="""The first of the two bodies constrained""")
