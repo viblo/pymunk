@@ -140,33 +140,37 @@ class Constraint(object):
 
 class PinJoint(Constraint):
     """Keeps the anchor points at a set distance from one another."""
-    def __init__(self, a, b, anchr1=(0,0), anchr2=(0,0)):
-        """a and b are the two bodies to connect, and anchr1 and anchr2 are the
-        anchor points on those bodies.
+    def __init__(self, a, b, anchor_a=(0,0), anchor_b=(0,0)):
+        """a and b are the two bodies to connect, and anchor_a and anchor_b are
+        the anchor points on those bodies.
+
+        The distance between the two anchor points is measured when the joint
+        is created. If you want to set a specific distance, use the setter
+        function to override it.
         """
 
-        self._constraint = cp.cpPinJointNew(a._body, b._body, anchr1, anchr2)
+        self._constraint = cp.cpPinJointNew(a._body, b._body, anchor_a, anchor_b)
         self._ccontents = self._constraint.contents
         self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPinJoint)).contents
         self._set_bodies(a,b)
 
-    def _get_anchr1(self):
-        return self._pjc.anchr1
-    def _set_anchr1(self, anchr):
-        self._pjc.anchr1 = anchr
-    anchr1 = property(_get_anchr1, _set_anchr1)
+    def _get_anchor_a(self):
+        return cp.cpPinJointGetAnchorA(self._constraint)
+    def _set_anchor_a(self, anchor):
+        cp.cpPinJointSetAnchorA(self._constraint, anchor)
+    anchor_a = property(_get_anchor_a, _set_anchor_a)
 
-    def _get_anchr2(self):
-        return self._pjc.anchr2
-    def _set_anchr2(self, anchr):
-        self._pjc.anchr2 = anchr
-    anchr2 = property(_get_anchr2, _set_anchr2)
+    def _get_anchor_b(self):
+        return cp.cpPinJointGetAnchorB(self._constraint)
+    def _set_anchor_b(self, anchor):
+        cp.cpPinJointSetAnchorB(self._constraint, anchor)
+    anchor_b = property(_get_anchor_b, _set_anchor_b)
 
-    def _get_dist(self):
-        return self._pjc.dist
-    def _set_dist(self, dist):
-        self._pjc.dist = dist
-    distance = property(_get_dist, _set_dist)
+    def _get_distance(self):
+        return cp.cpPinJointGetDist(self._constraint)
+    def _set_distance(self, distance):
+        cp.cpPinJointSetDist(self._constraint, distance)
+    distance = property(_get_distance, _set_distance)
 
 class SlideJoint(Constraint):
     """Like pin joints, but have a minimum and maximum distance.

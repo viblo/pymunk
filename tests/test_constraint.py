@@ -70,13 +70,26 @@ class UnitTestConstraint(unittest.TestCase):
         self.assertFalse(a.is_sleeping)
         self.assertFalse(b.is_sleeping)
 
-
-
-    def testPinJoint(self):
+class UnitTestPinJoint(unittest.TestCase):
+    def testDistane(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.PinJoint(a,b,(0,0), (10,0))
+        j = p.PinJoint(a, b, (0,0), (10,0))
         self.assertEqual(j.distance, 10)
+        j.distance = 20
+        self.assertEqual(j.distance, 20)
 
+    def testAnchor(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.PinJoint(a, b, (1,2), (3,4))
+        self.assertEqual(j.anchor_a, (1,2))
+        self.assertEqual(j.anchor_b, (3,4))
+        j.anchor_a = (5,6)
+        j.anchor_b = (7,8)
+        self.assertEqual(j.anchor_a, (5,6))
+        self.assertEqual(j.anchor_b, (7,8))
+
+
+class UnitTestSlideJoint(unittest.TestCase):
     def testSlideJoint(self):
         a,b = p.Body(10,10), p.Body(20,20)
         j = p.SlideJoint(a,b,(1,0), (10,0), 7, 12)
