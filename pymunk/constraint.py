@@ -150,8 +150,8 @@ class PinJoint(Constraint):
         """
 
         self._constraint = cp.cpPinJointNew(a._body, b._body, anchor_a, anchor_b)
-        self._ccontents = self._constraint.contents
-        self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPinJoint)).contents
+        #self._ccontents = self._constraint.contents
+        #self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPinJoint)).contents
         self._set_bodies(a,b)
 
     def _get_anchor_a(self):
@@ -177,38 +177,38 @@ class SlideJoint(Constraint):
     A chain could be modeled using this joint. It keeps the anchor points
     from getting to far apart, but will allow them to get closer together.
     """
-    def __init__(self, a, b, anchr1, anchr2, min, max):
-        """a and b are the two bodies to connect, anchr1 and anchr2 are the
+    def __init__(self, a, b, anchor_a=(0,0), anchor_b=(0,0), min=0, max=0):
+        """a and b are the two bodies to connect, anchor_a and anchor_b are the
         anchor points on those bodies, and min and max define the allowed
         distances of the anchor points.
         """
-        self._constraint = cp.cpSlideJointNew(a._body, b._body, anchr1, anchr2, min, max)
+        self._constraint = cp.cpSlideJointNew(a._body, b._body, anchor_a, anchor_b, min, max)
         self._ccontents = self._constraint.contents
         self._sjc = cp.cast(self._constraint, ct.POINTER(cp.cpSlideJoint)).contents
         self._set_bodies(a,b)
 
-    def _get_anchr1(self):
-        return self._sjc.anchr1
-    def _set_anchr1(self, anchr):
-        self._sjc.anchr1 = anchr
-    anchr1 = property(_get_anchr1, _set_anchr1)
+    def _get_anchor_a(self):
+        return cp.cpSlideJointGetAnchorA(self._constraint)
+    def _set_anchor_a(self, anchor):
+        cp.cpSlideJointSetAnchorA(self._constraint, anchor)
+    anchor_a = property(_get_anchor_a, _set_anchor_a)
 
-    def _get_anchr2(self):
-        return self._sjc.anchr2
-    def _set_anchr2(self, anchr):
-        self._sjc.anchr2 = anchr
-    anchr2 = property(_get_anchr2, _set_anchr2)
+    def _get_anchor_b(self):
+        return cp.cpSlideJointGetAnchorB(self._constraint)
+    def _set_anchor_b(self, anchor):
+        cp.cpSlideJointSetAnchorB(self._constraint, anchor)
+    anchor_b = property(_get_anchor_b, _set_anchor_b)
 
     def _get_min(self):
-        return self._sjc.min
+        return cp.cpSlideJointGetMin(self._constraint)
     def _set_min(self, min):
-        self._sjc.min = min
+        cp.cpSlideJointSetMin(self._constraint, min)
     min = property(_get_min, _set_min)
 
     def _get_max(self):
-        return self._sjc.max
+        return cp.cpSlideJointGetMax(self._constraint)
     def _set_max(self, max):
-        self._sjc.max = max
+        cp.cpSlideJointSetMax(self._constraint, max)
     max = property(_get_max, _set_max)
 
 class PivotJoint(Constraint):
