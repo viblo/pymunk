@@ -388,55 +388,58 @@ class DampedRotarySpring(Constraint):
 class RotaryLimitJoint(Constraint):
     """Constrains the relative rotations of two bodies."""
     def __init__(self, a, b, min, max):
-        """Constrains the relative rotations of two bodies. min and max are
-        the angular limits in radians. It is implemented so that it's possible
-        to for the range to be greater than a full revolution.
+        """Constrains the relative rotations of two bodies.
+
+        min and max are the angular limits in radians. It is implemented so
+        that it's possible to for the range to be greater than a full
+        revolution.
         """
         self._constraint = cp.cpRotaryLimitJointNew(a._body, b._body, min, max)
-        self._ccontents = self._constraint.contents
-        self._rlc = cp.cast(self._constraint, ct.POINTER(cp.cpRotaryLimitJoint)).contents
+        #self._ccontents = self._constraint.contents
+        #self._rlc = cp.cast(self._constraint, ct.POINTER(cp.cpRotaryLimitJoint)).contents
         self._set_bodies(a,b)
 
     def _get_min(self):
-        return self._rlc.min
+        return cp.cpRotaryLimitJointGetMin(self._constraint)
     def _set_min(self, min):
-        self._rlc.min = min
+        cp.cpRotaryLimitJointSetMin(self._constraint, min)
     min = property(_get_min, _set_min)
 
     def _get_max(self):
-        return self._rlc.max
+        return cp.cpRotaryLimitJointGetMax(self._constraint)
     def _set_max(self, max):
-        self._rlc.max = max
+        cp.cpRotaryLimitJointSetMax(self._constraint, max)
     max = property(_get_max, _set_max)
 
 class RatchetJoint(Constraint):
     """Works like a socket wrench."""
     def __init__(self, a, b, phase, ratchet):
-        """Works like a socket wrench. ratchet is the distance between
-        "clicks", phase is the initial offset to use when deciding where the
-        ratchet angles are.
+        """Works like a socket wrench.
+
+        ratchet is the distance between "clicks", phase is the initial offset
+        to use when deciding where the ratchet angles are.
         """
         self._constraint = cp.cpRatchetJointNew(a._body, b._body, phase, ratchet)
-        self._ccontents = self._constraint.contents
-        self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpRatchetJoint)).contents
+        #self._ccontents = self._constraint.contents
+        #self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpRatchetJoint)).contents
         self._set_bodies(a,b)
 
     def _get_angle(self):
-        return self._dsc.angle
+        return cp.cpRatchetJointGetAngle(self._constraint)
     def _set_angle(self, angle):
-        self._dsc.angle = angle
+        cp.cpRatchetJointSetAngle(self._constraint, angle)
     angle = property(_get_angle, _set_angle)
 
     def _get_phase(self):
-        return self._dsc.phase
+        return cp.cpRatchetJointGetPhase(self._constraint)
     def _set_phase(self, phase):
-        self._dsc.phase = phase
+        cp.cpRatchetJointSetPhase(self._constraint, phase)
     phase = property(_get_phase, _set_phase)
 
     def _get_ratchet(self):
-        return self._dsc.ratchet
+        return cp.cpRatchetJointGetRatchet(self._constraint)
     def _set_ratchet(self, ratchet):
-        self._dsc.ratchet = ratchet
+        cp.cpRatchetJointSetRatchet(self._constraint, ratchet)
     ratchet = property(_get_ratchet, _set_ratchet)
 
 class GearJoint(Constraint):

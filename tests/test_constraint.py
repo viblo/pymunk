@@ -101,14 +101,14 @@ class UnitTestSlideJoint(unittest.TestCase):
 
     def testMin(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.SlideJoint(a, b, min=1)
+        j = p.SlideJoint(a, b, 1, 0)
         self.assertEqual(j.min, 1)
         j.min = 2
         self.assertEqual(j.min, 2)
 
     def testMax(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.SlideJoint(a, b, max=1)
+        j = p.SlideJoint(a, b, 0, 1)
         self.assertEqual(j.max, 1)
         j.max = 2
         self.assertEqual(j.max, 2)
@@ -204,20 +204,43 @@ class UnitTestDampedRotarySpring(unittest.TestCase):
         self.assertEqual(j.damping, 2)
 
 class UnitTestRotaryLimitJoint(unittest.TestCase):
-
-    def testRotaryLimitJoint(self):
+    def testMin(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.RotaryLimitJoint(a, b, 0.1, 0.2)
-        self.assertEqual(j.max, 0.2)
-        self.assertEqual(j.min, 0.1)
+        j = p.RotaryLimitJoint(a, b, 1, 0)
+        self.assertEqual(j.min, 1)
+        j.min = 2
+        self.assertEqual(j.min, 2)
 
-    def testRatchetJoint(self):
+    def testMax(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.RatchetJoint(a, b, 0.3, 0.2)
-        self.assertEqual(j.angle, 0.0)
-        self.assertEqual(j.phase, 0.3)
-        self.assertEqual(j.ratchet, 0.2)
+        j = p.RotaryLimitJoint(a, b, 0, 1)
+        self.assertEqual(j.max, 1)
+        j.max = 2
+        self.assertEqual(j.max, 2)
 
+class UnitTestRatchetJoint(unittest.TestCase):
+    def testAngle(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.RatchetJoint(a, b, 0, 0)
+        self.assertEqual(j.angle, 0)
+        j.angle = 1
+        self.assertEqual(j.angle, 1)
+
+    def testPhase(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.RatchetJoint(a, b, 1, 0)
+        self.assertEqual(j.phase, 1)
+        j.phase = 2
+        self.assertEqual(j.phase, 2)
+
+    def testRatchet(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.RatchetJoint(a, b, 0, 1)
+        self.assertEqual(j.ratchet, 1)
+        j.ratchet = 2
+        self.assertEqual(j.ratchet, 2)
+
+class UnitTestGearJoint(unittest.TestCase):
     def testGearJoint(self):
         a,b = p.Body(10,10), p.Body(20,20)
         j = p.GearJoint(a, b, 0.3, 0.2)
