@@ -183,8 +183,8 @@ class SlideJoint(Constraint):
         distances of the anchor points.
         """
         self._constraint = cp.cpSlideJointNew(a._body, b._body, anchor_a, anchor_b, min, max)
-        self._ccontents = self._constraint.contents
-        self._sjc = cp.cast(self._constraint, ct.POINTER(cp.cpSlideJoint)).contents
+        #self._ccontents = self._constraint.contents
+        #self._sjc = cp.cast(self._constraint, ct.POINTER(cp.cpSlideJoint)).contents
         self._set_bodies(a,b)
 
     def _get_anchor_a(self):
@@ -215,15 +215,16 @@ class PivotJoint(Constraint):
     """Simply allow two objects to pivot about a single point."""
     def __init__(self, a, b, *args):
         """a and b are the two bodies to connect, and pivot is the point in
-        world coordinates of the pivot. Because the pivot location is given in
-        world coordinates, you must have the bodies moved into the correct
-        positions already.
+        world coordinates of the pivot.
+
+        Because the pivot location is given in world coordinates, you must
+        have the bodies moved into the correct positions already.
         Alternatively you can specify the joint based on a pair of anchor
         points, but make sure you have the bodies in the right place as the
         joint will fix itself as soon as you start simulating the space.
 
         That is, either create the joint with PivotJoint(a, b, pivot) or
-        PivotJoint(a, b, anchr1, anchr2).
+        PivotJoint(a, b, anchor_a, anchor_b).
 
             a : `Body`
                 The first of the two bodies
@@ -240,21 +241,21 @@ class PivotJoint(Constraint):
         else:
             raise Exception("You must specify either one pivot point or two anchor points")
 
-        self._ccontents = self._constraint.contents
-        self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPivotJoint)).contents
+        #self._ccontents = self._constraint.contents
+        #self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPivotJoint)).contents
         self._set_bodies(a,b)
 
-    def _get_anchr1(self):
-        return self._pjc.anchr1
-    def _set_anchr1(self, anchr):
-        self._pjc.anchr1 = anchr
-    anchr1 = property(_get_anchr1, _set_anchr1)
+    def _get_anchor_a(self):
+        return cp.cpPivotJointGetAnchorA(self._constraint)
+    def _set_anchor_a(self, anchor):
+        cp.cpPivotJointSetAnchorA(self._constraint, anchor)
+    anchor_a = property(_get_anchor_a, _set_anchor_a)
 
-    def _get_anchr2(self):
-        return self._pjc.anchr2
-    def _set_anchr2(self, anchr):
-        self._pjc.anchr2 = anchr
-    anchr2 = property(_get_anchr2, _set_anchr2)
+    def _get_anchor_b(self):
+        return cp.cpPivotJointGetAnchorB(self._constraint)
+    def _set_anchor_b(self, anchor):
+        cp.cpPivotJointSetAnchorB(self._constraint, anchor)
+    anchor_b = property(_get_anchor_b, _set_anchor_b)
 
 class GrooveJoint(Constraint):
     """Similar to a pivot joint, but one of the anchors is

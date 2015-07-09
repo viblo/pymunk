@@ -114,18 +114,24 @@ class UnitTestSlideJoint(unittest.TestCase):
         self.assertEqual(j.max, 2)
 
 class UnitTestPivotJoint(unittest.TestCase):
-    def testPivotjoint(self):
+    def testAnchorByPivot(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        a.position = (-10,0)
-        b.position = (10,0)
-        s = p.Space()
-        j1 = p.PivotJoint(a, b, (0,0))
-        j2 = p.PivotJoint(a, b, (-10,0), (10,0))
-        s.add(a,b,j1,j2)
-        s.step(1)
-        self.assertEqual(j1.anchr1, j2.anchr2)
-        self.assertEqual(j2.anchr1, j1.anchr2)
+        a.position = (5,7)
+        j = p.PivotJoint(a, b, (1,2))
+        self.assertEqual(j.anchor_a, (-4,-5))
+        self.assertEqual(j.anchor_b, (1,2))
 
+    def testAnchorByAnchor(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.PivotJoint(a, b, (1,2), (3,4))
+        self.assertEqual(j.anchor_a, (1,2))
+        self.assertEqual(j.anchor_b, (3,4))
+        j.anchor_a = (5,6)
+        j.anchor_b = (7,8)
+        self.assertEqual(j.anchor_a, (5,6))
+        self.assertEqual(j.anchor_b, (7,8))
+
+class UnitTestDampedSprint(unittest.TestCase):
     def testDampedSpring(self):
         a,b = p.Body(10,10), p.Body(20,20)
         j = p.DampedSpring(a,b,(1,0), (10,0), 7, 12,5)
