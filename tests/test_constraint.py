@@ -150,7 +150,7 @@ class UnitTestGrooveJoint(unittest.TestCase):
         self.assertEqual(j.groove_b, (7,8))
 
 class UnitTestDampedSpring(unittest.TestCase):
-    def testAnchorByAnchor(self):
+    def testAnchor(self):
         a,b = p.Body(10,10), p.Body(20,20)
         j = p.DampedSpring(a, b, (1,2), (3,4), 0, 0, 0)
         self.assertEqual(j.anchor_a, (1,2))
@@ -182,26 +182,28 @@ class UnitTestDampedSpring(unittest.TestCase):
         self.assertEqual(j.damping, 2)
 
 class UnitTestDampedRotarySpring(unittest.TestCase):
-    def testDampedRotarySpring(self):
+    def testRestAngle(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.DampedRotarySpring(a,b, 0.4, 12,5)
-        self.assertEqual(j.rest_angle, 0.4)
-        self.assertEqual(j.stiffness, 12)
-        self.assertEqual(j.damping, 5)
+        j = p.DampedRotarySpring(a, b, 1, 0, 0)
+        self.assertEqual(j.rest_angle, 1)
+        j.rest_angle = 2
+        self.assertEqual(j.rest_angle, 2)
 
-    def testDampedRotarySpringCallback(self):
+    def testStiffness(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.DampedRotarySpring(a,b, 0.4, 12,5)
-        def f(self, relative_angle):
-            return 1
-        j.torque_func = f
-        s = p.Space()
-        s.add(a,b,j)
-        a.apply_impulse((10,0), (0,10))
-        a.apply_impulse((-10,0), (0,-10))
-        for x in range(100):
-            s.step(0.1)
-        self.assertAlmostEqual(a.angle-b.angle,-29.3233997)
+        j = p.DampedRotarySpring(a, b, 0, 1, 0)
+        self.assertEqual(j.stiffness, 1)
+        j.stiffness = 2
+        self.assertEqual(j.stiffness, 2)
+
+    def testDamping(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.DampedRotarySpring(a, b,  0, 0, 1)
+        self.assertEqual(j.damping, 1)
+        j.damping = 2
+        self.assertEqual(j.damping, 2)
+
+class UnitTestRotaryLimitJoint(unittest.TestCase):
 
     def testRotaryLimitJoint(self):
         a,b = p.Body(10,10), p.Body(20,20)

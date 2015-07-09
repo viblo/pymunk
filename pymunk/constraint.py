@@ -351,56 +351,38 @@ class DampedRotarySpring(Constraint):
         """Like a damped spring, but works in an angular fashion.
 
         :Parameters:
-            rest_angle
+            rest_angle : float
                 The relative angle in radians that the bodies want to have
-            stiffness
+            stiffness : float
                 The spring constant (Young's modulus).
-            damping
+            damping : float
                 How soft to make the damping of the spring.
         """
         self._constraint = cp.cpDampedRotarySpringNew(a._body, b._body, rest_angle, stiffness, damping)
-        self._ccontents = self._constraint.contents
-        self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedRotarySpring)).contents
+        #self._ccontents = self._constraint.contents
+        #self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedRotarySpring)).contents
         self._set_bodies(a,b)
 
     def _get_rest_angle(self):
-        return self._dsc.restAngle
+        return cp.cpDampedRotarySpringGetRestAngle(self._constraint)
     def _set_rest_angle(self, rest_angle):
-        self._dsc.restAngle = rest_angle
+        cp.cpDampedRotarySpringSetRestAngle(self._constraint, rest_angle)
     rest_angle = property(_get_rest_angle, _set_rest_angle,
         doc="""The relative angle in radians that the bodies want to have""")
 
     def _get_stiffness(self):
-        return self._dsc.stiffness
+        return cp.cpDampedRotarySpringGetStiffness(self._constraint)
     def _set_stiffness(self, stiffness):
-        self._dsc.stiffness = stiffness
+        cp.cpDampedRotarySpringSetStiffness(self._constraint, stiffness)
     stiffness = property(_get_stiffness, _set_stiffness,
         doc="""The spring constant (Young's modulus).""")
 
     def _get_damping(self):
-        return self._dsc.damping
+        return cp.cpDampedRotarySpringGetDamping(self._constraint)
     def _set_damping(self, damping):
-        self._dsc.damping = damping
+        cp.cpDampedRotarySpringSetDamping(self._constraint, damping)
     damping = property(_get_damping, _set_damping,
         doc="""How soft to make the damping of the spring.""")
-
-    def _set_torque_func(self, func):
-        """Set the torque function
-
-            func(self, relative_angle) -> torque
-
-            Callback Parameters
-                relative_angle : float
-                    The relative angle
-
-        """
-        def _impl(_, relative_angle):
-            return func(self, relative_angle)
-
-        self._torque_func_callback = cp.cpDampedRotarySpringTorqueFunc(_impl)
-        self._dsc.springTorqueFunc = self._torque_func_callback
-    torque_func = property(fset=_set_torque_func,
-        doc=_set_torque_func.__doc__)
 
 
 class RotaryLimitJoint(Constraint):
