@@ -177,7 +177,7 @@ class SlideJoint(Constraint):
     A chain could be modeled using this joint. It keeps the anchor points
     from getting to far apart, but will allow them to get closer together.
     """
-    def __init__(self, a, b, anchor_a=(0,0), anchor_b=(0,0), min=0, max=0):
+    def __init__(self, a, b, anchor_a, anchor_b, min, max):
         """a and b are the two bodies to connect, anchor_a and anchor_b are the
         anchor points on those bodies, and min and max define the allowed
         distances of the anchor points.
@@ -261,39 +261,45 @@ class GrooveJoint(Constraint):
     """Similar to a pivot joint, but one of the anchors is
     on a linear slide instead of being fixed.
     """
-    def __init__(self, a, b, groove_a, groove_b, anchr2):
+    def __init__(self, a, b, groove_a, groove_b, anchor_b):
         """The groove goes from groove_a to groove_b on body a, and the pivot
-        is attached to anchr2 on body b. All coordinates are body local.
+        is attached to anchor_b on body b.
+
+        All coordinates are body local.
         """
-        self._constraint = cp.cpGrooveJointNew(a._body, b._body, groove_a, groove_b, anchr2)
-        self._ccontents = self._constraint.contents
-        self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpGrooveJoint)).contents
+        self._constraint = cp.cpGrooveJointNew(a._body, b._body, groove_a, groove_b, anchor_b)
+        #self._ccontents = self._constraint.contents
+        #self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpGrooveJoint)).contents
         self._set_bodies(a,b)
 
-    def _get_anchr2(self):
-        return self._pjc.anchr2
-    def _set_anchr2(self, anchr):
-        self._pjc.anchr2 = anchr
-    anchr2 = property(_get_anchr2, _set_anchr2)
+    def _get_anchor_b(self):
+        return cp.cpGrooveJointGetAnchorB(self._constraint)
+    def _set_anchor_b(self, anchor):
+        cp.cpGrooveJointSetAnchorB(self._constraint, anchor)
+    anchor_b = property(_get_anchor_b, _set_anchor_b)
 
     def _get_groove_a(self):
-        return self._pjc.grv_a
-    groove_a = property(_get_groove_a)
+        return cp.cpGrooveJointGetGrooveA(self._constraint)
+    def _set_groove_a(self, groove):
+        cp.cpGrooveJointSetGrooveA(self._constraint, groove)
+    groove_a = property(_get_groove_a, _set_groove_a)
 
     def _get_groove_b(self):
-        return self._pjc.grv_b
-    groove_b = property(_get_groove_b)
+        return cp.cpGrooveJointGetGrooveB(self._constraint)
+    def _set_groove_b(self, groove):
+        cp.cpGrooveJointSetGrooveB(self._constraint, groove)
+    groove_b = property(_get_groove_b, _set_groove_b)
 
 class DampedSpring(Constraint):
     """A damped spring"""
-    def __init__(self, a, b, anchr1, anchr2, rest_length, stiffness, damping):
+    def __init__(self, a, b, anchor_a, anchor_b, rest_length, stiffness, damping):
         """Defined much like a slide joint.
 
         :Parameters:
-            anchr1 : Vec2d or (x,y)
-                Anchor point 1, relative to body a
-            anchr2 : Vec2d or (x,y)
-                Anchor point 2, relative to body b
+            anchor_a : Vec2d or (x,y)
+                Anchor point a, relative to body a
+            anchor_b : Vec2d or (x,y)
+                Anchor point b, relative to body b
             rest_length : float
                 The distance the spring wants to be.
             stiffness : float
@@ -301,41 +307,41 @@ class DampedSpring(Constraint):
             damping : float
                 How soft to make the damping of the spring.
         """
-        self._constraint = cp.cpDampedSpringNew(a._body, b._body, anchr1, anchr2, rest_length, stiffness, damping)
-        self._ccontents = self._constraint.contents
-        self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedSpring)).contents
+        self._constraint = cp.cpDampedSpringNew(a._body, b._body, anchor_a, anchor_b, rest_length, stiffness, damping)
+        #self._ccontents = self._constraint.contents
+        #self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedSpring)).contents
         self._set_bodies(a,b)
 
-    def _get_anchr1(self):
-        return self._dsc.anchr1
-    def _set_anchr1(self, anchr):
-        self._dsc.anchr1 = anchr
-    anchr1 = property(_get_anchr1, _set_anchr1)
+    def _get_anchor_a(self):
+        return cp.cpDampedSpringGetAnchorA(self._constraint)
+    def _set_anchor_a(self, anchor):
+        cp.cpDampedSpringSetAnchorA(self._constraint, anchor)
+    anchor_a = property(_get_anchor_a, _set_anchor_a)
 
-    def _get_anchr2(self):
-        return self._dsc.anchr2
-    def _set_anchr2(self, anchr):
-        self._dsc.anchr2 = anchr
-    anchr2 = property(_get_anchr2, _set_anchr2)
+    def _get_anchor_b(self):
+        return cp.cpDampedSpringGetAnchorB(self._constraint)
+    def _set_anchor_b(self, anchor):
+        cp.cpDampedSpringSetAnchorB(self._constraint, anchor)
+    anchor_b = property(_get_anchor_b, _set_anchor_b)
 
     def _get_rest_length(self):
-        return self._dsc.restLength
+        return cp.cpDampedSpringGetRestLength(self._constraint)
     def _set_rest_length(self, rest_length):
-        self._dsc.restLength = rest_length
+        cp.cpDampedSpringSetRestLength(self._constraint, rest_length)
     rest_length = property(_get_rest_length, _set_rest_length,
         doc="""The distance the spring wants to be.""")
 
     def _get_stiffness(self):
-        return self._dsc.stiffness
+        return cp.cpDampedSpringGetStiffness(self._constraint)
     def _set_stiffness(self, stiffness):
-        self._dsc.stiffness = stiffness
+        cp.cpDampedSpringSetStiffness(self._constraint, stiffness)
     stiffness = property(_get_stiffness, _set_stiffness,
         doc="""The spring constant (Young's modulus).""")
 
     def _get_damping(self):
-        return self._dsc.damping
+        return cp.cpDampedSpringGetDamping(self._constraint)
     def _set_damping(self, damping):
-        self._dsc.damping = damping
+        cp.cpDampedSpringSetDamping(self._constraint, damping)
     damping = property(_get_damping, _set_damping,
         doc="""How soft to make the damping of the spring.""")
 

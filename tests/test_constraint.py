@@ -131,14 +131,57 @@ class UnitTestPivotJoint(unittest.TestCase):
         self.assertEqual(j.anchor_a, (5,6))
         self.assertEqual(j.anchor_b, (7,8))
 
-class UnitTestDampedSprint(unittest.TestCase):
-    def testDampedSpring(self):
+class UnitTestGrooveJoint(unittest.TestCase):
+    def testAnchor(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.DampedSpring(a,b,(1,0), (10,0), 7, 12,5)
-        self.assertEqual(j.rest_length, 7)
-        self.assertEqual(j.stiffness, 12)
-        self.assertEqual(j.damping, 5)
+        j = p.GrooveJoint(a, b, (0,0), (0,0), (1,2))
+        self.assertEqual(j.anchor_b, (1,2))
+        j.anchor_b = (3,4)
+        self.assertEqual(j.anchor_b, (3,4))
 
+    def testGroove(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.GrooveJoint(a, b, (1,2), (3,4), (0,0))
+        self.assertEqual(j.groove_a, (1,2))
+        self.assertEqual(j.groove_b, (3,4))
+        j.groove_a = (5,6)
+        j.groove_b = (7,8)
+        self.assertEqual(j.groove_a, (5,6))
+        self.assertEqual(j.groove_b, (7,8))
+
+class UnitTestDampedSpring(unittest.TestCase):
+    def testAnchorByAnchor(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.DampedSpring(a, b, (1,2), (3,4), 0, 0, 0)
+        self.assertEqual(j.anchor_a, (1,2))
+        self.assertEqual(j.anchor_b, (3,4))
+        j.anchor_a = (5,6)
+        j.anchor_b = (7,8)
+        self.assertEqual(j.anchor_a, (5,6))
+        self.assertEqual(j.anchor_b, (7,8))
+
+    def testRestLength(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.DampedSpring(a, b, (0,0), (0,0), 1, 0, 0)
+        self.assertEqual(j.rest_length, 1)
+        j.rest_length = 2
+        self.assertEqual(j.rest_length, 2)
+
+    def testStiffness(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.DampedSpring(a, b, (0,0), (0,0), 0, 1, 0)
+        self.assertEqual(j.stiffness, 1)
+        j.stiffness = 2
+        self.assertEqual(j.stiffness, 2)
+
+    def testDamping(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.DampedSpring(a, b, (0,0), (0,0), 0, 0, 1)
+        self.assertEqual(j.damping, 1)
+        j.damping = 2
+        self.assertEqual(j.damping, 2)
+
+class UnitTestDampedRotarySpring(unittest.TestCase):
     def testDampedRotarySpring(self):
         a,b = p.Body(10,10), p.Body(20,20)
         j = p.DampedRotarySpring(a,b, 0.4, 12,5)
