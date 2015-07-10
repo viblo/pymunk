@@ -241,12 +241,21 @@ class UnitTestRatchetJoint(unittest.TestCase):
         self.assertEqual(j.ratchet, 2)
 
 class UnitTestGearJoint(unittest.TestCase):
-    def testGearJoint(self):
+    def testPhase(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.GearJoint(a, b, 0.3, 0.2)
-        self.assertEqual(j.phase, 0.3)
-        self.assertEqual(j.ratio, 0.2)
+        j = p.GearJoint(a, b, 1, 0)
+        self.assertEqual(j.phase, 1)
+        j.phase = 2
+        self.assertEqual(j.phase, 2)
 
+    def testRatio(self):
+        a,b = p.Body(10,10), p.Body(20,20)
+        j = p.GearJoint(a, b, 0, 1)
+        self.assertEqual(j.ratio, 1)
+        j.ratio = 2
+        self.assertEqual(j.ratio, 2)
+
+class UnitTestSimleMotor(unittest.TestCase):
     def testSimpleMotor(self):
         a,b = p.Body(10,10), p.Body(20,20)
         j = p.SimpleMotor(a, b, 0.3)
@@ -259,16 +268,6 @@ class UnitTestGearJoint(unittest.TestCase):
         self.assertEqual(j.max_bias, 30)
         self.assertEqual(j.bias_coef, 40)
         self.assertEqual(j.max_force, 50)
-
-    def testGrooveJoint(self):
-        a,b = p.Body(10,10), p.Body(20,20)
-        a.position = 10,10
-        b.position = 20,20
-        j = p.GrooveJoint(a,b, (5,0), (7,7), (3,3))
-
-        self.assertEqual(j.anchr2, (3,3))
-        self.assertEqual(j.groove_a, (5,0))
-        self.assertEqual(j.groove_b, (7,7))
 
 ####################################################################
 if __name__ == "__main__":

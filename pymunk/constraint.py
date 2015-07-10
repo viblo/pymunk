@@ -446,25 +446,26 @@ class GearJoint(Constraint):
     """Keeps the angular velocity ratio of a pair of bodies constant."""
     def __init__(self, a, b, phase, ratio):
         """Keeps the angular velocity ratio of a pair of bodies constant.
+
         ratio is always measured in absolute terms. It is currently not
         possible to set the ratio in relation to a third body's angular
         velocity. phase is the initial angular offset of the two bodies.
         """
         self._constraint = cp.cpGearJointNew(a._body, b._body, phase, ratio)
-        self._ccontents = self._constraint.contents
-        self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpGearJoint)).contents
+        #self._ccontents = self._constraint.contents
+        #self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpGearJoint)).contents
         self._set_bodies(a,b)
 
     def _get_phase(self):
-        return self._dsc.phase
+        return cp.cpGearJointGetPhase(self._constraint)
     def _set_phase(self, phase):
-        self._dsc.phase = phase
+        cp.cpGearJointSetPhase(self._constraint, phase)
     phase = property(_get_phase, _set_phase)
 
     def _get_ratio(self):
-        return self._dsc.ratio
+        return cp.cpGearJointGetRatio(self._constraint)
     def _set_ratio(self, ratio):
-        self._dsc.ratio = ratio
+        cp.cpGearJointSetRatio(self._constraint, ratio)
     ratio = property(_get_ratio, _set_ratio)
 
 class SimpleMotor(Constraint):
