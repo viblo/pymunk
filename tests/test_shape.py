@@ -3,7 +3,7 @@ from pymunk.vec2d import Vec2d
 import unittest
 
 ####################################################################
-       
+
 class UnitTestShape(unittest.TestCase):
     def testPointQuery(self):
         b = p.Body(10,10)
@@ -15,29 +15,29 @@ class UnitTestShape(unittest.TestCase):
         self.assertEqual(str(info.point), "Vec2d(nan, nan)")
         self.assertEqual(info.distance, -5)
         self.assertEqual(info.gradient, (0,1))
-        
+
         r, info = c.point_query((11,0))
         self.assertEqual(r, 6)
         self.assertEqual(info.shape, c)
         self.assertEqual(info.point, (5,0))
         self.assertEqual(info.distance, 6)
         self.assertEqual(info.gradient, (1,0))
-    
+
     def testSegmentQuery(self):
         s = p.Space()
         b = p.Body(10,10)
         c = p.Circle(b, 5)
         c.cache_bb()
-        
+
         info = c.segment_query((10,-50), (10,50))
         self.assertEqual(info.shape, None)
         self.assertEqual(info.point, (10,50))
         self.assertEqual(info.normal, (0,0))
         self.assertEqual(info.alpha, 1.0)
-        
+
         info = c.segment_query((10,-50), (10,50), 6)
         self.assertEqual(info.shape, c)
-        
+
         info = c.segment_query((0,-50), (0,50))
         self.assertEqual(info.shape, c)
         self.assertAlmostEqual(info.point.x, 0)
@@ -45,59 +45,19 @@ class UnitTestShape(unittest.TestCase):
         self.assertAlmostEqual(info.normal.x, 0)
         self.assertAlmostEqual(info.normal.y, -1)
         self.assertEqual(info.alpha, 0.45)
-           
-    def testGroup(self):
-        s = p.Space()
-        b1 = p.Body(1,1)
-        b2 = p.Body(1,1)
-        b3 = p.Body(1,1)
-        
-        c1 = p.Circle(b1,2)
-        c2 = p.Circle(b2,2)
-        c3 = p.Circle(b3,2)
-        
-        c1.group = 5
-        c2.group = 5
-        c3.group = 6
-        
-        s.add(b2,b3,c2,c3)
-        
-        self.assertEqual(s.shape_query(c1)[0], c3)
-        
-    def testLayer(self):
-        s = p.Space()
-        b1 = p.Body(1,1)
-        b2 = p.Body(1,1)
-        b3 = p.Body(1,1)
-        b4 = p.Body(1,1)
-        
-        c1 = p.Circle(b1,2)
-        c2 = p.Circle(b2,2)
-        c3 = p.Circle(b3,2)
-        c4 = p.Circle(b4,2)
-        
-        c1.layers = 2 #0b10
-        c2.layers = 1 #0b01
-        c3.layers = 3 #0b11
-        
-        s.add(b2,b3,b4,c2,c3,c4)
-        shapes = s.shape_query(c1)
-        self.assertEqual(len(shapes), 2)
-        self.assert_(c3 in shapes)
-        self.assert_(c4 in shapes)
-        
+
     def testNoBody(self):
-        c = p.Circle(None, 1)        
+        c = p.Circle(None, 1)
         self.assertEqual(c.body, None)
-        
+
     def testRemoveBody(self):
         b = p.Body(1,1)
         c = p.Circle(b,1)
         c.body = None
-        
+
         self.assertEqual(c.body, None)
         self.assertEqual(len(b.shapes), 0)
-        
+
     def testSwitchBody(self):
         b1 = p.Body(1,1)
         b2 = p.Body(1,1)
@@ -109,49 +69,49 @@ class UnitTestShape(unittest.TestCase):
         self.assertEqual(c.body, b2)
         self.assert_(c not in b1.shapes)
         self.assert_(c in b2.shapes)
-    
+
     def testSensor(self):
         b1 = p.Body(1,1)
         c = p.Circle(b1,1)
         self.assertFalse(c.sensor)
         c.sensor = True
         self.assertTrue(c.sensor)
-        
+
     def testElasticity(self):
         b1 = p.Body(1,1)
         c = p.Circle(b1,1)
         self.assertEqual(c.elasticity, 0)
         c.elasticity = 1
         self.assertEqual(c.elasticity, 1)
-        
+
     def testFriction(self):
         b1 = p.Body(1,1)
         c = p.Circle(b1,1)
         self.assertEqual(c.friction, 0)
         c.friction = 1
         self.assertEqual(c.friction, 1)
-        
+
     def testSurfaceVelocity(self):
         b1 = p.Body(1,1)
         c = p.Circle(b1,1)
         self.assertEqual(c.surface_velocity, (0,0))
         c.surface_velocity = (1,2)
         self.assertEqual(c.surface_velocity, (1,2))
-        
+
     def testCollisionType(self):
         b1 = p.Body(1,1)
         c = p.Circle(b1,1)
         self.assertEqual(c.collision_type, 0)
         c.collision_type = 1
         self.assertEqual(c.collision_type, 1)
-    
+
     def testFilter(self):
         b1 = p.Body(1,1)
         c = p.Circle(b1,1)
         self.assertEqual(c.filter, p.ShapeFilter(0, 0xffffffff, 0xffffffff))
         c.filter = p.ShapeFilter(1, 0xfffffff2, 0xfffffff3)
-        self.assertEqual(c.filter, p.ShapeFilter(1, 0xfffffff2, 0xfffffff3)) 
-    
+        self.assertEqual(c.filter, p.ShapeFilter(1, 0xfffffff2, 0xfffffff3))
+
     def testSpace(self):
         b1 = p.Body(1,1)
         c = p.Circle(b1,1)
@@ -159,58 +119,58 @@ class UnitTestShape(unittest.TestCase):
         s = p.Space()
         s.add(c)
         self.assertEqual(c.space, s)
-        
-        
+
+
 class UnitTestCircle(unittest.TestCase):
     def testCircleBB(self):
         s = p.Space()
         b = p.Body(10,10)
         c = p.Circle(b,5)
-        
+
         c.cache_bb()
-        
+
         self.assertEqual(c.bb, p.BB(-5.0, -5.0, 5.0, 5.0))
 
     def testCircleNoBody(self):
         s = p.Space()
         c = p.Circle(None,5)
-        
+
         bb = c.update(p.Transform(1, 2, 3, 4, 5, 6))
         self.assertEqual(c.bb, bb)
         self.assertEqual(c.bb, p.BB(0, 1, 10, 11))
-        
+
     def testOffset(self):
         c = p.Circle(None, 5, (1,2))
-        
+
         self.assertEqual(c.offset, (1,2))
-        
+
     def testRadius(self):
         c = p.Circle(None, 5)
-        
+
         self.assertEqual(c.radius, 5)
-    
+
 class UnitTestSegment(unittest.TestCase):
     def testBB(self):
         s = p.Space()
         b = p.Body(10,10)
         c = p.Segment(b,(2,2),(2,3),2)
-        
+
         c.cache_bb()
-        
+
         self.assertEqual(c.bb, p.BB(0, 0, 4.0, 5.0))
-    
+
     def testProperties(self):
         c = p.Segment(None, (2,2), (2,3), 4)
-        
+
         self.assertEqual(c.a, (2,2))
         self.assertEqual(c.b, (2,3))
         self.assertEqual(c.normal, (1,0))
         self.assertEqual(c.radius, 4)
-    
+
     def testSetNeighbors(self):
         c = p.Segment(None, (2,2), (2,3), 1)
         c.set_neighbors((2,2),(2,3))
-    
+
     def testSegmentSegmentCollision(self):
         s = p.Space()
         b1 = p.Body(10,10)
@@ -228,42 +188,42 @@ class UnitTestSegment(unittest.TestCase):
         s.step(.1)
 
         self.assertEqual(1, self.num_of_begins)
-        
+
 class UnitTestPoly(unittest.TestCase):
     def testInit(self):
         c = p.Poly(None, [(0,0),(10,10),(20,0),(-10,10)], None, 0)
-       
+
         b = p.Body(1,2)
         c = p.Poly(b, [(0,0),(10,10),(20,0),(-10,10)], p.Transform.identity(), 6)
-        
+
     def testGetVertices(self):
         vs = [(-10,10), (0,0),(20,0),(10,10)]
         c = p.Poly(None, vs, None, 0)
-        
+
         self.assertEqual(c.get_vertices(), vs)
-    
+
     def testBB(self):
         c = p.Poly(None, [(2,2),(4,3),(3,5)])
         bb = c.update(p.Transform.identity())
         self.assertEqual(bb, c.bb)
         self.assertEqual(c.bb, p.BB(2, 2, 4, 5))
-        
+
         b = p.Body(1,2)
         c = p.Poly(b, [(2,2),(4,3),(3,5)])
         c.cache_bb()
         self.assertEqual(c.bb, p.BB(2, 2, 4, 5))
-        
+
         s = p.Space()
         b = p.Body(1,2)
         c = p.Poly(b, [(2,2),(4,3),(3,5)])
         s.add(b,c)
         self.assertEqual(c.bb, p.BB(2, 2, 4, 5))
-        
+
     def testRadius(self):
         b = p.Body(1,1)
-        
+
         c = p.Poly(b, [(2,2), (4,3), (3,5)], radius=10)
-       
+
         self.assertEqual(c.radius, 10)
 
         c.unsafe_set_radius(20)
@@ -274,25 +234,25 @@ class UnitTestPoly(unittest.TestCase):
         s = p.Space()
         b = p.Body(10,10)
         c = p.Poly(b,[(2,2), (4,3), (3,5)])
-        
+
         c.cache_bb()
-        
+
         c.unsafe_set_vertices([(0,0), (1,0), (1,1)])
         c.cache_bb()
-        
+
         self.assertAlmostEqual(c.bb.top, 1)
         self.assertAlmostEqual(c.bb.left, 0)
         self.assertAlmostEqual(c.bb.right, 1)
         self.assertAlmostEqual(c.bb.bottom, 0)
-        
+
     def testCreateBox(self):
         c = p.Poly.create_box(None, (4,2), 3)
         self.assertEqual(c.get_vertices(), [(2,-1), (2,1), (-2,1), (-2,-1)])
-        
+
         c = p.Poly.create_box(None, p.BB(1,2,3,4), 3)
         self.assertEqual(c.get_vertices(), [(3,2), (3,4), (1,4), (1,2)])
 
-        
+
 ####################################################################
 if __name__ == "__main__":
     print ("testing pymunk version " + p.version)
