@@ -101,14 +101,14 @@ class UnitTestSlideJoint(unittest.TestCase):
 
     def testMin(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.SlideJoint(a, b, 1, 0)
+        j = p.SlideJoint(a, b, (0,0), (0,0), 1, 0)
         self.assertEqual(j.min, 1)
         j.min = 2
         self.assertEqual(j.min, 2)
 
     def testMax(self):
         a,b = p.Body(10,10), p.Body(20,20)
-        j = p.SlideJoint(a, b, 0, 1)
+        j = p.SlideJoint(a, b, (0,0), (0,0), 0, 1)
         self.assertEqual(j.max, 1)
         j.max = 2
         self.assertEqual(j.max, 2)

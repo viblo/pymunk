@@ -472,6 +472,7 @@ class SimpleMotor(Constraint):
     """Keeps the relative angular velocity of a pair of bodies constant."""
     def __init__(self, a, b, rate):
         """Keeps the relative angular velocity of a pair of bodies constant.
+
         rate is the desired relative angular velocity. You will usually want
         to set an force (torque) maximum for motors as otherwise they will be
         able to apply a nearly infinite torque to keep the bodies moving.
