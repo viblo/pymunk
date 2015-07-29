@@ -262,12 +262,6 @@ class UnitTestSimleMotor(unittest.TestCase):
         self.assertEqual(j.rate, 0.3)
         j.rate = 0.4
         self.assertEqual(j.rate, 0.4)
-        j.max_bias = 30
-        j.bias_coef = 40
-        j.max_force = 50
-        self.assertEqual(j.max_bias, 30)
-        self.assertEqual(j.bias_coef, 40)
-        self.assertEqual(j.max_force, 50)
 
 ####################################################################
 if __name__ == "__main__":

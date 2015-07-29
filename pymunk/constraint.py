@@ -477,13 +477,13 @@ class SimpleMotor(Constraint):
         able to apply a nearly infinite torque to keep the bodies moving.
         """
         self._constraint = cp.cpSimpleMotorNew(a._body, b._body, rate)
-        self._ccontents = self._constraint.contents
-        self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpSimpleMotor)).contents
+        #self._ccontents = self._constraint.contents
+        #self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpSimpleMotor)).contents
         self._set_bodies(a,b)
 
     def _get_rate(self):
-        return self._dsc.rate
+        return cp.cpSimpleMotorGetRate(self._constraint)
     def _set_rate(self, rate):
-        self._dsc.rate = rate
+        cp.cpSimpleMotorSetRate(self._constraint, rate)
     rate = property(_get_rate, _set_rate,
         doc="""The desired relative angular velocity""")
