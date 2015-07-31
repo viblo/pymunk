@@ -1005,19 +1005,6 @@ class Body(object):
     space = property(_get_space,
         doc="""Get the cpSpace that body has been added to (or None).""")
 
-    def _set_velocity_limit(self, vel):
-        self._bodycontents.v_limit = vel
-    def _get_velocity_limit(self):
-        return self._bodycontents.v_limit
-    velocity_limit = property(_get_velocity_limit, _set_velocity_limit)
-
-
-    def _set_angular_velocity_limit(self, w):
-        self._bodycontents.w_limit = w
-    def _get_angular_velocity_limit(self):
-        return self._bodycontents.w_limit
-    angular_velocity_limit = property(_get_angular_velocity_limit, _set_angular_velocity_limit)
-
     def _set_velocity_func(self, func):
         """The velocity callback function. The velocity callback function
         is called each time step, and can be used to set a body's velocity.
@@ -1060,7 +1047,7 @@ class Body(object):
             func(self, dt)
             return 0
         self._position_callback = cp.cpBodyPositionFunc(_impl)
-        self._bodycontents.position_func = self._position_callback
+        cp.cpBodySetPositionUpdateFunc(self._body, self._position_callback)
     position_func = property(fset=_set_position_func,
         doc=_set_position_func.__doc__)
 
