@@ -3,6 +3,9 @@ __docformat__ = "reStructuredText"
 
 from . import _chipmunk as cp
 import ctypes as ct
+from ._chipmunk_manual import Transform
+from ._bb import BB
+from .vec2d import Vec2d
 
 class Shape(object):
     """Base class for all the shapes.

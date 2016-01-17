@@ -5,7 +5,7 @@ import unittest
 
 from tests import *
 
-ts = ["test_vec2d", "test_body", "test_common", "test_constraint", "test_shape", "test_space", "test_arbiter"]
+ts = ["test_vec2d", "test_body", "test_common", "test_constraint", "test_shape", "test_space", "test_arbiter", "test_bb"]
 
 suite = unittest.TestSuite()   
 for t in ts:

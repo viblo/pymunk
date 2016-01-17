@@ -2,6 +2,7 @@ __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 from . import _chipmunk as cp
+from . import _chipmunk_ffi as cpffi
 
 class BB(object):
     """Simple bounding box.
