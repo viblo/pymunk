@@ -4,7 +4,8 @@ __docformat__ = "reStructuredText"
 from . import _chipmunk as cp
 import ctypes as ct
 from ._chipmunk_manual import Transform
-from ._bb import BB
+from ._bb import BB 
+from ._query_info import PointQueryInfo, SegmentQueryInfo
 from .vec2d import Vec2d
 
 class Shape(object):
