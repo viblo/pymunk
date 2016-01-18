@@ -252,63 +252,78 @@ class UnitTestSpace(unittest.TestCase):
         hits = self.s.point_query( (-50,-55), 0, p.ShapeFilter())
         self.assertEqual(hits[0].shape, c)
 
-    def testReindexStatic(self):
+    def testReindexShape(self):
+        s = p.Space()
+        
         b = p.Body()
         c = p.Circle(b, 10)
 
-        self.s.add(c)
+        s.add(c)
 
         b.position = -50,-50
-        hit = self.s.point_query_first( (-50,-55) )
+        hit = self.s.point_query_nearest( (-50,-55), 0, p.ShapeFilter() )
         self.assertEqual(hit, None)
-        self.s.reindex_static()
-        hit = self.s.point_query_first( (-50,-55) )
-        self.assertEqual(hit, c)
-        b.position = 50,50
-        self.s.reindex_shape(c)
-        hit = self.s.point_query_first( (50,50) )
-        self.assertEqual(hit, c)
+        s.reindex_shape(c)
+        hit = s.point_query_nearest( (-50,-55), 0, p.ShapeFilter() )
+        self.assertEqual(hit.shape, c)
+        
+    def testReindexShapesForBody(self):
+        s = p.Space()
+        b = p.Body(body_type=p.Body.STATIC)
+        c = p.Circle(b, 10)
+
+        s.add(c)
+
+        b.position = -50,-50
+        hit = s.point_query_nearest( (-50,-55), 0, p.ShapeFilter() )
+        self.assertEqual(hit, None)
+        s.reindex_shapes_for_body(b)
+        
+        hit = s.point_query_nearest( (-50,-55), 0, p.ShapeFilter() )
+        self.assertEqual(hit.shape, c)
+
+    def testReindexStatic(self):
+        s = p.Space()
+        b = p.Body(body_type=p.Body.STATIC)
+        c = p.Circle(b, 10)
+
+        s.add(c)
+
+        b.position = -50,-50
+        hit = s.point_query_nearest( (-50,-55), 0, p.ShapeFilter() )
+        self.assertEqual(hit, None)
+        s.reindex_static()
+        hit = s.point_query_nearest( (-50,-55), 0, p.ShapeFilter() )
+        self.assertEqual(hit.shape, c)
 
     def testReindexStaticCollision(self):
-        b1 = p.Body(10, p.inf)
+        s = p.Space()
+        b1 = p.Body(10, 1000)
         c1 = p.Circle(b1, 10)
         b1.position = 20, 20
 
-        b2 = p.Body()
+        b2 = p.Body(body_type=p.Body.STATIC)
         s2 = p.Segment(b2, (-10,0), (10,0),1)
 
-        self.s.add(b1,c1)
-        self.s.add(s2)
+        s.add(b1,c1)
+        s.add(s2)
 
         s2.unsafe_set_b((100,0))
-        self.s.gravity = 0, -100
+        s.gravity = 0, -100
 
         for x in range(10):
-            self.s.step(.1)
-
+            s.step(.1)
+            
         self.assert_(b1.position.y < 0)
 
         b1.position = 20,20
         b1.velocity = 0,0
-        self.s.reindex_static()
+        s.reindex_static()
 
         for x in range(10):
             self.s.step(.1)
 
         self.assert_(b1.position.y > 10)
-
-    def testReindexShape(self):
-        b = p.Body()
-        c = p.Circle(b, 10)
-
-        self.s.add(c)
-
-        b.position = -50,-50
-        hit = self.s.point_query_first( (-50,-55) )
-        self.assertEqual(hit, None)
-        self.s.reindex_shape(c)
-        hit = self.s.point_query_first( (-50,-55) )
-        self.assertEqual(hit, c)
 
     def testSegmentQuery(self):
         s = p.Space()
