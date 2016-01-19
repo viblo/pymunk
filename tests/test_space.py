@@ -553,10 +553,10 @@ class UnitTestSpace(unittest.TestCase):
         #print 5,dir(ch._handler.contents.preSolveFunc)
         s.step(0.1)
         self.assertEqual(s.shapes, [])
-        print self.number_of_calls
+        print "5 number of calls", self.number_of_calls
         s.add(s1, s2)
         s.step(0.1)
-        print self.number_of_calls
+        print "6 number of calls", self.number_of_calls
         self.assertEqual(s.shapes, [])
         s.add(s1, s2)
         #ch._handler.contents.preSolveFunc = x.contents
