@@ -130,7 +130,7 @@ class UnitTestBody(unittest.TestCase):
     def testKineticEnergy(self):
         b = p.Body(1,10)
         self.assertEqual(b.kinetic_energy, 0)
-        b.apply_impulse((10,0))
+        b.apply_impulse_at_local_point((10,0))
         self.assertEqual(b.kinetic_energy, 100)
 
     def testDynamic(self):

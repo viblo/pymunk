@@ -8,6 +8,7 @@ except ImportError:
     from .weakrefset import WeakSet
     
 from . import _chipmunk as cp
+from ._arbiter import Arbiter
 
 class Body(object):
     """A rigid body
