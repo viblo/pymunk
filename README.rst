@@ -26,6 +26,7 @@ TODO v7
 - do we still need pymunk.inf?
 - replace references to Chipmunk in api docs to references to pymunk
 - http://code.activestate.com/recipes/500261/ for pickle of vec2d
+- keep names of add_collion_handler and co.
 
 How to Use
 ----------

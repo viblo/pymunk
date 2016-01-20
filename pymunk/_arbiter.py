@@ -7,8 +7,11 @@ from ._contact import Contact
 
 
 class Arbiter(object):
-    """Arbiters are collision pairs between shapes that are used with the
-    collision callbacks.
+    """The Arbiter object encapsulates a pair of colliding shapes and all of 
+        the data about their collision. 
+        
+        They are created when a collision starts, and persist until those 
+        shapes are no longer colliding.
 
     .. Warning::
         Because arbiters are handled by the space you should never
@@ -54,23 +57,47 @@ class Arbiter(object):
         doc="""Get the shapes in the order that they were defined in the
         collision handler associated with this arbiter""")
 
-    def _get_elasticity(self):
-        return self._arbiter.contents.e
-    def _set_elasticity(self, elasticity):
-        self._arbiter.contents.e = elasticity
-    elasticity = property(_get_elasticity, _set_elasticity,
-        doc="""Elasticity""")
+    def _get_restitution(self):
+        return cp.cpArbiterGetRestitution(self._arbiter)
+    def _set_restitution(self, restitution):
+        cp.cpArbiterSetRestitution(self._arbiter, restitution)
+    restitution = property(_get_restitution, _set_restitution,
+        doc="""The calculated restitution (elasticity) for this collision 
+        pair. 
+        
+        Setting the value in a preSolve() callback will override the value 
+        calculated by the space. The default calculation multiplies the 
+        elasticity of the two shapes together.
+        """)
 
     def _get_friction(self):
-        return self._arbiter.contents.u
+        return cp.cpArbiterGetFriction(self._arbiter)
     def _set_friction(self, friction):
-        self._arbiter.contents.u = friction
-    friction = property(_get_friction, _set_friction, doc="""Friction""")
+        cp.cpArbiterSetFriction(self._arbiter, friction)
+    friction = property(_get_friction, _set_friction, 
+        doc="""The calculated friction for this collision pair. 
+        
+        Setting the value in a preSolve() callback will override the value 
+        calculated by the space. The default calculation multiplies the 
+        friction of the two shapes together.
+        """)
 
     def _get_surface_velocity(self):
-        return self._arbiter.contents.surface_vr
-    surface_velocity = property(_get_surface_velocity,
-        doc="""Used for surface_v calculations, implementation may change""")
+        return cp.cpArbiterGetSurfaceVelocity(self._arbiter)
+    def _set_surface_velocity(self, velocity):
+        cp.cpArbiterSetSurfaceVelocity(self._arbiter, velocity)
+    surface_velocity = property(_get_surface_velocity, _set_surface_velocity,
+        doc="""The calculated surface velocity for this collision pair. 
+        
+        Setting the value in a preSolve() callback will override the value 
+        calculated by the space. the default calculation subtracts the 
+        surface velocity of the second shape from the first and then projects 
+        that onto the tangent of the collision. This is so that only 
+        friction is affected by default calculation. Using a custom 
+        calculation, you can make something that responds like a pinball 
+        bumper, or where the surface velocity is dependent on the location 
+        of the contact point.
+        """)
 
     def _get_total_impulse(self):
         return cp.cpArbiterTotalImpulse(self._arbiter)
