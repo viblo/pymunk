@@ -3,6 +3,8 @@ __docformat__ = "reStructuredText"
 
 import ctypes as ct
 from . import _chipmunk as cp
+from ._contact import Contact
+
 
 class Arbiter(object):
     """Arbiters are collision pairs between shapes that are used with the

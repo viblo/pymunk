@@ -10,10 +10,10 @@ class CollisionHandler(object):
     """A collision handler is a set of 4 function callbacks for the different
     collision events that pymunk recognizes.
 
-    Collision callbacks are closely associated with Arbiter structs. You
+    Collision callbacks are closely associated with Arbiter objects. You
     should familiarize yourself with those as well.
 
-    Note: Shapes tagged as sensors (Shape.sensor == true) never generate
+    Note #1: Shapes tagged as sensors (Shape.sensor == true) never generate
     collisions that get processed, so collisions between sensors shapes and
     other shapes will never call the postSolve() callback. They still
     generate begin(), and separate() callbacks, and the preSolve() callback
@@ -35,12 +35,6 @@ class CollisionHandler(object):
         self._pre_solve = None
         self._post_solve = None
         self._separate = None
-
-        self._orig_beginFunc = _handler.contents.beginFunc
-        self._orig_PreSolveFunc = _handler.contents.preSolveFunc
-        self._orig_postSolveFunc = _handler.contents.postSolveFunc
-        self._orig_separateFunc = _handler.contents.separateFunc
-        print self._orig_PreSolveFunc
 
     def _get_cf(self, func, function_type, *args, **kwargs):
         def cf(_arbiter, _space, _data):
@@ -91,12 +85,8 @@ class CollisionHandler(object):
 
     def _set_pre_solve(self, f):
         self._pre_solve = f
-        if f == None:
-            self._handler.contents.preSolveFunc = self._space.default_collision_handler()._handler.contents.preSolveFunc
-            #self._handler.contents.preSolveFunc = self._orig_PreSolveFunc
-        else:
-            cf = self._get_cf(f, cp.cpCollisionPreSolveFunc)
-            self._handler.contents.preSolveFunc = cf
+        cf = self._get_cf(f, cp.cpCollisionPreSolveFunc)
+        self._handler.contents.preSolveFunc = cf
 
     def _get_pre_solve(self):
         return self._pre_solve
