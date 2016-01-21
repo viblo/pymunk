@@ -184,7 +184,7 @@ class UnitTestSegment(unittest.TestCase):
         def begin(space, arb):
             self.num_of_begins += 1
             return True
-        s.set_default_collision_handler(begin=begin)
+        s.default_collision_handler().begin=begin
         s.step(.1)
 
         self.assertEqual(1, self.num_of_begins)
