@@ -33,15 +33,15 @@ class Arbiter(object):
         self._space = space
         self._contacts = None # keep a lazy loaded cache of converted contacts
 
-    def _get_contacts(self):
+    def _get_contact_points(self):
         point_set = cp.cpArbiterGetContactPointSet(self._arbiter)
 
         if self._contacts is None:
             self._contacts = []
             for i in range(point_set.count):
-                self.contacts.append(Contact(point_set.points[i]))
+                self._contacts.append(Contact(point_set.points[i]))
         return self._contacts
-    contacts = property(_get_contacts,
+    contact_points = property(_get_contact_points,
         doc="""Information on the contact points between the objects. Return [`Contact`]""")
 
     def _get_shapes(self):
@@ -99,6 +99,24 @@ class Arbiter(object):
         of the contact point.
         """)
 
+    def _get_count(self):
+        return cp.cpArbiterGetCount(self._arbiter)
+    count = property(_get_count, 
+        doc="""Get the number of contacts tracked by this arbiter
+        """)
+    
+    def _get_normal(self):
+        return cp.cpArbiterGetNormal(self._arbiter)
+    normal = property(_get_normal, 
+        doc="""Get the collision normal of the collision""")
+    
+    def get_point_a(self, i):
+        """Get the collision point of the i:th contact."""
+        return cp.cpArbiterGetPointA(self._arbiter, i)
+    def get_point_b(self, i):
+        """Get the collision point of the i:th contact."""
+        return cp.cpArbiterGetPointB(self._arbiter, i)
+        
     def _get_total_impulse(self):
         return cp.cpArbiterTotalImpulse(self._arbiter)
     total_impulse = property(_get_total_impulse,

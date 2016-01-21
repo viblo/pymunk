@@ -1,10 +1,10 @@
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-class Contact(object):
+class ContactPointSet(object):
     """Contact information"""
     def __init__(self, _contact):
-        """Initialize a Contact object from the Chipmunk equivalent struct
+        """Initialize a ContactPointSet object from the Chipmunk equivalent struct
 
         .. note::
             You should never need to create an instance of this class directly.
