@@ -89,43 +89,7 @@ class UnitTestArbiter(unittest.TestCase):
         s.collision_handler(1,2).pre_solve = pre_solve
         
         for x in range(5):
-            s.step(0.1)
-    
-    def testCountNormalPointDepth(self):
-        s = p.Space()
-        s.gravity = 0,-100
-        
-        b1 = p.Body(1, p.inf)
-        c1 = p.Circle(b1, 10)
-        b1.position = 5, 3
-        c1.collision_type = 1
-        
-        b2 = p.Body(body_type = p.Body.STATIC)
-        c2 = p.Circle(b2, 10)
-        c2.collision_type = 2
-        
-        s.add(b1, c1, b2, c2)
-        
-        def pre_solve(space, arb):
-            print arb.contact_points
-            
-            
-            self.assertAlmostEqual(arb.count, 1)
-            self.assertAlmostEqual(arb.normal.x, 0.8574929257)
-            self.assertAlmostEqual(arb.normal.y, 0.514495755)
-            self.assertAlmostEqual(arb.get_point_a(0).x, 0)
-            self.assertAlmostEqual(arb.get_point_a(0).y, 1)
-            self.assertAlmostEqual(arb.get_point_b(0).x, 0)
-            self.assertAlmostEqual(arb.get_point_b(0).y, 1)
-            self.assertAlmostEqual(arb.get_depth(0), -0.923076923077)
-            
-            return True
-        
-        s.default_collision_handler().pre_solve = pre_solve
-        
-        #for x in range(5):
-        s.step(0.1)
-        
+            s.step(0.1)    
         
     def testContactPointSet(self):
         s = p.Space()
@@ -275,8 +239,6 @@ class UnitTestArbiter(unittest.TestCase):
             s.step(0.1)
         self.assertTrue(self.called1)
         
-        
-        
         b1.position = 5,3
         s.step(0.1) 
         
@@ -291,7 +253,37 @@ class UnitTestArbiter(unittest.TestCase):
         
         self.assertTrue(self.called2)
         
+    def testShapes(self):
+        s = p.Space()
+        s.gravity = 0,-100
         
+        b1 = p.Body(1, 30)
+        c1 = p.Circle(b1, 10)
+        b1.position = 5, 3
+        c1.collision_type = 1
+        c1.friction = 0.5
+        
+        b2 = p.Body(body_type = p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        c2.collision_type = 2
+        c2.friction = 0.8
+        
+        s.add(b1, c1, b2, c2)
+        
+        self.called = False
+        def pre_solve(space, arb):
+            self.called = True
+            self.assertEqual(len(arb.shapes), 2)
+            self.assertEqual(arb.shapes[0], c1)
+            self.assertEqual(arb.shapes[1], c2)
+            return True
+        
+        s.collision_handler(1,2).pre_solve = pre_solve
+        
+        s.step(0.1)
+        self.assertTrue(self.called)
+        
+            
 if __name__ == "__main__":
     print ("testing pymunk version " + p.version)
     unittest.main()        

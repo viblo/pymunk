@@ -96,24 +96,6 @@ class Arbiter(object):
         of the contact point.
         """)
 
-    def _get_count(self):
-        return cp.cpArbiterGetCount(self._arbiter)
-    count = property(_get_count, 
-        doc="""Get the number of contacts tracked by this arbiter
-        """)
-    
-    def _get_normal(self):
-        return cp.cpArbiterGetNormal(self._arbiter)
-    normal = property(_get_normal, 
-        doc="""Get the collision normal of the collision""")
-    
-    def get_point_a(self, i):
-        """Get the collision point of the i:th contact."""
-        return cp.cpArbiterGetPointA(self._arbiter, i)
-    def get_point_b(self, i):
-        """Get the collision point of the i:th contact."""
-        return cp.cpArbiterGetPointB(self._arbiter, i)
-        
     def _get_total_impulse(self):
         return cp.cpArbiterTotalImpulse(self._arbiter)
     total_impulse = property(_get_total_impulse,

@@ -5,7 +5,7 @@ pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
 you need 2d rigid body physics from Python. It is built on top of the very 
 nice 2d physics library Chipmunk.
 
-2007 - 2013, Victor Blomqvist - vb@viblo.se, MIT License
+2007 - 2015, Victor Blomqvist - vb@viblo.se, MIT License
 
 This release is based on the latest pymunk release (5.0.0), 
 using chipmunk 7.0 rev d7603e3927 (source included)
@@ -27,6 +27,7 @@ TODO v7
 - replace references to Chipmunk in api docs to references to pymunk
 - http://code.activestate.com/recipes/500261/ for pickle of vec2d
 - keep names of add_collion_handler and co.
+- Think about experimental repr of Body
 
 How to Use
 ----------
