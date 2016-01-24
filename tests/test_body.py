@@ -56,6 +56,14 @@ class UnitTestBody(unittest.TestCase):
         s.add(b)
         self.assertEqual(b.space, s)
 
+    def testRepr(self):
+        b = p.Body(1,2)
+        self.assertEqual(str(b), "Body(1.0, 2.0, Body.DYNAMIC)")
+        b = p.Body(body_type = p.Body.KINEMATIC)
+        self.assertEqual(str(b), "Body(Body.KINEMATIC)")
+        b = p.Body(body_type = p.Body.STATIC)
+        self.assertEqual(str(b), "Body(Body.STATIC)")
+
     def testCoordinateConversion(self):
         b = p.Body()
         v = 1,2

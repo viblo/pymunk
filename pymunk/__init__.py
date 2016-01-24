@@ -45,7 +45,7 @@ __all__ = ["inf", "version", "chipmunk_version"
         , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
         , "moment_for_circle", "moment_for_poly", "moment_for_segment"
         , "moment_for_box", "reset_shapeid_counter"
-        , "SegmentQueryInfo", "Contact", "Arbiter", "BB", "ShapeFilter"
+        , "SegmentQueryInfo", "ContactPointSet", "Arbiter", "BB", "ShapeFilter"
         , "Transform", "PointQueryInfo"]
 
 import ctypes as ct
@@ -63,11 +63,11 @@ from . import _chipmunk_ffi as cpffi
 from . import util as u
 from .vec2d import Vec2d
 from ._chipmunk_manual import ShapeFilter, Transform
+from ._contact_point_set import ContactPoint, ContactPointSet
 from ._arbiter import Arbiter
 from ._bb import BB
 from ._body import Body
 from ._collision_handler import CollisionHandler
-from ._contact import ContactPointSet
 from ._query_info import PointQueryInfo, SegmentQueryInfo
 from ._shapes import Shape, Circle, Poly, Segment
 from pymunk.constraint import *

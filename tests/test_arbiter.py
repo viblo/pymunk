@@ -129,6 +129,32 @@ class UnitTestArbiter(unittest.TestCase):
         #for x in range(5):
         s.step(0.1)
         
+        
+    def testContactPointSet(self):
+        s = p.Space()
+        s.gravity = 0,-100
+        
+        b1 = p.Body(1, p.inf)
+        c1 = p.Circle(b1, 10)
+        b1.position = 5, 3
+        c1.collision_type = 1
+        
+        b2 = p.Body(body_type = p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        c2.collision_type = 2
+        
+        s.add(b1, c1, b2, c2)
+        
+        def pre_solve(space, arb):
+            print arb.contact_points
+            
+            return True
+            
+        s.default_collision_handler().pre_solve = pre_solve
+        
+        #for x in range(5):
+        s.step(0.1)
+        
     def testImpulse(self):
         self.post_solve_done = False
         self.b1.apply_impulse((10,0))

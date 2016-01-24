@@ -1,7 +1,12 @@
 
 from ctypes import *
 from .vec2d import Vec2d
-from ._chipmunk_manual import ShapeFilter, uintptr_t, cpGroup, cpBitmask, Transform, cpFloat
+from ._base import uintptr_t, cpGroup, cpBitmask, cpFloat
+from ._chipmunk_manual import ShapeFilter, Transform
+from ._contact_point_set import ContactPoint, ContactPointSet
+
+
+
 cpVect = Vec2d
 STRING = c_char_p
 
@@ -266,11 +271,11 @@ cpContactPointSet._fields_ = [
     ('points', N17cpContactPointSet4DOT_25E * 2),
 ]
 cpArbiterGetContactPointSet = chipmunk_lib.cpArbiterGetContactPointSet
-cpArbiterGetContactPointSet.restype = cpContactPointSet
+cpArbiterGetContactPointSet.restype = ContactPointSet
 cpArbiterGetContactPointSet.argtypes = [POINTER(cpArbiter)]
 cpArbiterSetContactPointSet = chipmunk_lib.cpArbiterSetContactPointSet
 cpArbiterSetContactPointSet.restype = None
-cpArbiterSetContactPointSet.argtypes = [POINTER(cpArbiter), POINTER(cpContactPointSet)]
+cpArbiterSetContactPointSet.argtypes = [POINTER(cpArbiter), POINTER(ContactPointSet)]
 cpArbiterIsFirstContact = chipmunk_lib.cpArbiterIsFirstContact
 cpArbiterIsFirstContact.restype = cpBool
 cpArbiterIsFirstContact.argtypes = [POINTER(cpArbiter)]
@@ -896,7 +901,7 @@ cpShapeSegmentQuery = chipmunk_lib.cpShapeSegmentQuery
 cpShapeSegmentQuery.restype = cpBool
 cpShapeSegmentQuery.argtypes = [POINTER(cpShape), cpVect, cpVect, cpFloat, POINTER(cpSegmentQueryInfo)]
 cpShapesCollide = chipmunk_lib.cpShapesCollide
-cpShapesCollide.restype = cpContactPointSet
+cpShapesCollide.restype = ContactPointSet
 cpShapesCollide.argtypes = [POINTER(cpShape), POINTER(cpShape)]
 cpShapeGetSpace = chipmunk_lib.cpShapeGetSpace
 cpShapeGetSpace.restype = POINTER(cpSpace)
@@ -1219,7 +1224,7 @@ cpSpaceBBQueryFunc = function_pointer(None, POINTER(cpShape), c_void_p)
 cpSpaceBBQuery = chipmunk_lib.cpSpaceBBQuery
 cpSpaceBBQuery.restype = None
 cpSpaceBBQuery.argtypes = [POINTER(cpSpace), cpBB, cpShapeFilter, cpSpaceBBQueryFunc, c_void_p]
-cpSpaceShapeQueryFunc = function_pointer(None, POINTER(cpShape), POINTER(cpContactPointSet), c_void_p)
+cpSpaceShapeQueryFunc = function_pointer(None, POINTER(cpShape), POINTER(ContactPointSet), c_void_p)
 cpSpaceShapeQuery = chipmunk_lib.cpSpaceShapeQuery
 cpSpaceShapeQuery.restype = cpBool
 cpSpaceShapeQuery.argtypes = [POINTER(cpSpace), POINTER(cpShape), cpSpaceShapeQueryFunc, c_void_p]

@@ -48,3 +48,9 @@ class UnitTestTransform(unittest.TestCase):
         self.assertEqual(t.d, 1)
         self.assertEqual(t.tx, 0)
         self.assertEqual(t.ty, 0)
+
+class UnitTestContactPoint(unittest.TestCase):
+    pass
+    
+class UnitTestContactPointSet(unittest.TestCase):
+    pass

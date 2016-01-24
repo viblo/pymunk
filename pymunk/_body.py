@@ -105,6 +105,15 @@ class Body(object):
             cp.cpBodyFree(self._body)
         except:
             pass
+            
+    def __repr__(self):
+        if self.body_type == Body.DYNAMIC:
+            return 'Body(%r, %r, Body.DYNAMIC)' % (self.mass, self.moment)
+        elif self.body_type == Body.KINEMATIC:
+            return 'Body(Body.KINEMATIC)'
+        elif self.body_type == Body.STATIC:
+            return 'Body(Body.STATIC)'
+
 
     def _set_mass(self, mass):
         cp.cpBodySetMass(self._body, mass)

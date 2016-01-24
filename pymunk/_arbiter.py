@@ -3,8 +3,7 @@ __docformat__ = "reStructuredText"
 
 import ctypes as ct
 from . import _chipmunk as cp
-from ._contact import ContactPointSet
-
+from ._contact_point_set import ContactPointSet
 
 class Arbiter(object):
     """The Arbiter object encapsulates a pair of colliding shapes and all of 
@@ -29,20 +28,20 @@ class Arbiter(object):
         """
 
         self._arbiter = _arbiter
-        self._arbitercontents = self._arbiter.contents
         self._space = space
-        self._contacts = None # keep a lazy loaded cache of converted contacts
-
-    def _get_contact_points(self):
+        
+    def _get_contact_point_set(self):
         point_set = cp.cpArbiterGetContactPointSet(self._arbiter)
-
-        if self._contacts is None:
-            self._contacts = []
-            for i in range(point_set.count):
-                self._contacts.append(Contact(point_set.points[i]))
-        return self._contacts
-    contact_points = property(_get_contact_points,
-        doc="""Information on the contact points between the objects. Return [`Contact`]""")
+        return point_set
+        
+    def _set_contact_point_set(self, point_set):
+        cp.cpArbiterSetContactPointSet(self._arbiter, point_set)
+        
+    contact_points = property(_get_contact_point_set, _set_contact_point_set,
+        doc="""Contact point sets make getting contact information from the 
+        Arbiter simpler.
+        
+        Return `ContactPointSet`""")
 
     def _get_shapes(self):
         shapeA_p = ct.POINTER(cp.cpShape)()

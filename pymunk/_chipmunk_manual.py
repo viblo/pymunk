@@ -1,12 +1,5 @@
 from ctypes import *
-
-if sizeof(c_void_p) == 4: 
-    uintptr_t = c_uint 
-else: 
-    uintptr_t = c_ulonglong
-cpGroup = uintptr_t
-cpBitmask = c_uint
-cpFloat = c_double
+from ._base import *
 
 class ShapeFilter(Structure):
     """
@@ -180,5 +173,4 @@ Transform._fields_ = [
     ('tx', cpFloat),
     ('ty', cpFloat),
 ]
-
 
