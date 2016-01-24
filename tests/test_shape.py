@@ -174,8 +174,8 @@ class UnitTestSegment(unittest.TestCase):
     def testSegmentSegmentCollision(self):
         s = p.Space()
         b1 = p.Body(10,10)
-        b2 = p.Body(10,10)
         c1 = p.Segment(b1, (-1,-1), (1,1), 1)
+        b2 = p.Body(10,10)
         c2 = p.Segment(b2, (1,-1), (-1,1), 1)
 
         s.add(b1,b2,c1,c2)
@@ -184,6 +184,7 @@ class UnitTestSegment(unittest.TestCase):
         def begin(space, arb):
             self.num_of_begins += 1
             return True
+            
         s.default_collision_handler().begin=begin
         s.step(.1)
 
