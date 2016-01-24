@@ -2,10 +2,7 @@ import pymunk as p
 from pymunk.vec2d import Vec2d
 import unittest
 
-class UnitTestArbiter(unittest.TestCase):
-    def setUp(self):
-        pass
-        
+class UnitTestArbiter(unittest.TestCase):    
     def testRestitution(self):
         s = p.Space()
         s.gravity = 0,-100
@@ -134,7 +131,7 @@ class UnitTestArbiter(unittest.TestCase):
         s = p.Space()
         s.gravity = 0,-100
         
-        b1 = p.Body(1, p.inf)
+        b1 = p.Body(1, 30)
         c1 = p.Circle(b1, 10)
         b1.position = 5, 3
         c1.collision_type = 1
@@ -146,42 +143,155 @@ class UnitTestArbiter(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         
         def pre_solve(space, arb):
-            print arb.contact_points
+            self.assertEqual(arb.contact_point_set.count, 1)
+            self.assertAlmostEqual(arb.contact_point_set.normal.x, 0.8574929257)
+            self.assertAlmostEqual(arb.contact_point_set.normal.y, 0.5144957554)
+            p1 = arb.contact_point_set.points[0]
+            self.assertAlmostEqual(p1.pointA.x, 8.574929257)
+            self.assertAlmostEqual(p1.pointA.y, 5.144957554)
+            self.assertAlmostEqual(p1.pointB.x, -3.574929257)
+            self.assertAlmostEqual(p1.pointB.y, -2.144957554)
+            self.assertAlmostEqual(p1.distance, -14.16904810)
             
             return True
             
         s.default_collision_handler().pre_solve = pre_solve
         
-        #for x in range(5):
         s.step(0.1)
         
     def testImpulse(self):
+        s = p.Space()
+        s.gravity = 0,-100
+        
+        b1 = p.Body(1, 30)
+        c1 = p.Circle(b1, 10)
+        b1.position = 5, 3
+        c1.collision_type = 1
+        c1.friction = 0.5
+        
+        b2 = p.Body(body_type = p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        c2.collision_type = 2
+        c2.friction = 0.8
+        
+        s.add(b1, c1, b2, c2)
+        
         self.post_solve_done = False
-        self.b1.apply_impulse((10,0))
-        def post_solve(space, arb, test_self):
-            self.assertAlmostEqual(arb.total_impulse.x, -11.25)
-            self.assertAlmostEqual(arb.total_impulse.y, 3.75)
-            self.assertAlmostEqual(arb.total_impulse_with_friction.x, -12.05)
-            self.assertAlmostEqual(arb.total_impulse_with_friction.y, 1.35)
+        
+        def post_solve(space, arb):
+            self.assertAlmostEqual(arb.total_impulse.x, 3.3936651583)
+            self.assertAlmostEqual(arb.total_impulse.y, 4.3438914027)
             self.post_solve_done = True
-            return True
+            
+        s.collision_handler(1,2).post_solve = post_solve
         
-        self.s.add_collision_handler(1,2, None, None, post_solve, None, self)
-        
-        for x in range(7):
-            self.s.step(0.1)
+        s.step(0.1)
+            
         self.assert_(self.post_solve_done)
     
     def testTotalKE(self):
-        self.b1.apply_impulse((10,0))
-        def post_solve(space, arb, test_self):
-            self.assertAlmostEqual(arb.total_ke, 92.375)
+        s = p.Space()
+        s.gravity = 0,-100
+        
+        b1 = p.Body(1, 30)
+        c1 = p.Circle(b1, 10)
+        b1.position = 5, 3
+        c1.collision_type = 1
+        c1.friction = 0.5
+        
+        b2 = p.Body(body_type = p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        c2.collision_type = 2
+        c2.friction = 0.8
+        
+        s.add(b1, c1, b2, c2)
+        
+        def post_solve(space, arb):
+            self.assertAlmostEqual(arb.total_ke, 43.438914027)
             return True
         
-        self.s.add_collision_handler(1,2, None, None, post_solve, None, self)
-        for x in range(7):
-            self.s.step(0.1)
-            
+        s.collision_handler(1,2).post_solve = post_solve
+        
+        s.step(0.1)
+        
+    def testIsFirstContact(self):
+        s = p.Space()
+        s.gravity = 0,-100
+        
+        b1 = p.Body(1, 30)
+        c1 = p.Circle(b1, 10)
+        b1.position = 5, 3
+        c1.collision_type = 1
+        c1.friction = 0.5
+        
+        b2 = p.Body(body_type = p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        c2.collision_type = 2
+        c2.friction = 0.8
+        
+        s.add(b1, c1, b2, c2)
+        
+        def pre_solve1(space, arb):
+            self.assertTrue(arb.is_first_contact)
+            return True
+        
+        s.collision_handler(1,2).pre_solve = pre_solve1
+        
+        s.step(0.1)
+        
+        def pre_solve2(space, arb):
+            self.assertFalse(arb.is_first_contact)
+            return True
+        
+        s.collision_handler(1,2).pre_solve = pre_solve2
+        
+        s.step(0.1)
+        
+    def testIsRemoval(self):
+        s = p.Space()
+        s.gravity = 0,-100
+        
+        b1 = p.Body(1, 30)
+        c1 = p.Circle(b1, 10)
+        b1.position = 5, 3
+        c1.collision_type = 1
+        c1.friction = 0.5
+        
+        b2 = p.Body(body_type = p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        c2.collision_type = 2
+        c2.friction = 0.8
+        
+        s.add(b1, c1, b2, c2)
+        
+        self.called1 = False
+        def separate1(space, arb):
+            self.called1 = True
+            self.assertFalse(arb.is_removal)
+        
+        s.collision_handler(1,2).separate = separate1
+        
+        for x in range(10):
+            s.step(0.1)
+        self.assertTrue(self.called1)
+        
+        
+        
+        b1.position = 5,3
+        s.step(0.1) 
+        
+        self.called2 = False
+        def separate2(space, arb):
+            self.called2 = True
+            self.assertTrue(arb.is_removal)
+            return True
+       
+        s.collision_handler(1,2).separate = separate2
+        s.remove(b1, c1)
+        
+        self.assertTrue(self.called2)
+        
+        
 if __name__ == "__main__":
     print ("testing pymunk version " + p.version)
     unittest.main()        

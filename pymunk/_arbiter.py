@@ -32,12 +32,10 @@ class Arbiter(object):
         
     def _get_contact_point_set(self):
         point_set = cp.cpArbiterGetContactPointSet(self._arbiter)
-        return point_set
-        
+        return point_set        
     def _set_contact_point_set(self, point_set):
-        cp.cpArbiterSetContactPointSet(self._arbiter, point_set)
-        
-    contact_points = property(_get_contact_point_set, _set_contact_point_set,
+        cp.cpArbiterSetContactPointSet(self._arbiter, point_set)        
+    contact_point_set = property(_get_contact_point_set, _set_contact_point_set,
         doc="""Contact point sets make getting contact information from the 
         Arbiter simpler.
         
@@ -124,14 +122,6 @@ class Arbiter(object):
 
         This property should only be called from a post-solve, post-step""")
 
-    def _get_total_impulse_with_friction(self):
-        return cp.cpArbiterTotalImpulseWithFriction(self._arbiter)
-    total_impulse_with_friction = property(_get_total_impulse_with_friction,
-        doc="""Returns the impulse with friction that was applied this step to
-        resolve the collision.
-
-        This property should only be called from a post-solve, post-step""")
-
     def _get_total_ke(self):
         return cp.cpArbiterTotalKE(self._arbiter)
     total_ke = property(_get_total_ke,
@@ -140,15 +130,21 @@ class Arbiter(object):
 
         This property should only be called from a post-solve, post-step""")
 
-    def _get_stamp(self):
-        return self._arbiter.contents.stamp
-    stamp = property(_get_stamp,
-        doc="""Time stamp of the arbiter. (from the space)""")
-
     def _get_is_first_contact(self):
-        return bool(cpffi.cpArbiterIsFirstContact(self._arbiter))
+        return bool(cp.cpArbiterIsFirstContact(self._arbiter))
     is_first_contact = property(_get_is_first_contact,
-        doc="""Returns true if this is the first step that an arbiter existed.
-        You can use this from preSolve and postSolve to know if a collision
-        between two shapes is new without needing to flag a boolean in your
-        begin callback.""")
+        doc="""Returns true if this is the first step the two shapes started 
+        touching. 
+        
+        This can be useful for sound effects for instance. If its the first 
+        frame for a certain collision, check the energy of the collision in a 
+        postStep() callback and use that to determine the volume of a sound 
+        effect to play.
+        """)
+
+    def _get_is_removal(self):
+        return bool(cp.cpArbiterIsRemoval(self._arbiter))
+    is_removal = property(_get_is_removal, 
+        doc="""Returns True during a separate() callback if the callback was 
+        invoked due to an object removal.
+        """)

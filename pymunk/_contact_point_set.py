@@ -10,7 +10,7 @@ class ContactPoint(Structure):
     pointA and pointB are the contact position on the surface of each shape.
     
     distance is the penetration distance of the two shapes. Overlapping 
-    means it will be negative. /// This value is calculated as 
+    means it will be negative. This value is calculated as 
     dot(point2 - point1), normal) and is ignored when you set the 
     Arbiter.contact_point_set.
     """
