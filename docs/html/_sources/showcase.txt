@@ -8,6 +8,8 @@ Here I will display some examples where pymunk have been used.
 Games
 -----
 
+.. image:: _static/invisipin.png
+
 invisipin
 Winner in PyWeek 20 (Overall Individual Entry)  Top Individual Entries
 https://pyweek.org/e/Tee-py20/
