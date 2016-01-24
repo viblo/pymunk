@@ -93,6 +93,7 @@ Contents
     installation
     pymunk
     examples
+    showcase
     tutorials
     advanced
     Issue Tracker <https://github.com/viblo/pymunk/issues>

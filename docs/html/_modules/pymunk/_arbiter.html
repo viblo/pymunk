@@ -54,8 +54,7 @@
 
 <span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">ct</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk</span> <span class="k">as</span> <span class="n">cp</span>
-<span class="kn">from</span> <span class="nn">._contact</span> <span class="kn">import</span> <span class="n">ContactPointSet</span>
-
+<span class="kn">from</span> <span class="nn">._contact_point_set</span> <span class="kn">import</span> <span class="n">ContactPointSet</span>
 
 <div class="viewcode-block" id="Arbiter"><a class="viewcode-back" href="../../pymunk.html#pymunk.Arbiter">[docs]</a><span class="k">class</span> <span class="nc">Arbiter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The Arbiter object encapsulates a pair of colliding shapes and all of </span>
@@ -80,20 +79,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span> <span class="o">=</span> <span class="n">_arbiter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_arbitercontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="o">.</span><span class="n">contents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">space</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_contacts</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># keep a lazy loaded cache of converted contacts</span>
-</div>
-    <span class="k">def</span> <span class="nf">_get_contact_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        </div>
+    <span class="k">def</span> <span class="nf">_get_contact_point_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">point_set</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetContactPointSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contacts</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_contacts</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">point_set</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_contacts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Contact</span><span class="p">(</span><span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contacts</span>
-    <span class="n">contact_points</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_contact_points</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Information on the contact points between the objects. Return [`Contact`]&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">point_set</span>        
+    <span class="k">def</span> <span class="nf">_set_contact_point_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_set</span><span class="p">):</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterSetContactPointSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">point_set</span><span class="p">)</span>        
+    <span class="n">contact_point_set</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_contact_point_set</span><span class="p">,</span> <span class="n">_set_contact_point_set</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Contact point sets make getting contact information from the </span>
+<span class="s">        Arbiter simpler.</span>
+<span class="s">        </span>
+<span class="s">        Return `ContactPointSet`&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">shapeA_p</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpShape</span><span class="p">)()</span>
@@ -150,37 +147,11 @@
 <span class="s">        of the contact point.</span>
 <span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_get_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetCount</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
-    <span class="n">count</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_count</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the number of contacts tracked by this arbiter</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
-    
-    <span class="k">def</span> <span class="nf">_get_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetNormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
-    <span class="n">normal</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_normal</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the collision normal of the collision&quot;&quot;&quot;</span><span class="p">)</span>
-    
-<div class="viewcode-block" id="Arbiter.get_point_a"><a class="viewcode-back" href="../../pymunk.html#pymunk.Arbiter.get_point_a">[docs]</a>    <span class="k">def</span> <span class="nf">get_point_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the collision point of the i:th contact.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetPointA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span></div>
-<div class="viewcode-block" id="Arbiter.get_point_b"><a class="viewcode-back" href="../../pymunk.html#pymunk.Arbiter.get_point_b">[docs]</a>    <span class="k">def</span> <span class="nf">get_point_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the collision point of the i:th contact.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetPointB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-        </div>
     <span class="k">def</span> <span class="nf">_get_total_impulse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterTotalImpulse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
     <span class="n">total_impulse</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_total_impulse</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns the impulse that was applied this step to resolve the</span>
 <span class="s">        collision.</span>
-
-<span class="s">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_get_total_impulse_with_friction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterTotalImpulseWithFriction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
-    <span class="n">total_impulse_with_friction</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_total_impulse_with_friction</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns the impulse with friction that was applied this step to</span>
-<span class="s">        resolve the collision.</span>
 
 <span class="s">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
 
@@ -192,18 +163,24 @@
 
 <span class="s">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_get_stamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">stamp</span>
-    <span class="n">stamp</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_stamp</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Time stamp of the arbiter. (from the space)&quot;&quot;&quot;</span><span class="p">)</span>
-
     <span class="k">def</span> <span class="nf">_get_is_first_contact</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cpffi</span><span class="o">.</span><span class="n">cpArbiterIsFirstContact</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterIsFirstContact</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>
     <span class="n">is_first_contact</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_is_first_contact</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns true if this is the first step that an arbiter existed.</span>
-<span class="s">        You can use this from preSolve and postSolve to know if a collision</span>
-<span class="s">        between two shapes is new without needing to flag a boolean in your</span>
-<span class="s">        begin callback.&quot;&quot;&quot;</span><span class="p">)</span></div>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns true if this is the first step the two shapes started </span>
+<span class="s">        touching. </span>
+<span class="s">        </span>
+<span class="s">        This can be useful for sound effects for instance. If its the first </span>
+<span class="s">        frame for a certain collision, check the energy of the collision in a </span>
+<span class="s">        postStep() callback and use that to determine the volume of a sound </span>
+<span class="s">        effect to play.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_is_removal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterIsRemoval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>
+    <span class="n">is_removal</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_is_removal</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns True during a separate() callback if the callback was </span>
+<span class="s">        invoked due to an object removal.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -230,6 +207,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>

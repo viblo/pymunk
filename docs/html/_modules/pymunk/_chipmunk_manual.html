@@ -50,14 +50,7 @@
             
   <h1>Source code for pymunk._chipmunk_manual</h1><div class="highlight"><pre>
 <span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="k">if</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">c_void_p</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span> 
-    <span class="n">uintptr_t</span> <span class="o">=</span> <span class="n">c_uint</span> 
-<span class="k">else</span><span class="p">:</span> 
-    <span class="n">uintptr_t</span> <span class="o">=</span> <span class="n">c_ulonglong</span>
-<span class="n">cpGroup</span> <span class="o">=</span> <span class="n">uintptr_t</span>
-<span class="n">cpBitmask</span> <span class="o">=</span> <span class="n">c_uint</span>
-<span class="n">cpFloat</span> <span class="o">=</span> <span class="n">c_double</span>
+<span class="kn">from</span> <span class="nn">._base</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="ShapeFilter"><a class="viewcode-back" href="../../pymunk.html#pymunk.ShapeFilter">[docs]</a><span class="k">class</span> <span class="nc">ShapeFilter</span><span class="p">(</span><span class="n">Structure</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -257,6 +250,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>

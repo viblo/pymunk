@@ -95,7 +95,7 @@
         <span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">,</span> <span class="s">&quot;Body&quot;</span><span class="p">,</span> <span class="s">&quot;Shape&quot;</span><span class="p">,</span> <span class="s">&quot;Circle&quot;</span><span class="p">,</span> <span class="s">&quot;Poly&quot;</span><span class="p">,</span> <span class="s">&quot;Segment&quot;</span>
         <span class="p">,</span> <span class="s">&quot;moment_for_circle&quot;</span><span class="p">,</span> <span class="s">&quot;moment_for_poly&quot;</span><span class="p">,</span> <span class="s">&quot;moment_for_segment&quot;</span>
         <span class="p">,</span> <span class="s">&quot;moment_for_box&quot;</span><span class="p">,</span> <span class="s">&quot;reset_shapeid_counter&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;SegmentQueryInfo&quot;</span><span class="p">,</span> <span class="s">&quot;Contact&quot;</span><span class="p">,</span> <span class="s">&quot;Arbiter&quot;</span><span class="p">,</span> <span class="s">&quot;BB&quot;</span><span class="p">,</span> <span class="s">&quot;ShapeFilter&quot;</span>
+        <span class="p">,</span> <span class="s">&quot;SegmentQueryInfo&quot;</span><span class="p">,</span> <span class="s">&quot;ContactPointSet&quot;</span><span class="p">,</span> <span class="s">&quot;Arbiter&quot;</span><span class="p">,</span> <span class="s">&quot;BB&quot;</span><span class="p">,</span> <span class="s">&quot;ShapeFilter&quot;</span>
         <span class="p">,</span> <span class="s">&quot;Transform&quot;</span><span class="p">,</span> <span class="s">&quot;PointQueryInfo&quot;</span><span class="p">]</span>
 
 <span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">ct</span>
@@ -113,11 +113,11 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span> <span class="k">as</span> <span class="n">u</span>
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">._chipmunk_manual</span> <span class="kn">import</span> <span class="n">ShapeFilter</span><span class="p">,</span> <span class="n">Transform</span>
+<span class="kn">from</span> <span class="nn">._contact_point_set</span> <span class="kn">import</span> <span class="n">ContactPoint</span><span class="p">,</span> <span class="n">ContactPointSet</span>
 <span class="kn">from</span> <span class="nn">._arbiter</span> <span class="kn">import</span> <span class="n">Arbiter</span>
 <span class="kn">from</span> <span class="nn">._bb</span> <span class="kn">import</span> <span class="n">BB</span>
 <span class="kn">from</span> <span class="nn">._body</span> <span class="kn">import</span> <span class="n">Body</span>
 <span class="kn">from</span> <span class="nn">._collision_handler</span> <span class="kn">import</span> <span class="n">CollisionHandler</span>
-<span class="kn">from</span> <span class="nn">._contact</span> <span class="kn">import</span> <span class="n">ContactPointSet</span>
 <span class="kn">from</span> <span class="nn">._query_info</span> <span class="kn">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span>
 <span class="kn">from</span> <span class="nn">._shapes</span> <span class="kn">import</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Poly</span><span class="p">,</span> <span class="n">Segment</span>
 <span class="kn">from</span> <span class="nn">pymunk.constraint</span> <span class="kn">import</span> <span class="o">*</span>
@@ -851,6 +851,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pymunk.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>

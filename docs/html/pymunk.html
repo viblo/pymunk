@@ -101,7 +101,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x000000000399EEF0&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x0000000003A222E8&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -2071,6 +2071,40 @@ range [0, 1]</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="pymunk.ContactPointSet">
+<em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">ContactPointSet</code><a class="reference internal" href="_modules/pymunk/_contact_point_set.html#ContactPointSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.ContactPointSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">_ctypes.Structure</span></code></p>
+<p>Contact point sets make getting contact information simpler.</p>
+<p>count is the number of contact points in the set.</p>
+<p>normal is the normal of the collision</p>
+<p>points is the array of contact points. Can be at most 2 points.</p>
+<dl class="attribute">
+<dt id="pymunk.ContactPointSet.__init__">
+<code class="descname">__init__</code><a class="headerlink" href="#pymunk.ContactPointSet.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.ContactPointSet.count">
+<code class="descname">count</code><a class="headerlink" href="#pymunk.ContactPointSet.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.ContactPointSet.normal">
+<code class="descname">normal</code><a class="headerlink" href="#pymunk.ContactPointSet.normal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.ContactPointSet.points">
+<code class="descname">points</code><a class="headerlink" href="#pymunk.ContactPointSet.points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pymunk.Arbiter">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">Arbiter</code><span class="sig-paren">(</span><em>_arbiter</em>, <em>space</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/_arbiter.html#Arbiter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Arbiter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
@@ -2101,15 +2135,11 @@ and the Space.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.Arbiter.contact_points">
-<code class="descname">contact_points</code><a class="headerlink" href="#pymunk.Arbiter.contact_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Information on the contact points between the objects. Return [<cite>Contact</cite>]</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.Arbiter.count">
-<code class="descname">count</code><a class="headerlink" href="#pymunk.Arbiter.count" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the number of contacts tracked by this arbiter</p>
+<dt id="pymunk.Arbiter.contact_point_set">
+<code class="descname">contact_point_set</code><a class="headerlink" href="#pymunk.Arbiter.contact_point_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contact point sets make getting contact information from the 
+Arbiter simpler.</p>
+<p>Return <cite>ContactPointSet</cite></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2121,31 +2151,22 @@ calculated by the space. The default calculation multiplies the
 friction of the two shapes together.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pymunk.Arbiter.get_point_a">
-<code class="descname">get_point_a</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/_arbiter.html#Arbiter.get_point_a"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Arbiter.get_point_a" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the collision point of the i:th contact.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymunk.Arbiter.get_point_b">
-<code class="descname">get_point_b</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/_arbiter.html#Arbiter.get_point_b"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Arbiter.get_point_b" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the collision point of the i:th contact.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="pymunk.Arbiter.is_first_contact">
 <code class="descname">is_first_contact</code><a class="headerlink" href="#pymunk.Arbiter.is_first_contact" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns true if this is the first step that an arbiter existed.
-You can use this from preSolve and postSolve to know if a collision
-between two shapes is new without needing to flag a boolean in your
-begin callback.</p>
+<dd><p>Returns true if this is the first step the two shapes started 
+touching.</p>
+<p>This can be useful for sound effects for instance. If its the first 
+frame for a certain collision, check the energy of the collision in a 
+postStep() callback and use that to determine the volume of a sound 
+effect to play.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.Arbiter.normal">
-<code class="descname">normal</code><a class="headerlink" href="#pymunk.Arbiter.normal" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the collision normal of the collision</p>
+<dt id="pymunk.Arbiter.is_removal">
+<code class="descname">is_removal</code><a class="headerlink" href="#pymunk.Arbiter.is_removal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True during a separate() callback if the callback was 
+invoked due to an object removal.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2163,12 +2184,6 @@ elasticity of the two shapes together.</p>
 <code class="descname">shapes</code><a class="headerlink" href="#pymunk.Arbiter.shapes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the shapes in the order that they were defined in the
 collision handler associated with this arbiter</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.Arbiter.stamp">
-<code class="descname">stamp</code><a class="headerlink" href="#pymunk.Arbiter.stamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Time stamp of the arbiter. (from the space)</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2190,14 +2205,6 @@ of the contact point.</p>
 <code class="descname">total_impulse</code><a class="headerlink" href="#pymunk.Arbiter.total_impulse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the impulse that was applied this step to resolve the
 collision.</p>
-<p>This property should only be called from a post-solve, post-step</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.Arbiter.total_impulse_with_friction">
-<code class="descname">total_impulse_with_friction</code><a class="headerlink" href="#pymunk.Arbiter.total_impulse_with_friction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the impulse with friction that was applied this step to
-resolve the collision.</p>
 <p>This property should only be called from a post-solve, post-step</p>
 </dd></dl>
 
@@ -2613,6 +2620,7 @@ coordinates)</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>
