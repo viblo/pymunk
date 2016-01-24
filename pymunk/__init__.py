@@ -67,7 +67,7 @@ from ._arbiter import Arbiter
 from ._bb import BB
 from ._body import Body
 from ._collision_handler import CollisionHandler
-from ._contact import Contact
+from ._contact import ContactPointSet
 from ._query_info import PointQueryInfo, SegmentQueryInfo
 from ._shapes import Shape, Circle, Poly, Segment
 from pymunk.constraint import *

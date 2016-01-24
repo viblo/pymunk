@@ -3,7 +3,7 @@ __docformat__ = "reStructuredText"
 
 import ctypes as ct
 from . import _chipmunk as cp
-from ._contact import Contact
+from ._contact import ContactPointSet
 
 
 class Arbiter(object):

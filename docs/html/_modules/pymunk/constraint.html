@@ -27,8 +27,8 @@
     <link rel="top" title="pymunk 5.0.0 documentation" href="../../index.html" />
     <link rel="up" title="pymunk" href="../pymunk.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -37,16 +37,16 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
-          <li><a href="../index.html" >Module code</a> &raquo;</li>
-          <li><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for pymunk.constraint</h1><div class="highlight"><pre>
 <span class="c"># ----------------------------------------------------------------------------</span>
@@ -439,99 +439,104 @@
 <div class="viewcode-block" id="RotaryLimitJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint">[docs]</a><span class="k">class</span> <span class="nc">RotaryLimitJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Constrains the relative rotations of two bodies.&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="RotaryLimitJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Constrains the relative rotations of two bodies. min and max are</span>
-<span class="sd">        the angular limits in radians. It is implemented so that it&#39;s possible</span>
-<span class="sd">        to for the range to be greater than a full revolution.</span>
+        <span class="sd">&quot;&quot;&quot;Constrains the relative rotations of two bodies.</span>
+
+<span class="sd">        min and max are the angular limits in radians. It is implemented so</span>
+<span class="sd">        that it&#39;s possible to for the range to be greater than a full</span>
+<span class="sd">        revolution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rlc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJoint</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="c">#self._ccontents = self._constraint.contents</span>
+        <span class="c">#self._rlc = cp.cast(self._constraint, ct.POINTER(cp.cpRotaryLimitJoint)).contents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">_get_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rlc</span><span class="o">.</span><span class="n">min</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointGetMin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rlc</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointSetMin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">min</span><span class="p">)</span>
     <span class="nb">min</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_min</span><span class="p">,</span> <span class="n">_set_min</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rlc</span><span class="o">.</span><span class="n">max</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointGetMax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rlc</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointSetMax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
     <span class="nb">max</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_max</span><span class="p">,</span> <span class="n">_set_max</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="RatchetJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint">[docs]</a><span class="k">class</span> <span class="nc">RatchetJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Works like a socket wrench.&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="RatchetJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Works like a socket wrench. ratchet is the distance between</span>
-<span class="sd">        &quot;clicks&quot;, phase is the initial offset to use when deciding where the</span>
-<span class="sd">        ratchet angles are.</span>
+        <span class="sd">&quot;&quot;&quot;Works like a socket wrench.</span>
+
+<span class="sd">        ratchet is the distance between &quot;clicks&quot;, phase is the initial offset</span>
+<span class="sd">        to use when deciding where the ratchet angles are.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJoint</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="c">#self._ccontents = self._constraint.contents</span>
+        <span class="c">#self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpRatchetJoint)).contents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">_get_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">angle</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointGetAngle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">angle</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointSetAngle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
     <span class="n">angle</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_angle</span><span class="p">,</span> <span class="n">_set_angle</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">phase</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointGetPhase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phase</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointSetPhase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">phase</span><span class="p">)</span>
     <span class="n">phase</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_phase</span><span class="p">,</span> <span class="n">_set_phase</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_ratchet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">ratchet</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointGetRatchet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_ratchet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">ratchet</span> <span class="o">=</span> <span class="n">ratchet</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointSetRatchet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">)</span>
     <span class="n">ratchet</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_ratchet</span><span class="p">,</span> <span class="n">_set_ratchet</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="GearJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint">[docs]</a><span class="k">class</span> <span class="nc">GearJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Keeps the angular velocity ratio of a pair of bodies constant.&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="GearJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratio</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Keeps the angular velocity ratio of a pair of bodies constant.</span>
+
 <span class="sd">        ratio is always measured in absolute terms. It is currently not</span>
 <span class="sd">        possible to set the ratio in relation to a third body&#39;s angular</span>
 <span class="sd">        velocity. phase is the initial angular offset of the two bodies.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratio</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGearJoint</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="c">#self._ccontents = self._constraint.contents</span>
+        <span class="c">#self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpGearJoint)).contents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">_get_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">phase</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointGetPhase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phase</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointSetPhase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">phase</span><span class="p">)</span>
     <span class="n">phase</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_phase</span><span class="p">,</span> <span class="n">_set_phase</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">ratio</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointGetRatio</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratio</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">ratio</span> <span class="o">=</span> <span class="n">ratio</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointSetRatio</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ratio</span><span class="p">)</span>
     <span class="n">ratio</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_ratio</span><span class="p">,</span> <span class="n">_set_ratio</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="SimpleMotor"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor">[docs]</a><span class="k">class</span> <span class="nc">SimpleMotor</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Keeps the relative angular velocity of a pair of bodies constant.&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="SimpleMotor.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Keeps the relative angular velocity of a pair of bodies constant.</span>
+
 <span class="sd">        rate is the desired relative angular velocity. You will usually want</span>
 <span class="sd">        to set an force (torque) maximum for motors as otherwise they will be</span>
 <span class="sd">        able to apply a nearly infinite torque to keep the bodies moving.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSimpleMotorNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">rate</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ccontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="o">.</span><span class="n">contents</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSimpleMotor</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
+        <span class="c">#self._ccontents = self._constraint.contents</span>
+        <span class="c">#self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpSimpleMotor)).contents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">_get_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">rate</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSimpleMotorGetRate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dsc</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="n">rate</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSimpleMotorSetRate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">rate</span><span class="p">)</span>
     <span class="n">rate</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_rate</span><span class="p">,</span> <span class="n">_set_rate</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The desired relative angular velocity&quot;&quot;&quot;</span><span class="p">)</span></div>
 </pre></div>
@@ -539,7 +544,7 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../../index.html">
               <img class="logo" src="../../_static/pymunk_logo_sphinx.png" alt="Logo"/>
@@ -568,7 +573,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -585,7 +590,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -594,14 +599,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
-          <li><a href="../index.html" >Module code</a> &raquo;</li>
-          <li><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
