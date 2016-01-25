@@ -95,17 +95,17 @@ objects if they hit hard enough.</p>
 
 <span class="n">width</span> <span class="o">=</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">600</span>
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="c1">### PyGame init</span>
+    <span class="c">### PyGame init</span>
     <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
     <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">width</span><span class="p">,</span><span class="n">height</span><span class="p">))</span>
     <span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
     <span class="n">running</span> <span class="o">=</span> <span class="bp">True</span>
-    <span class="n">font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;Arial&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s">&quot;Arial&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
 
-    <span class="c1">### Physics stuff</span>
+    <span class="c">### Physics stuff</span>
     <span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
 
-    <span class="c1"># walls - the left-top-right-bottom walls</span>
+    <span class="c"># walls - the left-top-right-bottom walls</span>
     <span class="n">static_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">space</span><span class="o">.</span><span class="n">static_body</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">550</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
                 <span class="p">,</span><span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">space</span><span class="o">.</span><span class="n">static_body</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">550</span><span class="p">),</span> <span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">550</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
                 <span class="p">,</span><span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">space</span><span class="o">.</span><span class="n">static_body</span><span class="p">,</span> <span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">550</span><span class="p">),</span> <span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
@@ -113,7 +113,7 @@ objects if they hit hard enough.</p>
                 <span class="p">]</span>
     <span class="n">space</span><span class="o">.</span><span class="n">add_static</span><span class="p">(</span><span class="n">static_lines</span><span class="p">)</span>
 
-    <span class="c1">### &quot;Cannon&quot; that can fire arrows</span>
+    <span class="c">### &quot;Cannon&quot; that can fire arrows</span>
     <span class="n">cannon_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">()</span>
     <span class="n">player_shape</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">cannon_body</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
     <span class="n">cannon_body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span><span class="mi">100</span>
@@ -131,26 +131,26 @@ objects if they hit hard enough.</p>
         <span class="n">mouse_position</span> <span class="o">=</span> <span class="n">p</span>
         <span class="n">cannon_body</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="p">(</span><span class="n">mouse_position</span> <span class="o">-</span> <span class="n">cannon_body</span><span class="o">.</span><span class="n">position</span><span class="p">)</span><span class="o">.</span><span class="n">angle</span>
 
-        <span class="c1">### Clear screen</span>
-        <span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">])</span>
+        <span class="c">### Clear screen</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;black&quot;</span><span class="p">])</span>
 
-        <span class="c1">### Draw stuff</span>
+        <span class="c">### Draw stuff</span>
         <span class="n">draw_space</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">space</span><span class="p">)</span>
 
-        <span class="c1">### Update physics</span>
+        <span class="c">### Update physics</span>
         <span class="n">fps</span> <span class="o">=</span> <span class="mi">60</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">fps</span>
         <span class="n">space</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
 
-        <span class="c1">### Info and flip screen</span>
-        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;fps: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">clock</span><span class="o">.</span><span class="n">get_fps</span><span class="p">()),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;white&quot;</span><span class="p">]),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
-        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;Aim with mouse, click to fire&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;darkgrey&quot;</span><span class="p">]),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">height</span> <span class="o">-</span> <span class="mi">35</span><span class="p">))</span>
-        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;Press R to reset, ESC or Q to quit&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;darkgrey&quot;</span><span class="p">]),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">height</span> <span class="o">-</span> <span class="mi">20</span><span class="p">))</span>
+        <span class="c">### Info and flip screen</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">&quot;fps: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">clock</span><span class="o">.</span><span class="n">get_fps</span><span class="p">()),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;white&quot;</span><span class="p">]),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">&quot;Aim with mouse, click to fire&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;darkgrey&quot;</span><span class="p">]),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">height</span> <span class="o">-</span> <span class="mi">35</span><span class="p">))</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">&quot;Press R to reset, ESC or Q to quit&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;darkgrey&quot;</span><span class="p">]),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">height</span> <span class="o">-</span> <span class="mi">20</span><span class="p">))</span>
 
         <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
         <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">fps</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -251,7 +251,7 @@ objects if they hit hard enough.</p>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

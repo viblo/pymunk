@@ -15,6 +15,14 @@ div.body h6
     margin-bottom: 20px;
 }
 
+div.body h3,
+div.body h4,
+div.body h5,
+div.body h6 {
+    background-color: transparent;
+    border-bottom: none;
+}
+
 .custom-index {
     overflow: hidden;
     width: 100%
@@ -49,9 +57,14 @@ body {
 
 .bodywrapper img {
     max-width:100%;
+    width: 100%;
     display: block; margin-left: auto; margin-right: auto; 
 }
 
 th.field-name {
     white-space:nowrap;
+}
+
+table.docutils td, table.docutils th {
+    padding: 15px 10px 15px 10px;
 }

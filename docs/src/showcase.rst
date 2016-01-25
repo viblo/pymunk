@@ -8,27 +8,28 @@ Pymunk please let us know and we can add it here!
 Games
 =====
 
-invisipin
----------
+.. list-table:: 
+    :widths: 40 60
 
-.. image:: _static/invisipin.png
-  :width: 450px
-  
+    * - .. image:: _static/invisipin.png
+      - `Invisipin <https://pyweek.org/e/Tee-py20/>`_  
+        
+        :subscript:`made by Tee. Retrieved 2016-01-25`
 
-Winner of PyWeek 20 (Overall Individual Entry)
-https://pyweek.org/e/Tee-py20/
+        Winner of PyWeek 20 (Overall Individual Entry)
+        
+        A pachinko-like puzzle game. Play some balls and watch their movement 
+        carefully (i.e. collect data) to reconstruct the board!
 
+    * - .. image:: _static/SubTerrex.png
+      - `SubTerrex <http://www.pygame.org/project-SubTerrex-2389-.html>`_  
+        
+        :subscript:`made by Paul Paterson. Retrieved 201-01-25`
 
-SubTerrex
----------
-
-.. image:: _static/SubTerrex.png
-  :width: 450px
-  
-
-"A cave exploration game where you explore caves by descending into them on ropes."
-http://www.pygame.org/project-SubTerrex-2389-.html
-
+        A cave exploration game where you explore caves by descending into them 
+        on ropes.
+        
+    
 Papers / Science
 ================
 

@@ -185,7 +185,7 @@ cpBodyIsSleeping.</p>
 </pre></div>
 </div>
 <p>Then the actual ctypes wrapping:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">cpBodyIsSleeping</span> <span class="o">=</span> <span class="p">(</span><span class="n">function_pointer</span><span class="p">(</span><span class="n">cpBool</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">cpBody</span><span class="p">)))</span><span class="o">.</span><span class="n">in_dll</span><span class="p">(</span><span class="n">chipmunk_lib</span><span class="p">,</span> <span class="s1">&#39;_cpBodyIsSleeping&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cpBodyIsSleeping</span> <span class="o">=</span> <span class="p">(</span><span class="n">function_pointer</span><span class="p">(</span><span class="n">cpBool</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">cpBody</span><span class="p">)))</span><span class="o">.</span><span class="n">in_dll</span><span class="p">(</span><span class="n">chipmunk_lib</span><span class="p">,</span> <span class="s">&#39;_cpBodyIsSleeping&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Then to make it easy to use we want to create a python method that looks nice:</p>
@@ -198,7 +198,7 @@ cpBodyIsSleeping.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">._chipmunk</span> <span class="kn">import</span> <span class="n">cpBody</span><span class="p">,</span> <span class="n">chipmunk_lib</span><span class="p">,</span> <span class="n">function_pointer</span>
 
-<span class="n">cpBodyIsSleeping</span> <span class="o">=</span> <span class="p">(</span><span class="n">function_pointer</span><span class="p">(</span><span class="n">cpBool</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">cpBody</span><span class="p">)))</span><span class="o">.</span><span class="n">in_dll</span><span class="p">(</span><span class="n">chipmunk_lib</span><span class="p">,</span> <span class="s1">&#39;_cpBodyIsSleeping&#39;</span><span class="p">)</span>
+<span class="n">cpBodyIsSleeping</span> <span class="o">=</span> <span class="p">(</span><span class="n">function_pointer</span><span class="p">(</span><span class="n">cpBool</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">cpBody</span><span class="p">)))</span><span class="o">.</span><span class="n">in_dll</span><span class="p">(</span><span class="n">chipmunk_lib</span><span class="p">,</span> <span class="s">&#39;_cpBodyIsSleeping&#39;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">is_sleeping</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">cpffi</span><span class="o">.</span><span class="n">cpBodyIsSleeping</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
@@ -338,7 +338,7 @@ reference is weak it is marked in the API documentation of the specific method.<
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

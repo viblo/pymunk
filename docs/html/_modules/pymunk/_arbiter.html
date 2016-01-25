@@ -49,8 +49,8 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk._arbiter</h1><div class="highlight"><pre>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;$Id$&quot;</span>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
 <span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">ct</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk</span> <span class="k">as</span> <span class="n">cp</span>
@@ -79,18 +79,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span> <span class="o">=</span> <span class="n">_arbiter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">space</span></div>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">space</span>
+        </div>
     <span class="k">def</span> <span class="nf">_get_contact_point_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">point_set</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetContactPointSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">point_set</span>        
     <span class="k">def</span> <span class="nf">_set_contact_point_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_set</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterSetContactPointSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">point_set</span><span class="p">)</span>        
     <span class="n">contact_point_set</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_contact_point_set</span><span class="p">,</span> <span class="n">_set_contact_point_set</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Contact point sets make getting contact information from the </span>
-<span class="s2">        Arbiter simpler.</span>
-<span class="s2">        </span>
-<span class="s2">        Return `ContactPointSet`&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Contact point sets make getting contact information from the </span>
+<span class="s">        Arbiter simpler.</span>
+<span class="s">        </span>
+<span class="s">        Return `ContactPointSet`&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">shapeA_p</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpShape</span><span class="p">)()</span>
@@ -102,85 +102,85 @@
         <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
 
     <span class="n">shapes</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_shapes</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get the shapes in the order that they were defined in the</span>
-<span class="s2">        collision handler associated with this arbiter&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the shapes in the order that they were defined in the</span>
+<span class="s">        collision handler associated with this arbiter&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_restitution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetRestitution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_restitution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">restitution</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterSetRestitution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">restitution</span><span class="p">)</span>
     <span class="n">restitution</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_restitution</span><span class="p">,</span> <span class="n">_set_restitution</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The calculated restitution (elasticity) for this collision </span>
-<span class="s2">        pair. </span>
-<span class="s2">        </span>
-<span class="s2">        Setting the value in a preSolve() callback will override the value </span>
-<span class="s2">        calculated by the space. The default calculation multiplies the </span>
-<span class="s2">        elasticity of the two shapes together.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The calculated restitution (elasticity) for this collision </span>
+<span class="s">        pair. </span>
+<span class="s">        </span>
+<span class="s">        Setting the value in a preSolve() callback will override the value </span>
+<span class="s">        calculated by the space. The default calculation multiplies the </span>
+<span class="s">        elasticity of the two shapes together.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_friction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetFriction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_friction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">friction</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterSetFriction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">friction</span><span class="p">)</span>
     <span class="n">friction</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_friction</span><span class="p">,</span> <span class="n">_set_friction</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The calculated friction for this collision pair. </span>
-<span class="s2">        </span>
-<span class="s2">        Setting the value in a preSolve() callback will override the value </span>
-<span class="s2">        calculated by the space. The default calculation multiplies the </span>
-<span class="s2">        friction of the two shapes together.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The calculated friction for this collision pair. </span>
+<span class="s">        </span>
+<span class="s">        Setting the value in a preSolve() callback will override the value </span>
+<span class="s">        calculated by the space. The default calculation multiplies the </span>
+<span class="s">        friction of the two shapes together.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_surface_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetSurfaceVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_surface_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">velocity</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterSetSurfaceVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">velocity</span><span class="p">)</span>
     <span class="n">surface_velocity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_surface_velocity</span><span class="p">,</span> <span class="n">_set_surface_velocity</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The calculated surface velocity for this collision pair. </span>
-<span class="s2">        </span>
-<span class="s2">        Setting the value in a preSolve() callback will override the value </span>
-<span class="s2">        calculated by the space. the default calculation subtracts the </span>
-<span class="s2">        surface velocity of the second shape from the first and then projects </span>
-<span class="s2">        that onto the tangent of the collision. This is so that only </span>
-<span class="s2">        friction is affected by default calculation. Using a custom </span>
-<span class="s2">        calculation, you can make something that responds like a pinball </span>
-<span class="s2">        bumper, or where the surface velocity is dependent on the location </span>
-<span class="s2">        of the contact point.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The calculated surface velocity for this collision pair. </span>
+<span class="s">        </span>
+<span class="s">        Setting the value in a preSolve() callback will override the value </span>
+<span class="s">        calculated by the space. the default calculation subtracts the </span>
+<span class="s">        surface velocity of the second shape from the first and then projects </span>
+<span class="s">        that onto the tangent of the collision. This is so that only </span>
+<span class="s">        friction is affected by default calculation. Using a custom </span>
+<span class="s">        calculation, you can make something that responds like a pinball </span>
+<span class="s">        bumper, or where the surface velocity is dependent on the location </span>
+<span class="s">        of the contact point.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_total_impulse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterTotalImpulse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
     <span class="n">total_impulse</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_total_impulse</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Returns the impulse that was applied this step to resolve the</span>
-<span class="s2">        collision.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns the impulse that was applied this step to resolve the</span>
+<span class="s">        collision.</span>
 
-<span class="s2">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_total_ke</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterTotalKE</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
     <span class="n">total_ke</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_total_ke</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The amount of energy lost in a collision including static, but</span>
-<span class="s2">        not dynamic friction.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The amount of energy lost in a collision including static, but</span>
+<span class="s">        not dynamic friction.</span>
 
-<span class="s2">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_is_first_contact</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterIsFirstContact</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>
     <span class="n">is_first_contact</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_is_first_contact</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Returns true if this is the first step the two shapes started </span>
-<span class="s2">        touching. </span>
-<span class="s2">        </span>
-<span class="s2">        This can be useful for sound effects for instance. If its the first </span>
-<span class="s2">        frame for a certain collision, check the energy of the collision in a </span>
-<span class="s2">        postStep() callback and use that to determine the volume of a sound </span>
-<span class="s2">        effect to play.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns true if this is the first step the two shapes started </span>
+<span class="s">        touching. </span>
+<span class="s">        </span>
+<span class="s">        This can be useful for sound effects for instance. If its the first </span>
+<span class="s">        frame for a certain collision, check the energy of the collision in a </span>
+<span class="s">        postStep() callback and use that to determine the volume of a sound </span>
+<span class="s">        effect to play.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_is_removal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterIsRemoval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>
     <span class="n">is_removal</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_is_removal</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Returns True during a separate() callback if the callback was </span>
-<span class="s2">        invoked due to an object removal.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span></div>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns True during a separate() callback if the callback was </span>
+<span class="s">        invoked due to an object removal.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -249,7 +249,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
