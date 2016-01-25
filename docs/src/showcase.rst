@@ -15,6 +15,13 @@ Winner in PyWeek 20 (Overall Individual Entry)  Top Individual Entries
 https://pyweek.org/e/Tee-py20/
 
 
+
+.. image:: _static/SubTerrex.png
+
+SubTerrex
+"A cave exploration game where you explore caves by descending into them on ropes."
+http://www.pygame.org/project-SubTerrex-2389-.html
+
 Papers / Science
 -----------------
 
