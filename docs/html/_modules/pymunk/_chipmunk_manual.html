@@ -106,13 +106,13 @@
 <span class="sd">    using groups or category masks is preferred.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="s">&#39;categories&#39;</span><span class="p">,</span> <span class="s">&#39;mask&#39;</span><span class="p">]</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="s1">&#39;categories&#39;</span><span class="p">,</span> <span class="s1">&#39;mask&#39;</span><span class="p">]</span>
     
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="ShapeFilter.from_param"><a class="viewcode-back" href="../../pymunk.html#pymunk.ShapeFilter.from_param">[docs]</a>    <span class="k">def</span> <span class="nf">from_param</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Used by ctypes to automatically create ShapeFilters&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-        </div>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></div>
+        
 <div class="viewcode-block" id="ShapeFilter.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.ShapeFilter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_or_tuple</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">categories</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;ShapeFilter constructor. </span>
 <span class="sd">        </span>
@@ -131,8 +131,8 @@
         <span class="k">if</span> <span class="n">group_or_tuple</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">categories</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">mask</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="mh">0xffffffff</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="mh">0xffffffff</span>
- </div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="mh">0xffffffff</span></div>
+ 
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">3</span>
  
@@ -144,7 +144,7 @@
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&quot;Invalid subscript &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">+</span><span class="s">&quot; to ShapeFilter&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Invalid subscript &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; to ShapeFilter&quot;</span><span class="p">)</span>
  
     <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -154,32 +154,32 @@
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&quot;Invalid subscript &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">+</span><span class="s">&quot; to ShapeFilter&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Invalid subscript &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; to ShapeFilter&quot;</span><span class="p">)</span>
  
-    <span class="c"># String representaion (for debugging)</span>
+    <span class="c1"># String representaion (for debugging)</span>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;ShapeFilter(</span><span class="si">%s</span><span class="s">, 0x</span><span class="si">%x</span><span class="s">, 0x</span><span class="si">%x</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;ShapeFilter(</span><span class="si">%s</span><span class="s1">, 0x</span><span class="si">%x</span><span class="s1">, 0x</span><span class="si">%x</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
     
-    <span class="c"># Comparison</span>
+    <span class="c1"># Comparison</span>
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
             
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">return</span> <span class="bp">True</span></div>
     
     
-    </div>
+    
 <span class="n">ShapeFilter</span><span class="o">.</span><span class="n">_fields_</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="n">cpGroup</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;categories&#39;</span><span class="p">,</span> <span class="n">cpBitmask</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;mask&#39;</span><span class="p">,</span> <span class="n">cpBitmask</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="n">cpGroup</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;categories&#39;</span><span class="p">,</span> <span class="n">cpBitmask</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="n">cpBitmask</span><span class="p">),</span>
 <span class="p">]</span>
 
 
@@ -206,24 +206,25 @@
 <span class="sd">        Transform(1.0,0.0,0.0,4.0,5.0,0.0)</span>
 <span class="sd">        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="s">&#39;d&#39;</span><span class="p">,</span> <span class="s">&#39;tx&#39;</span><span class="p">,</span> <span class="s">&#39;ty&#39;</span><span class="p">]</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;tx&#39;</span><span class="p">,</span> <span class="s1">&#39;ty&#39;</span><span class="p">]</span>
     
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Transform.identity"><a class="viewcode-back" href="../../pymunk.html#pymunk.Transform.identity">[docs]</a>    <span class="k">def</span> <span class="nf">identity</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;The identity transform&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Transform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
-        </div>
+        <span class="k">return</span> <span class="n">Transform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span></div>
+        
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;Transform(</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ty</span><span class="p">)</span>
-        </div>
+        <span class="k">return</span> <span class="s1">&#39;Transform(</span><span class="si">%s</span><span class="s1">,</span><span class="si">%s</span><span class="s1">,</span><span class="si">%s</span><span class="s1">,</span><span class="si">%s</span><span class="s1">,</span><span class="si">%s</span><span class="s1">,</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ty</span><span class="p">)</span></div>
+        
 <span class="n">Transform</span><span class="o">.</span><span class="n">_fields_</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;tx&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;ty&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;tx&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;ty&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">),</span>
 <span class="p">]</span>
+
 </pre></div>
 
           </div>
@@ -292,7 +293,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>

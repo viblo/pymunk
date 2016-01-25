@@ -49,28 +49,28 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk.vec2d</h1><div class="highlight"><pre>
-<span class="c"># ----------------------------------------------------------------------------</span>
-<span class="c"># pymunk</span>
-<span class="c"># Copyright (c) 2007-2011 Victor Blomqvist</span>
-<span class="c">#</span>
-<span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-<span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-<span class="c"># in the Software without restriction, including without limitation the rights</span>
-<span class="c"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-<span class="c"># copies of the Software, and to permit persons to whom the Software is</span>
-<span class="c"># furnished to do so, subject to the following conditions:</span>
-<span class="c">#</span>
-<span class="c"># The above copyright notice and this permission notice shall be included in</span>
-<span class="c"># all copies or substantial portions of the Software.</span>
-<span class="c">#</span>
-<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-<span class="c"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-<span class="c"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-<span class="c"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-<span class="c"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-<span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
-<span class="c"># SOFTWARE.</span>
-<span class="c"># ----------------------------------------------------------------------------</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># pymunk</span>
+<span class="c1"># Copyright (c) 2007-2011 Victor Blomqvist</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1"># in the Software without restriction, including without limitation the rights</span>
+<span class="c1"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1"># copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1"># furnished to do so, subject to the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included in</span>
+<span class="c1"># all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c1"># SOFTWARE.</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
 
 <span class="sd">&quot;&quot;&quot;This module contain the Vec2d class that is used in all of pymunk when a </span>
 <span class="sd">vector is needed.</span>
@@ -92,8 +92,8 @@
 <span class="sd">    Vec2d(5.0, 11.0)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;$Id$&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
 <span class="kn">import</span> <span class="nn">operator</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -101,19 +101,19 @@
 
 <span class="n">float_type</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_double</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Vec2d&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Vec2d&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Vec2d"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d">[docs]</a><span class="k">class</span> <span class="nc">Vec2d</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">Structure</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;2d vector class, supports vector and scalar operators, and also </span>
 <span class="sd">    provides some high level functions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">]</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]</span>
      
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Vec2d.from_param"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.from_param">[docs]</a>    <span class="k">def</span> <span class="nf">from_param</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Used by ctypes to automatically create Vec2ds&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-        </div>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></div>
+        
 <div class="viewcode-block" id="Vec2d.__init__"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_or_pair</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">x_or_pair</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
@@ -121,8 +121,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">x_or_pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x_or_pair</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
- </div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span></div>
+ 
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">2</span>
  
@@ -132,7 +132,7 @@
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&quot;Invalid subscript &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">+</span><span class="s">&quot; to Vec2d&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Invalid subscript &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; to Vec2d&quot;</span><span class="p">)</span>
  
     <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -140,21 +140,21 @@
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&quot;Invalid subscript &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">+</span><span class="s">&quot; to Vec2d&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Invalid subscript &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; to Vec2d&quot;</span><span class="p">)</span>
  
-    <span class="c"># String representaion (for debugging)</span>
+    <span class="c1"># String representaion (for debugging)</span>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;Vec2d(</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;Vec2d(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
     
-    <span class="c"># Comparison</span>
+    <span class="c1"># Comparison</span>
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
     
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">!=</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">!=</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">True</span>
@@ -162,13 +162,13 @@
     <span class="k">def</span> <span class="nf">__nonzero__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">!=</span> <span class="mf">0.0</span>
  
-    <span class="c"># Generic operator handlers</span>
+    <span class="c1"># Generic operator handlers</span>
     <span class="k">def</span> <span class="nf">_o2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
-        <span class="s">&quot;Any two-operator operation where the left operand is a Vec2d&quot;</span>
+        <span class="s2">&quot;Any two-operator operation where the left operand is a Vec2d&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>
                          <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)):</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                          <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -176,8 +176,8 @@
                          <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other</span><span class="p">))</span>
  
     <span class="k">def</span> <span class="nf">_r_o2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
-        <span class="s">&quot;Any two-operator operation where the right operand is a Vec2d&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)):</span>
+        <span class="s2">&quot;Any two-operator operation where the right operand is a Vec2d&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>
                          <span class="n">f</span><span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -185,8 +185,8 @@
                          <span class="n">f</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
  
     <span class="k">def</span> <span class="nf">_io</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
-        <span class="s">&quot;inplace operator&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)):</span>
+        <span class="s2">&quot;inplace operator&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
@@ -194,11 +194,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
  
-    <span class="c"># Addition</span>
+    <span class="c1"># Addition</span>
     <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">other</span><span class="p">)</span>
@@ -208,7 +208,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span>
-        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -216,18 +216,18 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">other</span>
         <span class="k">return</span> <span class="bp">self</span>
  
-    <span class="c"># Subtraction</span>
+    <span class="c1"># Subtraction</span>
     <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)):</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">other</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__rsub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">other</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">other</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
@@ -235,7 +235,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-=</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-=</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)):</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-=</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-=</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -243,11 +243,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-=</span> <span class="n">other</span>
         <span class="k">return</span> <span class="bp">self</span>
  
-    <span class="c"># Multiplication</span>
+    <span class="c1"># Multiplication</span>
     <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="p">)</span>
@@ -257,7 +257,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">*=</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">*=</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;__getitem__&quot;</span><span class="p">)):</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">*=</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">*=</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -265,7 +265,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">*=</span> <span class="n">other</span>
         <span class="k">return</span> <span class="bp">self</span>
  
-    <span class="c"># Division</span>
+    <span class="c1"># Division</span>
     <span class="k">def</span> <span class="nf">__div__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_o2</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">div</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__rdiv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
@@ -287,7 +287,7 @@
     <span class="k">def</span> <span class="nf">__itruediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_io</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">truediv</span><span class="p">)</span>
  
-    <span class="c"># Modulo</span>
+    <span class="c1"># Modulo</span>
     <span class="k">def</span> <span class="nf">__mod__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_o2</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">mod</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__rmod__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
@@ -298,13 +298,13 @@
     <span class="k">def</span> <span class="nf">__rdivmod__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r_o2</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">divmod</span><span class="p">)</span>
  
-    <span class="c"># Exponentation</span>
+    <span class="c1"># Exponentation</span>
     <span class="k">def</span> <span class="nf">__pow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_o2</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">pow</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__rpow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r_o2</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">pow</span><span class="p">)</span>
  
-    <span class="c"># Bitwise operators</span>
+    <span class="c1"># Bitwise operators</span>
     <span class="k">def</span> <span class="nf">__lshift__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_o2</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">lshift</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__rlshift__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
@@ -327,7 +327,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_o2</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">xor</span><span class="p">)</span>
     <span class="n">__rxor__</span> <span class="o">=</span> <span class="n">__xor__</span>
  
-    <span class="c"># Unary operations</span>
+    <span class="c1"># Unary operations</span>
     <span class="k">def</span> <span class="nf">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">neg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="n">operator</span><span class="o">.</span><span class="n">neg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
  
@@ -340,7 +340,7 @@
     <span class="k">def</span> <span class="nf">__invert__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
  
-    <span class="c"># vectory functions</span>
+    <span class="c1"># vectory functions</span>
 <div class="viewcode-block" id="Vec2d.get_length_sqrd"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_length_sqrd">[docs]</a>    <span class="k">def</span> <span class="nf">get_length_sqrd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
         <span class="sd">&quot;&quot;&quot;Get the squared length of the vector.</span>
 <span class="sd">        It is more efficent to use this method instead of first call </span>
@@ -348,8 +348,8 @@
 <span class="sd">        </span>
 <span class="sd">        :return: The squared length</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span>
- </div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span></div>
+ 
 <div class="viewcode-block" id="Vec2d.get_length"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_length">[docs]</a>    <span class="k">def</span> <span class="nf">get_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the length of the vector.</span>
 <span class="sd">        </span>
@@ -361,7 +361,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">*=</span> <span class="n">value</span><span class="o">/</span><span class="n">length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">*=</span> <span class="n">value</span><span class="o">/</span><span class="n">length</span>
     <span class="n">length</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_length</span><span class="p">,</span> <span class="n">__setlength</span><span class="p">,</span> 
-        <span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;Gets or sets the magnitude of the vector&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Gets or sets the magnitude of the vector&quot;&quot;&quot;</span><span class="p">)</span>
        
 <div class="viewcode-block" id="Vec2d.rotate"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle_radians</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rotate the vector by angle_radians radians.&quot;&quot;&quot;</span>
@@ -370,8 +370,8 @@
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">cos</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">sin</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">sin</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">cos</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
- </div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span></div>
+ 
 <div class="viewcode-block" id="Vec2d.rotated"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.rotated">[docs]</a>    <span class="k">def</span> <span class="nf">rotated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle_radians</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create and return a new vector by rotating this vector by </span>
 <span class="sd">        angle_radians radians.</span>
@@ -382,20 +382,20 @@
         <span class="n">sin</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle_radians</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">cos</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">sin</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">sin</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">cos</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    </div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
+    
 <div class="viewcode-block" id="Vec2d.rotate_degrees"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.rotate_degrees">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_degrees</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle_degrees</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rotate the vector by angle_degrees degrees.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle_degrees</span><span class="p">))</span>
-    </div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle_degrees</span><span class="p">))</span></div>
+    
 <div class="viewcode-block" id="Vec2d.rotated_degrees"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.rotated_degrees">[docs]</a>    <span class="k">def</span> <span class="nf">rotated_degrees</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle_degrees</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create and return a new vector by rotating this vector by </span>
 <span class="sd">        angle_degrees degrees.</span>
 <span class="sd">        </span>
 <span class="sd">        :return: Rotade vector</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle_degrees</span><span class="p">))</span>
-    </div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle_degrees</span><span class="p">))</span></div>
+    
 <div class="viewcode-block" id="Vec2d.get_angle"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_angle">[docs]</a>    <span class="k">def</span> <span class="nf">get_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_length_sqrd</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
             <span class="k">return</span> <span class="mi">0</span>
@@ -405,14 +405,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
     <span class="n">angle</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_angle</span><span class="p">,</span> <span class="n">__setangle</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Gets or sets the angle (in radians) of a vector&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Gets or sets the angle (in radians) of a vector&quot;&quot;&quot;</span><span class="p">)</span>
  
 <div class="viewcode-block" id="Vec2d.get_angle_degrees"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_angle_degrees">[docs]</a>    <span class="k">def</span> <span class="nf">get_angle_degrees</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_angle</span><span class="p">())</span></div>
     <span class="k">def</span> <span class="nf">__set_angle_degrees</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle_degrees</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__setangle</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle_degrees</span><span class="p">))</span>
     <span class="n">angle_degrees</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_angle_degrees</span><span class="p">,</span> <span class="n">__set_angle_degrees</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Gets or sets the angle (in degrees) of a vector&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Gets or sets the angle (in degrees) of a vector&quot;&quot;&quot;</span><span class="p">)</span>
     
 <div class="viewcode-block" id="Vec2d.get_angle_between"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_angle_between">[docs]</a>    <span class="k">def</span> <span class="nf">get_angle_between</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the angle between the vector and the other in radians</span>
@@ -421,15 +421,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cross</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">dot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">dot</span><span class="p">)</span>
-        </div>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">dot</span><span class="p">)</span></div>
+        
 <div class="viewcode-block" id="Vec2d.get_angle_degrees_between"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_angle_degrees_between">[docs]</a>    <span class="k">def</span> <span class="nf">get_angle_degrees_between</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the angle between the vector and the other in degrees</span>
 <span class="sd">        </span>
 <span class="sd">        :return: The angle (in degrees)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_angle_between</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
-        </div>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_angle_between</span><span class="p">(</span><span class="n">other</span><span class="p">))</span></div>
+        
 <div class="viewcode-block" id="Vec2d.normalized"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.normalized">[docs]</a>    <span class="k">def</span> <span class="nf">normalized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a normalized copy of the vector</span>
 <span class="sd">        Note: This function will return 0 if the length of the vector is 0.</span>
@@ -439,8 +439,8 @@
         <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
         <span class="k">if</span> <span class="n">length</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">/</span><span class="n">length</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
- </div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+ 
 <div class="viewcode-block" id="Vec2d.normalize_return_length"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.normalize_return_length">[docs]</a>    <span class="k">def</span> <span class="nf">normalize_return_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Normalize the vector and return its length before the normalization</span>
 <span class="sd">        </span>
@@ -450,32 +450,32 @@
         <span class="k">if</span> <span class="n">length</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">/=</span> <span class="n">length</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">/=</span> <span class="n">length</span>
-        <span class="k">return</span> <span class="n">length</span>
- </div>
+        <span class="k">return</span> <span class="n">length</span></div>
+ 
 <div class="viewcode-block" id="Vec2d.perpendicular"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.perpendicular">[docs]</a>    <span class="k">def</span> <span class="nf">perpendicular</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-    </div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span></div>
+    
 <div class="viewcode-block" id="Vec2d.perpendicular_normal"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.perpendicular_normal">[docs]</a>    <span class="k">def</span> <span class="nf">perpendicular_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
         <span class="k">if</span> <span class="n">length</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">/</span><span class="n">length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">/</span><span class="n">length</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        </div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        
 <div class="viewcode-block" id="Vec2d.dot"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.dot">[docs]</a>    <span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The dot product between the vector and other vector</span>
 <span class="sd">            v1.dot(v2) -&gt; v1.x*v2.x + v1.y*v2.y</span>
 <span class="sd">            </span>
 <span class="sd">        :return: The dot product</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        </div>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
+        
 <div class="viewcode-block" id="Vec2d.get_distance"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_distance">[docs]</a>    <span class="k">def</span> <span class="nf">get_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The distance between the vector and other vector</span>
 <span class="sd">        </span>
 <span class="sd">        :return: The distance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-        </div>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span></div>
+        
 <div class="viewcode-block" id="Vec2d.get_dist_sqrd"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.get_dist_sqrd">[docs]</a>    <span class="k">def</span> <span class="nf">get_dist_sqrd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The squared distance between the vector and other vector</span>
 <span class="sd">        It is more efficent to use this method than to call get_distance()</span>
@@ -483,69 +483,70 @@
 <span class="sd">        </span>
 <span class="sd">        :return: The squared distance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
-        </div>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span></div>
+        
 <div class="viewcode-block" id="Vec2d.projection"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.projection">[docs]</a>    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="n">other_length_sqrd</span> <span class="o">=</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">projected_length_times_other_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">other</span><span class="o">*</span><span class="p">(</span><span class="n">projected_length_times_other_length</span><span class="o">/</span><span class="n">other_length_sqrd</span><span class="p">)</span>
-    </div>
+        <span class="k">return</span> <span class="n">other</span><span class="o">*</span><span class="p">(</span><span class="n">projected_length_times_other_length</span><span class="o">/</span><span class="n">other_length_sqrd</span><span class="p">)</span></div>
+    
 <div class="viewcode-block" id="Vec2d.cross"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.cross">[docs]</a>    <span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The cross product between the vector and other vector</span>
 <span class="sd">            v1.cross(v2) -&gt; v1.x*v2.y - v2.y*v1.x</span>
 <span class="sd">        </span>
 <span class="sd">        :return: The cross product</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    </div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+    
 <div class="viewcode-block" id="Vec2d.interpolate_to"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.interpolate_to">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="nb">range</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="nb">range</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="nb">range</span><span class="p">)</span>
-    </div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="nb">range</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="nb">range</span><span class="p">)</span></div>
+    
 <div class="viewcode-block" id="Vec2d.convert_to_basis"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.convert_to_basis">[docs]</a>    <span class="k">def</span> <span class="nf">convert_to_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_vector</span><span class="p">,</span> <span class="n">y_vector</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x_vector</span><span class="p">)</span><span class="o">/</span><span class="n">x_vector</span><span class="o">.</span><span class="n">get_length_sqrd</span><span class="p">()</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y_vector</span><span class="p">)</span><span class="o">/</span><span class="n">y_vector</span><span class="o">.</span><span class="n">get_length_sqrd</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    </div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
+    
     <span class="k">def</span> <span class="nf">__get_int_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
     <span class="n">int_tuple</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">__get_int_xy</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Return the x and y values of this vector as ints&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Return the x and y values of this vector as ints&quot;&quot;&quot;</span><span class="p">)</span>
     
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Vec2d.zero"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.zero">[docs]</a>    <span class="k">def</span> <span class="nf">zero</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;A vector of zero length&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        </div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+        
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Vec2d.unit"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.unit">[docs]</a>    <span class="k">def</span> <span class="nf">unit</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;A unit vector pointing up&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        </div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
+        
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Vec2d.ones"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.ones">[docs]</a>    <span class="k">def</span> <span class="nf">ones</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;A vector where both x and y is 1&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
  
-    <span class="c"># Extra functions, mainly for chipmunk</span></div>
+    <span class="c1"># Extra functions, mainly for chipmunk</span>
 <div class="viewcode-block" id="Vec2d.cpvrotate"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.cpvrotate">[docs]</a>    <span class="k">def</span> <span class="nf">cpvrotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Uses complex multiplication to rotate this vector by the other. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">)</span></div>
 <div class="viewcode-block" id="Vec2d.cpvunrotate"><a class="viewcode-back" href="../../pymunk.vec2d.html#pymunk.vec2d.Vec2d.cpvunrotate">[docs]</a>    <span class="k">def</span> <span class="nf">cpvunrotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The inverse of cpvrotate&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span></div>
     
-    <span class="c"># Pickle</span></div>
+    <span class="c1"># Pickle</span>
     <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">callable</span> <span class="o">=</span> <span class="n">Vec2d</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nb">callable</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">callable</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+
 <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fields_</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">float_type</span><span class="p">),</span>
-            <span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">float_type</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">float_type</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">float_type</span><span class="p">),</span>
         <span class="p">]</span>
 
 <span class="k">del</span> <span class="n">float_type</span>
+
 </pre></div>
 
           </div>
@@ -614,7 +615,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>
