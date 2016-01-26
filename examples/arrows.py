@@ -100,7 +100,7 @@ def main():
                 diff = end_time - start_time
                 power = max(min(diff, 1000), 10) * 1.5
                 impulse = power * Vec2d(1,0)
-                arrow_body.apply_impulse(impulse.rotated(arrow_body.angle))
+                arrow_body.apply_impulse_at_local_point(impulse.rotated(arrow_body.angle))
                 
                 space.add(arrow_body)
                 flying_arrows.append(arrow_body)
@@ -137,7 +137,7 @@ def main():
             drag_force_magnitude = (1-abs(dot)) * flight_speed **2 * drag_constant * flying_arrow.mass
             
             arrow_tail_position = Vec2d(-50, 0).rotated(flying_arrow.angle)
-            flying_arrow.apply_impulse(drag_force_magnitude * -flight_direction, arrow_tail_position)
+            flying_arrow.apply_impulse_at_world_point(drag_force_magnitude * -flight_direction, arrow_tail_position)
             
             flying_arrow.angular_velocity *= 0.9
             
