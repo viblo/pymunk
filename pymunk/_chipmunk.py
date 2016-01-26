@@ -867,9 +867,9 @@ import collections
 class ShapeFilter1(collections.namedtuple('ShapeFilter', ['group','categories','mask'])):
     @classmethod
     def from_param(cls, arg):
-        print cls, arg
-        print 1
-        print "XXXXXXXXXXXXXXX"
+        #print cls, arg
+        #print 1
+        #print "XXXXXXXXXXXXXXX"
         return cls(1,2,3)
 
 cpShapeFilter = ShapeFilter

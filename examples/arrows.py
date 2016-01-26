@@ -72,7 +72,7 @@ def main():
     space.add(static)
     
     # "Cannon" that can fire arrows
-    cannon_body = pymunk.Body(pymunk.inf, pymunk.inf)
+    cannon_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
     cannon_shape = pymunk.Circle(cannon_body, 25)
     cannon_shape.sensor = True
     cannon_body.position = 100,100
@@ -81,7 +81,7 @@ def main():
     arrow_body,arrow_shape = create_arrow()
     space.add(arrow_shape)
         
-    space.add_collision_handler(0, 1, post_solve=post_solve_arrow_hit)
+    space.collision_handler(0, 1).post_solve=post_solve_arrow_hit
 
     flying_arrows = []
     

@@ -14,45 +14,45 @@ def add_objects(space):
                 ]  
     space.add(segments)
     
-    b = pymunk.Body()
+    b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (40,530)
     b.angle = 3.14/7
     s = pymunk.Segment(b, (-30,0), (30,0), 2)
     space.add(s)
     
     # Static Circles
-    b = pymunk.Body()
+    b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (150,500)
     s = pymunk.Circle(b, 10)
     space.add(s)
     
-    b = pymunk.Body()
+    b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (150,500)
     s = pymunk.Circle(b, 10,(0,-30))
     space.add(s)
     
-    b = pymunk.Body()
+    b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (150,400)
     b.angle = 3.14/4
     s = pymunk.Circle(b, 40)
     space.add(s)
     
     # Static Polys
-    b = pymunk.Body()
+    b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (150,300)
     b.angle = 3.14/4
     s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)])
     space.add(s)
     
-    b = pymunk.Body()
+    b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (150,300)
     b.angle = 3.14/2
-    s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)], (-100,0), radius=3)
+    s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)], pymunk.Transform(tx=-100), radius=3)
     space.add(s)
     
-    b = pymunk.Body()
+    b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (150,200)
-    s = pymunk.Poly(b, [(0, -50), (50, 0), (30, 50),(-30, 50),(-50, 0)], (0,-100))
+    s = pymunk.Poly(b, [(0, -50), (50, 0), (30, 50),(-30, 50),(-50, 0)], pymunk.Transform(ty=-100))
     space.add(s)
     
     ### Dynamic
@@ -99,12 +99,13 @@ def add_objects(space):
     b = pymunk.Body(1,1)
     b.position = (350,300)
     b.angle = 3.14/2
-    s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)], (-100,0), radius=3)
+    
+    s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)], pymunk.Transform(tx=-100), radius=3)
     space.add(s)
     
     b = pymunk.Body(1,1)
     b.position = (350,200)
-    s = pymunk.Poly(b, [(0, -50), (50, 0), (30, 50),(-30, 50),(-50, 0)], (0,-100))
+    s = pymunk.Poly(b, [(0, -50), (50, 0), (30, 50),(-30, 50),(-50, 0)], pymunk.Transform(ty=-100))
     space.add(s)
     
     ###Constraints
@@ -121,7 +122,7 @@ def add_objects(space):
     a.position = (450,480)
     b = pymunk.Body(1,1)
     b.position = (550,480)
-    j = pymunk.PinJoint(a,b, anchr1=(0,20), anchr2=(0,-20))
+    j = pymunk.PinJoint(a,b, anchor_a=(0,20), anchor_b=(0,-20))
     space.add(a,b,j)
     
     # SlideJoints
@@ -129,7 +130,7 @@ def add_objects(space):
     a.position = (450,430)
     b = pymunk.Body(1,1)
     b.position = (550,430)
-    j = pymunk.SlideJoint(a,b, anchr1=(0,20), anchr2=(0,-20), min=10,max=30)
+    j = pymunk.SlideJoint(a,b, anchor_a=(0,20), anchor_b=(0,-20), min=10,max=30)
     space.add(a,b,j)
     
     
