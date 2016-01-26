@@ -16,7 +16,7 @@ Games
         
         :subscript:`made by Tee. Retrieved 2016-01-25`
 
-        Winner of PyWeek 20 (Overall Individual Entry)
+        **Winner of PyWeek 20** (Overall Individual Entry)
         
         A pachinko-like puzzle game. Play some balls and watch their movement 
         carefully (i.e. collect data) to reconstruct the board!
@@ -24,7 +24,7 @@ Games
     * - .. image:: _static/SubTerrex.png
       - `SubTerrex <http://www.pygame.org/project-SubTerrex-2389-.html>`_  
         
-        :subscript:`made by Paul Paterson. Retrieved 201-01-25`
+        :subscript:`made by Paul Paterson. Retrieved 2016-01-25`
 
         A cave exploration game where you explore caves by descending into them 
         on ropes.
