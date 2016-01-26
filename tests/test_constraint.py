@@ -4,9 +4,6 @@ import unittest
 
 ####################################################################
 class UnitTestConstraint(unittest.TestCase):
-    def setUp(self):
-        p.reset_shapeid_counter()
-
     def testA(self):
         a,b = p.Body(10,10), p.Body(10,10)
         j = p.PivotJoint(a, b, (0,0))

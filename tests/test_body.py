@@ -5,9 +5,6 @@ import unittest
 ####################################################################
 
 class UnitTestBody(unittest.TestCase):
-    def setUp(self):
-        p.reset_shapeid_counter()
-
     def testProperties(self):
         b = p.Body(10,100)
         self.assertEqual(b.mass, 10)

@@ -11,8 +11,6 @@ from pymunk.vec2d import Vec2d
 
 class UnitTestSpace(unittest.TestCase):
     def setUp(self):
-        p.reset_shapeid_counter()
-
         self.s = p.Space()
 
         self.b1, self.b2 = p.Body(1,3),p.Body(10,100)
