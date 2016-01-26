@@ -7,7 +7,6 @@ http://untamed.wild-refuge.net/rmxpresources.php?characters
     own code you might want to structure it a bit differently.
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import sys,math
@@ -106,7 +105,7 @@ def main():
     # moving platform
     platform_path = [(650,100),(600,200),(650,300)]
     platform_path_index = 0
-    platform_body = pymunk.Body(pymunk.inf, pymunk.inf)
+    platform_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
     platform_body.position = 650,100
     s = pymunk.Segment(platform_body, (-25, 0), (25, 0), 5)
     s.friction = 1.
@@ -128,7 +127,7 @@ def main():
         else:
             return False
             
-    space.add_collision_handler(1,2, begin=passthrough_handler)
+    space.collision_handler(1,2).begin=passthrough_handler
     
     
     # player
