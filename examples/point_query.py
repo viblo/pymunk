@@ -78,7 +78,7 @@ def main():
 
         mouse_pos = pymunk.pygame_util.get_mouse_pos(screen)
 
-        shape = space.point_query_first(mouse_pos)
+        shape = space.point_query_nearest(mouse_pos, pymunk.inf, pymunk.ShapeFilter()).shape
         if shape is not None:
             if hasattr(shape, "radius"):
                 r = shape.radius + 4
