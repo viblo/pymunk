@@ -23,6 +23,7 @@
 #include <string.h>
 
 #include "chipmunk/chipmunk_private.h"
+#include "chipmunk/cpRobust.h"
 
 #if DEBUG && 0
 #include "ChipmunkDemo.h"
@@ -264,12 +265,6 @@ ClosestDist(const cpVect v0,const cpVect v1)
 	return cpvlengthsq(LerpT(v0, v1, ClosestT(v0, v1)));
 }
 
-static inline cpBool
-CheckArea(cpVect v1, cpVect v2)
-{
-	return (v1.x*v2.y) > (v1.y*v2.x);
-}
-
 // Recursive implementation of the EPA loop.
 // Each recursion adds a point to the convex hull until it's known that we have the closest point on the surface.
 static struct ClosestPoints
@@ -305,7 +300,11 @@ EPARecurse(const struct SupportContext *ctx, const int count, const struct Minko
 	ChipmunkDebugDrawDot(5, p.ab, LAColor(1, 1));
 #endif
 	
-	if(CheckArea(cpvsub(v1.ab, v0.ab), cpvadd(cpvsub(p.ab, v0.ab), cpvsub(p.ab, v1.ab))) && iteration < MAX_EPA_ITERATIONS){
+	// The usual exit condition is a duplicated vertex.
+	// Much faster to check the ids than to check the signed area.
+	cpBool duplicate = (p.id == v0.id || p.id == v1.id);
+	
+	if(!duplicate && cpCheckPointGreater(v0.ab, v1.ab, p.ab) && iteration < MAX_EPA_ITERATIONS){
 		// Rebuild the convex hull by inserting p.
 		struct MinkowskiPoint *hull2 = (struct MinkowskiPoint *)alloca((count + 1)*sizeof(struct MinkowskiPoint));
 		int count2 = 1;
@@ -318,7 +317,7 @@ EPARecurse(const struct SupportContext *ctx, const int count, const struct Minko
 			cpVect h1 = hull[index].ab;
 			cpVect h2 = (i + 1 < count ? hull[(index + 1)%count] : p).ab;
 			
-			if(CheckArea(cpvsub(h2, h0), cpvadd(cpvsub(h1, h0), cpvsub(h1, h2)))){
+			if(cpCheckPointGreater(h0, h2, h1)){
 				hull2[count2] = hull[index];
 				count2++;
 			}
@@ -334,18 +333,18 @@ EPARecurse(const struct SupportContext *ctx, const int count, const struct Minko
 
 // Find the closest points on the surface of two overlapping shapes using the EPA algorithm.
 // EPA is called from GJK when two shapes overlap.
-// This is moderately expensive step! Avoid it by adding radii to your shapes so their inner polygons won't overlap.
+// This is a moderately expensive step! Avoid it by adding radii to your shapes so their inner polygons won't overlap.
 static struct ClosestPoints
 EPA(const struct SupportContext *ctx, const struct MinkowskiPoint v0, const struct MinkowskiPoint v1, const struct MinkowskiPoint v2)
 {
-	// TODO: allocate a NxM array here and do an in place convex hull reduction in EPARecurse
+	// TODO: allocate a NxM array here and do an in place convex hull reduction in EPARecurse?
 	struct MinkowskiPoint hull[3] = {v0, v1, v2};
 	return EPARecurse(ctx, 3, hull, 1);
 }
 
 //MARK: GJK Functions.
 
-// Recursive implementatino of the GJK loop.
+// Recursive implementation of the GJK loop.
 static inline struct ClosestPoints
 GJKRecurse(const struct SupportContext *ctx, const struct MinkowskiPoint v0, const struct MinkowskiPoint v1, const int iteration)
 {
@@ -354,13 +353,12 @@ GJKRecurse(const struct SupportContext *ctx, const struct MinkowskiPoint v0, con
 		return ClosestPointsNew(v0, v1);
 	}
 	
-	cpVect delta = cpvsub(v1.ab, v0.ab);
-	if(CheckArea(delta, cpvadd(v0.ab, v1.ab))){
+	if(cpCheckPointGreater(v1.ab, v0.ab, cpvzero)){
 		// Origin is behind axis. Flip and try again.
 		return GJKRecurse(ctx, v1, v0, iteration);
 	} else {
 		cpFloat t = ClosestT(v0.ab, v1.ab);
-		cpVect n = (-1.0f < t && t < 1.0f ? cpvperp(delta) : cpvneg(LerpT(v0.ab, v1.ab, t)));
+		cpVect n = (-1.0f < t && t < 1.0f ? cpvperp(cpvsub(v1.ab, v0.ab)) : cpvneg(LerpT(v0.ab, v1.ab, t)));
 		struct MinkowskiPoint p = Support(ctx, n);
 		
 #if DRAW_GJK
@@ -371,15 +369,12 @@ GJKRecurse(const struct SupportContext *ctx, const struct MinkowskiPoint v0, con
 		ChipmunkDebugDrawDot(5.0, p.ab, LAColor(1, 1));
 #endif
 		
-		if(
-			CheckArea(cpvsub(v1.ab, p.ab), cpvadd(v1.ab, p.ab)) &&
-			CheckArea(cpvadd(v0.ab, p.ab), cpvsub(v0.ab, p.ab))
-		){
+		if(cpCheckPointGreater(p.ab, v0.ab, cpvzero) && cpCheckPointGreater(v1.ab, p.ab, cpvzero)){
 			// The triangle v0, p, v1 contains the origin. Use EPA to find the MSA.
 			cpAssertWarn(iteration < WARN_GJK_ITERATIONS, "High GJK->EPA iterations: %d", iteration);
 			return EPA(ctx, v0, p, v1);
 		} else {
-			if(cpvdot(p.ab, n) <= cpfmax(cpvdot(v0.ab, n), cpvdot(v1.ab, n))){
+			if(cpCheckAxis(v0.ab, v1.ab, p.ab, n)){
 				// The edge v0, v1 that we already have is the closest to (0, 0) since p was not closer.
 				cpAssertWarn(iteration < WARN_GJK_ITERATIONS, "High GJK iterations: %d", iteration);
 				return ClosestPointsNew(v0, v1);
@@ -496,8 +491,9 @@ ContactPoints(const struct Edge e1, const struct Edge e2, const struct ClosestPo
 		cpFloat d_e2_a = cpvcross(e2.a.p, n);
 		cpFloat d_e2_b = cpvcross(e2.b.p, n);
 		
-		cpFloat e1_denom = 1.0f/(d_e1_b - d_e1_a);
-		cpFloat e2_denom = 1.0f/(d_e2_b - d_e2_a);
+		// TODO + min isn't a complete fix.
+		cpFloat e1_denom = 1.0f/(d_e1_b - d_e1_a + CPFLOAT_MIN);
+		cpFloat e2_denom = 1.0f/(d_e2_b - d_e2_a + CPFLOAT_MIN);
 		
 		// Project the endpoints of the two edges onto the opposing edge, clamping them as necessary.
 		// Compare the projected points to the collision normal to see if the shapes overlap there.
@@ -595,8 +591,7 @@ SegmentToSegment(const cpSegmentShape *seg1, const cpSegmentShape *seg2, struct 
 	
 	// If the closest points are nearer than the sum of the radii...
 	if(
-		points.d <= (seg1->r + seg2->r) &&
-		(
+		points.d <= (seg1->r + seg2->r) && (
 			// Reject endcap collisions if tangents are provided.
 			(!cpveql(points.a, seg1->ta) || cpvdot(n, cpvrotate(seg1->a_tangent, rot1)) <= 0.0) &&
 			(!cpveql(points.a, seg1->tb) || cpvdot(n, cpvrotate(seg1->b_tangent, rot1)) <= 0.0) &&
@@ -653,8 +648,7 @@ SegmentToPoly(const cpSegmentShape *seg, const cpPolyShape *poly, struct cpColli
 	
 	if(
 		// If the closest points are nearer than the sum of the radii...
-		points.d - seg->r - poly->r <= 0.0 &&
-		(
+		points.d - seg->r - poly->r <= 0.0 && (
 			// Reject endcap collisions if tangents are provided.
 			(!cpveql(points.a, seg->ta) || cpvdot(n, cpvrotate(seg->a_tangent, rot)) <= 0.0) &&
 			(!cpveql(points.a, seg->tb) || cpvdot(n, cpvrotate(seg->b_tangent, rot)) <= 0.0)

@@ -18,14 +18,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 #ifndef CHIPMUNK_PRIVATE_H
 #define CHIPMUNK_PRIVATE_H
-#ifdef CHIPMUNK_H
-#error Cannot include chipmunk_private.h after chipmunk.h.
-#endif
 
-#define CP_ALLOW_PRIVATE_ACCESS 1
 #include "chipmunk/chipmunk.h"
+#include "chipmunk/chipmunk_structs.h"
 
 #define CP_HASH_COEF (3344921057ul)
 #define CP_HASH_PAIR(A, B) ((cpHashValue)(A)*CP_HASH_COEF ^ (cpHashValue)(B)*CP_HASH_COEF)
@@ -35,11 +33,6 @@
 
 
 //MARK: cpArray
-
-struct cpArray {
-	int num, max;
-	void **arr;
-};
 
 cpArray *cpArrayNew(int size);
 
@@ -77,54 +70,6 @@ void cpHashSetFilter(cpHashSet *set, cpHashSetFilterFunc func, void *data);
 
 //MARK: Bodies
 
-struct cpBody {
-	// Integration functions
-	cpBodyVelocityFunc velocity_func;
-	cpBodyPositionFunc position_func;
-	
-	// mass and it's inverse
-	cpFloat m;
-	cpFloat m_inv;
-	
-	// moment of inertia and it's inverse
-	cpFloat i;
-	cpFloat i_inv;
-	
-	// center of gravity
-	cpVect cog;
-	
-	// position, velocity, force
-	cpVect p;
-	cpVect v;
-	cpVect f;
-	
-	// Angle, angular velocity, torque (radians)
-	cpFloat a;
-	cpFloat w;
-	cpFloat t;
-	
-	cpTransform transform;
-	
-	cpDataPointer userData;
-	
-	// "pseudo-velocities" used for eliminating overlap.
-	// Erin Catto has some papers that talk about what these are.
-	cpVect v_bias;
-	cpFloat w_bias;
-	
-	cpSpace *space;
-	
-	cpShape *shapeList;
-	cpArbiter *arbiterList;
-	cpConstraint *constraintList;
-	
-	struct {
-		cpBody *root;
-		cpBody *next;
-		cpFloat idleTime;
-	} sleeping;
-};
-
 void cpBodyAddShape(cpBody *body, cpShape *shape);
 void cpBodyRemoveShape(cpBody *body, cpShape *shape);
 
@@ -140,70 +85,6 @@ cpSpatialIndex *cpSpatialIndexInit(cpSpatialIndex *index, cpSpatialIndexClass *k
 
 
 //MARK: Arbiters
-
-enum cpArbiterState {
-	// Arbiter is active and its the first collision.
-	CP_ARBITER_STATE_FIRST_COLLISION,
-	// Arbiter is active and its not the first collision.
-	CP_ARBITER_STATE_NORMAL,
-	// Collision has been explicitly ignored.
-	// Either by returning false from a begin collision handler or calling cpArbiterIgnore().
-	CP_ARBITER_STATE_IGNORE,
-	// Collison is no longer active. A space will cache an arbiter for up to cpSpace.collisionPersistence more steps.
-	CP_ARBITER_STATE_CACHED,
-	// Collison arbiter is invalid because one of the shapes was removed.
-	CP_ARBITER_STATE_INVALIDATED,
-};
-
-struct cpArbiterThread {
-	struct cpArbiter *next, *prev;
-};
-
-struct cpContact {
-	cpVect r1, r2;
-	
-	cpFloat nMass, tMass;
-	cpFloat bounce; // TODO: look for an alternate bounce solution.
-
-	cpFloat jnAcc, jtAcc, jBias;
-	cpFloat bias;
-	
-	cpHashValue hash;
-};
-
-struct cpCollisionInfo {
-	const cpShape *a, *b;
-	cpCollisionID id;
-	
-	cpVect n;
-	
-	int count;
-	// TODO Should this be a unique struct type?
-	struct cpContact *arr;
-};
-
-struct cpArbiter {
-	cpFloat e;
-	cpFloat u;
-	cpVect surface_vr;
-	
-	cpDataPointer data;
-	
-	const cpShape *a, *b;
-	cpBody *body_a, *body_b;
-	struct cpArbiterThread thread_a, thread_b;
-	
-	int count;
-	struct cpContact *contacts;
-	cpVect n;
-	
-	// Regular, wildcard A and wildcard B collision handlers.
-	cpCollisionHandler *handler, *handlerA, *handlerB;
-	cpBool swapped;
-	
-	cpTimestamp stamp;
-	enum cpArbiterState state;
-};
 
 cpArbiter* cpArbiterInit(cpArbiter *arb, cpShape *a, cpShape *b);
 
@@ -222,97 +103,6 @@ void cpArbiterApplyImpulse(cpArbiter *arb);
 
 
 //MARK: Shapes/Collisions
-
-struct cpShapeMassInfo {
-	cpFloat m;
-	cpFloat i;
-	cpVect cog;
-	cpFloat area;
-};
-
-typedef enum cpShapeType{
-	CP_CIRCLE_SHAPE,
-	CP_SEGMENT_SHAPE,
-	CP_POLY_SHAPE,
-	CP_NUM_SHAPES
-} cpShapeType;
-
-typedef cpBB (*cpShapeCacheDataImpl)(cpShape *shape, cpTransform transform);
-typedef void (*cpShapeDestroyImpl)(cpShape *shape);
-typedef void (*cpShapePointQueryImpl)(const cpShape *shape, cpVect p, cpPointQueryInfo *info);
-typedef void (*cpShapeSegmentQueryImpl)(const cpShape *shape, cpVect a, cpVect b, cpFloat radius, cpSegmentQueryInfo *info);
-
-typedef struct cpShapeClass cpShapeClass;
-
-struct cpShapeClass {
-	cpShapeType type;
-	
-	cpShapeCacheDataImpl cacheData;
-	cpShapeDestroyImpl destroy;
-	cpShapePointQueryImpl pointQuery;
-	cpShapeSegmentQueryImpl segmentQuery;
-};
-
-struct cpShape {
-	const cpShapeClass *klass;
-	
-	cpSpace *space;
-	cpBody *body;
-	struct cpShapeMassInfo massInfo;
-	cpBB bb;
-	
-	cpBool sensor;
-	
-	cpFloat e;
-	cpFloat u;
-	cpVect surfaceV;
-
-	cpDataPointer userData;
-	
-	cpCollisionType type;
-	cpShapeFilter filter;
-	
-	cpShape *next;
-	cpShape *prev;
-	
-	cpHashValue hashid;
-};
-
-struct cpCircleShape {
-	cpShape shape;
-	
-	cpVect c, tc;
-	cpFloat r;
-};
-
-struct cpSegmentShape {
-	cpShape shape;
-	
-	cpVect a, b, n;
-	cpVect ta, tb, tn;
-	cpFloat r;
-	
-	cpVect a_tangent, b_tangent;
-};
-
-struct cpSplittingPlane {
-	cpVect v0, n;
-};
-
-#define CP_POLY_SHAPE_INLINE_ALLOC 6
-
-struct cpPolyShape {
-	cpShape shape;
-	
-	cpFloat r;
-	
-	int count;
-	// The untransformed planes are appended at the end of the transformed planes.
-	struct cpSplittingPlane *planes;
-	
-	// Allocate a small number of splitting planes internally for simple poly.
-	struct cpSplittingPlane _planes[2*CP_POLY_SHAPE_INLINE_ALLOC];
-};
 
 cpShape *cpShapeInit(cpShape *shape, const cpShapeClass *klass, cpBody *body, struct cpShapeMassInfo massInfo);
 
@@ -370,161 +160,6 @@ void cpLoopIndexes(const cpVect *verts, int count, int *start, int *end);
 //MARK: Constraints
 // TODO naming conventions here
 
-typedef void (*cpConstraintPreStepImpl)(cpConstraint *constraint, cpFloat dt);
-typedef void (*cpConstraintApplyCachedImpulseImpl)(cpConstraint *constraint, cpFloat dt_coef);
-typedef void (*cpConstraintApplyImpulseImpl)(cpConstraint *constraint, cpFloat dt);
-typedef cpFloat (*cpConstraintGetImpulseImpl)(cpConstraint *constraint);
-
-typedef struct cpConstraintClass {
-	cpConstraintPreStepImpl preStep;
-	cpConstraintApplyCachedImpulseImpl applyCachedImpulse;
-	cpConstraintApplyImpulseImpl applyImpulse;
-	cpConstraintGetImpulseImpl getImpulse;
-} cpConstraintClass;
-
-struct cpConstraint {
-	const cpConstraintClass *klass;
-	
-	cpSpace *space;
-	
-	cpBody *a, *b;
-	cpConstraint *next_a, *next_b;
-	
-	cpFloat maxForce;
-	cpFloat errorBias;
-	cpFloat maxBias;
-	
-	cpBool collideBodies;
-	
-	cpConstraintPreSolveFunc preSolve;
-	cpConstraintPostSolveFunc postSolve;
-	
-	cpDataPointer userData;
-};
-
-struct cpPinJoint {
-	cpConstraint constraint;
-	cpVect anchorA, anchorB;
-	cpFloat dist;
-	
-	cpVect r1, r2;
-	cpVect n;
-	cpFloat nMass;
-	
-	cpFloat jnAcc;
-	cpFloat bias;
-};
-
-struct cpSlideJoint {
-	cpConstraint constraint;
-	cpVect anchorA, anchorB;
-	cpFloat min, max;
-	
-	cpVect r1, r2;
-	cpVect n;
-	cpFloat nMass;
-	
-	cpFloat jnAcc;
-	cpFloat bias;
-};
-
-struct cpPivotJoint {
-	cpConstraint constraint;
-	cpVect anchorA, anchorB;
-	
-	cpVect r1, r2;
-	cpMat2x2 k;
-	
-	cpVect jAcc;
-	cpVect bias;
-};
-
-struct cpGrooveJoint {
-	cpConstraint constraint;
-	cpVect grv_n, grv_a, grv_b;
-	cpVect  anchorB;
-	
-	cpVect grv_tn;
-	cpFloat clamp;
-	cpVect r1, r2;
-	cpMat2x2 k;
-	
-	cpVect jAcc;
-	cpVect bias;
-};
-
-struct cpDampedSpring {
-	cpConstraint constraint;
-	cpVect anchorA, anchorB;
-	cpFloat restLength;
-	cpFloat stiffness;
-	cpFloat damping;
-	cpDampedSpringForceFunc springForceFunc;
-	
-	cpFloat target_vrn;
-	cpFloat v_coef;
-	
-	cpVect r1, r2;
-	cpFloat nMass;
-	cpVect n;
-	
-	cpFloat jAcc;
-};
-
-struct cpDampedRotarySpring {
-	cpConstraint constraint;
-	cpFloat restAngle;
-	cpFloat stiffness;
-	cpFloat damping;
-	cpDampedRotarySpringTorqueFunc springTorqueFunc;
-	
-	cpFloat target_wrn;
-	cpFloat w_coef;
-	
-	cpFloat iSum;
-	cpFloat jAcc;
-};
-
-struct cpRotaryLimitJoint {
-	cpConstraint constraint;
-	cpFloat min, max;
-	
-	cpFloat iSum;
-		
-	cpFloat bias;
-	cpFloat jAcc;
-};
-
-struct cpRatchetJoint {
-	cpConstraint constraint;
-	cpFloat angle, phase, ratchet;
-	
-	cpFloat iSum;
-		
-	cpFloat bias;
-	cpFloat jAcc;
-};
-
-struct cpGearJoint {
-	cpConstraint constraint;
-	cpFloat phase, ratio;
-	cpFloat ratio_inv;
-	
-	cpFloat iSum;
-		
-	cpFloat bias;
-	cpFloat jAcc;
-};
-
-struct cpSimpleMotor {
-	cpConstraint constraint;
-	cpFloat rate;
-	
-	cpFloat iSum;
-		
-	cpFloat jAcc;
-};
-
 void cpConstraintInit(cpConstraint *constraint, const struct cpConstraintClass *klass, cpBody *a, cpBody *b);
 
 static inline void
@@ -536,8 +171,8 @@ cpConstraintActivateBodies(cpConstraint *constraint)
 
 static inline cpVect
 relative_velocity(cpBody *a, cpBody *b, cpVect r1, cpVect r2){
-	cpVect v1_sum = cpvadd(a->CP_PRIVATE(v), cpvmult(cpvperp(r1), a->CP_PRIVATE(w)));
-	cpVect v2_sum = cpvadd(b->CP_PRIVATE(v), cpvmult(cpvperp(r2), b->CP_PRIVATE(w)));
+	cpVect v1_sum = cpvadd(a->v, cpvmult(cpvperp(r1), a->w));
+	cpVect v2_sum = cpvadd(b->v, cpvmult(cpvperp(r2), b->w));
 	
 	return cpvsub(v2_sum, v1_sum);
 }
@@ -549,8 +184,8 @@ normal_relative_velocity(cpBody *a, cpBody *b, cpVect r1, cpVect r2, cpVect n){
 
 static inline void
 apply_impulse(cpBody *body, cpVect j, cpVect r){
-	body->CP_PRIVATE(v) = cpvadd(body->CP_PRIVATE(v), cpvmult(j, body->CP_PRIVATE(m_inv)));
-	body->CP_PRIVATE(w) += body->CP_PRIVATE(i_inv)*cpvcross(r, j);
+	body->v = cpvadd(body->v, cpvmult(j, body->m_inv));
+	body->w += body->i_inv*cpvcross(r, j);
 }
 
 static inline void
@@ -563,8 +198,8 @@ apply_impulses(cpBody *a , cpBody *b, cpVect r1, cpVect r2, cpVect j)
 static inline void
 apply_bias_impulse(cpBody *body, cpVect j, cpVect r)
 {
-	body->CP_PRIVATE(v_bias) = cpvadd(body->CP_PRIVATE(v_bias), cpvmult(j, body->CP_PRIVATE(m_inv)));
-	body->CP_PRIVATE(w_bias) += body->CP_PRIVATE(i_inv)*cpvcross(r, j);
+	body->v_bias = cpvadd(body->v_bias, cpvmult(j, body->m_inv));
+	body->w_bias += body->i_inv*cpvcross(r, j);
 }
 
 static inline void
@@ -578,7 +213,7 @@ static inline cpFloat
 k_scalar_body(cpBody *body, cpVect r, cpVect n)
 {
 	cpFloat rcn = cpvcross(r, n);
-	return body->CP_PRIVATE(m_inv) + body->CP_PRIVATE(i_inv)*rcn*rcn;
+	return body->m_inv + body->i_inv*rcn*rcn;
 }
 
 static inline cpFloat
@@ -593,14 +228,14 @@ k_scalar(cpBody *a, cpBody *b, cpVect r1, cpVect r2, cpVect n)
 static inline cpMat2x2
 k_tensor(cpBody *a, cpBody *b, cpVect r1, cpVect r2)
 {
-	cpFloat m_sum = a->CP_PRIVATE(m_inv) + b->CP_PRIVATE(m_inv);
+	cpFloat m_sum = a->m_inv + b->m_inv;
 	
 	// start with Identity*m_sum
 	cpFloat k11 = m_sum, k12 = 0.0f;
 	cpFloat k21 = 0.0f,  k22 = m_sum;
 	
 	// add the influence from r1
-	cpFloat a_i_inv = a->CP_PRIVATE(i_inv);
+	cpFloat a_i_inv = a->i_inv;
 	cpFloat r1xsq =  r1.x * r1.x * a_i_inv;
 	cpFloat r1ysq =  r1.y * r1.y * a_i_inv;
 	cpFloat r1nxy = -r1.x * r1.y * a_i_inv;
@@ -608,7 +243,7 @@ k_tensor(cpBody *a, cpBody *b, cpVect r1, cpVect r2)
 	k21 += r1nxy; k22 += r1xsq;
 	
 	// add the influnce from r2
-	cpFloat b_i_inv = b->CP_PRIVATE(i_inv);
+	cpFloat b_i_inv = b->i_inv;
 	cpFloat r2xsq =  r2.x * r2.x * b_i_inv;
 	cpFloat r2ysq =  r2.y * r2.y * b_i_inv;
 	cpFloat r2nxy = -r2.x * r2.y * b_i_inv;
@@ -635,57 +270,6 @@ bias_coef(cpFloat errorBias, cpFloat dt)
 
 //MARK: Spaces
 
-typedef struct cpContactBufferHeader cpContactBufferHeader;
-typedef void (*cpSpaceArbiterApplyImpulseFunc)(cpArbiter *arb);
-
-struct cpSpace {
-	int iterations;
-	
-	cpVect gravity;
-	cpFloat damping;
-	
-	cpFloat idleSpeedThreshold;
-	cpFloat sleepTimeThreshold;
-	
-	cpFloat collisionSlop;
-	cpFloat collisionBias;
-	cpTimestamp collisionPersistence;
-	
-	cpDataPointer userData;
-	
-	cpTimestamp stamp;
-	cpFloat curr_dt;
-
-	cpArray *dynamicBodies;
-	cpArray *staticBodies;
-	cpArray *rousedBodies;
-	cpArray *sleepingComponents;
-	
-	cpHashValue shapeIDCounter;
-	cpSpatialIndex *staticShapes;
-	cpSpatialIndex *dynamicShapes;
-	
-	cpArray *constraints;
-	
-	cpArray *arbiters;
-	cpContactBufferHeader *contactBuffersHead;
-	cpHashSet *cachedArbiters;
-	cpArray *pooledArbiters;
-	
-	cpArray *allocatedBuffers;
-	unsigned int locked;
-	
-	cpBool usesWildcards;
-	cpHashSet *collisionHandlers;
-	cpCollisionHandler defaultHandler;
-	
-	cpBool skipPostStep;
-	cpArray *postStepCallbacks;
-	
-	cpBody *staticBody;
-	cpBody _staticBody;
-};
-
 #define cpAssertSpaceUnlocked(space) \
 	cpAssertHard(!space->locked, \
 		"This operation cannot be done safely during a call to cpSpaceStep() or during a query. " \
@@ -701,12 +285,6 @@ void cpSpaceProcessComponents(cpSpace *space, cpFloat dt);
 void cpSpacePushFreshContactBuffer(cpSpace *space);
 struct cpContact *cpContactBufferGetArray(cpSpace *space);
 void cpSpacePushContacts(cpSpace *space, int count);
-
-typedef struct cpPostStepCallback {
-	cpPostStepFunc func;
-	void *key;
-	void *data;
-} cpPostStepCallback;
 
 cpPostStepCallback *cpSpaceGetPostStepCallback(cpSpace *space, void *key);
 
