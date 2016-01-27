@@ -8,7 +8,7 @@ import pygame
 from pygame.locals import *
 from pygame.color import *
 
-import pymunk as pm
+import pymunk
 from pymunk import Vec2d
 
 
@@ -37,19 +37,19 @@ def main():
     running = True
     
     ### Physics stuff
-    space = pm.Space()
-    space.gravity = Vec2d(0.0, -900.0)
+    space = pymunk.Space()
+    space.gravity = 0.0, -900.0
     
     ## Balls
     balls = []
     
     ### Mouse
-    mouse_body = pm.Body()
-    mouse_shape = pm.Circle(mouse_body, 3, Vec2d(0,0))
+    mouse_body = pymunk.Body()
+    mouse_shape = pymunk.Circle(mouse_body, 3, (0,0))
     mouse_shape.collision_type = COLLTYPE_MOUSE
     space.add(mouse_shape)
 
-    space.add_collision_handler(COLLTYPE_MOUSE, COLLTYPE_BALL, None, mouse_coll_func, None, None)   
+    space.collision_handler(COLLTYPE_MOUSE, COLLTYPE_BALL).pre_solve=mouse_coll_func   
     
     ### Static line
     line_point1 = None
@@ -66,9 +66,9 @@ def main():
                 pygame.image.save(screen, "balls_and_lines.png")
             elif event.type == MOUSEBUTTONDOWN and event.button == 1:
                 p = event.pos[X], flipy(event.pos[Y])
-                body = pm.Body(10, 100)
+                body = pymunk.Body(10, 100)
                 body.position = p
-                shape = pm.Circle(body, 10, (0,0))
+                shape = pymunk.Circle(body, 10, (0,0))
                 shape.friction = 0.5
                 shape.collision_type = COLLTYPE_BALL
                 space.add(body, shape)
@@ -81,9 +81,8 @@ def main():
                 if line_point1 is not None:
                     
                     line_point2 = Vec2d(event.pos[X], flipy(event.pos[Y]))
-                    print line_point1, line_point2
-                    body = pm.Body()
-                    shape= pm.Segment(body, line_point1, line_point2, 0.0)
+                    body = pymunk.Body(body_type=pymunk.Body.STATIC)
+                    shape= pymunk.Segment(body, line_point1, line_point2, 0.0)
                     shape.friction = 0.99
                     space.add(shape)
                     static_lines.append(shape)
@@ -98,9 +97,9 @@ def main():
         
         
         if pygame.key.get_mods() & KMOD_SHIFT and pygame.mouse.get_pressed()[0]:
-            body = pm.Body(10, 10)
+            body = pymunk.Body(10, 10)
             body.position = mouse_pos
-            shape = pm.Circle(body, 10, (0,0))
+            shape = pymunk.Circle(body, 10, (0,0))
             shape.collision_type = COLLTYPE_BALL
             space.add(body, shape)
             balls.append(shape)

@@ -33,7 +33,7 @@ def spawn_ball(space, position, direction):
     ball_shape.color =  THECOLORS["green"]
     ball_shape.elasticity = 1.0
     
-    ball_body.apply_impulse(Vec2d(direction))
+    ball_body.apply_impulse_at_local_point(Vec2d(direction))
     
     # Keep ball velocity at a static value
     def constant_velocity(body, gravity, damping, dt):
@@ -46,7 +46,7 @@ def setup_level(space, player_body):
     
     # Remove balls and bricks
     for s in space.shapes[:]:
-        if not s.body.is_static and s.body not in [player_body]:
+        if s.body.body_type == pymunk.Body.DYNAMIC and s.body not in [player_body]:
             space.remove(s.body, s)
             
     # Spawn a ball for the player to have something to play with
@@ -57,7 +57,7 @@ def setup_level(space, player_body):
         x = x * 20 + 100
         for y in range(0,5):
             y = y * 10 + 400
-            brick_body = pymunk.Body(pymunk.inf, pymunk.inf)
+            brick_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
             brick_body.position = x, y
             brick_shape = pymunk.Poly.create_box(brick_body, (20,10))
             brick_shape.elasticity = 1.0
@@ -69,7 +69,7 @@ def setup_level(space, player_body):
     def remove_first(space, arbiter):
         first_shape = arbiter.shapes[0] 
         space.add_post_step_callback(space.remove, first_shape, first_shape.body)
-    space.add_collision_handler(2, 0, separate = remove_first)
+    space.collision_handler(2, 0).separate = remove_first
 
 def main():
     ### PyGame init
@@ -102,7 +102,7 @@ def main():
         first_shape = arbiter.shapes[0]
         space.add_post_step_callback(space.remove, first_shape, first_shape.body)
         return True
-    space.add_collision_handler(0, 1, begin = remove_first)
+    space.collision_handler(0, 1).begin = remove_first
     space.add(bottom)
     
     ### Player ship

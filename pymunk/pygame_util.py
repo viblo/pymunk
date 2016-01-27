@@ -121,7 +121,7 @@ def _draw_circle(surface, circle):
    
     r = 0
     color = pygame.color.THECOLORS["red"]
-    if circle.body.is_static:
+    if circle.body.body_type == pymunk.Body.STATIC:
         color = pygame.color.THECOLORS["lightgrey"]
         r = 1
     if hasattr(circle, "color"):
@@ -141,7 +141,7 @@ def _draw_poly(surface, poly):
     ps += [ps[0]]
     if hasattr(poly, "color"):
         color = poly.color  
-    elif poly.body.is_static:
+    elif poly.body.body_type == pymunk.Body.STATIC:
         color = pygame.color.THECOLORS["lightgrey"]
     else:
         color = pygame.color.THECOLORS["green"]
@@ -158,7 +158,7 @@ def _draw_segment(surface, segment):
     
     if hasattr(segment, "color"):
         color = segment.color  
-    elif segment.body.is_static:
+    elif segment.body.body_type == pymunk.Body.STATIC:
         color = pygame.color.THECOLORS["lightgrey"]
     else:
         color = pygame.color.THECOLORS["blue"]
@@ -173,8 +173,8 @@ def _draw_constraint(surface, constraint):
         p2 = to_pygame(pv2, surface)
         pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])
     elif isinstance(constraint, pymunk.PinJoint):
-        pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
-        pv2 = constraint.b.position + constraint.anchr2.rotated(constraint.b.angle)
+        pv1 = constraint.a.position + constraint.anchor_a.rotated(constraint.a.angle)
+        pv2 = constraint.b.position + constraint.anchor_b.rotated(constraint.b.angle)
         p1 = to_pygame(pv1, surface)
         p2 = to_pygame(pv2, surface)
         pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])    
@@ -186,8 +186,8 @@ def _draw_constraint(surface, constraint):
         pygame.draw.circle(surface, pygame.color.THECOLORS["darkgray"], p1, 3)
         pygame.draw.circle(surface, pygame.color.THECOLORS["darkgray"], p2, 3)
     elif hasattr(constraint, "anchr1"):
-        pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
-        pv2 = constraint.b.position + constraint.anchr2.rotated(constraint.b.angle)
+        pv1 = constraint.a.position + constraint.anchor_a.rotated(constraint.a.angle)
+        pv2 = constraint.b.position + constraint.anchor_b.rotated(constraint.b.angle)
         p1 = to_pygame(pv1, surface)
         p2 = to_pygame(pv2, surface)
         pygame.draw.aalines(surface, pygame.color.THECOLORS["darkgray"], False, [p1,p2])

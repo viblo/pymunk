@@ -29,7 +29,7 @@ space.gravity = (0.0, -900.0)
 balls = []
    
 ### walls
-static_body = pm.Body()
+static_body = pm.Body(pm.Body.STATIC)
 static_lines = [pm.Segment(static_body, (111.0, 280.0), (407.0, 246.0), 0.0)
                 ,pm.Segment(static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
                 ]  
@@ -68,7 +68,7 @@ while running:
     ### Draw stuff
     balls_to_remove = []
     for ball in balls:
-        if ball.body.position.y < 200: balls_to_remove.append(ball)
+        if ball.body.position.y < 100: balls_to_remove.append(ball)
 
         p = to_pygame(ball.body.position)
         pygame.draw.circle(screen, THECOLORS["blue"], p, int(ball.radius), 2)
