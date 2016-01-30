@@ -6,7 +6,9 @@
 
 #include <pthread.h>
 //#include <sys/param.h >
+#ifndef WIN32 //Pymunk on windows support
 #include <sys/sysctl.h>
+#endif
 
 #include "chipmunk/chipmunk_private.h"
 #include "chipmunk/cpHastySpace.h"

@@ -84,9 +84,9 @@ class build_chipmunk(distutils.cmd.Command):
             #O1 and O2 works on 32bit, not O3 and maybe not O0?
             
         if arch == 64 and platform.system() in ('Windows', 'Microsoft'):
-            compiler_preargs += ['-m64']
+            compiler_preargs += ['-O3', '-m64']
         if arch == 32 and platform.system() in ('Windows', 'Microsoft'):
-            compiler_preargs += ['-O2', '-m32']
+            compiler_preargs += ['-O3', '-m32']
             
         for x in compiler.executables:
             args = getattr(compiler, x)
