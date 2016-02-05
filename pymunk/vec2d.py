@@ -46,13 +46,10 @@ __docformat__ = "reStructuredText"
 
 import operator
 import math
-import ctypes 
-
-float_type = ctypes.c_double
 
 __all__ = ["Vec2d"]
 
-class Vec2d(ctypes.Structure):
+class Vec2d(list):
     """2d vector class, supports vector and scalar operators, and also 
     provides some high level functions.
     """
@@ -489,10 +486,5 @@ class Vec2d(ctypes.Structure):
         args = (self.x, self.y)
         return (callable, args)
 
-Vec2d._fields_ = [
-            ('x', float_type),
-            ('y', float_type),
-        ]
 
-del float_type
 

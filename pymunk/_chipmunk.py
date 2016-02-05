@@ -1,10 +1,12 @@
 
 from ctypes import *
 from .vec2d import Vec2d
-from ._base import uintptr_t, cpGroup, cpBitmask, cpFloat
-from ._chipmunk_manual import ShapeFilter, Transform
-from ._contact_point_set import ContactPoint, ContactPointSet
+#from ._base import uintptr_t, cpGroup, cpBitmask, cpFloat
+#from ._chipmunk_manual import ShapeFilter, Transform
+#from ._contact_point_set import ContactPoint, ContactPointSet
 
+
+'''
 
 
 cpVect = Vec2d
@@ -1609,3 +1611,4 @@ __all__ = ['cpDampedRotarySpringSetRestAngle',
            'cpArbiterGetSurfaceVelocity', 'cpSpaceDebugColor',
            'cpArbiterGetRestitution', 'cpConstraintGetPostSolveFunc',
            'cpArbiterGetBodies']
+'''
