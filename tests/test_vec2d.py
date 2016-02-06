@@ -8,15 +8,29 @@ from pymunk.vec2d import Vec2d
 
 class UnitTestVec2d(unittest.TestCase):
     
-    def setUp(self):
-        pass
-    
     def testCreationAndAccess(self):
+        v = Vec2d()
+        self.assertEqual(v.x, 0)
+        self.assertEqual(v[0], 0)
+        self.assertEqual(v.y, 0)
+        self.assertEqual(v[1], 0)
+    
+        v = Vec2d(3,5)
+        self.assertEqual(v.x, 3)
+        self.assertEqual(v[0], 3)
+        self.assertEqual(v.y, 5)
+        self.assertEqual(v[1], 5)
+    
         v = Vec2d(111, 222)
         self.assert_(v.x == 111 and v.y == 222)
         v.x = 333
         v[1] = 444
         self.assert_(v[0] == 333 and v[1] == 444)
+        
+        v = Vec2d(3,5)
+        self.assertEqual(len(v), 2)
+        self.assertEqual(list(v), [3,5])
+        self.assertEqual(tuple(v), (3,5))
 
     def testMath(self):
         v = Vec2d(111,222)

@@ -54,40 +54,19 @@ class Vec2d(list):
     provides some high level functions.
     """
     __slots__ = ['x', 'y']
-     
-    @classmethod
-    def from_param(cls, arg):
-        """Used by ctypes to automatically create Vec2ds"""
-        return cls(arg)
         
     def __init__(self, x_or_pair=None, y = None):
         if x_or_pair != None:
             if y == None:
-                self.x = x_or_pair[0]
-                self.y = x_or_pair[1]
+                if hasattr(x_or_pair, "x") and hasattr(x_or_pair, "y"):
+                    super(Vec2d, self).__init__([x_or_pair.x, x_or_pair.y])
+                else:
+                    super(Vec2d, self).__init__(x_or_pair)
             else:
-                self.x = x_or_pair
-                self.y = y
- 
-    def __len__(self):
-        return 2
- 
-    def __getitem__(self, key):
-        if key == 0:
-            return self.x
-        elif key == 1:
-            return self.y
+                super(Vec2d, self).__init__([x_or_pair, y])
         else:
-            raise IndexError("Invalid subscript "+str(key)+" to Vec2d")
- 
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.x = value
-        elif key == 1:
-            self.y = value
-        else:
-            raise IndexError("Invalid subscript "+str(key)+" to Vec2d")
- 
+            super(Vec2d, self).__init__([0,0])
+   
     # String representaion (for debugging)
     def __repr__(self):
         return 'Vec2d(%s, %s)' % (self.x, self.y)
@@ -285,6 +264,23 @@ class Vec2d(list):
  
     def __invert__(self):
         return Vec2d(-self.x, -self.y)
+ 
+    
+    def _get_x(self):
+        return self[0]
+
+    def _set_x(self, x):
+        self[0] = x
+        
+    x = property(_get_x, _set_x)
+    
+    def _get_y(self):
+        return self[1]
+
+    def _set_y(self, y):
+        self[1] = y
+    
+    y = property(_get_y, _set_y)
  
     # vectory functions
     def get_length_sqrd(self): 
