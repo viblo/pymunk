@@ -65,11 +65,11 @@ from .vec2d import Vec2d
 #from ._contact_point_set import ContactPoint, ContactPointSet
 #from ._arbiter import Arbiter
 from ._bb import BB
-#from ._body import Body
+from ._body import Body
 #from ._collision_handler import CollisionHandler
 #from ._query_info import PointQueryInfo, SegmentQueryInfo
-#from ._shapes import Shape, Circle, Poly, Segment
-#from ._space import Space
+from ._shapes import Shape, Circle, Poly, Segment
+from ._space import Space
 #from pymunk.constraint import *
 
 version = "5.0.0"
@@ -142,13 +142,8 @@ def moment_for_poly(mass, vertices,  offset=(0, 0), radius=0):
     Assumes the polygon center of gravity is at its centroid. The offset is
     added to each vertex.
     """
-    verts = (Vec2d * len(vertices))
-    verts = verts(Vec2d(0, 0))
-    for (i, vertex) in enumerate(vertices):
-        verts[i].x = vertex[0]
-        verts[i].y = vertex[1]
-    return cp.cpMomentForPoly(mass, len(verts), verts, offset, radius)
-
+    return cp.cpMomentForPoly(mass, len(vertices), vertices, offset, radius)
+    
 def area_for_circle(inner_radius, outer_radius):
     """Area of a hollow circle."""
     return cp.cpAreaForCircle(inner_radius, outer_radius)
@@ -165,12 +160,7 @@ def area_for_poly(vertices, radius=0):
 
     Returns a negative number for polygons with a clockwise winding.
     """
-    verts = (Vec2d * len(vertices))
-    verts = verts(Vec2d(0, 0))
-    for (i, vertex) in enumerate(vertices):
-        verts[i].x = vertex[0]
-        verts[i].y = vertex[1]
-    return cp.cpAreaForPoly(len(verts), verts, radius)
+    return cp.cpAreaForPoly(len(vertices), vertices, radius)
 
 
 #del cp, ct, u

@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-import ctypes as ct
+#import ctypes as ct
 import weakref
 try:
     #Python 2.7+
@@ -8,36 +8,29 @@ try:
 except ImportError:
     from .weakrefset import WeakSet
     
-from . import _chipmunk as cp
+    
+from . import _chipmunk_cffi
+cp = _chipmunk_cffi.C
+#ffi = _chipmunk_cffi.ffi    
+    
+#from . import _chipmunk as cp
 from ._body import Body
-from ._collision_handler import CollisionHandler
-from ._query_info import PointQueryInfo, SegmentQueryInfo
-from ._shapes import Shape, Circle, Poly, Segment
-from pymunk.constraint import *
+#from ._collision_handler import CollisionHandler
+#from ._query_info import PointQueryInfo, SegmentQueryInfo
+#from ._shapes import Shape, Circle, Poly, Segment
+#from pymunk.constraint import *
 
 class Space(object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes
     and joints to it and then step them all forward together through time.
     """
-    def __init__(self, iterations=10):
+    def __init__(self):
         """Create a new instace of the Space
-
-        Its usually best to keep the elastic_iterations setting to 0. Only
-        change if you have problem with stacking elastic objects on each other.
-        If that is the case, try to raise it. However, a value other than 0
-        will affect other parts, most importantly you wont get reliable
-        total_impulse readings from the `Arbiter` object in collsion callbacks!
-
-        :Parameters:
-            iterations : int
-                Number of iterations to use in the impulse solver to solve
-                contacts.
         """
 
         self._space = cp.cpSpaceNew()
-        self._space.contents.iterations = iterations
 
-        self._static_body = Body(body_type=Body.STATIC)
+        #self._static_body = Body(body_type=Body.STATIC)
 
         self._handlers = {} # To prevent the gc to collect the callbacks.
         self._handlers_key = 0

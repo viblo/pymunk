@@ -1,11 +1,15 @@
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-from . import _chipmunk as cp
-import ctypes as ct
-from ._chipmunk_manual import Transform
+from . import _chipmunk_cffi
+cp = _chipmunk_cffi.C
+ffi = _chipmunk_cffi.ffi
+
+#from . import _chipmunk as cp
+#import ctypes as ct
+#from ._chipmunk_manual import Transform
 from ._bb import BB 
-from ._query_info import PointQueryInfo, SegmentQueryInfo
+#from ._query_info import PointQueryInfo, SegmentQueryInfo
 from .vec2d import Vec2d
 
 class Shape(object):
@@ -21,7 +25,6 @@ class Shape(object):
 
     def __init__(self, shape=None):
         self._shape = shape
-        self._shapecontents = self._shape.contents
         self._body = shape.body
 
     def __del__(self):
@@ -33,7 +36,7 @@ class Shape(object):
     def _get_shapeid(self):
         return cp.cpShapeGetUserData(self._shape)
     def _set_shapeid(self):
-        cp.cpShapeSetUserData(self._shape, Shape._shapeid_counter)
+        cp.cpShapeSetUserData(self._shape, ffi.cast("cpDataPointer", Shape._shapeid_counter))
         Shape._shapeid_counter += 1
 
     def _get_sensor(self):
@@ -216,13 +219,12 @@ class Circle(Shape):
         """
 
         self._body = body
-        body_body = None if body is None else body._body
+        body_body = ffi.NULL if body is None else body._body
         if body != None:
             body._shapes.add(self)
 
         self._shape = cp.cpCircleShapeNew(body_body, radius, offset)
-        self._shapecontents = self._shape.contents
-        self._cs = ct.cast(self._shape, ct.POINTER(cp.cpCircleShape))
+        #self._cs = ffi.csat("", self._shape, ct.POINTER(cp.cpCircleShape))
         self._set_shapeid()
 
     def unsafe_set_radius(self, r):
@@ -252,7 +254,7 @@ class Circle(Shape):
         cp.cpCircleShapeSetOffset(self._shape, o)
 
     def _get_offset (self):
-        return cp.cpCircleShapeGetOffset(self._shape)
+        return Vec2d(cp.cpCircleShapeGetOffset(self._shape))
     offset = property(_get_offset, doc="""Offset. (body space coordinates)""")
 
 
@@ -279,11 +281,10 @@ class Segment(Shape):
                 The thickness of the segment
         """
         self._body = body
-        body_body = None if body is None else body._body
+        body_body = ffi.NULL if body is None else body._body
         if body != None:
             body._shapes.add(self)
         self._shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
-        self._shapecontents = self._shape.contents
         self._set_shapeid()
 
     def unsafe_set_a(self, a):
@@ -297,7 +298,7 @@ class Segment(Shape):
         """
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a = a
     def _get_a(self):
-        return cp.cpSegmentShapeGetA(self._shape)
+        return Vec2d(cp.cpSegmentShapeGetA(self._shape))
     a = property(_get_a,
         doc="""The first of the two endpoints for this segment""")
 
@@ -312,12 +313,12 @@ class Segment(Shape):
         """
         ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b = b
     def _get_b(self):
-        return cp.cpSegmentShapeGetB(self._shape)
+        return Vec2d(cp.cpSegmentShapeGetB(self._shape))
     b = property(_get_b,
         doc="""The second of the two endpoints for this segment""")
 
     def _get_normal(self):
-        return cp.cpSegmentShapeGetNormal(self._shape)
+        return Vec2d(cp.cpSegmentShapeGetNormal(self._shape))
     normal = property(_get_normal,
         doc="""The normal""")
 
@@ -376,7 +377,7 @@ class Poly(Shape):
 
         self._body = body
 
-        body_body = None if body is None else body._body
+        body_body = ffi.NULL if body is None else body._body
         if body != None:
             body._shapes.add(self)
 
@@ -435,16 +436,15 @@ class Poly(Shape):
 
         self._body = body
 
-        body_body = None if body is None else body._body
+        body_body = ffi.NULL if body is None else body._body
         if body != None:
             body._shapes.add(self)
 
         if isinstance(size, BB):
-            self._shape = cp.cpBoxShapeNew2(body_body, size._bb, radius)
+            self._shape = cp.cpBoxShapeNew2(body_body, size._bb[0], radius)
         else:
             self._shape = cp.cpBoxShapeNew(body_body, size[0], size[1], radius)
 
-        self._shapecontents = self._shape.contents
         self._set_shapeid()
 
         return self
@@ -457,7 +457,7 @@ class Poly(Shape):
         verts = []
         l = cp.cpPolyShapeGetCount(self._shape)
         for i in range(l):
-            verts.append(cp.cpPolyShapeGetVert(self._shape, i))
+            verts.append(Vec2d(cp.cpPolyShapeGetVert(self._shape, i)))
         return verts
 
     def unsafe_set_vertices(self, vertices, transform=None):
