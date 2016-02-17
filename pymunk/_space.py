@@ -17,7 +17,7 @@ cp = _chipmunk_cffi.C
 from ._body import Body
 #from ._collision_handler import CollisionHandler
 #from ._query_info import PointQueryInfo, SegmentQueryInfo
-#from ._shapes import Shape, Circle, Poly, Segment
+from ._shapes import Shape, Circle, Poly, Segment
 #from pymunk.constraint import *
 
 class Space(object):

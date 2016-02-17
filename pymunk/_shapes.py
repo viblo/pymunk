@@ -120,7 +120,7 @@ class Shape(object):
         """)
 
     def _get_surface_velocity(self):
-        return cp.cpShapeGetSurfaceVelocity(self._shape)
+        return Vec2d(cp.cpShapeGetSurfaceVelocity(self._shape))
     def _set_surface_velocity(self, surface_v):
         cp.cpShapeSetSurfaceVelocity(self._shape, surface_v)
     surface_velocity = property(_get_surface_velocity, _set_surface_velocity,
