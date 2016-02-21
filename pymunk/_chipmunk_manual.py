@@ -132,7 +132,37 @@ ShapeFilter._fields_ = [
 ]
 
 
-class Transform(Structure):
+
+from . import _chipmunk_cffi
+cp = _chipmunk_cffi.C
+ffi = _chipmunk_cffi.ffi
+from .vec2d import Vec2d
+
+class Transform2():
+    """Type used for 2x3 affine transforms.
+    
+    See wikipedia for details: 
+    http://en.wikipedia.org/wiki/Affine_transformation
+    
+    The properties map to the matrix in this way: 
+    
+    = = ==
+    = = ==
+    a c tx
+    b d ty
+    = = ==
+        
+    An instance can be created with args or kwargs::
+        >>> Transform()
+        Transform(1.0,0.0,0.0,1.0,0.0,0.0)
+        >>> Transform(1, 2, 3, 4, 5, 6)
+        Transform(1.0,2.0,3.0,4.0,5.0,6.0)
+        >>> Transform(1, d=4, tx=5)
+        Transform(1.0,0.0,0.0,4.0,5.0,0.0)
+        
+    """
+    
+class Transform(list):
     """Type used for 2x3 affine transforms.
     
     See wikipedia for details: 
@@ -157,6 +187,23 @@ class Transform(Structure):
     """
     __slots__ = ['a', 'b', 'c', 'd', 'tx', 'ty']
     
+    a = 0
+    b = 0
+    c = 0
+    d = 0
+    tx = 0
+    ty = 0
+    
+    def __init__(self, a=0, b=0, c=0, d=0, tx=0, ty=0):
+        super(list, self).__init__([a,b,c,d,tx,ty])
+        return 
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
+        self.tx = tx
+        self.ty = ty 
+    
     @staticmethod
     def identity():
         """The identity transform"""
@@ -164,13 +211,4 @@ class Transform(Structure):
         
     def __repr__(self):
         return 'Transform(%s,%s,%s,%s,%s,%s)' % (self.a, self.b, self.c, self.d, self.tx, self.ty)
-        
-Transform._fields_ = [
-    ('a', cpFloat),
-    ('b', cpFloat),
-    ('c', cpFloat),
-    ('d', cpFloat),
-    ('tx', cpFloat),
-    ('ty', cpFloat),
-]
-
+    

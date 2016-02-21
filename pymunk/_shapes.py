@@ -7,7 +7,7 @@ ffi = _chipmunk_cffi.ffi
 
 #from . import _chipmunk as cp
 #import ctypes as ct
-#from ._chipmunk_manual import Transform
+from ._chipmunk_manual import Transform
 from ._bb import BB 
 #from ._query_info import PointQueryInfo, SegmentQueryInfo
 from .vec2d import Vec2d
@@ -384,17 +384,8 @@ class Poly(Shape):
         if transform == None:
             transform = Transform.identity()
 
-        self._shape = cp.cpPolyShapeNew(body_body, len(vertices), self._to_verts(vertices), transform, radius)
-        self._shapecontents = self._shape.contents
+        self._shape = cp.cpPolyShapeNew(body_body, len(vertices), vertices, transform, radius)
         self._set_shapeid()
-
-    def _to_verts(self, vertices):
-        verts = (Vec2d * len(vertices))
-        verts = verts(Vec2d(0,0))
-        for (i,v) in enumerate(vertices):
-            verts[i].x = vertices[i][0]
-            verts[i].y = vertices[i][1]
-        return verts
 
     def unsafe_set_radius(self, radius):
         """Unsafe set the radius of the poly.
@@ -471,4 +462,4 @@ class Poly(Shape):
         """
         if transform == None:
             transform = Transform.identity()
-        cp.cpPolyShapeSetVerts(self._shape, len(vertices), self._to_verts(vertices), transform)
+        cp.cpPolyShapeSetVerts(self._shape, len(vertices), vertices, transform)
