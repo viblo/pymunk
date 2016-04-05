@@ -11,12 +11,13 @@ except ImportError:
     
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.C
-#ffi = _chipmunk_cffi.ffi    
+ffi = _chipmunk_cffi.ffi    
     
 #from . import _chipmunk as cp
+from .vec2d import Vec2d
 from ._body import Body
 #from ._collision_handler import CollisionHandler
-#from ._query_info import PointQueryInfo, SegmentQueryInfo
+from ._query_info import PointQueryInfo, SegmentQueryInfo
 from ._shapes import Shape, Circle, Poly, Segment
 #from pymunk.constraint import *
 
@@ -467,14 +468,16 @@ class Space(object):
         """
 
         self.__query_hits = []
+        
+        @ffi.callback("void (*cpSpacePointQueryFunc)(cpShape *shape, cpVect point, cpFloat distance, cpVect gradient, void *data)")
         def cf(_shape, point, distance, gradient, data):
-
+            # space = ffi.from_handle(data)
             shape = self._get_shape(_shape)
-            p = PointQueryInfo(shape, point, distance, gradient)
+            p = PointQueryInfo(shape, Vec2d(point), distance, Vec2d(gradient))
             self.__query_hits.append(p)
-        f = cp.cpSpacePointQueryFunc(cf)
-        cp.cpSpacePointQuery(self._space, point, max_distance, shape_filter, f, None)
-
+            
+        data = ffi.new_handle(self)
+        cp.cpSpacePointQuery(self._space, point, max_distance, shape_filter, cf, data)
         return self.__query_hits
 
     def _get_shape(self, _shape):
@@ -509,13 +512,21 @@ class Space(object):
             shape_filter : ShapeFilter
                 Only pick shapes matching the filter.
         """
-        info = cp.cpPointQueryInfo()
-        info_p = ct.POINTER(cp.cpPointQueryInfo)(info)
-        _shape = cp.cpSpacePointQueryNearest(self._space, point, max_distance, shape_filter, info_p)
+        info = ffi.new("cpPointQueryInfo *")
+        f = ffi.new("cpShapeFilter *")
+        f = f[0]
+        print f
+        _shape = cp.cpSpacePointQueryNearest(self._space, point, max_distance, f, info)
+        return
+        _shape = cp.cpSpacePointQueryNearest(self._space, point, max_distance, shape_filter, info)
+        
+        print _shape
+        print info
+        return
         shape = self._get_shape(_shape)
 
         if shape != None:
-            return PointQueryInfo(shape, info.point, info.distance, info.gradient)
+            return PointQueryInfo(shape, Vec2d(info.point), info.distance, Vec2d(info.gradient))
         return None
 
 

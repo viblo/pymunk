@@ -1,43 +1,32 @@
-__version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-class PointQueryInfo(object):
+from collections import namedtuple
+
+class PointQueryInfo(namedtuple('PointQueryInfo', ['shape', 'point', 'distance', 'gradient'])):
     """PointQueryInfo holds the result of a point query made on a Shape or
     Space.
-    """
-    def __init__(self, shape, point, distance, gradient):
-        """You shouldn't need to initialize PointQueryInfo objects
-        manually.
-        """
-        self._shape = shape
-        self._point = point
-        self._distance = distance
-        self._gradient = gradient
-
-    def __repr__(self):
-        return 'PointQueryInfo(%s,%s,%s,%s)' % (self.shape, self.point, self.distance, self.gradient)
-
-    shape = property(lambda self:self._shape,
-        doc = """The nearest shape, None if no shape was within range.""")
-
-    point = property(lambda self:self._point,
-        doc = """The closest point on the shape's surface. (in world space
+    
+    The properties are as follows
+    
+    shape 
+    The nearest shape, None if no shape was within range.
+    
+    point
+    The closest point on the shape's surface. (in world space
         coordinates)
-        """)
-
-    distance = property(lambda self:self._distance,
-        doc = """The distance to the point. The distance is negative if the
+    
+    distance
+    The distance to the point. The distance is negative if the
         point is inside the shape.
-        """)
-
-    gradient = property(lambda self:self._gradient,
-        doc = """The gradient of the signed distance function.
+        
+    gradient
+    The gradient of the signed distance function.
 
         The value should be similar to
         PointQueryInfo.point/PointQueryInfo.distance, but accurate even for
         very small values of info.distance.
-        """)
-
+    """
+    __slots__ = ()
 
 class SegmentQueryInfo(object):
     """Segment queries return more information than just a simple yes or no,

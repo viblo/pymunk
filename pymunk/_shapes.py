@@ -9,7 +9,7 @@ ffi = _chipmunk_cffi.ffi
 #import ctypes as ct
 from ._chipmunk_manual import Transform
 from ._bb import BB 
-#from ._query_info import PointQueryInfo, SegmentQueryInfo
+from ._query_info import PointQueryInfo, SegmentQueryInfo
 from .vec2d import Vec2d
 
 class Shape(object):
@@ -175,9 +175,15 @@ class Shape(object):
 
     def point_query(self, p):
         """Check if the given point lies within the shape."""
-        info = cp.cpPointQueryInfo()
-        info_p = ct.POINTER(cp.cpPointQueryInfo)(info)
-        distance = cp.cpShapePointQuery(self._shape, p, info_p)
+        #info = cp.cpPointQueryInfo()
+        #info_p = ct.POINTER(cp.cpPointQueryInfo)(info)
+        info = ffi.new("cpPointQueryInfo *")
+        distance = cp.cpShapePointQuery(self._shape, p, info)
+        #print info_p
+        #print info_p.point
+        #print info_p.distance
+        #print info_p.gradient
+        return PointQueryInfo(self, Vec2d(info.point), info.distance, Vec2d(info.gradient))
         ud = cp.cpShapeGetUserData(info.shape)
         assert ud == self._get_shapeid()
         x = PointQueryInfo(self, info.point, info.distance, info.gradient)
@@ -187,9 +193,10 @@ class Shape(object):
     def segment_query(self, start, end, radius=0):
         """Check if the line segment from start to end intersects the shape.
         """
-        info = cp.cpSegmentQueryInfo()
-        info_p = ct.POINTER(cp.cpSegmentQueryInfo)(info)
-        r = cp.cpShapeSegmentQuery(self._shape, start, end, radius, info_p)
+        #info = cp.cpSegmentQueryInfo()
+        #info_p = ct.POINTER(cp.cpSegmentQueryInfo)(info)
+        info = ffi.new("cpSegmentQueryInfo *")
+        r = cp.cpShapeSegmentQuery(self._shape, start, end, radius, info)
         if r:
             ud = cp.cpShapeGetUserData(info.shape)
             assert ud == self._get_shapeid()
