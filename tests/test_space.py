@@ -190,6 +190,30 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hits[1].gradient, (1,0))
 
     def testPointQueryNearest(self):
+        """
+        from pymunk import _chipmunk_cffi_api
+        lib = _chipmunk_cffi_api.lib
+        ffi = _chipmunk_cffi_api.ffi
+        
+        #lib = p.cp
+        #ffi = p.ffi
+
+        _space = lib.cpSpaceNew()
+        _body = lib.cpBodyNew(1, 1)
+        _shape = lib.cpCircleShapeNew(_body, 10, (0,0))
+        lib.cpSpaceAddShape(_space, _shape)
+
+        info = ffi.new("cpPointQueryInfo *")
+        f = ffi.new("cpShapeFilter *")
+        f.group = 0
+        f.categories = 0
+        f.mask = 0
+        fa = f[0]
+
+        x = lib.cpSpacePointQueryNearest(_space, (4,0), 0, fa, info)
+        print x, fa, info, _space
+        return
+        """
         s = p.Space()
         b1 = p.Body(1,1)
         b1.position = 19,0
