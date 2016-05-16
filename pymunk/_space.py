@@ -17,7 +17,7 @@ ffi = _chipmunk_cffi.ffi
 from .vec2d import Vec2d
 from ._body import Body
 #from ._collision_handler import CollisionHandler
-from ._query_info import PointQueryInfo, SegmentQueryInfo
+from ._query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from ._shapes import Shape, Circle, Poly, Segment
 #from pymunk.constraint import *
 
@@ -603,11 +603,14 @@ class Space(object):
         """
 
         self.__query_hits = []
+        @ffi.callback("typedef void (*cpSpaceBBQueryFunc)"
+            "(cpShape *shape, void *data)")
         def cf(_shape, data):
             shape = self._get_shape(_shape)
             self.__query_hits.append(shape)
-        f = cp.cpSpaceBBQueryFunc(cf)
-        cp.cpSpaceBBQuery(self._space, bb._bb, shape_filter, f, None)
+        
+        data = ffi.new_handle(self)
+        cp.cpSpaceBBQuery(self._space, bb._bb[0], shape_filter, cf, data)
         return self.__query_hits
 
 
@@ -618,10 +621,16 @@ class Space(object):
         """
 
         self.__query_hits = []
+        @ffi.callback("typedef void (*cpSpaceShapeQueryFunc)"
+            "(cpShape *shape, cpContactPointSet *points, void *data)")
         def cf(_shape, points, data):
-
             shape = self._get_shape(_shape)
-            self.__query_hits.append(shape)
-        f = cp.cpSpaceShapeQueryFunc(cf)
-        cp.cpSpaceShapeQuery(self._space, shape._shape, f, None)
+            #todo handle contact point set
+            p = ShapeQueryInfo(shape, points)
+            self.__query_hits.append(p)
+            
+        data = ffi.new_handle(self)
+        cp.cpSpaceShapeQuery(self._space, shape._shape, cf, data)
+
+        
         return self.__query_hits

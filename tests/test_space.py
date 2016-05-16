@@ -249,7 +249,6 @@ class UnitTestSpace(unittest.TestCase):
         s.add(s2)
 
         bb = p.BB(-7, -7, 7, 7)
-
         hits = s.bb_query(bb, p.ShapeFilter())
         self.assertEqual(len(hits), 1)
         self.assert_(s2 in hits)
