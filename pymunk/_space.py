@@ -524,22 +524,19 @@ class Space(object):
                 Only pick shapes matching the filter.
         """
         info = ffi.new("cpPointQueryInfo *")
-        f = ffi.new("cpShapeFilter *")
-        f = f[0]
-        print f
-        #_shape = cp.cpSpacePointQueryNearest(self._space, point, max_distance, f, info)
-                
-        #return
+        _shape = cp.cpSpacePointQueryNearest(
+            self._space, 
+            point, max_distance, 
+            shape_filter, info)
         
-        _shape = cp.cpSpacePointQueryNearest(self._space, point, max_distance, shape_filter, info)
-        
-        print _shape
-        print info
-        return
         shape = self._get_shape(_shape)
 
         if shape != None:
-            return PointQueryInfo(shape, Vec2d(info.point), info.distance, Vec2d(info.gradient))
+            return PointQueryInfo(
+                shape, 
+                Vec2d(info.point), 
+                info.distance, 
+                Vec2d(info.gradient))
         return None
 
 
@@ -555,14 +552,17 @@ class Space(object):
         """
 
         self.__query_hits = []
+        
+        @ffi.callback("void (*cpSpaceSegmentQueryFunc)"
+            "(cpShape *shape, cpVect point, cpVect normal, cpFloat alpha,"
+            " void *data)")
         def cf(_shape, point, normal, alpha, data):
             shape = self._get_shape(_shape)
-            info = SegmentQueryInfo(shape, point, normal, alpha)
-            self.__query_hits.append(info)
-
-        f = cp.cpSpaceSegmentQueryFunc(cf)
-        cp.cpSpaceSegmentQuery(self._space, start, end, radius, shape_filter, f, None)
-
+            p = SegmentQueryInfo(shape, Vec2d(point), Vec2d(normal), alpha)
+            self.__query_hits.append(p)
+            
+        data = ffi.new_handle(self)
+        cp.cpSpaceSegmentQuery(self._space, start, end, radius, shape_filter, cf, data)
         return self.__query_hits
 
     def segment_query_first(self, start, end, radius,  shape_filter):
@@ -576,13 +576,20 @@ class Space(object):
             `SegmentQueryInfo` - SegmentQueryInfo object or None if nothing
             was hit.
         """
-        info = cp.cpSegmentQueryInfo()
-        info_p = ct.POINTER(cp.cpSegmentQueryInfo)(info)
-        _shape = cp.cpSpaceSegmentQueryFirst(self._space, start, end, radius, shape_filter, info_p)
+        info = ffi.new("cpSegmentQueryInfo *")
+        _shape = cp.cpSpaceSegmentQueryFirst(
+            self._space, 
+            start, end, 
+            radius, shape_filter, 
+            info)
 
         shape = self._get_shape(_shape)
         if shape != None:
-            return SegmentQueryInfo(shape, info.point, info.normal, info.alpha)
+            return SegmentQueryInfo(
+                shape, 
+                Vec2d(info.point), 
+                Vec2d(info.normal), 
+                info.alpha)
         return None
 
 
