@@ -29,6 +29,14 @@ TODO v7
 - keep names of add_collion_handler and co.
 - Think about experimental repr of Body
 
+- use twine to upload to Pypi? https://pypi.python.org/pypi/twine
+- use appveyor for windows automated tests? http://python-packaging-user-guide.readthedocs.io/en/latest/appveyor/
+- use travis ci to build osx chipmunk lib file and run tests? https://docs.travis-ci.com/user/osx-ci-environment/
+
+other links
+https://mingwpy.github.io/issues.html#choice-of-msvc-runtime
+
+
 How to Use
 ----------
 

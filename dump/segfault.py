@@ -1,30 +1,16 @@
-from ctypes import *
-from pymunk._chipmunk import *
-from pymunk._chipmunk_ffi import *
+from  _chipmunk_cffi import ffi, lib
 
-s = cpSpaceNew()
-b1 = cpBodyNew(1, 2)
-b2 = cpBodyNew(3, 4)
-c1 = cpCircleShapeNew(b1, 10, (0, 0))
-c2 = cpCircleShapeNew(b2, 10, (0, 0))
-cpSpaceAddShape(s, c1)
-cpSpaceAddShape(s, c2)
+_space = lib.cpSpaceNew()
+_body = lib.cpBodyNew(1, 1)
+_shape = lib.cpCircleShapeNew(_body, 10, (0,0))
+lib.cpSpaceAddShape(_space, _shape)
 
-cpSpaceStep(s, 1)
+info = ffi.new("cpPointQueryInfo *")
+f = ffi.new("cpShapeFilter *")
+f.group = 0
+f.categories = 0
+f.mask = 0
+fa = f[0]
 
-arbs = []
-def impl(b, _arbiter, _):
-    arbs.append(_arbiter)
-    return 0
-f = cpBodyArbiterIteratorFunc(impl)
-cpBodyEachArbiter(b1, f, None)
-
-arb = arbs[0]
-shapeA_p = POINTER(cpShape)()
-shapeB_p = POINTER(cpShape)()
-cpArbiterGetShapes(arb, shapeA_p, shapeB_p)
-print 1
-print 2, shapeA_p.contents.sensor
-print 3, shapeB_p.contents.sensor
-
-
+x = lib.cpSpacePointQueryNearest(_space, (4,0), 0, f[0], info)
+print x

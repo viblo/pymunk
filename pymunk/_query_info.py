@@ -28,7 +28,9 @@ class PointQueryInfo(namedtuple('PointQueryInfo', ['shape', 'point', 'distance',
     """
     __slots__ = ()
 
-class SegmentQueryInfo(object):
+
+
+class SegmentQueryInfo(namedtuple('SegmentQueryInfo', ['shape', 'point', 'normal', 'alpha'])):
     """Segment queries return more information than just a simple yes or no,
     they also return where a shape was hit and it's surface normal at the hit
     point. This object hold that information.
@@ -42,29 +44,19 @@ class SegmentQueryInfo(object):
     about the performance as long as you aren't using extremely long segments
     for your queries.
 
+    The properties are as follows
+
+    shape
+    Shape that was hit, or None if no collision occured
+    
+    point 
+    The point of impact.
+
+    normal
+    The normal of the surface hit.
+    
+    alpha
+    The normalized distance along the query segment in the range [0, 1]
+
     """
-    def __init__(self, shape, point, normal, alpha):
-        """You shouldn't need to initialize SegmentQueryInfo objects
-        manually.
-        """
-        self._shape = shape
-        self._point = point
-        self._normal = normal
-        self._alpha = alpha
-
-    def __repr__(self):
-        return "SegmentQueryInfo(%s, %s, %s, %s)" % (self.shape, self.point, self.normal, self.alpha)
-
-    shape = property(lambda self: self._shape,
-        doc = """Shape that was hit, or None if no collision occured""")
-
-    point = property(lambda self: self._point,
-        doc = """The point of impact.""")
-
-    normal = property(lambda self: self._normal,
-        doc = """The normal of the surface hit.""")
-
-    alpha = property(lambda self: self._alpha,
-        doc = """The normalized distance along the query segment in the
-        range [0, 1]
-        """)
+    __slots__ = ()

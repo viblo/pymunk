@@ -2,7 +2,7 @@ __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 from . import _chipmunk_cffi
-cp = _chipmunk_cffi.C
+cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
 #from . import _chipmunk as cp
@@ -193,16 +193,14 @@ class Shape(object):
     def segment_query(self, start, end, radius=0):
         """Check if the line segment from start to end intersects the shape.
         """
-        #info = cp.cpSegmentQueryInfo()
-        #info_p = ct.POINTER(cp.cpSegmentQueryInfo)(info)
         info = ffi.new("cpSegmentQueryInfo *")
         r = cp.cpShapeSegmentQuery(self._shape, start, end, radius, info)
         if r:
             ud = cp.cpShapeGetUserData(info.shape)
             assert ud == self._get_shapeid()
-            return SegmentQueryInfo(self, info.point, info.normal, info.alpha)
+            return SegmentQueryInfo(self, Vec2d(info.point), Vec2d(info.normal), info.alpha)
         else:
-            return SegmentQueryInfo(None, info.point, info.normal, info.alpha)
+            return SegmentQueryInfo(None, Vec2d(info.point), Vec2d(info.normal), info.alpha)
 
     def _get_space(self):
         if self._space != None:

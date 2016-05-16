@@ -3,8 +3,8 @@ import sys
 import unittest
 import warnings
 
-import pymunk as p
 from pymunk import *
+import pymunk as p
 from pymunk.vec2d import Vec2d
 
 ####################################################################

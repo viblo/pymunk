@@ -10,7 +10,7 @@ except ImportError:
     
     
 from . import _chipmunk_cffi
-cp = _chipmunk_cffi.C
+cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi    
     
 #from . import _chipmunk as cp
@@ -44,11 +44,13 @@ class Space(object):
 
         self._shapes = {}
         self._bodies = set()
+        self._static_body = None
         self._constraints = set()
-
+        
         self._locked = False
         self._add_later = set()
         self._remove_later = set()
+
 
     def _get_self(self):
         return self
@@ -69,12 +71,21 @@ class Space(object):
         doc="""A list of the constraints added to this space""")
 
     def _get_static_body(self):
-        """A convenience static body already added to the space"""
+        """A dedicated static body for the space. 
+        
+        You don't have to use it, but because its memory is managed 
+        automatically with the space its very convenient. 
+        """
+        if self._static_body == None:
+            b = cp.cpSpaceGetStaticBody(self._space)
+            self._static_body = Body._init_with_body(b)
+            self._static_body._space = self
         return self._static_body
     static_body = property(_get_static_body, doc=_get_static_body.__doc__)
 
     def __del__(self):
         try:
+            #del self._static_body
             cp.cpSpaceFree(self._space)
         except:
             pass
@@ -106,7 +117,7 @@ class Space(object):
     def _set_gravity(self, gravity_vector):
         cp.cpSpaceSetGravity(self._space, gravity_vector)
     def _get_gravity(self):
-        return cp.cpSpaceGetGravity(self._space)
+        return Vec2d(cp.cpSpaceGetGravity(self._space))
     gravity = property(_get_gravity, _set_gravity
         , doc="""Global gravity applied to the space.
 
@@ -516,8 +527,10 @@ class Space(object):
         f = ffi.new("cpShapeFilter *")
         f = f[0]
         print f
-        _shape = cp.cpSpacePointQueryNearest(self._space, point, max_distance, f, info)
-        return
+        #_shape = cp.cpSpacePointQueryNearest(self._space, point, max_distance, f, info)
+                
+        #return
+        
         _shape = cp.cpSpacePointQueryNearest(self._space, point, max_distance, shape_filter, info)
         
         print _shape

@@ -53,7 +53,7 @@ class build_chipmunk(distutils.cmd.Command):
         compiler_preargs = ['-std=gnu99', 
                             '-ffast-math', 
                             '-DCHIPMUNK_FFI', 
-                            '-Wno-unknown-pragmas', 
+                            #'-Wno-unknown-pragmas', 
                             #'-fPIC', 
                             '-DCP_USE_CGPOINTS=0'] # '-DCP_ALLOW_PRIVATE_ACCESS']
         
@@ -79,6 +79,7 @@ class build_chipmunk(distutils.cmd.Command):
             # we also have to use -fno-omit-frame-pointer
             compiler_preargs += [#'-mrtd', 
                                 #'-O1', 
+                                '-mincoming-stack-boundary=2', # from https://mingwpy.github.io/issues.html#choice-of-msvc-runtime
                                 '-shared']
                                 #'-fno-omit-frame-pointer'] 
             #O1 and O2 works on 32bit, not O3 and maybe not O0?

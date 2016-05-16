@@ -8,7 +8,7 @@ except ImportError:
     from .weakrefset import WeakSet
     
 from . import _chipmunk_cffi
-cp = _chipmunk_cffi.C    
+cp = _chipmunk_cffi.lib    
 from .vec2d import Vec2d
 #from . import _chipmunk as cp
 #from ._arbiter import Arbiter
@@ -94,6 +94,9 @@ class Body(object):
         elif body_type == Body.STATIC:
             self._body = cp.cpBodyNewStatic()
 
+        self._init()
+
+    def _init(self):
         self._position_callback = None # To prevent the gc to collect the callbacks.
         self._velocity_callback = None # To prevent the gc to collect the callbacks.
 
@@ -104,6 +107,7 @@ class Body(object):
 
     def __del__(self):
         try:
+            #pass
             cp.cpBodyFree(self._body)
         except:
             pass
@@ -116,6 +120,13 @@ class Body(object):
         elif self.body_type == Body.STATIC:
             return 'Body(Body.STATIC)'
 
+    @classmethod
+    def _init_with_body(cls, _body):
+        """Only used internally in pymunk."""
+        b = cls.__new__(cls)
+        b._body = _body
+        b._init()
+        return b
 
     def _set_mass(self, mass):
         cp.cpBodySetMass(self._body, mass)

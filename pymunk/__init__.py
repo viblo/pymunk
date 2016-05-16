@@ -54,7 +54,7 @@ import warnings
 import sys
 
 from . import _chipmunk_cffi
-cp = _chipmunk_cffi.C
+cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
 #from . import _chipmunk as cp

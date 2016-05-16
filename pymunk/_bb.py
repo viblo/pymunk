@@ -5,7 +5,7 @@ __docformat__ = "reStructuredText"
 #from . import _chipmunk_ffi as cpffi
 
 from . import _chipmunk_cffi
-cp = _chipmunk_cffi.C
+cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 from .vec2d import Vec2d
 
