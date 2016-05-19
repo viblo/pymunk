@@ -2,6 +2,20 @@
 News 
 ****
 
+Move from ctypes to CFFI?
+-------------------------
+*Victor - 2016-05-19*
+
+**Should pymunk move to CFFI?**
+
+To make developement of pymunk easier Im planning to move from using ctypes
+to CFFI for the low level Chipmunk wrapping. The idea is that CFFI is a 
+active project which should mean it will be easier to get help, for example
+around the 64bit python problems on windows.
+
+Please take a look at Iseue 99 on github which tracks this switch.
+https://github.com/viblo/pymunk/issues/99
+
 Travis-ci & tox
 ---------------
 *Victor - 2014-11-13*
