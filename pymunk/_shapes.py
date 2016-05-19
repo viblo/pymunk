@@ -136,12 +136,11 @@ class Shape(object):
     def _set_body(self, body):
         if self._body != None:
             self._body._shapes.remove(self)
+        body_body = ffi.NULL if body is None else body._body
+        cp.cpShapeSetBody(self._shape, body_body)
         if body != None:
             body._shapes.add(self)
-            self._shapecontents.body = body._body
-        else:
-            self._shapecontents.body = None
-
+        
         self._body = body
 
     body = property(_get_body, _set_body,
