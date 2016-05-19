@@ -8,7 +8,8 @@ except ImportError:
     from .weakrefset import WeakSet
     
 from . import _chipmunk_cffi
-cp = _chipmunk_cffi.lib    
+cp = _chipmunk_cffi.lib
+ffi = _chipmunk_cffi.ffi    
 from .vec2d import Vec2d
 #from . import _chipmunk as cp
 #from ._arbiter import Arbiter
@@ -250,12 +251,15 @@ class Body(object):
                 dt : float
                     Delta time since last step.
         """
-
+        
+        
+        @ffi.callback("typedef void (*cpBodyVelocityFunc)"
+            "(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt)")
         def _impl(_, gravity, damping, dt):
-            return func(self, gravity, damping, dt)
+            return func(self, Vec2d(gravity), damping, dt)
 
-        self._velocity_callback = cp.cpBodyVelocityFunc(_impl)
-        self._bodycontents.velocity_func = self._velocity_callback
+        self._velocity_callback = _impl
+        cp.cpBodySetVelocityUpdateFunc(self._body, _impl)
     velocity_func = property(fset=_set_velocity_func,
         doc=_set_velocity_func.__doc__)
 
@@ -271,6 +275,8 @@ class Body(object):
                 dt : float
                     Delta time since last step.
         """
+
+        "typedef void (*cpBodyPositionFunc)(cpBody *body, cpFloat dt);"
 
         def _impl(_, dt):
             func(self, dt)
