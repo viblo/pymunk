@@ -7,7 +7,7 @@ ffi = _chipmunk_cffi.ffi
 
 #from . import _chipmunk as cp
 #import ctypes as ct
-from ._chipmunk_manual import Transform
+from ._chipmunk_manual import Transform, ShapeFilter
 from ._bb import BB 
 from ._query_info import PointQueryInfo, SegmentQueryInfo
 from .vec2d import Vec2d
@@ -62,7 +62,8 @@ class Shape(object):
         """)
 
     def _get_filter(self):
-        return cp.cpShapeGetFilter(self._shape)
+        f = cp.cpShapeGetFilter(self._shape)
+        return ShapeFilter(f.group, f.categories, f.mask)
     def _set_filter(self, f):
         cp.cpShapeSetFilter(self._shape, f)
     filter = property(_get_filter, _set_filter,
