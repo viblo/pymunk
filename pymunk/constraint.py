@@ -42,10 +42,11 @@ http://www.youtube.com/watch?v=ZgJJZTS0aMM
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-import ctypes as ct
+from .vec2d import Vec2d
 
-from . import _chipmunk as cp
-from . import _chipmunk_ffi as cpffi
+from . import _chipmunk_cffi
+cp = _chipmunk_cffi.lib
+ffi = _chipmunk_cffi.ffi
 
 class Constraint(object):
     """Base class of all constraints.
@@ -155,13 +156,13 @@ class PinJoint(Constraint):
         self._set_bodies(a,b)
 
     def _get_anchor_a(self):
-        return cp.cpPinJointGetAnchorA(self._constraint)
+        return Vec2d(cp.cpPinJointGetAnchorA(self._constraint))
     def _set_anchor_a(self, anchor):
         cp.cpPinJointSetAnchorA(self._constraint, anchor)
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
     def _get_anchor_b(self):
-        return cp.cpPinJointGetAnchorB(self._constraint)
+        return Vec2d(cp.cpPinJointGetAnchorB(self._constraint))
     def _set_anchor_b(self, anchor):
         cp.cpPinJointSetAnchorB(self._constraint, anchor)
     anchor_b = property(_get_anchor_b, _set_anchor_b)
@@ -188,13 +189,13 @@ class SlideJoint(Constraint):
         self._set_bodies(a,b)
 
     def _get_anchor_a(self):
-        return cp.cpSlideJointGetAnchorA(self._constraint)
+        return Vec2d(cp.cpSlideJointGetAnchorA(self._constraint))
     def _set_anchor_a(self, anchor):
         cp.cpSlideJointSetAnchorA(self._constraint, anchor)
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
     def _get_anchor_b(self):
-        return cp.cpSlideJointGetAnchorB(self._constraint)
+        return Vec2d(cp.cpSlideJointGetAnchorB(self._constraint))
     def _set_anchor_b(self, anchor):
         cp.cpSlideJointSetAnchorB(self._constraint, anchor)
     anchor_b = property(_get_anchor_b, _set_anchor_b)
@@ -239,20 +240,21 @@ class PivotJoint(Constraint):
         elif len(args) == 2:
             self._constraint = cp.cpPivotJointNew2(a._body, b._body, args[0], args[1])
         else:
-            raise Exception("You must specify either one pivot point or two anchor points")
+            raise Exception("You must specify either one pivot point"
+                " or two anchor points")
 
         #self._ccontents = self._constraint.contents
         #self._pjc = cp.cast(self._constraint, ct.POINTER(cp.cpPivotJoint)).contents
         self._set_bodies(a,b)
 
     def _get_anchor_a(self):
-        return cp.cpPivotJointGetAnchorA(self._constraint)
+        return Vec2d(cp.cpPivotJointGetAnchorA(self._constraint))
     def _set_anchor_a(self, anchor):
         cp.cpPivotJointSetAnchorA(self._constraint, anchor)
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
     def _get_anchor_b(self):
-        return cp.cpPivotJointGetAnchorB(self._constraint)
+        return Vec2d(cp.cpPivotJointGetAnchorB(self._constraint))
     def _set_anchor_b(self, anchor):
         cp.cpPivotJointSetAnchorB(self._constraint, anchor)
     anchor_b = property(_get_anchor_b, _set_anchor_b)
@@ -273,19 +275,19 @@ class GrooveJoint(Constraint):
         self._set_bodies(a,b)
 
     def _get_anchor_b(self):
-        return cp.cpGrooveJointGetAnchorB(self._constraint)
+        return Vec2d(cp.cpGrooveJointGetAnchorB(self._constraint))
     def _set_anchor_b(self, anchor):
         cp.cpGrooveJointSetAnchorB(self._constraint, anchor)
     anchor_b = property(_get_anchor_b, _set_anchor_b)
 
     def _get_groove_a(self):
-        return cp.cpGrooveJointGetGrooveA(self._constraint)
+        return Vec2d(cp.cpGrooveJointGetGrooveA(self._constraint))
     def _set_groove_a(self, groove):
         cp.cpGrooveJointSetGrooveA(self._constraint, groove)
     groove_a = property(_get_groove_a, _set_groove_a)
 
     def _get_groove_b(self):
-        return cp.cpGrooveJointGetGrooveB(self._constraint)
+        return Vec2d(cp.cpGrooveJointGetGrooveB(self._constraint))
     def _set_groove_b(self, groove):
         cp.cpGrooveJointSetGrooveB(self._constraint, groove)
     groove_b = property(_get_groove_b, _set_groove_b)
@@ -307,19 +309,20 @@ class DampedSpring(Constraint):
             damping : float
                 How soft to make the damping of the spring.
         """
-        self._constraint = cp.cpDampedSpringNew(a._body, b._body, anchor_a, anchor_b, rest_length, stiffness, damping)
+        self._constraint = cp.cpDampedSpringNew(a._body, b._body, 
+            anchor_a, anchor_b, rest_length, stiffness, damping)
         #self._ccontents = self._constraint.contents
         #self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedSpring)).contents
         self._set_bodies(a,b)
 
     def _get_anchor_a(self):
-        return cp.cpDampedSpringGetAnchorA(self._constraint)
+        return Vec2d(cp.cpDampedSpringGetAnchorA(self._constraint))
     def _set_anchor_a(self, anchor):
         cp.cpDampedSpringSetAnchorA(self._constraint, anchor)
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
     def _get_anchor_b(self):
-        return cp.cpDampedSpringGetAnchorB(self._constraint)
+        return Vec2d(cp.cpDampedSpringGetAnchorB(self._constraint))
     def _set_anchor_b(self, anchor):
         cp.cpDampedSpringSetAnchorB(self._constraint, anchor)
     anchor_b = property(_get_anchor_b, _set_anchor_b)
@@ -358,7 +361,8 @@ class DampedRotarySpring(Constraint):
             damping : float
                 How soft to make the damping of the spring.
         """
-        self._constraint = cp.cpDampedRotarySpringNew(a._body, b._body, rest_angle, stiffness, damping)
+        self._constraint = cp.cpDampedRotarySpringNew(a._body, b._body, 
+            rest_angle, stiffness, damping)
         #self._ccontents = self._constraint.contents
         #self._dsc = cp.cast(self._constraint, ct.POINTER(cp.cpDampedRotarySpring)).contents
         self._set_bodies(a,b)
