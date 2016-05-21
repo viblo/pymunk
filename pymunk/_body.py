@@ -276,13 +276,13 @@ class Body(object):
                     Delta time since last step.
         """
 
-        "typedef void (*cpBodyPositionFunc)(cpBody *body, cpFloat dt);"
-
+        @ffi.callback("typedef void (*cpBodyPositionFunc)"
+            "(cpBody *body, cpFloat dt)")
         def _impl(_, dt):
-            func(self, dt)
-            return 0
-        self._position_callback = cp.cpBodyPositionFunc(_impl)
-        cp.cpBodySetPositionUpdateFunc(self._body, self._position_callback)
+            return func(self, dt)
+            
+        self._position_callback = (_impl)
+        cp.cpBodySetPositionUpdateFunc(self._body, _impl)
     position_func = property(fset=_set_position_func,
         doc=_set_position_func.__doc__)
 

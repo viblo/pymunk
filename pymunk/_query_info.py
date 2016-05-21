@@ -2,7 +2,8 @@ __docformat__ = "reStructuredText"
 
 from collections import namedtuple
 
-class PointQueryInfo(namedtuple('PointQueryInfo', ['shape', 'point', 'distance', 'gradient'])):
+class PointQueryInfo(
+    namedtuple('PointQueryInfo', ['shape', 'point', 'distance', 'gradient'])):
     """PointQueryInfo holds the result of a point query made on a Shape or
     Space.
     
@@ -28,9 +29,8 @@ class PointQueryInfo(namedtuple('PointQueryInfo', ['shape', 'point', 'distance',
     """
     __slots__ = ()
 
-
-
-class SegmentQueryInfo(namedtuple('SegmentQueryInfo', ['shape', 'point', 'normal', 'alpha'])):
+class SegmentQueryInfo(
+    namedtuple('SegmentQueryInfo', ['shape', 'point', 'normal', 'alpha'])):
     """Segment queries return more information than just a simple yes or no,
     they also return where a shape was hit and it's surface normal at the hit
     point. This object hold that information.
@@ -58,5 +58,12 @@ class SegmentQueryInfo(namedtuple('SegmentQueryInfo', ['shape', 'point', 'normal
     alpha
     The normalized distance along the query segment in the range [0, 1]
 
+    """
+    __slots__ = ()
+    
+class ShapeQueryInfo(
+    namedtuple('ShapeQueryInfo', ['shape', 'contact_point_set'])):
+    """Shape queries return more information than just a simple yes or no,
+    they also return where a shape was hit. This object hold that information.
     """
     __slots__ = ()
