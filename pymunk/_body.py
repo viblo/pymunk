@@ -1,18 +1,13 @@
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-try:
-    #Python 2.7+
-    from weakref import WeakSet
-except ImportError:
-    from .weakrefset import WeakSet
+from weakref import WeakSet
     
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi    
 from .vec2d import Vec2d
-#from . import _chipmunk as cp
-#from ._arbiter import Arbiter
+from ._arbiter import Arbiter
 
 class Body(object):
     """A rigid body

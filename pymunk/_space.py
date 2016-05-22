@@ -1,13 +1,7 @@
 __docformat__ = "reStructuredText"
 
-#import ctypes as ct
 import weakref
-try:
-    #Python 2.7+
-    from weakref import WeakSet
-except ImportError:
-    from .weakrefset import WeakSet
-    
+from weakref import WeakSet
     
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib

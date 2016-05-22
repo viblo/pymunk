@@ -98,10 +98,7 @@ is a release then the second part will be empty
     chipmunk_src folder (normally included in the pymunk source distribution).
 """
 
-try:
-    inf = float('inf') # works only on python 2.6+
-except:
-    inf = 1e100
+inf = float('inf')
 """Infinity that can be passed as mass or inertia to Body.
 
 Useful when you for example want a body that cannot rotate, just set its
@@ -111,8 +108,7 @@ moment.
 
 .. note::
     In previous versions of pymunk you used inf to create static bodies. This
-    has changed and you should instead do it by invoking the body constructor
-    without any arguments.
+    has changed. See the Body documentation for details.
 """
 
 #cp.cpEnableSegmentToSegmentCollisions()

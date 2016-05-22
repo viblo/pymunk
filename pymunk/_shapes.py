@@ -5,8 +5,6 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-#from . import _chipmunk as cp
-#import ctypes as ct
 from ._chipmunk_manual import Transform, ShapeFilter
 from ._bb import BB 
 from ._query_info import PointQueryInfo, SegmentQueryInfo

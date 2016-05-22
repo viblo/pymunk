@@ -86,7 +86,7 @@ For more detailed and advanced examples, take a look at the included demos
 Dependencies / Requirements
 ---------------------------
 
-- python (tested on cpython 2.6, 2.7 and 3.2, 3.3. Also on pypy 2.1)
+- python (tested on cpython 2.7 and 3.2, 3.3. Also on pypy 2.1)
 - chipmunk (pymunk ships with a set of chipmunk libraries)
 
 * pygame (optional, you need it to run the pygame based demos)

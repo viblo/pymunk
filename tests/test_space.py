@@ -87,8 +87,10 @@ class UnitTestSpace(unittest.TestCase):
 
         c2 = p.Circle(b, 15)
         s.add(c2)
-        self.assertEqual(s.shapes, [c1,c2])
-
+        self.assertEqual(len(s.shapes), 2)
+        self.assert_(c1 in s.shapes)
+        self.assert_(c2 in s.shapes)
+        
         s.remove(c1)
         self.assertEqual(s.shapes, [c2])
 
