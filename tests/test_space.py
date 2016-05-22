@@ -466,7 +466,7 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, c1, b2, c2)
 
         d = {}
-        def pre_solve(space, arb):
+        def pre_solve(arb, space):
             d["shapes"] = arb.shapes
             d["space"] = space
             return True
@@ -485,7 +485,7 @@ class UnitTestSpace(unittest.TestCase):
         c2 = p.Circle(b2, 10)
         s.add(b1, c1, b2, c2)
         
-        def pre_solve(space, arb):
+        def pre_solve(arb, space):
             return
         s.collision_handler(0,0).pre_solve = pre_solve
         
@@ -499,7 +499,7 @@ class UnitTestSpace(unittest.TestCase):
 
     def testCollisionHandlerPostSolve(self):
         self.hit = 0
-        def post_solve(space, arb):
+        def post_solve(arb, space):
             self.hit += 1
 
         self.s.collision_handler(0,0).post_solve = post_solve
@@ -521,7 +521,7 @@ class UnitTestSpace(unittest.TestCase):
         s.gravity = 0,-100
 
         self.separated = False
-        def separate(space, arb):
+        def separate(arb, space):
             self.separated = True
 
         s.collision_handler(0,0).separate = separate
@@ -540,7 +540,7 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         
         d = {}
-        def pre_solve(space, arb):
+        def pre_solve(arb, space):
             d["shapes"] = arb.shapes
             d["space"] = space
             return True
@@ -568,7 +568,7 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         
         d = {}
-        def pre_solve(space, arb):
+        def pre_solve(arb, space):
             d["shapes"] = arb.shapes
             d["space"] = space
             return True
@@ -596,7 +596,7 @@ class UnitTestSpace(unittest.TestCase):
                 s.remove(shape)
             test_self.calls += 1
         
-        def pre_solve(space, arb):
+        def pre_solve(arb, space):
             space.add_post_step_callback(callback, 0, arb.shapes, test_self = self)
             return True
 

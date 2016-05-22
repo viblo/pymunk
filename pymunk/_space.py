@@ -393,6 +393,7 @@ class Space(object):
         """
 
         h = cp.cpSpaceAddWildcardHandler(self._space, collision_type_a)
+        return CollisionHandler(h, self)
         p = h.contents.userData
         if p == None:
             p = self._handlers_key
@@ -412,6 +413,7 @@ class Space(object):
         """
 
         h = cp.cpSpaceAddDefaultCollisionHandler(self._space)
+        return CollisionHandler(h, self)
         p = h.contents.userData
         if p == None:
             p = self._handlers_key
