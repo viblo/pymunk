@@ -144,10 +144,24 @@ class UnitTestCircle(unittest.TestCase):
 
         self.assertEqual(c.offset, (1,2))
 
+    def testOffsetUnsafe(self):
+        c = p.Circle(None, 5, (1,2))
+
+        c.unsafe_set_offset((3,4))
+
+        self.assertEqual(c.offset, (3,4))
+
     def testRadius(self):
         c = p.Circle(None, 5)
 
         self.assertEqual(c.radius, 5)
+
+    def testRadiusUnsafe(self):
+        c = p.Circle(None, 5)
+        
+        c.unsafe_set_radius(3)
+        
+        self.assertEqual(c.radius, 3)
 
 class UnitTestSegment(unittest.TestCase):
     def testBB(self):
@@ -166,6 +180,16 @@ class UnitTestSegment(unittest.TestCase):
         self.assertEqual(c.b, (2,3))
         self.assertEqual(c.normal, (1,0))
         self.assertEqual(c.radius, 4)
+
+    def testPropertiesUnsafe(self):
+        c = p.Segment(None, (2,2), (2,3), 4)
+        
+        c.unsafe_set_endpoints((3,4), (5,6))
+        self.assertEqual(c.a, (3,4))
+        self.assertEqual(c.b, (5,6))
+        
+        c.unsafe_set_radius(5)
+        self.assertEqual(c.radius, 5)
 
     def testSetNeighbors(self):
         c = p.Segment(None, (2,2), (2,3), 1)

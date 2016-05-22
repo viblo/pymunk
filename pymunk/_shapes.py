@@ -292,23 +292,18 @@ class Segment(Shape):
         self._shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
         self._set_shapeid()
 
-    def unsafe_set_a(self, a):
-        """Set the first of the two endpoints for this segment
-
-        .. note::
-            This change is only picked up as a change to the position
-            of the shape's surface, but not it's velocity. Changing it will
-            not result in realistic physical behavior. Only use if you know
-            what you are doing!
-        """
-        ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.a = a
     def _get_a(self):
         return Vec2d(cp.cpSegmentShapeGetA(self._shape))
     a = property(_get_a,
         doc="""The first of the two endpoints for this segment""")
 
-    def unsafe_set_b(self, b):
-        """Set the second of the two endpoints for this segment
+    def _get_b(self):
+        return Vec2d(cp.cpSegmentShapeGetB(self._shape))
+    b = property(_get_b,
+        doc="""The second of the two endpoints for this segment""")
+
+    def unsafe_set_endpoints(self, a, b):
+        """Set the two endpoints for this segment
 
         .. note::
             This change is only picked up as a change to the position
@@ -316,12 +311,8 @@ class Segment(Shape):
             not result in realistic physical behavior. Only use if you know
             what you are doing!
         """
-        ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.b = b
-    def _get_b(self):
-        return Vec2d(cp.cpSegmentShapeGetB(self._shape))
-    b = property(_get_b,
-        doc="""The second of the two endpoints for this segment""")
-
+        cp.cpSegmentShapeSetEndpoints(self._shape, a, b)
+        
     def _get_normal(self):
         return Vec2d(cp.cpSegmentShapeGetNormal(self._shape))
     normal = property(_get_normal,
@@ -336,7 +327,7 @@ class Segment(Shape):
             not result in realistic physical behavior. Only use if you know
             what you are doing!
         """
-        ct.cast(self._shape, ct.POINTER(cp.cpSegmentShape)).contents.r = r
+        cp.cpSegmentShapeSetRadius(self._shape, r)
     def _get_radius(self):
         return cp.cpSegmentShapeGetRadius(self._shape)
     radius = property(_get_radius,
