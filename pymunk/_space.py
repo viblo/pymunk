@@ -18,6 +18,7 @@ from ._body import Body
 from ._collision_handler import CollisionHandler
 from ._query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from ._shapes import Shape, Circle, Poly, Segment
+from ._contact_point_set import ContactPointSet
 from pymunk.constraint import Constraint
 
 class Space(object):
@@ -453,13 +454,13 @@ class Space(object):
             True if key was not previously added, False otherwise
         """
 
-        if key in self._post_callbacks:
+        if key in self._post_step_callbacks:
             return False
         
-        def f():
+        def f(x):
             callback_function(self, key, *args, **kwargs)
             
-        self._post_step_callbacks[key] = callback_function
+        self._post_step_callbacks[key] = f
         return True
         
     def point_query(self, point, max_distance, shape_filter):
@@ -630,14 +631,13 @@ class Space(object):
         self.__query_hits = []
         @ffi.callback("typedef void (*cpSpaceShapeQueryFunc)"
             "(cpShape *shape, cpContactPointSet *points, void *data)")
-        def cf(_shape, points, data):
+        def cf(_shape, _points, _data):
             shape = self._get_shape(_shape)
-            #todo handle contact point set
-            p = ShapeQueryInfo(shape, points)
-            self.__query_hits.append(p)
+            point_set = ContactPointSet._from_cp(_points)
+            info = ShapeQueryInfo(shape, point_set)
+            self.__query_hits.append(info)
             
         data = ffi.new_handle(self)
         cp.cpSpaceShapeQuery(self._space, shape._shape, cf, data)
 
-        
         return self.__query_hits

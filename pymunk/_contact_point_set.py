@@ -30,10 +30,17 @@ class ContactPointSet(
     
     __slots__ = ()
     
+    @classmethod
+    def _from_cp(cls, _points):
+        normal = Vec2d(_points.normal)
+        
+        points = [] 
+        for i in range(_points.count):
+            _p = _points.points[i]
+            p = ContactPoint(Vec2d(_p.pointA), Vec2d(_p.pointB), _p.distance)
+            points.append(p)
+        
+        cls(normal, points)
+    
     def __repr__(self):
-        points = []
-        i = 0
-        for i in range(self.count):
-            points.append(self.points[i])
-        points = ",".join([p.__repr__() for p in points])
-        return 'ContactPointSet(%s, %s, [%s])' % (self.count, self.normal, points)
+        return 'ContactPointSet(%s, %s, [%s])' % (self.normal, self.points)

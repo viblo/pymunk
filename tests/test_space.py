@@ -591,12 +591,14 @@ class UnitTestSpace(unittest.TestCase):
         s.add(s1, s2)
 
         self.calls = 0
-        def callback(obj, shapes, test_self):
+        def callback(space, key, shapes, test_self):
             for shape in shapes:
                 s.remove(shape)
             test_self.calls += 1
         
         def pre_solve(arb, space):
+            # note that we dont pass on the whole arbiters object, instead
+            # we take only the shapes.
             space.add_post_step_callback(callback, 0, arb.shapes, test_self = self)
             return True
 
