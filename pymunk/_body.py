@@ -441,13 +441,14 @@ class Body(object):
 
             Do not hold on to the Arbiter after the callback!
         """
-
-        def impl(body, _arbiter, _):
+        @ffi.callback("typedef void (*cpBodyArbiterIteratorFunc)"
+            "(cpBody *body, cpArbiter *arbiter, void *data)")
+        def cf(_body, _arbiter, _data):
             arbiter = Arbiter(_arbiter, self._space)
             func(arbiter, *args, **kwargs)
-            return 0
-        f = cp.cpBodyArbiterIteratorFunc(impl)
-        cp.cpBodyEachArbiter(self._body, f, None)
+            
+        data = ffi.new_handle(self)
+        cp.cpBodyEachArbiter(self._body, cf, data)
 
     def _get_constraints(self):
         return set(self._constraints)

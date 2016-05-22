@@ -107,14 +107,14 @@ class UnitTestArbiter(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         
         def pre_solve(arb, space):
-            self.assertEqual(arb.contact_point_set.count, 1)
+            self.assertEqual(len(arb.contact_point_set.points), 1)
             self.assertAlmostEqual(arb.contact_point_set.normal.x, 0.8574929257)
             self.assertAlmostEqual(arb.contact_point_set.normal.y, 0.5144957554)
             p1 = arb.contact_point_set.points[0]
-            self.assertAlmostEqual(p1.pointA.x, 8.574929257)
-            self.assertAlmostEqual(p1.pointA.y, 5.144957554)
-            self.assertAlmostEqual(p1.pointB.x, -3.574929257)
-            self.assertAlmostEqual(p1.pointB.y, -2.144957554)
+            self.assertAlmostEqual(p1.point_a.x, 8.574929257)
+            self.assertAlmostEqual(p1.point_a.y, 5.144957554)
+            self.assertAlmostEqual(p1.point_b.x, -3.574929257)
+            self.assertAlmostEqual(p1.point_b.y, -2.144957554)
             self.assertAlmostEqual(p1.distance, -14.16904810)
             
             return True

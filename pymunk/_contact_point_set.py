@@ -40,7 +40,4 @@ class ContactPointSet(
             p = ContactPoint(Vec2d(_p.pointA), Vec2d(_p.pointB), _p.distance)
             points.append(p)
         
-        cls(normal, points)
-    
-    def __repr__(self):
-        return 'ContactPointSet(%s, %s, [%s])' % (self.normal, self.points)
+        return cls(normal, points)

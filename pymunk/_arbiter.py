@@ -35,9 +35,9 @@ class Arbiter(object):
         self._space = space        
         
     def _get_contact_point_set(self):
-        return None
-        #point_set = cp.cpArbiterGetContactPointSet(self._arbiter)
-        #return point_set        
+        _points = cp.cpArbiterGetContactPointSet(self._arbiter)
+        return ContactPointSet._from_cp(_points)
+        
     def _set_contact_point_set(self, point_set):
         pass
         #cp.cpArbiterSetContactPointSet(self._arbiter, point_set)        
