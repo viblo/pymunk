@@ -114,13 +114,13 @@ class UnitTestSpace(unittest.TestCase):
         b = p.Body(1, 2)
         c = p.Circle(b, 2)
         
-        def pre_solve_add(space, arbiter):
+        def pre_solve_add(arbiter, space):
             space.add(b, c)
             self.assertTrue(b not in s.bodies)
             self.assertTrue(c not in s.shapes)
             return True
 
-        def pre_solve_remove(space, arbiter):
+        def pre_solve_remove(arbiter, space):
             space.remove(b, c)
             self.assertTrue(b in s.bodies)
             self.assertTrue(c in s.shapes)
@@ -143,7 +143,7 @@ class UnitTestSpace(unittest.TestCase):
     def testRemoveInStep(self):
         s = self.s
 
-        def pre_solve(space, arbiter):
+        def pre_solve(arbiter, space):
             space.remove(arbiter.shapes)
             return True
 
