@@ -48,12 +48,12 @@ class Arbiter(object):
         Return `ContactPointSet`""")
 
     def _get_shapes(self):
-        shapeA_p = ct.POINTER(cp.cpShape)()
-        shapeB_p = ct.POINTER(cp.cpShape)()
+        shapeA_p = ffi.new("cpShape *[1]")
+        shapeB_p = ffi.new("cpShape *[1]")
 
         cp.cpArbiterGetShapes(self._arbiter, shapeA_p, shapeB_p)
 
-        a, b = self._space._get_shape(shapeA_p), self._space._get_shape(shapeB_p)
+        a, b = self._space._get_shape(shapeA_p[0]), self._space._get_shape(shapeB_p[0])
         return a, b
 
     shapes = property(_get_shapes,

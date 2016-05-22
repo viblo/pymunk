@@ -504,6 +504,8 @@ class Space(object):
             shape = self._shapes[shapeid]
         elif shapeid in self._removed_shapes:
             shape = self._removed_shapes[shapeid]
+        else:
+            shape = None
         return shape
 
     def point_query_nearest(self, point, max_distance, shape_filter):
