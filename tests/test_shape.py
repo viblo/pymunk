@@ -221,12 +221,24 @@ class UnitTestPoly(unittest.TestCase):
         b = p.Body(1,2)
         c = p.Poly(b, [(0,0),(10,10),(20,0),(-10,10)], p.Transform.identity(), 6)
 
-    def testGetVertices(self):
+    def testVertices(self):
         vs = [(-10,10), (0,0),(20,0),(10,10)]
         c = p.Poly(None, vs, None, 0)
 
         self.assertEqual(c.get_vertices(), vs)
 
+    def testVerticesUnsafe(self):
+        vs = [(-10,10), (0,0),(20,0),(10,10)]
+        c = p.Poly(None, vs, None, 0)
+
+        vs2 = [(-3,3), (0,0), (3,0)]
+        c.unsafe_set_vertices(vs2)
+        self.assertEqual(c.get_vertices(), vs2)
+        
+        vs3 = [(-4,4), (0,0), (4,0)]
+        c.unsafe_set_vertices(vs3, p.Transform.identity())
+        self.assertEqual(c.get_vertices(), vs3)
+        
     def testBB(self):
         c = p.Poly(None, [(2,2),(4,3),(3,5)])
         bb = c.update(p.Transform.identity())
@@ -245,30 +257,15 @@ class UnitTestPoly(unittest.TestCase):
         self.assertEqual(c.bb, p.BB(2, 2, 4, 5))
 
     def testRadius(self):
-        b = p.Body(1,1)
-
-        c = p.Poly(b, [(2,2), (4,3), (3,5)], radius=10)
-
+        c = p.Poly(None, [(2,2), (4,3), (3,5)], radius=10)
         self.assertEqual(c.radius, 10)
+        
+    def testRadiusUnsafe(self):
+        c = p.Poly(None, [(2,2), (4,3), (3,5)], radius=10)
 
         c.unsafe_set_radius(20)
 
-        self.assertEqual(c.radius, 20)
-
-    def testPolyUnsafeSet(self):
-        s = p.Space()
-        b = p.Body(10,10)
-        c = p.Poly(b,[(2,2), (4,3), (3,5)])
-
-        c.cache_bb()
-
-        c.unsafe_set_vertices([(0,0), (1,0), (1,1)])
-        c.cache_bb()
-
-        self.assertAlmostEqual(c.bb.top, 1)
-        self.assertAlmostEqual(c.bb.left, 0)
-        self.assertAlmostEqual(c.bb.right, 1)
-        self.assertAlmostEqual(c.bb.bottom, 0)
+        self.assertEqual(c.radius, 20)        
 
     def testCreateBox(self):
         c = p.Poly.create_box(None, (4,2), 3)

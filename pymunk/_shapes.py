@@ -457,5 +457,7 @@ class Poly(Shape):
             what you are doing!
         """
         if transform == None:
-            transform = Transform.identity()
+            cp.cpPolyShapeSetVertsRaw(self._shape, len(vertices), vertices)
+            return
+            
         cp.cpPolyShapeSetVerts(self._shape, len(vertices), vertices, transform)
