@@ -334,7 +334,7 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1,c1)
         s.add(s2)
 
-        s2.unsafe_set_b((100,0))
+        s2.unsafe_set_endpoints((-10,0), (100,0))
         s.gravity = 0, -100
 
         for x in range(10):
