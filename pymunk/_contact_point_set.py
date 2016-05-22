@@ -1,42 +1,34 @@
 __docformat__ = "reStructuredText"
 
-from ctypes import *
+from collections import namedtuple
+
 from .vec2d import Vec2d
 from ._base import *
 
-class ContactPoint(Structure):
+class ContactPoint(
+    namedtuple('ContactPoint', ['point_a', 'point_b', 'distance'])):
     """Contains information about a contact point. 
     
-    pointA and pointB are the contact position on the surface of each shape.
+    point_a and point_b are the contact position on the surface of each shape.
     
     distance is the penetration distance of the two shapes. Overlapping 
     means it will be negative. This value is calculated as 
     dot(point2 - point1), normal) and is ignored when you set the 
     Arbiter.contact_point_set.
     """
-     
-    __slots__ = ['pointA', 'pointB', 'distance']
-
-    def __repr__(self):
-        return 'ContactPoint(%s, %s, %s)' % (self.pointA, self.pointB, self.distance)
     
-ContactPoint._fields_ = [
-    ('pointA', Vec2d),
-    ('pointB', Vec2d),
-    ('distance', cpFloat)
-]
+    __slots__ = ()
 
-class ContactPointSet(Structure):
+class ContactPointSet(
+    namedtuple('ContactPointSet', ['normal', 'points'])):
     """Contact point sets make getting contact information simpler.
-    
-    count is the number of contact points in the set.
     
     normal is the normal of the collision
     
     points is the array of contact points. Can be at most 2 points.
     """
     
-    __slots__ = ["count", "normal", "points"]
+    __slots__ = ()
     
     def __repr__(self):
         points = []
@@ -45,9 +37,3 @@ class ContactPointSet(Structure):
             points.append(self.points[i])
         points = ",".join([p.__repr__() for p in points])
         return 'ContactPointSet(%s, %s, [%s])' % (self.count, self.normal, points)
-
-ContactPointSet._fields_ = [
-    ('count', c_int),
-    ('normal', Vec2d),
-    ('points', ContactPoint * 2)
-]

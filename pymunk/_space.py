@@ -13,13 +13,12 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi    
     
-#from . import _chipmunk as cp
 from .vec2d import Vec2d
 from ._body import Body
-#from ._collision_handler import CollisionHandler
+from ._collision_handler import CollisionHandler
 from ._query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from ._shapes import Shape, Circle, Poly, Segment
-#from pymunk.constraint import *
+from pymunk.constraint import Constraint
 
 class Space(object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes
@@ -31,15 +30,13 @@ class Space(object):
 
         self._space = cp.cpSpaceNew()
 
-        #self._static_body = Body(body_type=Body.STATIC)
+        self._static_body = None
 
         self._handlers = {} # To prevent the gc to collect the callbacks.
         self._handlers_key = 0
         self._default_handler = None
 
         self._post_step_callbacks = {}
-        self._post_callback_keys = {}
-        self._post_last_callback_key = 0
         self._removed_shapes = {}
 
         self._shapes = {}
@@ -47,7 +44,7 @@ class Space(object):
         self._static_body = None
         self._constraints = set()
         
-        self._locked = False
+        self._in_step = False
         self._add_later = set()
         self._remove_later = set()
 
@@ -56,9 +53,13 @@ class Space(object):
         return self
 
     def _get_shapes(self):
+        """A list of all the shapes added to this space 
+        
+        (includes both static and non-static)
+        """
         return list(self._shapes.values())
     shapes = property(_get_shapes,
-        doc="""A list of all the shapes added to this space (both static and non-static)""")
+        doc=_get_shapes.__doc__)
 
     def _get_bodies(self):
         return list(self._bodies)
@@ -227,7 +228,7 @@ class Space(object):
         add will not be performed until the end of the step.
         """
 
-        if self._locked:
+        if self._in_step:
             self._add_later.add(objs)
             return
 
@@ -255,7 +256,7 @@ class Space(object):
             body, remove the joints and shapes attached to it.
         """
 
-        if self._locked:
+        if self._in_step:
             self._remove_later.add(objs)
             return
 
@@ -322,18 +323,17 @@ class Space(object):
         cp.cpSpaceReindexStatic(self._space)
 
     def step(self, dt):
-        """Update the space for the given time step. Using a fixed time step is
-        highly recommended. Doing so will increase the efficiency of the
-        contact persistence, requiring an order of magnitude fewer iterations
-        to resolve the collisions in the usual case."""
+        """Update the space for the given time step. 
+        
+        Using a fixed time step is highly recommended. Doing so will increase 
+        the efficiency of the contact persistence, requiring an order of 
+        magnitude fewer iterations to resolve the collisions in the usual case.
+        """
 
-        self._locked = True
+        self._in_step = True
         cp.cpSpaceStep(self._space, dt)
         self._removed_shapes = {}
-        self._post_step_callbacks = {}
-        self._post_callback_keys = {}
-        self._post_last_callback_key = 0
-        self._locked = False
+        self._in_step = False
 
         for objs in self._add_later:
             self.add(objs)
@@ -342,6 +342,11 @@ class Space(object):
         for objs in self._remove_later:
             self.remove(objs)
         self._remove_later.clear()
+        
+        for key in self._post_step_callbacks:
+            self._post_step_callbacks[key](self)  
+        
+        self._post_step_callbacks = {}  
 
 
     def collision_handler(self, collision_type_a, collision_type_b):
@@ -358,7 +363,10 @@ class Space(object):
         wildcard handlers, and accept all collisions).
         """
 
+        
         h = cp.cpSpaceAddCollisionHandler(self._space, collision_type_a, collision_type_b)
+        return CollisionHandler(h, self)
+        print h
         p = h.contents.userData
         if p == None:
             p = self._handlers_key
@@ -412,7 +420,7 @@ class Space(object):
 
         return self._handlers[p]
 
-    def add_post_step_callback(self, callback_function, obj, *args, **kwargs):
+    def add_post_step_callback(self, callback_function, key, *args, **kwargs):
         """Add a function to be called last in the next simulation step.
 
         Post step callbacks are registered as a function and an object used as
@@ -429,7 +437,7 @@ class Space(object):
             touching when removed.
 
         :Parameters:
-            callback_function : ``func(obj, *args, **kwargs)``
+            callback_function : ``func(space, key, *args, **kwargs)``
                 The callback function.
             obj : Any object
                 This object is used as a key, you can only have one callback
@@ -443,21 +451,15 @@ class Space(object):
             True if key was not previously added, False otherwise
         """
 
-        if obj in self._post_callback_keys:
+        if key in self._post_callbacks:
             return False
-
-        def cf(_space, key, data):
-            callback_function(obj, *args, **kwargs)
-
-        f = cp.cpPostStepFunc(cf)
-
-        self._post_last_callback_key += 1
-        self._post_callback_keys[obj] = self._post_last_callback_key
-        self._post_step_callbacks[obj] = f
-
-        key = self._post_callback_keys[obj]
-        return bool(cp.cpSpaceAddPostStepCallback(self._space, f, key, None))
-
+        
+        def f():
+            callback_function(self, key, *args, **kwargs)
+            
+        self._post_step_callbacks[key] = callback_function
+        return True
+        
     def point_query(self, point, max_distance, shape_filter):
         """Query space at point for shapes within the given distance range.
 
@@ -480,7 +482,8 @@ class Space(object):
 
         self.__query_hits = []
         
-        @ffi.callback("void (*cpSpacePointQueryFunc)(cpShape *shape, cpVect point, cpFloat distance, cpVect gradient, void *data)")
+        @ffi.callback("void (*cpSpacePointQueryFunc)"
+            "(cpShape *shape, cpVect point, cpFloat distance, cpVect gradient, void *data)")
         def cf(_shape, point, distance, gradient, data):
             # space = ffi.from_handle(data)
             shape = self._get_shape(_shape)

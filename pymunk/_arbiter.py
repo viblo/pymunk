@@ -1,8 +1,12 @@
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-import ctypes as ct
-from . import _chipmunk as cp
+from .vec2d import Vec2d
+
+from . import _chipmunk_cffi
+cp = _chipmunk_cffi.lib
+ffi = _chipmunk_cffi.ffi   
+
 from ._contact_point_set import ContactPointSet
 
 class Arbiter(object):
@@ -28,13 +32,15 @@ class Arbiter(object):
         """
 
         self._arbiter = _arbiter
-        self._space = space
+        self._space = space        
         
     def _get_contact_point_set(self):
-        point_set = cp.cpArbiterGetContactPointSet(self._arbiter)
-        return point_set        
+        return None
+        #point_set = cp.cpArbiterGetContactPointSet(self._arbiter)
+        #return point_set        
     def _set_contact_point_set(self, point_set):
-        cp.cpArbiterSetContactPointSet(self._arbiter, point_set)        
+        pass
+        #cp.cpArbiterSetContactPointSet(self._arbiter, point_set)        
     contact_point_set = property(_get_contact_point_set, _set_contact_point_set,
         doc="""Contact point sets make getting contact information from the 
         Arbiter simpler.
@@ -80,13 +86,13 @@ class Arbiter(object):
         """)
 
     def _get_surface_velocity(self):
-        return cp.cpArbiterGetSurfaceVelocity(self._arbiter)
+        return Vec2d(cp.cpArbiterGetSurfaceVelocity(self._arbiter))
     def _set_surface_velocity(self, velocity):
         cp.cpArbiterSetSurfaceVelocity(self._arbiter, velocity)
     surface_velocity = property(_get_surface_velocity, _set_surface_velocity,
         doc="""The calculated surface velocity for this collision pair. 
         
-        Setting the value in a preSolve() callback will override the value 
+        Setting the value in a pre_solve() callback will override the value 
         calculated by the space. the default calculation subtracts the 
         surface velocity of the second shape from the first and then projects 
         that onto the tangent of the collision. This is so that only 
@@ -97,7 +103,7 @@ class Arbiter(object):
         """)
 
     def _get_total_impulse(self):
-        return cp.cpArbiterTotalImpulse(self._arbiter)
+        return Vec2d(cp.cpArbiterTotalImpulse(self._arbiter))
     total_impulse = property(_get_total_impulse,
         doc="""Returns the impulse that was applied this step to resolve the
         collision.

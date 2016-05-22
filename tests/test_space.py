@@ -436,9 +436,7 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertEqual(self.hits, 1)
 
-    def testCollisionHandlerBeginNoReturn(self):
-        if sys.version_info < (2, 6): return
-        
+    def testCollisionHandlerBeginNoReturn(self):        
         s = p.Space()
         b1 = p.Body(1, 1)
         c1 = p.Circle(b1, 10)
@@ -479,9 +477,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(c2, d["shapes"][0])
         self.assertEqual(s, d["space"])
 
-    def testCollisionHandlerPreSolveNoReturn(self):
-        if sys.version_info < (2, 6): return
-        
+    def testCollisionHandlerPreSolveNoReturn(self):        
         s = p.Space()
         b1 = p.Body(1, 1)
         c1 = p.Circle(b1, 10)

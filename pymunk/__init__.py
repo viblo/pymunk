@@ -70,7 +70,7 @@ from ._body import Body
 #from ._query_info import PointQueryInfo, SegmentQueryInfo
 from ._shapes import Shape, Circle, Poly, Segment
 from ._space import Space
-#from pymunk.constraint import *
+from pymunk.constraint import *
 
 version = "5.0.0"
 """The release version of this pymunk installation.
