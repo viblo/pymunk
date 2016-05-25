@@ -361,7 +361,7 @@ class Space(object):
         
         h = cp.cpSpaceAddCollisionHandler(self._space, collision_type_a, collision_type_b)
         return CollisionHandler(h, self)
-        print h
+        #print h
         p = h.contents.userData
         if p == None:
             p = self._handlers_key

@@ -53,7 +53,7 @@ class Vec2d(list):
     """2d vector class, supports vector and scalar operators, and also 
     provides some high level functions.
     """
-    __slots__ = ['x', 'y']
+    __slots__ = ()
         
     def __init__(self, x_or_pair=None, y = None):
         if x_or_pair != None:

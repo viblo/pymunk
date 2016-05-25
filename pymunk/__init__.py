@@ -49,7 +49,7 @@ __all__ = ["inf", "version", "chipmunk_version"
         , "SegmentQueryInfo", "ContactPointSet", "Arbiter", "BB", "ShapeFilter"
         , "Transform", "PointQueryInfo"]
 '''
-#import ctypes as ct
+
 import warnings
 import sys
 
@@ -61,7 +61,7 @@ ffi = _chipmunk_cffi.ffi
 #from . import _chipmunk_ffi as cpffi
 #from . import util as u
 from .vec2d import Vec2d
-from ._chipmunk_manual import ShapeFilter, Transform, Transform2
+from ._chipmunk_manual import ShapeFilter, Transform
 #from ._contact_point_set import ContactPoint, ContactPointSet
 #from ._arbiter import Arbiter
 from ._bb import BB
