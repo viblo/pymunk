@@ -33,7 +33,8 @@ class Mock(object):
             return Mock()
             
 
-MOCK_MODULES = ['pymunk._chipmunk', 'pymunk._chipmunk_ffi', 
+MOCK_MODULES = [
+                'pymunk._chipmunk_cffi','pymunk._chipmunk_cffi_abi',
                 'pygame', 'pygame.locals', 'pygame.color',
                 'pyglet'
                 ]
@@ -41,12 +42,16 @@ MOCK_MODULES = ['pymunk._chipmunk', 'pymunk._chipmunk_ffi',
 class MockFinder():
     def find_module(self, fullname, path=None):
         if fullname in MOCK_MODULES:
+            print("fullname", fullname)
             return self
         return None
     def load_module(self, fullname):
+        print("fullname", fullname)
         return Mock()
         
-sys.meta_path = [MockFinder()]
+#sys.meta_path = [MockFinder()]
+for m in MOCK_MODULES:
+    sys.modules[m] = Mock()
 
 
 # If extensions (or modules to document with autodoc) are in another directory,

@@ -91,29 +91,33 @@
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;inf&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;chipmunk_version&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">,</span> <span class="s">&quot;Body&quot;</span><span class="p">,</span> <span class="s">&quot;Shape&quot;</span><span class="p">,</span> <span class="s">&quot;Circle&quot;</span><span class="p">,</span> <span class="s">&quot;Poly&quot;</span><span class="p">,</span> <span class="s">&quot;Segment&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;moment_for_circle&quot;</span><span class="p">,</span> <span class="s">&quot;moment_for_poly&quot;</span><span class="p">,</span> <span class="s">&quot;moment_for_segment&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;moment_for_box&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;SegmentQueryInfo&quot;</span><span class="p">,</span> <span class="s">&quot;ContactPointSet&quot;</span><span class="p">,</span> <span class="s">&quot;Arbiter&quot;</span><span class="p">,</span> <span class="s">&quot;BB&quot;</span><span class="p">,</span> <span class="s">&quot;ShapeFilter&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;Transform&quot;</span><span class="p">,</span> <span class="s">&quot;PointQueryInfo&quot;</span><span class="p">]</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">__all__ = [&quot;inf&quot;, &quot;version&quot;, &quot;chipmunk_version&quot;</span>
+<span class="sd">        , &quot;Space&quot;, &quot;Body&quot;, &quot;Shape&quot;, &quot;Circle&quot;, &quot;Poly&quot;, &quot;Segment&quot;</span>
+<span class="sd">        , &quot;moment_for_circle&quot;, &quot;moment_for_poly&quot;, &quot;moment_for_segment&quot;</span>
+<span class="sd">        , &quot;moment_for_box&quot;</span>
+<span class="sd">        , &quot;SegmentQueryInfo&quot;, &quot;ContactPointSet&quot;, &quot;Arbiter&quot;, &quot;BB&quot;, &quot;ShapeFilter&quot;</span>
+<span class="sd">        , &quot;Transform&quot;, &quot;PointQueryInfo&quot;]</span>
+<span class="sd">&#39;&#39;&#39;</span>
 
-<span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">ct</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
+<span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
+<span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk</span> <span class="k">as</span> <span class="n">cp</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_ffi</span> <span class="k">as</span> <span class="n">cpffi</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span> <span class="k">as</span> <span class="n">u</span>
+<span class="c">#from . import _chipmunk as cp</span>
+<span class="c">#from . import _chipmunk_ffi as cpffi</span>
+<span class="c">#from . import util as u</span>
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">._chipmunk_manual</span> <span class="kn">import</span> <span class="n">ShapeFilter</span><span class="p">,</span> <span class="n">Transform</span>
-<span class="kn">from</span> <span class="nn">._contact_point_set</span> <span class="kn">import</span> <span class="n">ContactPoint</span><span class="p">,</span> <span class="n">ContactPointSet</span>
-<span class="kn">from</span> <span class="nn">._arbiter</span> <span class="kn">import</span> <span class="n">Arbiter</span>
+<span class="c">#from ._contact_point_set import ContactPoint, ContactPointSet</span>
+<span class="c">#from ._arbiter import Arbiter</span>
 <span class="kn">from</span> <span class="nn">._bb</span> <span class="kn">import</span> <span class="n">BB</span>
 <span class="kn">from</span> <span class="nn">._body</span> <span class="kn">import</span> <span class="n">Body</span>
-<span class="kn">from</span> <span class="nn">._collision_handler</span> <span class="kn">import</span> <span class="n">CollisionHandler</span>
-<span class="kn">from</span> <span class="nn">._query_info</span> <span class="kn">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span>
+<span class="c">#from ._collision_handler import CollisionHandler</span>
+<span class="c">#from ._query_info import PointQueryInfo, SegmentQueryInfo</span>
 <span class="kn">from</span> <span class="nn">._shapes</span> <span class="kn">import</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Poly</span><span class="p">,</span> <span class="n">Segment</span>
 <span class="kn">from</span> <span class="nn">._space</span> <span class="kn">import</span> <span class="n">Space</span>
 <span class="kn">from</span> <span class="nn">pymunk.constraint</span> <span class="kn">import</span> <span class="o">*</span>
@@ -124,7 +128,7 @@
 <span class="sd">distribution (i.e. not in a checked-out copy from git).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">chipmunk_version</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">R</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpVersionString</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span> <span class="s">&#39;d7603e392782079b691d7948405af2dd66648a7a&#39;</span><span class="p">)</span>
+<span class="n">chipmunk_version</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">R</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ffi</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpVersionString</span><span class="p">),</span> <span class="s">&#39;d7603e392782079b691d7948405af2dd66648a7a&#39;</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;The Chipmunk version compatible with this pymunk version.</span>
 <span class="sd">Other (newer) Chipmunk versions might also work if the new version does not</span>
 <span class="sd">contain any breaking API changes.</span>
@@ -144,10 +148,7 @@
 <span class="sd">    chipmunk_src folder (normally included in the pymunk source distribution).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">inf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;inf&#39;</span><span class="p">)</span> <span class="c"># works only on python 2.6+</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="n">inf</span> <span class="o">=</span> <span class="mf">1e100</span>
+<span class="n">inf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;inf&#39;</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;Infinity that can be passed as mass or inertia to Body.</span>
 
 <span class="sd">Useful when you for example want a body that cannot rotate, just set its</span>
@@ -157,8 +158,7 @@
 
 <span class="sd">.. note::</span>
 <span class="sd">    In previous versions of pymunk you used inf to create static bodies. This</span>
-<span class="sd">    has changed and you should instead do it by invoking the body constructor</span>
-<span class="sd">    without any arguments.</span>
+<span class="sd">    has changed. See the Body documentation for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c">#cp.cpEnableSegmentToSegmentCollisions()</span>
@@ -188,38 +188,28 @@
 <span class="sd">    Assumes the polygon center of gravity is at its centroid. The offset is</span>
 <span class="sd">    added to each vertex.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">verts</span> <span class="o">=</span> <span class="p">(</span><span class="n">Vec2d</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">))</span>
-    <span class="n">verts</span> <span class="o">=</span> <span class="n">verts</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
-        <span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">vertex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">vertex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForPoly</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">),</span> <span class="n">verts</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
-</div>
-<span class="k">def</span> <span class="nf">area_for_circle</span><span class="p">(</span><span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForPoly</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+    </div>
+<div class="viewcode-block" id="area_for_circle"><a class="viewcode-back" href="../pymunk.html#pymunk.area_for_circle">[docs]</a><span class="k">def</span> <span class="nf">area_for_circle</span><span class="p">(</span><span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Area of a hollow circle.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpAreaForCircle</span><span class="p">(</span><span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">area_for_segment</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="area_for_segment"><a class="viewcode-back" href="../pymunk.html#pymunk.area_for_segment">[docs]</a><span class="k">def</span> <span class="nf">area_for_segment</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Area of a beveled segment.</span>
 
 <span class="sd">    (Will always be zero if radius is zero)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpAreaForSegment</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">area_for_poly</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="area_for_poly"><a class="viewcode-back" href="../pymunk.html#pymunk.area_for_poly">[docs]</a><span class="k">def</span> <span class="nf">area_for_poly</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Signed area of a polygon shape.</span>
 
 <span class="sd">    Returns a negative number for polygons with a clockwise winding.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">verts</span> <span class="o">=</span> <span class="p">(</span><span class="n">Vec2d</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">))</span>
-    <span class="n">verts</span> <span class="o">=</span> <span class="n">verts</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
-        <span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">vertex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">vertex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpAreaForPoly</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">),</span> <span class="n">verts</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpAreaForPoly</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
 
 
-<span class="c">#del cp, ct, u</span>
+<span class="c">#del cp, ct, u</span></div>
 </pre></div>
 
           </div>
