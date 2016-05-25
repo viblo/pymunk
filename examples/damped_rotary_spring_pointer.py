@@ -60,16 +60,16 @@ def main():
             # is that it looks good, not the exact parameters
             elif event.type == KEYDOWN and event.key == K_q:
                 rotary_spring.stiffness *= .5
-                print rotary_spring.stiffness, rotary_spring.damping
+                print(rotary_spring.stiffness, rotary_spring.damping)
             elif event.type == KEYDOWN and event.key == K_w:
                 rotary_spring.stiffness *= 2
-                print rotary_spring.stiffness, rotary_spring.damping
+                print(rotary_spring.stiffness, rotary_spring.damping)
             elif event.type == KEYDOWN and event.key == K_a:
                 rotary_spring.damping *= .5
-                print rotary_spring.stiffness, rotary_spring.damping
+                print(rotary_spring.stiffness, rotary_spring.damping)
             elif event.type == KEYDOWN and event.key == K_s:
                 rotary_spring.damping *= 2
-                print rotary_spring.stiffness, rotary_spring.damping
+                print(rotary_spring.stiffness, rotary_spring.damping)
                 
         ### Clear screen
         screen.fill(THECOLORS["white"])

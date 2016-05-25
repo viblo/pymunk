@@ -16,7 +16,7 @@ A screensaver version of Newton's Cradle with an interactive mode
 """
 
 if len(sys.argv) < 2:
-    print description
+    print(description)
     sys.exit()
 
 is_interactive = False
@@ -56,9 +56,7 @@ def drawcircle(image, colour, origin, radius, width=0):
         pygame.draw.circle(circle, colour, [circle.get_width()/2, circle.get_height()/2], radius+(width/2))
         if int(radius-(width/2)) > 0: 
             pygame.draw.circle(circle, [0,0,0,0], [circle.get_width()/2, circle.get_height()/2], abs(int(radius-(width/2))))
-        image.blit(circle, [origin[0] - (circle.get_width()/2), origin[1] - (circle.get_height()/2)])    
-
-        print THECOLORS
+        image.blit(circle, [origin[0] - (circle.get_width()/2), origin[1] - (circle.get_height()/2)])
 
 def reset_bodies(space):
     for body in space.bodies:
