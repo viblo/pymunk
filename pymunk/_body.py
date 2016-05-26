@@ -276,7 +276,7 @@ class Body(object):
         def _impl(_, dt):
             return func(self, dt)
             
-        self._position_callback = (_impl)
+        self._position_callback = _impl
         cp.cpBodySetPositionUpdateFunc(self._body, _impl)
     position_func = property(fset=_set_position_func,
         doc=_set_position_func.__doc__)
@@ -312,8 +312,6 @@ class Body(object):
         correction process.
         """
         cp.cpBodyUpdatePosition(body._body, dt)
-
-
 
     def reset_forces(self):
         """Zero both the forces and torques accumulated on body"""

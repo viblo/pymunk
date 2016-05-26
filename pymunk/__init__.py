@@ -57,8 +57,6 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-#from . import _chipmunk as cp
-#from . import _chipmunk_ffi as cpffi
 #from . import util as u
 from .vec2d import Vec2d
 from ._chipmunk_manual import ShapeFilter, Transform

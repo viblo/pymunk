@@ -357,11 +357,16 @@ class Space(object):
         set to builtin callbacks that perform the default behavior (call the
         wildcard handlers, and accept all collisions).
         """
-
+        
+        key = (collision_type_a, collision_type_b) 
+        if key in self._handlers:
+            return self._handlers[key]
         
         h = cp.cpSpaceAddCollisionHandler(self._space, collision_type_a, collision_type_b)
-        return CollisionHandler(h, self)
-        #print h
+        ch = CollisionHandler(h, self)
+        self._handlers[key] = ch
+        return ch
+        
         p = h.contents.userData
         if p == None:
             p = self._handlers_key
@@ -387,7 +392,15 @@ class Space(object):
         post_solve() and separate().
         """
 
+        if collision_type_a in self._handlers:
+            return self._handlers[collision_type_a]
+            
         h = cp.cpSpaceAddWildcardHandler(self._space, collision_type_a)
+        ch = CollisionHandler(h, self)
+        self._handlers[collision_type_a] = ch
+        return ch
+        
+        
         return CollisionHandler(h, self)
         p = h.contents.userData
         if p == None:
@@ -406,9 +419,14 @@ class Space(object):
         the wildcard handlers, ANDing their return values together if
         applicable.
         """
-
-        h = cp.cpSpaceAddDefaultCollisionHandler(self._space)
-        return CollisionHandler(h, self)
+        if None in self._handlers:
+            return self._handlers[None]
+        
+        _h = cp.cpSpaceAddDefaultCollisionHandler(self._space)
+        h = CollisionHandler(_h, self)
+        self._handlers[None] = h
+        return h
+        
         p = h.contents.userData
         if p == None:
             p = self._handlers_key
