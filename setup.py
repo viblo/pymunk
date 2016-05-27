@@ -134,6 +134,9 @@ classifiers = [
     , 'Topic :: Games/Entertainment'
     , 'Topic :: Software Development :: Libraries'   
     , 'Topic :: Software Development :: Libraries :: pygame'
+    , 'Programming Language :: Python :: 2'
+    , 'Programming Language :: Python :: 2.7'
+    , 'Programming Language :: Python :: 3'
 ]
 
 from distutils.command import bdist
@@ -160,6 +163,7 @@ setup(
     , license='MIT License'
     , classifiers=classifiers
     , cmdclass={'build_chipmunk':build_chipmunk}
-    , extras_require = {'dev': ['pyglet','pygame','sphinx','ctypeslib']}    
+    , install_requires = ['cffi']
+    , extras_require = {'dev': ['pyglet','pygame','sphinx']}    
     , test_suite="tests"
 )
