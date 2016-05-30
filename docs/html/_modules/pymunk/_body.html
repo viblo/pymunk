@@ -52,13 +52,12 @@
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="c">#Python 2.7+</span>
-    <span class="kn">from</span> <span class="nn">weakref</span> <span class="kn">import</span> <span class="n">WeakSet</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">.weakrefset</span> <span class="kn">import</span> <span class="n">WeakSet</span>
+<span class="kn">from</span> <span class="nn">weakref</span> <span class="kn">import</span> <span class="n">WeakSet</span>
     
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk</span> <span class="k">as</span> <span class="n">cp</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
+<span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
+<span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>    
+<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">._arbiter</span> <span class="kn">import</span> <span class="n">Arbiter</span>
 
 <div class="viewcode-block" id="Body"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body">[docs]</a><span class="k">class</span> <span class="nc">Body</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -74,7 +73,7 @@
 <span class="sd">      out of sync.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">DYNAMIC</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">DYNAMIC</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">CP_BODY_TYPE_DYNAMIC</span>
     <span class="sd">&quot;&quot;&quot;Dynamic bodies are the default body type.</span>
 
 <span class="sd">    They react to collisions,</span>
@@ -84,7 +83,7 @@
 <span class="sd">    and can generate collision callbacks.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">KINEMATIC</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">KINEMATIC</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">CP_BODY_TYPE_KINEMATIC</span>
     <span class="sd">&quot;&quot;&quot;Kinematic bodies are bodies that are controlled from your code</span>
 <span class="sd">    instead of inside the physics engine.</span>
 
@@ -96,7 +95,7 @@
 <span class="sd">    body are never allowed to fall asleep.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">STATIC</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">STATIC</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">CP_BODY_TYPE_STATIC</span>
     <span class="sd">&quot;&quot;&quot;Static bodies are bodies that never (or rarely) move.</span>
 
 <span class="sd">    Using static bodies for things like terrain offers a big performance</span>
@@ -142,7 +141,9 @@
         <span class="k">elif</span> <span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNewStatic</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bodycontents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="o">.</span><span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_position_callback</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># To prevent the gc to collect the callbacks.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_callback</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># To prevent the gc to collect the callbacks.</span>
 
@@ -150,9 +151,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span> <span class="o">=</span> <span class="n">WeakSet</span><span class="p">()</span> <span class="c"># weak refs to any constraints attached</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span> <span class="o">=</span> <span class="n">WeakSet</span><span class="p">()</span> <span class="c"># weak refs to any shapes attached</span>
-</div>
+
     <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="c">#pass</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyFree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">pass</span>
@@ -165,6 +167,13 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
             <span class="k">return</span> <span class="s">&#39;Body(Body.STATIC)&#39;</span>
 
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_init_with_body</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">_body</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Only used internally in pymunk.&quot;&quot;&quot;</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">_body</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">b</span>
 
     <span class="k">def</span> <span class="nf">_set_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mass</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetMass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">mass</span><span class="p">)</span>
@@ -186,7 +195,7 @@
     <span class="k">def</span> <span class="nf">_set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_get_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">))</span>
     <span class="n">position</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_position</span><span class="p">,</span> <span class="n">_set_position</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Position of the body.</span>
 
@@ -198,7 +207,7 @@
     <span class="k">def</span> <span class="nf">_set_center_of_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cog</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetCenterOfGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">cog</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_get_center_of_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetCenterOfGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetCenterOfGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">))</span>
     <span class="n">center_of_gravity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_center_of_gravity</span><span class="p">,</span>
         <span class="n">_set_center_of_gravity</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Location of the center of gravity in body local coordinates.</span>
@@ -210,14 +219,14 @@
     <span class="k">def</span> <span class="nf">_set_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vel</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">vel</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_get_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">))</span>
     <span class="n">velocity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_velocity</span><span class="p">,</span> <span class="n">_set_velocity</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Linear velocity of the center of gravity of the body.&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetForce</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_get_force</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetForce</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetForce</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">))</span>
     <span class="n">force</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_force</span><span class="p">,</span> <span class="n">_set_force</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Force applied to the center of gravity of the body.</span>
 
@@ -260,7 +269,7 @@
 <span class="s">        This value is reset for every time step.&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_rotation_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetRotation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetRotation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">))</span>
     <span class="n">rotation_vector</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_rotation_vector</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The rotation vector for the body.&quot;&quot;&quot;</span><span class="p">)</span>
 
@@ -288,12 +297,15 @@
 <span class="sd">                dt : float</span>
 <span class="sd">                    Delta time since last step.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
+        
+        
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpBodyVelocityFunc)&quot;</span>
+            <span class="s">&quot;(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">_impl</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">gravity</span><span class="p">),</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_callback</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyVelocityFunc</span><span class="p">(</span><span class="n">_impl</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bodycontents</span><span class="o">.</span><span class="n">velocity_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_callback</span> <span class="o">=</span> <span class="n">_impl</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetVelocityUpdateFunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">_impl</span><span class="p">)</span>
     <span class="n">velocity_func</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fset</span><span class="o">=</span><span class="n">_set_velocity_func</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="n">_set_velocity_func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
 
@@ -310,11 +322,13 @@
 <span class="sd">                    Delta time since last step.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpBodyPositionFunc)&quot;</span>
+            <span class="s">&quot;(cpBody *body, cpFloat dt)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">_impl</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-            <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
-            <span class="k">return</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_position_callback</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyPositionFunc</span><span class="p">(</span><span class="n">_impl</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetPositionUpdateFunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_callback</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position_callback</span> <span class="o">=</span> <span class="n">_impl</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetPositionUpdateFunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">_impl</span><span class="p">)</span>
     <span class="n">position_func</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fset</span><span class="o">=</span><span class="n">_set_position_func</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="n">_set_position_func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
 
@@ -349,8 +363,6 @@
 <span class="sd">        correction process.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyUpdatePosition</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
-
-
 </div>
 <div class="viewcode-block" id="Body.reset_forces"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.reset_forces">[docs]</a>    <span class="k">def</span> <span class="nf">reset_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Zero both the forces and torques accumulated on body&quot;&quot;&quot;</span>
@@ -478,13 +490,14 @@
 
 <span class="sd">            Do not hold on to the Arbiter after the callback!</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">def</span> <span class="nf">impl</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">_arbiter</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpBodyArbiterIteratorFunc)&quot;</span>
+            <span class="s">&quot;(cpBody *body, cpArbiter *arbiter, void *data)&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_body</span><span class="p">,</span> <span class="n">_arbiter</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">arbiter</span> <span class="o">=</span> <span class="n">Arbiter</span><span class="p">(</span><span class="n">_arbiter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
             <span class="n">func</span><span class="p">(</span><span class="n">arbiter</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="mi">0</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyArbiterIteratorFunc</span><span class="p">(</span><span class="n">impl</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyEachArbiter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            
+        <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyEachArbiter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">_get_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span><span class="p">)</span>
@@ -515,7 +528,7 @@
 <span class="sd">            v : (x,y) or `Vec2d`</span>
 <span class="sd">                Vector in body local coordinates</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyLocalToWorld</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyLocalToWorld</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="Body.world_to_local"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.world_to_local">[docs]</a>    <span class="k">def</span> <span class="nf">world_to_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert world space coordinates to body local coordinates</span>
@@ -524,7 +537,7 @@
 <span class="sd">            v : (x,y) or `Vec2d`</span>
 <span class="sd">                Vector in world space coordinates</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyWorldToLocal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyWorldToLocal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="Body.velocity_at_world_point"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.velocity_at_world_point">[docs]</a>    <span class="k">def</span> <span class="nf">velocity_at_world_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the absolute velocity of the rigid body at the given world</span>
@@ -534,13 +547,13 @@
 <span class="sd">        surface of a body since the angular velocity affects everything</span>
 <span class="sd">        except the center of gravity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocityAtWorldPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocityAtWorldPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">point</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="Body.velocity_at_local_point"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.velocity_at_local_point">[docs]</a>    <span class="k">def</span> <span class="nf">velocity_at_local_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get the absolute velocity of the rigid body at the given body</span>
 <span class="sd">        local point</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocityAtLocalPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocityAtLocalPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">point</span><span class="p">))</span></div></div>
 </pre></div>
 
           </div>

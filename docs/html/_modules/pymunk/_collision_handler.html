@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pymunk._collision_handler &mdash; pymunk 5.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '5.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
+    <link rel="top" title="pymunk 5.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="pymunk" href="../pymunk.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pymunk._collision_handler</h1><div class="highlight"><pre>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
+<span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
+<span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>   
+
+<span class="kn">from</span> <span class="nn">._arbiter</span> <span class="kn">import</span> <span class="n">Arbiter</span>
+
+<div class="viewcode-block" id="CollisionHandler"><a class="viewcode-back" href="../../pymunk.html#pymunk.CollisionHandler">[docs]</a><span class="k">class</span> <span class="nc">CollisionHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A collision handler is a set of 4 function callbacks for the different</span>
+<span class="sd">    collision events that pymunk recognizes.</span>
+
+<span class="sd">    Collision callbacks are closely associated with Arbiter objects. You</span>
+<span class="sd">    should familiarize yourself with those as well.</span>
+
+<span class="sd">    Note #1: Shapes tagged as sensors (Shape.sensor == true) never generate</span>
+<span class="sd">    collisions that get processed, so collisions between sensors shapes and</span>
+<span class="sd">    other shapes will never call the postSolve() callback. They still</span>
+<span class="sd">    generate begin(), and separate() callbacks, and the preSolve() callback</span>
+<span class="sd">    is also called every frame even though there is no collision response.</span>
+<span class="sd">    Note #2: preSolve() callbacks are called before the sleeping algorithm</span>
+<span class="sd">    runs. If an object falls asleep, its postSolve() callback won&#39;t be</span>
+<span class="sd">    called until it&#39;s reawoken.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CollisionHandler.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.CollisionHandler.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_handler</span><span class="p">,</span> <span class="n">space</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a CollisionHandler object from the Chipmunk equivalent</span>
+<span class="sd">        struct and the Space.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            You should never need to create an instance of this class directly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="n">_handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">space</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+    <span class="k">def</span> <span class="nf">_set_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef cpBool (*cpCollisionBeginFunc)&quot;</span>
+            <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">x</span>
+            
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_name</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_filename</span>
+                <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_firstlineno</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_name</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_filename</span>
+                <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_firstlineno</span>
+
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn_explicit</span><span class="p">(</span>
+                <span class="s">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s">&quot;&#39; should return a bool to&quot;</span>
+                <span class="s">&quot; indicate if the collision should be processed or not when&quot;</span>
+                <span class="s">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span> <span class="o">=</span> <span class="n">cf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">beginFunc</span> <span class="o">=</span> <span class="n">cf</span>
+
+    <span class="k">def</span> <span class="nf">_get_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span>
+
+    <span class="n">begin</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_begin</span><span class="p">,</span> <span class="n">_set_begin</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes just started touching for the first time this step.</span>
+
+<span class="s">        ``func(arbiter, space) -&gt; bool``</span>
+
+<span class="s">        Return true from the callback to process the collision normally or</span>
+<span class="s">        false to cause pymunk to ignore the collision entirely. If you return</span>
+<span class="s">        false, the `pre_solve` and `post_solve` callbacks will never be run,</span>
+<span class="s">        but you will still recieve a separate event when the shapes stop</span>
+<span class="s">        overlapping.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_pre_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef cpBool (*cpCollisionPreSolveFunc)&quot;</span>
+            <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">x</span>
+            
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_name</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_filename</span>
+                <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_firstlineno</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_name</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_filename</span>
+                <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_firstlineno</span>
+
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn_explicit</span><span class="p">(</span>
+                <span class="s">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s">&quot;&#39; should return a bool to&quot;</span>
+                <span class="s">&quot; indicate if the collision should be processed or not when&quot;</span>
+                <span class="s">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span> <span class="o">=</span> <span class="n">cf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">preSolveFunc</span> <span class="o">=</span> <span class="n">cf</span> 
+        
+    <span class="k">def</span> <span class="nf">_get_pre_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span>
+
+    <span class="n">pre_solve</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_pre_solve</span><span class="p">,</span> <span class="n">_set_pre_solve</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes are touching during this step.</span>
+
+<span class="s">        ``func(arbiter, space) -&gt; bool``</span>
+
+<span class="s">        Return false from the callback to make pymunk ignore the collision</span>
+<span class="s">        this step or true to process it normally. Additionally, you may</span>
+<span class="s">        override collision values using Arbiter.friction, Arbiter.elasticity</span>
+<span class="s">        or Arbiter.surfaceVelocity to provide custom friction, elasticity,</span>
+<span class="s">        or surface velocity values. See Arbiter for more info.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_post_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+    
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpCollisionPostSolveFunc)&quot;</span>
+            <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
+            <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+                
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span> <span class="o">=</span> <span class="n">cf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">postSolveFunc</span> <span class="o">=</span> <span class="n">cf</span>
+
+    <span class="k">def</span> <span class="nf">_get_post_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span>
+
+    <span class="n">post_solve</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_post_solve</span><span class="p">,</span> <span class="n">_set_post_solve</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes are touching and their collision response has been</span>
+<span class="s">        processed.</span>
+
+<span class="s">        ``func(arbiter, space)``</span>
+
+<span class="s">        You can retrieve the collision impulse or kinetic energy at this</span>
+<span class="s">        time if you want to use it to calculate sound volumes or damage</span>
+<span class="s">        amounts. See Arbiter for more info.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_separate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+    
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpCollisionSeparateFunc)&quot;</span>
+            <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
+            <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+                
+        <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span> <span class="o">=</span> <span class="n">cf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">separateFunc</span> <span class="o">=</span> <span class="n">cf</span>
+
+    <span class="k">def</span> <span class="nf">_get_separate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span>
+
+    <span class="n">separate</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_separate</span><span class="p">,</span> <span class="n">_set_separate</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes have just stopped touching for the first time this</span>
+<span class="s">        step.</span>
+
+<span class="s">        ``func(arbiter, space)``</span>
+
+<span class="s">        To ensure that begin()/separate() are always called in balanced</span>
+<span class="s">        pairs, it will also be called when removing a shape while its in</span>
+<span class="s">        contact with something or when deallocating the space.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/pymunk_logo_sphinx.png" alt="Logo"/>
+            </a></p><div style="margin-left:10px;">
+	<p>
+		<iframe src="http://ghbtns.com/github-btn.html?user=viblo&repo=pymunk&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+	</p>
+	<p>
+		<a href="https://travis-ci.org/viblo/pymunk">
+		    <img alt="https://travis-ci.org/viblo/pymunk.svg?branch=master" src="https://travis-ci.org/viblo/pymunk.svg?branch=master">
+		</a>
+	</p>
+</div>
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk">Source Repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/pymunk/">Downloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2013, Victor Blomqvist.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

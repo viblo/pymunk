@@ -49,48 +49,39 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk._query_info</h1><div class="highlight"><pre>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
-<div class="viewcode-block" id="PointQueryInfo"><a class="viewcode-back" href="../../pymunk.html#pymunk.PointQueryInfo">[docs]</a><span class="k">class</span> <span class="nc">PointQueryInfo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<div class="viewcode-block" id="PointQueryInfo"><a class="viewcode-back" href="../../pymunk.html#pymunk.PointQueryInfo">[docs]</a><span class="k">class</span> <span class="nc">PointQueryInfo</span><span class="p">(</span>
+    <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;PointQueryInfo&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;shape&#39;</span><span class="p">,</span> <span class="s">&#39;point&#39;</span><span class="p">,</span> <span class="s">&#39;distance&#39;</span><span class="p">,</span> <span class="s">&#39;gradient&#39;</span><span class="p">])):</span>
     <span class="sd">&quot;&quot;&quot;PointQueryInfo holds the result of a point query made on a Shape or</span>
 <span class="sd">    Space.</span>
+<span class="sd">    </span>
+<span class="sd">    The properties are as follows</span>
+<span class="sd">    </span>
+<span class="sd">    shape </span>
+<span class="sd">    The nearest shape, None if no shape was within range.</span>
+<span class="sd">    </span>
+<span class="sd">    point</span>
+<span class="sd">    The closest point on the shape&#39;s surface. (in world space</span>
+<span class="sd">    coordinates)</span>
+<span class="sd">    </span>
+<span class="sd">    distance</span>
+<span class="sd">    The distance to the point. The distance is negative if the</span>
+<span class="sd">    point is inside the shape.</span>
+<span class="sd">        </span>
+<span class="sd">    gradient</span>
+<span class="sd">    The gradient of the signed distance function.</span>
+
+<span class="sd">        The value should be similar to</span>
+<span class="sd">        PointQueryInfo.point/PointQueryInfo.distance, but accurate even for</span>
+<span class="sd">        very small values of info.distance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="PointQueryInfo.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.PointQueryInfo.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">gradient</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;You shouldn&#39;t need to initialize PointQueryInfo objects</span>
-<span class="sd">        manually.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">shape</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="n">point</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="o">=</span> <span class="n">distance</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_gradient</span> <span class="o">=</span> <span class="n">gradient</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 </div>
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;PointQueryInfo(</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span><span class="p">)</span>
-
-    <span class="n">shape</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;The nearest shape, None if no shape was within range.&quot;&quot;&quot;</span><span class="p">)</span>
-
-    <span class="n">point</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_point</span><span class="p">,</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;The closest point on the shape&#39;s surface. (in world space</span>
-<span class="s">        coordinates)</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
-
-    <span class="n">distance</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="p">,</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;The distance to the point. The distance is negative if the</span>
-<span class="s">        point is inside the shape.</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
-
-    <span class="n">gradient</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_gradient</span><span class="p">,</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;The gradient of the signed distance function.</span>
-
-<span class="s">        The value should be similar to</span>
-<span class="s">        PointQueryInfo.point/PointQueryInfo.distance, but accurate even for</span>
-<span class="s">        very small values of info.distance.</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="SegmentQueryInfo"><a class="viewcode-back" href="../../pymunk.html#pymunk.SegmentQueryInfo">[docs]</a><span class="k">class</span> <span class="nc">SegmentQueryInfo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="SegmentQueryInfo"><a class="viewcode-back" href="../../pymunk.html#pymunk.SegmentQueryInfo">[docs]</a><span class="k">class</span> <span class="nc">SegmentQueryInfo</span><span class="p">(</span>
+    <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;SegmentQueryInfo&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;shape&#39;</span><span class="p">,</span> <span class="s">&#39;point&#39;</span><span class="p">,</span> <span class="s">&#39;normal&#39;</span><span class="p">,</span> <span class="s">&#39;alpha&#39;</span><span class="p">])):</span>
     <span class="sd">&quot;&quot;&quot;Segment queries return more information than just a simple yes or no,</span>
 <span class="sd">    they also return where a shape was hit and it&#39;s surface normal at the hit</span>
 <span class="sd">    point. This object hold that information.</span>
@@ -104,32 +95,29 @@
 <span class="sd">    about the performance as long as you aren&#39;t using extremely long segments</span>
 <span class="sd">    for your queries.</span>
 
+<span class="sd">    The properties are as follows</span>
+
+<span class="sd">    shape</span>
+<span class="sd">    Shape that was hit, or None if no collision occured</span>
+<span class="sd">    </span>
+<span class="sd">    point </span>
+<span class="sd">    The point of impact.</span>
+
+<span class="sd">    normal</span>
+<span class="sd">    The normal of the surface hit.</span>
+<span class="sd">    </span>
+<span class="sd">    alpha</span>
+<span class="sd">    The normalized distance along the query segment in the range [0, 1]</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="SegmentQueryInfo.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.SegmentQueryInfo.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;You shouldn&#39;t need to initialize SegmentQueryInfo objects</span>
-<span class="sd">        manually.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">shape</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="n">point</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_normal</span> <span class="o">=</span> <span class="n">normal</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_alpha</span> <span class="o">=</span> <span class="n">alpha</span>
-</div>
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&quot;SegmentQueryInfo(</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
-
-    <span class="n">shape</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;Shape that was hit, or None if no collision occured&quot;&quot;&quot;</span><span class="p">)</span>
-
-    <span class="n">point</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point</span><span class="p">,</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;The point of impact.&quot;&quot;&quot;</span><span class="p">)</span>
-
-    <span class="n">normal</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normal</span><span class="p">,</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;The normal of the surface hit.&quot;&quot;&quot;</span><span class="p">)</span>
-
-    <span class="n">alpha</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alpha</span><span class="p">,</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;The normalized distance along the query segment in the</span>
-<span class="s">        range [0, 1]</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span></div>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+    </div>
+<span class="k">class</span> <span class="nc">ShapeQueryInfo</span><span class="p">(</span>
+    <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;ShapeQueryInfo&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;shape&#39;</span><span class="p">,</span> <span class="s">&#39;contact_point_set&#39;</span><span class="p">])):</span>
+    <span class="sd">&quot;&quot;&quot;Shape queries return more information than just a simple yes or no,</span>
+<span class="sd">    they also return where a shape was hit. This object hold that information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 </pre></div>
 
           </div>

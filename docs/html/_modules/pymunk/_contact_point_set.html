@@ -51,57 +51,47 @@
   <h1>Source code for pymunk._contact_point_set</h1><div class="highlight"><pre>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
-<span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">._base</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="k">class</span> <span class="nc">ContactPoint</span><span class="p">(</span><span class="n">Structure</span><span class="p">):</span>
+<div class="viewcode-block" id="ContactPoint"><a class="viewcode-back" href="../../pymunk.html#pymunk.ContactPoint">[docs]</a><span class="k">class</span> <span class="nc">ContactPoint</span><span class="p">(</span>
+    <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;ContactPoint&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;point_a&#39;</span><span class="p">,</span> <span class="s">&#39;point_b&#39;</span><span class="p">,</span> <span class="s">&#39;distance&#39;</span><span class="p">])):</span>
     <span class="sd">&quot;&quot;&quot;Contains information about a contact point. </span>
 <span class="sd">    </span>
-<span class="sd">    pointA and pointB are the contact position on the surface of each shape.</span>
+<span class="sd">    point_a and point_b are the contact position on the surface of each shape.</span>
 <span class="sd">    </span>
 <span class="sd">    distance is the penetration distance of the two shapes. Overlapping </span>
 <span class="sd">    means it will be negative. This value is calculated as </span>
 <span class="sd">    dot(point2 - point1), normal) and is ignored when you set the </span>
 <span class="sd">    Arbiter.contact_point_set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-     
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;pointA&#39;</span><span class="p">,</span> <span class="s">&#39;pointB&#39;</span><span class="p">,</span> <span class="s">&#39;distance&#39;</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;ContactPoint(</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointA</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointB</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">)</span>
     
-<span class="n">ContactPoint</span><span class="o">.</span><span class="n">_fields_</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s">&#39;pointA&#39;</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;pointB&#39;</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;distance&#39;</span><span class="p">,</span> <span class="n">cpFloat</span><span class="p">)</span>
-<span class="p">]</span>
-
-<div class="viewcode-block" id="ContactPointSet"><a class="viewcode-back" href="../../pymunk.html#pymunk.ContactPointSet">[docs]</a><span class="k">class</span> <span class="nc">ContactPointSet</span><span class="p">(</span><span class="n">Structure</span><span class="p">):</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+</div>
+<div class="viewcode-block" id="ContactPointSet"><a class="viewcode-back" href="../../pymunk.html#pymunk.ContactPointSet">[docs]</a><span class="k">class</span> <span class="nc">ContactPointSet</span><span class="p">(</span>
+    <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;ContactPointSet&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;normal&#39;</span><span class="p">,</span> <span class="s">&#39;points&#39;</span><span class="p">])):</span>
     <span class="sd">&quot;&quot;&quot;Contact point sets make getting contact information simpler.</span>
-<span class="sd">    </span>
-<span class="sd">    count is the number of contact points in the set.</span>
 <span class="sd">    </span>
 <span class="sd">    normal is the normal of the collision</span>
 <span class="sd">    </span>
 <span class="sd">    points is the array of contact points. Can be at most 2 points.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;count&quot;</span><span class="p">,</span> <span class="s">&quot;normal&quot;</span><span class="p">,</span> <span class="s">&quot;points&quot;</span><span class="p">]</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
     
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
-            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">__repr__</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
-        <span class="k">return</span> <span class="s">&#39;ContactPointSet(</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, [</span><span class="si">%s</span><span class="s">])&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
-</div>
-<span class="n">ContactPointSet</span><span class="o">.</span><span class="n">_fields_</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s">&#39;count&#39;</span><span class="p">,</span> <span class="n">c_int</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;normal&#39;</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;points&#39;</span><span class="p">,</span> <span class="n">ContactPoint</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-<span class="p">]</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_from_cp</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">_points</span><span class="p">):</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">_points</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span>
+        
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span> 
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_points</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
+            <span class="n">_p</span> <span class="o">=</span> <span class="n">_points</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">ContactPoint</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">_p</span><span class="o">.</span><span class="n">pointA</span><span class="p">),</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">_p</span><span class="o">.</span><span class="n">pointB</span><span class="p">),</span> <span class="n">_p</span><span class="o">.</span><span class="n">distance</span><span class="p">)</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

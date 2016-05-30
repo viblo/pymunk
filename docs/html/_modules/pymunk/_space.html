@@ -51,69 +51,61 @@
   <h1>Source code for pymunk._space</h1><div class="highlight"><pre>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
-<span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">ct</span>
 <span class="kn">import</span> <span class="nn">weakref</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="c">#Python 2.7+</span>
-    <span class="kn">from</span> <span class="nn">weakref</span> <span class="kn">import</span> <span class="n">WeakSet</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">.weakrefset</span> <span class="kn">import</span> <span class="n">WeakSet</span>
+<span class="kn">from</span> <span class="nn">weakref</span> <span class="kn">import</span> <span class="n">WeakSet</span>
     
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk</span> <span class="k">as</span> <span class="n">cp</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
+<span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
+<span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>    
+    
+<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">._body</span> <span class="kn">import</span> <span class="n">Body</span>
 <span class="kn">from</span> <span class="nn">._collision_handler</span> <span class="kn">import</span> <span class="n">CollisionHandler</span>
-<span class="kn">from</span> <span class="nn">._query_info</span> <span class="kn">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span>
+<span class="kn">from</span> <span class="nn">._query_info</span> <span class="kn">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span><span class="p">,</span> <span class="n">ShapeQueryInfo</span>
 <span class="kn">from</span> <span class="nn">._shapes</span> <span class="kn">import</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Poly</span><span class="p">,</span> <span class="n">Segment</span>
-<span class="kn">from</span> <span class="nn">pymunk.constraint</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">._contact_point_set</span> <span class="kn">import</span> <span class="n">ContactPointSet</span>
+<span class="kn">from</span> <span class="nn">pymunk.constraint</span> <span class="kn">import</span> <span class="n">Constraint</span>
 
 <div class="viewcode-block" id="Space"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space">[docs]</a><span class="k">class</span> <span class="nc">Space</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Spaces are the basic unit of simulation. You add rigid bodies, shapes</span>
 <span class="sd">    and joints to it and then step them all forward together through time.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="Space.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="Space.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new instace of the Space</span>
-
-<span class="sd">        Its usually best to keep the elastic_iterations setting to 0. Only</span>
-<span class="sd">        change if you have problem with stacking elastic objects on each other.</span>
-<span class="sd">        If that is the case, try to raise it. However, a value other than 0</span>
-<span class="sd">        will affect other parts, most importantly you wont get reliable</span>
-<span class="sd">        total_impulse readings from the `Arbiter` object in collsion callbacks!</span>
-
-<span class="sd">        :Parameters:</span>
-<span class="sd">            iterations : int</span>
-<span class="sd">                Number of iterations to use in the impulse solver to solve</span>
-<span class="sd">                contacts.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceNew</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">iterations</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="n">Body</span><span class="p">(</span><span class="n">body_type</span><span class="o">=</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="bp">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span> <span class="o">=</span> <span class="p">{}</span> <span class="c"># To prevent the gc to collect the callbacks.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_default_handler</span> <span class="o">=</span> <span class="bp">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_callback_keys</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_last_callback_key</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_removed_shapes</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bodies</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span> <span class="o">=</span> <span class="bp">False</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_later</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_remove_later</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
 </div>
     <span class="k">def</span> <span class="nf">_get_self</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="nf">_get_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A list of all the shapes added to this space </span>
+<span class="sd">        </span>
+<span class="sd">        (includes both static and non-static)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
     <span class="n">shapes</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_shapes</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;A list of all the shapes added to this space (both static and non-static)&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">_get_shapes</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_bodies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bodies</span><span class="p">)</span>
@@ -126,12 +118,21 @@
         <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;A list of the constraints added to this space&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_static_body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A convenience static body already added to the space&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;A dedicated static body for the space. </span>
+<span class="sd">        </span>
+<span class="sd">        You don&#39;t have to use it, but because its memory is managed </span>
+<span class="sd">        automatically with the space its very convenient. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetStaticBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="n">Body</span><span class="o">.</span><span class="n">_init_with_body</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span>
     <span class="n">static_body</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_static_body</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">_get_static_body</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="c">#del self._static_body</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceFree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">pass</span>
@@ -163,7 +164,7 @@
     <span class="k">def</span> <span class="nf">_set_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gravity_vector</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSetGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">gravity_vector</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_get_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">))</span>
     <span class="n">gravity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_gravity</span><span class="p">,</span> <span class="n">_set_gravity</span>
         <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Global gravity applied to the space.</span>
 
@@ -273,7 +274,7 @@
 <span class="sd">        add will not be performed until the end of the step.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_later</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
             <span class="k">return</span>
 
@@ -301,7 +302,7 @@
 <span class="sd">            body, remove the joints and shapes attached to it.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_remove_later</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
             <span class="k">return</span>
 
@@ -368,18 +369,17 @@
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceReindexStatic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Space.step"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update the space for the given time step. Using a fixed time step is</span>
-<span class="sd">        highly recommended. Doing so will increase the efficiency of the</span>
-<span class="sd">        contact persistence, requiring an order of magnitude fewer iterations</span>
-<span class="sd">        to resolve the collisions in the usual case.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Update the space for the given time step. </span>
+<span class="sd">        </span>
+<span class="sd">        Using a fixed time step is highly recommended. Doing so will increase </span>
+<span class="sd">        the efficiency of the contact persistence, requiring an order of </span>
+<span class="sd">        magnitude fewer iterations to resolve the collisions in the usual case.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceStep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_removed_shapes</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_callback_keys</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_last_callback_key</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">objs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_later</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
@@ -388,6 +388,11 @@
         <span class="k">for</span> <span class="n">objs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remove_later</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_remove_later</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">[</span><span class="n">key</span><span class="p">](</span><span class="bp">self</span><span class="p">)</span>  
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span> <span class="o">=</span> <span class="p">{}</span>  
 
 </div>
 <div class="viewcode-block" id="Space.collision_handler"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.collision_handler">[docs]</a>    <span class="k">def</span> <span class="nf">collision_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">,</span> <span class="n">collision_type_b</span><span class="p">):</span>
@@ -403,8 +408,16 @@
 <span class="sd">        set to builtin callbacks that perform the default behavior (call the</span>
 <span class="sd">        wildcard handlers, and accept all collisions).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
+        
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">collision_type_a</span><span class="p">,</span> <span class="n">collision_type_b</span><span class="p">)</span> 
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        
         <span class="n">h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddCollisionHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">,</span> <span class="n">collision_type_b</span><span class="p">)</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch</span>
+        <span class="k">return</span> <span class="n">ch</span>
+        
         <span class="n">p</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">userData</span>
         <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span>
@@ -430,7 +443,16 @@
 <span class="sd">        post_solve() and separate().</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="k">if</span> <span class="n">collision_type_a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">collision_type_a</span><span class="p">]</span>
+            
         <span class="n">h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddWildcardHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">)</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">collision_type_a</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch</span>
+        <span class="k">return</span> <span class="n">ch</span>
+        
+        
+        <span class="k">return</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">userData</span>
         <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span>
@@ -448,8 +470,14 @@
 <span class="sd">        the wildcard handlers, ANDing their return values together if</span>
 <span class="sd">        applicable.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddDefaultCollisionHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">None</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span>
+        
+        <span class="n">_h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddDefaultCollisionHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">_h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">return</span> <span class="n">h</span>
+        
         <span class="n">p</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">userData</span>
         <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span>
@@ -458,7 +486,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
 </div>
-<div class="viewcode-block" id="Space.add_post_step_callback"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add_post_step_callback">[docs]</a>    <span class="k">def</span> <span class="nf">add_post_step_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_function</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Space.add_post_step_callback"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add_post_step_callback">[docs]</a>    <span class="k">def</span> <span class="nf">add_post_step_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_function</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a function to be called last in the next simulation step.</span>
 
 <span class="sd">        Post step callbacks are registered as a function and an object used as</span>
@@ -475,7 +503,7 @@
 <span class="sd">            touching when removed.</span>
 
 <span class="sd">        :Parameters:</span>
-<span class="sd">            callback_function : ``func(obj, *args, **kwargs)``</span>
+<span class="sd">            callback_function : ``func(space, key, *args, **kwargs)``</span>
 <span class="sd">                The callback function.</span>
 <span class="sd">            obj : Any object</span>
 <span class="sd">                This object is used as a key, you can only have one callback</span>
@@ -489,21 +517,15 @@
 <span class="sd">            True if key was not previously added, False otherwise</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_callback_keys</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
-
-        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_space</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-            <span class="n">callback_function</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="n">f</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPostStepFunc</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_last_callback_key</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_callback_keys</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_last_callback_key</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
-
-        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_callback_keys</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddPostStepCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
-</div>
+        
+        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">callback_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="k">return</span> <span class="bp">True</span>
+        </div>
 <div class="viewcode-block" id="Space.point_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.point_query">[docs]</a>    <span class="k">def</span> <span class="nf">point_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query space at point for shapes within the given distance range.</span>
 
@@ -525,14 +547,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;void (*cpSpacePointQueryFunc)&quot;</span>
+            <span class="s">&quot;(cpShape *shape, cpVect point, cpFloat distance, cpVect gradient, void *data)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-
+            <span class="c"># space = ffi.from_handle(data)</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="n">PointQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">gradient</span><span class="p">)</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">PointQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">distance</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">gradient</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQueryFunc</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-
+            
+        <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span>
 </div>
     <span class="k">def</span> <span class="nf">_get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_shape</span><span class="p">):</span>
@@ -545,6 +570,8 @@
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">[</span><span class="n">shapeid</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">shapeid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_removed_shapes</span><span class="p">:</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_removed_shapes</span><span class="p">[</span><span class="n">shapeid</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">return</span> <span class="n">shape</span>
 
 <div class="viewcode-block" id="Space.point_query_nearest"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.point_query_nearest">[docs]</a>    <span class="k">def</span> <span class="nf">point_query_nearest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
@@ -567,13 +594,20 @@
 <span class="sd">            shape_filter : ShapeFilter</span>
 <span class="sd">                Only pick shapes matching the filter.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPointQueryInfo</span><span class="p">()</span>
-        <span class="n">info_p</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPointQueryInfo</span><span class="p">)(</span><span class="n">info</span><span class="p">)</span>
-        <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQueryNearest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">info_p</span><span class="p">)</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;cpPointQueryInfo *&quot;</span><span class="p">)</span>
+        <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQueryNearest</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> 
+            <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> 
+            <span class="n">shape_filter</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+        
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">PointQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">PointQueryInfo</span><span class="p">(</span>
+                <span class="n">shape</span><span class="p">,</span> 
+                <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> 
+                <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> 
+                <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">None</span>
 
 </div>
@@ -589,14 +623,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;void (*cpSpaceSegmentQueryFunc)&quot;</span>
+            <span class="s">&quot;(cpShape *shape, cpVect point, cpVect normal, cpFloat alpha,&quot;</span>
+            <span class="s">&quot; void *data)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
-            <span class="n">info</span> <span class="o">=</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-
-        <span class="n">f</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQueryFunc</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-
+            <span class="n">p</span> <span class="o">=</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">normal</span><span class="p">),</span> <span class="n">alpha</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            
+        <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span>
 </div>
 <div class="viewcode-block" id="Space.segment_query_first"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.segment_query_first">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query_first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span>  <span class="n">shape_filter</span><span class="p">):</span>
@@ -610,13 +647,20 @@
 <span class="sd">            `SegmentQueryInfo` - SegmentQueryInfo object or None if nothing</span>
 <span class="sd">            was hit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentQueryInfo</span><span class="p">()</span>
-        <span class="n">info_p</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentQueryInfo</span><span class="p">)(</span><span class="n">info</span><span class="p">)</span>
-        <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQueryFirst</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">info_p</span><span class="p">)</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;cpSegmentQueryInfo *&quot;</span><span class="p">)</span>
+        <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQueryFirst</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> 
+            <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> 
+            <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> 
+            <span class="n">info</span><span class="p">)</span>
 
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span>
+                <span class="n">shape</span><span class="p">,</span> 
+                <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> 
+                <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">normal</span><span class="p">),</span> 
+                <span class="n">info</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">None</span>
 
 </div>
@@ -630,11 +674,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpSpaceBBQueryFunc)&quot;</span>
+            <span class="s">&quot;(cpShape *shape, void *data)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceBBQueryFunc</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceBBQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        
+        <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceBBQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span>
 
 </div>
@@ -645,12 +692,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpSpaceShapeQueryFunc)&quot;</span>
+            <span class="s">&quot;(cpShape *shape, cpContactPointSet *points, void *data)&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">_points</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceShapeQueryFunc</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceShapeQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="n">point_set</span> <span class="o">=</span> <span class="n">ContactPointSet</span><span class="o">.</span><span class="n">_from_cp</span><span class="p">(</span><span class="n">_points</span><span class="p">)</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="n">ShapeQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">point_set</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+            
+        <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceShapeQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span></div></div>
 </pre></div>
 
