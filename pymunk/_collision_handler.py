@@ -26,7 +26,7 @@ class CollisionHandler(object):
     runs. If an object falls asleep, its postSolve() callback won't be
     called until it's reawoken.
     """
-    def __init__(self, _handler, space):
+    def __init__(self, _handler, space, *args, **kwargs):
         """Initialize a CollisionHandler object from the Chipmunk equivalent
         struct and the Space.
 
@@ -40,12 +40,23 @@ class CollisionHandler(object):
         self._post_solve = None
         self._separate = None
 
+        self._data = {}
+        
+        
+    def _get_data(self):
+        return self._data
+    data = property(_get_data, doc="""Data property that get passed on into the
+    callbacks.
+    
+    Usefull if the callback needs some extra data to perform its function. 
+    """)    
+
     def _set_begin(self, func):
         
         @ffi.callback("typedef cpBool (*cpCollisionBeginFunc)"
             "(cpArbiter *arb, cpSpace *space, cpDataPointer userData)")
-        def cf(_arb, _space, _data):
-            x = func(Arbiter(_arb, self._space), self._space)
+        def cf(_arb, _space, _):
+            x = func(Arbiter(_arb, self._space), self._space, self._data)
             if isinstance(x,int):
                 return x
             
@@ -88,7 +99,7 @@ class CollisionHandler(object):
         @ffi.callback("typedef cpBool (*cpCollisionPreSolveFunc)"
             "(cpArbiter *arb, cpSpace *space, cpDataPointer userData)")
         def cf(_arb, _space, _data):
-            x = func(Arbiter(_arb, self._space), self._space)
+            x = func(Arbiter(_arb, self._space), self._space, self._data)
             if isinstance(x,int):
                 return x
             
@@ -131,7 +142,7 @@ class CollisionHandler(object):
         @ffi.callback("typedef void (*cpCollisionPostSolveFunc)"
             "(cpArbiter *arb, cpSpace *space, cpDataPointer userData)")
         def cf(_arb, _space, _data):
-            func(Arbiter(_arb, self._space), self._space)
+            func(Arbiter(_arb, self._space), self._space, self._data)
                 
         self._post_solve = cf
         self._handler.postSolveFunc = cf
@@ -155,7 +166,7 @@ class CollisionHandler(object):
         @ffi.callback("typedef void (*cpCollisionSeparateFunc)"
             "(cpArbiter *arb, cpSpace *space, cpDataPointer userData)")
         def cf(_arb, _space, _data):
-            func(Arbiter(_arb, self._space), self._space)
+            func(Arbiter(_arb, self._space), self._space, self._data)
                 
         self._separate = cf
         self._handler.separateFunc = cf

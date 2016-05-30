@@ -26,22 +26,22 @@ def create_arrow():
     arrow_shape.collision_type = 1
     return arrow_body, arrow_shape
     
-def stick_arrow_to_target(arrow_body, target_body, position, space):
+def stick_arrow_to_target(space, arrow_body, target_body, position):
     pivot_joint = pymunk.PivotJoint(arrow_body, target_body, position)
     phase = target_body.angle - arrow_body.angle 
     gear_joint = pymunk.GearJoint(arrow_body, target_body,phase,1)
     space.add(pivot_joint)
     space.add(gear_joint)
 
-def post_solve_arrow_hit(space, arbiter):
+def post_solve_arrow_hit(arbiter, space):
     if arbiter.total_impulse.length > 300:
         a,b = arbiter.shapes
-        position = arbiter.contacts[0].position
+        position = arbiter.contact_point_set.points[0].point_a
         b.collision_type = 0
         b.group = 1
         other_body = a.body
         arrow_body = b.body
-        space.add_post_step_callback(stick_arrow_to_target, arrow_body, other_body, position, space)
+        space.add_post_step_callback(stick_arrow_to_target, arrow_body, other_body, position)
     
 width, height = 690,600
 def main():

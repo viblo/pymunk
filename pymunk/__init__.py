@@ -41,14 +41,15 @@ exactly which Chipmunk library file it loaded. For example::
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-'''
+
 __all__ = ["inf", "version", "chipmunk_version"
         , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
         , "moment_for_circle", "moment_for_poly", "moment_for_segment"
         , "moment_for_box"
-        , "SegmentQueryInfo", "ContactPointSet", "Arbiter", "BB", "ShapeFilter"
+        , "SegmentQueryInfo", "ContactPoint", "ContactPointSet", "Arbiter"
+        , "CollisionHandler" 
+        , "BB", "ShapeFilter"
         , "Transform", "PointQueryInfo"]
-'''
 
 import warnings
 import sys
@@ -60,12 +61,12 @@ ffi = _chipmunk_cffi.ffi
 #from . import util as u
 from .vec2d import Vec2d
 from ._chipmunk_manual import ShapeFilter, Transform
-#from ._contact_point_set import ContactPoint, ContactPointSet
-#from ._arbiter import Arbiter
+from ._contact_point_set import ContactPoint, ContactPointSet
+from ._arbiter import Arbiter
 from ._bb import BB
 from ._body import Body
-#from ._collision_handler import CollisionHandler
-#from ._query_info import PointQueryInfo, SegmentQueryInfo
+from ._collision_handler import CollisionHandler
+from ._query_info import PointQueryInfo, SegmentQueryInfo
 from ._shapes import Shape, Circle, Poly, Segment
 from ._space import Space
 from pymunk.constraint import *

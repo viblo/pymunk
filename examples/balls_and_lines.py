@@ -23,7 +23,7 @@ def flipy(y):
     """Small hack to convert chipmunk physics to pygame coordinates"""
     return -y+600
 
-def mouse_coll_func(space, arbiter):
+def mouse_coll_func(arbiter, space):
     """Simple callback that increases the radius of circles touching the mouse"""
     s1,s2 = arbiter.shapes
     s2.unsafe_set_radius(s2.radius + 0.15)

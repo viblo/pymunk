@@ -14,11 +14,11 @@ class PointQueryInfo(
     
     point
     The closest point on the shape's surface. (in world space
-        coordinates)
+    coordinates)
     
     distance
     The distance to the point. The distance is negative if the
-        point is inside the shape.
+    point is inside the shape.
         
     gradient
     The gradient of the signed distance function.

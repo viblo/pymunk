@@ -84,6 +84,7 @@ class Body(object):
         overwite your custom mass value when the shapes are added to the body.
         """
         if body_type == Body.DYNAMIC:
+            assert mass != 0 and moment != 0, "dynamic body with 0 mass and/or moment"
             self._body = cp.cpBodyNew(mass, moment)
         elif body_type == Body.KINEMATIC:
             self._body = cp.cpBodyNewKinematic()

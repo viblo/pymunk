@@ -38,7 +38,7 @@ class PyramidDemo:
         for i in range(25):
             y = Vec2d(x)
             for j in range(i, 25):
-                size= 5
+                size = 5
                 points = [(-size, -size), (-size, size), (size,size), (size, -size)]
                 mass = 1.0
                 moment = pymunk.moment_for_poly(mass, points, (0,0))

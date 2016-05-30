@@ -14,12 +14,12 @@ from pygame.color import *
 import pymunk as pm
 from pymunk import Vec2d
 
-def draw_collision(space, arb, surface):
-    for c in arb.contacts:
+def draw_collision(arbiter, space, data):
+    for c in arbiter.contact_point_set.points:
         r = max( 3, abs(c.distance*5) )
         r = int(r)
-        p = map(int, c.position)
-        pygame.draw.circle(surface, THECOLORS["red"], p, r, 0)
+        p = map(int, c.point_a)
+        pygame.draw.circle(data["surface"], THECOLORS["red"], p, r, 0)
     
 def main():
     
@@ -39,7 +39,7 @@ def main():
     balls = []
        
     ### walls
-    static_body = pm.Body()
+    static_body = pm.Body(body_type = pm.Body.STATIC)
     static_lines = [pm.Segment(static_body, (111.0, 320.0), (407.0, 354.0), 0.0)
                     ,pm.Segment(static_body, (407.0, 354.0), (407.0, 257.0), 0.0)
                     ]    
@@ -47,7 +47,9 @@ def main():
     
     ticks_to_next_ball = 10
 
-    space.add_collision_handler(0, 0, None, None, draw_collision, None, surface=screen)
+    ch = space.collision_handler(0, 0)
+    ch.data["surface"] = screen
+    ch.post_solve = draw_collision
     
     while running:
         for event in pygame.event.get():

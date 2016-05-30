@@ -29,7 +29,7 @@ space.gravity = (0.0, -900.0)
 balls = []
    
 ### walls
-static_body = pm.Body(pm.Body.STATIC)
+static_body = space.static_body
 static_lines = [pm.Segment(static_body, (111.0, 280.0), (407.0, 246.0), 0.0)
                 ,pm.Segment(static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
                 ]  
