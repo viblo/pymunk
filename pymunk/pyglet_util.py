@@ -137,7 +137,7 @@ def _draw_circle(circle, batch = None):
     r = 0
     if hasattr(circle, "color"):
         color = circle.color  
-    elif circle.body.is_static:
+    elif circle.body.body_type == pymunk.Body.STATIC:
         color = (200, 200, 200)
         r = 1
     else:
@@ -161,7 +161,7 @@ def _draw_circle(circle, batch = None):
         y = s * t + c * y
                
     
-    if circle.body.is_static:
+    if circle.body.body_type == pymunk.Body.STATIC:
         mode = pyglet.gl.GL_LINES
         ps = [p for p in ps+ps[:1] for _ in (0, 1)]
     else:
@@ -203,12 +203,12 @@ def _draw_poly(poly, batch = None):
     
     if hasattr(poly, "color"):
         color = poly.color  
-    elif poly.body.is_static:
+    elif poly.body.body_type == pymunk.Body.STATIC:
         color = (200, 200, 200)
     else:
         color = (0, 255, 0)
         
-    if poly.body.is_static:
+    if poly.body.body_type == pymunk.Body.STATIC:
         mode = pyglet.gl.GL_LINES
         ps = [p for p in ps+ps[:1] for _ in (0, 1)]
     else:
@@ -248,7 +248,7 @@ def _draw_segment(segment, batch = None):
     
     if hasattr(segment, "color"):
         color = segment.color  
-    elif segment.body.is_static:
+    elif segment.body.body_type == pymunk.Body.STATIC:
         color = (200, 200, 200)
     else:
         color = (0, 0, 255)
@@ -271,12 +271,12 @@ def _draw_constraint(constraint, batch=None):
         pv2 = constraint.a.position + constraint.groove_b.rotated(constraint.a.angle)
         _draw_line(pv1, pv2, darkgrey, batch)
     elif isinstance(constraint, pymunk.PinJoint):
-        pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
-        pv2 = constraint.b.position + constraint.anchr2.rotated(constraint.b.angle)
+        pv1 = constraint.a.position + constraint.anchor_a.rotated(constraint.a.angle)
+        pv2 = constraint.b.position + constraint.anchor_b.rotated(constraint.b.angle)
         _draw_line(pv1, pv2, darkgrey, batch)
     elif hasattr(constraint, "anchr1"):
-        pv1 = constraint.a.position + constraint.anchr1.rotated(constraint.a.angle)
-        pv2 = constraint.b.position + constraint.anchr2.rotated(constraint.b.angle)
+        pv1 = constraint.a.position + constraint.anchor_a.rotated(constraint.a.angle)
+        pv2 = constraint.b.position + constraint.anchor_b.rotated(constraint.b.angle)
         _draw_line(pv1, pv2, darkgrey, batch)
     else:
         pv1 = constraint.a.position
