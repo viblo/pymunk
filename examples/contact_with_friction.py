@@ -21,12 +21,12 @@ def to_pygame(p):
     """Small hack to convert pymunk to pygame coordinates"""
     return int(p.x), int(-p.y+600)
 
-def draw_collision(space, arb, surface):
-    for c in arb.contacts:
+def draw_collision(arbiter, space, data):
+    for c in arbiter.contact_point_set.points:
         r = max( 3, abs(c.distance*5) )
         r = int(r)
-        p = to_pygame(c.position)
-        pygame.draw.circle(surface, THECOLORS["black"], p, r, 1)
+        p = to_pygame(c.point_a)
+        pygame.draw.circle(data["surface"], THECOLORS["black"], p, r, 1)
     
 def main():
     
@@ -55,7 +55,9 @@ def main():
     
     ticks_to_next_ball = 10
     
-    space.add_collision_handler(0, 0, None, None, draw_collision, None, surface=screen)
+    ch = space.collision_handler(0, 0)
+    ch.data["surface"] = screen
+    ch.post_solve = draw_collision
     
     while running:
         for event in pygame.event.get():

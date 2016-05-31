@@ -26,7 +26,7 @@ def main():
     ### Physics stuff
     space = pymunk.Space()
                 
-    pointer_body = pymunk.Body()
+    pointer_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
     
     ps = [(80,0),(0,20),(0,-20)]
     moment = pymunk.moment_for_poly(1, ps)
