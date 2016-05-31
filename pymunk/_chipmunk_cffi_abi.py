@@ -1281,7 +1281,11 @@ ffi.cdef("""
     /// Set the radius of a poly shape.
     void cpPolyShapeSetRadius(cpShape *shape, cpFloat radius);
 """)
-path = """c:\code\gh\pymunk\pymunk\chipmunk.dll"""
-#path = "/home/blomqvist/code/pymunk/pymunk/libchipmunk64.so"
-lib = ffi.dlopen(path)                     # loads the entire C namespace
 
+from ._libload import load_library
+try:
+    import pymunkoptions
+    _lib_debug = pymunkoptions.options["debug"]
+except:
+    _lib_debug = True #Set to True to print the Chipmunk path.
+lib = load_library(ffi, "chipmunk", debug_lib=_lib_debug)

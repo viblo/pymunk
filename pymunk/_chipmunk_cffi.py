@@ -4,7 +4,7 @@ if False:
     lib = _chipmunk_cffi_api.lib
     ffi = _chipmunk_cffi_api.ffi
 else:
-    print("abi mode")
+    #print("abi mode")
     from . import _chipmunk_cffi_abi
     lib = _chipmunk_cffi_abi.lib
     ffi = _chipmunk_cffi_abi.ffi

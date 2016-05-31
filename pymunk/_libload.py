@@ -6,21 +6,7 @@ import platform
 import sys, imp, os
 import ctypes
  
-def platform_specific_functions():
-    # use stddecl on windows, cdecl on all other platforms
-    
-    d = {'library_loader' : ctypes.cdll
-        ,'function_pointer' : ctypes.CFUNCTYPE
-        }
-    
-    if platform.system() in ('Windows', 'Microsoft'):
-        #d['library_loader'] = ctypes.windll
-        #d['function_pointer'] = ctypes.WINFUNCTYPE
-        pass
-    return d
-    
- 
-def load_library(libname, debug_lib=True):
+def load_library(ffi, libname, debug_lib=True):
     # lib gets loaded from
     # 32bit python: pymunk/libchipmunk.so, libchipmunk.dylib or chipmunk.dll
     # 64 bit python pymunk/libchipmunk64.so, libchipmunk.dylib or chipmunk64.dll
@@ -33,7 +19,7 @@ def load_library(libname, debug_lib=True):
     try:
         if hasattr(sys, "frozen") or \
             hasattr(sys, "importers") or \
-            hasattr(imp, "is_frozen") and imp.is_forzen("__main__"):
+            hasattr(imp, "is_frozen") and imp.is_frozen("__main__"):
             if 'site-packages.zip' in __file__:
                 path = os.path.join(os.path.dirname(os.getcwd()), 'Frameworks')
             else:
@@ -50,12 +36,6 @@ def load_library(libname, debug_lib=True):
         libfn = "lib%s%s.so" % (libname, arch_param)
         
     elif s in ('Windows', 'Microsoft'):
-        if arch == "32" and debug_lib:
-            print ("""
-WARNING! 
-There are known blocker bugs in 64-bit pymunk on Windows.
-Use at your own risk. 
-""")
         libfn = "%s%s.dll" % (libname, arch_param)
         
     elif s == 'Darwin':
@@ -71,7 +51,7 @@ Use at your own risk.
     if debug_lib:
         print ("Loading chipmunk for %s (%sbit) [%s]" % (s, arch, libfn))
     try:
-        lib = platform_specific_functions()['library_loader'].LoadLibrary(libfn)
+        lib = ffi.dlopen(libfn)
     except OSError: 
         print ("""
 Failed to load pymunk library.
