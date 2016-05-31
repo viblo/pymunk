@@ -402,12 +402,14 @@ class UnitTestSpace(unittest.TestCase):
         c2 = p.Circle(b2, 10)
         s.add(b1, c1, b2, c2)
         
+        
         self.hits = 0
         def begin(space, arb, data):
-            self.hits += 1
+            self.hits += h.data["test"]
             return True
 
         h = s.collision_handler(0, 0)
+        h.data["test"] = 1
         h.begin = begin
 
         for x in range(10):
@@ -448,13 +450,17 @@ class UnitTestSpace(unittest.TestCase):
         def pre_solve(arb, space, data):
             d["shapes"] = arb.shapes
             d["space"] = space
+            d["test"] = data["test"]
             return True
 
-        s.collision_handler(0,1).pre_solve = pre_solve
+        h = s.collision_handler(0,1)
+        h.data["test"] = 1
+        h.pre_solve = pre_solve
         s.step(0.1)
         self.assertEqual(c1, d["shapes"][1])
         self.assertEqual(c2, d["shapes"][0])
         self.assertEqual(s, d["space"])
+        self.assertEqual(1, d["test"])
 
     def testCollisionHandlerPreSolveNoReturn(self):        
         s = p.Space()
@@ -501,9 +507,11 @@ class UnitTestSpace(unittest.TestCase):
 
         self.separated = False
         def separate(arb, space, data):
-            self.separated = True
+            self.separated = data["test"]
 
-        s.collision_handler(0,0).separate = separate
+        h = s.collision_handler(0,0)
+        h.data["test"] = True
+        h.separate = separate
 
         for x in range(10):
             s.step(0.1)
