@@ -33,7 +33,7 @@ def stick_arrow_to_target(space, arrow_body, target_body, position):
     space.add(pivot_joint)
     space.add(gear_joint)
 
-def post_solve_arrow_hit(arbiter, space):
+def post_solve_arrow_hit(arbiter, space, data):
     if arbiter.total_impulse.length > 300:
         a,b = arbiter.shapes
         position = arbiter.contact_point_set.points[0].point_a
@@ -62,7 +62,7 @@ def main():
                 ,pymunk.Segment(space.static_body, (50, 50), (650, 50), 5)
                 ]  
     
-    b2 = pymunk.Body()
+    b2 = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
     static.append(pymunk.Circle(b2, 30))
     b2.position = 300,400
     
