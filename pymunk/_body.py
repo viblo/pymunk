@@ -61,7 +61,6 @@ class Body(object):
     useful for simplifying your code by allowing different parts of your
     static geometry to be initialized or moved separately.
     """
-
     def __init__(self, mass=0, moment=0, body_type=DYNAMIC):
         """Create a new Body
 

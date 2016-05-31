@@ -205,7 +205,7 @@ class UnitTestSegment(unittest.TestCase):
         s.add(b1,b2,c1,c2)
 
         self.num_of_begins = 0
-        def begin(space, arb):
+        def begin(arb, space, data):
             self.num_of_begins += 1
             return True
             

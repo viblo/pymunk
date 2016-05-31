@@ -55,7 +55,7 @@ class UnitTestConstraint(unittest.TestCase):
         self.assertAlmostEqual(j.impulse, 50)
 
     def testActivate(self):
-        a,b = p.Body(), p.Body(10,10)
+        a,b = p.Body(4,5), p.Body(10,10)
         j = p.PivotJoint(a,b,(0,0))
         s = p.Space()
         s.sleep_time_threshold = 0.01

@@ -116,13 +116,13 @@ class UnitTestSpace(unittest.TestCase):
         b = p.Body(1, 2)
         c = p.Circle(b, 2)
         
-        def pre_solve_add(arbiter, space):
+        def pre_solve_add(arbiter, space, data):
             space.add(b, c)
             self.assertTrue(b not in s.bodies)
             self.assertTrue(c not in s.shapes)
             return True
 
-        def pre_solve_remove(arbiter, space):
+        def pre_solve_remove(arbiter, space, data):
             space.remove(b, c)
             self.assertTrue(b in s.bodies)
             self.assertTrue(c in s.shapes)
@@ -145,7 +145,7 @@ class UnitTestSpace(unittest.TestCase):
     def testRemoveInStep(self):
         s = self.s
 
-        def pre_solve(arbiter, space):
+        def pre_solve(arbiter, space, data):
             space.remove(arbiter.shapes)
             return True
 
@@ -234,7 +234,7 @@ class UnitTestSpace(unittest.TestCase):
 
     def testShapeQuery(self):
 
-        b = p.Body()
+        b = p.Body(body_type=p.Body.KINEMATIC)
         s = p.Circle(b, 2)
         b.position = 20,1
 
@@ -245,7 +245,7 @@ class UnitTestSpace(unittest.TestCase):
 
 
     def testStaticPointQueries(self):
-        b = p.Body()
+        b = p.Body(body_type=p.Body.KINEMATIC)
         c = p.Circle(b, 10)
         b.position = -50,-50
 
@@ -260,7 +260,7 @@ class UnitTestSpace(unittest.TestCase):
     def testReindexShape(self):
         s = p.Space()
         
-        b = p.Body()
+        b = p.Body(body_type=p.Body.KINEMATIC)
         c = p.Circle(b, 10)
 
         s.add(c)
@@ -383,7 +383,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hit, None)
 
     def testStaticSegmentQueries(self):
-        b = p.Body()
+        b = p.Body(body_type=p.Body.KINEMATIC)
         c = p.Circle(b, 10)
         b.position = -50,-50
 
@@ -403,7 +403,7 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         
         self.hits = 0
-        def begin(space, arb):
+        def begin(space, arb, data):
             self.hits += 1
             return True
 
@@ -426,7 +426,7 @@ class UnitTestSpace(unittest.TestCase):
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
 
-            def begin(space, arb):
+            def begin(space, arb, data):
                 return
 
             s.collision_handler(0,0).begin = begin
@@ -445,7 +445,7 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, c1, b2, c2)
 
         d = {}
-        def pre_solve(arb, space):
+        def pre_solve(arb, space, data):
             d["shapes"] = arb.shapes
             d["space"] = space
             return True
@@ -464,7 +464,7 @@ class UnitTestSpace(unittest.TestCase):
         c2 = p.Circle(b2, 10)
         s.add(b1, c1, b2, c2)
         
-        def pre_solve(arb, space):
+        def pre_solve(arb, space, data):
             return
         s.collision_handler(0,0).pre_solve = pre_solve
         
@@ -478,7 +478,7 @@ class UnitTestSpace(unittest.TestCase):
 
     def testCollisionHandlerPostSolve(self):
         self.hit = 0
-        def post_solve(arb, space):
+        def post_solve(arb, space, data):
             self.hit += 1
 
         self.s.collision_handler(0,0).post_solve = post_solve
@@ -500,7 +500,7 @@ class UnitTestSpace(unittest.TestCase):
         s.gravity = 0,-100
 
         self.separated = False
-        def separate(arb, space):
+        def separate(arb, space, data):
             self.separated = True
 
         s.collision_handler(0,0).separate = separate
@@ -519,7 +519,7 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         
         d = {}
-        def pre_solve(arb, space):
+        def pre_solve(arb, space, data):
             d["shapes"] = arb.shapes
             d["space"] = space
             return True
@@ -547,7 +547,7 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         
         d = {}
-        def pre_solve(arb, space):
+        def pre_solve(arb, space, data):
             d["shapes"] = arb.shapes
             d["space"] = space
             return True
@@ -575,7 +575,7 @@ class UnitTestSpace(unittest.TestCase):
                 s.remove(shape)
             test_self.calls += 1
         
-        def pre_solve(arb, space):
+        def pre_solve(arb, space, data):
             # note that we dont pass on the whole arbiters object, instead
             # we take only the shapes.
             space.add_post_step_callback(callback, 0, arb.shapes, test_self = self)

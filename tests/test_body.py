@@ -62,7 +62,7 @@ class UnitTestBody(unittest.TestCase):
         self.assertEqual(str(b), "Body(Body.STATIC)")
 
     def testCoordinateConversion(self):
-        b = p.Body()
+        b = p.Body(body_type=p.Body.KINEMATIC)
         v = 1,2
         self.assertEqual(b.local_to_world(v), v)
         self.assertEqual(b.world_to_local(v), v)
@@ -140,7 +140,7 @@ class UnitTestBody(unittest.TestCase):
 
     def testDynamic(self):
         b1 = p.Body(1,1)
-        b2 = p.Body()
+        b2 = p.Body(1,1, body_type=p.Body.DYNAMIC)
         self.assertEqual(b1.body_type, p.Body.DYNAMIC)
         self.assertEqual(b2.body_type, p.Body.DYNAMIC)
 

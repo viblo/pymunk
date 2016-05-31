@@ -20,7 +20,7 @@ class UnitTestArbiter(unittest.TestCase):
         
         s.add(b1, c1, b2, c2)
         
-        def pre_solve(arb, space):
+        def pre_solve(arb, space, data):
             self.assertEqual(arb.restitution, 0.18)
             arb.restitution = 1
             return True
@@ -49,7 +49,7 @@ class UnitTestArbiter(unittest.TestCase):
         
         s.add(b1, c1, b2, c2)
         
-        def pre_solve(arb, space):
+        def pre_solve(arb, space, data):
             self.assertEqual(arb.friction, 0.18)
             arb.friction = 1
             return True
@@ -78,7 +78,7 @@ class UnitTestArbiter(unittest.TestCase):
         
         s.add(b1, c1, b2, c2)
         
-        def pre_solve(arb, space):
+        def pre_solve(arb, space, data):
             self.assertAlmostEqual(arb.surface_velocity.x, 1.38461538462)
             self.assertAlmostEqual(arb.surface_velocity.y, -0.923076923077)
             
@@ -106,7 +106,7 @@ class UnitTestArbiter(unittest.TestCase):
         
         s.add(b1, c1, b2, c2)
         
-        def pre_solve(arb, space):
+        def pre_solve(arb, space, data):
             self.assertEqual(len(arb.contact_point_set.points), 1)
             self.assertAlmostEqual(arb.contact_point_set.normal.x, 0.8574929257)
             self.assertAlmostEqual(arb.contact_point_set.normal.y, 0.5144957554)
@@ -142,7 +142,7 @@ class UnitTestArbiter(unittest.TestCase):
         
         self.post_solve_done = False
         
-        def post_solve(arb, space):
+        def post_solve(arb, space, data):
             self.assertAlmostEqual(arb.total_impulse.x, 3.3936651583)
             self.assertAlmostEqual(arb.total_impulse.y, 4.3438914027)
             self.post_solve_done = True
@@ -170,7 +170,7 @@ class UnitTestArbiter(unittest.TestCase):
         
         s.add(b1, c1, b2, c2)
         
-        def post_solve(arb, space):
+        def post_solve(arb, space, data):
             self.assertAlmostEqual(arb.total_ke, 43.438914027)
             return True
         
@@ -195,7 +195,7 @@ class UnitTestArbiter(unittest.TestCase):
         
         s.add(b1, c1, b2, c2)
         
-        def pre_solve1(arb, space):
+        def pre_solve1(arb, space, data):
             self.assertTrue(arb.is_first_contact)
             return True
         
@@ -203,7 +203,7 @@ class UnitTestArbiter(unittest.TestCase):
         
         s.step(0.1)
         
-        def pre_solve2(arb, space):
+        def pre_solve2(arb, space, data):
             self.assertFalse(arb.is_first_contact)
             return True
         
@@ -229,7 +229,7 @@ class UnitTestArbiter(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         
         self.called1 = False
-        def separate1(arb, space):
+        def separate1(arb, space, data):
             self.called1 = True
             self.assertFalse(arb.is_removal)
         
@@ -243,7 +243,7 @@ class UnitTestArbiter(unittest.TestCase):
         s.step(0.1) 
         
         self.called2 = False
-        def separate2(arb, space):
+        def separate2(arb, space, data):
             self.called2 = True
             self.assertTrue(arb.is_removal)
             return True
@@ -271,7 +271,7 @@ class UnitTestArbiter(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         
         self.called = False
-        def pre_solve(arb, space):
+        def pre_solve(arb, space, data):
             self.called = True
             self.assertEqual(len(arb.shapes), 2)
             self.assertEqual(arb.shapes[0], c1)
