@@ -28,6 +28,7 @@ TODO v7
 - http://code.activestate.com/recipes/500261/ for pickle of vec2d
 - keep names of add_collion_handler and co.
 - Think about experimental repr of Body
+- Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js
 
 - use twine to upload to Pypi? https://pypi.python.org/pypi/twine
 - use appveyor for windows automated tests? http://python-packaging-user-guide.readthedocs.io/en/latest/appveyor/

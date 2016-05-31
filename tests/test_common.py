@@ -69,7 +69,7 @@ class UnitTestBugs(unittest.TestCase):
 
         space.add(b1,c1,b2,c2,b3,c3)
 
-        def remove_first(arbiter, space):
+        def remove_first(arbiter, space, data):
             first_shape = arbiter.shapes[0]
             #print "REMOVE FIRST", first_shape.name
             if c1 in space.shapes:
