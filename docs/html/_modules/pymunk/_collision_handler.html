@@ -77,7 +77,7 @@
 <span class="sd">    runs. If an object falls asleep, its postSolve() callback won&#39;t be</span>
 <span class="sd">    called until it&#39;s reawoken.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="CollisionHandler.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.CollisionHandler.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_handler</span><span class="p">,</span> <span class="n">space</span><span class="p">):</span>
+<div class="viewcode-block" id="CollisionHandler.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.CollisionHandler.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_handler</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize a CollisionHandler object from the Chipmunk equivalent</span>
 <span class="sd">        struct and the Space.</span>
 
@@ -90,13 +90,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span> <span class="o">=</span> <span class="bp">None</span>
-</div>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        </div>
+    <span class="k">def</span> <span class="nf">_get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_data</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Data property that get passed on into the</span>
+<span class="s">    callbacks.</span>
+<span class="s">    </span>
+<span class="s">    Usefull if the callback needs some extra data to perform its function. </span>
+<span class="s">    &quot;&quot;&quot;</span><span class="p">)</span>    
+
     <span class="k">def</span> <span class="nf">_set_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         
         <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef cpBool (*cpCollisionBeginFunc)&quot;</span>
             <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">x</span>
             
@@ -139,7 +150,7 @@
         <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef cpBool (*cpCollisionPreSolveFunc)&quot;</span>
             <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">x</span>
             
@@ -182,7 +193,7 @@
         <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpCollisionPostSolveFunc)&quot;</span>
             <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
-            <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+            <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
                 
         <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span> <span class="o">=</span> <span class="n">cf</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">postSolveFunc</span> <span class="o">=</span> <span class="n">cf</span>
@@ -206,7 +217,7 @@
         <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpCollisionSeparateFunc)&quot;</span>
             <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
-            <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
+            <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
                 
         <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span> <span class="o">=</span> <span class="n">cf</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">separateFunc</span> <span class="o">=</span> <span class="n">cf</span>

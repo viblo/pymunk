@@ -112,7 +112,6 @@
 <span class="sd">    useful for simplifying your code by allowing different parts of your</span>
 <span class="sd">    static geometry to be initialized or moved separately.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
 <div class="viewcode-block" id="Body.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">moment</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">body_type</span><span class="o">=</span><span class="n">DYNAMIC</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new Body</span>
 
@@ -135,6 +134,7 @@
 <span class="sd">        overwite your custom mass value when the shapes are added to the body.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">mass</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">moment</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;dynamic body with 0 mass and/or moment&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNew</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">moment</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">KINEMATIC</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNewKinematic</span><span class="p">()</span>
@@ -363,10 +363,6 @@
 <span class="sd">        correction process.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyUpdatePosition</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Body.reset_forces"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.reset_forces">[docs]</a>    <span class="k">def</span> <span class="nf">reset_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Zero both the forces and torques accumulated on body&quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyResetForces</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Body.apply_force_at_world_point"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.apply_force_at_world_point">[docs]</a>    <span class="k">def</span> <span class="nf">apply_force_at_world_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add the force force to body as if applied from the world point.</span>

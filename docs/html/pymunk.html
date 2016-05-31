@@ -116,7 +116,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x000001A1AE4064A8&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x0000020486CE6B38&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -843,12 +843,6 @@ is called each time step and can be used to update the body&#8217;s position.</p
 </dd>
 </dl>
 </div></blockquote>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymunk.Body.reset_forces">
-<code class="descname">reset_forces</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/_body.html#Body.reset_forces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.reset_forces" title="Permalink to this definition">¶</a></dt>
-<dd><p>Zero both the forces and torques accumulated on body</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2267,7 +2261,7 @@ not dynamic friction.</p>
 
 <dl class="class">
 <dt id="pymunk.CollisionHandler">
-<em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">CollisionHandler</code><span class="sig-paren">(</span><em>_handler</em>, <em>space</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/_collision_handler.html#CollisionHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.CollisionHandler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">CollisionHandler</code><span class="sig-paren">(</span><em>_handler</em>, <em>space</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/_collision_handler.html#CollisionHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.CollisionHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>A collision handler is a set of 4 function callbacks for the different
 collision events that pymunk recognizes.</p>
@@ -2283,7 +2277,7 @@ runs. If an object falls asleep, its postSolve() callback won&#8217;t be
 called until it&#8217;s reawoken.</p>
 <dl class="method">
 <dt id="pymunk.CollisionHandler.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>_handler</em>, <em>space</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/_collision_handler.html#CollisionHandler.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.CollisionHandler.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>_handler</em>, <em>space</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/_collision_handler.html#CollisionHandler.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.CollisionHandler.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize a CollisionHandler object from the Chipmunk equivalent
 struct and the Space.</p>
 <div class="admonition note">
@@ -2302,6 +2296,14 @@ false to cause pymunk to ignore the collision entirely. If you return
 false, the <cite>pre_solve</cite> and <cite>post_solve</cite> callbacks will never be run,
 but you will still recieve a separate event when the shapes stop
 overlapping.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.CollisionHandler.data">
+<code class="descname">data</code><a class="headerlink" href="#pymunk.CollisionHandler.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data property that get passed on into the
+callbacks.</p>
+<p>Usefull if the callback needs some extra data to perform its function.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2597,6 +2599,18 @@ using groups or category masks is preferred.</p>
 <dt>An instance can be created in this way::</dt>
 <dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Transform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">Transform(a=1, b=2, c=3, d=4, tx=5, ty=6)</span>
+</pre></div>
+</div>
+</dd>
+<dt>Or using the default identity in this way::</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Transform</span><span class="o">.</span><span class="n">identity</span><span class="p">()</span>
+<span class="go">Transform(a=1, b=0, c=0, d=1, tx=0, ty=0)</span>
+</pre></div>
+</div>
+</dd>
+<dt>Or overriding only some of the values (on a identity matrix):</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Transform</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">ty</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">Transform(a=1, b=3, c=0, d=1, tx=0, ty=5)</span>
 </pre></div>
 </div>
 </dd>
