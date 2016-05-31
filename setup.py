@@ -78,16 +78,18 @@ class build_chipmunk(distutils.cmd.Command):
             # gives problem with function pointer to the sdtlib free function
             # we also have to use -fno-omit-frame-pointer
             compiler_preargs += [#'-mrtd', 
-                                #'-O1', 
-                                '-mincoming-stack-boundary=2', # from https://mingwpy.github.io/issues.html#choice-of-msvc-runtime
+                                #'-O1',
                                 '-shared']
                                 #'-fno-omit-frame-pointer'] 
             #O1 and O2 works on 32bit, not O3 and maybe not O0?
             
         if arch == 64 and platform.system() in ('Windows', 'Microsoft'):
-            compiler_preargs += ['-O3', '-m64']
+            compiler_preargs += ['-O3',
+                                '-m64']
         if arch == 32 and platform.system() in ('Windows', 'Microsoft'):
-            compiler_preargs += ['-O3', '-m32']
+            compiler_preargs += ['-O3', 
+                                '-mincoming-stack-boundary=2', # from https://mingwpy.github.io/issues.html#choice-of-msvc-runtime
+                                '-m32']
             
         for x in compiler.executables:
             args = getattr(compiler, x)
