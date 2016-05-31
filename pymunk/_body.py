@@ -313,10 +313,6 @@ class Body(object):
         """
         cp.cpBodyUpdatePosition(body._body, dt)
 
-    def reset_forces(self):
-        """Zero both the forces and torques accumulated on body"""
-        cp.cpBodyResetForces(self._body)
-
     def apply_force_at_world_point(self, force, point):
         """Add the force force to body as if applied from the world point.
 

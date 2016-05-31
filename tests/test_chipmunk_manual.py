@@ -23,15 +23,7 @@ class UnitTestShapeFilter(unittest.TestCase):
 
 class UnitTestTransform(unittest.TestCase):
     def testInit(self):
-        """"
-        t = p.Transform()
-        self.assertEqual(t.a, 0)
-        self.assertEqual(t.b, 0)
-        self.assertEqual(t.c, 0)
-        self.assertEqual(t.d, 0)
-        self.assertEqual(t.tx, 0)
-        self.assertEqual(t.ty, 0)
-        """
+        
         t = p.Transform(1,2,3,4,5,6)
         self.assertEqual(t.a, 1)
         self.assertEqual(t.b, 2)
@@ -40,6 +32,14 @@ class UnitTestTransform(unittest.TestCase):
         self.assertEqual(t.tx, 5)
         self.assertEqual(t.ty, 6)
         self.assertEqual(str(t), "Transform(a=1, b=2, c=3, d=4, tx=5, ty=6)")
+
+        t = p.Transform(b=4, ty=2)
+        self.assertEqual(t.a, 1)
+        self.assertEqual(t.b, 4)
+        self.assertEqual(t.c, 0)
+        self.assertEqual(t.d, 1)
+        self.assertEqual(t.tx, 0)
+        self.assertEqual(t.ty, 2)
 
     def testIdentity(self):
         t = p.Transform.identity()

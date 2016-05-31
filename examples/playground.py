@@ -117,7 +117,7 @@ class PhysicsDemo:
         for i in range(len(points)-1):
             v1 = Vec2d(points[i].x, points[i].y)
             v2 = Vec2d(points[i+1].x, points[i+1].y)
-            wall_body = pm.Body()
+            wall_body = pm.Body(body_type=pm.Body.STATIC)
             wall_shape = pm.Segment(wall_body, v1, v2, .0)
             wall_shape.friction = 1.0
             wall_shape.collision_type = COLLTYPE_DEFAULT
@@ -271,7 +271,11 @@ class PhysicsDemo:
         if pygame.key.get_mods() & KMOD_SHIFT and pygame.mouse.get_pressed()[2]:
             p = self.flipyv(Vec2d(mpos))
             self.poly_points.append(p)
-        self.shape_to_remove = self.space.point_query_first( self.flipyv(Vec2d(mpos)) )
+        hits = self.space.point_query( self.flipyv(Vec2d(mpos)), 0, pm.ShapeFilter() )
+        if len(hits)>0:
+            self.shape_to_remove = hits[0].shape
+        else:
+            self.shape_to_remove = None
         
         ### Update physics
         if self.run_physics:

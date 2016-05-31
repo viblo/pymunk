@@ -47,7 +47,8 @@ def add_objects(space):
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (150,300)
     b.angle = 3.14/2
-    s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)], pymunk.Transform(tx=-100), radius=3)
+    t = pymunk.Transform(tx=-100)
+    s = pymunk.Poly(b, [(0, -50),(30, 50),(-30, 50)], t, radius=3)
     space.add(s)
     
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
@@ -139,14 +140,14 @@ def add_objects(space):
     ### Other
     
     # Object not drawn by draw_space
-    b = pymunk.Body()
+    b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (500,250)
     s = pymunk.Circle(b, 40)
     s.ignore_draw = True
     space.add(s)
     
     # Objects in custom color
-    b = pymunk.Body()
+    b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (500,200)
     s = pymunk.Circle(b, 40)
     s.color = (255, 255, 0)

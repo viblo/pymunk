@@ -61,7 +61,8 @@ def drawcircle(image, colour, origin, radius, width=0):
 def reset_bodies(space):
     for body in space.bodies:
         body.position = Vec2d(body.start_position)
-        body.reset_forces()
+        body.force = 0,0
+        body.torque = 0
         body.velocity = 0,0
         body.angular_velocity = 0
     color = random.choice(THECOLORS.values())
@@ -85,11 +86,10 @@ def main():
     font = pygame.font.Font(None, 16)
     
     ### Physics stuff
-    space = pm.Space(iterations = 1)
+    space = pm.Space()
     space.gravity = (0.0, -1900.0)
     space.damping = 0.999 # to prevent it from blowing up.
-    static_body = pm.Body()
-    mouse_body = pm.Body()
+    mouse_body = pm.Body(body_type=pm.Body.KINEMATIC)
    
     bodies = []
     for x in range(-100,150,50):
@@ -105,7 +105,7 @@ def main():
         shape.elasticity = 0.9999999
         space.add(body, shape)
         bodies.append(body)
-        pj = pm.PinJoint(static_body, body, (x,125+offset_y), (0,0))
+        pj = pm.PinJoint(space.static_body, body, (x,125+offset_y), (0,0))
         space.add(pj)
         
     reset_bodies(space)
@@ -127,7 +127,7 @@ def main():
             if event.type == pygame.USEREVENT+1:
                 r = random.randint(1,4)
                 for body in bodies[0:r]:
-                    body.apply_impulse((-6000,0))
+                    body.apply_impulse_at_local_point((-6000,0))
             if event.type == pygame.USEREVENT+2:
                 reset_bodies(space)
                 
@@ -136,14 +136,15 @@ def main():
             elif event.type == KEYDOWN and event.key == K_f and is_interactive:
                 r = random.randint(1,4)
                 for body in bodies[0:r]:
-                    body.apply_impulse((-6000,0))
+                    body.apply_impulse_at_local_point((-6000,0))
                 
             elif event.type == MOUSEBUTTONDOWN and is_interactive:
                 if selected != None:
                     space.remove(selected)
                 p = from_pygame(Vec2d(event.pos))
-                shape = space.point_query_first(p)
-                if shape != None:
+                hit = space.point_query_nearest(p, 0, pm.ShapeFilter())
+                if hit != None:
+                    shape = hit.shape
                     rest_length = mouse_body.position.get_distance(shape.body.position)
                     ds = pm.DampedSpring(mouse_body, shape.body, (0,0), (0,0), rest_length, 1000, 10)
                     space.add(ds)
@@ -168,8 +169,8 @@ def main():
         
         ### Draw stuff
         for c in space.constraints:
-            pv1 = c.a.position + c.anchr1
-            pv2 = c.b.position + c.anchr2
+            pv1 = c.a.position + c.anchor_a
+            pv2 = c.b.position + c.anchor_b
             p1 = to_pygame(pv1)
             p2 = to_pygame(pv2)
             pygame.draw.aalines(screen, THECOLORS["lightgray"], False, [p1,p2])
