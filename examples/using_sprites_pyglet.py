@@ -27,9 +27,8 @@ space = pymunk.Space()
 space.gravity = Vec2d(0.0, -900.0)
 
 ### Static line
-static_body = pymunk.Body()
-static_lines = [pymunk.Segment(static_body, (11.0, 280.0), (407.0, 246.0), 0.0)
-                ,pymunk.Segment(static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
+static_lines = [pymunk.Segment(space.static_body, (11.0, 280.0), (407.0, 246.0), 0.0)
+                ,pymunk.Segment(space.static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
                 ]
 for l in static_lines:
     l.friction = 0.5
@@ -61,6 +60,7 @@ def on_draw():
     for logo_sprite in logos:
         
         ps = logo_sprite.shape.get_vertices()
+        ps = [p.rotated(logo_sprite.body.angle) + logo_sprite.body.position for p in ps]
         n = len(ps)
         ps = [c for p in ps for c in p]
         
