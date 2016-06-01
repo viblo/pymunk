@@ -226,6 +226,11 @@ class UnitTestPoly(unittest.TestCase):
         c = p.Poly(None, vs, None, 0)
 
         self.assertEqual(c.get_vertices(), vs)
+        
+        c = p.Poly(None, vs, p.Transform(1,2,3,4,5,6), 0)
+        
+        vs2 = [(5.0, 6.0), (25.0, 26.0), (45.0, 66.0), (25.0, 46.0)]
+        self.assertEqual(c.get_vertices(), vs2)
 
     def testVerticesUnsafe(self):
         vs = [(-10,10), (0,0),(20,0),(10,10)]

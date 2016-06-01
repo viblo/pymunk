@@ -49,7 +49,7 @@ def main():
             elif event.type == KEYDOWN and event.key == K_p:
                 pygame.image.save(screen, "pygame_util_demo.png")                
                                   
-        clock.tick()
+        clock.tick(10)
         
 if __name__ == '__main__':
     sys.exit(main())

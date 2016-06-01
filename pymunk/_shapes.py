@@ -435,9 +435,9 @@ class Poly(Shape):
         return self
 
     def get_vertices(self):
-        """Get the vertices in world coordinates for the polygon
+        """Get the vertices in local coordinates for the polygon
 
-        :return: [`Vec2d`] in world coords
+        :return: [`Vec2d`] in local coords
         """
         verts = []
         l = cp.cpPolyShapeGetCount(self._shape)

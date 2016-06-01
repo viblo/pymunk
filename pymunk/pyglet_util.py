@@ -199,7 +199,11 @@ def _draw_circle(circle, batch = None):
     return
 
 def _draw_poly(poly, batch = None):
-    ps = poly.get_vertices()
+    offset = 0,0
+    if poly.body != None:
+        offset = poly.body.position
+    
+    ps = [p + offset for p in poly.get_vertices()]
     
     if hasattr(poly, "color"):
         color = poly.color  
