@@ -46,14 +46,14 @@ def add_objects(space):
     
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (150,300)
-    b.angle = 3.14/2
     t = pymunk.Transform(ty=-100)
     s = pymunk.Poly(b, [(0, -25),(30, 25),(-30, 25)], t, radius=3)
     space.add(s)
     
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (150,200)
-    s = pymunk.Poly(b, [(0, -50), (50, 0), (30, 50),(-30, 50),(-50, 0)], pymunk.Transform(ty=-100))
+    t = pymunk.Transform(ty=-100)
+    s = pymunk.Poly(b, [(0, -50), (50, 0), (30, 50),(-30, 50),(-50, 0)], t)
     space.add(s)
     
     ### Dynamic
@@ -99,9 +99,7 @@ def add_objects(space):
     space.add(s)
     
     b = pymunk.Body(1,1)
-    b.position = (350,300)
-    b.angle = 3.14/2
-    
+    b.position = (350,300)    
     s = pymunk.Poly(b, [(0, -25),(30, 25),(-30, 25)], pymunk.Transform(ty=-100), radius=3)
     space.add(s)
     

@@ -200,10 +200,11 @@ def _draw_circle(circle, batch = None):
 
 def _draw_poly(poly, batch = None):
     offset = 0,0
+    angle = 0
     if poly.body != None:
         offset = poly.body.position
-    
-    ps = [p + offset for p in poly.get_vertices()]
+        angle = poly.body.angle
+    ps = [p.rotated(angle) + offset for p in poly.get_vertices()]
     
     if hasattr(poly, "color"):
         color = poly.color  

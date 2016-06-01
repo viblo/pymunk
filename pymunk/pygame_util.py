@@ -137,9 +137,11 @@ def _draw_circle(surface, circle):
 def _draw_poly(surface, poly):
     ps = poly.get_vertices()
     offset = (0,0)
+    angle = 0
     if poly.body != None:
         offset = poly.body.position
-    ps = [to_pygame(p+offset, surface) for p in ps]
+        angle = poly.body.angle
+    ps = [to_pygame((p.rotated(angle)+offset), surface) for p in ps]
     ps += [ps[0]]
     if hasattr(poly, "color"):
         color = poly.color  
