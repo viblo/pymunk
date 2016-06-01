@@ -41,18 +41,15 @@ class Main(pyglet.window.Window):
         
         for x in range(5):
             for y in range(12):
-                pass
-        x = 0
-        y = 0        
-        size= 5
-        points = [(-size, -size), (-size, size), (size,size), (size, -size)]
-        mass = 10.0
-        moment = pymunk.moment_for_poly(mass, points, (0,0))
-        body = pymunk.Body(mass, moment)
-        body.position = Vec2d(200 + x*50, 105 + y * 11)
-        shape = pymunk.Poly(body, points, (0,0))
-        shape.friction = 0.3
-        self.space.add(body,shape)
+                size= 5
+                points = [(-size, -size), (-size, size), (size,size), (size, -size)]
+                mass = 10.0
+                moment = pymunk.moment_for_poly(mass, points, (0,0))
+                body = pymunk.Body(mass, moment)
+                body.position = Vec2d(200 + x*50, 105 + y * 11)
+                shape = pymunk.Poly(body, points)
+                shape.friction = 0.3
+                self.space.add(body,shape)
                 
         
     def update(self,dt):

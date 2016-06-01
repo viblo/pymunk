@@ -91,9 +91,9 @@ while running:
             pygame.image.save(screen, "flipper.png")
                 
         elif event.type == KEYDOWN and event.key == K_j:
-            r_flipper_body.apply_impulse(Vec2d.unit() * 40000, (-100,0))
+            r_flipper_body.apply_impulse_at_local_point(Vec2d.unit() * 40000, (-100,0))
         elif event.type == KEYDOWN and event.key == K_f:
-            l_flipper_body.apply_impulse(Vec2d.unit() * -40000, (-100,0))
+            l_flipper_body.apply_impulse_at_local_point(Vec2d.unit() * -40000, (-100,0))
         elif event.type == KEYDOWN and event.key == K_b:
             
             mass = 1
@@ -129,7 +129,8 @@ while running:
     l_flipper_body.position = 150, 100
     r_flipper_body.velocity = l_flipper_body.velcoty = 0,0
     for f in [r_flipper_shape, l_flipper_shape]:
-        ps = f.get_vertices()
+        
+        ps = [p + f.body.position for p in f.get_vertices()]
         ps.append(ps[0])
         ps = map(to_pygame, ps)
         

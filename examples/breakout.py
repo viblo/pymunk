@@ -20,11 +20,6 @@ from pymunk import Vec2d
 import pymunk.pygame_util
 width, height = 600,600
 
-
-import pymunk._chipmunk as cp
-import pymunk._chipmunk_ffi as cpffi
-import ctypes as ct
-
 def spawn_ball(space, position, direction):
     ball_body = pymunk.Body(1, pymunk.inf)
     ball_body.position = position
@@ -66,9 +61,11 @@ def setup_level(space, player_body):
             brick_shape.collision_type = 2
             space.add(brick_body, brick_shape)
     # Make bricks be removed when hit by ball
-    def remove_first(space, arbiter):
+    def remove_first(arbiter, space, data):
         first_shape = arbiter.shapes[0] 
-        space.add_post_step_callback(space.remove, first_shape, first_shape.body)
+        def f(space, shape):
+            space.remove(shape, shape.body)
+        space.add_post_step_callback(f, first_shape)
     space.collision_handler(2, 0).separate = remove_first
 
 def main():
@@ -98,9 +95,9 @@ def main():
     bottom.sensor = True
     bottom.collision_type = 1
     bottom.color = THECOLORS['red']
-    def remove_first(space, arbiter):
+    def remove_first(arbiter, space, data):
         first_shape = arbiter.shapes[0]
-        space.add_post_step_callback(space.remove, first_shape, first_shape.body)
+        space.remove(first_shape, first_shape.body)
         return True
     space.collision_handler(0, 1).begin = remove_first
     space.add(bottom)

@@ -20,36 +20,17 @@ space = pymunk.Space()
 
 space.gravity = 0,-900
 space.damping = .999
-c = Vec2d(window.width /2., window.height / 2.)
-
-### CONTAINER
-ss = [
-        pymunk.Segment(space.static_body, (0,0), (window.width,0),5)
-        ,pymunk.Segment(space.static_body, (window.width,0), (window.width,window.height),5)
-        ,pymunk.Segment(space.static_body, (window.width,window.height), (0,window.height),5)
-        ,pymunk.Segment(space.static_body, (0,window.height), (0,0),5)
-        ]
-
-for s in ss:
-    s.friction = .5
-    s.layers = s.layers ^ 0b100
-        
-space.add(ss)
-        
+c = Vec2d(window.width /2., window.height / 2.)        
         
 ### WEB
 web_group = 1
-web_collision_type = 1
-web_layers = 0b101
 bs = []
 dist = .3
 
 cb = pymunk.Body(1,1)
 cb.position = c
 s = pymunk.Circle(cb, 15) # to have something to grab
-s.group = web_group
-s.layers = web_layers
-s.collision_type = web_collision_type
+s.filter = pymunk.ShapeFilter(group = web_group)
 s.ignore_draw = True
 space.add(cb, s)
 
@@ -76,9 +57,7 @@ for x in range(0,101):
     
     b.position = c + v
     s = pymunk.Circle(b, 15)
-    s.group = web_group
-    s.layers = web_layers
-    s.collision_type = web_collision_type
+    s.filter = pymunk.ShapeFilter(group = web_group)
     s.ignore_draw = True
     space.add(b,s)
     bs.append(b)
@@ -106,7 +85,7 @@ for i in range(len(bs)-1):
 ### WEB ATTACH POINTS
 static_bs = []
 for b in bs[-17::4]:
-    static_body = pymunk.Body()
+    static_body = pymunk.Body(body_type = pymunk.Body.STATIC)
     static_body.position = b.position
     static_bs.append(static_body)
     
@@ -130,15 +109,15 @@ pyglet.clock.schedule_interval(update, 1/30.)
 
 selected = None
 selected_joint = None
-mouse_body = pymunk.Body()
+mouse_body = pymunk.Body(body_type = pymunk.Body.KINEMATIC)
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
     mouse_body.position = x,y
-    hit = space.nearest_point_query_nearest((x,y),10)
+    hit = space.point_query_nearest((x,y), 10, pymunk.ShapeFilter())
     if hit != None:
         global selected
-        body = hit['shape'].body
+        body = hit.shape.body
         rest_length = mouse_body.position.get_distance(body.position)
         stiffness = 1000
         damping = 10

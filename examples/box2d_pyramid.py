@@ -24,8 +24,7 @@ class PyramidDemo:
         self.space = pymunk.Space()
         self.space.gravity = (0.0, -900.0)
         ### ground
-        body = pymunk.Body()
-        shape = pymunk.Segment(body, (50, 100), (550,100), .0)
+        shape = pymunk.Segment(self.space.static_body, (50, 100), (550,100), 1.0)
         shape.friction = 1.0
         self.space.add(shape)
         
@@ -44,13 +43,14 @@ class PyramidDemo:
                 moment = pymunk.moment_for_poly(mass, points, (0,0))
                 body = pymunk.Body(mass, moment)
                 body.position = y
-                shape = pymunk.Poly(body, points, (0,0))
+                shape = pymunk.Poly(body, points)
                 shape.friction = 1
                 self.space.add(body,shape)
                 
                 y += deltaY
 
             x += deltaX
+        
         
     def run(self):
         while self.running:
@@ -84,7 +84,7 @@ class PyramidDemo:
         self.screen.fill(THECOLORS["white"])          
         
         for shape in self.space.shapes:
-            if shape.body.is_static:
+            if shape.body.body_type != pymunk.Body.DYNAMIC:
                 body = shape.body
                 pv1 = self.flipyv(body.position + shape.a.cpvrotate(body.rotation_vector))
                 pv2 = self.flipyv(body.position + shape.b.cpvrotate(body.rotation_vector))
@@ -92,7 +92,7 @@ class PyramidDemo:
             else:
                 if shape.body.is_sleeping:
                     continue
-                ps = shape.get_vertices()
+                ps = [p + shape.body.position for p in shape.get_vertices()]
                 ps.append(ps[0])
                 ps = map(self.flipyv, ps)
                  #pygame.draw.lines(self.screen, color, False, ps, 1)
