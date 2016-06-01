@@ -41,15 +41,18 @@ class Main(pyglet.window.Window):
         
         for x in range(5):
             for y in range(12):
-                size= 5
-                points = [(-size, -size), (-size, size), (size,size), (size, -size)]
-                mass = 10.0
-                moment = pymunk.moment_for_poly(mass, points, (0,0))
-                body = pymunk.Body(mass, moment)
-                body.position = Vec2d(200 + x*50, 105 + y * 11)
-                shape = pymunk.Poly(body, points, (0,0))
-                shape.friction = 0.3
-                self.space.add(body,shape)
+                pass
+        x = 0
+        y = 0        
+        size= 5
+        points = [(-size, -size), (-size, size), (size,size), (size, -size)]
+        mass = 10.0
+        moment = pymunk.moment_for_poly(mass, points, (0,0))
+        body = pymunk.Body(mass, moment)
+        body.position = Vec2d(200 + x*50, 105 + y * 11)
+        shape = pymunk.Poly(body, points, (0,0))
+        shape.friction = 0.3
+        self.space.add(body,shape)
                 
         
     def update(self,dt):
@@ -68,7 +71,7 @@ class Main(pyglet.window.Window):
             shape = pymunk.Circle(body, r, (0,0))
             self.space.add(body, shape)
             f = 200000
-            body.apply_impulse((f,0), (0,0))
+            body.apply_impulse_at_local_point((f,0), (0,0))
         elif symbol == key.ESCAPE:
             pyglet.app.exit()
         elif symbol == pyglet.window.key.P:
