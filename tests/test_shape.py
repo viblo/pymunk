@@ -63,12 +63,12 @@ class UnitTestShape(unittest.TestCase):
         b2 = p.Body(1,1)
         c = p.Circle(b1,1)
         self.assertEqual(c.body, b1)
-        self.assert_(c in b1.shapes)
-        self.assert_(c not in b2.shapes)
+        self.assertTrue(c in b1.shapes)
+        self.assertTrue(c not in b2.shapes)
         c.body = b2
         self.assertEqual(c.body, b2)
-        self.assert_(c not in b1.shapes)
-        self.assert_(c in b2.shapes)
+        self.assertTrue(c not in b1.shapes)
+        self.assertTrue(c in b2.shapes)
 
     def testSensor(self):
         b1 = p.Body(1,1)

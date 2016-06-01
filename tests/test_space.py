@@ -88,8 +88,8 @@ class UnitTestSpace(unittest.TestCase):
         c2 = p.Circle(b, 15)
         s.add(c2)
         self.assertEqual(len(s.shapes), 2)
-        self.assert_(c1 in s.shapes)
-        self.assert_(c2 in s.shapes)
+        self.assertTrue(c1 in s.shapes)
+        self.assertTrue(c2 in s.shapes)
         
         s.remove(c1)
         self.assertEqual(s.shapes, [c2])
@@ -153,8 +153,8 @@ class UnitTestSpace(unittest.TestCase):
 
         s.step(.1)
 
-        self.assert_(self.s1 not in s.bodies)
-        self.assert_(self.s2 not in s.shapes)
+        self.assertTrue(self.s1 not in s.bodies)
+        self.assertTrue(self.s2 not in s.shapes)
 
     def testPointQuery(self):
         s = p.Space()
@@ -229,8 +229,8 @@ class UnitTestSpace(unittest.TestCase):
         bb = p.BB(-7, -7, 7, 7)
         hits = s.bb_query(bb, p.ShapeFilter())
         self.assertEqual(len(hits), 1)
-        self.assert_(s2 in hits)
-        self.assert_(s1 not in hits)
+        self.assertTrue(s2 in hits)
+        self.assertTrue(s1 not in hits)
 
     def testShapeQuery(self):
 
@@ -319,7 +319,7 @@ class UnitTestSpace(unittest.TestCase):
         for x in range(10):
             s.step(.1)
             
-        self.assert_(b1.position.y < 0)
+        self.assertTrue(b1.position.y < 0)
 
         b1.position = 20,20
         b1.velocity = 0,0
@@ -328,7 +328,7 @@ class UnitTestSpace(unittest.TestCase):
         for x in range(10):
             self.s.step(.1)
 
-        self.assert_(b1.position.y > 10)
+        self.assertTrue(b1.position.y > 10)
 
     def testSegmentQuery(self):
         s = p.Space()
@@ -516,7 +516,7 @@ class UnitTestSpace(unittest.TestCase):
         for x in range(10):
             s.step(0.1)
 
-        self.assert_(self.separated)
+        self.assertTrue(self.separated)
 
     def testWildcardCollisionHandler(self):
         s = p.Space()

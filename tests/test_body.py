@@ -114,7 +114,7 @@ class UnitTestBody(unittest.TestCase):
         self.assertFalse(b.is_sleeping)
 
         b.sleep()
-        self.assert_(b.is_sleeping)
+        self.assertTrue(b.is_sleeping)
 
         b.activate()
         self.assertFalse(b.is_sleeping)
@@ -127,7 +127,7 @@ class UnitTestBody(unittest.TestCase):
         s.add(b1,b2)
         b2.sleep()
         b1.sleep_with_group(b2)
-        self.assert_(b1.is_sleeping)
+        self.assertTrue(b1.is_sleeping)
         b2.activate()
         self.assertFalse(b1.is_sleeping)
 
@@ -217,10 +217,10 @@ class UnitTestBody(unittest.TestCase):
         j1 = p.PivotJoint(b1,s.static_body,(0,0))
         j2 = p.PivotJoint(b2,s.static_body,(0,0))
 
-        self.assert_(j1 in b1.constraints)
-        self.assert_(j1 not in b2.constraints)
-        self.assert_(j1 in s.static_body.constraints)
-        self.assert_(j2 in s.static_body.constraints)
+        self.assertTrue(j1 in b1.constraints)
+        self.assertTrue(j1 not in b2.constraints)
+        self.assertTrue(j1 in s.static_body.constraints)
+        self.assertTrue(j2 in s.static_body.constraints)
 
     def testGetShapes(self):
         s = p.Space()
@@ -229,9 +229,9 @@ class UnitTestBody(unittest.TestCase):
         s1 = p.Circle(b1,3)
         s2 = p.Segment(b1,(0,0), (1,2),1)
 
-        self.assert_(s1 in b1.shapes)
-        self.assert_(s2 in b1.shapes)
-        self.assert_(s1 not in s.static_body.shapes)
+        self.assertTrue(s1 in b1.shapes)
+        self.assertTrue(s2 in b1.shapes)
+        self.assertTrue(s1 not in s.static_body.shapes)
 
 ####################################################################
 if __name__ == "__main__":

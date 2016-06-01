@@ -151,7 +151,7 @@ class UnitTestArbiter(unittest.TestCase):
         
         s.step(0.1)
             
-        self.assert_(self.post_solve_done)
+        self.assertTrue(self.post_solve_done)
     
     def testTotalKE(self):
         s = p.Space()

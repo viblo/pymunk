@@ -29,6 +29,7 @@ TODO v7
 - keep names of add_collion_handler and co.
 - Think about experimental repr of Body
 - Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js
+- Check this list for new stuff in chipmunk: http://howlingmoonsoftware.com/wordpress/chipmunk-7-released-pro-tools-open-sourced/
 
 - use twine to upload to Pypi? https://pypi.python.org/pypi/twine
 - use appveyor for windows automated tests? http://python-packaging-user-guide.readthedocs.io/en/latest/appveyor/

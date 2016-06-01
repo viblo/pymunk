@@ -37,16 +37,16 @@ class UnitTestBB(unittest.TestCase):
 
         v1 = Vec2d(1,1)
         v2 = Vec2d(100,3)
-        self.assert_(bb1.intersects(bb2))
+        self.assertTrue(bb1.intersects(bb2))
         self.assertFalse(bb3.intersects(bb2))
 
-        self.assert_(bb1.intersects_segment(v1,v2))
+        self.assertTrue(bb1.intersects_segment(v1,v2))
         self.assertFalse(bb3.intersects_segment(v1,v2))
 
-        self.assert_(bb1.contains(bb3))
+        self.assertTrue(bb1.contains(bb3))
         self.assertFalse(bb1.contains(bb2))
 
-        self.assert_(bb1.contains_vect(v1))
+        self.assertTrue(bb1.contains_vect(v1))
         self.assertFalse(bb1.contains_vect(v2))
 
         self.assertEqual(bb1.merge(bb2), p.BB(0,0,20,20))
