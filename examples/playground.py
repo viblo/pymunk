@@ -103,7 +103,7 @@ class PhysicsDemo:
         #moment = 1000
         body = pm.Body(mass, moment)
         body.position = Vec2d(pos)       
-        shape = pm.Poly(body, points, Vec2d(0,0))
+        shape = pm.Poly(body, points)
         shape.friction = 0.5
         shape.collision_type = COLLTYPE_DEFAULT
         self.space.add(body, shape)
@@ -143,7 +143,7 @@ class PhysicsDemo:
 
     def draw_poly(self, poly):
         body = poly.body
-        ps = poly.get_vertices()
+        ps = [p.rotated(body.angle) + body.position for p in poly.get_vertices()]
         ps.append(ps[0])
         ps = list(map(self.flipyv, ps))
         if u.is_clockwise(ps):
@@ -249,10 +249,10 @@ class PhysicsDemo:
                 for x in range (-100,100,25):
                     for y in range(-100,100,25):
                         p = pygame.mouse.get_pos()
-                        p = self.flipyv(Vec2d(p)) + (x,y)
+                        p = Vec2d(self.flipyv(Vec2d(p))) + (x,y)
                         self.polys.append(self.create_box(pos=p))                
             elif event.type == KEYDOWN and event.key == K_b:
-                p = flipyv(Vec2d(pygame.mouse.get_pos())) 
+                p = self.flipyv(Vec2d(pygame.mouse.get_pos())) 
                 self.polys.append(self.create_box(p, size=10, mass = 1))
             elif event.type == KEYDOWN and event.key == K_f:
                 bp = Vec2d(100,500)
@@ -271,9 +271,9 @@ class PhysicsDemo:
         if pygame.key.get_mods() & KMOD_SHIFT and pygame.mouse.get_pressed()[2]:
             p = self.flipyv(Vec2d(mpos))
             self.poly_points.append(p)
-        hits = self.space.point_query( self.flipyv(Vec2d(mpos)), 0, pm.ShapeFilter() )
-        if len(hits)>0:
-            self.shape_to_remove = hits[0].shape
+        hit = self.space.point_query_nearest( self.flipyv(Vec2d(mpos)), 0, pm.ShapeFilter() )
+        if hit != None:
+            self.shape_to_remove = hit.shape
         else:
             self.shape_to_remove = None
         
