@@ -3,6 +3,7 @@ News
 ****
 
 pymunk 5.0.0
+------------
 *Victor - X*
 
 **A new version of pymunk!**
@@ -26,6 +27,20 @@ API Changes
 - New class PointQueryInfo. Changed returned data from Shape.point_query.
 - Updated signature of Shape.segment_query() method. Updated properties of SegmentQueryInfo object.
 - Removed Space.enable_contact_graph. New Space.current_time_step property.
+
+Move from ctypes to CFFI?
+-------------------------
+*Victor - 2016-05-19*
+
+**Should pymunk move to CFFI?**
+
+To make developement of pymunk easier Im planning to move from using ctypes
+to CFFI for the low level Chipmunk wrapping. The idea is that CFFI is a 
+active project which should mean it will be easier to get help, for example
+around the 64bit python problems on windows.
+
+Please take a look at Iseue 99 on github which tracks this switch.
+https://github.com/viblo/pymunk/issues/99
 
 Travis-ci & tox
 ---------------
