@@ -46,7 +46,7 @@ class UnitTestBody(unittest.TestCase):
         b.angle = 0
         self.assertEqual(b.rotation_vector, (1,0))
         b.angle = Vec2d(1,1).get_angle()
-        self.assertAlmostEquals(b.rotation_vector.get_angle(), Vec2d(1,1).get_angle())
+        self.assertAlmostEqual(b.rotation_vector.get_angle(), Vec2d(1,1).get_angle())
 
         self.assertEqual(b.space, None)
         s = p.Space()

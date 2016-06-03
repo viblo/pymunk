@@ -22,10 +22,10 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertEqual(v[1], 5)
     
         v = Vec2d(111, 222)
-        self.assert_(v.x == 111 and v.y == 222)
+        self.assertTrue(v.x == 111 and v.y == 222)
         v.x = 333
         v[1] = 444
-        self.assert_(v[0] == 333 and v[1] == 444)
+        self.assertTrue(v[0] == 333 and v[1] == 444)
         
         v = Vec2d(3,5)
         self.assertEqual(len(v), 2)
@@ -35,40 +35,40 @@ class UnitTestVec2d(unittest.TestCase):
     def testMath(self):
         v = Vec2d(111,222)
         self.assertEqual(v + 1, Vec2d(112, 223))
-        self.assert_(v - 2 == [109, 220])
-        self.assert_(v * 3 == (333, 666))
-        self.assert_(v / 2.0 == Vec2d(55.5, 111))
-        #self.assert_(v / 2 == (55, 111)) # Not supported since this is a c_float structure in the bottom
-        self.assert_(v ** Vec2d(2, 3) == [12321, 10941048])
-        self.assert_(v + [-11, 78] == Vec2d(100, 300))
-        #self.assert_(v / [11,2] == [10,111]) # Not supported since this is a c_float structure in the bottom
+        self.assertTrue(v - 2 == [109, 220])
+        self.assertTrue(v * 3 == (333, 666))
+        self.assertTrue(v / 2.0 == Vec2d(55.5, 111))
+        #self.assertTrue(v / 2 == (55, 111)) # Not supported since this is a c_float structure in the bottom
+        self.assertTrue(v ** Vec2d(2, 3) == [12321, 10941048])
+        self.assertTrue(v + [-11, 78] == Vec2d(100, 300))
+        #self.assertTrue(v / [11,2] == [10,111]) # Not supported since this is a c_float structure in the bottom
 
     def testReverseMath(self):
         v = Vec2d(111, 222)
-        self.assert_(1 + v == Vec2d(112, 223))
-        self.assert_(2 - v == [-109, -220])
-        self.assert_(3 * v == (333, 666))
-        #self.assert_([222,999] / v == [2,4]) # Not supported since this is a c_float structure in the bottom
-        self.assert_([111, 222] ** Vec2d(2, 3) == [12321, 10941048])
-        self.assert_([-11, 78] + v == Vec2d(100, 300))
+        self.assertTrue(1 + v == Vec2d(112, 223))
+        self.assertTrue(2 - v == [-109, -220])
+        self.assertTrue(3 * v == (333, 666))
+        #self.assertTrue([222,999] / v == [2,4]) # Not supported since this is a c_float structure in the bottom
+        self.assertTrue([111, 222] ** Vec2d(2, 3) == [12321, 10941048])
+        self.assertTrue([-11, 78] + v == Vec2d(100, 300))
 
     def testUnary(self):
         v = Vec2d(111, 222)
         v = -v
-        self.assert_(v == [-111, -222])
+        self.assertTrue(v == [-111, -222])
         v = abs(v)
-        self.assert_(v == [111, 222])
+        self.assertTrue(v == [111, 222])
 
     def testLength(self):
         v = Vec2d(3,4)
-        self.assert_(v.length == 5)
-        self.assert_(v.get_length_sqrd() == 25)
-        self.assert_(v.normalize_return_length() == 5)
+        self.assertTrue(v.length == 5)
+        self.assertTrue(v.get_length_sqrd() == 25)
+        self.assertTrue(v.normalize_return_length() == 5)
         self.assertAlmostEqual(v.length, 1)
         v.length = 5
-        self.assert_(v == Vec2d(3, 4))
+        self.assertTrue(v == Vec2d(3, 4))
         v2 = Vec2d(10, -2)
-        self.assert_(v.get_distance(v2) == (v - v2).get_length())
+        self.assertTrue(v.get_distance(v2) == (v - v2).get_length())
         
     def testAnglesDegrees(self):            
         v = Vec2d(0, 3)
@@ -80,7 +80,7 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertEqual(v.length, v2.length)
         self.assertEqual(v2.angle_degrees, 0)
         self.assertEqual(v2, [3, 0])
-        self.assert_((v - v2).length < .00001)
+        self.assertTrue((v - v2).length < .00001)
         self.assertEqual(v.length, v2.length)
         v2.rotate_degrees(300)
         self.assertAlmostEqual(v.get_angle_degrees_between(v2), -60) # Allow a little more error than usual (floats..)
