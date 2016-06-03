@@ -12,7 +12,7 @@ env:
   - TOXENV=docs
 
 install:
-  - pip install tox
+  - travis_retry "virtualenv<14.0.0" pip install tox
 
 script: 
   - tox
