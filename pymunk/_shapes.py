@@ -25,12 +25,6 @@ class Shape(object):
         self._shape = shape
         self._body = shape.body
 
-    def __del__(self):
-        try:
-            cp.cpShapeFree(self._shape)
-        except:
-            pass
-
     def _get_shapeid(self):
         return cp.cpShapeGetUserData(self._shape)
     def _set_shapeid(self):
@@ -226,8 +220,8 @@ class Circle(Shape):
         if body != None:
             body._shapes.add(self)
 
-        self._shape = cp.cpCircleShapeNew(body_body, radius, offset)
-        #self._cs = ffi.csat("", self._shape, ct.POINTER(cp.cpCircleShape))
+        self._shape = ffi.gc(
+            cp.cpCircleShapeNew(body_body, radius, offset), cp.cpShapeFree)
         self._set_shapeid()
 
     def unsafe_set_radius(self, r):
@@ -287,7 +281,9 @@ class Segment(Shape):
         body_body = ffi.NULL if body is None else body._body
         if body != None:
             body._shapes.add(self)
-        self._shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
+            
+        self._shape = ffi.gc(
+            cp.cpSegmentShapeNew(body_body, a, b, radius), cp.cpShapeFree)
         self._set_shapeid()
 
     def _get_a(self):
@@ -348,9 +344,6 @@ class Poly(Shape):
     shape is not attached to a body.
     """
 
-    def _init():
-        pass
-
     def __init__(self, body, vertices, transform=None, radius=0):
         """Create a polygon.
 
@@ -378,7 +371,8 @@ class Poly(Shape):
         if transform == None:
             transform = Transform.identity()
 
-        self._shape = cp.cpPolyShapeNew(body_body, len(vertices), vertices, transform, radius)
+        s = cp.cpPolyShapeNew(body_body, len(vertices), vertices, transform, radius)
+        self._shape = ffi.gc(s, cp.cpShapeFree)
         self._set_shapeid()
 
     def unsafe_set_radius(self, radius):

@@ -84,11 +84,11 @@ class Body(object):
         """
         if body_type == Body.DYNAMIC:
             assert mass != 0 and moment != 0, "dynamic body with 0 mass and/or moment"
-            self._body = cp.cpBodyNew(mass, moment)
+            self._body = ffi.gc(cp.cpBodyNew(mass, moment), cp.cpBodyFree)
         elif body_type == Body.KINEMATIC:
-            self._body = cp.cpBodyNewKinematic()
+            self._body = ffi.gc(cp.cpBodyNewKinematic(), cp.cpBodyFree)
         elif body_type == Body.STATIC:
-            self._body = cp.cpBodyNewStatic()
+            self._body = ffi.gc(cp.cpBodyNewStatic(), cp.cpBodyFree)
 
         self._init()
 
@@ -100,13 +100,6 @@ class Body(object):
 
         self._constraints = WeakSet() # weak refs to any constraints attached
         self._shapes = WeakSet() # weak refs to any shapes attached
-
-    def __del__(self):
-        try:
-            #pass
-            cp.cpBodyFree(self._body)
-        except:
-            pass
             
     def __repr__(self):
         if self.body_type == Body.DYNAMIC:
