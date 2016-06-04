@@ -2,6 +2,7 @@ import distutils.ccompiler as cc
 import os, os.path
 import platform
 import distutils.cmd
+import sys
 try:
     from setuptools import setup
 except:
