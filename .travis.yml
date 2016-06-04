@@ -1,18 +1,35 @@
 language: python
 python: 2.7
+git:
+  depth: 3
+  
+matrix:
+  include:
+    - os: osx
+      language: generic
+      env: TOXENV=py27
+    - os: linux
+      env: TOXENV=py27
+      
+    
 
-env:
-  - TOXENV=py34
-  - TOXENV=py33
-  - TOXENV=py32
-  - TOXENV=pypy3
-  - TOXENV=py27
-  - TOXENV=py26
-  - TOXENV=pypy
-  - TOXENV=docs
+#
+#env:
+#  - TOXENV=py34
+#  - TOXENV=py33
+#  - TOXENV=py32
+#  - TOXENV=pypy3
+#  - TOXENV=py27
+#  - TOXENV=py26
+#  - TOXENV=pypy
+#  - TOXENV=docs
 
+before_install:
+  -  ./travis_install.sh
+  
 install:
   - travis_retry pip install "virtualenv<14.0.0" tox
 
 script: 
+  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then python setup.py build_chipmunk; fi
   - tox
