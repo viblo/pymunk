@@ -3,7 +3,6 @@ __docformat__ = "reStructuredText"
 from collections import namedtuple
 
 from .vec2d import Vec2d
-from ._base import *
 
 class ContactPoint(
     namedtuple('ContactPoint', ['point_a', 'point_b', 'distance'])):

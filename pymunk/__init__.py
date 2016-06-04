@@ -35,6 +35,7 @@ file. As long as you haven't turned off the debug mode a print will show
 exactly which Chipmunk library file it loaded. For example::
 
     >>> import pymunk
+    
     Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 
 """
@@ -109,8 +110,6 @@ moment.
     In previous versions of pymunk you used inf to create static bodies. This
     has changed. See the Body documentation for details.
 """
-
-#cp.cpEnableSegmentToSegmentCollisions()
 
 def moment_for_circle(mass, inner_radius, outer_radius, offset=(0, 0)):
     """Calculate the moment of inertia for a hollow circle

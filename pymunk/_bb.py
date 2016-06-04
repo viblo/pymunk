@@ -15,9 +15,10 @@ class BB(object):
     Stored as left, bottom, right, top values.
     """
     def __init__(self, *args):
-        """Create a new instance of a bounding box. Can be created with zero
-        size with bb = BB() or with four args defining left, bottom, right and
-        top: bb = BB(left, bottom, right, top)
+        """Create a new instance of a bounding box. 
+        
+        Can be created with zero size with bb = BB() or with four args defining 
+        left, bottom, right and top: bb = BB(left, bottom, right, top)
         """
         if len(args) == 0:
             self._bb = ffi.new("cpBB *")

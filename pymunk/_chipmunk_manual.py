@@ -1,5 +1,4 @@
 from collections import namedtuple
-from ._base import *
 
 class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     """
