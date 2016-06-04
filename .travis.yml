@@ -25,7 +25,8 @@ matrix:
 #  - TOXENV=docs
 
 before_install:
-  -  ./.travis_before_install.sh
+  - chmod ugo+x .travis_before_install.sh 
+  - ./.travis_before_install.sh
   
 install:
   - travis_retry pip install "virtualenv<14.0.0" tox
