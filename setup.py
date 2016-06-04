@@ -1,7 +1,6 @@
 import distutils.ccompiler as cc
 import os, os.path
 import platform
-import ctypes
 import distutils.cmd
 try:
     from setuptools import setup
@@ -53,6 +52,7 @@ class build_chipmunk(distutils.cmd.Command):
         compiler_preargs = ['-std=gnu99', 
                             '-ffast-math', 
                             '-DCHIPMUNK_FFI', 
+                            '-g',
                             #'-Wno-unknown-pragmas', 
                             #'-fPIC', 
                             '-DCP_USE_CGPOINTS=0'] # '-DCP_ALLOW_PRIVATE_ACCESS']
@@ -61,7 +61,10 @@ class build_chipmunk(distutils.cmd.Command):
             compiler_preargs.append('-DNDEBUG')
         
         # check if we are on a 64bit python
-        arch = ctypes.sizeof(ctypes.c_voidp) * 8
+        if sys.maxsize > 2**32:
+            arch = 64
+        else:
+            arch = 32
         
         if arch == 64 and platform.system() == 'Linux':
             compiler_preargs += ['-m64', '-fPIC', '-O3']

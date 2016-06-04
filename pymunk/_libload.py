@@ -4,7 +4,6 @@ __version__ = "$Id$"
 import os.path
 import platform
 import sys, imp, os
-import ctypes
  
 def load_library(ffi, libname, debug_lib=True):
     # lib gets loaded from
@@ -12,8 +11,11 @@ def load_library(ffi, libname, debug_lib=True):
     # 64 bit python pymunk/libchipmunk64.so, libchipmunk.dylib or chipmunk64.dll
     
     s = platform.system()
-    arch = str(ctypes.sizeof(ctypes.c_voidp) * 8)
-    
+    if sys.maxsize > 2**32:
+        arch = "64"
+    else:
+        arch = "32"
+        
     path = os.path.dirname(os.path.abspath(__file__))
     
     try:
