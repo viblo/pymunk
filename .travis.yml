@@ -2,10 +2,13 @@ language: python
 python: 2.7
 git:
   depth: 3
+sudo: false
+
 
 env:
   matrix:
     - TRAVIS_4681_WORKAROUND=1
+
 
 matrix:
   include:

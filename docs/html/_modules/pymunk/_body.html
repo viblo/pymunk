@@ -135,11 +135,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">mass</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">moment</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;dynamic body with 0 mass and/or moment&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNew</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">moment</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNew</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">moment</span><span class="p">),</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyFree</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">KINEMATIC</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNewKinematic</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNewKinematic</span><span class="p">(),</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyFree</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNewStatic</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNewStatic</span><span class="p">(),</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyFree</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span>
 </div>
@@ -151,13 +151,6 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span> <span class="o">=</span> <span class="n">WeakSet</span><span class="p">()</span> <span class="c"># weak refs to any constraints attached</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span> <span class="o">=</span> <span class="n">WeakSet</span><span class="p">()</span> <span class="c"># weak refs to any shapes attached</span>
-
-    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c">#pass</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyFree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="k">pass</span>
             
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span>

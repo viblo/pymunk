@@ -55,8 +55,9 @@
             
   <div class="section" id="news">
 <h1>News<a class="headerlink" href="#news" title="Permalink to this headline">¶</a></h1>
-<p>pymunk 5.0.0
-<em>Victor - X</em></p>
+<div class="section" id="pymunk-5-0-0">
+<h2>pymunk 5.0.0<a class="headerlink" href="#pymunk-5-0-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Victor - X</em></p>
 <p><strong>A new version of pymunk!</strong></p>
 <p>API Changes
 - New property Body.body_type
@@ -77,6 +78,18 @@
 - New class PointQueryInfo. Changed returned data from Shape.point_query.
 - Updated signature of Shape.segment_query() method. Updated properties of SegmentQueryInfo object.
 - Removed Space.enable_contact_graph. New Space.current_time_step property.</p>
+</div>
+<div class="section" id="move-from-ctypes-to-cffi">
+<h2>Move from ctypes to CFFI?<a class="headerlink" href="#move-from-ctypes-to-cffi" title="Permalink to this headline">¶</a></h2>
+<p><em>Victor - 2016-05-19</em></p>
+<p><strong>Should pymunk move to CFFI?</strong></p>
+<p>To make developement of pymunk easier Im planning to move from using ctypes
+to CFFI for the low level Chipmunk wrapping. The idea is that CFFI is a
+active project which should mean it will be easier to get help, for example
+around the 64bit python problems on windows.</p>
+<p>Please take a look at Iseue 99 on github which tracks this switch.
+<a class="reference external" href="https://github.com/viblo/pymunk/issues/99">https://github.com/viblo/pymunk/issues/99</a></p>
+</div>
 <div class="section" id="travis-ci-tox">
 <h2>Travis-ci &amp; tox<a class="headerlink" href="#travis-ci-tox" title="Permalink to this headline">¶</a></h2>
 <p><em>Victor - 2014-11-13</em></p>
@@ -272,6 +285,8 @@ number were increased).</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Readme</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pymunk-5-0-0">pymunk 5.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#move-from-ctypes-to-cffi">Move from ctypes to CFFI?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#travis-ci-tox">Travis-ci &amp; tox</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#move-to-github">Move to Github</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-4-0-0">pymunk 4.0.0</a></li>

@@ -66,9 +66,10 @@
 <span class="sd">    Stored as left, bottom, right, top values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="BB.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instance of a bounding box. Can be created with zero</span>
-<span class="sd">        size with bb = BB() or with four args defining left, bottom, right and</span>
-<span class="sd">        top: bb = BB(left, bottom, right, top)</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of a bounding box. </span>
+<span class="sd">        </span>
+<span class="sd">        Can be created with zero size with bb = BB() or with four args defining </span>
+<span class="sd">        left, bottom, right and top: bb = BB(left, bottom, right, top)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_bb</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;cpBB *&quot;</span><span class="p">)</span>

@@ -1,6 +1,34 @@
 environment:
+  matrix:
+    - PYTHON: "C:\\Python27"
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python33"
+    - PYTHON: "C:\\Python33-x64"
+      DISTUTILS_USE_SDK: "1"
+    - PYTHON: "C:\\Python34"
+    - PYTHON: "C:\\Python34-x64"
+      DISTUTILS_USE_SDK: "1"
+    - PYTHON: "C:\\Python35"
+    - PYTHON: "C:\\Python35-x64"
 
+platform:
+  - x86
+  - x64
+
+matrix:
+  fast_finish: true
+
+clone_depth: 3
+
+init:
+  - ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%
 
 install:
   # We need wheel installed to build wheels
-  - "%PYTHON%\\python.exe -m pip install tox"
+  - %PYTHON%\\python.exe -m pip install tox
+  
+build: off
+  
+test_script:
+  - %PYTHON%\\Scripts\\tox -e py
+#  - "tox -e py"
