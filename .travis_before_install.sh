@@ -3,7 +3,15 @@ set -e
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     brew update
-    brew install python;
-    brew install python3;
+    
+    case $TOXENV in 
+    py27)
+        brew install python;
+        ;;
+    py3)
+        brew install python3;
+        ;;
+    esac
+    
     PATH=/usr/local/bin:$PATH;
 fi; 
