@@ -2,7 +2,11 @@ language: python
 python: 2.7
 git:
   depth: 3
-  
+
+env:
+  matrix:
+    - TRAVIS_4681_WORKAROUND=1
+
 matrix:
   include:
     - os: osx
@@ -27,6 +31,8 @@ matrix:
       env: TOXENV=pypy3
     - os: linux
       env: TOXENV=docs
+  exclude:
+    - env: TRAVIS_4681_WORKAROUND=1
       
     
 
@@ -51,3 +57,4 @@ install:
 script: 
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then python setup.py build_chipmunk; fi
   - tox
+ 
