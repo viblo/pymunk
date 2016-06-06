@@ -66,7 +66,7 @@ The good news is that it is usually enough (at least on *nix and OS X) to
 simply run the compile command first before installing and then retry again:
 
 You compile chipmunk with
-> python setup.py build_chipmunk
+> python setup.py build_clib
 and then continue as usual with 
 > python setup.py install
 > cd examples

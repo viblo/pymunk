@@ -110,7 +110,7 @@ at your own risk.
 If pymunk doesnt have your particular platform included, you can compile 
 Chipmunk by hand with a custom setup argument::
 
-    > python setup.py build_chipmunk
+    > python setup.py build_clib
 
 The compiled file goes into the /pymunk folder (same as _chipmunk.py, 
 util.py and others). If the compile fail, please check the readme in 

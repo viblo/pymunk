@@ -35,24 +35,29 @@ class Mock(object):
 
 MOCK_MODULES = [
                 'pymunk._chipmunk_cffi','pymunk._chipmunk_cffi_abi',
+               # '_chipmunk_cffi', '_chipmunk_cffi_abi',
                 'pygame', 'pygame.locals', 'pygame.color',
                 'pyglet'
                 ]
                 
-class MockFinder():
+class MockFinder(object):
     def find_module(self, fullname, path=None):
         if fullname in MOCK_MODULES:
-            print("fullname", fullname)
+            print("fm: fullname", fullname, self)
             return self
+        print("fm: fullname not found", fullname, self)
         return None
     def load_module(self, fullname):
-        print("fullname", fullname)
+        print("lm: fullname", fullname, self)
         return Mock()
-        
-#sys.meta_path = [MockFinder()]
-for m in MOCK_MODULES:
-    sys.modules[m] = Mock()
+  
+#sys.path_hooks.append(MockFinder().find_module)
+print(sys.meta_path)      
+#sys.meta_path.append(MockFinder())
 
+#for m in MOCK_MODULES:
+#    sys.modules[m] = Mock()
+#sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -61,8 +66,8 @@ for m in MOCK_MODULES:
 
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../..'))
-print(sys.path)
-from pymunk import Space
+print("path", sys.path)
+import pymunk
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
