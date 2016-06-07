@@ -48,28 +48,28 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk</h1><div class="highlight"><pre>
-<span class="c"># ----------------------------------------------------------------------------</span>
-<span class="c"># pymunk</span>
-<span class="c"># Copyright (c) 2007-2012 Victor Blomqvist</span>
-<span class="c">#</span>
-<span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-<span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-<span class="c"># in the Software without restriction, including without limitation the rights</span>
-<span class="c"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-<span class="c"># copies of the Software, and to permit persons to whom the Software is</span>
-<span class="c"># furnished to do so, subject to the following conditions:</span>
-<span class="c">#</span>
-<span class="c"># The above copyright notice and this permission notice shall be included in</span>
-<span class="c"># all copies or substantial portions of the Software.</span>
-<span class="c">#</span>
-<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-<span class="c"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-<span class="c"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-<span class="c"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-<span class="c"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-<span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
-<span class="c"># SOFTWARE.</span>
-<span class="c"># ----------------------------------------------------------------------------</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># pymunk</span>
+<span class="c1"># Copyright (c) 2007-2012 Victor Blomqvist</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1"># in the Software without restriction, including without limitation the rights</span>
+<span class="c1"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1"># copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1"># furnished to do so, subject to the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included in</span>
+<span class="c1"># all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c1"># SOFTWARE.</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">pymunk is a easy-to-use pythonic 2d physics library that can be used whenever</span>
@@ -89,18 +89,18 @@
 <span class="sd">    Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;$Id$&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;inf&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;chipmunk_version&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">,</span> <span class="s">&quot;Body&quot;</span><span class="p">,</span> <span class="s">&quot;Shape&quot;</span><span class="p">,</span> <span class="s">&quot;Circle&quot;</span><span class="p">,</span> <span class="s">&quot;Poly&quot;</span><span class="p">,</span> <span class="s">&quot;Segment&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;moment_for_circle&quot;</span><span class="p">,</span> <span class="s">&quot;moment_for_poly&quot;</span><span class="p">,</span> <span class="s">&quot;moment_for_segment&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;moment_for_box&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;SegmentQueryInfo&quot;</span><span class="p">,</span> <span class="s">&quot;ContactPoint&quot;</span><span class="p">,</span> <span class="s">&quot;ContactPointSet&quot;</span><span class="p">,</span> <span class="s">&quot;Arbiter&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;CollisionHandler&quot;</span> 
-        <span class="p">,</span> <span class="s">&quot;BB&quot;</span><span class="p">,</span> <span class="s">&quot;ShapeFilter&quot;</span>
-        <span class="p">,</span> <span class="s">&quot;Transform&quot;</span><span class="p">,</span> <span class="s">&quot;PointQueryInfo&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;inf&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;chipmunk_version&quot;</span>
+        <span class="p">,</span> <span class="s2">&quot;Space&quot;</span><span class="p">,</span> <span class="s2">&quot;Body&quot;</span><span class="p">,</span> <span class="s2">&quot;Shape&quot;</span><span class="p">,</span> <span class="s2">&quot;Circle&quot;</span><span class="p">,</span> <span class="s2">&quot;Poly&quot;</span><span class="p">,</span> <span class="s2">&quot;Segment&quot;</span>
+        <span class="p">,</span> <span class="s2">&quot;moment_for_circle&quot;</span><span class="p">,</span> <span class="s2">&quot;moment_for_poly&quot;</span><span class="p">,</span> <span class="s2">&quot;moment_for_segment&quot;</span>
+        <span class="p">,</span> <span class="s2">&quot;moment_for_box&quot;</span>
+        <span class="p">,</span> <span class="s2">&quot;SegmentQueryInfo&quot;</span><span class="p">,</span> <span class="s2">&quot;ContactPoint&quot;</span><span class="p">,</span> <span class="s2">&quot;ContactPointSet&quot;</span><span class="p">,</span> <span class="s2">&quot;Arbiter&quot;</span>
+        <span class="p">,</span> <span class="s2">&quot;CollisionHandler&quot;</span> 
+        <span class="p">,</span> <span class="s2">&quot;BB&quot;</span><span class="p">,</span> <span class="s2">&quot;ShapeFilter&quot;</span>
+        <span class="p">,</span> <span class="s2">&quot;Transform&quot;</span><span class="p">,</span> <span class="s2">&quot;PointQueryInfo&quot;</span><span class="p">]</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -109,7 +109,7 @@
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>
 
-<span class="c">#from . import util as u</span>
+<span class="c1">#from . import util as u</span>
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">._chipmunk_manual</span> <span class="kn">import</span> <span class="n">ShapeFilter</span><span class="p">,</span> <span class="n">Transform</span>
 <span class="kn">from</span> <span class="nn">._contact_point_set</span> <span class="kn">import</span> <span class="n">ContactPoint</span><span class="p">,</span> <span class="n">ContactPointSet</span>
@@ -122,13 +122,13 @@
 <span class="kn">from</span> <span class="nn">._space</span> <span class="kn">import</span> <span class="n">Space</span>
 <span class="kn">from</span> <span class="nn">pymunk.constraint</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="n">version</span> <span class="o">=</span> <span class="s">&quot;5.0.0&quot;</span>
+<span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;5.0.0&quot;</span>
 <span class="sd">&quot;&quot;&quot;The release version of this pymunk installation.</span>
 <span class="sd">Valid only if pymunk was installed from a source or binary</span>
 <span class="sd">distribution (i.e. not in a checked-out copy from git).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">chipmunk_version</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">R</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ffi</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpVersionString</span><span class="p">),</span> <span class="s">&#39;d7603e392782079b691d7948405af2dd66648a7a&#39;</span><span class="p">)</span>
+<span class="n">chipmunk_version</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">R</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ffi</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpVersionString</span><span class="p">),</span> <span class="s1">&#39;d7603e392782079b691d7948405af2dd66648a7a&#39;</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;The Chipmunk version compatible with this pymunk version.</span>
 <span class="sd">Other (newer) Chipmunk versions might also work if the new version does not</span>
 <span class="sd">contain any breaking API changes.</span>
@@ -148,7 +148,7 @@
 <span class="sd">    chipmunk_src folder (normally included in the pymunk source distribution).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">inf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;inf&#39;</span><span class="p">)</span>
+<span class="n">inf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;Infinity that can be passed as mass or inertia to Body.</span>
 
 <span class="sd">Useful when you for example want a body that cannot rotate, just set its</span>
@@ -167,27 +167,27 @@
 <span class="sd">    inner_radius and outer_radius are the inner and outer diameters.</span>
 <span class="sd">    (A solid circle has an inner diameter of 0)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForCircle</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
-</div>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForCircle</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="moment_for_segment"><a class="viewcode-back" href="../pymunk.html#pymunk.moment_for_segment">[docs]</a><span class="k">def</span> <span class="nf">moment_for_segment</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Calculate the moment of inertia for a line segment</span>
 
 <span class="sd">    The endpoints a and b are relative to the body</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForSegment</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
-</div>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForSegment</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="moment_for_box"><a class="viewcode-back" href="../pymunk.html#pymunk.moment_for_box">[docs]</a><span class="k">def</span> <span class="nf">moment_for_box</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the moment of inertia for a solid box centered on the body&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForBox</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-</div>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForBox</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="moment_for_poly"><a class="viewcode-back" href="../pymunk.html#pymunk.moment_for_poly">[docs]</a><span class="k">def</span> <span class="nf">moment_for_poly</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span>  <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the moment of inertia for a solid polygon shape.</span>
 
 <span class="sd">    Assumes the polygon center of gravity is at its centroid. The offset is</span>
 <span class="sd">    added to each vertex.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForPoly</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
-    </div>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForPoly</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
+    
 <span class="k">def</span> <span class="nf">area_for_circle</span><span class="p">(</span><span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Area of a hollow circle.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpAreaForCircle</span><span class="p">(</span><span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">)</span>
@@ -207,7 +207,7 @@
     <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpAreaForPoly</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
 
 
-<span class="c">#del cp, ct, u</span>
+<span class="c1">#del cp, ct, u</span>
 </pre></div>
 
           </div>
@@ -275,7 +275,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>

@@ -49,12 +49,12 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk._query_info</h1><div class="highlight"><pre>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 
 <div class="viewcode-block" id="PointQueryInfo"><a class="viewcode-back" href="../../pymunk.html#pymunk.PointQueryInfo">[docs]</a><span class="k">class</span> <span class="nc">PointQueryInfo</span><span class="p">(</span>
-    <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;PointQueryInfo&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;shape&#39;</span><span class="p">,</span> <span class="s">&#39;point&#39;</span><span class="p">,</span> <span class="s">&#39;distance&#39;</span><span class="p">,</span> <span class="s">&#39;gradient&#39;</span><span class="p">])):</span>
+    <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;PointQueryInfo&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">,</span> <span class="s1">&#39;gradient&#39;</span><span class="p">])):</span>
     <span class="sd">&quot;&quot;&quot;PointQueryInfo holds the result of a point query made on a Shape or</span>
 <span class="sd">    Space.</span>
 <span class="sd">    </span>
@@ -78,10 +78,10 @@
 <span class="sd">        PointQueryInfo.point/PointQueryInfo.distance, but accurate even for</span>
 <span class="sd">        very small values of info.distance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
-</div>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span></div>
+
 <div class="viewcode-block" id="SegmentQueryInfo"><a class="viewcode-back" href="../../pymunk.html#pymunk.SegmentQueryInfo">[docs]</a><span class="k">class</span> <span class="nc">SegmentQueryInfo</span><span class="p">(</span>
-    <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;SegmentQueryInfo&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;shape&#39;</span><span class="p">,</span> <span class="s">&#39;point&#39;</span><span class="p">,</span> <span class="s">&#39;normal&#39;</span><span class="p">,</span> <span class="s">&#39;alpha&#39;</span><span class="p">])):</span>
+    <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;SegmentQueryInfo&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">])):</span>
     <span class="sd">&quot;&quot;&quot;Segment queries return more information than just a simple yes or no,</span>
 <span class="sd">    they also return where a shape was hit and it&#39;s surface normal at the hit</span>
 <span class="sd">    point. This object hold that information.</span>
@@ -110,10 +110,10 @@
 <span class="sd">    The normalized distance along the query segment in the range [0, 1]</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
-    </div>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span></div>
+    
 <span class="k">class</span> <span class="nc">ShapeQueryInfo</span><span class="p">(</span>
-    <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;ShapeQueryInfo&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;shape&#39;</span><span class="p">,</span> <span class="s">&#39;contact_point_set&#39;</span><span class="p">])):</span>
+    <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;ShapeQueryInfo&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span> <span class="s1">&#39;contact_point_set&#39;</span><span class="p">])):</span>
     <span class="sd">&quot;&quot;&quot;Shape queries return more information than just a simple yes or no,</span>
 <span class="sd">    they also return where a shape was hit. This object hold that information.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -186,7 +186,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>

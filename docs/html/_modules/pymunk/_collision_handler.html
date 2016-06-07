@@ -49,8 +49,8 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk._collision_handler</h1><div class="highlight"><pre>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;$Id$&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -91,21 +91,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span> <span class="o">=</span> <span class="bp">None</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="p">{}</span></div>
         
-        </div>
+        
     <span class="k">def</span> <span class="nf">_get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_data</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Data property that get passed on into the</span>
-<span class="s">    callbacks.</span>
-<span class="s">    </span>
-<span class="s">    Usefull if the callback needs some extra data to perform its function. </span>
-<span class="s">    &quot;&quot;&quot;</span><span class="p">)</span>    
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_data</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Data property that get passed on into the</span>
+<span class="s2">    callbacks.</span>
+<span class="s2">    </span>
+<span class="s2">    Usefull if the callback needs some extra data to perform its function. </span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>    
 
     <span class="k">def</span> <span class="nf">_set_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef cpBool (*cpCollisionBeginFunc)&quot;</span>
-            <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef cpBool (*cpCollisionBeginFunc)&quot;</span>
+            <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
@@ -121,9 +121,9 @@
                 <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_firstlineno</span>
 
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn_explicit</span><span class="p">(</span>
-                <span class="s">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s">&quot;&#39; should return a bool to&quot;</span>
-                <span class="s">&quot; indicate if the collision should be processed or not when&quot;</span>
-                <span class="s">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s2">&quot;&#39; should return a bool to&quot;</span>
+                <span class="s2">&quot; indicate if the collision should be processed or not when&quot;</span>
+                <span class="s2">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
                 <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">True</span>
         
@@ -134,21 +134,21 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span>
 
     <span class="n">begin</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_begin</span><span class="p">,</span> <span class="n">_set_begin</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes just started touching for the first time this step.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes just started touching for the first time this step.</span>
 
-<span class="s">        ``func(arbiter, space) -&gt; bool``</span>
+<span class="s2">        ``func(arbiter, space) -&gt; bool``</span>
 
-<span class="s">        Return true from the callback to process the collision normally or</span>
-<span class="s">        false to cause pymunk to ignore the collision entirely. If you return</span>
-<span class="s">        false, the `pre_solve` and `post_solve` callbacks will never be run,</span>
-<span class="s">        but you will still recieve a separate event when the shapes stop</span>
-<span class="s">        overlapping.</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        Return true from the callback to process the collision normally or</span>
+<span class="s2">        false to cause pymunk to ignore the collision entirely. If you return</span>
+<span class="s2">        false, the `pre_solve` and `post_solve` callbacks will never be run,</span>
+<span class="s2">        but you will still recieve a separate event when the shapes stop</span>
+<span class="s2">        overlapping.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_pre_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef cpBool (*cpCollisionPreSolveFunc)&quot;</span>
-            <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef cpBool (*cpCollisionPreSolveFunc)&quot;</span>
+            <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
@@ -164,9 +164,9 @@
                 <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_firstlineno</span>
 
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn_explicit</span><span class="p">(</span>
-                <span class="s">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s">&quot;&#39; should return a bool to&quot;</span>
-                <span class="s">&quot; indicate if the collision should be processed or not when&quot;</span>
-                <span class="s">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s2">&quot;&#39; should return a bool to&quot;</span>
+                <span class="s2">&quot; indicate if the collision should be processed or not when&quot;</span>
+                <span class="s2">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
                 <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">True</span>
         
@@ -177,21 +177,21 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span>
 
     <span class="n">pre_solve</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_pre_solve</span><span class="p">,</span> <span class="n">_set_pre_solve</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes are touching during this step.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes are touching during this step.</span>
 
-<span class="s">        ``func(arbiter, space) -&gt; bool``</span>
+<span class="s2">        ``func(arbiter, space) -&gt; bool``</span>
 
-<span class="s">        Return false from the callback to make pymunk ignore the collision</span>
-<span class="s">        this step or true to process it normally. Additionally, you may</span>
-<span class="s">        override collision values using Arbiter.friction, Arbiter.elasticity</span>
-<span class="s">        or Arbiter.surfaceVelocity to provide custom friction, elasticity,</span>
-<span class="s">        or surface velocity values. See Arbiter for more info.</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        Return false from the callback to make pymunk ignore the collision</span>
+<span class="s2">        this step or true to process it normally. Additionally, you may</span>
+<span class="s2">        override collision values using Arbiter.friction, Arbiter.elasticity</span>
+<span class="s2">        or Arbiter.surfaceVelocity to provide custom friction, elasticity,</span>
+<span class="s2">        or surface velocity values. See Arbiter for more info.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_post_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
     
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpCollisionPostSolveFunc)&quot;</span>
-            <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpCollisionPostSolveFunc)&quot;</span>
+            <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
                 
@@ -202,20 +202,20 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span>
 
     <span class="n">post_solve</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_post_solve</span><span class="p">,</span> <span class="n">_set_post_solve</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes are touching and their collision response has been</span>
-<span class="s">        processed.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes are touching and their collision response has been</span>
+<span class="s2">        processed.</span>
 
-<span class="s">        ``func(arbiter, space)``</span>
+<span class="s2">        ``func(arbiter, space)``</span>
 
-<span class="s">        You can retrieve the collision impulse or kinetic energy at this</span>
-<span class="s">        time if you want to use it to calculate sound volumes or damage</span>
-<span class="s">        amounts. See Arbiter for more info.</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        You can retrieve the collision impulse or kinetic energy at this</span>
+<span class="s2">        time if you want to use it to calculate sound volumes or damage</span>
+<span class="s2">        amounts. See Arbiter for more info.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_separate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
     
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;typedef void (*cpCollisionSeparateFunc)&quot;</span>
-            <span class="s">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpCollisionSeparateFunc)&quot;</span>
+            <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
                 
@@ -226,15 +226,15 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span>
 
     <span class="n">separate</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_separate</span><span class="p">,</span> <span class="n">_set_separate</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes have just stopped touching for the first time this</span>
-<span class="s">        step.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes have just stopped touching for the first time this</span>
+<span class="s2">        step.</span>
 
-<span class="s">        ``func(arbiter, space)``</span>
+<span class="s2">        ``func(arbiter, space)``</span>
 
-<span class="s">        To ensure that begin()/separate() are always called in balanced</span>
-<span class="s">        pairs, it will also be called when removing a shape while its in</span>
-<span class="s">        contact with something or when deallocating the space.</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span></div>
+<span class="s2">        To ensure that begin()/separate() are always called in balanced</span>
+<span class="s2">        pairs, it will also be called when removing a shape while its in</span>
+<span class="s2">        contact with something or when deallocating the space.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -303,7 +303,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>
