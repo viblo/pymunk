@@ -57,7 +57,7 @@ install:
   - echo $PATH
   - which pip
   - which python
-  - travis_retry pip install "virtualenv<14.0.0" tox
+  - travis_retry python -m pip install "virtualenv<14.0.0" tox
 
 script: 
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then python setup.py build_chipmunk; fi
