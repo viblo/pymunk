@@ -35,7 +35,7 @@ class Mock(object):
 
 MOCK_MODULES = [
                 'pymunk._chipmunk_cffi','pymunk._chipmunk_cffi_abi',
-               # '_chipmunk_cffi', '_chipmunk_cffi_abi',
+                #'_chipmunk_cffi', '_chipmunk_cffi_abi',
                 'pygame', 'pygame.locals', 'pygame.color',
                 'pyglet'
                 ]
@@ -43,17 +43,15 @@ MOCK_MODULES = [
 class MockFinder(object):
     def find_module(self, fullname, path=None):
         if fullname in MOCK_MODULES:
-            print("fm: fullname", fullname, self)
+            #print("fm: fullname", fullname, self)
             return self
-        print("fm: fullname not found", fullname, self)
         return None
     def load_module(self, fullname):
-        print("lm: fullname", fullname, self)
+        #print("lm: fullname", fullname, self)
         return Mock()
   
-#sys.path_hooks.append(MockFinder().find_module)
 print(sys.meta_path)      
-#sys.meta_path.append(MockFinder())
+sys.meta_path.append(MockFinder())
 
 #for m in MOCK_MODULES:
 #    sys.modules[m] = Mock()
@@ -66,7 +64,7 @@ print(sys.meta_path)
 
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../..'))
-print("path", sys.path)
+#print("path", sys.path)
 import pymunk
 # -- General configuration -----------------------------------------------------
 
