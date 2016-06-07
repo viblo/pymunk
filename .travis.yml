@@ -51,6 +51,7 @@ matrix:
 before_install:
   - chmod ugo+x .travis_before_install.sh 
   - ./.travis_before_install.sh
+  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then PATH=/usr/local/bin:$PATH; fi;
   
 install:
   - travis_retry pip install "virtualenv<14.0.0" tox

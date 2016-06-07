@@ -2,7 +2,7 @@
 set -e
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-    brew update
+    brew update;
     
     case $TOXENV in 
     py27)
