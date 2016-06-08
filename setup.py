@@ -84,7 +84,7 @@ class build_chipmunk_clib(build_clib, object):
             if arch == 64 and platform.system() != 'Darwin':
                 libname += '64'
             if platform.system() == 'Darwin':
-                libname = compiler.library_filename(libname, lib_type='dylib')
+                libname = self.compiler.library_filename(libname, lib_type='dylib')
                 self.compiler.set_executable('linker_so', 
                     ['cc', '-dynamiclib', '-arch', 'i386', '-arch', 'x86_64'])
             else:
