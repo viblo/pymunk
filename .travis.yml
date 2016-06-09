@@ -51,13 +51,13 @@ matrix:
 before_install:
   - chmod ugo+x .travis_before_install.sh 
   - ./.travis_before_install.sh
-  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then PATH=/usr/local/bin:$PATH; fi;
+#  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then PATH=/usr/local/bin:$PATH; fi;
   
 install:
   - echo $PATH
   - which pip
   - which python
-  - travis_retry python -m pip install "virtualenv<14.0.0" tox
+  - travis_retry python -m pip install --user "virtualenv<14.0.0" tox
 
 script: 
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then python setup.py build_chipmunk; fi
