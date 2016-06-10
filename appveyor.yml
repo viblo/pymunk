@@ -24,10 +24,16 @@ init:
   - ECHO %PYTHON%
 
 install:
-  # We need wheel installed to build wheels
+  # tox for testing
   - "%PYTHON%\\python.exe -m pip install tox"
+  # We need wheel installed to build wheels
+  - "%PYTHON%\\python.exe -m pip install --upgrade wheel"
+  - "%PYTHON%\\python.exe -m pip freeze"
   
 build: off
   
 test_script:
   - "%PYTHON%\\Scripts\\tox -e py"
+  
+after_test:
+  - %PYTHON%/python setup.py bdist_wheel

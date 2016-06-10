@@ -4,3 +4,4 @@ chipmunk_src/**/*.o
 dist/
 .tox/
 *.obj
+.vscode/
