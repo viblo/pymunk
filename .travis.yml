@@ -6,18 +6,19 @@ sudo: false
 
 
 env:
+  global:
+    - PIP_INSTALL=pip install
   matrix:
     - TRAVIS_4681_WORKAROUND=1
-
 
 matrix:
   include:
     - os: osx
       language: generic
-      env: TOXENV=py3
+      env: TOXENV=py3 PIP_INSTALL="pip install --user"
     - os: osx
       language: generic
-      env: TOXENV=py27
+      env: TOXENV=py27 PIP_INSTALL="pip install --user"
     - os: linux
       env: TOXENV=py27
     - os: linux
