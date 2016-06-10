@@ -44,7 +44,10 @@ install:
   - echo $PATH
   - which pip
   - which python
-  - travis_retry python -m pip install --user "virtualenv<14.0.0" tox
+  - test $TRAVIS_OS_NAME = 'osx' \
+    && travis_retry python -m pip install --user "virtualenv<14.0.0" tox
+  - test $TRAVIS_OS_NAME != 'osx' \
+    && travis_retry python -m pip install "virtualenv<14.0.0" tox
 
 script: 
   #- if [[ $TRAVIS_OS_NAME == 'osx' ]]; then python setup.py build_clib; fi
