@@ -17,9 +17,9 @@ def get_library_name():
     if get_arch() == 64 and platform.system() != 'Darwin':
         libname += '64'
     if platform.system() == 'Darwin':
-        libname += ".dylib"
+        libname = "lib" + libname + ".dylib"
     elif platform.system() == 'Linux':
-        libname += ".so"
+        libname = "lib" + libname + ".so"
     elif platform.system() == 'Windows':
         libname += ".dll"
     else:
@@ -111,7 +111,7 @@ class build_chipmunk_clib(build_clib, object):
             self.compiler.link(
                 cc.CCompiler.SHARED_LIBRARY, 
                 objs, get_library_name(),
-                output_dir = 'pymunk', extra_preargs=linker_preargs)    
+                output_dir = self.build_clib, extra_preargs=linker_preargs)    
                 
                         
 # todo: add/remove/think about this list
@@ -151,12 +151,6 @@ libraries = [("chipmunk", {
     'include_dirs': [os.path.join('chipmunk_src','include')]
 })]
 
-import sysconfig
-data_files_root = os.path.join(sysconfig.get_path('platlib'), 'pymunk') 
-data_files = [
-    (data_files_root, [os.path.join("pymunk", get_library_name())])
-]
-
 setup(
     name = 'pymunk',
     url = 'http://www.pymunk.org',
@@ -172,7 +166,7 @@ setup(
     #                            , 'libchipmunk.so'
     #                            , 'libchipmunk64.so'
     #                            , 'libchipmunk.dylib']}
-    data_files = data_files,
+    include_package_data = True,
     license = 'MIT License',
     classifiers = classifiers,
     cmdclass = {'build_clib':build_chipmunk_clib},

@@ -8,10 +8,9 @@ recursive-include docs *
 recursive-include examples *.py
 recursive-include examples *.png
 #chipmunk compiled libs
-#include pymunk/chipmunk.dll
-#include pymunk/libchipmunk.so
-#include pymunk/libchipmunk64.so
-#include pymunk/libchipmunk.dylib
+recursive-include pymunk *.dll
+recursive-include pymunk *.so
+recursive-include pymunk *.dylib
 #chipmunk src
 recursive-include chipmunk_src *.c
 recursive-include chipmunk_src *.h
@@ -20,5 +19,3 @@ recursive-include chipmunk_src *.txt
 recursive-include tests *.py
 #tools
 recursive-include tools *.py
-recursive-include tools *.css
-recursive-include tools *.config
