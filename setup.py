@@ -3,11 +3,29 @@ import distutils.ccompiler as cc
 import os, os.path
 import platform
 import sys
-try:
-    from setuptools import setup
-except:
-    from distutils.core import setup
+from setuptools import setup
 
+def get_arch():
+    if sys.maxsize > 2**32:
+        arch = 64
+    else:
+        arch = 32
+    return arch
+
+def get_library_name():
+    libname = 'chipmunk'
+    if get_arch() == 64 and platform.system() != 'Darwin':
+        libname += '64'
+    if platform.system() == 'Darwin':
+        libname += ".dylib"
+    elif platform.system() == 'Linux':
+        libname += ".so"
+    elif platform.system() == 'Windows':
+        libname += ".dll"
+    else:
+        libname += ".so"
+    return libname
+    
 class build_chipmunk_clib(build_clib, object):
 
     def finalize_options(self):
@@ -28,22 +46,16 @@ class build_chipmunk_clib(build_clib, object):
                                 '-DCP_USE_CGPOINTS=0'] # '-DCP_ALLOW_PRIVATE_ACCESS']
             if not self.debug:
                 compiler_preargs.append('-DNDEBUG')
-                
-            # check if we are on a 64bit python
-            if sys.maxsize > 2**32:
-                arch = 64
-            else:
-                arch = 32
             
-            if arch == 64 and platform.system() == 'Linux':
+            if get_arch() == 64 and platform.system() == 'Linux':
                 compiler_preargs += ['-m64', '-fPIC', '-O3']
-            elif arch == 32 and platform.system() == 'Linux':
+            elif get_arch() == 32 and platform.system() == 'Linux':
                 compiler_preargs += ['-m32', '-fPIC', '-O3']
             elif platform.system() == 'Darwin':
                 #No -O3 on OSX. There's a bug in the clang compiler when using O3.
                 compiler_preargs += ['-arch', 'i386', '-arch', 'x86_64']
             
-            if platform.system() in ('Windows', 'Microsoft'):
+            if platform.system() == 'Windows':
                 # Compile with stddecl instead of cdecl (-mrtd). 
                 # Using cdecl cause a missing bytes issue in some cases
                 # Because -mrtd and -fomit-frame-pointer (which is included in -O)
@@ -55,16 +67,15 @@ class build_chipmunk_clib(build_clib, object):
                                     #'-fno-omit-frame-pointer'] 
                 #O1 and O2 works on 32bit, not O3 and maybe not O0?
                 
-            if arch == 64 and platform.system() in ('Windows', 'Microsoft'):
-                compiler_preargs += ['-O3',
-                                    '-m64']
-            if arch == 32 and platform.system() in ('Windows', 'Microsoft'):
-                # We set the stack boundary with -mincoming-stack-boundary=2
-                # from 
-                # https://mingwpy.github.io/issues.html#choice-of-msvc-runtime 
-                compiler_preargs += ['-O3', 
-                                    '-mincoming-stack-boundary=2',
-                                    '-m32']
+                if get_arch() == 32:
+                    # We set the stack boundary with -mincoming-stack-boundary=2
+                    # from 
+                    # https://mingwpy.github.io/issues.html#choice-of-msvc-runtime 
+                    compiler_preargs += ['-O3', 
+                                        '-mincoming-stack-boundary=2',
+                                        '-m32']
+                if get_arch() == 64:
+                    compiler_preargs += ['-O3', '-m64']
                 
             for x in self.compiler.executables:
                 args = getattr(self.compiler, x)
@@ -80,31 +91,26 @@ class build_chipmunk_clib(build_clib, object):
             objs = self.compiler.compile(sources, 
                 include_dirs=include_dirs, extra_preargs=compiler_preargs)
                 
-            libname = 'chipmunk'
-            if arch == 64 and platform.system() != 'Darwin':
-                libname += '64'
             if platform.system() == 'Darwin':
-                libname = self.compiler.library_filename(libname, lib_type='dylib')
                 self.compiler.set_executable('linker_so', 
                     ['cc', '-dynamiclib', '-arch', 'i386', '-arch', 'x86_64'])
-            else:
-                libname = self.compiler.library_filename(libname, lib_type='shared')
             linker_preargs = []
             if platform.system() == 'Linux' and platform.machine() == 'x86_64':
                 linker_preargs += ['-fPIC']
-            if platform.system() in ('Windows', 'Microsoft'):
+            if platform.system() == 'Windows':
                 # link with stddecl instead of cdecl
                 #linker_preargs += ['-mrtd'] 
-                if arch == 32:
+                if get_arch() == 32:
                     linker_preargs += ['-m32']
                 else:
                     linker_preargs += ['-m64']
                 # remove link against msvcr*. this is a bit ugly maybe.. :)
                 self.compiler.dll_libraries = [lib for lib in self.compiler.dll_libraries if not lib.startswith("msvcr")]
-            
+            here = os.path.abspath(os.path.dirname(__file__))
+            print here
             self.compiler.link(
                 cc.CCompiler.SHARED_LIBRARY, 
-                objs, libname,
+                objs, get_library_name(),
                 output_dir = 'pymunk', extra_preargs=linker_preargs)    
                 
                         
@@ -145,25 +151,33 @@ libraries = [("chipmunk", {
     'include_dirs': [os.path.join('chipmunk_src','include')]
 })]
 
+import sysconfig
+data_files_root = os.path.join(sysconfig.get_path('platlib'), 'pymunk') 
+data_files = [
+    (data_files_root, [os.path.join("pymunk", get_library_name())])
+]
+
 setup(
-    name='pymunk'
-    , url='http://www.pymunk.org'
-    , author='Victor Blomqvist'
-    , author_email='vb@viblo.se'
-    , version='5.0.0' # remember to change me for new versions!
-    , description='pymunk is a easy-to-use pythonic 2d physics library built on top of Chipmunk'
-    , long_description=long_description
-    , packages=['pymunk','pymunkoptions']
-    , package_data = {'pymunk': ['chipmunk.dll'
-                                , 'chipmunk64.dll'
-                                , 'libchipmunk.so'
-                                , 'libchipmunk64.so'
-                                , 'libchipmunk.dylib']}
-    , license='MIT License'
-    , classifiers=classifiers
-    , cmdclass={'build_clib':build_chipmunk_clib}
-    , install_requires = ['cffi']
-    , extras_require = {'dev': ['pyglet','pygame','sphinx']}    
-    , test_suite="tests"
-    , libraries=libraries
+    name = 'pymunk',
+    url = 'http://www.pymunk.org',
+    author = 'Victor Blomqvist',
+    author_email = 'vb@viblo.se',
+    version = '5.0.0.dev0', # remember to change me for new versions!
+    description = 'pymunk is a easy-to-use pythonic 2d physics library built on top of Chipmunk',
+    long_description = long_description,
+    packages = ['pymunk','pymunkoptions'],
+    
+    #, package_data = {'pymunk': ['chipmunk.dll'
+    #                            , 'chipmunk64.dll'
+    #                            , 'libchipmunk.so'
+    #                            , 'libchipmunk64.so'
+    #                            , 'libchipmunk.dylib']}
+    data_files = data_files,
+    license = 'MIT License',
+    classifiers = classifiers,
+    cmdclass = {'build_clib':build_chipmunk_clib},
+    install_requires = ['cffi'],
+    extras_require = {'dev': ['pyglet','pygame','sphinx']},    
+    test_suite = "tests",
+    libraries = libraries,
 )
