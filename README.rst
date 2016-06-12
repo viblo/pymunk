@@ -30,6 +30,7 @@ TODO v7
 - Think about experimental repr of Body
 - Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js
 - Check this list for new stuff in chipmunk: http://howlingmoonsoftware.com/wordpress/chipmunk-7-released-pro-tools-open-sourced/
+- Investigate if its possible to use cpHastySpace on linux (wont work on windows due to posix threads)  
 
 - use twine to upload to Pypi? https://pypi.python.org/pypi/twine
 - use appveyor for windows automated tests? http://python-packaging-user-guide.readthedocs.io/en/latest/appveyor/

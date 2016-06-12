@@ -102,9 +102,15 @@ class build_chipmunk(build_ext, object):
         for folder in source_folders:
             for fn in os.listdir(folder):
                 fn_path = os.path.join(folder, fn)
-                if fn_path[-1] == 'c':
-                    sources.append(fn_path)
-                elif fn_path[-1] == 'o':
+                if fn[-1] == 'c':
+                    # Ignore cpHastySpace since it depends on pthread which 
+                    # doesnt work in mingwpy gcc (it uses win32 threads)
+                    # Will prevent the code from being multithreaded, would be
+                    # good if some tests could be made to verify the performance
+                    # of this.
+                    if fn != "cpHastySpace.c":
+                        sources.append(fn_path)
+                elif fn[-1] == 'o':
                     os.remove(fn_path)
         
         include_dirs = [os.path.join('chipmunk_src','include')]
