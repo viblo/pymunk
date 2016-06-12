@@ -35,6 +35,15 @@ class build_chipmunk_clib(build_clib, object):
         
         return super(build_chipmunk_clib, self).finalize_options()
 
+    def get_outputs(self):
+        x = super(build_chipmunk, self).get_outputs()
+        
+        print("get_outputs", x)
+        print("get_outputs xoutputs", self.xoutputs)
+        return self.xoutputs
+        #return x
+
+
     def build_libraries(self, libraries):
         for (lib_name, build_info) in libraries:
             compiler_preargs = ['-std=gnu99', 
@@ -108,10 +117,26 @@ class build_chipmunk_clib(build_clib, object):
                 self.compiler.dll_libraries = [lib for lib in self.compiler.dll_libraries if not lib.startswith("msvcr")]
             here = os.path.abspath(os.path.dirname(__file__))
             print here
+            
+            self.inplace = False
+            print("self.inplace", self.inplace)
+            
+            if not self.inplace:
+                package_dir = os.path.join(self.build_clib, "pymunk")
+            else:
+                build_py = self.get_finalized_command('build_py')
+                package_dir = os.path.abspath(build_py.get_package_dir(".pymunk"))
+            self.xoutputs = [os.path.join(package_dir, get_library_name())]
+            #package_dir = self.build_lib
+            print("package_dir", package_dir)
+            #outpath = os.path.join(package_dir, get_library_name()) 
+
+            print("build_clib", self.build_clib)
+            
             self.compiler.link(
                 cc.CCompiler.SHARED_LIBRARY, 
                 objs, get_library_name(),
-                output_dir = self.build_clib, extra_preargs=linker_preargs)    
+                output_dir = package_dir, extra_preargs=linker_preargs)    
                 
                         
 # todo: add/remove/think about this list
