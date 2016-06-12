@@ -36,7 +36,7 @@ test_script:
   - "%PYTHON%\\Scripts\\tox -e py"
   
 after_test:
-  - %PYTHON%/python setup.py bdist_wheel
+  - "%PYTHON%\\python setup.py bdist_wheel"
 
 artifacts:
   - path: dist\*
