@@ -25,21 +25,22 @@ init:
 
 install:
   # tox for testing
-  - "%PYTHON%\\python.exe -m pip install tox"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "python --version"
+  - "python -m pip install tox"
   # We need wheel installed to build wheels
-  - "%PYTHON%\\python.exe -m pip install --upgrade wheel"
-  - "%PYTHON%\\python.exe -m pip freeze"
+  - "python -m pip install --upgrade wheel"
   # We need mingwpy for compiling
-  - "%PYTHON%\\python.exe -m pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy "
-  - "set PATH=%PATH%:%PYTHON%\\Scripts"
+  - "python -m pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy "
+  - "python -m pip freeze"
   
 build: off
   
 test_script:
-  - "%PYTHON%\\Scripts\\tox -e py"
+  - "tox -e py"
   
 after_test:
-  - "%PYTHON%\\python setup.py bdist_wheel"
+  - "python setup.py bdist_wheel"
 
 artifacts:
   - path: dist\*
