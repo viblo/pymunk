@@ -8,11 +8,11 @@ cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi    
     
 from .vec2d import Vec2d
-from ._body import Body
-from ._collision_handler import CollisionHandler
-from ._query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
-from ._shapes import Shape, Circle, Poly, Segment
-from ._contact_point_set import ContactPointSet
+from .body import Body
+from .collision_handler import CollisionHandler
+from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
+from .shapes import Shape, Circle, Poly, Segment
+from .contact_point_set import ContactPointSet
 from pymunk.constraint import Constraint
 
 class Space(object):

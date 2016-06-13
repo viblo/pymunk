@@ -61,15 +61,16 @@ ffi = _chipmunk_cffi.ffi
 
 #from . import util as u
 from .vec2d import Vec2d
-from ._chipmunk_manual import ShapeFilter, Transform
-from ._contact_point_set import ContactPoint, ContactPointSet
-from ._arbiter import Arbiter
-from ._bb import BB
-from ._body import Body
-from ._collision_handler import CollisionHandler
-from ._query_info import PointQueryInfo, SegmentQueryInfo
-from ._shapes import Shape, Circle, Poly, Segment
-from ._space import Space
+from .shape_filter import ShapeFilter
+from .transform import Transform
+from .contact_point_set import ContactPoint, ContactPointSet
+from .arbiter import Arbiter
+from .bb import BB
+from .body import Body
+from .collision_handler import CollisionHandler
+from .query_info import PointQueryInfo, SegmentQueryInfo
+from .shapes import Shape, Circle, Poly, Segment
+from .space import Space
 from pymunk.constraint import *
 
 version = "5.0.0.dev0"

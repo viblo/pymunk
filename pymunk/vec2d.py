@@ -27,7 +27,7 @@ vector is needed.
 The Vec2d class is used almost everywhere in pymunk for 2d coordinates and 
 vectors, for example to define gravity vector in a space. However, pymunk is 
 smart enough to convert tuples or tuple like objects to Vec2ds so you usually 
-do not need to explcitily do conversions if you happen to have a tuple::
+do not need to explicitly do conversions if you happen to have a tuple::
 
     >>> import pymunk
     >>> space = pymunk.Space()
