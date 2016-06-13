@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Arrows and other pointy sticky things &mdash; pymunk 5.0.0 documentation</title>
+    <title>Arrows and other pointy sticky things &mdash; pymunk 5.0.0.dev0 documentation</title>
     
     <link rel="stylesheet" href="../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '5.0.0',
+        VERSION:     '5.0.0.dev0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="../index.html" />
+    <link rel="top" title="pymunk 5.0.0.dev0 documentation" href="../index.html" />
     <link rel="up" title="Tutorials" href="../tutorials.html" />
     <link rel="next" title="Slide and Pin Joint Demo Step by Step" href="SlideAndPinJoint.html" />
     <link rel="prev" title="Tutorials" href="../tutorials.html" /> 
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="../tutorials.html" title="Tutorials"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pymunk 5.0.0.dev0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../tutorials.html" accesskey="U">Tutorials</a> &raquo;</li> 
       </ul>
     </div>  
@@ -60,7 +60,7 @@
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
 <p class="last">This tutorial is work in progress. Take a look at the arrows.py example file
-in <a class="reference internal" href="../examples.html#id1"><span>Examples</span></a> for fully working code for the arrows.</p>
+in <a class="reference internal" href="../examples.html#id1"><span class="std std-ref">Examples</span></a> for fully working code for the arrows.</p>
 </div>
 <p>This tutorial will explain one way to make arrows/sticky projectiles that can stick on the target.</p>
 <p>The tutorial is heavily inspired by the Box2d tutorial &#8220;Box2D C++ tutorials - Sticky projectiles&#8221; found
@@ -83,15 +83,15 @@ objects if they hit hard enough.</p>
 <div class="section" id="basic-scene">
 <h2>Basic scene<a class="headerlink" href="#basic-scene" title="Permalink to this headline">¶</a></h2>
 <p>Before we start with the arrow we need a scene to contain it and a &#8220;cannon&#8221; that can aim:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">import</span> <span class="nn">pygame</span>
-<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pygame.color</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pygame.color</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="kn">import</span> <span class="nn">pymunk</span>
-<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
-<span class="kn">from</span> <span class="nn">pymunk.pygame_draw</span> <span class="kn">import</span> <span class="n">draw_space</span><span class="p">,</span> <span class="n">from_pygame</span>
+<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">pymunk.pygame_draw</span> <span class="k">import</span> <span class="n">draw_space</span><span class="p">,</span> <span class="n">from_pygame</span>
 
 <span class="n">width</span> <span class="o">=</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">600</span>
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -99,7 +99,7 @@ objects if they hit hard enough.</p>
     <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
     <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">width</span><span class="p">,</span><span class="n">height</span><span class="p">))</span>
     <span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
-    <span class="n">running</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;Arial&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
 
     <span class="c1">### Physics stuff</span>
@@ -124,7 +124,7 @@ objects if they hit hard enough.</p>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span> <span class="ow">or</span> \
                 <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYDOWN</span> <span class="ow">and</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">K_ESCAPE</span><span class="p">,</span> <span class="n">K_q</span><span class="p">]):</span>
-                <span class="n">running</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="n">mpos</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">from_pygame</span><span class="p">(</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">mpos</span><span class="p">),</span> <span class="n">screen</span> <span class="p">)</span>
@@ -184,7 +184,7 @@ objects if they hit hard enough.</p>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../showcase.html">Showcase</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="">Arrows and other pointy sticky things</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Arrows and other pointy sticky things</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#before-we-start">Before we start</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#basic-scene">Basic scene</a></li>
 </ul>
@@ -216,14 +216,11 @@ objects if they hit hard enough.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -245,13 +242,13 @@ objects if they hit hard enough.</p>
         <li class="right" >
           <a href="../tutorials.html" title="Tutorials"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pymunk 5.0.0.dev0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../tutorials.html" >Tutorials</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.3.
     </div>
   </body>
 </html>

@@ -1,14 +1,14 @@
 About
 -----
 
-pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
+Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
 you need 2d rigid body physics from Python. It is built on top of the very 
 nice 2d physics library Chipmunk.
 
-2007 - 2015, Victor Blomqvist - vb@viblo.se, MIT License
+2007 - 2016, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest pymunk release (5.0.0), 
-using chipmunk 7.0 rev d7603e3927 (source included)
+This release is based on the latest Pymunk release (5.0.0), 
+using Chipmunk 7.0 rev d7603e3927 (source included)
 
 :Homepage: http://www.pymunk.org
 :Forum: http://chipmunk-physics.net/forum/
@@ -21,46 +21,32 @@ using chipmunk 7.0 rev d7603e3927 (source included)
 
 TODO v7
 -------
+- cache pip downloads on appveyor?
 - Think about split between pymunk.util and pymunk modules
 - Update examples with new api
 - do we still need pymunk.inf?
 - replace references to Chipmunk in api docs to references to pymunk
 - http://code.activestate.com/recipes/500261/ for pickle of vec2d
-- keep names of add_collion_handler and co.
 - Think about experimental repr of Body
 - Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js
-- Check this list for new stuff in chipmunk: http://howlingmoonsoftware.com/wordpress/chipmunk-7-released-pro-tools-open-sourced/
 - Investigate if its possible to use cpHastySpace on linux (wont work on windows due to posix threads)  
+- add code for threaded sovler on non-windows
+- add code for autogeometry
 
 - use twine to upload to Pypi? https://pypi.python.org/pypi/twine
 - use appveyor for windows automated tests? http://python-packaging-user-guide.readthedocs.io/en/latest/appveyor/
 - use travis ci to build osx chipmunk lib file and run tests? https://docs.travis-ci.com/user/osx-ci-environment/
 
-other links
-https://mingwpy.github.io/issues.html#choice-of-msvc-runtime
 
+Installation
+------------
 
-How to Use
-----------
+In the normal case pymunk can be installed with pip::
 
-pymunk ships with a number of demos in the examples directory, and its  
-complete documentation including API Reference.  
+    > pip install pymunk
 
-If chipmunk doesnt ship with a chipmunk binary your platform can understand
-(currently Windows and Linux 32bit and 64 bit are included) you will have to 
-compile chipmunk before install. See section CHIPMUNK in this readme for 
-(very simple) instructions.
-
-To install you can either run::
-    
-    > python setup.py install
-
-or simply put the pymunk folder where your program/game can find it.
-(like /my_python_scripts/yourgame/pymunk). The chipmunk binary library
-is located in the pymunk folder.
-
-The easy way to get started is to check out the examples/ directory,
-and run 'run.py python arrows.py' and so on, and see what each one does :)
+It has one (or two) dependencies. CFFI and if not on Windows or OSX you also 
+need a working gcc compiler.
 
 
 Example
@@ -86,35 +72,60 @@ For more detailed and advanced examples, take a look at the included demos
 (in examples/).
 
 
+Documentation
+-------------
+
+The source distribution of Pymunk ships with a number of demos in the examples
+directory, and it also contains the full documentaiton including API reference.
+
+You can also find the full documentation including examples and API reference 
+on the pymunk homepage, http://www.pymunk.org
+
+
 Dependencies / Requirements
 ---------------------------
 
-- python (tested on cpython 2.7 and 3.2, 3.3. Also on pypy 2.1)
-- chipmunk (pymunk ships with a set of chipmunk libraries)
+Basically Pymunk have been made to be as easy to install and distribute as 
+possible, usually `Pip install` will take care of everything for you.
 
-* pygame (optional, you need it to run the pygame based demos)
-* pyglet (optional, you need it to run the pyglet based demos)
-* setuptools (optional, for some uses of setup.py)
-* sphinx (optional, you need it to build documentation)
-* ctypeslib & GCC_XML (optional, you need them to generate new bindings)
+- Python (Runs on CPython 2.7 and 3.X. Pypy and Pypy3)
+- Chipmunk (Source included, and on Windows and OSX its already compiled)
+- CFFI (will be installed automatically by pip)
+- Setuptools (should be included with Pip)
+
+* GCC and friends (optional, you need it to compile Chipmunk)
+* Pygame (optional, you need it to run the Pygame based demos)
+* Pyglet (optional, you need it to run the Pyglet based demos)
+* Sphinx (optional, you need it to build documentation)
 
 
 Chipmunk
 --------
 
-Compiled libraries of Chipmunk compatible Windows 32bit and Linux 32bit and 
-64bit are distributed with pymunk.
+Pymunk is built on top of the c library Chipmunk. It uses CFFI to interface
+with the Chipmunk library file. Because of this Chipmunk has to be compiled
+before it can be used with Pymunk. Compilation has to be done with GCC or 
+another compiler that uses the same flags. 
 
-**Warning** There are known blocker bugs in 64-bit pymunk on Windows. Use 
-at your own risk.
+The source distribution does not include a precompiled Chipmunk library file, 
+instead you need to build it yourself. 
 
-If pymunk doesnt have your particular platform included, you can compile 
-Chipmunk by hand with a custom setup argument::
+There are basically two options, either building it automatically as part of 
+installation using for example pip::
 
-    > python setup.py build_clib
+    > pip install pymunk-source-dist.zip
 
-The compiled file goes into the /pymunk folder (same as _chipmunk.py, 
-util.py and others). If the compile fail, please check the readme in 
+Or if you have the source unpacked / you got pymunk by cloning its git repo, 
+you can explicitly tell pymunk to compile it inplace::    
+
+    > python setup.py build_ext --inplace
+
+Note that chipmunk is actually not built as a python extension, but distutils /
+setuptools doesnt currently handle pure native libraries that needs to be built 
+in a good way if built with build_clib.
+
+The compiled file goes into the /pymunk folder (same as space.py, 
+body.py and others). If the compile fail, please check the readme in 
 chipmunk_src for generic instructions on how to compile with gcc, 
 or download the relevant release from Chipmunk homepage and follow its
 instructions.

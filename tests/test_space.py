@@ -128,14 +128,14 @@ class UnitTestSpace(unittest.TestCase):
             self.assertTrue(c in s.shapes)
             return True
 
-        s.collision_handler(0, 0).pre_solve = pre_solve_add
+        s.add_collision_handler(0, 0).pre_solve = pre_solve_add
 
         s.step(.1)
         
         self.assertTrue(b in s.bodies)
         self.assertTrue(c in s.shapes)
 
-        s.collision_handler(0, 0).pre_solve = pre_solve_remove
+        s.add_collision_handler(0, 0).pre_solve = pre_solve_remove
         
         s.step(.1)
         
@@ -149,7 +149,7 @@ class UnitTestSpace(unittest.TestCase):
             space.remove(arbiter.shapes)
             return True
 
-        s.collision_handler(0, 0).pre_solve = pre_solve
+        s.add_collision_handler(0, 0).pre_solve = pre_solve
 
         s.step(.1)
 
@@ -408,7 +408,7 @@ class UnitTestSpace(unittest.TestCase):
             self.hits += h.data["test"]
             return True
 
-        h = s.collision_handler(0, 0)
+        h = s.add_collision_handler(0, 0)
         h.data["test"] = 1
         h.begin = begin
 
@@ -431,7 +431,7 @@ class UnitTestSpace(unittest.TestCase):
             def begin(space, arb, data):
                 return
 
-            s.collision_handler(0,0).begin = begin
+            s.add_collision_handler(0,0).begin = begin
             s.step(0.1)
             
             self.assertEqual(len(w),1)
@@ -453,7 +453,7 @@ class UnitTestSpace(unittest.TestCase):
             d["test"] = data["test"]
             return True
 
-        h = s.collision_handler(0,1)
+        h = s.add_collision_handler(0,1)
         h.data["test"] = 1
         h.pre_solve = pre_solve
         s.step(0.1)
@@ -472,7 +472,7 @@ class UnitTestSpace(unittest.TestCase):
         
         def pre_solve(arb, space, data):
             return
-        s.collision_handler(0,0).pre_solve = pre_solve
+        s.add_collision_handler(0,0).pre_solve = pre_solve
         
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -487,7 +487,7 @@ class UnitTestSpace(unittest.TestCase):
         def post_solve(arb, space, data):
             self.hit += 1
 
-        self.s.collision_handler(0,0).post_solve = post_solve
+        self.s.add_collision_handler(0,0).post_solve = post_solve
         self.s.step(0.1)
         self.assertEqual(self.hit, 1)
 
@@ -509,7 +509,7 @@ class UnitTestSpace(unittest.TestCase):
         def separate(arb, space, data):
             self.separated = data["test"]
 
-        h = s.collision_handler(0,0)
+        h = s.add_collision_handler(0,0)
         h.data["test"] = True
         h.separate = separate
 
@@ -532,7 +532,7 @@ class UnitTestSpace(unittest.TestCase):
             d["space"] = space
             return True
 
-        s.wildcard_collision_handler(1).pre_solve = pre_solve
+        s.add_wildcard_collision_handler(1).pre_solve = pre_solve
         s.step(0.1)
         
         self.assertEqual({}, d)
@@ -560,7 +560,7 @@ class UnitTestSpace(unittest.TestCase):
             d["space"] = space
             return True
 
-        s.default_collision_handler().pre_solve = pre_solve
+        s.add_default_collision_handler().pre_solve = pre_solve
         s.step(0.1)
         
         self.assertEqual(c1, d["shapes"][1])
@@ -589,7 +589,7 @@ class UnitTestSpace(unittest.TestCase):
             space.add_post_step_callback(callback, 0, arb.shapes, test_self = self)
             return True
 
-        ch = s.collision_handler(0,0).pre_solve = pre_solve
+        ch = s.add_collision_handler(0,0).pre_solve = pre_solve
         
         s.step(0.1)
         self.assertEqual([], s.shapes)

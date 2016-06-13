@@ -344,7 +344,7 @@ class Space(object):
         self._post_step_callbacks = {}  
 
 
-    def collision_handler(self, collision_type_a, collision_type_b):
+    def add_collision_handler(self, collision_type_a, collision_type_b):
         """Return the CollisionHandler for collisions between objects ot
         type collision_type_a and collision_type_b.
 
@@ -375,7 +375,7 @@ class Space(object):
 
         return self._handlers[p]
 
-    def wildcard_collision_handler(self, collision_type_a):
+    def add_wildcard_collision_handler(self, collision_type_a):
         """Add a wildcard collision handler for given collision type.
 
         This handler will be used any time an object with this type collides
@@ -410,7 +410,7 @@ class Space(object):
 
         return self._handlers[p]
 
-    def default_collision_handler(self):
+    def add_default_collision_handler(self):
         """Return a reference to the default collision handler or that is
         used to process all collisions that don't have a more specific
         handler.

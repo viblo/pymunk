@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pymunk.arbiter &mdash; pymunk 5.0.0.dev0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '5.0.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
+    <link rel="top" title="pymunk 5.0.0.dev0 documentation" href="../../index.html" />
+    <link rel="up" title="pymunk" href="../pymunk.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0.dev0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pymunk.arbiter</h1><div class="highlight"><pre>
+<span></span><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;$Id$&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
+<span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
+<span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>   
+
+<span class="kn">from</span> <span class="nn">.contact_point_set</span> <span class="kn">import</span> <span class="n">ContactPointSet</span>
+
+<div class="viewcode-block" id="Arbiter"><a class="viewcode-back" href="../../pymunk.html#pymunk.Arbiter">[docs]</a><span class="k">class</span> <span class="nc">Arbiter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The Arbiter object encapsulates a pair of colliding shapes and all of </span>
+<span class="sd">        the data about their collision. </span>
+<span class="sd">        </span>
+<span class="sd">        They are created when a collision starts, and persist until those </span>
+<span class="sd">        shapes are no longer colliding.</span>
+
+<span class="sd">    .. Warning::</span>
+<span class="sd">        Because arbiters are handled by the space you should never</span>
+<span class="sd">        hold onto a reference to an arbiter as you don&#39;t know when it will be</span>
+<span class="sd">        destroyed! Use them within the callback where they are given to you</span>
+<span class="sd">        and then forget about them or copy out the information you need from</span>
+<span class="sd">        them.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Arbiter.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Arbiter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_arbiter</span><span class="p">,</span> <span class="n">space</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize an Arbiter object from the Chipmunk equivalent struct</span>
+<span class="sd">        and the Space.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            You should never need to create an instance of this class directly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span> <span class="o">=</span> <span class="n">_arbiter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">space</span>        </div>
+        
+    <span class="k">def</span> <span class="nf">_get_contact_point_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">_points</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetContactPointSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ContactPointSet</span><span class="o">.</span><span class="n">_from_cp</span><span class="p">(</span><span class="n">_points</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_set_contact_point_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_set</span><span class="p">):</span>
+        <span class="k">pass</span>
+        <span class="c1">#cp.cpArbiterSetContactPointSet(self._arbiter, point_set)        </span>
+    <span class="n">contact_point_set</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_contact_point_set</span><span class="p">,</span> <span class="n">_set_contact_point_set</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Contact point sets make getting contact information from the </span>
+<span class="s2">        Arbiter simpler.</span>
+<span class="s2">        </span>
+<span class="s2">        Return `ContactPointSet`&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">shapeA_p</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpShape *[1]&quot;</span><span class="p">)</span>
+        <span class="n">shapeB_p</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpShape *[1]&quot;</span><span class="p">)</span>
+
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetShapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">shapeA_p</span><span class="p">,</span> <span class="n">shapeB_p</span><span class="p">)</span>
+
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">shapeA_p</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">shapeB_p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+
+    <span class="n">shapes</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_shapes</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get the shapes in the order that they were defined in the</span>
+<span class="s2">        collision handler associated with this arbiter&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_restitution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetRestitution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_restitution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">restitution</span><span class="p">):</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterSetRestitution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">restitution</span><span class="p">)</span>
+    <span class="n">restitution</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_restitution</span><span class="p">,</span> <span class="n">_set_restitution</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The calculated restitution (elasticity) for this collision </span>
+<span class="s2">        pair. </span>
+<span class="s2">        </span>
+<span class="s2">        Setting the value in a preSolve() callback will override the value </span>
+<span class="s2">        calculated by the space. The default calculation multiplies the </span>
+<span class="s2">        elasticity of the two shapes together.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_friction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetFriction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_friction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">friction</span><span class="p">):</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterSetFriction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">friction</span><span class="p">)</span>
+    <span class="n">friction</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_friction</span><span class="p">,</span> <span class="n">_set_friction</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The calculated friction for this collision pair. </span>
+<span class="s2">        </span>
+<span class="s2">        Setting the value in a preSolve() callback will override the value </span>
+<span class="s2">        calculated by the space. The default calculation multiplies the </span>
+<span class="s2">        friction of the two shapes together.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_surface_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetSurfaceVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">_set_surface_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">velocity</span><span class="p">):</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterSetSurfaceVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">velocity</span><span class="p">)</span>
+    <span class="n">surface_velocity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_surface_velocity</span><span class="p">,</span> <span class="n">_set_surface_velocity</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The calculated surface velocity for this collision pair. </span>
+<span class="s2">        </span>
+<span class="s2">        Setting the value in a pre_solve() callback will override the value </span>
+<span class="s2">        calculated by the space. the default calculation subtracts the </span>
+<span class="s2">        surface velocity of the second shape from the first and then projects </span>
+<span class="s2">        that onto the tangent of the collision. This is so that only </span>
+<span class="s2">        friction is affected by default calculation. Using a custom </span>
+<span class="s2">        calculation, you can make something that responds like a pinball </span>
+<span class="s2">        bumper, or where the surface velocity is dependent on the location </span>
+<span class="s2">        of the contact point.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_total_impulse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterTotalImpulse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>
+    <span class="n">total_impulse</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_total_impulse</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Returns the impulse that was applied this step to resolve the</span>
+<span class="s2">        collision.</span>
+
+<span class="s2">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_total_ke</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterTotalKE</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
+    <span class="n">total_ke</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_total_ke</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The amount of energy lost in a collision including static, but</span>
+<span class="s2">        not dynamic friction.</span>
+
+<span class="s2">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_is_first_contact</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterIsFirstContact</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>
+    <span class="n">is_first_contact</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_is_first_contact</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Returns true if this is the first step the two shapes started </span>
+<span class="s2">        touching. </span>
+<span class="s2">        </span>
+<span class="s2">        This can be useful for sound effects for instance. If its the first </span>
+<span class="s2">        frame for a certain collision, check the energy of the collision in a </span>
+<span class="s2">        postStep() callback and use that to determine the volume of a sound </span>
+<span class="s2">        effect to play.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_is_removal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterIsRemoval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>
+    <span class="n">is_removal</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_is_removal</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Returns True during a separate() callback if the callback was </span>
+<span class="s2">        invoked due to an object removal.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/pymunk_logo_sphinx.png" alt="Logo"/>
+            </a></p><div style="margin-left:10px;">
+	<p>
+		<iframe src="http://ghbtns.com/github-btn.html?user=viblo&repo=pymunk&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+	</p>
+	<p>
+		<a href="https://travis-ci.org/viblo/pymunk">
+		    <img alt="https://travis-ci.org/viblo/pymunk.svg?branch=master" src="https://travis-ci.org/viblo/pymunk.svg?branch=master">
+		</a>
+	</p>
+</div>
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk">Source Repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/pymunk/">Downloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0.dev0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2013, Victor Blomqvist.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.3.
+    </div>
+  </body>
+</html>

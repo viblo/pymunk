@@ -225,7 +225,7 @@ class UnitTestSegment(unittest.TestCase):
             self.num_of_begins += 1
             return True
             
-        s.default_collision_handler().begin=begin
+        s.add_default_collision_handler().begin=begin
         s.step(.1)
 
         self.assertEqual(1, self.num_of_begins)

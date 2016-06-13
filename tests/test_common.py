@@ -76,7 +76,7 @@ class UnitTestBugs(unittest.TestCase):
                 space.remove(c1)
             #space.add_post_step_callback(space.remove, first_shape, first_shape.body)
 
-        space.collision_handler(2, 0).separate = remove_first
+        space.add_collision_handler(2, 0).separate = remove_first
 
         space.step(1./60)
         b2.position = 22,0

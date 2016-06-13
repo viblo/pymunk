@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Readme &mdash; pymunk 5.0.0 documentation</title>
+    <title>Readme &mdash; pymunk 5.0.0.dev0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.0.0',
+        VERSION:     '5.0.0.dev0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="index.html" />
+    <link rel="top" title="pymunk 5.0.0.dev0 documentation" href="index.html" />
     <link rel="next" title="News" href="news.html" />
     <link rel="prev" title="pymunk" href="index.html" /> 
   </head>
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="index.html" title="pymunk"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0.dev0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -57,12 +57,12 @@
 <h1>Readme<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="about">
 <h2>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h2>
-<p>pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
+<p>Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
 you need 2d rigid body physics from Python. It is built on top of the very
 nice 2d physics library Chipmunk.</p>
-<p>2007 - 2015, Victor Blomqvist - <a class="reference external" href="mailto:vb&#37;&#52;&#48;viblo&#46;se">vb<span>&#64;</span>viblo<span>&#46;</span>se</a>, MIT License</p>
-<p>This release is based on the latest pymunk release (5.0.0),
-using chipmunk 7.0 rev d7603e3927 (source included)</p>
+<p>2007 - 2016, Victor Blomqvist - <a class="reference external" href="mailto:vb&#37;&#52;&#48;viblo&#46;se">vb<span>&#64;</span>viblo<span>&#46;</span>se</a>, MIT License</p>
+<p>This release is based on the latest Pymunk release (5.0.0),
+using Chipmunk 7.0 rev d7603e3927 (source included)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -84,44 +84,35 @@ using chipmunk 7.0 rev d7603e3927 (source included)</p>
 <div class="section" id="todo-v7">
 <h2>TODO v7<a class="headerlink" href="#todo-v7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li>cache pip downloads on appveyor?</li>
 <li>Think about split between pymunk.util and pymunk modules</li>
 <li>Update examples with new api</li>
 <li>do we still need pymunk.inf?</li>
 <li>replace references to Chipmunk in api docs to references to pymunk</li>
 <li><a class="reference external" href="http://code.activestate.com/recipes/500261/">http://code.activestate.com/recipes/500261/</a> for pickle of vec2d</li>
-<li>keep names of add_collion_handler and co.</li>
 <li>Think about experimental repr of Body</li>
 <li>Get inspiration of examples and debug drawing from here: <a class="reference external" href="https://github.com/liabru/matter-js">https://github.com/liabru/matter-js</a></li>
-<li>Check this list for new stuff in chipmunk: <a class="reference external" href="http://howlingmoonsoftware.com/wordpress/chipmunk-7-released-pro-tools-open-sourced/">http://howlingmoonsoftware.com/wordpress/chipmunk-7-released-pro-tools-open-sourced/</a></li>
+<li>Investigate if its possible to use cpHastySpace on linux (wont work on windows due to posix threads)</li>
+<li>add code for threaded sovler on non-windows</li>
+<li>add code for autogeometry</li>
 <li>use twine to upload to Pypi? <a class="reference external" href="https://pypi.python.org/pypi/twine">https://pypi.python.org/pypi/twine</a></li>
 <li>use appveyor for windows automated tests? <a class="reference external" href="http://python-packaging-user-guide.readthedocs.io/en/latest/appveyor/">http://python-packaging-user-guide.readthedocs.io/en/latest/appveyor/</a></li>
 <li>use travis ci to build osx chipmunk lib file and run tests? <a class="reference external" href="https://docs.travis-ci.com/user/osx-ci-environment/">https://docs.travis-ci.com/user/osx-ci-environment/</a></li>
 </ul>
-<p>other links
-<a class="reference external" href="https://mingwpy.github.io/issues.html#choice-of-msvc-runtime">https://mingwpy.github.io/issues.html#choice-of-msvc-runtime</a></p>
 </div>
-<div class="section" id="how-to-use">
-<h2>How to Use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h2>
-<p>pymunk ships with a number of demos in the examples directory, and its
-complete documentation including API Reference.</p>
-<p>If chipmunk doesnt ship with a chipmunk binary your platform can understand
-(currently Windows and Linux 32bit and 64 bit are included) you will have to
-compile chipmunk before install. See section CHIPMUNK in this readme for
-(very simple) instructions.</p>
-<p>To install you can either run:</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py install
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>In the normal case pymunk can be installed with pip:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span>
 </pre></div>
 </div>
-<p>or simply put the pymunk folder where your program/game can find it.
-(like /my_python_scripts/yourgame/pymunk). The chipmunk binary library
-is located in the pymunk folder.</p>
-<p>The easy way to get started is to check out the examples/ directory,
-and run &#8216;run.py python arrows.py&#8217; and so on, and see what each one does :)</p>
+<p>It has one (or two) dependencies. CFFI and if not on Windows or OSX you also
+need a working gcc compiler.</p>
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>Quick code example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pymunk</span>               <span class="c1"># Import pymunk..</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymunk</span>               <span class="c1"># Import pymunk..</span>
 
 <span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>      <span class="c1"># Create a Space which contain the simulation</span>
 <span class="n">space</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1000</span>     <span class="c1"># Set its gravity</span>
@@ -132,40 +123,60 @@ and run &#8216;run.py python arrows.py&#8217; and so on, and see what each one d
 <span class="n">poly</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Poly</span><span class="o">.</span><span class="n">create_box</span><span class="p">(</span><span class="n">body</span><span class="p">)</span> <span class="c1"># Create a box shape and attach to body</span>
 <span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">poly</span><span class="p">)</span>       <span class="c1"># Add both body and shape to the simulation</span>
 
-<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>                 <span class="c1"># Infinite loop simulation</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>                 <span class="c1"># Infinite loop simulation</span>
     <span class="n">space</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>        <span class="c1"># Step the simulation one step forward</span>
 </pre></div>
 </div>
 <p>For more detailed and advanced examples, take a look at the included demos
 (in examples/).</p>
 </div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>The source distribution of Pymunk ships with a number of demos in the examples
+directory, and it also contains the full documentaiton including API reference.</p>
+<p>You can also find the full documentation including examples and API reference
+on the pymunk homepage, <a class="reference external" href="http://www.pymunk.org">http://www.pymunk.org</a></p>
+</div>
 <div class="section" id="dependencies-requirements">
 <h2>Dependencies / Requirements<a class="headerlink" href="#dependencies-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Basically Pymunk have been made to be as easy to install and distribute as
+possible, usually <cite>Pip install</cite> will take care of everything for you.</p>
 <ul class="simple">
-<li>python (tested on cpython 2.7 and 3.2, 3.3. Also on pypy 2.1)</li>
-<li>chipmunk (pymunk ships with a set of chipmunk libraries)</li>
+<li>Python (Runs on CPython 2.7 and 3.X. Pypy and Pypy3)</li>
+<li>Chipmunk (Source included, and on Windows and OSX its already compiled)</li>
+<li>CFFI (will be installed automatically by pip)</li>
+<li>Setuptools (should be included with Pip)</li>
 </ul>
 <ul class="simple">
-<li>pygame (optional, you need it to run the pygame based demos)</li>
-<li>pyglet (optional, you need it to run the pyglet based demos)</li>
-<li>setuptools (optional, for some uses of setup.py)</li>
-<li>sphinx (optional, you need it to build documentation)</li>
-<li>ctypeslib &amp; GCC_XML (optional, you need them to generate new bindings)</li>
+<li>GCC and friends (optional, you need it to compile Chipmunk)</li>
+<li>Pygame (optional, you need it to run the Pygame based demos)</li>
+<li>Pyglet (optional, you need it to run the Pyglet based demos)</li>
+<li>Sphinx (optional, you need it to build documentation)</li>
 </ul>
 </div>
 <div class="section" id="chipmunk">
 <h2>Chipmunk<a class="headerlink" href="#chipmunk" title="Permalink to this headline">¶</a></h2>
-<p>Compiled libraries of Chipmunk compatible Windows 32bit and Linux 32bit and
-64bit are distributed with pymunk.</p>
-<p><strong>Warning</strong> There are known blocker bugs in 64-bit pymunk on Windows. Use
-at your own risk.</p>
-<p>If pymunk doesnt have your particular platform included, you can compile
-Chipmunk by hand with a custom setup argument:</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py build_clib
+<p>Pymunk is built on top of the c library Chipmunk. It uses CFFI to interface
+with the Chipmunk library file. Because of this Chipmunk has to be compiled
+before it can be used with Pymunk. Compilation has to be done with GCC or
+another compiler that uses the same flags.</p>
+<p>The source distribution does not include a precompiled Chipmunk library file,
+instead you need to build it yourself.</p>
+<p>There are basically two options, either building it automatically as part of
+installation using for example pip:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">dist</span><span class="o">.</span><span class="n">zip</span>
 </pre></div>
 </div>
-<p>The compiled file goes into the /pymunk folder (same as _chipmunk.py,
-util.py and others). If the compile fail, please check the readme in
+<p>Or if you have the source unpacked / you got pymunk by cloning its git repo,
+you can explicitly tell pymunk to compile it inplace:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span>
+</pre></div>
+</div>
+<p>Note that chipmunk is actually not built as a python extension, but distutils /
+setuptools doesnt currently handle pure native libraries that needs to be built
+in a good way if built with build_clib.</p>
+<p>The compiled file goes into the /pymunk folder (same as space.py,
+body.py and others). If the compile fail, please check the readme in
 chipmunk_src for generic instructions on how to compile with gcc,
 or download the relevant release from Chipmunk homepage and follow its
 instructions.</p>
@@ -192,11 +203,12 @@ instructions.</p>
 </div>
 <h3><a href="index.html">Table Of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">Readme</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Readme</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#about">About</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#todo-v7">TODO v7</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#how-to-use">How to Use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dependencies-requirements">Dependencies / Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#chipmunk">Chipmunk</a></li>
 </ul>
@@ -230,14 +242,11 @@ instructions.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -259,12 +268,12 @@ instructions.</p>
         <li class="right" >
           <a href="index.html" title="pymunk"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0.dev0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.3.
     </div>
   </body>
 </html>

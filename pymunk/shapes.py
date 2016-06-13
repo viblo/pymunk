@@ -362,7 +362,7 @@ class Poly(Shape):
             body : `Body`
                 The body to attach the poly to
             vertices : [(x,y)] or [`Vec2d`]
-                    Define a convex hull of the polygon with a counterclockwise
+                Define a convex hull of the polygon with a counterclockwise
                 winding.
             transform : `Transform`
                 Transform will be applied to every vertex.
