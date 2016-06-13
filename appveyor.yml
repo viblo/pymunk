@@ -11,8 +11,8 @@ environment:
     #- PYTHON: "C:\\Python35"
     #- PYTHON: "C:\\Python35-x64"
 
-platform:
-  - x86
+#platform:
+#  - x86
   #- x64
 
 #matrix:
@@ -29,6 +29,8 @@ install:
   # We need wheel installed to build wheels
   - "%PYTHON%\\python.exe -m pip install --upgrade wheel"
   - "%PYTHON%\\python.exe -m pip freeze"
+  # We need mingwpy for compiling
+  - "%PYTHON%\\python.exe -m pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy "
   
 build: off
   
