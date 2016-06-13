@@ -119,6 +119,22 @@ class UnitTestShape(unittest.TestCase):
         s = p.Space()
         s.add(c)
         self.assertEqual(c.space, s)
+        
+    def testShapesCollide(self):
+        b1 = p.Body(1,1)
+        s1 = p.Circle(b1, 10)
+        
+        b2 = p.Body(1,1)
+        b2.position = 30,30
+        s2 = p.Circle(b2, 10)
+        
+        c = s1.shapes_collide(s2)
+        self.assertEqual(c.normal, (1, 0))
+        self.assertEqual(len(c.points), 1)
+        point = c.points[0]
+        self.assertEqual(point.point_a, (10,0))
+        self.assertEqual(point.point_b, (-10,0))
+        self.assertEqual(point.distance, -20) 
 
 
 class UnitTestCircle(unittest.TestCase):

@@ -8,6 +8,7 @@ ffi = _chipmunk_cffi.ffi
 from ._chipmunk_manual import Transform, ShapeFilter
 from ._bb import BB 
 from ._query_info import PointQueryInfo, SegmentQueryInfo
+from ._contact_point_set import ContactPointSet
 from .vec2d import Vec2d
 
 class Shape(object):
@@ -193,6 +194,14 @@ class Shape(object):
             return SegmentQueryInfo(self, Vec2d(info.point), Vec2d(info.normal), info.alpha)
         else:
             return SegmentQueryInfo(None, Vec2d(info.point), Vec2d(info.normal), info.alpha)
+
+    def shapes_collide(self, b):
+        """Get contact information about this shape and shape b.
+        
+        Returns ContactPointSet
+        """
+        _points = cp.cpShapesCollide(self._shape, b._shape)
+        return ContactPointSet._from_cp(_points)
 
     def _get_space(self):
         if self._space != None:
