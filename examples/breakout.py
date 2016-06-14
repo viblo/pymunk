@@ -66,7 +66,7 @@ def setup_level(space, player_body):
         def f(space, shape):
             space.remove(shape, shape.body)
         space.add_post_step_callback(f, first_shape)
-    space.collision_handler(2, 0).separate = remove_first
+    space.add_collision_handler(2, 0).separate = remove_first
 
 def main():
     ### PyGame init
