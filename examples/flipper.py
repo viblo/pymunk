@@ -11,11 +11,8 @@ from pygame.color import *
 
 import pymunk
 from pymunk import Vec2d
+import pymunk.pygame_util
 
-def to_pygame(p):
-    """Small hack to convert pymunk to pygame coordinates"""
-    return int(p.x), int(-p.y+600)
-    
 pygame.init()
 screen = pygame.display.set_mode((600, 600))
 clock = pygame.time.Clock()
@@ -27,7 +24,7 @@ space.gravity = (0.0, -900.0)
 
 ## Balls
 balls = []
-   
+
 ### walls
 static_lines = [pymunk.Segment(space.static_body, (150, 100.0), (50.0, 550.0), 1.0)
                 ,pymunk.Segment(space.static_body, (450.0, 100.0), (550.0, 550.0), 1.0)
@@ -66,7 +63,7 @@ space.add(l_flipper_body, l_flipper_shape)
 l_flipper_joint_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
 l_flipper_joint_body.position = l_flipper_body.position 
 j = pymunk.PinJoint(l_flipper_body, l_flipper_joint_body, (0,0), (0,0))
-s = pymunk.DampedRotarySpring(l_flipper_body, l_flipper_joint_body, -0.15, 20000000,900000)
+s = pymunk.DampedRotarySpring(l_flipper_body, l_flipper_joint_body, -0.15, 20000000, 900000)
 space.add(j, s)
 
 r_flipper_shape.group = l_flipper_shape.group = 1
@@ -79,7 +76,6 @@ for p in [(240,500), (360,500)]:
     shape = pymunk.Circle(body, 10)
     shape.elasticity = 1.5
     space.add(shape)
-    balls.append(shape)
 
 while running:
     for event in pygame.event.get():
@@ -111,33 +107,22 @@ while running:
     screen.fill(THECOLORS["white"])
     
     ### Draw stuff
-    for ball in balls:
-        p = to_pygame(ball.body.position)
-        pygame.draw.circle(screen, THECOLORS["blue"], p, int(ball.radius), 2)
-
-
-    for line in static_lines:
-        body = line.body
-        pv1 = body.position + line.a.rotated(body.angle)
-        pv2 = body.position + line.b.rotated(body.angle)
-        p1 = to_pygame(pv1)
-        p2 = to_pygame(pv2)
-        pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])
-    
+    pymunk.pygame_util.draw(screen, space)    
     
     r_flipper_body.position = 450, 100
     l_flipper_body.position = 150, 100
-    r_flipper_body.velocity = l_flipper_body.velcoty = 0,0
-    for f in [r_flipper_shape, l_flipper_shape]:
+    r_flipper_body.velocity = l_flipper_body.velocity = 0,0
+
+    ### Remove any balls outside
+    to_remove = []
+    for ball in balls:
+        if ball.body.position.get_distance((300,300)) > 1000:
+            to_remove.append(ball)
+            
+    for ball in to_remove:
+        space.remove(ball.body, ball)
+        balls.remove(ball)
         
-        ps = [p + f.body.position for p in f.get_vertices()]
-        ps.append(ps[0])
-        ps = map(to_pygame, ps)
-        
-        color = THECOLORS["red"]
-        pygame.draw.lines(screen, color, False, ps)
-    #if abs(flipper_body.angle) < 0.001: flipper_body.angle = 0
-    
     ### Update physics
     dt = 1.0/60.0/5.
     for x in range(5):

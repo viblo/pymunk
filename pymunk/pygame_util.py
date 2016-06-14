@@ -39,8 +39,19 @@ import pygame
 import pymunk
 from pymunk.vec2d import Vec2d
 
-flip_y = True
-"""Flip the y cooridnate to make y point upwards"""
+positive_y_is_up = True
+"""Make increasing values of y values of y point upwards.
+
+        y
+        ^
+        |   . (2 ,2)
+        |
+    ----+------ > x
+        |
+        |   . (2, -2)
+        |
+
+"""
 
 def draw(surface, *objs):
     """Draw one or many pymunk objects on a pygame.Surface object.
@@ -209,9 +220,12 @@ def get_mouse_pos(surface):
 
 def to_pygame(p, surface):
     """Convenience method to convert pymunk coordinates to pygame surface 
-    local coordinates
+    local coordinates. 
+    
+    Note that in case positive_y_is_up is False, this function wont actually do
+    anything except converting the point to integers.
     """
-    if flip_y:
+    if positive_y_is_up:
         return int(p[0]), surface.get_height()-int(p[1])
     else:
         return int(p[0]), int(p[1])
