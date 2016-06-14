@@ -29,7 +29,7 @@ def create_arrow():
 def stick_arrow_to_target(space, arrow_body, target_body, position):
     pivot_joint = pymunk.PivotJoint(arrow_body, target_body, position)
     phase = target_body.angle - arrow_body.angle 
-    gear_joint = pymunk.GearJoint(arrow_body, target_body,phase,1)
+    gear_joint = pymunk.GearJoint(arrow_body, target_body, phase, 1)
     space.add(pivot_joint)
     space.add(gear_joint)
 
@@ -81,7 +81,7 @@ def main():
     arrow_body,arrow_shape = create_arrow()
     space.add(arrow_shape)
         
-    space.collision_handler(0, 1).post_solve=post_solve_arrow_hit
+    space.add_collision_handler(0, 1).post_solve=post_solve_arrow_hit
 
     flying_arrows = []
     

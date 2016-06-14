@@ -85,7 +85,7 @@ class CollisionHandler(object):
     begin = property(_get_begin, _set_begin,
         doc="""Two shapes just started touching for the first time this step.
 
-        ``func(arbiter, space) -> bool``
+        ``func(arbiter, space, data) -> bool``
 
         Return true from the callback to process the collision normally or
         false to cause pymunk to ignore the collision entirely. If you return
@@ -128,7 +128,7 @@ class CollisionHandler(object):
     pre_solve = property(_get_pre_solve, _set_pre_solve,
         doc="""Two shapes are touching during this step.
 
-        ``func(arbiter, space) -> bool``
+        ``func(arbiter, space, data) -> bool``
 
         Return false from the callback to make pymunk ignore the collision
         this step or true to process it normally. Additionally, you may
@@ -154,7 +154,7 @@ class CollisionHandler(object):
         doc="""Two shapes are touching and their collision response has been
         processed.
 
-        ``func(arbiter, space)``
+        ``func(arbiter, space, data)``
 
         You can retrieve the collision impulse or kinetic energy at this
         time if you want to use it to calculate sound volumes or damage
@@ -178,7 +178,7 @@ class CollisionHandler(object):
         doc="""Two shapes have just stopped touching for the first time this
         step.
 
-        ``func(arbiter, space)``
+        ``func(arbiter, space, data)``
 
         To ensure that begin()/separate() are always called in balanced
         pairs, it will also be called when removing a shape while its in
