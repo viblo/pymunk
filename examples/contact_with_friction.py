@@ -55,7 +55,7 @@ def main():
     
     ticks_to_next_ball = 10
     
-    ch = space.collision_handler(0, 0)
+    ch = space.add_collision_handler(0, 0)
     ch.data["surface"] = screen
     ch.post_solve = draw_collision
     
