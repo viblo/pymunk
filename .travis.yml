@@ -54,5 +54,4 @@ install:
       fi
 
 script: 
-  #- if [[ $TRAVIS_OS_NAME == 'osx' ]]; then python setup.py build_clib; fi
   - python -m tox

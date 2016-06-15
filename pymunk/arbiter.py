@@ -35,12 +35,30 @@ class Arbiter(object):
         self._space = space        
         
     def _get_contact_point_set(self):
-        _points = cp.cpArbiterGetContactPointSet(self._arbiter)
-        return ContactPointSet._from_cp(_points)
+        _set = cp.cpArbiterGetContactPointSet(self._arbiter)
+        return ContactPointSet._from_cp(_set)
         
     def _set_contact_point_set(self, point_set):
-        pass
-        #cp.cpArbiterSetContactPointSet(self._arbiter, point_set)        
+        # This has to be done by fetching a new chipmuk point set, update it 
+        # according to whats passed in and the pass that back to chipmunk due
+        # to the fact that ContactPointSet doesnt contain a reference to the 
+        # corresponding c struct. 
+        
+        _set = cp.cpArbiterGetContactPointSet(self._arbiter)
+        _set.normal = point_set.normal
+        
+        if len(point_set.points) == _set.count:
+            for i in range(_set.count):
+                _set.points[i].pointA = point_set.points[0].point_a
+                _set.points[i].pointB = point_set.points[0].point_b
+                _set.points[i].distance = point_set.points[0].distance
+        else:
+            msg = 'Expected {} points, got {} points in point_set'.format(
+                _set.count,  len(point_set.points))
+            raise Exception, msg
+            
+        cp.cpArbiterSetContactPointSet(self._arbiter, ffi.addressof(_set))
+                
     contact_point_set = property(_get_contact_point_set, _set_contact_point_set,
         doc="""Contact point sets make getting contact information from the 
         Arbiter simpler.
@@ -68,7 +86,7 @@ class Arbiter(object):
         doc="""The calculated restitution (elasticity) for this collision 
         pair. 
         
-        Setting the value in a preSolve() callback will override the value 
+        Setting the value in a pre_solve() callback will override the value 
         calculated by the space. The default calculation multiplies the 
         elasticity of the two shapes together.
         """)
@@ -80,7 +98,7 @@ class Arbiter(object):
     friction = property(_get_friction, _set_friction, 
         doc="""The calculated friction for this collision pair. 
         
-        Setting the value in a preSolve() callback will override the value 
+        Setting the value in a pre_solve() callback will override the value 
         calculated by the space. The default calculation multiplies the 
         friction of the two shapes together.
         """)
@@ -126,7 +144,7 @@ class Arbiter(object):
         
         This can be useful for sound effects for instance. If its the first 
         frame for a certain collision, check the energy of the collision in a 
-        postStep() callback and use that to determine the volume of a sound 
+        post_step() callback and use that to determine the volume of a sound 
         effect to play.
         """)
 

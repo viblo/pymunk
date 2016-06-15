@@ -4,8 +4,7 @@ from collections import namedtuple
 
 from .vec2d import Vec2d
 
-class ContactPoint(
-    namedtuple('ContactPoint', ['point_a', 'point_b', 'distance'])):
+class ContactPoint(object):
     """Contains information about a contact point. 
     
     point_a and point_b are the contact position on the surface of each shape.
@@ -16,10 +15,19 @@ class ContactPoint(
     Arbiter.contact_point_set.
     """
     
-    __slots__ = ()
+    __slots__ = ('point_a', 'point_b', 'distance')
+    
+    def __init__(self, point_a, point_b, distance):
+        self.point_a = point_a
+        self.point_b = point_b
+        self.distance = distance
+    
+    def __repr__(self):
+        return 'ContactPoint(point_a={}, point_b={}, distance={})'.format(
+            self.point_a, self.point_b, self.distance)
+    
 
-class ContactPointSet(
-    namedtuple('ContactPointSet', ['normal', 'points'])):
+class ContactPointSet(object):
     """Contact point sets make getting contact information simpler.
     
     normal is the normal of the collision
@@ -27,7 +35,15 @@ class ContactPointSet(
     points is the array of contact points. Can be at most 2 points.
     """
     
-    __slots__ = ()
+    __slots__ = ('normal', 'points')
+    
+    def __init__(self, normal, points):
+        self.normal = normal
+        self.points = points
+    
+    def __repr__(self):
+        return 'ContactPointSet(normal={}, points={})'.format(
+            self.normal, self.points)
     
     @classmethod
     def _from_cp(cls, _points):

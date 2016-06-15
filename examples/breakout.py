@@ -20,6 +20,15 @@ from pymunk import Vec2d
 import pymunk.pygame_util
 width, height = 600,600
 
+
+collision_types = {
+    "ball": 1,
+    "brick": 2,
+    "bottom": 3,
+    "player": 4,
+}
+
+
 def spawn_ball(space, position, direction):
     ball_body = pymunk.Body(1, pymunk.inf)
     ball_body.position = position
@@ -27,6 +36,7 @@ def spawn_ball(space, position, direction):
     ball_shape = pymunk.Circle(ball_body, 5)
     ball_shape.color =  THECOLORS["green"]
     ball_shape.elasticity = 1.0
+    ball_shape.collision_type = collision_types["ball"]
     
     ball_body.apply_impulse_at_local_point(Vec2d(direction))
     
@@ -45,7 +55,7 @@ def setup_level(space, player_body):
             space.remove(s.body, s)
             
     # Spawn a ball for the player to have something to play with
-    spawn_ball(space, player_body.position + (0,40), random.choice([(1,1),(-1,1)]))
+    spawn_ball(space, player_body.position + (0,40), random.choice([(1,10),(-1,10)]))
     
     # Spawn bricks
     for x in range(0,21):
@@ -58,16 +68,19 @@ def setup_level(space, player_body):
             brick_shape.elasticity = 1.0
             brick_shape.color = THECOLORS['blue']
             brick_shape.group = 1
-            brick_shape.collision_type = 2
+            brick_shape.collision_type = collision_types["brick"]
             space.add(brick_body, brick_shape)
+    
     # Make bricks be removed when hit by ball
-    def remove_first(arbiter, space, data):
-        first_shape = arbiter.shapes[0] 
-        def f(space, shape):
-            space.remove(shape, shape.body)
-        space.add_post_step_callback(f, first_shape)
-    space.add_collision_handler(2, 0).separate = remove_first
-
+    def remove_brick(arbiter, space, data):
+        brick_shape = arbiter.shapes[0] 
+        space.remove(brick_shape, brick_shape.body)
+        
+    h = space.add_collision_handler(
+        collision_types["brick"],
+        collision_types["ball"])
+    h.separate = remove_brick
+    
 def main():
     ### PyGame init
     pygame.init()
@@ -93,21 +106,46 @@ def main():
     # bottom - a sensor that removes anything touching it
     bottom = pymunk.Segment(space.static_body, (50, 50), (550, 50), 5)
     bottom.sensor = True
-    bottom.collision_type = 1
+    bottom.collision_type = collision_types["bottom"]
     bottom.color = THECOLORS['red']
     def remove_first(arbiter, space, data):
-        first_shape = arbiter.shapes[0]
-        space.remove(first_shape, first_shape.body)
+        ball_shape = arbiter.shapes[0]
+        space.remove(ball_shape, ball_shape.body)
         return True
-    space.collision_handler(0, 1).begin = remove_first
+    h = space.add_collision_handler(
+        collision_types["ball"], 
+        collision_types["bottom"])
+    h.begin = remove_first
     space.add(bottom)
     
     ### Player ship
     player_body = pymunk.Body(500, pymunk.inf)
-    player_shape = pymunk.Circle(player_body, 35)
+    player_body.position = 300,100
+    
+    player_shape = pymunk.Segment(player_body, (-50,0), (50,0), 5)
     player_shape.color = THECOLORS["red"]
     player_shape.elasticity = 1.0
-    player_body.position = 300,100
+    player_shape.collision_type = collision_types["player"]
+    
+    def pre_solve(arbiter, space, data):
+        # We want to update the collision normal to make the bounce direction 
+        # dependent of where on the paddle the ball hits. Note that this 
+        # calculation isn't perfect, but just a quick example.
+        set_ = arbiter.contact_point_set    
+        if len(set_.points) > 0:
+            player_shape = arbiter.shapes[0]
+            width = (player_shape.b - player_shape.a).x
+            delta = (player_shape.body.position - set_.points[0].point_a.x).x
+            normal = Vec2d(0, 1).rotated(delta / width / 2)
+            set_.normal = normal
+            set_.points[0].distance = 0
+        arbiter.contact_point_set = set_        
+        return True
+    h = space.add_collision_handler(
+        collision_types["player"],
+        collision_types["ball"])
+    h.pre_solve = pre_solve
+    
     # restrict movement of player to a straigt line 
     move_joint = pymunk.GrooveJoint(space.static_body, player_body, (100,100), (500,100), (0,0))
     space.add(player_body, player_shape, move_joint)
@@ -137,7 +175,7 @@ def main():
             elif event.type == KEYDOWN and event.key == K_r:
                 setup_level(space, player_body)
             elif event.type == KEYDOWN and event.key == K_SPACE:
-                spawn_ball(space, player_body.position + (0,40), random.choice([(1,1),(-1,1)]))
+                spawn_ball(space, player_body.position + (0,40), random.choice([(1,10),(-1,10)]))
                    
         ### Clear screen
         screen.fill(THECOLORS["black"])
