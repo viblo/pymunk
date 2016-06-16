@@ -259,7 +259,7 @@ class PhysicsDemo:
                 p = self.flipyv(Vec2d(pygame.mouse.get_pos())) -bp
                 ball = self.create_ball(bp)
                 p = p.normalized()
-                ball.body.apply_impulse(p*1000, (0,0))
+                ball.body.apply_impulse_at_local_point(p*1000, (0,0))
                 self.balls.append(ball)      
             elif event.type == KEYDOWN and event.key == K_g:
                 g = self.space.gravity

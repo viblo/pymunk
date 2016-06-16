@@ -55,7 +55,7 @@ class Arbiter(object):
         else:
             msg = 'Expected {} points, got {} points in point_set'.format(
                 _set.count,  len(point_set.points))
-            raise Exception, msg
+            raise Exception(msg)
             
         cp.cpArbiterSetContactPointSet(self._arbiter, ffi.addressof(_set))
                 
