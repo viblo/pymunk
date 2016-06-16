@@ -64,7 +64,6 @@ class Shape(object):
         doc="""Set the collision filter for this shape.""")
 
 
-
     def _get_elasticity(self):
         return cp.cpShapeGetElasticity(self._shape)
     def _set_elasticity(self, e):
@@ -169,14 +168,8 @@ class Shape(object):
 
     def point_query(self, p):
         """Check if the given point lies within the shape."""
-        #info = cp.cpPointQueryInfo()
-        #info_p = ct.POINTER(cp.cpPointQueryInfo)(info)
         info = ffi.new("cpPointQueryInfo *")
         distance = cp.cpShapePointQuery(self._shape, p, info)
-        #print info_p
-        #print info_p.point
-        #print info_p.distance
-        #print info_p.gradient
         return PointQueryInfo(self, Vec2d(info.point), info.distance, Vec2d(info.gradient))
         ud = cp.cpShapeGetUserData(info.shape)
         assert ud == self._get_shapeid()

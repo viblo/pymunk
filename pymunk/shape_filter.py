@@ -38,14 +38,10 @@ class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
 
     Objects can fall into multiple categories. For instance, you might have a 
     category for a red team, and have a red player bullet. In the above 
-    example, each object only has one category. If you make use of multiple 
-    categories on an object, you may also wish to consider replacing the 
-    ShapeFilter class and the cpShapeFilterReject() function in 
-    chipmunk_private.h to customize it to better suit your game's needs.
+    example, each object only has one category. 
 
     The default type of categories and mask in ShapeFilter is unsigned int 
-    which has a resolution of 32 bits on most systems. You can redefine 
-    cpBitmask in chipmunk_types.h if you need more bits to work with.
+    which has a resolution of 32 bits on most systems. 
 
     There is one last way of filtering collisions using collision handlers. 
     See the section on callbacks for more information. Collision handlers can 

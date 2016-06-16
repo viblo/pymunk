@@ -164,13 +164,13 @@ def main():
         
                 
         def f(arbiter):
-            n = -arbiter.contacts[0].normal
+            n = -arbiter.contact_point_set.normal
             if n.y > grounding['normal'].y:
                 grounding['normal'] = n
-                grounding['penetration'] = -arbiter.contacts[0].distance
+                grounding['penetration'] = -arbiter.contact_point_set.points[0].distance
                 grounding['body'] = arbiter.shapes[1].body
                 grounding['impulse'] = arbiter.total_impulse
-                grounding['position'] = arbiter.contacts[0].position
+                grounding['position'] = arbiter.contact_point_set.points[0].point_b
         body.each_arbiter(f)
             
         well_grounded = False
@@ -197,7 +197,8 @@ def main():
             elif event.type == KEYDOWN and event.key == K_UP:
                 if well_grounded or remaining_jumps > 0:                    
                     jump_v = math.sqrt(2.0 * JUMP_HEIGHT * abs(space.gravity.y))
-                    body.velocity.y = ground_velocity.y + jump_v;
+                    impulse = (0,body.mass * (ground_velocity.y+jump_v))
+                    body.apply_impulse_at_local_point(impulse)
                     remaining_jumps -=1
             elif event.type == KEYUP and event.key == K_UP:                
                 body.velocity.y = min(body.velocity.y, JUMP_CUTOFF_VELOCITY)
@@ -220,7 +221,7 @@ def main():
         if (keys[K_DOWN]):
             direction = -3
             
-        feet.surface_velocity = target_vx,0
+        feet.surface_velocity = -target_vx, 0
 
         
         if grounding['body'] != None:
@@ -290,6 +291,7 @@ def main():
        
         pygame.display.flip()
         frame_number += 1
+        
         ### Update physics
         
         space.step(dt)
