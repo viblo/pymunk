@@ -107,7 +107,7 @@ class build_chipmunk(build_ext, object):
                     # Will prevent the code from being multithreaded, would be
                     # good if some tests could be made to verify the performance
                     # of this.
-                    if fn != "cpHastySpace.c":
+                    if platform.system() != 'Windows' or fn != "cpHastySpace.c":
                         sources.append(fn_path)
                 elif fn[-1] == 'o':
                     os.remove(fn_path)
