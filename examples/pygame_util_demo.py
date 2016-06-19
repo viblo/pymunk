@@ -15,17 +15,17 @@ import pymunk
 from pymunk.vec2d import Vec2d
 import pymunk.pygame_util
 
-from shapes_for_draw_demos import add_objects
+import shapes_for_draw_demos
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((600,600)) 
+    screen = pygame.display.set_mode((1000,700)) 
     clock = pygame.time.Clock()
     font = pygame.font.SysFont("Arial", 16)
     
     space = pymunk.Space()
     
-    add_objects(space)
+    shapes_for_draw_demos.fill_space(space)(space)
             
     ### Draw it 
     screen.fill(pygame.color.THECOLORS["black"])

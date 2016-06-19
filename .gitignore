@@ -5,3 +5,8 @@ dist/
 .tox/
 *.obj
 .vscode/
+.ipynb_checkpoints
+pymunk.egg-info
+pymunk/*.dll
+pymunk/*.so
+pymunk/*.dylib

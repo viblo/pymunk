@@ -4,13 +4,12 @@ Adds a lot of stuff to a space.
 
 import pymunk
 
-def add_objects(space):
+def fill_space(space):
     ### Static
     #Static Segments
-    segments = [ pymunk.Segment(space.static_body, (10, 50), (10, 500), 1)
-                ,pymunk.Segment(space.static_body, (30, 50), (30, 500), 2)
-                ,pymunk.Segment(space.static_body, (50, 50), (50, 500), 3)
-                ,pymunk.Segment(space.static_body, (70, 50), (70, 500), 5)
+    segments = [ pymunk.Segment(space.static_body, (10, 50), (10, 250), 1)
+                ,pymunk.Segment(space.static_body, (30, 50), (30, 250), 3)
+                ,pymunk.Segment(space.static_body, (50, 50), (50, 250), 5)
                 ]  
     space.add(segments)
     
@@ -28,7 +27,7 @@ def add_objects(space):
     
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (150,500)
-    s = pymunk.Circle(b, 10,(0,-30))
+    s = pymunk.Circle(b, 10, (0,-30))
     space.add(s)
     
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
@@ -60,10 +59,9 @@ def add_objects(space):
     
     #Dynamic Segments
     b = pymunk.Body(1,1)
-    segments = [ pymunk.Segment(b, (210, 50), (210, 500), 1)
-                ,pymunk.Segment(b, (230, 50), (230, 500), 2)
-                ,pymunk.Segment(b, (250, 50), (250, 500), 3)
-                ,pymunk.Segment(b, (270, 50), (270, 500), 5)
+    segments = [ pymunk.Segment(b, (210, 50), (210, 250), 1)
+                ,pymunk.Segment(b, (230, 50), (230, 250), 3)
+                ,pymunk.Segment(b, (250, 50), (250, 250), 5)
                 ]  
     space.add(segments)
     
@@ -81,7 +79,7 @@ def add_objects(space):
     
     b = pymunk.Body(1,1)
     b.position = (350,500)
-    s = pymunk.Circle(b, 10,(0,-30))
+    s = pymunk.Circle(b, 10, (0,-30))
     space.add(s)
     
     b = pymunk.Body(1,1)

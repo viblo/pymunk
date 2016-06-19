@@ -1,6 +1,4 @@
-from cffi import FFI
-ffi = FFI()
-ffi.cdef("""
+h = """
     
     ///////////////////////////////////////////
     // chipmunk_types.h
@@ -1280,7 +1278,28 @@ ffi.cdef("""
     void cpPolyShapeSetVertsRaw(cpShape *shape, int count, cpVect *verts);
     /// Set the radius of a poly shape.
     void cpPolyShapeSetRadius(cpShape *shape, cpFloat radius);
-""")
+"""
+import platform
+if platform.system() != 'Windows':
+    # On nonwindows systems we can use the threaded space to get a potential 
+    # speedup. For now this is highly experimental.
+    h += """
+    struct cpHastySpace;
+    typedef struct cpHastySpace cpHastySpace;
+
+    cpSpace *cpHastySpaceNew(void);
+    void cpHastySpaceFree(cpSpace *space);
+
+    void cpHastySpaceSetThreads(cpSpace *space, unsigned long threads);
+
+    unsigned long cpHastySpaceGetThreads(cpSpace *space);
+
+    void cpHastySpaceStep(cpSpace *space, cpFloat dt);
+    """
+
+from cffi import FFI
+ffi = FFI()
+ffi.cdef(h)
 
 from ._libload import load_library
 try:

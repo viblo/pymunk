@@ -14,12 +14,12 @@ import pymunk
 from pymunk.vec2d import Vec2d
 import pymunk.pyglet_util
 
-from shapes_for_draw_demos import add_objects
+import shapes_for_draw_demos
 
 window = pyglet.window.Window(600, 600)
 space = pymunk.Space()
 
-add_objects(space)
+shapes_for_draw_demos.fill_space(space)
 
 
 textbatch = pyglet.graphics.Batch()

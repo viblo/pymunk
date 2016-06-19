@@ -106,8 +106,6 @@ def draw(surface, *objs):
                 
 def _draw_space(surface, space):
     
-    (width, height) = surface.get_size()
-    
     for s in space.shapes:
         if not (hasattr(s, "ignore_draw") and s.ignore_draw):
             _draw_shape(surface, s)
