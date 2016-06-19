@@ -46,7 +46,6 @@ class build_chipmunk(build_ext, object):
         #return x
 
     def run(self):
-
         self.compiler = cc.new_compiler(compiler=self.compiler)
         
         compiler_preargs = ['-std=gnu99', 
@@ -133,10 +132,10 @@ class build_chipmunk(build_ext, object):
                 linker_preargs += ['-m64']
             # remove link against msvcr*. this is a bit ugly maybe.. :)
             self.compiler.dll_libraries = [lib for lib in self.compiler.dll_libraries if not lib.startswith("msvcr")]
-        here = os.path.abspath(os.path.dirname(__file__))
-        print("here", here)
+        #here = os.path.abspath(os.path.dirname(__file__))
+        #print("here", here)
         
-        print("self.inplace", self.inplace)
+        #print("self.inplace", self.inplace)
         if not self.inplace:
             package_dir = os.path.join(self.build_lib, "pymunk")
         else:
@@ -144,7 +143,7 @@ class build_chipmunk(build_ext, object):
             package_dir = os.path.abspath(build_py.get_package_dir(".pymunk"))
         self.xoutputs = [os.path.join(package_dir, get_library_name())]
         #package_dir = self.build_lib
-        print("package_dir", package_dir)
+        #print("package_dir", package_dir)
         #outpath = os.path.join(package_dir, get_library_name()) 
         self.compiler.link(
             cc.CCompiler.SHARED_LIBRARY, 
