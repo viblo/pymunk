@@ -16,7 +16,7 @@ import pymunk.pyglet_util
 
 import shapes_for_draw_demos
 
-window = pyglet.window.Window(600, 600)
+window = pyglet.window.Window(1000, 700)
 space = pymunk.Space()
 
 shapes_for_draw_demos.fill_space(space)

@@ -25,7 +25,7 @@ def main():
     
     space = pymunk.Space()
     
-    shapes_for_draw_demos.fill_space(space)(space)
+    shapes_for_draw_demos.fill_space(space)
             
     ### Draw it 
     screen.fill(pygame.color.THECOLORS["black"])

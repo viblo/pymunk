@@ -7,50 +7,50 @@ import pymunk
 def fill_space(space):
     ### Static
     #Static Segments
-    segments = [ pymunk.Segment(space.static_body, (10, 50), (10, 250), 1)
-                ,pymunk.Segment(space.static_body, (30, 50), (30, 250), 3)
-                ,pymunk.Segment(space.static_body, (50, 50), (50, 250), 5)
+    segments = [ pymunk.Segment(space.static_body, (10, 400), (10, 600), 1)
+                ,pymunk.Segment(space.static_body, (30, 400), (30, 600), 3)
+                ,pymunk.Segment(space.static_body, (50, 400), (50, 600), 5)
                 ]  
     space.add(segments)
     
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
-    b.position = (40,530)
+    b.position = (40,630)
     b.angle = 3.14/7
     s = pymunk.Segment(b, (-30,0), (30,0), 2)
     space.add(s)
     
     # Static Circles
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
-    b.position = (150,500)
+    b.position = (120,630)
     s = pymunk.Circle(b, 10)
     space.add(s)
     
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
-    b.position = (150,500)
-    s = pymunk.Circle(b, 10, (0,-30))
+    b.position = (120,630)
+    s = pymunk.Circle(b, 10, (-30,0))
     space.add(s)
     
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
-    b.position = (150,400)
+    b.position = (120,560)
     b.angle = 3.14/4
     s = pymunk.Circle(b, 40)
     space.add(s)
     
     # Static Polys
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
-    b.position = (150,300)
+    b.position = (120,460)
     b.angle = 3.14/4
     s = pymunk.Poly(b, [(0, -25),(30, 25),(-30, 25)])
     space.add(s)
     
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
-    b.position = (150,300)
+    b.position = (120,500)
     t = pymunk.Transform(ty=-100)
     s = pymunk.Poly(b, [(0, -25),(30, 25),(-30, 25)], t, radius=3)
     space.add(s)
     
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
-    b.position = (150,200)
+    b.position = (50,430)
     t = pymunk.Transform(ty=-100)
     s = pymunk.Poly(b, [(0, -50), (50, 0), (30, 50),(-30, 50),(-50, 0)], t)
     space.add(s)
