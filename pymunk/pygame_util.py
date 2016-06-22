@@ -135,6 +135,8 @@ def _draw_circle(surface, circle):
         r = 1
     if hasattr(circle, "color"):
         color = circle.color  
+    if circle.body.is_sleeping:
+        color = pygame.color.THECOLORS["dimgrey"]
         
     pygame.draw.circle(surface, color, p, int(circle.radius), r)
     

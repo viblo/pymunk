@@ -33,12 +33,15 @@ def main():
     pymunk.pygame_util.draw(screen, space)
                     
     # Info
-    screen.blit(font.render("Demo example of shapes drawn by pygame_util.draw()", 1, pygame.color.THECOLORS["darkgray"]), (5, 580))
+    screen.blit(font.render("Demo example of different shapes drawn by pygame_util.draw()", 1, pygame.color.THECOLORS["darkgray"]), (205, 680))
     screen.blit(font.render("Static shapes", 1, pygame.color.THECOLORS["white"]), (50, 20))
-    screen.blit(font.render("Dynamic shapes", 1, pygame.color.THECOLORS["white"]), (250, 20))
-    screen.blit(font.render("Constraints", 1, pygame.color.THECOLORS["white"]), (450, 20))
-    screen.blit(font.render("Other", 1, pygame.color.THECOLORS["white"]), (450, 300))
-   
+    screen.blit(font.render("Kinematic shapes", 1, pygame.color.THECOLORS["white"]), (220, 20))
+    screen.blit(font.render("Dynamic shapes", 1, pygame.color.THECOLORS["white"]), (390, 20))
+    #screen.blit(font.render("Constraints", 1, pygame.color.THECOLORS["white"]), (450, 20))
+    screen.blit(font.render("ignore_draw=True", 1, pygame.color.THECOLORS["white"]), (10, 530))
+    screen.blit(font.render("custom color (static & dynamic)", 1, pygame.color.THECOLORS["white"]), (150, 550))
+    screen.blit(font.render("collisions", 1, pygame.color.THECOLORS["white"]), (500, 550))
+    screen.blit(font.render("sleeping", 1, pygame.color.THECOLORS["white"]), (50, 670))
     pygame.display.flip()
     
     while True:

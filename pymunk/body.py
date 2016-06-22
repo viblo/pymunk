@@ -373,6 +373,8 @@ class Body(object):
 
         Cannot be called from a callback.
         """
+        if self._space == None:
+            raise Exception("Body not added to space")
         cp.cpBodySleep(self._body)
 
     def sleep_with_group(self, body):
@@ -388,10 +390,12 @@ class Body(object):
         awoken. You can use this to initialize levels and start stacks of
         objects in a pre-sleeping state.
         """
+        if self._space == None:
+            raise Exception("Body not added to space")
         cp.cpBodySleepWithGroup(self._body, body._body)
 
     def _is_sleeping(self):
-        return cp.cpBodyIsSleeping(self._body)
+        return bool(cp.cpBodyIsSleeping(self._body))
     is_sleeping = property(_is_sleeping,
         doc="""Returns true if the body is sleeping.""")
 

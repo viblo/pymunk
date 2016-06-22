@@ -109,23 +109,35 @@ class UnitTestBody(unittest.TestCase):
         b = p.Body(1,1)
         s = p.Space()
         s.sleep_time_threshold = 0.01
-        s.add(b)
-
+        
         self.assertFalse(b.is_sleeping)
 
+        self.assertRaises(Exception, b.sleep)
+        s.add(b)
         b.sleep()
+
         self.assertTrue(b.is_sleeping)
 
         b.activate()
         self.assertFalse(b.is_sleeping)
+
+        b.sleep()
+        s.remove(b)
+        b.activate()
+        
 
     def testSleepWithGroup(self):
         b1 = p.Body(1,1)
         b2 = p.Body(2,2)
         s = p.Space()
         s.sleep_time_threshold = 0.01
-        s.add(b1,b2)
+        s.add(b2)
         b2.sleep()
+        
+        with self.assertRaises(Exception):
+            b1.sleep_with_group(b2)
+        
+        s.add(b1)
         b1.sleep_with_group(b2)
         self.assertTrue(b1.is_sleeping)
         b2.activate()
