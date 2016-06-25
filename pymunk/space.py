@@ -656,8 +656,6 @@ class Space(object):
 
 
     def debug_draw(self, options):
-        #import faulthandler
-        #faulthandler.enable()
         """Debug draw the current state of the space using the supplied drawing 
         options.        
 
@@ -665,5 +663,8 @@ class Space(object):
         and pyglet, you can use the predefined options in their *_util modules, 
         for example pygame_util.draw_options().
         """
-
+        h = ffi.new_handle(self)
+        # we need to hold h until the end of cpSpaceDebugDraw to prevent GC
+        options._options.data = h
+        
         cp.cpSpaceDebugDraw(self._space, options._options)

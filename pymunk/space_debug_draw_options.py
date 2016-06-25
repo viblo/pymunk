@@ -87,13 +87,12 @@ class SpaceDebugDrawOptions(object):
         @ffi.callback("typedef cpSpaceDebugColor "
             "(*cpSpaceDebugDrawColorForShapeImpl)"
             "(cpShape *shape, cpDataPointer data)")
-        def f6(shape, data):
-        
-            return SpaceDebugColor(255,0,0,255)
-
+        def f6(_shape, data):
+            space = ffi.from_handle(data)
+            shape = space._get_shape(_shape)
+            return color_for_shape(shape)
+            #return SpaceDebugColor(255,0,0,255)
         _options.colorForShape = f6
-
-        _color = ffi.new("cpSpaceDebugColor *")
 
         _options.flags = flags
 

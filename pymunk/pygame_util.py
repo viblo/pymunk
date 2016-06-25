@@ -91,9 +91,19 @@ def draw_options(surface):
         p = to_pygame(pos, surface)
         pygame.draw.circle(surface, color, p, int(size), 0)
 
-    def color_for_shape(_shape):
-        pass
-
+    def color_for_shape(shape):
+        color = 255,0,255,255
+        if hasattr(shape, "color"):
+            color = shape.color  
+        elif shape.body != None:
+            if shape.body.body_type == pymunk.Body.STATIC:
+                color = (150,150,150,255)
+            elif shape.body.body_type == pymunk.Body.KINEMATIC:
+                color = (150,150,150,255)
+            elif shape.body.is_sleeping:
+                color = (50,50,50,150)
+        return color
+        
     flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES | \
             pymunk.SpaceDebugDrawOptions.DRAW_CONSTRAINTS | \
             pymunk.SpaceDebugDrawOptions.DRAW_COLLISION_POINTS
