@@ -653,3 +653,17 @@ class Space(object):
         cp.cpSpaceShapeQuery(self._space, shape._shape, cf, data)
 
         return self.__query_hits
+
+
+    def debug_draw(self, options):
+        #import faulthandler
+        #faulthandler.enable()
+        """Debug draw the current state of the space using the supplied drawing 
+        options.        
+
+        If you use a graphics library that is already supported, such as pygame 
+        and pyglet, you can use the predefined options in their *_util modules, 
+        for example pygame_util.draw_options().
+        """
+
+        cp.cpSpaceDebugDraw(self._space, options._options)

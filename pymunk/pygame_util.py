@@ -53,6 +53,66 @@ positive_y_is_up = True
 
 """
 
+def draw_options(surface):
+    def draw_circle(pos, angle, radius, outline_color, fill_color):
+        p = to_pygame(pos, surface)
+    
+        pygame.draw.circle(surface, fill_color, p, int(radius), 0)
+        
+        circle_edge = pos + Vec2d(radius, 0).rotated(angle)
+        p2 = to_pygame(circle_edge, surface)
+        line_r = 2 if radius > 20 else 1
+        pygame.draw.lines(surface, outline_color, False, [p,p2], line_r)
+    
+    def draw_segment(a, b, color):
+        p1 = to_pygame(a, surface)
+        p2 = to_pygame(b, surface)
+        
+        pygame.draw.aalines(surface, color, False, [p1,p2])
+
+    def draw_fat_segment(a, b, radius, outline_color, fill_color):
+        p1 = to_pygame(a, surface)
+        p2 = to_pygame(b, surface)
+        
+        pygame.draw.lines(surface, fill_color, False, [p1,p2], int(radius))
+        
+    def draw_polygon(verts, radius, outline_color, fill_color):
+        ps = [to_pygame(v, surface) for v in verts]
+        ps += [ps[0]]
+        
+        pygame.draw.polygon(surface, fill_color, ps)
+        
+        if radius == 0 and False:
+            pygame.draw.lines(surface, outline_color, False, ps)
+        else:
+            pygame.draw.lines(surface, outline_color, False, ps, int(radius))
+
+    def draw_dot(size, pos, color):
+        p = to_pygame(pos, surface)
+        pygame.draw.circle(surface, color, p, int(size), 0)
+
+    def color_for_shape(_shape):
+        pass
+
+    flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES | \
+            pymunk.SpaceDebugDrawOptions.DRAW_CONSTRAINTS | \
+            pymunk.SpaceDebugDrawOptions.DRAW_COLLISION_POINTS
+
+    options = pymunk.SpaceDebugDrawOptions(
+        draw_circle=draw_circle,
+        draw_segment=draw_segment,
+        draw_fat_segment=draw_fat_segment,
+        draw_polygon=draw_polygon,
+        draw_dot=draw_dot,
+        flags=flags,
+        shape_outline_color=(150,150,150,255),
+        color_for_shape=color_for_shape,
+        constraint_color=(150,150,150,255),
+        collision_point_color=(0,255,0,255),
+        data=None
+    )
+    return options
+
 def draw(surface, *objs):
     """Draw one or many pymunk objects on a pygame.Surface object.
         

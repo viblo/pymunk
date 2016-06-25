@@ -50,7 +50,8 @@ __all__ = ["inf", "version", "chipmunk_version"
         , "SegmentQueryInfo", "ContactPoint", "ContactPointSet", "Arbiter"
         , "CollisionHandler" 
         , "BB", "ShapeFilter"
-        , "Transform", "PointQueryInfo"]
+        , "Transform", "PointQueryInfo",
+        "SpaceDebugDrawOptions"]
 
 import warnings
 import sys
@@ -71,6 +72,7 @@ from .collision_handler import CollisionHandler
 from .query_info import PointQueryInfo, SegmentQueryInfo
 from .shapes import Shape, Circle, Poly, Segment
 from .space import Space
+from .space_debug_draw_options import SpaceDebugDrawOptions
 from pymunk.constraint import *
 
 version = "5.0.0.dev0"

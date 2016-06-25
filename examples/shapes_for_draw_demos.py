@@ -225,3 +225,18 @@ def fill_space(space):
     s = pymunk.Circle(b, 40)
     space.add(s, b)
     b.sleep()
+
+
+def main():
+    space = pymunk.Space()
+    fill_space(space)
+
+    options = pymunk.SpaceDebugDrawOptions.text_options()
+    #space.step(1)
+    #space.step(2)
+    space.debug_draw(options)
+
+
+if __name__ == '__main__':
+    import sys
+    sys.exit(main())

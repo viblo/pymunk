@@ -30,8 +30,10 @@ def main():
     ### Draw it 
     screen.fill(pygame.color.THECOLORS["black"])
     
-    pymunk.pygame_util.draw(screen, space)
-                    
+    options = pymunk.pygame_util.draw_options(screen)
+    space.debug_draw(options)
+    #pymunk.pygame_util.draw(screen, space)
+
     # Info
     screen.blit(font.render("Demo example of different shapes drawn by pygame_util.draw()", 1, pygame.color.THECOLORS["darkgray"]), (205, 680))
     screen.blit(font.render("Static shapes", 1, pygame.color.THECOLORS["white"]), (50, 20))

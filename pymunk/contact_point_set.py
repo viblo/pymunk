@@ -1,7 +1,5 @@
 __docformat__ = "reStructuredText"
 
-from collections import namedtuple
-
 from .vec2d import Vec2d
 
 class ContactPoint(object):

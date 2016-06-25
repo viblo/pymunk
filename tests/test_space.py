@@ -167,8 +167,8 @@ class UnitTestSpace(unittest.TestCase):
         b2.position = 0, 0
         s2 = p.Circle(b2, 10)
         s.add(s2)
-
-        hits = s.point_query((23,0), 0, p.ShapeFilter())
+        s1.shape_filter = p.ShapeFilter(categories = 0b10, mask=0b01)
+        hits = s.point_query((23,0), 0, p.ShapeFilter(categories = 0b01, mask=0b01))
 
         self.assertEqual(len(hits), 1)
         self.assertEqual(hits[0].shape, s1)
@@ -599,6 +599,16 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertEqual(self.calls, 1)
 
+    def testDebugDraw(self):
+        s = p.Space()
+
+        b1 = p.Body(1,3)
+        s1 = p.Circle(b1, 5)
+        s.add(b1, s1)
+        s.step(1)
+        o = p.SpaceDebugDrawOptions.text_options()
+
+        s.debug_draw(o)
 
 ####################################################################
 if __name__ == "__main__":
