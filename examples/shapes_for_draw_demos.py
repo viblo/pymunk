@@ -1,4 +1,4 @@
-""" Helper function add_objects for the draw demos. 
+""" Helper function fill_space for the draw demos. 
 Adds a lot of stuff to a space.
 """
 
