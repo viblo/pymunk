@@ -659,7 +659,7 @@ class Space(object):
         """Debug draw the current state of the space using the supplied drawing 
         options.        
 
-        If you use a graphics library that is already supported, such as pygame 
+        If you use a graphics backend that is already supported, such as pygame 
         and pyglet, you can use the predefined options in their *_util modules, 
         for example pygame_util.draw_options().
         """
@@ -667,4 +667,6 @@ class Space(object):
         # we need to hold h until the end of cpSpaceDebugDraw to prevent GC
         options._options.data = h
         
-        cp.cpSpaceDebugDraw(self._space, options._options)
+        with options:
+            cp.cpSpaceDebugDraw(self._space, options._options)
+        

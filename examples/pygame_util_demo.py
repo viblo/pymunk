@@ -3,7 +3,6 @@
 See pyglet_util_demo.py for a comparison to pyglet.
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import sys
@@ -28,22 +27,23 @@ def main():
     shapes_for_draw_demos.fill_space(space)
             
     ### Draw it 
-    screen.fill(pygame.color.THECOLORS["black"])
+    screen.fill(pygame.color.THECOLORS["white"])
     
-    options = pymunk.pygame_util.draw_options(screen)
+    options = pymunk.pygame_util.DrawOptions(screen)
     space.debug_draw(options)
     #pymunk.pygame_util.draw(screen, space)
 
     # Info
-    screen.blit(font.render("Demo example of different shapes drawn by pygame_util.draw()", 1, pygame.color.THECOLORS["darkgray"]), (205, 680))
-    screen.blit(font.render("Static shapes", 1, pygame.color.THECOLORS["white"]), (50, 20))
-    screen.blit(font.render("Kinematic shapes", 1, pygame.color.THECOLORS["white"]), (220, 20))
-    screen.blit(font.render("Dynamic shapes", 1, pygame.color.THECOLORS["white"]), (390, 20))
+    color = pygame.color.THECOLORS["black"]
+    screen.blit(font.render("Demo example of pygame_util.DrawOptions()", 1, color), (205, 680))
+    screen.blit(font.render("Static shapes", 1, color), (50, 20))
+    screen.blit(font.render("Kinematic shapes", 1, color), (220, 20))
+    screen.blit(font.render("Dynamic shapes", 1, color), (390, 20))
     #screen.blit(font.render("Constraints", 1, pygame.color.THECOLORS["white"]), (450, 20))
-    screen.blit(font.render("ignore_draw=True", 1, pygame.color.THECOLORS["white"]), (10, 530))
-    screen.blit(font.render("custom color (static & dynamic)", 1, pygame.color.THECOLORS["white"]), (150, 550))
-    screen.blit(font.render("collisions", 1, pygame.color.THECOLORS["white"]), (500, 550))
-    screen.blit(font.render("sleeping", 1, pygame.color.THECOLORS["white"]), (50, 670))
+    #screen.blit(font.render("ignore_draw=True", 1, pygame.color.THECOLORS["white"]), (10, 530))
+    screen.blit(font.render("custom color (static & dynamic)", 1, color), (150, 550))
+    screen.blit(font.render("collisions", 1, color), (500, 550))
+    screen.blit(font.render("sleeping", 1, color), (50, 670))
     pygame.display.flip()
     
     while True:

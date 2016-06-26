@@ -38,7 +38,8 @@ def on_draw():
     pyglet.gl.glClearColor(0,0,0,1)
     window.clear()
     
-    pymunk.pyglet_util.draw(space)
+    options = pymunk.pyglet_util.DrawOptions()
+    space.debug_draw(options)
     textbatch.draw()
     
 @window.event

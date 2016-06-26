@@ -26,7 +26,7 @@ class Main(pyglet.window.Window):
                           x=10, y=400)
         self.create_world()
         
-    
+        self.draw_options = pymunk.pyglet_util.DrawOptions()
 
     def create_world(self):
         self.space = pymunk.Space()
@@ -78,8 +78,8 @@ class Main(pyglet.window.Window):
     def on_draw(self):
         self.clear()
         self.text.draw()
-        self.fps_display.draw()       
-        pymunk.pyglet_util.draw(self.space)
+        self.fps_display.draw()  
+        self.space.debug_draw(self.draw_options)
         
 if __name__ == '__main__':
     main = Main()

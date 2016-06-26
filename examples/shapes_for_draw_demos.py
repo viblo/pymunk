@@ -231,7 +231,7 @@ def main():
     space = pymunk.Space()
     fill_space(space)
 
-    options = pymunk.SpaceDebugDrawOptions.text_options()
+    options = pymunk.SpaceDebugDrawOptions()
     #space.step(1)
     #space.step(2)
     space.debug_draw(options)
