@@ -37,17 +37,19 @@ class SpaceDebugDrawOptions(object):
     DRAW_COLLISION_POINTS = cp.CP_SPACE_DEBUG_DRAW_COLLISION_POINTS
     """Draw collision points"""
 
-    shape_dynamic_color = (52,152,219,255)
-    shape_static_color = (149,165,166,255)
-    shape_kinematic_color = (39,174,96,255)
-    shape_sleeping_color = (114,148,168,255)
-    shape_outline_color = (44,62,80,255)
-    constraint_color = (142,68,173,255)
-    collision_point_color = (231,76,60,255)
+    shape_dynamic_color = SpaceDebugColor(52,152,219,255)
+    shape_static_color = SpaceDebugColor(149,165,166,255)
+    shape_kinematic_color = SpaceDebugColor(39,174,96,255)
+    shape_sleeping_color = SpaceDebugColor(114,148,168,255)
 
     def __init__(self):
-      
         _options = ffi.new("cpSpaceDebugDrawOptions *")
+        self._options = _options        
+        self.shape_outline_color = (44,62,80,255)
+        self.constraint_color = (142,68,173,255)
+        self.collision_point_color = (231,76,60,255)  
+
+        
         @ffi.callback("typedef void (*cpSpaceDebugDrawCircleImpl)"
             "(cpVect pos, cpFloat angle, cpFloat radius, "
             "cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, "
@@ -103,18 +105,33 @@ class SpaceDebugDrawOptions(object):
             return self.color_for_shape(shape)
         _options.colorForShape = f6
 
-        
-        _options.shapeOutlineColor = self.shape_outline_color
-        _options.constraintColor = self.constraint_color
-        _options.collisionPointColor = self.collision_point_color
-
-        self._options = _options
-
         self.flags = SpaceDebugDrawOptions.DRAW_SHAPES | \
                 SpaceDebugDrawOptions.DRAW_CONSTRAINTS | \
                 SpaceDebugDrawOptions.DRAW_COLLISION_POINTS
 
         self._callbacks = [f1,f2,f3,f4,f5,f6]
+
+    def _get_shape_outline_color(self):
+        print(self._options.shapeOutlineColor)
+        return self._c(self._options.shapeOutlineColor)
+    def _set_shape_outline_color(self, c):
+        self._options.shapeOutlineColor = c
+    shape_outline_color = property(_get_shape_outline_color, 
+        _set_shape_outline_color)
+
+    def _get_constraint_color(self):
+        return self._c(self._options.constraintColor)
+    def _set_constraint_color(self, c):
+        self._options.constraintColor = c
+    constraint_color = property(_get_constraint_color, 
+        _set_constraint_color)
+
+    def _get_collision_point_color(self):
+        return self._c(self._options.collisionPointColor)
+    def _set_collision_point_color(self, c):
+        self._options.collisionPointColor = c
+    collision_point_color = property(_get_collision_point_color, 
+        _set_collision_point_color)
 
     def __enter__(self):
         pass

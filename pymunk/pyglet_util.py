@@ -69,8 +69,8 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
                 kwargs : You can optionally pass in a pyglet.graphics.Batch
                     If a batch is given all drawing will use this batch to draw 
                     on. If no batch is given a a new batch will be used for the
-                    drawing. Remember that if you pass in your own batch you need 
-                    to call draw on it yourself.
+                    drawing. Remember that if you pass in your own batch you 
+                    need to call draw on it yourself.
         
         """
         self.new_batch = False

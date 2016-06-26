@@ -4,7 +4,7 @@ Adds a lot of stuff to a space.
 
 import pymunk
 
-def fill_space(space):
+def fill_space(space, custom_color=(255,255,0,255)):
     ### Static
     #Static Segments
     segments = [ pymunk.Segment(space.static_body, (10, 400), (10, 600), 1)
@@ -198,13 +198,13 @@ def fill_space(space):
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (200, 200)
     s = pymunk.Circle(b, 40)
-    s.color = (255, 255, 0)
+    s.color = custom_color
     space.add(s)
     
     b = pymunk.Body(1, 1)
     b.position = (300, 200)
     s = pymunk.Circle(b, 40)
-    s.color = (255, 255, 0)
+    s.color = custom_color
     space.add(s)
     
     # Collision
