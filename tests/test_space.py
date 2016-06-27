@@ -606,9 +606,21 @@ class UnitTestSpace(unittest.TestCase):
         s1 = p.Circle(b1, 5)
         s.add(b1, s1)
         s.step(1)
-        o = p.SpaceDebugDrawOptions.text_options()
+        o = p.SpaceDebugDrawOptions()
 
-        s.debug_draw(o)
+        from io import BytesIO as StringIO
+        import sys
+        new_out = StringIO()
+        sys.stdout = new_out
+        try:
+            s.debug_draw(o)
+        finally:
+            sys.stdout = sys.__stdout__
+        msg = ("('draw_circle', (Vec2d(0.0, 0.0), 0.0, 5.0, "
+            "SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), "
+            "SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))\n")
+        self.assertEqual(msg, new_out.getvalue())
+
 
 ####################################################################
 if __name__ == "__main__":
