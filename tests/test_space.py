@@ -68,6 +68,22 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertTrue(s.static_body != None)
         self.assertEqual(s.static_body.body_type, p.Body.STATIC)
+        
+        self.assertEqual(s.threads, 1)
+        s.threads = 2
+        self.assertEqual(s.threads, 1)
+
+
+    def testThreaded(self):
+        s = p.Space(threaded=True)
+        s.step(1)
+        s.threads = 2
+        import platform
+        if platform.system() == 'Windows':
+            self.assertEqual(s.threads, 1)
+        else:
+            self.assertEqual(s.threads, 2)
+        s.step(1)
 
     def testAddRemove(self):
         s = p.Space()
