@@ -68,6 +68,22 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertTrue(s.static_body != None)
         self.assertEqual(s.static_body.body_type, p.Body.STATIC)
+        
+        self.assertEqual(s.threads, 1)
+        s.threads = 2
+        self.assertEqual(s.threads, 1)
+
+
+    def testThreaded(self):
+        s = p.Space(threaded=True)
+        s.step(1)
+        s.threads = 2
+        import platform
+        if platform.system() == 'Windows':
+            self.assertEqual(s.threads, 1)
+        else:
+            self.assertEqual(s.threads, 2)
+        s.step(1)
 
     def testAddRemove(self):
         s = p.Space()
@@ -606,9 +622,21 @@ class UnitTestSpace(unittest.TestCase):
         s1 = p.Circle(b1, 5)
         s.add(b1, s1)
         s.step(1)
-        o = p.SpaceDebugDrawOptions.text_options()
+        o = p.SpaceDebugDrawOptions()
 
-        s.debug_draw(o)
+        from io import BytesIO as StringIO
+        import sys
+        new_out = StringIO()
+        sys.stdout = new_out
+        try:
+            s.debug_draw(o)
+        finally:
+            sys.stdout = sys.__stdout__
+        msg = ("('draw_circle', (Vec2d(0.0, 0.0), 0.0, 5.0, "
+            "SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), "
+            "SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))\n")
+        self.assertEqual(msg, new_out.getvalue())
+
 
 ####################################################################
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ __docformat__ = "reStructuredText"
 
 import weakref
 from weakref import WeakSet
+import platform
     
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
@@ -19,11 +20,23 @@ class Space(object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes
     and joints to it and then step them all forward together through time.
     """
-    def __init__(self):
-        """Create a new instace of the Space
+    def __init__(self, threaded=False):
+        """Create a new instace of the Space. 
+        
+        If you set threaded=True the step function will run in threaded mode
+        which might give a speedup. Note that even when you set threaded=True 
+        you still have to set Space.threads=2 to actually use more than one 
+        thread.        
+        
+        Also note that threaded mode is not available on Windows, and setting 
+        threaded=True has no effect on that platform.
         """
 
-        self._space = cp.cpSpaceNew()
+        self.threaded = threaded and platform.system() != 'Windows' 
+        if self.threaded:        
+            self._space = cp.cpHastySpaceNew()
+        else:
+            self._space = cp.cpSpaceNew()
 
         self._static_body = None
 
@@ -317,6 +330,25 @@ class Space(object):
         """
         cp.cpSpaceReindexStatic(self._space)
 
+    def _get_threads(self):
+        if self.threaded:
+            return int(cp.cpHastySpaceGetThreads(self._space))
+        return 1 
+
+    def _set_threads(self, n):
+        if self.threaded:
+            cp.cpHastySpaceSetThreads(self._space, n)
+    threads=property(_get_threads, _set_threads, 
+        doc="""The number of threads to use for running the step function. 
+        
+        Only valid on platforms other than Windows and when the Space was 
+        created with threaded=True. Currently the max limit is 2, setting a
+        higher value wont have any effect. The default is 1 regardless if the 
+        Space was created with threaded=True, to keep determinism in the 
+        simulation.
+        """)
+
+
     def step(self, dt):
         """Update the space for the given time step. 
         
@@ -326,7 +358,10 @@ class Space(object):
         """
 
         self._in_step = True
-        cp.cpSpaceStep(self._space, dt)
+        if self.threaded:
+            cp.cpHastySpaceStep(self._space, dt)
+        else:
+            cp.cpSpaceStep(self._space, dt)
         self._removed_shapes = {}
         self._in_step = False
 
