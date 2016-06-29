@@ -53,12 +53,13 @@
 
 <span class="kn">import</span> <span class="nn">weakref</span>
 <span class="kn">from</span> <span class="nn">weakref</span> <span class="kn">import</span> <span class="n">WeakSet</span>
+<span class="kn">import</span> <span class="nn">platform</span>
     
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>    
     
-<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">.body</span> <span class="kn">import</span> <span class="n">Body</span>
 <span class="kn">from</span> <span class="nn">.collision_handler</span> <span class="kn">import</span> <span class="n">CollisionHandler</span>
 <span class="kn">from</span> <span class="nn">.query_info</span> <span class="kn">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span><span class="p">,</span> <span class="n">ShapeQueryInfo</span>
@@ -70,11 +71,23 @@
     <span class="sd">&quot;&quot;&quot;Spaces are the basic unit of simulation. You add rigid bodies, shapes</span>
 <span class="sd">    and joints to it and then step them all forward together through time.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="Space.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instace of the Space</span>
+<div class="viewcode-block" id="Space.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threaded</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instace of the Space. </span>
+<span class="sd">        </span>
+<span class="sd">        If you set threaded=True the step function will run in threaded mode</span>
+<span class="sd">        which might give a speedup. Note that even when you set threaded=True </span>
+<span class="sd">        you still have to set Space.threads=2 to actually use more than one </span>
+<span class="sd">        thread.        </span>
+<span class="sd">        </span>
+<span class="sd">        Also note that threaded mode is not available on Windows, and setting </span>
+<span class="sd">        threaded=True has no effect on that platform.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceNew</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threaded</span> <span class="o">=</span> <span class="n">threaded</span> <span class="ow">and</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;Windows&#39;</span> 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">threaded</span><span class="p">:</span>        
+            <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpHastySpaceNew</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceNew</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="bp">None</span>
 
@@ -368,6 +381,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceReindexStatic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span></div>
 
+    <span class="k">def</span> <span class="nf">_get_threads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">threaded</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpHastySpaceGetThreads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">))</span>
+        <span class="k">return</span> <span class="mi">1</span> 
+
+    <span class="k">def</span> <span class="nf">_set_threads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">threaded</span><span class="p">:</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpHastySpaceSetThreads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">threads</span><span class="o">=</span><span class="nb">property</span><span class="p">(</span><span class="n">_get_threads</span><span class="p">,</span> <span class="n">_set_threads</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The number of threads to use for running the step function. </span>
+<span class="s2">        </span>
+<span class="s2">        Only valid on platforms other than Windows and when the Space was </span>
+<span class="s2">        created with threaded=True. Currently the max limit is 2, setting a</span>
+<span class="s2">        higher value wont have any effect. The default is 1 regardless if the </span>
+<span class="s2">        Space was created with threaded=True, to keep determinism in the </span>
+<span class="s2">        simulation.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+
 <div class="viewcode-block" id="Space.step"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the space for the given time step. </span>
 <span class="sd">        </span>
@@ -377,7 +409,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceStep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">threaded</span><span class="p">:</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpHastySpaceStep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceStep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_removed_shapes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="bp">False</span>
 
@@ -703,7 +738,24 @@
         <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceShapeQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span></div>
+
+
+<div class="viewcode-block" id="Space.debug_draw"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.debug_draw">[docs]</a>    <span class="k">def</span> <span class="nf">debug_draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Debug draw the current state of the space using the supplied drawing </span>
+<span class="sd">        options.        </span>
+
+<span class="sd">        If you use a graphics backend that is already supported, such as pygame </span>
+<span class="sd">        and pyglet, you can use the predefined options in their x_util modules, </span>
+<span class="sd">        for example pygame_util.draw_options().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># we need to hold h until the end of cpSpaceDebugDraw to prevent GC</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">h</span>
+        
+        <span class="k">with</span> <span class="n">options</span><span class="p">:</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceDebugDraw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span></div></div>
+        
 </pre></div>
 
           </div>

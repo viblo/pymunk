@@ -115,7 +115,6 @@
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Set the collision filter for this shape.&quot;&quot;&quot;</span><span class="p">)</span>
 
 
-
     <span class="k">def</span> <span class="nf">_get_elasticity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetElasticity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_elasticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
@@ -220,14 +219,8 @@
 
 <div class="viewcode-block" id="Shape.point_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Shape.point_query">[docs]</a>    <span class="k">def</span> <span class="nf">point_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if the given point lies within the shape.&quot;&quot;&quot;</span>
-        <span class="c1">#info = cp.cpPointQueryInfo()</span>
-        <span class="c1">#info_p = ct.POINTER(cp.cpPointQueryInfo)(info)</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpPointQueryInfo *&quot;</span><span class="p">)</span>
         <span class="n">distance</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapePointQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
-        <span class="c1">#print info_p</span>
-        <span class="c1">#print info_p.point</span>
-        <span class="c1">#print info_p.distance</span>
-        <span class="c1">#print info_p.gradient</span>
         <span class="k">return</span> <span class="n">PointQueryInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">))</span>
         <span class="n">ud</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetUserData</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">ud</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shapeid</span><span class="p">()</span>

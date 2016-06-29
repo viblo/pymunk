@@ -65,43 +65,46 @@ using pymunk together with pyglet.</p>
 in a full application. The methods contained in this module is opinionated 
 about your coordinate system and not very optimized (they use batched 
 drawing, but there is probably room for optimizations still).</p>
-<dl class="function">
-<dt id="pymunk.pyglet_util.draw">
-<code class="descclassname">pymunk.pyglet_util.</code><code class="descname">draw</code><span class="sig-paren">(</span><em>*objs</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/pyglet_util.html#draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.draw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw one or many pymunk objects. It is perfectly fine to pass in a 
-whole Space object.</p>
-<dl class="docutils">
-<dt>Objects that can be handled are:</dt>
-<dd><ul class="first last simple">
-<li>pymunk.Space</li>
-<li>pymunk.Segment</li>
-<li>pymunk.Circle</li>
-<li>pymunk.Poly</li>
-<li>pymunk.Constraint</li>
-</ul>
-</dd>
-</dl>
-<p>If a Space is passed in all shapes in that space will be drawn. 
-Unrecognized objects will be ignored (for example if you pass in a 
-constraint).</p>
+<dl class="class">
+<dt id="pymunk.pyglet_util.DrawOptions">
+<em class="property">class </em><code class="descclassname">pymunk.pyglet_util.</code><code class="descname">DrawOptions</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/pyglet_util.html#DrawOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk.space_debug_draw_options.SpaceDebugDrawOptions</span></code></p>
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.DRAW_COLLISION_POINTS">
+<code class="descname">DRAW_COLLISION_POINTS</code><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.DRAW_COLLISION_POINTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">CP_SPACE_DEBUG_DRAW_COLLISION_POINTS</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.DRAW_CONSTRAINTS">
+<code class="descname">DRAW_CONSTRAINTS</code><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.DRAW_CONSTRAINTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">CP_SPACE_DEBUG_DRAW_CONSTRAINTS</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.DRAW_SHAPES">
+<code class="descname">DRAW_SHAPES</code><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.DRAW_SHAPES" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">CP_SPACE_DEBUG_DRAW_SHAPES</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.pyglet_util.DrawOptions.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/pyglet_util.html#DrawOptions.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw a pymunk.Space.</p>
 <p>Typical usage:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pymunk</span><span class="o">.</span><span class="n">pyglet_util</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">my_space</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">pyglet_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myspace</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can control the color of a Shape by setting shape.color to the color 
 you want it drawn in.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># will draw my_shape in red</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="c1"># will draw my_shape in red</span>
 </pre></div>
 </div>
-<p>If you do not want a shape to be drawn, set shape.ignore_draw to True.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">ignore_draw</span> <span class="o">=</span> <span class="kc">True</span>
-</pre></div>
-</div>
-<p>(However, if you want to ignore most shapes its probably more performant 
-to only pass in those shapes that you want to be drawn to the draw method)</p>
-<p>You can optionally pass in a batch to use. Just remember that you need to 
-call draw yourself.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pymunk</span><span class="o">.</span><span class="n">pyglet_util</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">my_shape</span><span class="p">,</span> <span class="n">batch</span> <span class="o">=</span> <span class="n">my_batch</span><span class="p">)</span>
+<p>You can optionally pass in a batch to use for drawing. Just 
+remember that you need to call draw yourself.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">pyglet_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">batch</span><span class="o">=</span><span class="n">my_batch</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myspace</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_batch</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -111,21 +114,89 @@ call draw yourself.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body"><dl class="first last docutils">
-<dt>objs</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">One or many objects to draw.</span><dd><p class="first last">Can be either a single object or a list like container with 
-objects.</p>
-</dd>
 <dt>kwargs</dt>
  <span class="classifier-delimiter">:</span> <span class="classifier">You can optionally pass in a pyglet.graphics.Batch</span><dd><p class="first last">If a batch is given all drawing will use this batch to draw 
 on. If no batch is given a a new batch will be used for the
-drawing. Remember that if you pass in your own batch you need 
-to call draw on it yourself.</p>
+drawing. Remember that if you pass in your own batch you 
+need to call draw on it yourself.</p>
 </dd>
 </dl>
 </td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.collision_point_color">
+<code class="descname">collision_point_color</code><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.collision_point_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.pyglet_util.DrawOptions.color_for_shape">
+<code class="descname">color_for_shape</code><span class="sig-paren">(</span><em>shape</em><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.color_for_shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.constraint_color">
+<code class="descname">constraint_color</code><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.constraint_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.pyglet_util.DrawOptions.draw_circle">
+<code class="descname">draw_circle</code><span class="sig-paren">(</span><em>pos</em>, <em>angle</em>, <em>radius</em>, <em>outline_color</em>, <em>fill_color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/pyglet_util.html#DrawOptions.draw_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.draw_circle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.pyglet_util.DrawOptions.draw_dot">
+<code class="descname">draw_dot</code><span class="sig-paren">(</span><em>size</em>, <em>pos</em>, <em>color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/pyglet_util.html#DrawOptions.draw_dot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.draw_dot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.pyglet_util.DrawOptions.draw_fat_segment">
+<code class="descname">draw_fat_segment</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>radius</em>, <em>outline_color</em>, <em>fill_color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/pyglet_util.html#DrawOptions.draw_fat_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.draw_fat_segment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.pyglet_util.DrawOptions.draw_polygon">
+<code class="descname">draw_polygon</code><span class="sig-paren">(</span><em>verts</em>, <em>radius</em>, <em>outline_color</em>, <em>fill_color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/pyglet_util.html#DrawOptions.draw_polygon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.draw_polygon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.pyglet_util.DrawOptions.draw_segment">
+<code class="descname">draw_segment</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/pyglet_util.html#DrawOptions.draw_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.draw_segment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.flags">
+<code class="descname">flags</code><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.flags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.shape_dynamic_color">
+<code class="descname">shape_dynamic_color</code><em class="property"> = SpaceDebugColor(r=52, g=152, b=219, a=255)</em><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.shape_dynamic_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.shape_kinematic_color">
+<code class="descname">shape_kinematic_color</code><em class="property"> = SpaceDebugColor(r=39, g=174, b=96, a=255)</em><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.shape_kinematic_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.shape_outline_color">
+<code class="descname">shape_outline_color</code><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.shape_outline_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.shape_sleeping_color">
+<code class="descname">shape_sleeping_color</code><em class="property"> = SpaceDebugColor(r=114, g=148, b=168, a=255)</em><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.shape_sleeping_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.pyglet_util.DrawOptions.shape_static_color">
+<code class="descname">shape_static_color</code><em class="property"> = SpaceDebugColor(r=149, g=165, b=166, a=255)</em><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.shape_static_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -158,6 +229,7 @@ to call draw on it yourself.</p>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.util.html"><code class="docutils literal"><span class="pre">pymunk.util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal"><span class="pre">pymunkoptions</span></code> Module</a></li>

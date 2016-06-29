@@ -136,7 +136,7 @@
     <span class="n">begin</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_begin</span><span class="p">,</span> <span class="n">_set_begin</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes just started touching for the first time this step.</span>
 
-<span class="s2">        ``func(arbiter, space) -&gt; bool``</span>
+<span class="s2">        ``func(arbiter, space, data) -&gt; bool``</span>
 
 <span class="s2">        Return true from the callback to process the collision normally or</span>
 <span class="s2">        false to cause pymunk to ignore the collision entirely. If you return</span>
@@ -179,7 +179,7 @@
     <span class="n">pre_solve</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_pre_solve</span><span class="p">,</span> <span class="n">_set_pre_solve</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes are touching during this step.</span>
 
-<span class="s2">        ``func(arbiter, space) -&gt; bool``</span>
+<span class="s2">        ``func(arbiter, space, data) -&gt; bool``</span>
 
 <span class="s2">        Return false from the callback to make pymunk ignore the collision</span>
 <span class="s2">        this step or true to process it normally. Additionally, you may</span>
@@ -205,7 +205,7 @@
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes are touching and their collision response has been</span>
 <span class="s2">        processed.</span>
 
-<span class="s2">        ``func(arbiter, space)``</span>
+<span class="s2">        ``func(arbiter, space, data)``</span>
 
 <span class="s2">        You can retrieve the collision impulse or kinetic energy at this</span>
 <span class="s2">        time if you want to use it to calculate sound volumes or damage</span>
@@ -229,7 +229,7 @@
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes have just stopped touching for the first time this</span>
 <span class="s2">        step.</span>
 
-<span class="s2">        ``func(arbiter, space)``</span>
+<span class="s2">        ``func(arbiter, space, data)``</span>
 
 <span class="s2">        To ensure that begin()/separate() are always called in balanced</span>
 <span class="s2">        pairs, it will also be called when removing a shape while its in</span>

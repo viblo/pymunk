@@ -51,12 +51,9 @@
   <h1>Source code for pymunk.contact_point_set</h1><div class="highlight"><pre>
 <span></span><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 
-<div class="viewcode-block" id="ContactPoint"><a class="viewcode-back" href="../../pymunk.html#pymunk.ContactPoint">[docs]</a><span class="k">class</span> <span class="nc">ContactPoint</span><span class="p">(</span>
-    <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;ContactPoint&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;point_a&#39;</span><span class="p">,</span> <span class="s1">&#39;point_b&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">])):</span>
+<div class="viewcode-block" id="ContactPoint"><a class="viewcode-back" href="../../pymunk.html#pymunk.ContactPoint">[docs]</a><span class="k">class</span> <span class="nc">ContactPoint</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Contains information about a contact point. </span>
 <span class="sd">    </span>
 <span class="sd">    point_a and point_b are the contact position on the surface of each shape.</span>
@@ -67,10 +64,19 @@
 <span class="sd">    Arbiter.contact_point_set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span></div>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;point_a&#39;</span><span class="p">,</span> <span class="s1">&#39;point_b&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="ContactPoint.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.ContactPoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point_a</span> <span class="o">=</span> <span class="n">point_a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point_b</span> <span class="o">=</span> <span class="n">point_b</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span></div>
+    
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;ContactPoint(point_a={}, point_b={}, distance={})&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">point_a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">point_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">)</span></div>
+    
 
-<div class="viewcode-block" id="ContactPointSet"><a class="viewcode-back" href="../../pymunk.html#pymunk.ContactPointSet">[docs]</a><span class="k">class</span> <span class="nc">ContactPointSet</span><span class="p">(</span>
-    <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;ContactPointSet&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;points&#39;</span><span class="p">])):</span>
+<div class="viewcode-block" id="ContactPointSet"><a class="viewcode-back" href="../../pymunk.html#pymunk.ContactPointSet">[docs]</a><span class="k">class</span> <span class="nc">ContactPointSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Contact point sets make getting contact information simpler.</span>
 <span class="sd">    </span>
 <span class="sd">    normal is the normal of the collision</span>
@@ -78,7 +84,15 @@
 <span class="sd">    points is the array of contact points. Can be at most 2 points.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;points&#39;</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="ContactPointSet.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.ContactPointSet.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">normal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span></div>
+    
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;ContactPointSet(normal={}, points={})&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
     
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_from_cp</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">_points</span><span class="p">):</span>

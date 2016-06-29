@@ -81,10 +81,9 @@
 <span class="sd">drawing, but there is probably room for optimizations still). </span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;$Id$&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;draw&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DrawOptions&quot;</span><span class="p">]</span>
 
 
 <span class="kn">import</span> <span class="nn">math</span>
@@ -94,261 +93,163 @@
 <span class="kn">import</span> <span class="nn">pymunk</span>
 <span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 
-<div class="viewcode-block" id="draw"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.draw">[docs]</a><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="o">*</span><span class="n">objs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Draw one or many pymunk objects. It is perfectly fine to pass in a </span>
-<span class="sd">    whole Space object.</span>
-<span class="sd">    </span>
-<span class="sd">    Objects that can be handled are:</span>
-<span class="sd">        * pymunk.Space</span>
-<span class="sd">        * pymunk.Segment</span>
-<span class="sd">        * pymunk.Circle</span>
-<span class="sd">        * pymunk.Poly</span>
-<span class="sd">        * pymunk.Constraint</span>
-<span class="sd">    </span>
-<span class="sd">    If a Space is passed in all shapes in that space will be drawn. </span>
-<span class="sd">    Unrecognized objects will be ignored (for example if you pass in a </span>
-<span class="sd">    constraint).</span>
-<span class="sd">    </span>
-<span class="sd">    Typical usage::</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; pymunk.pyglet_util.draw(my_space)</span>
-<span class="sd">    </span>
-<span class="sd">    You can control the color of a Shape by setting shape.color to the color </span>
-<span class="sd">    you want it drawn in.</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; my_shape.color = (255, 0, 0) # will draw my_shape in red</span>
-<span class="sd">    </span>
-<span class="sd">    If you do not want a shape to be drawn, set shape.ignore_draw to True.</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; my_shape.ignore_draw = True</span>
-<span class="sd">    </span>
-<span class="sd">    (However, if you want to ignore most shapes its probably more performant </span>
-<span class="sd">    to only pass in those shapes that you want to be drawn to the draw method)</span>
-<span class="sd">    </span>
-<span class="sd">    You can optionally pass in a batch to use. Just remember that you need to </span>
-<span class="sd">    call draw yourself.</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; pymunk.pyglet_util.draw(my_shape, batch = my_batch)</span>
-<span class="sd">    &gt;&gt;&gt; my_batch.draw()</span>
-<span class="sd">    </span>
-<span class="sd">    See pyglet_util.demo.py for a full example</span>
-<span class="sd">    </span>
-<span class="sd">    :Param:</span>
-<span class="sd">            objs : One or many objects to draw.</span>
-<span class="sd">                Can be either a single object or a list like container with </span>
-<span class="sd">                objects.</span>
-<span class="sd">            kwargs : You can optionally pass in a pyglet.graphics.Batch</span>
-<span class="sd">                If a batch is given all drawing will use this batch to draw </span>
-<span class="sd">                on. If no batch is given a a new batch will be used for the</span>
-<span class="sd">                drawing. Remember that if you pass in your own batch you need </span>
-<span class="sd">                to call draw on it yourself.</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">new_batch</span> <span class="o">=</span> <span class="bp">False</span>
-    
-    <span class="k">if</span> <span class="s2">&quot;batch&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">new_batch</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="n">batch</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">Batch</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">batch</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">]</span>
+<div class="viewcode-block" id="DrawOptions"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions">[docs]</a><span class="k">class</span> <span class="nc">DrawOptions</span><span class="p">(</span><span class="n">pymunk</span><span class="o">.</span><span class="n">SpaceDebugDrawOptions</span><span class="p">):</span>
+<div class="viewcode-block" id="DrawOptions.__init__"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw a pymunk.Space.</span>
+<span class="sd">        </span>
+<span class="sd">        Typical usage::</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; options = pyglet_util.DrawOptions()</span>
+<span class="sd">        &gt;&gt;&gt; myspace.debug_draw(options)</span>
+<span class="sd">        </span>
+<span class="sd">        You can control the color of a Shape by setting shape.color to the color </span>
+<span class="sd">        you want it drawn in.</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; my_shape.color = (255, 0, 0, 255) # will draw my_shape in red</span>
+<span class="sd">        </span>
+<span class="sd">        You can optionally pass in a batch to use for drawing. Just </span>
+<span class="sd">        remember that you need to call draw yourself.</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; options = pyglet_util.DrawOptions(batch=my_batch)</span>
+<span class="sd">        &gt;&gt;&gt; myspace.debug_draw(options)</span>
+<span class="sd">        &gt;&gt;&gt; my_batch.draw()</span>
+<span class="sd">        </span>
+<span class="sd">        See pyglet_util.demo.py for a full example</span>
+<span class="sd">        </span>
+<span class="sd">        :Param:</span>
+<span class="sd">                kwargs : You can optionally pass in a pyglet.graphics.Batch</span>
+<span class="sd">                    If a batch is given all drawing will use this batch to draw </span>
+<span class="sd">                    on. If no batch is given a a new batch will be used for the</span>
+<span class="sd">                    drawing. Remember that if you pass in your own batch you </span>
+<span class="sd">                    need to call draw on it yourself.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_batch</span> <span class="o">=</span> <span class="bp">False</span>
         
-    <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">):</span>
-            <span class="n">_draw_space</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Shape</span><span class="p">):</span>
-            <span class="n">_draw_shape</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Constraint</span><span class="p">):</span>
-            <span class="n">_draw_constraint</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">oo</span> <span class="ow">in</span> <span class="n">o</span><span class="p">:</span>
-                <span class="n">draw</span><span class="p">(</span><span class="n">oo</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="n">new_batch</span><span class="p">:</span>
-        <span class="n">batch</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div>
+        <span class="k">if</span> <span class="s2">&quot;batch&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_batch</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">_draw_space</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">batch</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">shapes</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;ignore_draw&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">ignore_draw</span><span class="p">):</span>
-            <span class="n">_draw_shape</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">constraints</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;ignore_draw&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">ignore_draw</span><span class="p">):</span>
-            <span class="n">_draw_constraint</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-            
-<span class="k">def</span> <span class="nf">_draw_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">batch</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">):</span>
-        <span class="n">_draw_circle</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">):</span>
-        <span class="n">_draw_segment</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Poly</span><span class="p">):</span>
-        <span class="n">_draw_poly</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-    
-<span class="k">def</span> <span class="nf">_draw_circle</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="n">batch</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
-    <span class="n">circle_center</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">circle</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-    
-    <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">):</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">color</span>  
-    <span class="k">elif</span> <span class="n">circle</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DrawOptions</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_batch</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">Batch</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_batch</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DrawOptions.draw_circle"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_circle">[docs]</a>    <span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
+        <span class="n">circle_center</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
         
-    <span class="c1">#http://slabode.exofire.net/circle_draw.shtml</span>
-    <span class="n">num_segments</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">radius</span><span class="p">))</span>
-    <span class="n">theta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">num_segments</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-    
-    <span class="n">x</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">radius</span> <span class="c1"># we start at angle 0</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
-    
-    <span class="n">ps</span> <span class="o">=</span> <span class="p">[]</span>
-    
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_segments</span><span class="p">):</span>
-        <span class="n">ps</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">circle_center</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">circle_center</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">y</span><span class="p">)]</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">x</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">s</span> <span class="o">*</span> <span class="n">y</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">s</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">y</span>
-               
-    
-    <span class="k">if</span> <span class="n">circle</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
-        <span class="n">mode</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span>
-        <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ps</span><span class="o">+</span><span class="n">ps</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
-    <span class="k">else</span><span class="p">:</span>
+        <span class="c1">#http://slabode.exofire.net/circle_draw.shtml</span>
+        <span class="n">num_segments</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">radius</span><span class="p">))</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">num_segments</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        
+        <span class="n">x</span> <span class="o">=</span> <span class="n">radius</span> <span class="c1"># we start at angle 0</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="n">ps</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_segments</span><span class="p">):</span>
+            <span class="n">ps</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">circle_center</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">circle_center</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">y</span><span class="p">)]</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">s</span> <span class="o">*</span> <span class="n">y</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">s</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">y</span>
+                
         <span class="n">mode</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_TRIANGLE_STRIP</span>
         <span class="n">ps2</span> <span class="o">=</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)):</span>
             <span class="n">ps2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">ps2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="o">-</span><span class="n">i</span><span class="p">])</span>
         <span class="n">ps</span> <span class="o">=</span> <span class="n">ps2</span>
-    <span class="n">vs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">ps</span> <span class="o">+</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]:</span>
-            <span class="n">vs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="p">]</span>
-        
-    <span class="n">c</span> <span class="o">=</span> <span class="n">circle_center</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-    <span class="n">cvs</span> <span class="o">=</span> <span class="p">[</span><span class="n">circle_center</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">circle_center</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">y</span><span class="p">]</span>
-        
-    <span class="n">bg</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">OrderedGroup</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">fg</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">OrderedGroup</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        
-    <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
-    <span class="k">if</span> <span class="n">batch</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span>
-                            <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
-                            <span class="p">(</span><span class="s1">&#39;c3B&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
-        <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span><span class="p">,</span>
-                            <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">cvs</span><span class="p">),</span>
-                            <span class="p">(</span><span class="s1">&#39;c3B&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">bg</span><span class="p">,</span>
-                 <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
-                 <span class="p">(</span><span class="s1">&#39;c3B&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
-        <span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span><span class="p">,</span> <span class="n">fg</span><span class="p">,</span>
-                 <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">cvs</span><span class="p">),</span>
-                 <span class="p">(</span><span class="s1">&#39;c3B&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
-    <span class="k">return</span>
+        <span class="n">vs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">ps</span> <span class="o">+</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]:</span>
+                <span class="n">vs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="p">]</span>
+            
+        <span class="n">c</span> <span class="o">=</span> <span class="n">circle_center</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">cvs</span> <span class="o">=</span> <span class="p">[</span><span class="n">circle_center</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">circle_center</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">y</span><span class="p">]</span>
+            
+        <span class="n">bg</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">OrderedGroup</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">fg</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">OrderedGroup</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+       
 
-<span class="k">def</span> <span class="nf">_draw_poly</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">batch</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
-    <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span>
-    <span class="n">angle</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">if</span> <span class="n">poly</span><span class="o">.</span><span class="n">body</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">offset</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span>
-    <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">poly</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">()]</span>
-    
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">):</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">color</span>  
-    <span class="k">elif</span> <span class="n">poly</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">bg</span><span class="p">,</span>
+                <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span><span class="p">,</span> <span class="n">fg</span><span class="p">,</span>
+                <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">cvs</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">outline_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="DrawOptions.draw_segment"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="n">pv1</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">pv2</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pv1</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv1</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv2</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv2</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
         
-    <span class="k">if</span> <span class="n">poly</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
-        <span class="n">mode</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span>
-        <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ps</span><span class="o">+</span><span class="n">ps</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
-    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s1">&#39;v2i&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="DrawOptions.draw_fat_segment"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_fat_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_fat_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
+        <span class="n">pv1</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">pv2</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">pv2</span> <span class="o">-</span> <span class="n">pv1</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">pv1</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">)</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">pv1</span> <span class="o">-</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">)</span>
+        <span class="n">p3</span> <span class="o">=</span> <span class="n">pv2</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">)</span>
+        <span class="n">p4</span> <span class="o">=</span> <span class="n">pv2</span> <span class="o">-</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">)</span>
+            
+        <span class="n">vs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">,</span><span class="n">p3</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="n">p2</span><span class="p">,</span><span class="n">p3</span><span class="p">,</span><span class="n">p4</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xy</span><span class="p">]</span>
+            
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_TRIANGLES</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span> <span class="o">*</span> <span class="n">l</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DrawOptions.draw_polygon"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verts</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
+        <span class="n">ps</span> <span class="o">=</span> <span class="n">verts</span>
+            
         <span class="n">mode</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_TRIANGLE_STRIP</span>
         <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">ps</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">ps</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
         
-    <span class="n">vs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">ps</span> <span class="o">+</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]:</span>
-            <span class="n">vs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="p">]</span>
-        
-    <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
-    <span class="k">if</span> <span class="n">batch</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span>
-                            <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
-                            <span class="p">(</span><span class="s1">&#39;c3B&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
-                 <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
-                 <span class="p">(</span><span class="s1">&#39;c3B&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
+        <span class="n">vs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">ps</span> <span class="o">+</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]:</span>
+                <span class="n">vs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="p">]</span>
+            
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="n">l</span><span class="p">))</span></div>
 
-<span class="k">def</span> <span class="nf">_draw_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">batch</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
-    <span class="n">body</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">body</span>
-    <span class="n">pv1</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">segment</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-    <span class="n">pv2</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">segment</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-    
-    <span class="n">d</span> <span class="o">=</span> <span class="n">pv2</span> <span class="o">-</span> <span class="n">pv1</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-    <span class="n">dx</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">dy</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    
-    <span class="n">p1</span> <span class="o">=</span> <span class="n">pv1</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">)</span>
-    <span class="n">p2</span> <span class="o">=</span> <span class="n">pv1</span> <span class="o">-</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">)</span>
-    <span class="n">p3</span> <span class="o">=</span> <span class="n">pv2</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">)</span>
-    <span class="n">p4</span> <span class="o">=</span> <span class="n">pv2</span> <span class="o">-</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">)</span>
-           
-    <span class="n">vs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">,</span><span class="n">p3</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="n">p2</span><span class="p">,</span><span class="n">p3</span><span class="p">,</span><span class="n">p4</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xy</span><span class="p">]</span>
-    
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">):</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">color</span>  
-    <span class="k">elif</span> <span class="n">segment</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-        
-    <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
-    <span class="k">if</span> <span class="n">batch</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_TRIANGLES</span><span class="p">,</span>
-                            <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
-                            <span class="p">(</span><span class="s1">&#39;c3B&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">*</span> <span class="n">l</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_TRIANGLES</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
-                 <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
-                 <span class="p">(</span><span class="s1">&#39;c3B&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">*</span> <span class="n">l</span><span class="p">))</span>
+<div class="viewcode-block" id="DrawOptions.draw_dot"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_dot">[docs]</a>    <span class="k">def</span> <span class="nf">draw_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="c1"># todo: optimize this functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_POINTS</span><span class="p">,</span> <span class="n">grPointSize</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> 
+                    <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">pos</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="mi">1</span><span class="p">))</span></div></div>
 
-<span class="k">def</span> <span class="nf">_draw_constraint</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">batch</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="n">darkgrey</span> <span class="o">=</span> <span class="p">(</span><span class="mi">169</span><span class="p">,</span> <span class="mi">169</span><span class="p">,</span> <span class="mi">169</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">GrooveJoint</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="s2">&quot;groove_a&quot;</span><span class="p">):</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">groove_a</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">groove_b</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">_draw_line</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">pv2</span><span class="p">,</span> <span class="n">darkgrey</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">PinJoint</span><span class="p">):</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">anchor_a</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">anchor_b</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">_draw_line</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">pv2</span><span class="p">,</span> <span class="n">darkgrey</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="s2">&quot;anchr1&quot;</span><span class="p">):</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">anchor_a</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">constraint</span><span class="o">.</span><span class="n">anchor_b</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">constraint</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">_draw_line</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">pv2</span><span class="p">,</span> <span class="n">darkgrey</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">position</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">position</span>
-        <span class="n">_draw_line</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">pv2</span><span class="p">,</span> <span class="n">darkgrey</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">_draw_line</span><span class="p">(</span><span class="n">pv1</span><span class="p">,</span> <span class="n">pv2</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
-    <span class="n">line</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pv1</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv1</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv2</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv2</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">batch</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span><span class="p">,</span>
-                            <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">),</span>
-                            <span class="p">(</span><span class="s1">&#39;c3B&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
-                  <span class="p">(</span><span class="s1">&#39;v2i&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">),</span>
-                  <span class="p">(</span><span class="s1">&#39;c3B&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">class</span> <span class="nc">grPointSize</span><span class="p">(</span><span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">Group</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This pyglet rendering group sets a specific point size.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">grPointSize</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+    <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">glPointSize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">unset_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">glPointSize</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 
           </div>

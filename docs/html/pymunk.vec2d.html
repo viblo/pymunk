@@ -102,13 +102,22 @@ provides some high level functions.</p>
 
 <dl class="method">
 <dt id="pymunk.vec2d.Vec2d.append">
-<code class="descname">append</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.vec2d.Vec2d.append" title="Permalink to this definition">¶</a></dt>
-<dd><p>L.append(object) &#8211; append object to end</p>
-</dd></dl>
+<code class="descname">append</code><span class="sig-paren">(</span><em>object</em><span class="sig-paren">)</span> &rarr; None -- append object to end<a class="headerlink" href="#pymunk.vec2d.Vec2d.append" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None -- remove all items from L<a class="headerlink" href="#pymunk.vec2d.Vec2d.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="pymunk.vec2d.Vec2d.convert_to_basis">
 <code class="descname">convert_to_basis</code><span class="sig-paren">(</span><em>x_vector</em>, <em>y_vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d.convert_to_basis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d.convert_to_basis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.vec2d.Vec2d.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; list -- a shallow copy of L<a class="headerlink" href="#pymunk.vec2d.Vec2d.copy" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -164,9 +173,8 @@ provides some high level functions.</p>
 
 <dl class="method">
 <dt id="pymunk.vec2d.Vec2d.extend">
-<code class="descname">extend</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.vec2d.Vec2d.extend" title="Permalink to this definition">¶</a></dt>
-<dd><p>L.extend(iterable) &#8211; extend list by appending elements from the iterable</p>
-</dd></dl>
+<code class="descname">extend</code><span class="sig-paren">(</span><em>iterable</em><span class="sig-paren">)</span> &rarr; None -- extend list by appending elements from the iterable<a class="headerlink" href="#pymunk.vec2d.Vec2d.extend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="pymunk.vec2d.Vec2d.get_angle">
@@ -353,9 +361,8 @@ Note: This function will return 0 if the length of the vector is 0.</p>
 
 <dl class="method">
 <dt id="pymunk.vec2d.Vec2d.remove">
-<code class="descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.vec2d.Vec2d.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>L.remove(value) &#8211; remove first occurrence of value.
-Raises ValueError if the value is not present.</p>
+<code class="descname">remove</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &rarr; None -- remove first occurrence of value.<a class="headerlink" href="#pymunk.vec2d.Vec2d.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
 <dl class="method">
@@ -408,10 +415,8 @@ angle_degrees degrees.</p>
 
 <dl class="method">
 <dt id="pymunk.vec2d.Vec2d.sort">
-<code class="descname">sort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.vec2d.Vec2d.sort" title="Permalink to this definition">¶</a></dt>
-<dd><p>L.sort(cmp=None, key=None, reverse=False) &#8211; stable sort <em>IN PLACE</em>;
-cmp(x, y) -&gt; -1, 0, 1</p>
-</dd></dl>
+<code class="descname">sort</code><span class="sig-paren">(</span><em>key=None</em>, <em>reverse=False</em><span class="sig-paren">)</span> &rarr; None -- stable sort *IN PLACE*<a class="headerlink" href="#pymunk.vec2d.Vec2d.sort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="staticmethod">
 <dt id="pymunk.vec2d.Vec2d.unit">
@@ -473,6 +478,7 @@ cmp(x, y) -&gt; -1, 0, 1</p>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.util.html"><code class="docutils literal"><span class="pre">pymunk.util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal"><span class="pre">pymunkoptions</span></code> Module</a></li>

@@ -86,12 +86,30 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">space</span>        </div>
         
     <span class="k">def</span> <span class="nf">_get_contact_point_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">_points</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetContactPointSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ContactPointSet</span><span class="o">.</span><span class="n">_from_cp</span><span class="p">(</span><span class="n">_points</span><span class="p">)</span>
+        <span class="n">_set</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetContactPointSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ContactPointSet</span><span class="o">.</span><span class="n">_from_cp</span><span class="p">(</span><span class="n">_set</span><span class="p">)</span>
         
     <span class="k">def</span> <span class="nf">_set_contact_point_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_set</span><span class="p">):</span>
-        <span class="k">pass</span>
-        <span class="c1">#cp.cpArbiterSetContactPointSet(self._arbiter, point_set)        </span>
+        <span class="c1"># This has to be done by fetching a new chipmuk point set, update it </span>
+        <span class="c1"># according to whats passed in and the pass that back to chipmunk due</span>
+        <span class="c1"># to the fact that ContactPointSet doesnt contain a reference to the </span>
+        <span class="c1"># corresponding c struct. </span>
+        
+        <span class="n">_set</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetContactPointSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
+        <span class="n">_set</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">point_set</span><span class="o">.</span><span class="n">normal</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="n">_set</span><span class="o">.</span><span class="n">count</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_set</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
+                <span class="n">_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">pointA</span> <span class="o">=</span> <span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">point_a</span>
+                <span class="n">_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">pointB</span> <span class="o">=</span> <span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">point_b</span>
+                <span class="n">_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Expected {} points, got {} points in point_set&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">_set</span><span class="o">.</span><span class="n">count</span><span class="p">,</span>  <span class="nb">len</span><span class="p">(</span><span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterSetContactPointSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">addressof</span><span class="p">(</span><span class="n">_set</span><span class="p">))</span>
+                
     <span class="n">contact_point_set</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_contact_point_set</span><span class="p">,</span> <span class="n">_set_contact_point_set</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Contact point sets make getting contact information from the </span>
 <span class="s2">        Arbiter simpler.</span>
@@ -119,7 +137,7 @@
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The calculated restitution (elasticity) for this collision </span>
 <span class="s2">        pair. </span>
 <span class="s2">        </span>
-<span class="s2">        Setting the value in a preSolve() callback will override the value </span>
+<span class="s2">        Setting the value in a pre_solve() callback will override the value </span>
 <span class="s2">        calculated by the space. The default calculation multiplies the </span>
 <span class="s2">        elasticity of the two shapes together.</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
@@ -131,7 +149,7 @@
     <span class="n">friction</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_friction</span><span class="p">,</span> <span class="n">_set_friction</span><span class="p">,</span> 
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The calculated friction for this collision pair. </span>
 <span class="s2">        </span>
-<span class="s2">        Setting the value in a preSolve() callback will override the value </span>
+<span class="s2">        Setting the value in a pre_solve() callback will override the value </span>
 <span class="s2">        calculated by the space. The default calculation multiplies the </span>
 <span class="s2">        friction of the two shapes together.</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
@@ -177,7 +195,7 @@
 <span class="s2">        </span>
 <span class="s2">        This can be useful for sound effects for instance. If its the first </span>
 <span class="s2">        frame for a certain collision, check the energy of the collision in a </span>
-<span class="s2">        postStep() callback and use that to determine the volume of a sound </span>
+<span class="s2">        post_step() callback and use that to determine the volume of a sound </span>
 <span class="s2">        effect to play.</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 

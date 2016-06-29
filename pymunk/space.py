@@ -695,7 +695,7 @@ class Space(object):
         options.        
 
         If you use a graphics backend that is already supported, such as pygame 
-        and pyglet, you can use the predefined options in their *_util modules, 
+        and pyglet, you can use the predefined options in their x_util modules, 
         for example pygame_util.draw_options().
         """
         h = ffi.new_handle(self)

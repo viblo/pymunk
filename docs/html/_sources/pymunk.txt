@@ -14,7 +14,8 @@ API Reference
 
         pymunk.constraint
         pymunk.vec2d
-        pymunk.util    
+        pymunk.util
+        pymunk.matplotlib_util    
         pymunk.pygame_util
         pymunk.pyglet_util
         pymunkoptions
