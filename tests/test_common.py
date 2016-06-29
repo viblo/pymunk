@@ -21,7 +21,7 @@ class UnitTestGeneral(unittest.TestCase):
         m = p.moment_for_poly(1, [(0,0), (10,10), (10,0)], (1,2), 3)
         self.assertAlmostEqual(m, 98.3333333333)
 
-        m = p.moment_for_box(1, 2, 3)
+        m = p.moment_for_box(1, (2, 3))
         self.assertAlmostEqual(m, 1.08333333333)
 
     def testAreaHelpers(self):

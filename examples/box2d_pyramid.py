@@ -7,7 +7,7 @@ from pygame.locals import *
 from pygame.color import *
 import pymunk
 from pymunk import Vec2d
-
+import pymunk.pygame_util
 
 class PyramidDemo:
     def flipyv(self, v):
@@ -23,21 +23,22 @@ class PyramidDemo:
         ### Init pymunk and create space
         self.space = pymunk.Space()
         self.space.gravity = (0.0, -900.0)
+        self.space.sleep_time_threshold = 0.3
         ### ground
-        shape = pymunk.Segment(self.space.static_body, (50, 100), (550,100), 1.0)
+        shape = pymunk.Segment(self.space.static_body, (5, 100), (595,100), 1.0)
         shape.friction = 1.0
         self.space.add(shape)
         
         ### pyramid
-        x=Vec2d(-100, 7.5) + (300,100)
+        x=Vec2d(-270, 7.5) + (300,100)
         y=Vec2d(0,0) 
-        deltaX=Vec2d(0.5625, 2.0)*10
-        deltaY=Vec2d(1.125, 0.0)*10
+        deltaX=Vec2d(0.5625, 1.1)*20
+        deltaY=Vec2d(1.125, 0.0)*20
 
         for i in range(25):
             y = Vec2d(x)
             for j in range(i, 25):
-                size = 5
+                size = 10
                 points = [(-size, -size), (-size, size), (size,size), (size, -size)]
                 mass = 1.0
                 moment = pymunk.moment_for_poly(mass, points, (0,0))
@@ -51,12 +52,15 @@ class PyramidDemo:
 
             x += deltaX
         
-        
+        ### draw options for drawing
+        self.draw_options = pymunk.pygame_util.DrawOptions(self.screen)
+
+
     def run(self):
         while self.running:
             self.loop() 
-            
-            
+
+
     def loop(self):  
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -68,36 +72,22 @@ class PyramidDemo:
             elif event.type == KEYDOWN and event.key == K_d:
                 self.drawing = not self.drawing
             
-        steps = 3
-        dt = 1.0/120.0/steps            
-        for x in range(steps):
-            self.space.step(dt)
+        fps = 30.
+        dt = 1.0/fps/5        
+        self.space.step(dt)
         if self.drawing:
             self.draw()
         
         ### Tick clock and update fps in title
-        self.clock.tick(30)
+        self.clock.tick(fps)
         pygame.display.set_caption("fps: " + str(self.clock.get_fps()))
         
     def draw(self):
         ### Clear the screen
-        self.screen.fill(THECOLORS["white"])          
+        self.screen.fill(THECOLORS["white"])
         
-        for shape in self.space.shapes:
-            if shape.body.body_type != pymunk.Body.DYNAMIC:
-                body = shape.body
-                pv1 = self.flipyv(body.position + shape.a.cpvrotate(body.rotation_vector))
-                pv2 = self.flipyv(body.position + shape.b.cpvrotate(body.rotation_vector))
-                pygame.draw.lines(self.screen, THECOLORS["lightgray"], False, [pv1,pv2])           
-            else:
-                if shape.body.is_sleeping:
-                    continue
-                ps = [p + shape.body.position for p in shape.get_vertices()]
-                ps.append(ps[0])
-                ps = map(self.flipyv, ps)
-                 #pygame.draw.lines(self.screen, color, False, ps, 1)
-                pygame.draw.polygon(self.screen, THECOLORS["lightgray"], ps)
-                pygame.draw.polygon(self.screen, THECOLORS["darkgrey"], ps,1)
+        ### Draw space
+        self.space.debug_draw(self.draw_options)
 
         ### All done, lets flip the display
         pygame.display.flip()        

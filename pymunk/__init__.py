@@ -129,9 +129,12 @@ def moment_for_segment(mass, a, b, radius):
     """
     return cp.cpMomentForSegment(mass, a, b, radius)
 
-def moment_for_box(mass, width, height):
-    """Calculate the moment of inertia for a solid box centered on the body"""
-    return cp.cpMomentForBox(mass, width, height)
+def moment_for_box(mass, size):
+    """Calculate the moment of inertia for a solid box centered on the body.
+    
+    size should be a tuple of (width, height)
+    """
+    return cp.cpMomentForBox(mass, size[0], size[1])
 
 def moment_for_poly(mass, vertices,  offset=(0, 0), radius=0):
     """Calculate the moment of inertia for a solid polygon shape.
