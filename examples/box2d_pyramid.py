@@ -9,10 +9,7 @@ import pymunk
 from pymunk import Vec2d
 import pymunk.pygame_util
 
-class PyramidDemo:
-    def flipyv(self, v):
-        return v[0], -v[1]+self.h
-        
+class PyramidDemo:        
     def __init__(self):
         self.running = True
         self.drawing = True
