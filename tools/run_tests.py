@@ -7,7 +7,7 @@ from tests import *
 
 ts = ["test_vec2d", "test_body", "test_common", "test_constraint", 
     "test_shape", "test_space", "test_arbiter", "test_bb", "test_transform",
-    "test_shape_filter"]
+    "test_shape_filter", "test_autogeometry"]
 
 suite = unittest.TestSuite()   
 for t in ts:

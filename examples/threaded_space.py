@@ -12,7 +12,6 @@ class PyramidDemo:
             self.space = pymunk.Space(threaded=True)
         self.space.gravity = (0.0, -900.0)
         self.space.threads = threads
-        self.space.sleep_time_threshold = 0.3
         
         ### ground
         shape = pymunk.Segment(self.space.static_body, (5, 100), (595,100), 1.0)
@@ -54,6 +53,6 @@ if __name__ == '__main__':
 
         demo = PyramidDemo(threads=num_threads)
         start = time.time()
-        demo.step(100000)
+        demo.step(10000)
         end = time.time()
         print("Threads {}, time {}".format(num_threads, end-start))
