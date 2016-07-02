@@ -1,4 +1,5 @@
 from pymunk.vec2d import Vec2d
+from pymunk.bb import BB
 import pymunk.auto_geometry as a
 
 import unittest
@@ -9,3 +10,111 @@ class UnitTestAutoGeometry(unittest.TestCase):
         
         self.assertFalse(a.is_closed([(0,0), (1,1), (0,1)]))
         self.assertTrue(a.is_closed([(0,0), (1,1), (0,1), (0,0)]))
+
+    def test_simplify_curves(self):
+        p1 = [(0,0), (0,10), (5,11), (10, 10), (0, 10)]
+        expected = [(0,0), (0,10), (10, 10), (0, 10)]
+        actual = a.simplify_curves(p1, 1)
+        self.assertEqual(actual, expected)
+
+    def test_simplify_vertexes(self):
+        p1 = [(0,0), (0,10), (5,11), (10, 10), (0, 10)]
+        expected = [(0,0), (0,10), (10, 10), (0, 10)]
+        actual = a.simplify_vertexes(p1, 1)
+        self.assertEqual(actual, expected)    
+        
+    def test_to_convex_hull(self):
+        p1 = [(0,0), (0,10), (5,5), (10, 10), (10,0)]
+        expected = [(0,0), (10,0), (10,10), (0, 10), (0, 0)]
+        actual = a.to_convex_hull(p1, 1)
+        self.assertEqual(actual, expected) 
+
+    def test_convex_decomposition(self):
+        # TODO: Make a more complicated polygon as test case
+        p1 = [(0,0), (0,10), (5,5), (20, 20), (10,10), (5,0)]
+        expected = [[(0,0), (20,20), (0, 10), (0, 0)]]
+        actual = a.convex_decomposition(p1, .1)
+        self.assertEqual(actual, expected)
+
+    def test_march_soft(self):
+        img = [
+            "  xx   ",
+            "  xx   ",
+            "  xx   ",
+            "  xx   ",
+            "  xx   ",
+            "  xxxxx",
+            "  xxxxx",
+            ]
+
+        segments = []
+
+        def segment_func(v0, v1):
+            segments.append((tuple(v0),tuple(v1)))
+            
+        def sample_func(point):
+            x = int(point.x)
+            y = int(point.y)
+            if img[y][x] == "x":
+                return 1
+            return 0
+            
+        a.march_soft(BB(0,0,6,6), 7, 7, .5, segment_func, sample_func)
+
+        expected = [
+            ((1.5, 1.0), (1.5, 0.0)),
+            ((3.5, 0.0), (3.5, 1.0)),
+            ((1.5, 2.0), (1.5, 1.0)),
+            ((3.5, 1.0), (3.5, 2.0)),
+            ((1.5, 3.0), (1.5, 2.0)),
+            ((3.5, 2.0), (3.5, 3.0)),
+            ((1.5, 4.0), (1.5, 3.0)),
+            ((3.5, 3.0), (3.5, 4.0)),
+            ((1.5, 5.0), (1.5, 4.0)),
+            ((3.5, 4.0), (4.0, 4.5)),
+            ((4.0, 4.5), (5.0, 4.5)),
+            ((5.0, 4.5), (6.0, 4.5)),
+            ((1.5, 6.0), (1.5, 5.0))]
+        self.assertEqual(segments, expected)
+
+    def test_march_hard(self):
+        img = [
+            "  xx   ",
+            "  xx   ",
+            "  xx   ",
+            "  xx   ",
+            "  xx   ",
+            "  xxxxx",
+            "  xxxxx",
+            ]
+
+        segments = []
+
+        def segment_func(v0, v1):
+            segments.append((tuple(v0),tuple(v1)))
+            
+        def sample_func(point):
+            x = int(point.x)
+            y = int(point.y)
+            if img[y][x] == "x":
+                return 1
+            return 0
+            
+        a.march_hard(BB(0,0,6,6), 7, 7, .5, segment_func, sample_func)
+
+        expected = [
+            ((1.5, 1.0), (1.5, 0.0)),
+            ((3.5, 0.0), (3.5, 1.0)),
+            ((1.5, 2.0), (1.5, 1.0)),
+            ((3.5, 1.0), (3.5, 2.0)),
+            ((1.5, 3.0), (1.5, 2.0)),
+            ((3.5, 2.0), (3.5, 3.0)),
+            ((1.5, 4.0), (1.5, 3.0)),
+            ((3.5, 3.0), (3.5, 4.0)),
+            ((1.5, 5.0), (1.5, 4.0)),
+            ((3.5, 4.0), (3.5, 4.5)),
+            ((3.5, 4.5), (4.0, 4.5)),
+            ((4.0, 4.5), (5.0, 4.5)),
+            ((5.0, 4.5), (6.0, 4.5)),
+            ((1.5, 6.0), (1.5, 5.0))]
+        self.assertEqual(segments, expected)

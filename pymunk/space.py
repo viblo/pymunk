@@ -573,7 +573,7 @@ class Space(object):
         :Parameters:
             point : (x,y) or `Vec2d`
                 Define where to check for collision in the space.
-            max_distnace : int
+            max_distance : int
                 Match only within this distance.
             shape_filter : ShapeFilter
                 Only pick shapes matching the filter.

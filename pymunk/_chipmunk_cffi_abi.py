@@ -1436,10 +1436,10 @@ h = """
         NOTE: If the input is a self intersecting polygon, the output might end up overly simplified.
     */
 
-    //cpPolylineSet *cpPolylineConvexDecomposition(cpPolyline *line, cpFloat tol);
+    cpPolylineSet *cpPolylineConvexDecomposition(cpPolyline *line, cpFloat tol);
 
     //#define cpPolylineConvexDecomposition_BETA cpPolylineConvexDecomposition
-    cpPolylineSet *cpPolylineConvexDecomposition_BETA(cpPolyline *line, cpFloat tol);
+    //cpPolylineSet *cpPolylineConvexDecomposition_BETA(cpPolyline *line, cpFloat tol);
 """
 import platform
 if platform.system() != 'Windows':
