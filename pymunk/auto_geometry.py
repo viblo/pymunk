@@ -13,6 +13,15 @@ def _to_chipmunk(polyline):
     _line.verts = polyline
     return _line
 
+def _from_polyline_set(_set):
+    lines = []
+    for i in range(_set.count):
+        line = []
+        for j in range(_set.lines[i].count):
+            line.append(Vec2d(_set.lines[i].verts[j]))
+        lines.append(line)
+    return lines
+    
 def is_closed(polyline):
     """ Returns true if the first vertex is equal to the last.
     
@@ -86,14 +95,23 @@ def convex_decomposition(polyline, tolerance):
             A higher value means more error is tolerated.
     """
     _line = _to_chipmunk(polyline)
-    _lines = lib.cpPolylineConvexDecomposition(_line, tolerance)
-    decs = []
-    for i in range(_lines.count):
-        dec = []
-        for j in range(_lines.lines[i].count):
-            dec.append(Vec2d(_lines.lines[i].verts[j]))
-        decs.append(dec)
-    return decs
+    _set = lib.cpPolylineConvexDecomposition(_line, tolerance)
+    return _from_polyline_set(_set)
+
+class PolylineSet(object):
+    def __init__(self):
+        self._set = lib.cpPolylineSetNew()
+
+    def collect_segment(self, v0, v1):
+        lib.cpPolylineSetCollectSegment(v0, v1, self._set)
+
+    def _get_lines(self):
+        return _from_polyline_set(self._set)
+    lines = property(_get_lines, 
+        doc="""Get the lines that make out this set as a list of `[Vec2d]`
+        """)
+
+
 
 def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
     """Trace an anti-aliased contour of an image along a particular threshold.

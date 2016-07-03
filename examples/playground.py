@@ -2,7 +2,6 @@
 move the mouse as you want and pymunk will approximate a Poly shape from the 
 drawing.
 """
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import pygame

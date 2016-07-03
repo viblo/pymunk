@@ -2,7 +2,6 @@
 realistic looking way.
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import sys

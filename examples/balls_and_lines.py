@@ -1,7 +1,6 @@
 """This example lets you dynamically create static walls and dynamic balls
 
 """
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import pygame

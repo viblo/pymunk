@@ -4,6 +4,19 @@ import pymunk.auto_geometry as a
 
 import unittest
 
+class UnitTestPolylineSet(unittest.TestCase):
+    def test_collect_segment(self):
+        pset = a.PolylineSet()
+
+        pset.collect_segment((0,0),(5,5))
+        pset.collect_segment((5,5),(10,10))
+
+        pset.collect_segment((2,5),(2,10))
+
+        expected = [
+            [Vec2d(0.0, 0.0), Vec2d(5.0, 5.0), Vec2d(10.0, 10.0)],
+            [Vec2d(2.0, 5.0), Vec2d(2.0, 10.0)]]
+        self.assertEqual(pset.lines, expected)
 
 class UnitTestAutoGeometry(unittest.TestCase):
     def test_is_closed(self):
@@ -30,7 +43,7 @@ class UnitTestAutoGeometry(unittest.TestCase):
         self.assertEqual(actual, expected) 
 
     def test_convex_decomposition(self):
-        # TODO: Make a more complicated polygon as test case
+        # TODO: Use a more complicated polygon as test case
         p1 = [(0,0), (0,10), (5,5), (20, 20), (10,10), (5,0)]
         expected = [[(0,0), (20,20), (0, 10), (0, 0)]]
         actual = a.convex_decomposition(p1, .1)
