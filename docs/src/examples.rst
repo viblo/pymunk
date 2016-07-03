@@ -6,6 +6,37 @@ Examples
 Here you will find a list of the included examples. Each example have a short 
 description and a screenshot (if applicable).
 
+
+Jupyter Notebooks
+=================
+
+There are a couple examples that are provided as Jupyter Notebooks (.ipynb). 
+They are possible to either view online in a browser directly on github, or 
+opened as a Notebook. 
+
+
+matplotlib_util_demo.ipynb
+--------------------------
+Displays the same space as the pygame and pyglet draw demos, but using
+matplotlib and the notebook.
+
+`Matplotlib Util Demo 
+<https://github.com/viblo/pymunk/blob/master/examples/matplotlib_util_demo.ipynb>`_
+
+
+newtons_cradle.ipynb
+--------------------
+Similar simulation as newtons_cradle.py, but this time as a Notebook. 
+Compared to the draw demo this demo will output a animation of the simulated
+space.
+
+`Newtons Cradle 
+<https://github.com/viblo/pymunk/blob/master/examples/newtons_cradle.ipynb>`_
+
+
+Standalone Python 
+=================
+
 To run the examples yourself either install pymunk or run it using the 
 convenience run.py script.
 
