@@ -149,6 +149,10 @@
   </dt>
 
         
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.PolylineSet.__init__">(pymunk.autogeometry.PolylineSet method)</a>
+  </dt>
+
+        
   <dt><a href="pymunk.constraint.html#pymunk.constraint.Constraint.__init__">(pymunk.constraint.Constraint method)</a>
   </dt>
 
@@ -590,18 +594,6 @@
 
       </dl></dd>
       
-  <dt><a href="pymunk.util.html#pymunk.util.calc_area">calc_area() (in module pymunk.util)</a>
-  </dt>
-
-      
-  <dt><a href="pymunk.util.html#pymunk.util.calc_center">calc_center() (in module pymunk.util)</a>
-  </dt>
-
-      
-  <dt><a href="pymunk.util.html#pymunk.util.calc_perimeter">calc_perimeter() (in module pymunk.util)</a>
-  </dt>
-
-      
   <dt><a href="pymunk.html#pymunk.ShapeFilter.categories">categories (pymunk.ShapeFilter attribute)</a>
   </dt>
 
@@ -627,6 +619,10 @@
 
       
   <dt><a href="pymunk.vec2d.html#pymunk.vec2d.Vec2d.clear">clear() (pymunk.vec2d.Vec2d method)</a>
+  </dt>
+
+      
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.PolylineSet.collect_segment">collect_segment() (pymunk.autogeometry.PolylineSet method)</a>
   </dt>
 
       
@@ -727,8 +723,6 @@
   <dt><a href="pymunk.html#pymunk.CollisionHandler">CollisionHandler (class in pymunk)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pymunk.matplotlib_util.html#pymunk.matplotlib_util.DrawOptions.color_for_shape">color_for_shape() (pymunk.matplotlib_util.DrawOptions method)</a>
   </dt>
@@ -747,6 +741,8 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pymunk.constraint.html#pymunk.constraint.Constraint">Constraint (class in pymunk.constraint)</a>
   </dt>
@@ -804,11 +800,7 @@
   </dt>
 
       
-  <dt><a href="pymunk.util.html#pymunk.util.convex_hull">convex_hull() (in module pymunk.util)</a>
-  </dt>
-
-      
-  <dt><a href="pymunk.util.html#pymunk.util.convexise">convexise() (in module pymunk.util)</a>
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.convex_decomposition">convex_decomposition() (in module pymunk.autogeometry)</a>
   </dt>
 
       
@@ -816,10 +808,14 @@
   </dt>
 
       
-  <dt><a href="pymunk.html#pymunk.PointQueryInfo.count">count() (pymunk.PointQueryInfo method)</a>
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.PolylineSet.count">count() (pymunk.autogeometry.PolylineSet method)</a>
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="pymunk.html#pymunk.PointQueryInfo.count">(pymunk.PointQueryInfo method)</a>
+  </dt>
+
         
   <dt><a href="pymunk.html#pymunk.SegmentQueryInfo.count">(pymunk.SegmentQueryInfo method)</a>
   </dt>
@@ -1374,10 +1370,14 @@
 
       </dl></dd>
       
-  <dt><a href="pymunk.html#pymunk.PointQueryInfo.index">index() (pymunk.PointQueryInfo method)</a>
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.PolylineSet.index">index() (pymunk.autogeometry.PolylineSet method)</a>
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="pymunk.html#pymunk.PointQueryInfo.index">(pymunk.PointQueryInfo method)</a>
+  </dt>
+
         
   <dt><a href="pymunk.html#pymunk.SegmentQueryInfo.index">(pymunk.SegmentQueryInfo method)</a>
   </dt>
@@ -1422,11 +1422,7 @@
   </dt>
 
       
-  <dt><a href="pymunk.util.html#pymunk.util.is_clockwise">is_clockwise() (in module pymunk.util)</a>
-  </dt>
-
-      
-  <dt><a href="pymunk.util.html#pymunk.util.is_convex">is_convex() (in module pymunk.util)</a>
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.is_closed">is_closed() (in module pymunk.autogeometry)</a>
   </dt>
 
       
@@ -1487,6 +1483,14 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.march_hard">march_hard() (in module pymunk.autogeometry)</a>
+  </dt>
+
+      
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.march_soft">march_soft() (in module pymunk.autogeometry)</a>
+  </dt>
+
       
   <dt><a href="pymunk.html#pymunk.ShapeFilter.mask">mask (pymunk.ShapeFilter attribute)</a>
   </dt>
@@ -1601,12 +1605,12 @@
   <dt><a href="pymunk.html#pymunk.BB.merge">merge() (pymunk.BB method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pymunk.html#pymunk.BB.merged_area">merged_area() (pymunk.BB method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint.min">min (pymunk.constraint.RotaryLimitJoint attribute)</a>
   </dt>
@@ -1780,7 +1784,7 @@
   </dt>
 
       
-  <dt><a href="pymunk.util.html#pymunk.util.poly_vectors_around_center">poly_vectors_around_center() (in module pymunk.util)</a>
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.PolylineSet">PolylineSet (class in pymunk.autogeometry)</a>
   </dt>
 
   </dl></td>
@@ -1814,6 +1818,10 @@
   </dt>
 
       
+  <dt><a href="pymunk.autogeometry.html#module-pymunk.autogeometry">pymunk.autogeometry (module)</a>
+  </dt>
+
+      
   <dt><a href="pymunk.constraint.html#module-pymunk.constraint">pymunk.constraint (module)</a>
   </dt>
 
@@ -1827,10 +1835,6 @@
 
       
   <dt><a href="pymunk.pyglet_util.html#module-pymunk.pyglet_util">pymunk.pyglet_util (module)</a>
-  </dt>
-
-      
-  <dt><a href="pymunk.util.html#module-pymunk.util">pymunk.util (module)</a>
   </dt>
 
       
@@ -1875,10 +1879,6 @@
 
       
   <dt><a href="pymunk.constraint.html#pymunk.constraint.GearJoint.ratio">ratio (pymunk.constraint.GearJoint attribute)</a>
-  </dt>
-
-      
-  <dt><a href="pymunk.util.html#pymunk.util.reduce_poly">reduce_poly() (in module pymunk.util)</a>
   </dt>
 
       
@@ -2131,8 +2131,6 @@
   <dt><a href="pymunk.html#pymunk.ShapeFilter">ShapeFilter (class in pymunk)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pymunk.html#pymunk.Arbiter.shapes">shapes (pymunk.Arbiter attribute)</a>
   </dt>
@@ -2147,6 +2145,8 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pymunk.html#pymunk.Circle.shapes_collide">shapes_collide() (pymunk.Circle method)</a>
   </dt>
@@ -2167,6 +2167,14 @@
       </dl></dd>
       
   <dt><a href="pymunk.constraint.html#pymunk.constraint.SimpleMotor">SimpleMotor (class in pymunk.constraint)</a>
+  </dt>
+
+      
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.simplify_curves">simplify_curves() (in module pymunk.autogeometry)</a>
+  </dt>
+
+      
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.simplify_vertexes">simplify_vertexes() (in module pymunk.autogeometry)</a>
   </dt>
 
       
@@ -2274,6 +2282,10 @@
   </dt>
 
       
+  <dt><a href="pymunk.autogeometry.html#pymunk.autogeometry.to_convex_hull">to_convex_hull() (in module pymunk.autogeometry)</a>
+  </dt>
+
+      
   <dt><a href="pymunk.pygame_util.html#pymunk.pygame_util.to_pygame">to_pygame() (in module pymunk.pygame_util)</a>
   </dt>
 
@@ -2285,22 +2297,18 @@
   <dt><a href="pymunk.html#pymunk.Body.torque">torque (pymunk.Body attribute)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pymunk.html#pymunk.Arbiter.total_impulse">total_impulse (pymunk.Arbiter attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pymunk.html#pymunk.Arbiter.total_ke">total_ke (pymunk.Arbiter attribute)</a>
   </dt>
 
       
   <dt><a href="pymunk.html#pymunk.Transform">Transform (class in pymunk)</a>
-  </dt>
-
-      
-  <dt><a href="pymunk.util.html#pymunk.util.triangulate">triangulate() (in module pymunk.util)</a>
   </dt>
 
       

@@ -40,10 +40,9 @@ class build_chipmunk(build_ext, object):
     def get_outputs(self):
         x = super(build_chipmunk, self).get_outputs()
         
-        print("get_outputs", x)
-        print("get_outputs xoutputs", self.xoutputs)
+        #print("get_outputs", x)
+        #print("get_outputs xoutputs", self.xoutputs)
         return self.xoutputs
-        #return x
 
     def run(self):
         self.compiler = cc.new_compiler(compiler=self.compiler)
@@ -54,7 +53,9 @@ class build_chipmunk(build_ext, object):
                             '-g',
                             #'-Wno-unknown-pragmas', 
                             #'-fPIC', 
-                            '-DCP_USE_CGPOINTS=0'] # '-DCP_ALLOW_PRIVATE_ACCESS']
+                            '-DCP_USE_CGPOINTS=0',
+                            # '-DCP_ALLOW_PRIVATE_ACCESS']
+                            ]
         if not self.debug:
             compiler_preargs.append('-DNDEBUG')
         

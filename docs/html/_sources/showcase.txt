@@ -3,7 +3,7 @@ Showcase
 ********
 
 This page shows some uses of Pymunk. If you also have done something using 
-Pymunk please let us know and we can add it here!   
+Pymunk please let me know and I can add it here!   
 
 Games
 =====
@@ -81,4 +81,5 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2016-01-25. If something is missing or wrong, please contact us!
+List last updated 2016-01-25. If something is missing or wrong, please contact 
+me!

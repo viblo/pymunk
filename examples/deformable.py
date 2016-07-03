@@ -12,8 +12,20 @@ from pygame.color import *
 import pymunk
 from pymunk import Vec2d, BB
 import pymunk.pygame_util
-import pymunk.auto_geometry
+import pymunk.autogeometry
 
+def draw_helptext(screen):
+    font = pygame.font.Font(None, 16)
+    text = ["LMB(hold): Draw pink color",
+            "LMB(hold) + Shift: Create balls",
+            "g: Generate segments from pink color drawing",
+            "r: Reset",
+            ]
+    y = 5
+    for line in text:
+        text = font.render(line, 1,THECOLORS["black"])
+        screen.blit(text, (5,y))
+        y += 10
 
 def generate_geometry(surface, space):
     for s in space.shapes:
@@ -28,15 +40,15 @@ def generate_geometry(surface, space):
         except:
             return 0 
 
-    line_set = pymunk.auto_geometry.PolylineSet()
+    line_set = pymunk.autogeometry.PolylineSet()
     def segment_func(v0, v1):
         line_set.collect_segment(v0, v1)
     
-    pymunk.auto_geometry.march_soft(
+    pymunk.autogeometry.march_soft(
         BB(0,0,599,599), 60, 60, 90, segment_func, sample_func)
 
-    for polyline in line_set.lines:
-        line = pymunk.auto_geometry.simplify_curves(polyline, 1.)
+    for polyline in line_set:
+        line = pymunk.autogeometry.simplify_curves(polyline, 1.)
 
         for i in range(len(line)-1):
             p1 = line[i]
@@ -132,9 +144,11 @@ def main():
         screen.fill(pygame.color.THECOLORS["white"])
         screen.blit(terrain_surface, (0,0))
         space.debug_draw(draw_options)
+        draw_helptext(screen)
         pygame.display.flip()
 
         clock.tick(fps)
+        pygame.display.set_caption("fps: " + str(clock.get_fps()))
 
 if __name__ == '__main__':
     sys.exit(main())

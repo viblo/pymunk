@@ -1,5 +1,4 @@
 """This module contain functions used to load the chipmunk dll/lib file"""
-__version__ = "$Id$"
 
 import os.path
 import platform

@@ -57,35 +57,8 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="admonition tip" id="id1">
 <p class="first admonition-title">Tip</p>
-<p class="last">You will find the latest version at
-<a class="reference external" href="http://code.google.com/p/pymunk/downloads/list">http://code.google.com/p/pymunk/downloads/list</a></p>
-</div>
-<p>pymunk does not need to be installed. However, you might need to compile the
-chipmunk library that pymunk uses internally if a precompiled library was not
-included for your platform. The default pymunk distribution ships with at least
-32-bit Windows and 32- and 64-bit Linux versions. But even if a compiled
-library is not shipped you should not despair! It is very easy to compile
-chipmunk as long as you have a gcc-compatible c compiler installed.</p>
-<div class="section" id="without-installation">
-<span id="without-install"></span><h2>Without installation<a class="headerlink" href="#without-installation" title="Permalink to this headline">¶</a></h2>
-<p>You might want to test pymunk before you install it on your development
-machine, or maybe decide to not install it at all. The easiest way to do this
-is to download the source release of pymunk and extract the archive to the
-folder where your code is and then tell python where to find it.</p>
-<p>For example, lets say you have main.py and a folder named pymunk-3.0.0 that
-contain the full source of pymunk (files, including setup.py, README.txt and
-a folder named pymunk). Then you can add this before you include:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
-
-<span class="n">current_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">current_path</span><span class="p">,</span> <span class="s2">&quot;pymunk-3.0.0&quot;</span> <span class="p">)</span> <span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">pymunk</span>
-</pre></div>
-</div>
-<p>For a working demo, check out the run.py file in the examples folder of
-pymunk. It uses this exact technique to allow running the examples using the
-pymunk located on level up.</p>
+<p class="last">You will find the latest released version at pypi:
+<a class="reference external" href="https://pypi.python.org/pypi/pymunk">https://pypi.python.org/pypi/pymunk</a></p>
 </div>
 <div class="section" id="install-pymunk">
 <h2>Install pymunk<a class="headerlink" href="#install-pymunk" title="Permalink to this headline">¶</a></h2>
@@ -93,12 +66,13 @@ pymunk located on level up.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span>
 </pre></div>
 </div>
-<p>Another option is to install pymunk with one of the prebuilt installers if
-available (Windows) or you can use the standard setup.py way:</p>
+<p>Another option is to use the standard setup.py way, in case you have downloaded
+the source distribution:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>
 </div>
-<p>If you are on Mac OS X or Linux you will probably need to run as a privileged
+<p>Note that this require a GCC compiler, which can be a bit tricky on Windows.
+If you are on Mac OS X or Linux you will probably need to run as a privileged
 user; for example using sudo:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>
@@ -106,12 +80,6 @@ user; for example using sudo:</p>
 <p>Once installed you should be able to to import pymunk just as any other
 installed library. pymunk should also work just fine with virtualenv in case
 you want it installed in a contained environment.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The setup will not check if the correct Chipmunk library was included or
-already compiled for you. It might be a good idea to first check that
-pymunk works before you actually install it. See <a class="reference internal" href="#without-install"><span class="std std-ref">Without installation</span></a></p>
-</div>
 </div>
 <div class="section" id="compile-chipmunk">
 <span id="id2"></span><h2>Compile Chipmunk<a class="headerlink" href="#compile-chipmunk" title="Permalink to this headline">¶</a></h2>
@@ -120,21 +88,18 @@ included in the release you will need to compile Chipmunk yourself. Another
 reason to compile chipmunk is if you want to run it in release mode to get
 rid of the debug prints it generates.</p>
 <p>To compile Chipmunk:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_chipmunk</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span>
 </pre></div>
 </div>
-<p>On Windows you will need to use a gcc-compatible compiler. The precompiled
-included windows binaries were compiled with a GCC installed from the TDM-GCC
-package <a class="reference external" href="http://tdm-gcc.tdragon.net/">http://tdm-gcc.tdragon.net/</a> To set the compiler use the compiler
-argument:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_chipmunk</span> <span class="o">--</span><span class="n">compiler</span><span class="o">=</span><span class="n">mingw32</span>
+<p>If you got the source and just want to use it directly you probably want to
+compile Chipmunk inplace, that way the output is put directly into the correct
+place in the source folder:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span>
 </pre></div>
 </div>
-<p>To compile Chipmunk in Release mode use the release argument (Useful to
-avoid some debug prints and asserts):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_chipmunk</span> <span class="o">--</span><span class="n">release</span>
-</pre></div>
-</div>
+<p>On Windows you will need to use a gcc-compatible compiler. The prebuilt version
+distributed with pymunk were compiled with the mingwpy GCC compiler at
+<a class="reference external" href="https://mingwpy.github.io/">https://mingwpy.github.io/</a></p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
@@ -170,7 +135,6 @@ remove all debugs prints.</dd>
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Readme</a></li>
 <li class="toctree-l1"><a class="reference internal" href="news.html">News</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#without-installation">Without installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-pymunk">Install pymunk</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compile-chipmunk">Compile Chipmunk</a></li>
 </ul>

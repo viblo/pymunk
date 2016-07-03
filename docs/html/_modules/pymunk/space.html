@@ -59,7 +59,7 @@
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>    
     
-<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">.body</span> <span class="kn">import</span> <span class="n">Body</span>
 <span class="kn">from</span> <span class="nn">.collision_handler</span> <span class="kn">import</span> <span class="n">CollisionHandler</span>
 <span class="kn">from</span> <span class="nn">.query_info</span> <span class="kn">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span><span class="p">,</span> <span class="n">ShapeQueryInfo</span>
@@ -624,7 +624,7 @@
 <span class="sd">        :Parameters:</span>
 <span class="sd">            point : (x,y) or `Vec2d`</span>
 <span class="sd">                Define where to check for collision in the space.</span>
-<span class="sd">            max_distnace : int</span>
+<span class="sd">            max_distance : int</span>
 <span class="sd">                Match only within this distance.</span>
 <span class="sd">            shape_filter : ShapeFilter</span>
 <span class="sd">                Only pick shapes matching the filter.</span>

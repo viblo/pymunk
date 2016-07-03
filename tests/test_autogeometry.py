@@ -1,6 +1,6 @@
 from pymunk.vec2d import Vec2d
 from pymunk.bb import BB
-import pymunk.auto_geometry as a
+import pymunk.autogeometry as a
 
 import unittest
 
@@ -16,7 +16,9 @@ class UnitTestPolylineSet(unittest.TestCase):
         expected = [
             [Vec2d(0.0, 0.0), Vec2d(5.0, 5.0), Vec2d(10.0, 10.0)],
             [Vec2d(2.0, 5.0), Vec2d(2.0, 10.0)]]
-        self.assertEqual(pset.lines, expected)
+
+        self.assertEqual(len(pset), 2)
+        self.assertEqual(list(pset), expected)
 
 class UnitTestAutoGeometry(unittest.TestCase):
     def test_is_closed(self):

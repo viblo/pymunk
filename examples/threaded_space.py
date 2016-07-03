@@ -40,7 +40,6 @@ class PyramidDemo:
                 y += deltaY
 
             x += deltaX
-        print self.space.threads
 
     def step(self, n=1):
         for x in range(n):  

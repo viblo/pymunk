@@ -23,10 +23,11 @@ def _from_polyline_set(_set):
     return lines
     
 def is_closed(polyline):
-    """ Returns true if the first vertex is equal to the last.
+    """Returns true if the first vertex is equal to the last.
     
     :Parameters:
         polyline : [(x,y)] or [`Vec2d`]
+            Polyline to simplify.
     """
     return bool(lib.cpPolylineIsClosed(_to_chipmunk(polyline)))
 
@@ -39,6 +40,7 @@ def simplify_curves(polyline, tolerance):
 
     :Parameters:
         polyline : [(x,y)] or [`Vec2d`]
+            Polyline to simplify.
         tolerance : float
             A higher value means more error is tolerated.
     """
@@ -57,6 +59,7 @@ def simplify_vertexes(polyline, tolerance):
 
     :Parameters:
         polyline : [(x,y)] or [`Vec2d`]
+            Polyline to simplify.
         tolerance : float
             A higher value means more error is tolerated.
     """
@@ -71,6 +74,7 @@ def to_convex_hull(polyline, tolerance):
 
     :Parameters:
         polyline : [(x,y)] or [`Vec2d`]
+            The polyline to generate the hull for.
         tolerance : float
             A higher value means more error is tolerated.
     """
@@ -91,27 +95,45 @@ def convex_decomposition(polyline, tolerance):
 
     :Parameters:
         polyline : [(x,y)] or [`Vec2d`]
+            The polyline to get the convex hulls for.
         tolerance : float
             A higher value means more error is tolerated.
+        
     """
     _line = _to_chipmunk(polyline)
     _set = lib.cpPolylineConvexDecomposition(_line, tolerance)
     return _from_polyline_set(_set)
 
-class PolylineSet(object):
+import collections
+class PolylineSet(collections.Sequence):
+    """A set of Polylines. 
+    
+    Mainly intended to be used for its `collect_segment()` function when generating
+    geometry with the `march_soft()` and `march_hard()` functions.    
+    """
     def __init__(self):
         self._set = lib.cpPolylineSetNew()
 
     def collect_segment(self, v0, v1):
+        """Add a line segment to a polyline set.
+        
+        A segment will either start a new polyline, join two others, or add to 
+        or loop an existing polyline. This is mostly intended to be used as a 
+        callback directly from `march_soft()` or `march_hard()`.
+        
+        """
         lib.cpPolylineSetCollectSegment(v0, v1, self._set)
 
-    def _get_lines(self):
-        return _from_polyline_set(self._set)
-    lines = property(_get_lines, 
-        doc="""Get the lines that make out this set as a list of `[Vec2d]`
-        """)
+    def __len__(self):
+        return self._set.count
 
-
+    def __getitem__(self, key):
+        if key >= self._set.count:
+            raise IndexError
+        line = []
+        for i in range(self._set.lines[key].count):
+            line.append(Vec2d(self._set.lines[key].verts[i]))
+        return line
 
 def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
     """Trace an anti-aliased contour of an image along a particular threshold.
@@ -130,11 +152,11 @@ def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
             A higher value means more error is tolerated
         segment_func : ``func(v0, v1)``
             The segment function will be called for each segment detected that 
-            lies along the density contour for threshold. v0 and v1 is `Vec2d`s.
+            lies along the density contour for threshold. v0 and v1 are `Vec2d`.
         sample_func : ``func(point) -> float``
             The sample function will be called for x_samples * y_samples spread
             across the bounding box area, and should return a float. point is 
-            a `Vec2d`
+            a `Vec2d`.
     """
     
     @ffi.callback("typedef void (*cpMarchSegmentFunc)"
@@ -167,11 +189,11 @@ def march_hard(bb, x_samples, y_samples, threshold, segment_func, sample_func):
             A higher value means more error is tolerated
         segment_func : ``func(v0, v1)``
             The segment function will be called for each segment detected that 
-            lies along the density contour for threshold. v0 and v1 is `Vec2d`s.
+            lies along the density contour for threshold. v0 and v1 are `Vec2d`.
         sample_func : ``func(point) -> float``
             The sample function will be called for x_samples * y_samples spread
             across the bounding box area, and should return a float. point is 
-            a `Vec2d`
+            a `Vec2d`.
     """
     @ffi.callback("typedef void (*cpMarchSegmentFunc)"
         "(cpVect v0, cpVect v1, void *data)")

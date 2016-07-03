@@ -12,9 +12,9 @@ API Reference
     .. toctree::
         :maxdepth: 6
 
+        pymunk.autogeometry
         pymunk.constraint
         pymunk.vec2d
-        pymunk.util
         pymunk.matplotlib_util    
         pymunk.pygame_util
         pymunk.pyglet_util

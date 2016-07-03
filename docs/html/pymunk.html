@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
     <link rel="top" title="pymunk 5.0.0.dev0 documentation" href="index.html" />
-    <link rel="next" title="pymunk.constraint Module" href="pymunk.constraint.html" />
+    <link rel="next" title="pymunk.autogeometry Module" href="pymunk.autogeometry.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
   </head>
   <body role="document">
@@ -39,7 +39,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pymunk.constraint.html" title="pymunk.constraint Module"
+          <a href="pymunk.autogeometry.html" title="pymunk.autogeometry Module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="installation.html" title="Installation"
@@ -61,15 +61,9 @@
 <p class="rubric">Submodules</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal"><span class="pre">pymunk.vec2d</span></code> Module</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pymunk.util.html"><code class="docutils literal"><span class="pre">pymunk.util</span></code> Module</a><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
@@ -118,7 +112,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x04974A90&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x04468A70&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -423,7 +417,7 @@ depth within a shape to be considered a match.</p>
 <dt>point</dt>
  <span class="classifier-delimiter">:</span> <span class="classifier">(x,y) or <cite>Vec2d</cite></span><dd><p class="first last">Define where to check for collision in the space.</p>
 </dd>
-<dt>max_distnace</dt>
+<dt>max_distance</dt>
  <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Match only within this distance.</p>
 </dd>
 <dt>shape_filter</dt>
@@ -2047,8 +2041,9 @@ added to each vertex.</p>
 
 <dl class="function">
 <dt id="pymunk.moment_for_box">
-<code class="descclassname">pymunk.</code><code class="descname">moment_for_box</code><span class="sig-paren">(</span><em>mass</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk.html#moment_for_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.moment_for_box" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the moment of inertia for a solid box centered on the body</p>
+<code class="descclassname">pymunk.</code><code class="descname">moment_for_box</code><span class="sig-paren">(</span><em>mass</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk.html#moment_for_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.moment_for_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the moment of inertia for a solid box centered on the body.</p>
+<p>size should be a tuple of (width, height)</p>
 </dd></dl>
 
 <dl class="class">
@@ -2894,9 +2889,9 @@ directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-package"><code class="docutils literal"><span class="pre">pymunk</span></code> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.util.html"><code class="docutils literal"><span class="pre">pymunk.util</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
@@ -2919,8 +2914,8 @@ directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
   <p class="topless"><a href="installation.html"
                         title="previous chapter">Installation</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pymunk.constraint.html"
-                        title="next chapter"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a></p>
+  <p class="topless"><a href="pymunk.autogeometry.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">pymunk.autogeometry</span></code> Module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -2952,7 +2947,7 @@ directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pymunk.constraint.html" title="pymunk.constraint Module"
+          <a href="pymunk.autogeometry.html" title="pymunk.autogeometry Module"
              >next</a> |</li>
         <li class="right" >
           <a href="installation.html" title="Installation"

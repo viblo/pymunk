@@ -23,18 +23,15 @@ TODO v7
 -------
 - cache pip downloads on appveyor?
 - Think about split between pymunk.util and pymunk modules
-- Update examples with new api
+- Update examples with new api (arrows and platformer left todo)
 - do we still need pymunk.inf?
 - replace references to Chipmunk in api docs to references to pymunk
 - http://code.activestate.com/recipes/500261/ for pickle of vec2d
 - Think about experimental repr of Body
-- Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js
-- Investigate if its possible to use cpHastySpace on linux (wont work on windows due to posix threads)  
-- add code for threaded sovler on non-windows
-- add code for autogeometry
+- Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js  
+- add better example benchmark for threaded solver on non-windows
 
 - use twine to upload to Pypi? https://pypi.python.org/pypi/twine
-- use appveyor for windows automated tests? http://python-packaging-user-guide.readthedocs.io/en/latest/appveyor/
 - use travis ci to build osx chipmunk lib file and run tests? https://docs.travis-ci.com/user/osx-ci-environment/
 
 
@@ -86,16 +83,18 @@ Dependencies / Requirements
 ---------------------------
 
 Basically Pymunk have been made to be as easy to install and distribute as 
-possible, usually `Pip install` will take care of everything for you.
+possible, usually `pip install` will take care of everything for you.
 
 - Python (Runs on CPython 2.7 and 3.X. Pypy and Pypy3)
 - Chipmunk (Source included, and on Windows and OSX its already compiled)
-- CFFI (will be installed automatically by pip)
+- CFFI (will be installed automatically by Pip)
 - Setuptools (should be included with Pip)
 
 * GCC and friends (optional, you need it to compile Chipmunk)
 * Pygame (optional, you need it to run the Pygame based demos)
 * Pyglet (optional, you need it to run the Pyglet based demos)
+* Matplotlib & Jupyter Notebook (optional, you need it to run the Matplotlib 
+  based demos)
 * Sphinx (optional, you need it to build documentation)
 
 
@@ -111,7 +110,7 @@ The source distribution does not include a precompiled Chipmunk library file,
 instead you need to build it yourself. 
 
 There are basically two options, either building it automatically as part of 
-installation using for example pip::
+installation using for example Pip::
 
     > pip install pymunk-source-dist.zip
 
@@ -125,7 +124,4 @@ setuptools doesnt currently handle pure native libraries that needs to be built
 in a good way if built with build_clib.
 
 The compiled file goes into the /pymunk folder (same as space.py, 
-body.py and others). If the compile fail, please check the readme in 
-chipmunk_src for generic instructions on how to compile with gcc, 
-or download the relevant release from Chipmunk homepage and follow its
-instructions.
+body.py and others).

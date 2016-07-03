@@ -92,11 +92,8 @@ using Chipmunk 7.0 rev d7603e3927 (source included)</p>
 <li><a class="reference external" href="http://code.activestate.com/recipes/500261/">http://code.activestate.com/recipes/500261/</a> for pickle of vec2d</li>
 <li>Think about experimental repr of Body</li>
 <li>Get inspiration of examples and debug drawing from here: <a class="reference external" href="https://github.com/liabru/matter-js">https://github.com/liabru/matter-js</a></li>
-<li>Investigate if its possible to use cpHastySpace on linux (wont work on windows due to posix threads)</li>
-<li>add code for threaded sovler on non-windows</li>
-<li>add code for autogeometry</li>
+<li>add better example benchmark for threaded solver on non-windows</li>
 <li>use twine to upload to Pypi? <a class="reference external" href="https://pypi.python.org/pypi/twine">https://pypi.python.org/pypi/twine</a></li>
-<li>use appveyor for windows automated tests? <a class="reference external" href="http://python-packaging-user-guide.readthedocs.io/en/latest/appveyor/">http://python-packaging-user-guide.readthedocs.io/en/latest/appveyor/</a></li>
 <li>use travis ci to build osx chipmunk lib file and run tests? <a class="reference external" href="https://docs.travis-ci.com/user/osx-ci-environment/">https://docs.travis-ci.com/user/osx-ci-environment/</a></li>
 </ul>
 </div>
@@ -140,17 +137,19 @@ on the pymunk homepage, <a class="reference external" href="http://www.pymunk.or
 <div class="section" id="dependencies-requirements">
 <h2>Dependencies / Requirements<a class="headerlink" href="#dependencies-requirements" title="Permalink to this headline">¶</a></h2>
 <p>Basically Pymunk have been made to be as easy to install and distribute as
-possible, usually <cite>Pip install</cite> will take care of everything for you.</p>
+possible, usually <cite>pip install</cite> will take care of everything for you.</p>
 <ul class="simple">
 <li>Python (Runs on CPython 2.7 and 3.X. Pypy and Pypy3)</li>
 <li>Chipmunk (Source included, and on Windows and OSX its already compiled)</li>
-<li>CFFI (will be installed automatically by pip)</li>
+<li>CFFI (will be installed automatically by Pip)</li>
 <li>Setuptools (should be included with Pip)</li>
 </ul>
 <ul class="simple">
 <li>GCC and friends (optional, you need it to compile Chipmunk)</li>
 <li>Pygame (optional, you need it to run the Pygame based demos)</li>
 <li>Pyglet (optional, you need it to run the Pyglet based demos)</li>
+<li>Matplotlib &amp; Jupyter Notebook (optional, you need it to run the Matplotlib
+based demos)</li>
 <li>Sphinx (optional, you need it to build documentation)</li>
 </ul>
 </div>
@@ -163,7 +162,7 @@ another compiler that uses the same flags.</p>
 <p>The source distribution does not include a precompiled Chipmunk library file,
 instead you need to build it yourself.</p>
 <p>There are basically two options, either building it automatically as part of
-installation using for example pip:</p>
+installation using for example Pip:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">dist</span><span class="o">.</span><span class="n">zip</span>
 </pre></div>
 </div>
@@ -176,10 +175,7 @@ you can explicitly tell pymunk to compile it inplace:</p>
 setuptools doesnt currently handle pure native libraries that needs to be built
 in a good way if built with build_clib.</p>
 <p>The compiled file goes into the /pymunk folder (same as space.py,
-body.py and others). If the compile fail, please check the readme in
-chipmunk_src for generic instructions on how to compile with gcc,
-or download the relevant release from Chipmunk homepage and follow its
-instructions.</p>
+body.py and others).</p>
 </div>
 </div>
 
