@@ -21,6 +21,7 @@ using Chipmunk 7.0 rev d7603e3927 (source included)
 
 TODO v7
 -------
+- benchmark against pymunk 4, cymunk on pypy and cpython
 - cache pip downloads on appveyor?
 - Think about split between pymunk.util and pymunk modules
 - Update examples with new api (arrows and platformer left todo)
