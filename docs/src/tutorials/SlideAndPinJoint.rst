@@ -85,7 +85,6 @@ Anyway, we are now ready to write some code::
     import sys
     import pygame
     from pygame.locals import *
-    from pygame.color import *
     import pymunk #1
 
     def main():
@@ -104,7 +103,7 @@ Anyway, we are now ready to write some code::
                 elif event.type == KEYDOWN and event.key == K_ESCAPE:
                     sys.exit(0)
                             
-            screen.fill(THECOLORS["white"])
+            screen.fill((255,255,255))
             
             space.step(1/50.0) #3
             
@@ -128,12 +127,12 @@ empty space.
    function steps the simulation one step forward in time. 
 
 .. Note:: 
-    It is best to keep the stepsize constant and not adjust it depending on the 
+    It is best to keep the step size constant and not adjust it depending on the 
     framerate. The physic simulation will work much better with a constant step 
     size.
 
 Falling balls
-=================
+=============
 
 The easiest shape to handle (and draw) is the circle. Therefore our next 
 step is to make a ball spawn once in while. In many of the example demos all 
@@ -178,7 +177,7 @@ If we want to draw manually, our draw function could look something like this::
 
     def draw_ball(screen, ball):
         p = int(ball.body.position.x), 600-int(ball.body.position.y)
-        pygame.draw.circle(screen, THECOLORS["blue"], p, int(ball.radius), 2)
+        pygame.draw.circle(screen, (0,0,255), p, int(ball.radius), 2)
 
 And then called in this way (given we collected all the ball shapes in a list 
 called balls)::
@@ -186,8 +185,8 @@ called balls)::
     for ball in balls:
         draw_ball(screen, ball)
 
-However, as we use pygame in this example instead we can use the debug_draw
-method already included in Pymunk to simplify a bit. In that case we would 
+However, as we use pygame in this example we can instead use the debug_draw
+method already included in Pymunk to simplify a bit. In that case we  
 first have to create a DrawOptions object with the options (mainly what surface 
 to draw on)::
 
@@ -200,10 +199,7 @@ way::
 
 Most of the examples included with Pymunk uses this way of drawing. 
 
-However, in this tutorial I included the manual way of drawing since if you are 
-making a game sooner or later you will want to draw manual anyway.
-
-With the two functions (add_ball and draw_ball) and a little code to spawn 
+With the add_ball function and the debug_draw call and a little code to spawn 
 balls you should see a couple of balls falling. Yay!
 
 ::
@@ -211,11 +207,9 @@ balls you should see a couple of balls falling. Yay!
     import sys, random
     import pygame
     from pygame.locals import *
-    from pygame.color import *
     import pymunk
 
     #def add_ball(space):
-    #def draw_ball(screen, ball):
 
     def main():
         pygame.init()
@@ -227,6 +221,8 @@ balls you should see a couple of balls falling. Yay!
         space.gravity = (0.0, -900.0)
         
         balls = []
+        draw_options = pymunk.pygame_util.DrawOptions(screen)
+
         
         ticks_to_next_ball = 10
         while True:
@@ -241,19 +237,17 @@ balls you should see a couple of balls falling. Yay!
                 ticks_to_next_ball = 25
                 ball_shape = add_ball(space)
                 balls.append(ball_shape)
-
-            screen.fill(THECOLORS["white"])
-            
-            for ball in balls:
-                draw_ball(screen, ball)
-            
+ 
             space.step(1/50.0)
             
+            screen.fill((255,255,255))     
+            space.debug_draw(draw_options) 
+
             pygame.display.flip()
             clock.tick(50)
             
     if __name__ == '__main__':
-        sys.exit(main())   
+        main()   
 
 A static L
 ==========
@@ -278,7 +272,9 @@ with the balls we start with a function to add an L to the space::
 2. A line shaped shape is created here.
 3. Again, we only add the segments, not the body to the space.
 
-Next we add a function to draw the L shape::
+Since we use Space.debug_draw to draw the space we dont need to do any special 
+draw code for the Segments, but I still include a possible draw function here
+just to show what it could look like::
 
     def draw_lines(screen, lines):
         for line in lines:
@@ -306,7 +302,7 @@ Next we add a function to draw the L shape::
         return int(p.x), int(-p.y+600)
 
 
-We add a call to add_static_L() and one to draw_lines() and now we should see 
+With the full code we should something like the below, and now we should see 
 an inverted L shape in the middle will balls spawning and hitting the shape. 
 
 ::
@@ -314,15 +310,12 @@ an inverted L shape in the middle will balls spawning and hitting the shape.
     import sys, random
     import pygame
     from pygame.locals import *
-    from pygame.color import *
     import pymunk
     import math
 
     #def to_pygame(p):
     #def add_ball(space):
-    #def draw_ball(screen, ball):
     #def add_static_l(space):
-    #def draw_lines(screen, lines):
 
     def main():
         pygame.init()
@@ -335,6 +328,7 @@ an inverted L shape in the middle will balls spawning and hitting the shape.
         
         lines = add_static_L(space)
         balls = []
+        draw_options = pymunk.pygame_util.DrawOptions(screen)
         
         ticks_to_next_ball = 10
         while True:
@@ -350,18 +344,16 @@ an inverted L shape in the middle will balls spawning and hitting the shape.
                 ball_shape = add_ball(space)
                 balls.append(ball_shape)
 
-            screen.fill(THECOLORS["white"])
-            
-            draw_balls(screen, balls)
-            draw_lines(screen, lines)
-            
             space.step(1/50.0)
-            
+
+            screen.fill((255,255,255))           
+            space.debug_draw(draw_options) 
+
             pygame.display.flip()
             clock.tick(50)
             
     if __name__ == '__main__':
-        sys.exit(main())
+        (main()
     
 
 Joints (1)
@@ -399,13 +391,6 @@ the function to add_L(). ::
 3. A pin joint allow two objects to pivot about a single point. In our case one 
    of the objects will be stuck to the world.
 
-To make it easy to see the point we draw a little red ball in its center ::
-
-    pygame.draw.circle(screen, THECOLORS["red"], (300,300), 5)
-
-In a bigger program you will want to get the rotation_center_body.position 
-instead of my little cheat here with (300,300), but it will work for this 
-tutorial as the rotation center is static.
 
 Joints (2)
 ==============
@@ -440,14 +425,8 @@ we modify the add_L() function::
    our case one of the bodies is static meaning only the body attached with the 
    shapes will move.
 
-And to make it a bit more clear, we draw a circle to do symbolize the joint 
-with a green circle with its radius set to the joint max::
-
-    pygame.draw.circle(screen, THECOLORS["green"], (200,300), 25, 2)
-
-
-The End
-=======
+Ending
+======
 
 You might notice that we never delete balls. This will make the simulation 
 require more and more memory and use more and more cpu, and this is of course 
@@ -475,23 +454,18 @@ over. You can check slide_and_pinjoint.py included in pymunk, but it
 doesn't follow this tutorial exactly as I factored out a couple of blocks 
 to functions to make it easier to follow in tutorial form. 
 
-If anything is unclear, not working feel free to add a comment in the bottom 
-of the page. If you have an idea for another tutorial you want to read, or 
-some example code you want to see included in pymunk, please write it 
-somewhere (like in the chipmunk forum)
+If anything is unclear, not working feel free to raise an issue on github. If 
+you have an idea for another tutorial you want to read, or some example code 
+you want to see included in pymunk, please write it somewhere (like in the 
+chipmunk forum)
 
 The full code for this tutorial is::
 
     import sys, random
     import pygame
     from pygame.locals import *
-    from pygame.color import *
     import pymunk
-    import math
-
-    def to_pygame(p):
-        """Small hack to convert pymunk to pygame coordinates"""
-        return int(p.x), int(-p.y+600)
+    import pymunk.pygame_util
 
     def add_ball(space):
         """Add a ball to the given space at a random position"""
@@ -505,17 +479,12 @@ The full code for this tutorial is::
         space.add(body, shape)
         return shape
 
-    def draw_ball(screen, ball):
-        """Draw a ball shape"""
-        p = int(ball.body.position.x), 600-int(ball.body.position.y)
-        pygame.draw.circle(screen, THECOLORS["blue"], p, int(ball.radius), 2)
-
     def add_L(space):
         """Add a inverted L shape with two joints"""
         rotation_center_body = pymunk.Body(body_type = pymunk.Body.STATIC)
         rotation_center_body.position = (300,300)
         
-        rotation_limit_body = pymunk.Body(body_type = pymunk.Body.STATIC) # 1
+        rotation_limit_body = pymunk.Body(body_type = pymunk.Body.STATIC)
         rotation_limit_body.position = (200,300)
         
         body = pymunk.Body(10, 10000)
@@ -525,21 +494,10 @@ The full code for this tutorial is::
         
         rotation_center_joint = pymunk.PinJoint(body, rotation_center_body, (0,0), (0,0)) 
         joint_limit = 25
-        rotation_limit_joint = pymunk.SlideJoint(body, rotation_limit_body, (-100,0), (0,0), 0, joint_limit) # 3
+        rotation_limit_joint = pymunk.SlideJoint(body, rotation_limit_body, (-100,0), (0,0), 0, joint_limit)
 
         space.add(l1, l2, body, rotation_center_joint, rotation_limit_joint)
         return l1,l2
-
-    def draw_lines(screen, lines):
-        """Draw the lines"""
-        for line in lines:
-            body = line.body
-            pv1 = body.position + line.a.rotated(body.angle)
-            pv2 = body.position + line.b.rotated(body.angle)
-            p1 = to_pygame(pv1)
-            p2 = to_pygame(pv2)
-            pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])
-
 
     def main():
         pygame.init()
@@ -552,6 +510,7 @@ The full code for this tutorial is::
         
         lines = add_L(space)
         balls = []
+        draw_options = pymunk.pygame_util.DrawOptions(screen)
         
         ticks_to_next_ball = 10
         while True:
@@ -567,22 +526,18 @@ The full code for this tutorial is::
                 ball_shape = add_ball(space)
                 balls.append(ball_shape)
 
-            screen.fill(THECOLORS["white"])
+            screen.fill((255,255,255))
             
             balls_to_remove = []
             for ball in balls:
                 if ball.body.position.y < 150:
                     balls_to_remove.append(ball)
-                draw_ball(screen, ball)
             
             for ball in balls_to_remove:
                 space.remove(ball, ball.body)
                 balls.remove(ball)
             
-            draw_lines(screen, lines)
-            
-            pygame.draw.circle(screen, THECOLORS["red"], (300,300), 5)
-            pygame.draw.circle(screen, THECOLORS["green"], (200,300), 25, 2)
+            space.debug_draw(draw_options)
 
             space.step(1/50.0)
             
@@ -590,4 +545,4 @@ The full code for this tutorial is::
             clock.tick(50)
             
     if __name__ == '__main__':
-        sys.exit(main())
+        main()
