@@ -19,22 +19,6 @@ using Chipmunk 7.0 rev d7603e3927 (source included)
 
 :Chipmunk: http://chipmunk-physics.net/
 
-TODO v7
--------
-- benchmark against pymunk 4, cymunk on pypy and cpython
-- cache pip downloads on appveyor?
-- Think about split between pymunk.util and pymunk modules
-- Update examples with new api (arrows and platformer left todo)
-- do we still need pymunk.inf?
-- replace references to Chipmunk in api docs to references to pymunk
-- http://code.activestate.com/recipes/500261/ for pickle of vec2d
-- Think about experimental repr of Body
-- Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js  
-- add better example benchmark for threaded solver on non-windows
-
-- use twine to upload to Pypi? https://pypi.python.org/pypi/twine
-- use travis ci to build osx chipmunk lib file and run tests? https://docs.travis-ci.com/user/osx-ci-environment/
-
 
 Installation
 ------------
