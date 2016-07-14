@@ -172,6 +172,33 @@ class UnitTestSpace(unittest.TestCase):
         self.assertTrue(self.s1 not in s.bodies)
         self.assertTrue(self.s2 not in s.shapes)
 
+    def testPointQueryNearestWithShapeFilter(self):
+        s = p.Space()
+        b1 = p.Body(1, 1)
+        s1 = p.Circle(b1, 10)
+        s.add(s1)
+
+        tests = [
+            {"c1": 0b00, "m1":0b00, "c2": 0b00, "m2":0b00, "hit":0}, 
+            {"c1": 0b01, "m1":0b01, "c2": 0b01, "m2":0b01, "hit":1}, 
+            {"c1": 0b10, "m1":0b01, "c2": 0b01, "m2":0b10, "hit":1}, 
+            {"c1": 0b01, "m1":0b01, "c2": 0b11, "m2":0b11, "hit":1},
+            {"c1": 0b11, "m1":0b00, "c2": 0b11, "m2":0b00, "hit":0},
+            {"c1": 0b00, "m1":0b11, "c2": 0b00, "m2":0b11, "hit":0},
+            {"c1": 0b01, "m1":0b10, "c2": 0b10, "m2":0b00, "hit":0},   
+            {"c1": 0b01, "m1":0b10, "c2": 0b10, "m2":0b10, "hit":0},
+            {"c1": 0b01, "m1":0b10, "c2": 0b10, "m2":0b01, "hit":1},
+            {"c1": 0b01, "m1":0b11, "c2": 0b00, "m2":0b10, "hit":0},
+            ]
+
+        for test in tests:
+            f1 = p.ShapeFilter(categories = test["c1"], mask=test["m1"])
+            f2 = p.ShapeFilter(categories = test["c2"], mask=test["m2"])
+            s1.filter = f1
+            hit = s.point_query_nearest((0,0), 0, f2)
+            self.assertEqual(hit != None, test["hit"], 
+                "Got {}!=None, expected {} for test: {}".format(hit, test["hit"], test))
+
     def testPointQuery(self):
         s = p.Space()
         b1 = p.Body(1, 1)
@@ -183,8 +210,8 @@ class UnitTestSpace(unittest.TestCase):
         b2.position = 0, 0
         s2 = p.Circle(b2, 10)
         s.add(s2)
-        s1.shape_filter = p.ShapeFilter(categories = 0b10, mask=0b01)
-        hits = s.point_query((23,0), 0, p.ShapeFilter(categories = 0b01, mask=0b01))
+        s1.filter = p.ShapeFilter(categories = 0b10, mask=0b01)
+        hits = s.point_query((23,0), 0, p.ShapeFilter(categories = 0b01, mask=0b10))
 
         self.assertEqual(len(hits), 1)
         self.assertEqual(hits[0].shape, s1)

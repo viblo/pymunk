@@ -14,6 +14,10 @@ class UnitTestShapeFilter(unittest.TestCase):
         self.assertEqual(f.categories, 2)
         self.assertEqual(f.mask, 3)
 
+    def testConstants(self):
+        self.assertEqual(p.ShapeFilter.ALL_MASKS, 0xffffffff)
+        self.assertEqual(p.ShapeFilter.ALL_CATEGORIES, 0xffffffff)
+
     def testEq(self):
         f1 = p.ShapeFilter(1,2,3)
         f2 = p.ShapeFilter(1,2,3)

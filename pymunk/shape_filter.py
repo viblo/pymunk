@@ -52,6 +52,9 @@ class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     """
     __slots__ = ()    
 
+    ALL_CATEGORIES = 0xffffffff
+    ALL_MASKS = 0xffffffff
+
     def __new__(cls, group = 0, categories = 0xffffffff, mask = 0xffffffff):
         self = super(ShapeFilter, cls).__new__(cls, group, categories, mask)
         return self

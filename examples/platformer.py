@@ -17,8 +17,7 @@ from pygame.color import *
     
 import pymunk
 from pymunk.vec2d import Vec2d
-from pymunk.pygame_util import draw, from_pygame, to_pygame
-
+import pymunk.pygame_util 
 
 def cpfclamp(f, min_, max_):
     """Clamp f between min and max"""
@@ -66,6 +65,8 @@ def main():
     ### Physics stuff
     space = pymunk.Space()   
     space.gravity = 0,-1000
+    draw_options = pymunk.pygame_util.DrawOptions(screen)
+
     # box walls 
     static = [pymunk.Segment(space.static_body, (10, 50), (300, 50), 5)
                 , pymunk.Segment(space.static_body, (300, 50), (325, 50), 5)
@@ -118,16 +119,16 @@ def main():
     passthrough.color = pygame.color.THECOLORS["yellow"]
     passthrough.friction = 1.
     passthrough.collision_type = 2
-    passthrough.layers = passthrough.layers ^ 0b1000
+    passthrough.filter = pymunk.ShapeFilter(categories=0b1000)
     space.add(passthrough)
     
-    def passthrough_handler(space, arbiter):
+    def passthrough_handler(arbiter, space, data):
         if arbiter.shapes[0].body.velocity.y < 0:
             return True
         else:
             return False
             
-    space.collision_handler(1,2).begin=passthrough_handler
+    space.add_collision_handler(1,2).begin = passthrough_handler
     
     
     # player
@@ -138,8 +139,15 @@ def main():
     head = pymunk.Circle(body, 10, (0,5))
     head2 = pymunk.Circle(body, 10, (0,13))
     feet = pymunk.Circle(body, 10, (0,-5))
-
-    head.layers = head2.layers = 0b1000
+    # Since we use the debug draw we need to hide these circles. To make it 
+    # easy we just set their color to black.
+    feet.color = 0,0,0,0
+    head.color = 0,0,0,0
+    head2.color = 0,0,0,0
+    mask = pymunk.ShapeFilter.ALL_MASKS ^ passthrough.filter.categories
+    sf = pymunk.ShapeFilter(mask=mask)
+    head.filter = sf 
+    head2.filter = sf 
     feet.collision_type = 1
     feet.ignore_draw = head.ignore_draw = head2.ignore_draw = True
     
@@ -161,7 +169,6 @@ def main():
             'body' : None
         }
         # find out if player is standing on ground
-        
                 
         def f(arbiter):
             n = -arbiter.contact_point_set.normal
@@ -188,11 +195,6 @@ def main():
                 running = False
             elif event.type == KEYDOWN and event.key == K_p:
                 pygame.image.save(screen, "platformer.png")
-
-            elif event.type == KEYDOWN and event.key == K_d:
-                feet.ignore_draw = not feet.ignore_draw
-                head.ignore_draw = not head.ignore_draw
-                head2.ignore_draw = not head2.ignore_draw
                 
             elif event.type == KEYDOWN and event.key == K_UP:
                 if well_grounded or remaining_jumps > 0:                    
@@ -259,18 +261,18 @@ def main():
             pygame.draw.line(screen, color, (10,y), (680,y), 1)
         
         ### Draw stuff
-        draw(screen, space)
+        space.debug_draw(draw_options)
         
-        if feet.ignore_draw:
-            direction_offset = 48+(1*direction+1)/2 * 48
-            if grounding['body'] != None and abs(target_vx) > 1:
-                animation_offset = 32 * (frame_number / 8 % 4)
-            elif grounding['body'] is None:
-                animation_offset = 32*1
-            else:
-                animation_offset = 32*0
-            position = body.position +(-16,28)
-            screen.blit(img, to_pygame(position, screen), (animation_offset, direction_offset, 32, 48))
+        direction_offset = 48+(1*direction+1)/2 * 48
+        if grounding['body'] != None and abs(target_vx) > 1:
+            animation_offset = 32 * (frame_number / 8 % 4)
+        elif grounding['body'] is None:
+            animation_offset = 32*1
+        else:
+            animation_offset = 32*0
+        position = body.position +(-16,28)
+        p = pymunk.pygame_util.to_pygame(position, screen)
+        screen.blit(img, p, (animation_offset, direction_offset, 32, 48))
 
         # Did we land?
         if abs(grounding['impulse'].y) / body.mass > 200 and not landed_previous:
@@ -280,13 +282,14 @@ def main():
         else:
             landed_previous = False
         if landing['n'] > 0:
-            pygame.draw.circle(screen, pygame.color.THECOLORS['yellow'], to_pygame(landing['p'], screen), 5)
+            p = pymunk.pygame_util.to_pygame(landing['p'], screen)
+            pygame.draw.circle(screen, pygame.color.THECOLORS['yellow'], p, 5)
             landing['n'] -= 1
         
         # Info and flip screen
         screen.blit(font.render("fps: " + str(clock.get_fps()), 1, THECOLORS["white"]), (0,0))
         screen.blit(font.render("Move with Left/Right, jump with Up, press again to double jump", 1, THECOLORS["darkgrey"]), (5,height - 35))
-        screen.blit(font.render("Press D to toggle sprite draw, ESC or Q to quit", 1, THECOLORS["darkgrey"]), (5,height - 20))
+        screen.blit(font.render("Press ESC or Q to quit", 1, THECOLORS["darkgrey"]), (5,height - 20))
         
        
         pygame.display.flip()
