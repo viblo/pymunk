@@ -8,6 +8,8 @@ included in pymunk. You will find a screenshot of it in the list of
 It is probably a good idea to have the file near by if I 
 miss something in the tutorial or something is unclear.
 
+.. image :: /_static/tutorials/slide_and_pinjoint.png
+
 Before we start
 ===================
 

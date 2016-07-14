@@ -2,9 +2,7 @@ __docformat__ = "reStructuredText"
 
 from collections import namedtuple
 
-from . import _chipmunk_cffi
-cp = _chipmunk_cffi.lib
-ffi = _chipmunk_cffi.ffi    
+from ._chipmunk_cffi import lib, ffi 
 
 from .vec2d import Vec2d
 from .body import Body
@@ -28,13 +26,13 @@ class SpaceDebugDrawOptions(object):
     directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.
     """
 
-    DRAW_SHAPES = cp.CP_SPACE_DEBUG_DRAW_SHAPES
+    DRAW_SHAPES = lib.CP_SPACE_DEBUG_DRAW_SHAPES
     """Draw shapes"""
 
-    DRAW_CONSTRAINTS = cp.CP_SPACE_DEBUG_DRAW_CONSTRAINTS
+    DRAW_CONSTRAINTS = lib.CP_SPACE_DEBUG_DRAW_CONSTRAINTS
     """Draw constraints"""
 
-    DRAW_COLLISION_POINTS = cp.CP_SPACE_DEBUG_DRAW_COLLISION_POINTS
+    DRAW_COLLISION_POINTS = lib.CP_SPACE_DEBUG_DRAW_COLLISION_POINTS
     """Draw collision points"""
 
     shape_dynamic_color = SpaceDebugColor(52,152,219,255)

@@ -23,6 +23,8 @@ matplotlib and the notebook.
 `Matplotlib Util Demo 
 <https://github.com/viblo/pymunk/blob/master/examples/matplotlib_util_demo.ipynb>`_
 
+.. image:: _static/examples/matplotlib_util_demo.png
+
 
 newtons_cradle.ipynb
 --------------------
@@ -33,6 +35,12 @@ space.
 `Newtons Cradle 
 <https://github.com/viblo/pymunk/blob/master/examples/newtons_cradle.ipynb>`_
 
+.. raw:: html
+
+    <video width="400" height="300" controls>
+        <source src="_static/examples/newtons_cradle.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video> 
 
 Standalone Python 
 =================

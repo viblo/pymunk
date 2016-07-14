@@ -66,13 +66,14 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         self.ax.add_line(line)
 
     def draw_fat_segment(self, a, b, radius, outline_color, fill_color):
+        radius = max(1, 2*radius)
         line = plt.Line2D([a.x, b.x], [a.y, b.y], 
             linewidth=radius, color=fill_color)
         line.set_solid_capstyle("round")
         self.ax.add_line(line)
         
     def draw_polygon(self, verts, radius, outline_color, fill_color):
-        radius = max(1,radius)
+        radius = max(1, 2*radius)
         p = plt.Polygon(verts, linewidth=radius, joinstyle="round", 
             facecolor=fill_color, edgecolor=outline_color)
         self.ax.add_patch(p)
