@@ -68,34 +68,34 @@ def main():
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     # box walls 
-    static = [pymunk.Segment(space.static_body, (10, 50), (300, 50), 5)
-                , pymunk.Segment(space.static_body, (300, 50), (325, 50), 5)
-                , pymunk.Segment(space.static_body, (325, 50), (350, 50), 5)
-                , pymunk.Segment(space.static_body, (350, 50), (375, 50), 5)
-                , pymunk.Segment(space.static_body, (375, 50), (680, 50), 5)
-                , pymunk.Segment(space.static_body, (680, 50), (680, 370), 5)
-                , pymunk.Segment(space.static_body, (680, 370), (10, 370), 5)
-                , pymunk.Segment(space.static_body, (10, 370), (10, 50), 5)
+    static = [pymunk.Segment(space.static_body, (10, 50), (300, 50), 3)
+                , pymunk.Segment(space.static_body, (300, 50), (325, 50), 3)
+                , pymunk.Segment(space.static_body, (325, 50), (350, 50), 3)
+                , pymunk.Segment(space.static_body, (350, 50), (375, 50), 3)
+                , pymunk.Segment(space.static_body, (375, 50), (680, 50), 3)
+                , pymunk.Segment(space.static_body, (680, 50), (680, 370), 3)
+                , pymunk.Segment(space.static_body, (680, 370), (10, 370), 3)
+                , pymunk.Segment(space.static_body, (10, 370), (10, 50), 3)
                 ]  
     static[1].color = pygame.color.THECOLORS['red']
     static[2].color = pygame.color.THECOLORS['green']
     static[3].color = pygame.color.THECOLORS['red']
     
     # rounded shape
-    rounded = [pymunk.Segment(space.static_body, (500, 50), (520, 60), 5)
-                , pymunk.Segment(space.static_body, (520, 60), (540, 80), 5)
-                , pymunk.Segment(space.static_body, (540, 80), (550, 100), 5)
-                , pymunk.Segment(space.static_body, (550, 100), (550, 150), 5)
+    rounded = [pymunk.Segment(space.static_body, (500, 50), (520, 60), 3)
+                , pymunk.Segment(space.static_body, (520, 60), (540, 80), 3)
+                , pymunk.Segment(space.static_body, (540, 80), (550, 100), 3)
+                , pymunk.Segment(space.static_body, (550, 100), (550, 150), 3)
                 ]
                 
     # static platforms
-    platforms = [pymunk.Segment(space.static_body, (170, 50), (270, 150), 5)
+    platforms = [pymunk.Segment(space.static_body, (170, 50), (270, 150), 3)
                 #, pymunk.Segment(space.static_body, (270, 100), (300, 100), 5)
-                , pymunk.Segment(space.static_body, (400, 150), (450, 150), 5)
-                , pymunk.Segment(space.static_body, (400, 200), (450, 200), 5)
-                , pymunk.Segment(space.static_body, (220, 200), (300, 200), 5)
-                , pymunk.Segment(space.static_body, (50, 250), (200, 250), 5)
-                , pymunk.Segment(space.static_body, (10, 370), (50, 250), 5)
+                , pymunk.Segment(space.static_body, (400, 150), (450, 150), 3)
+                , pymunk.Segment(space.static_body, (400, 200), (450, 200), 3)
+                , pymunk.Segment(space.static_body, (220, 200), (300, 200), 3)
+                , pymunk.Segment(space.static_body, (50, 250), (200, 250), 3)
+                , pymunk.Segment(space.static_body, (10, 370), (50, 250), 3)
                 ]
     
     for s in static + platforms+rounded:

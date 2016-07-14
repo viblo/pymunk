@@ -26,7 +26,7 @@ def main():
     ### Physics stuff
     space = pm.Space()
     space.gravity = Vec2d(0.0, -900.0)
-    
+    draw_options = pymunk.pygame_util.DrawOptions(screen)    
     ## Balls
     balls = []
        
@@ -66,7 +66,7 @@ def main():
         screen.fill(THECOLORS["white"])
         
         ### Draw stuff
-        pymunk.pygame_util.draw(screen, space)
+        space.debug_draw(draw_options)
         
         balls_to_remove = []
         for ball in balls:

@@ -88,14 +88,15 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
     def draw_segment(self, a, b, color):
         p1 = to_pygame(a, self.surface)
         p2 = to_pygame(b, self.surface)
-        
+
         pygame.draw.aalines(self.surface, color, False, [p1,p2])
 
     def draw_fat_segment(self, a, b, radius, outline_color, fill_color):
         p1 = to_pygame(a, self.surface)
         p2 = to_pygame(b, self.surface)
         
-        pygame.draw.lines(self.surface, fill_color, False, [p1,p2], int(radius))
+        r = int(max(1, radius*2))
+        pygame.draw.lines(self.surface, fill_color, False, [p1,p2], r)
         
     def draw_polygon(self, verts, radius, outline_color, fill_color):
         ps = [to_pygame(v, self.surface) for v in verts]
@@ -103,10 +104,10 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         
         pygame.draw.polygon(self.surface, fill_color, ps)
         
-        if radius == 0 and False:
+        if radius < 1 and False:
             pygame.draw.lines(self.surface, outline_color, False, ps)
         else:
-            pygame.draw.lines(self.surface, outline_color, False, ps, int(radius))
+            pygame.draw.lines(self.surface, outline_color, False, ps, int(radius*2))
 
     def draw_dot(self, size, pos, color):
         p = to_pygame(pos, self.surface)

@@ -3,9 +3,6 @@ two segment shapes. For each collision it draws a red circle with size
 depending on collision strength. Not interactive.
 """
 
-__version__ = "$Id:$"
-__docformat__ = "reStructuredText"
-
 import math, sys, random
 
 import pygame

@@ -21,6 +21,7 @@ running = True
 ### Physics stuff
 space = pymunk.Space()
 space.gravity = (0.0, -900.0)
+draw_options = pymunk.pygame_util.DrawOptions(screen)
 
 ## Balls
 balls = []
@@ -107,7 +108,7 @@ while running:
     screen.fill(THECOLORS["white"])
     
     ### Draw stuff
-    pymunk.pygame_util.draw(screen, space)    
+    space.debug_draw(draw_options)    
     
     r_flipper_body.position = 450, 100
     l_flipper_body.position = 150, 100

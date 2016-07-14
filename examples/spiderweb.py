@@ -12,7 +12,6 @@ import pyglet
     
 import pymunk
 from pymunk.vec2d import Vec2d
-from pymunk.pyglet_util import draw
 
 config = pyglet.gl.Config(sample_buffers=1, samples=2, double_buffer=True)
 window = pyglet.window.Window(config=config, vsync = False)
@@ -176,6 +175,5 @@ def on_draw():
     pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_LINES, ('v2f',a))
      
     # anything else
-    draw(space)
     
 pyglet.app.run()

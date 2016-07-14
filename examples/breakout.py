@@ -5,9 +5,6 @@ The code showcases several pymunk concepts such as elasitcity, impulses,
 constant object speed, joints, collision handlers and post step callbacks.
 """
 
-__version__ = "$Id:$"
-__docformat__ = "reStructuredText"
-
 import math, sys, random
 import os
 
@@ -89,13 +86,14 @@ def main():
     running = True
     font = pygame.font.SysFont("Arial", 16)
     ### Physics stuff
-    space = pymunk.Space()   
+    space = pymunk.Space()  
+    draw_options = pymunk.pygame_util.DrawOptions(screen) 
     
     ### Game area
     # walls - the left-top-right walls
-    static_lines = [pymunk.Segment(space.static_body, (50, 50), (50, 550), 5)
-                ,pymunk.Segment(space.static_body, (50, 550), (550, 550), 5)
-                ,pymunk.Segment(space.static_body, (550, 550), (550, 50), 5)
+    static_lines = [pymunk.Segment(space.static_body, (50, 50), (50, 550), 2)
+                ,pymunk.Segment(space.static_body, (50, 550), (550, 550), 2)
+                ,pymunk.Segment(space.static_body, (550, 550), (550, 50), 2)
                 ]  
     for line in static_lines:
         line.color = THECOLORS['lightgray']
@@ -104,7 +102,7 @@ def main():
     space.add(static_lines)
 
     # bottom - a sensor that removes anything touching it
-    bottom = pymunk.Segment(space.static_body, (50, 50), (550, 50), 5)
+    bottom = pymunk.Segment(space.static_body, (50, 50), (550, 50), 2)
     bottom.sensor = True
     bottom.collision_type = collision_types["bottom"]
     bottom.color = THECOLORS['red']
@@ -122,7 +120,7 @@ def main():
     player_body = pymunk.Body(500, pymunk.inf)
     player_body.position = 300,100
     
-    player_shape = pymunk.Segment(player_body, (-50,0), (50,0), 5)
+    player_shape = pymunk.Segment(player_body, (-50,0), (50,0), 8)
     player_shape.color = THECOLORS["red"]
     player_shape.elasticity = 1.0
     player_shape.collision_type = collision_types["player"]
@@ -181,17 +179,18 @@ def main():
         screen.fill(THECOLORS["black"])
         
         ### Draw stuff
-        pymunk.pygame_util.draw(screen, space)
+        space.debug_draw(draw_options)
         
-
         state = []
         for x in space.shapes:
             s = "%s %s %s" % (x, x.body.position, x.body.velocity)
             state.append(s)
+        
         ### Update physics
         fps = 60
         dt = 1./fps
         space.step(dt)
+        
         ### Info and flip screen
         screen.blit(font.render("fps: " + str(clock.get_fps()), 1, THECOLORS["white"]), (0,0))
         screen.blit(font.render("Move with left/right arrows, space to spawn a ball", 1, THECOLORS["darkgrey"]), (5,height - 35))

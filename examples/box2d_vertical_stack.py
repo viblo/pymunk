@@ -72,6 +72,7 @@ class Main(pyglet.window.Window):
             body.position = (0, 165)
             shape = pymunk.Circle(body, r, (0,0))
             shape.friction = 0.3
+            shape.color = (255,150,150,255)
             self.space.add(body, shape)
             f = 200000
             body.apply_impulse_at_local_point((f,0), (0,0))

@@ -25,6 +25,7 @@ def main():
     
     ### Physics stuff
     space = pymunk.Space()
+    draw_options = pymunk.pygame_util.DrawOptions(screen)
                 
     pointer_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
     
@@ -75,7 +76,7 @@ def main():
         screen.fill(THECOLORS["white"])
         
         ### Draw stuff
-        pymunk.pygame_util.draw(screen, space)
+        space.debug_draw(draw_options)
         
         ### Update physics
         dt = 1.0/60.0

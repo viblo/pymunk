@@ -33,8 +33,8 @@ def add_L(space):
 
     body = pymunk.Body(10, 10000)
     body.position = (300,300)
-    l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 5.0)
-    l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, 50.0), 5.0)
+    l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 1)
+    l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, 50.0), 1)
 
     rotation_center_joint = pymunk.PinJoint(body, rotation_center_body, (0,0), (0,0))
     joint_limit = 25

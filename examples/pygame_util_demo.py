@@ -24,7 +24,7 @@ def main():
     
     space = pymunk.Space()
     
-    shapes_for_draw_demos.fill_space(space)
+    captions = shapes_for_draw_demos.fill_space(space)
             
     ### Draw it 
     screen.fill(pygame.color.THECOLORS["white"])
@@ -36,14 +36,8 @@ def main():
     # Info
     color = pygame.color.THECOLORS["black"]
     screen.blit(font.render("Demo example of pygame_util.DrawOptions()", 1, color), (205, 680))
-    screen.blit(font.render("Static shapes", 1, color), (50, 20))
-    screen.blit(font.render("Kinematic shapes", 1, color), (220, 20))
-    screen.blit(font.render("Dynamic shapes", 1, color), (390, 20))
-    #screen.blit(font.render("Constraints", 1, pygame.color.THECOLORS["white"]), (450, 20))
-    #screen.blit(font.render("ignore_draw=True", 1, pygame.color.THECOLORS["white"]), (10, 530))
-    screen.blit(font.render("custom color (static & dynamic)", 1, color), (150, 550))
-    screen.blit(font.render("collisions", 1, color), (500, 550))
-    screen.blit(font.render("sleeping", 1, color), (50, 670))
+    for caption in captions:
+        screen.blit(font.render(caption[1], 1, color), caption[0])
     pygame.display.flip()
     
     while True:

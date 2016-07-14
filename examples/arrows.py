@@ -170,7 +170,7 @@ def main():
         # Info and flip screen
         screen.blit(font.render("fps: " + str(clock.get_fps()), 1, THECOLORS["white"]), (0,0))
         screen.blit(font.render("Aim with mouse, hold LMB to powerup, release to fire", 1, THECOLORS["darkgrey"]), (5,height - 35))
-        screen.blit(font.render("Press R to reset, ESC or Q to quit", 1, THECOLORS["darkgrey"]), (5,height - 20))
+        screen.blit(font.render("Press ESC or Q to quit", 1, THECOLORS["darkgrey"]), (5,height - 20))
         
         pygame.display.flip()
         

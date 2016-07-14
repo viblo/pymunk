@@ -47,6 +47,8 @@ class CollisionHandler(object):
         return self._data
     data = property(_get_data, doc="""Data property that get passed on into the
     callbacks.
+
+    data is a dictionary and you can not replace it, only fill it with data.
     
     Usefull if the callback needs some extra data to perform its function. 
     """)    

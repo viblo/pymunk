@@ -3,29 +3,22 @@ two segment shapes. Displays collsion strength and rotating balls thanks to
 friction. Not interactive.
 """
 
-__version__ = "$Id:$"
-__docformat__ = "reStructuredText"
-
 import math, sys, random
 
 import pygame
 from pygame.locals import *
 from pygame.color import *
 
-import pymunk as pm
+import pymunk
 from pymunk import Vec2d
 import pymunk.pygame_util
-
-
-def to_pygame(p):
-    """Small hack to convert pymunk to pygame coordinates"""
-    return int(p.x), int(-p.y+600)
 
 def draw_collision(arbiter, space, data):
     for c in arbiter.contact_point_set.points:
         r = max( 3, abs(c.distance*5) )
         r = int(r)
-        p = to_pygame(c.point_a)
+
+        p = pymunk.pygame_util.to_pygame(c.point_a, data["surface"])
         pygame.draw.circle(data["surface"], THECOLORS["black"], p, r, 1)
     
 def main():
@@ -39,15 +32,17 @@ def main():
     running = True
     
     ### Physics stuff
-    space = pm.Space()
+    space = pymunk.Space()
     space.gravity = (0.0, -900.0)
-    
+    draw_options = pymunk.pygame_util.DrawOptions(screen)
+    # disable the build in debug draw of collision point since we use our own code.
+    draw_options.flags = draw_options.flags ^ pymunk.pygame_util.DrawOptions.DRAW_COLLISION_POINTS 
     ## Balls
     balls = []
        
     ### walls
-    static_lines = [pm.Segment(space.static_body, (11.0, 280.0), (407.0, 246.0), 0.0)
-                    ,pm.Segment(space.static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
+    static_lines = [pymunk.Segment(space.static_body, (11.0, 280.0), (407.0, 246.0), 0.0)
+                    ,pymunk.Segment(space.static_body, (407.0, 246.0), (407.0, 343.0), 0.0)
                     ]
     for l in static_lines:
         l.friction = 0.5
@@ -73,11 +68,11 @@ def main():
             ticks_to_next_ball = 100
             mass = 0.1
             radius = 25
-            inertia = pm.moment_for_circle(mass, 0, radius, (0,0))
-            body = pm.Body(mass, inertia)
+            inertia = pymunk.moment_for_circle(mass, 0, radius, (0,0))
+            body = pymunk.Body(mass, inertia)
             x = random.randint(115,350)
             body.position = x, 400
-            shape = pm.Circle(body, radius, (0,0))
+            shape = pymunk.Circle(body, radius, (0,0))
             shape.friction = 0.5
             space.add(body, shape)
             balls.append(shape)
@@ -86,7 +81,7 @@ def main():
         screen.fill(THECOLORS["white"])
         
         ### Draw stuff
-        pymunk.pygame_util.draw(screen, space)
+        space.debug_draw(draw_options)
         
         balls_to_remove = []
         for ball in balls:

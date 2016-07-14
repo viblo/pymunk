@@ -5,9 +5,14 @@ Adds a lot of stuff to a space.
 import pymunk
 
 def fill_space(space, custom_color=(255,255,0,255)):
+    captions = []
+    
     ### Static
+    captions.append(((50,20), "Static Shapes"))
+
     #Static Segments
-    segments = [ pymunk.Segment(space.static_body, (10, 400), (10, 600), 1)
+    segments = [ pymunk.Segment(space.static_body, (10, 400), (10, 600), 0)
+                ,pymunk.Segment(space.static_body, (20, 400), (20, 600), 1)
                 ,pymunk.Segment(space.static_body, (30, 400), (30, 600), 3)
                 ,pymunk.Segment(space.static_body, (50, 400), (50, 600), 5)
                 ]  
@@ -56,9 +61,12 @@ def fill_space(space, custom_color=(255,255,0,255)):
     space.add(s)
     
     ### Kinematic
+    captions.append(((220,20), "Kinematic Shapes"))
+
     # Kinematic Segments
     b = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
-    segments = [ pymunk.Segment(b, (180, 400), (180, 600), 1)
+    segments = [ pymunk.Segment(b, (180, 400), (180, 600), 0)
+                ,pymunk.Segment(b, (190, 400), (190, 600), 1)
                 ,pymunk.Segment(b, (200, 400), (200, 600), 3)
                 ,pymunk.Segment(b, (220, 400), (220, 600), 5)
                 ]  
@@ -107,10 +115,12 @@ def fill_space(space, custom_color=(255,255,0,255)):
     space.add(s)
     
     ### Dynamic
-    
+    captions.append(((390,20), "Dynamic Shapes"))
+
     #Dynamic Segments
     b = pymunk.Body(1,1)
-    segments = [pymunk.Segment(b, (350, 400), (350, 600), 1),
+    segments = [pymunk.Segment(b, (350, 400), (350, 600), 0),
+                pymunk.Segment(b, (360, 400), (360, 600), 1),
                 pymunk.Segment(b, (370, 400), (370, 600), 3),
                 pymunk.Segment(b, (390, 400), (390, 600), 5),
                 ]  
@@ -160,41 +170,67 @@ def fill_space(space, custom_color=(255,255,0,255)):
     ###Constraints
     
     # PinJoints
+    captions.append(((560,20), "Pin Joints"))
     a = pymunk.Body(1,1)
-    a.position = (450,530)
+    a.position = (550, 600)
+    sa = pymunk.Circle(a, 20)
     b = pymunk.Body(1,1)
-    b.position = (550,530)
-    j = pymunk.PinJoint(a,b)
-    space.add(a,b,j)
+    b.position = (650, 620)
+    sb = pymunk.Circle(b, 20)
+    j = pymunk.PinJoint(a, b)
+    space.add(sa, sb, a, b, j)
     
     a = pymunk.Body(1,1)
-    a.position = (450,480)
+    a.position = (550,550)
+    sa = pymunk.Circle(a, 20)
     b = pymunk.Body(1,1)
-    b.position = (550,480)
-    j = pymunk.PinJoint(a,b, anchor_a=(0,20), anchor_b=(0,-20))
-    space.add(a,b,j)
+    b.position = (650,570)
+    sb = pymunk.Circle(b, 20)
+    j = pymunk.PinJoint(a, b, anchor_a=(0,20), anchor_b=(0,-20))
+    space.add(sa, sb, a, b, j)
     
     # SlideJoints
+    captions.append(((560,200), "Slide Joint"))
     a = pymunk.Body(1,1)
-    a.position = (450,430)
+    a.position = (550,430)
+    sa = pymunk.Circle(a, 20)
     b = pymunk.Body(1,1)
-    b.position = (550,430)
-    j = pymunk.SlideJoint(a,b, anchor_a=(0,20), anchor_b=(0,-20), min=10,max=30)
-    space.add(a,b,j)
+    b.position = (650,450)
+    sb = pymunk.Circle(b, 20)
+    j = pymunk.SlideJoint(a, b, anchor_a=(0,20), anchor_b=(0,-20), min=10, max=30)
+    space.add(sa, sb, a, b, j)
+    
+    # PivotJoints
+    captions.append(((560,300), "Pivot Joint"))
+    a = pymunk.Body(1,1)
+    a.position = (550,330)
+    sa = pymunk.Circle(a, 20)
+    b = pymunk.Body(1,1)
+    b.position = (650,350)
+    sb = pymunk.Circle(b, 20)
+    j = pymunk.PivotJoint(a, b, (600,320))
+    space.add(sa, sb, a, b, j)
+    
+
+    # GrooveJoints
+    captions.append(((560,300), "Groove Joint"))
+    a = pymunk.Body(1,1)
+    a.position = (550,330)
+    sa = pymunk.Circle(a, 20)
+    b = pymunk.Body(1,1)
+    b.position = (650,350)
+    sb = pymunk.Circle(b, 20)
+    j = pymunk.PivotJoint(a, b, (600,320))
+    space.add(sa, sb, a, b, j)
     
     
+
     # TODO: more stuff here :)
     
     ### Other
     
-    # Object not drawn by draw_space
-    b = pymunk.Body(body_type=pymunk.Body.STATIC)
-    b.position = (85,200)
-    s = pymunk.Circle(b, 40)
-    s.ignore_draw = True
-    space.add(s)
-    
     # Objects in custom color
+    captions.append(((150,550), "Custom Color (static & dynamic)"))
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (200, 200)
     s = pymunk.Circle(b, 40)
@@ -208,8 +244,9 @@ def fill_space(space, custom_color=(255,255,0,255)):
     space.add(s)
     
     # Collision
+    captions.append(((500,550), "Collisions"))
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
-    b.position = (450, 200)
+    b.position = (470, 200)
     s = pymunk.Circle(b, 40)
     space.add(s)
     
@@ -219,21 +256,24 @@ def fill_space(space, custom_color=(255,255,0,255)):
     space.add(s)
 
     # Sleeping
+    captions.append(((50,550), "Sleeping"))
     b = pymunk.Body(1,1)
-    b.position = (75, 80)
+    b.position = (75, 200)
     space.sleep_time_threshold = 0.01
     s = pymunk.Circle(b, 40)
     space.add(s, b)
     b.sleep()
+    space.step(0.000001)
 
+    return captions
 
 def main():
     space = pymunk.Space()
     fill_space(space)
 
     options = pymunk.SpaceDebugDrawOptions()
-    #space.step(1)
-    #space.step(2)
+    space.step(1)
+    space.step(2)
     space.debug_draw(options)
 
 
