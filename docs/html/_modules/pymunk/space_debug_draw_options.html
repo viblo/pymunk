@@ -53,9 +53,7 @@
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
-<span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
-<span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>    
+<span class="kn">from</span> <span class="nn">._chipmunk_cffi</span> <span class="kn">import</span> <span class="n">lib</span><span class="p">,</span> <span class="n">ffi</span> 
 
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">.body</span> <span class="kn">import</span> <span class="n">Body</span>
@@ -79,13 +77,13 @@
 <span class="sd">    directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">DRAW_SHAPES</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">CP_SPACE_DEBUG_DRAW_SHAPES</span>
+    <span class="n">DRAW_SHAPES</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">CP_SPACE_DEBUG_DRAW_SHAPES</span>
     <span class="sd">&quot;&quot;&quot;Draw shapes&quot;&quot;&quot;</span>
 
-    <span class="n">DRAW_CONSTRAINTS</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">CP_SPACE_DEBUG_DRAW_CONSTRAINTS</span>
+    <span class="n">DRAW_CONSTRAINTS</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">CP_SPACE_DEBUG_DRAW_CONSTRAINTS</span>
     <span class="sd">&quot;&quot;&quot;Draw constraints&quot;&quot;&quot;</span>
 
-    <span class="n">DRAW_COLLISION_POINTS</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">CP_SPACE_DEBUG_DRAW_COLLISION_POINTS</span>
+    <span class="n">DRAW_COLLISION_POINTS</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">CP_SPACE_DEBUG_DRAW_COLLISION_POINTS</span>
     <span class="sd">&quot;&quot;&quot;Draw collision points&quot;&quot;&quot;</span>
 
     <span class="n">shape_dynamic_color</span> <span class="o">=</span> <span class="n">SpaceDebugColor</span><span class="p">(</span><span class="mi">52</span><span class="p">,</span><span class="mi">152</span><span class="p">,</span><span class="mi">219</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span>

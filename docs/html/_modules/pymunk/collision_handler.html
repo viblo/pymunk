@@ -98,6 +98,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
     <span class="n">data</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_data</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Data property that get passed on into the</span>
 <span class="s2">    callbacks.</span>
+
+<span class="s2">    data is a dictionary and you can not replace it, only fill it with data.</span>
 <span class="s2">    </span>
 <span class="s2">    Usefull if the callback needs some extra data to perform its function. </span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>    

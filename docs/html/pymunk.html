@@ -112,7 +112,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x04468A70&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x04C88A30&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -2326,6 +2326,7 @@ overlapping.</p>
 <code class="descname">data</code><a class="headerlink" href="#pymunk.CollisionHandler.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data property that get passed on into the
 callbacks.</p>
+<p>data is a dictionary and you can not replace it, only fill it with data.</p>
 <p>Usefull if the callback needs some extra data to perform its function.</p>
 </dd></dl>
 
@@ -2546,6 +2547,16 @@ See the section on callbacks for more information. Collision handlers can
 be more flexible, but can be slower. Fast collision filtering rejects 
 collisions before running the expensive collision detection code, so 
 using groups or category masks is preferred.</p>
+<dl class="attribute">
+<dt id="pymunk.ShapeFilter.ALL_CATEGORIES">
+<code class="descname">ALL_CATEGORIES</code><em class="property"> = 4294967295</em><a class="headerlink" href="#pymunk.ShapeFilter.ALL_CATEGORIES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.ShapeFilter.ALL_MASKS">
+<code class="descname">ALL_MASKS</code><em class="property"> = 4294967295</em><a class="headerlink" href="#pymunk.ShapeFilter.ALL_MASKS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.ShapeFilter.__init__">
 <code class="descname">__init__</code><a class="headerlink" href="#pymunk.ShapeFilter.__init__" title="Permalink to this definition">¶</a></dt>

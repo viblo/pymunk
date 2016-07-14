@@ -1,9 +1,11 @@
 v5.0
 ----
+- check py2exe and pyinstaller examples
 - use twine to upload to Pypi? https://pypi.python.org/pypi/twine
 - use travis ci to build osx chipmunk lib file and run tests? https://docs.travis-ci.com/user/osx-ci-environment/
 - replace references to Chipmunk in api docs to references to pymunk
 - do we still need pymunk.inf?
+- update advanced.rst file
 
 v5.x
 ----
