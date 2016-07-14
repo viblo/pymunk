@@ -37,7 +37,9 @@ def main():
     color = pygame.color.THECOLORS["black"]
     screen.blit(font.render("Demo example of pygame_util.DrawOptions()", 1, color), (205, 680))
     for caption in captions:
-        screen.blit(font.render(caption[1], 1, color), caption[0])
+        x, y = caption[0]
+        y = 700 - y
+        screen.blit(font.render(caption[1], 1, color), (x,y))
     pygame.display.flip()
     
     while True:

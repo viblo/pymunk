@@ -50,7 +50,7 @@ def main():
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 running = False
             elif event.type == KEYDOWN and event.key == K_p:
-                pygame.image.save(screen, "aiming.png")
+                pygame.image.save(screen, "damped_rotary_sprint_pointer.png")
             elif event.type == pygame.MOUSEMOTION:
                 mouse_pos = pymunk.pygame_util.get_mouse_pos(screen)
                 pointer_body.position = mouse_pos

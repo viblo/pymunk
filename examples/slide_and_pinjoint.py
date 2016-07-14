@@ -63,6 +63,8 @@ def main():
                 sys.exit(0)
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 sys.exit(0)
+            elif event.type == KEYDOWN and event.key == K_p:
+                pygame.image.save(screen, "slide_and_pinjoint.png")
 
         ticks_to_next_ball -= 1
         if ticks_to_next_ball <= 0:

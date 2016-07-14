@@ -152,6 +152,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         pv2 = Vec2d(b)
         d = pv2 - pv1
         a = -math.atan2(d.x, d.y)
+        radius = max(radius, 1)
         dx = radius * math.cos(a)
         dy = radius * math.sin(a)
         

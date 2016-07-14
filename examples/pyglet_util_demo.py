@@ -16,30 +16,30 @@ import pymunk.pyglet_util
 
 import shapes_for_draw_demos
 
-window = pyglet.window.Window(1000, 700)
+window = pyglet.window.Window(1000, 700, vsync=False)
 space = pymunk.Space()
-
-shapes_for_draw_demos.fill_space(space)
+draw_options = pymunk.pyglet_util.DrawOptions()
+captions = shapes_for_draw_demos.fill_space(space)
 
 
 textbatch = pyglet.graphics.Batch()
 pyglet.text.Label('Demo example of shapes drawn by pyglet_util.draw()',
-                      x=5, y=5, batch=textbatch, color=(200,200,200,200))
-pyglet.text.Label('Static shapes', x=50, y=570, batch=textbatch)
-pyglet.text.Label('Dynamic shapes', x=250, y=570, batch=textbatch)
-pyglet.text.Label('Constraints', x=450, y=570, batch=textbatch)
-pyglet.text.Label('Other', x=450, y=290, batch=textbatch)
-
+                      x=5, y=5, batch=textbatch, color=(100,100,100,255))
+for caption in captions:
+    x, y = caption[0]
+    y = y - 10
+    pyglet.text.Label(caption[1], x=x, y=y, batch=textbatch, color=(50,50,50,255))
 
 batch = pyglet.graphics.Batch()
 
+# otherwise save screenshot wont work
+_ = pyglet.clock.ClockDisplay()
+
 @window.event
 def on_draw():
-    pyglet.gl.glClearColor(0,0,0,1)
+    pyglet.gl.glClearColor(255,255,255,255)
     window.clear()
-    
-    options = pymunk.pyglet_util.DrawOptions()
-    space.debug_draw(options)
+    space.debug_draw(draw_options)
     textbatch.draw()
     
 @window.event
