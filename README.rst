@@ -3,7 +3,7 @@ About
 
 Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
 you need 2d rigid body physics from Python. It is built on top of the very 
-nice 2d physics library Chipmunk.
+capable 2d physics library Chipmunk.
 
 2007 - 2016, Victor Blomqvist - vb@viblo.se, MIT License
 

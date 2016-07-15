@@ -24,9 +24,11 @@
 """This submodule contains utility functions, mainly to help with polygon
 creation.
 
+.. note:: this submodule is deprectade by the autogeometry submodule. Expect it 
+to be removed in the next Pymunk release. 
+
 """
 from __future__ import division
-__version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 from math import sqrt

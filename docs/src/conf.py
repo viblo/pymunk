@@ -18,16 +18,16 @@ import sys, os
 class Mock(object):
     #__package__ = 'pymunk._chipmunk_cffi_abi'
     def __init__(self, *args, **kwargs):
-        print("init", args, kwargs)
-        
+        #print("init", args, kwargs)
+        pass
 
     def __call__(self, *args, **kwargs):
-        print("call", args, kwargs)
+        #print("call", args, kwargs)
         return Mock()
 
     @classmethod
     def __getattr__(cls, name):
-        print("getattr", cls, name)
+        #print("getattr", cls, name)
         if name in ('__file__', '__path__'):
             return '/dev/null'
         elif name[0] == name[0].upper():
@@ -49,21 +49,21 @@ MOCK_MODULES = [
                 
 class MockFinder(object):
     def find_module(self, fullname, path=None):
-        if "cffi" in fullname:
-            print("CFFI!!!", fullname, path)
+        #if "cffi" in fullname:
+        #    print("CFFI!!!", fullname, path)
         if fullname in MOCK_MODULES:
-            print("fm: fullname", fullname, self)
+            #print("fm: fullname", fullname, self)
             return self 
         return None
     def load_module(self, fullname):
         if fullname in sys.modules:
             return sys.modules[fullname]
-        print("lm: fullname", fullname, self)
+        #print("lm: fullname", fullname, self)
         return Mock()
      
 #sys.meta_path.insert(0, MockFinder())
 
-print(sys.meta_path)   
+#print(sys.meta_path)   
 
 for m in MOCK_MODULES:
     sys.modules[m] = Mock()

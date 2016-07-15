@@ -10,8 +10,49 @@ First off, Pymunk is a pythonic wrapper around the C-library Chipmunk.
 To wrap Chipmunk pymunk uses Cffi. On top of the Cffi wrapping is a handmade 
 pythonic layer on top to make it nice to use from Python programs.
 
-Why ctypes?
------------
+Why CFFI?
+---------
+
+This is a straight copy from the github issue tracking the CFFI upgrade. 
+https://github.com/viblo/pymunk/issues/99
+
+CFFI have a number of advantages but also a downsides.
+
+Advantages (compared to ctypes):
+
+* Its an active project. The developers and users are active, there are new 
+  releases being made and its possible to ask and get answers within a day on 
+  the CFFI mailing list.
+* Its said to be the way forward for pypy, with promise of better performance 
+  compares to ctypes.
+* A little easier than ctypes to wrap things since you can just copy-paste the 
+  c headers.
+
+Disadvatages (compared to ctypes):
+
+* ctypes is part of the CPython standard library, CFFI is not. That means that 
+  it will be more difficult to install Pymunk if it uses CFFI, since a 
+  copy-paste install is no longer possible in an easy way.
+
+For me I see the 1st advantage as the main point. I have had great difficulties 
+with strange segfaults with 64bit pythons on windows, and also sometimes on 
+32bit python, and support for 64bit python on both windows and linux is 
+something I really want. Hopefully those problems will be easier to handle with 
+CFFI since it has an active community.
+
+Then comes the 3rd advantage, that its a bit easier to wrap the c code. For 
+ctypes I have a automatic wrapping script that does most of the low level 
+wrapping, but its not supported, very difficult to set up (I only managed 
+inside a VM with linux) and quite annoying. CFFI would be a clear improvement.
+
+For the disadvantage of ctypes I think it will be acceptable, even if not 
+ideal. Many python packages have to be installed in some way (like pygame), 
+and nowadays with pip its very easy to do. So I hope that it will be ok.
+
+See the next section on why ctypes was used initially.
+
+Why ctypes? (OBSOLETE)
+----------------------
 
 The reasons for ctypes instead of [your favorite wrapping solution] can be 
 summarized as

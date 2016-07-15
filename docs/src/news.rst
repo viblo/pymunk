@@ -4,7 +4,7 @@ News
 
 Pymunk 5.0.0
 ------------
-*Victor - X*
+*Victor - 2016-07-17*
 
 **A new version of Pymunk!**
 
@@ -14,31 +14,16 @@ This is a BIG release of Pymunk! Just in time before Pymunk turns 10 next year!
 * Updated to use Chipmunk 7 which includes lots of great improvements
 * Updated to use CFFI for wrapping, giving improved development and packaging 
   (wheels, yay!)
-* New util module with draw help for use in Jupyter notebooks
-* Support for automatically generate geometry. Can for example be used for 
+* New util module with draw help for matplotlib (with example Jupyter notebooks)
+* Support for automatically generate geometry. Can be used for such things as
   deformable terrain (example included).
 * Removed obsolete submodule pymunk.util.
 * Lots of smaller improvements
 
-API Changes
-* New property Body.body_type
-* Update Body constructor to allow creation of DYNAMIC, KINEMATIC and STATIC bodies
-* New method Space.reindex_shapes_for_body()
-* New property Body.center_of_gravity
-* New property Body.space
-* Changed signature of moment_for_{circle,segment,box,poly} methods
-* Added area_for_{circle, segment, poly} methods to caculate area of shape
-* Added Body.velocity_at_world_point & Body.velocity_at_local_point
-* Removed Body.apply_impulse and Body.apply_force. Added Body.apply_force_at_world_point, Body.apply_force_at_local_point, Body.apply_impulse_at_world_point, Body.apply_impulse_at_local_point
-* New methods on BB.
-* New ShapeFilter class. Removed Shape.group and Shape.layers properties. Added Shape.filter property.
-* New Transform class. Changed signature of Shape.update()
-* New Segment.normal property.
-* New method Segment.set_neighbors()
-* Updated constructor for Poly. Updated signature of Poly.create_box() method.
-* New class PointQueryInfo. Changed returned data from Shape.point_query.
-* Updated signature of Shape.segment_query() method. Updated properties of SegmentQueryInfo object.
-* Removed Space.enable_contact_graph. New Space.current_time_step property.
+New in this release is also testing on Travis and Appveyor to ensure good code 
+quality.
+
+I hope you will enjoy this new release!
 
 Move from ctypes to CFFI?
 -------------------------
@@ -135,8 +120,8 @@ On a body you can now retrieve the shapes and constraints attached to it.
 
 This release has been tested and runs on CPython 2.5, 2.6, 2.7, 3.3 and Pypy 2.1. 
 At least one run of the unit tests have been made on the following platforms: 
-32 bit CPython on Windows, 32 and 64 bit CPython on Linux, and 64 bit CPython on OSX. 
-Pypy 2.1 on one of the above platforms.
+32 bit CPython on Windows, 32 and 64 bit CPython on Linux, and 64 bit CPython 
+on OSX. Pypy 2.1 on one of the above platforms.
 
 
 

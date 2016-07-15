@@ -61,8 +61,43 @@ want a better understanding of Pymunk for example to extend it.</p>
 <p>First off, Pymunk is a pythonic wrapper around the C-library Chipmunk.</p>
 <p>To wrap Chipmunk pymunk uses Cffi. On top of the Cffi wrapping is a handmade
 pythonic layer on top to make it nice to use from Python programs.</p>
-<div class="section" id="why-ctypes">
-<h2>Why ctypes?<a class="headerlink" href="#why-ctypes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="why-cffi">
+<h2>Why CFFI?<a class="headerlink" href="#why-cffi" title="Permalink to this headline">¶</a></h2>
+<p>This is a straight copy from the github issue tracking the CFFI upgrade.
+<a class="reference external" href="https://github.com/viblo/pymunk/issues/99">https://github.com/viblo/pymunk/issues/99</a></p>
+<p>CFFI have a number of advantages but also a downsides.</p>
+<p>Advantages (compared to ctypes):</p>
+<ul class="simple">
+<li>Its an active project. The developers and users are active, there are new
+releases being made and its possible to ask and get answers within a day on
+the CFFI mailing list.</li>
+<li>Its said to be the way forward for pypy, with promise of better performance
+compares to ctypes.</li>
+<li>A little easier than ctypes to wrap things since you can just copy-paste the
+c headers.</li>
+</ul>
+<p>Disadvatages (compared to ctypes):</p>
+<ul class="simple">
+<li>ctypes is part of the CPython standard library, CFFI is not. That means that
+it will be more difficult to install Pymunk if it uses CFFI, since a
+copy-paste install is no longer possible in an easy way.</li>
+</ul>
+<p>For me I see the 1st advantage as the main point. I have had great difficulties
+with strange segfaults with 64bit pythons on windows, and also sometimes on
+32bit python, and support for 64bit python on both windows and linux is
+something I really want. Hopefully those problems will be easier to handle with
+CFFI since it has an active community.</p>
+<p>Then comes the 3rd advantage, that its a bit easier to wrap the c code. For
+ctypes I have a automatic wrapping script that does most of the low level
+wrapping, but its not supported, very difficult to set up (I only managed
+inside a VM with linux) and quite annoying. CFFI would be a clear improvement.</p>
+<p>For the disadvantage of ctypes I think it will be acceptable, even if not
+ideal. Many python packages have to be installed in some way (like pygame),
+and nowadays with pip its very easy to do. So I hope that it will be ok.</p>
+<p>See the next section on why ctypes was used initially.</p>
+</div>
+<div class="section" id="why-ctypes-obsolete">
+<h2>Why ctypes? (OBSOLETE)<a class="headerlink" href="#why-ctypes-obsolete" title="Permalink to this headline">¶</a></h2>
 <p>The reasons for ctypes instead of [your favorite wrapping solution] can be
 summarized as</p>
 <ul class="simple">
@@ -234,7 +269,8 @@ reference is weak it is marked in the API documentation of the specific method.<
 <li class="toctree-l1"><a class="reference internal" href="showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#why-ctypes">Why ctypes?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-cffi">Why CFFI?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-ctypes-obsolete">Why ctypes? (OBSOLETE)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#code-layout">Code Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-non-wrapped-parts-of-chipmunk">Working with non-wrapped parts of Chipmunk</a></li>
