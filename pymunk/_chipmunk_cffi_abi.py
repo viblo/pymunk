@@ -1469,4 +1469,4 @@ try:
     _lib_debug = pymunkoptions.options["debug"]
 except:
     _lib_debug = True #Set to True to print the Chipmunk path.
-lib = load_library(ffi, "chipmunk", debug_lib=_lib_debug)
+lib, lib_path = load_library(ffi, "chipmunk", debug_lib=_lib_debug)

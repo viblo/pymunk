@@ -2,20 +2,12 @@
 as pygame or pyglet like the other examples. 
 """
 
-__version__ = "$Id:$"
-__docformat__ = "reStructuredText"
-
 import pymunk
 import pymunk.util
 from pymunk import Vec2d
 import math, sys, random
-#import timeit
 
 def main():
-    main1()
-    #print timeit.Timer('main1()', "gc.enable(); from __main__ import main1").repeat(repeat=6, number=3)  
-
-def main1():
               
     space = pymunk.Space()
     space.gravity = (0.0, -900.0)

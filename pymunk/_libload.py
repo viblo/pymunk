@@ -55,23 +55,26 @@ def load_library(ffi, libname, debug_lib=True):
         lib = ffi.dlopen(libfn)
     except OSError: 
         print ("""
-Failed to load pymunk library.
+Failed to load Pymunk library.
 
-This error usually means that you don't have a compiled version of chipmunk in 
-the correct spot where pymunk can find it. pymunk does not include precompiled 
-chipmunk library files for all platforms. 
+This error usually means that you don't have a compiled version of Chipmunk in 
+the correct spot where Pymunk can find it. If you tried to run Pymunk without
+installing it properly this can be the result.
 
 The good news is that it is usually enough (at least on *nix and OS X) to 
-simply run the compile command first before installing and then retry again:
+run the build command:
 
-You compile chipmunk with
-> python setup.py build_clib
+You compile Chipmunk with
+> python setup.py build_ext --inplace
 and then continue as usual with 
-> python setup.py install
 > cd examples
 > python basic_test.py
 
 (for complete instructions please see the readme file)
+
+Another cause of this problem could be if you didnt included the Chipmunk 
+library when using a freeze tool such as Py2exe or PyInstaller. Please see the
+examples for how to include the library file when freezing a binary. 
 
 If it still doesnt work, please report as a bug on the issue tracker at 
 https://github.com/viblo/pymunk/issues
@@ -81,4 +84,4 @@ trigger the error is also good. Please include the exception traceback if any
 (usually found below this message).
 """)
         raise
-    return lib
+    return lib, libfn

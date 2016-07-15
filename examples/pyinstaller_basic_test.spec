@@ -1,42 +1,34 @@
 # -*- mode: python -*-
 
+block_cipher = None
 
-
-import os
-"""
-This little trickery is required to be able to include pymunk in case this 
-script is run directly in an unpacked source distribution of pymunk when 
-pymunk is not installed.
-"""
-import sys
-sys.path.insert(0,'..')
 import pymunk
-pymunk_dir = os.path.dirname(pymunk.__file__)
-
-chipmunk_libs = [
-    ('chipmunk.dll', os.path.join(pymunk_dir, 'chipmunk.dll'), 'DATA'),
-    ('libchipmunk.dylib', os.path.join(pymunk_dir, 'chipmunk.dll'), 'DATA'),
-    ('libchipmunk.so', os.path.join(pymunk_dir, 'chipmunk.dll'), 'DATA'),
-    ('libchipmunk64.so', os.path.join(pymunk_dir, 'chipmunk.dll'), 'DATA'),
-]
 
 a = Analysis(['basic_test.py'],
-             pathex=[], 
+             pathex=[],
+             binaries=[ ( pymunk.chipmunk_path, '' ) ],
+             datas=None,
              hiddenimports=[],
-             hookspath=None)
-pyz = PYZ(a.pure)
+             hookspath=[],
+             runtime_hooks=[],
+             excludes=[],
+             win_no_prefer_redirects=False,
+             win_private_assemblies=False,
+             cipher=block_cipher)
+pyz = PYZ(a.pure, a.zipped_data,
+             cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
-          exclude_binaries=1,
-          name=os.path.join('build\\pyi.win32\\basic_test', 'basic_test.exe'),
+          exclude_binaries=True,
+          name='basic_test',
           debug=False,
-          strip=None,
+          strip=False,
           upx=True,
           console=True )
 coll = COLLECT(exe,
-               a.binaries + chipmunk_libs,
+               a.binaries,
                a.zipfiles,
                a.datas,
-               strip=None,
+               strip=False,
                upx=True,
-               name=os.path.join('dist', 'basic_test'))
+               name='basic_test')

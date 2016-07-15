@@ -101,6 +101,14 @@ is a release then the second part will be empty
     chipmunk_src folder (normally included in the pymunk source distribution).
 """
 
+chipmunk_path = _chipmunk_cffi.lib_path
+"""The path to the Chipmunk library loaded.
+
+Useful in case you are packaging a pymunk program with for example Py2exe or 
+PyInstaller and need to know what library file to include. Please see the 
+py2exe examples in the examples folder of Pymunk for example of this.
+"""
+
 inf = float('inf')
 """Infinity that can be passed as mass or inertia to Body.
 
