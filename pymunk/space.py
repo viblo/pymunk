@@ -34,9 +34,9 @@ class Space(object):
 
         self.threaded = threaded and platform.system() != 'Windows' 
         if self.threaded:        
-            self._space = cp.cpHastySpaceNew()
+            self._space = ffi.gc(cp.cpHastySpaceNew(), cp.cpSpaceFree)
         else:
-            self._space = cp.cpSpaceNew()
+            self._space = ffi.gc(cp.cpSpaceNew(), cp.cpSpaceFree)
 
         self._static_body = None
 
@@ -95,7 +95,8 @@ class Space(object):
     def __del__(self):
         try:
             #del self._static_body
-            cp.cpSpaceFree(self._space)
+            #cp.cpSpaceFree(self._space)
+            pass
         except:
             pass
 

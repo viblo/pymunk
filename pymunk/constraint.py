@@ -56,8 +56,7 @@ class Constraint(object):
     """
     def __init__(self, constraint=None):
         self._constraint = constraint
-        self._ccontents = self._constraint.contents
-
+        
     def _get_max_force(self):
         return cp.cpConstraintGetMaxForce(self._constraint)
     def _set_max_force(self, f):
