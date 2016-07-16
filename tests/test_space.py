@@ -1,5 +1,5 @@
 from __future__ import with_statement
-import sys
+import sys, io
 import unittest
 import warnings
 
@@ -651,15 +651,22 @@ class UnitTestSpace(unittest.TestCase):
         s.step(1)
         o = p.SpaceDebugDrawOptions()
 
-        from io import BytesIO as StringIO
-        import sys
-        new_out = StringIO()
+        if sys.version_info >= (3, 0):
+            new_out = io.StringIO()
+        else:
+            new_out = io.BytesIO()
         sys.stdout = new_out
         try:
             s.debug_draw(o)
         finally:
             sys.stdout = sys.__stdout__
-        msg = ("('draw_circle', (Vec2d(0.0, 0.0), 0.0, 5.0, "
+
+        if sys.version_info >= (3, 0):
+            msg = ("draw_circle (Vec2d(0.0, 0.0), 0.0, 5.0, "
+            "SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), "
+            "SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0))\n")
+        else:
+            msg = ("('draw_circle', (Vec2d(0.0, 0.0), 0.0, 5.0, "
             "SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), "
             "SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))\n")
         self.assertEqual(msg, new_out.getvalue())
