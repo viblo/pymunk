@@ -215,7 +215,7 @@ cpBodyIsSleeping.</p>
 <p>First we need to check if its included in the cdef definition in
 _chipmunk_cffi.abi.py. If its not just add it.</p>
 <blockquote>
-<div>cpBool cpBodyIsSleeping(const cpBody <a href="#id1"><span class="problematic" id="id2">*</span></a>body);</div></blockquote>
+<div><cite>cpBool cpBodyIsSleeping(const cpBody *body);</cite></div></blockquote>
 <p>Then to make it easy to use we want to create a python method that looks nice:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_sleeping</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyIsSleeping</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>

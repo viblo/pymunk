@@ -190,7 +190,7 @@ cpBodyIsSleeping.
 First we need to check if its included in the cdef definition in 
 _chipmunk_cffi.abi.py. If its not just add it.
     
-    cpBool cpBodyIsSleeping(const cpBody *body);
+    `cpBool cpBodyIsSleeping(const cpBody *body);`
     
 Then to make it easy to use we want to create a python method that looks nice::
 
