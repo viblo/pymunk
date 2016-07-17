@@ -186,7 +186,7 @@ setup(
     author = 'Victor Blomqvist',
     author_email = 'vb@viblo.se',
     version = '5.0.0', # remember to change me for new versions!
-    description = 'Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever you need 2d rigid body physics from Python.',
+    description = 'Pymunk is a easy-to-use pythonic 2d physics library',
     long_description = long_description,
     packages = ['pymunk','pymunkoptions'],
     
