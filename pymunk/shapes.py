@@ -423,9 +423,13 @@ class Poly(Shape):
             body._shapes.add(self)
 
         if isinstance(size, BB):
-            self._shape = cp.cpBoxShapeNew2(body_body, size._bb[0], radius)
+            self._shape = ffi.gc(
+                cp.cpBoxShapeNew2(body_body, size._bb[0], radius),
+                cp.cpShapeFree)
         else:
-            self._shape = cp.cpBoxShapeNew(body_body, size[0], size[1], radius)
+            self._shape = ffi.gc(
+                cp.cpBoxShapeNew(body_body, size[0], size[1], radius),
+                cp.cpShapeFree)
 
         self._set_shapeid()
 

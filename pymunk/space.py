@@ -31,10 +31,10 @@ class Space(object):
         Also note that threaded mode is not available on Windows, and setting 
         threaded=True has no effect on that platform.
         """
-
+        
         self.threaded = threaded and platform.system() != 'Windows' 
         if self.threaded:        
-            self._space = ffi.gc(cp.cpHastySpaceNew(), cp.cpSpaceFree)
+            self._space = ffi.gc(cp.cpHastySpaceNew(), cp.cpHastySpaceFree)
         else:
             self._space = ffi.gc(cp.cpSpaceNew(), cp.cpSpaceFree)
 
@@ -91,14 +91,6 @@ class Space(object):
             self._static_body._space = self
         return self._static_body
     static_body = property(_get_static_body, doc=_get_static_body.__doc__)
-
-    def __del__(self):
-        try:
-            #del self._static_body
-            #cp.cpSpaceFree(self._space)
-            pass
-        except:
-            pass
 
     def _set_iterations(self, value):
         cp.cpSpaceSetIterations(self._space, value)

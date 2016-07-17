@@ -112,7 +112,9 @@ class PolylineSet(collections.Sequence):
     geometry with the `march_soft()` and `march_hard()` functions.    
     """
     def __init__(self):
-        self._set = lib.cpPolylineSetNew()
+        def free(_set):
+            lib.cpPolylineSetFree(_set, True)
+        self._set = ffi.gc(lib.cpPolylineSetNew(), free)
 
     def collect_segment(self, v0, v1):
         """Add a line segment to a polyline set.
