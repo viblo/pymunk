@@ -1,11 +1,11 @@
-#from distutils.command.build_clib import build_clib
-from distutils.command.build_ext import build_ext
-from setuptools import Extension
-import distutils.ccompiler as cc
 import os, os.path
 import platform
 import sys
+from distutils.command.build_ext import build_ext
+import distutils.ccompiler as cc
+from setuptools import Extension
 from setuptools import setup
+
 
 def get_arch():
     if sys.maxsize > 2**32:
@@ -68,17 +68,8 @@ class build_chipmunk(build_ext, object):
             compiler_preargs += ['-arch', 'i386', '-arch', 'x86_64']
         
         if platform.system() == 'Windows':
-            # Compile with stddecl instead of cdecl (-mrtd). 
-            # Using cdecl cause a missing bytes issue in some cases
-            # Because -mrtd and -fomit-frame-pointer (which is included in -O)
-            # gives problem with function pointer to the sdtlib free function
-            # we also have to use -fno-omit-frame-pointer
-            compiler_preargs += [#'-mrtd', 
-                                #'-O1',
-                                '-shared']
-                                #'-fno-omit-frame-pointer'] 
-            #O1 and O2 works on 32bit, not O3 and maybe not O0?
-            
+            compiler_preargs += ['-shared']
+                                            
             if get_arch() == 32:
                 # We set the stack boundary with -mincoming-stack-boundary=2
                 # from 
@@ -125,8 +116,6 @@ class build_chipmunk(build_ext, object):
         if platform.system() == 'Linux' and platform.machine() == 'x86_64':
             linker_preargs += ['-fPIC']
         if platform.system() == 'Windows':
-            # link with stddecl instead of cdecl
-            #linker_preargs += ['-mrtd'] 
             if get_arch() == 32:
                 linker_preargs += ['-m32']
             else:
@@ -196,16 +185,11 @@ setup(
     url = 'http://www.pymunk.org',
     author = 'Victor Blomqvist',
     author_email = 'vb@viblo.se',
-    version = '5.0.0.dev0', # remember to change me for new versions!
-    description = 'pymunk is a easy-to-use pythonic 2d physics library built on top of Chipmunk',
+    version = '5.0.0', # remember to change me for new versions!
+    description = 'Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever you need 2d rigid body physics from Python.',
     long_description = long_description,
     packages = ['pymunk','pymunkoptions'],
     
-    #package_data = {'pymunk': ['chipmunk.dll'
-    #                            , 'chipmunk64.dll'
-    #                            , 'libchipmunk.so'
-    #                            , 'libchipmunk64.so'
-    #                            , 'libchipmunk.dylib']},
     include_package_data = True,
     license = 'MIT License',
     classifiers = classifiers,

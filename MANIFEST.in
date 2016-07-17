@@ -5,12 +5,12 @@ include THANKS.txt
 #docs
 recursive-include docs *
 #examples
-recursive-include examples *.py
-recursive-include examples *.png
-#chipmunk compiled libs
-#recursive-include pymunk *.dll
-#recursive-include pymunk *.so
-#recursive-include pymunk *.dylib
+include examples/*.py
+include examples/*.png
+include examples/*.spec
+include examples/*.wav
+include examples/*.ipynb
+prune examples/.ipynb_checkpoints
 #chipmunk src
 recursive-include chipmunk_src *.c
 recursive-include chipmunk_src *.h
