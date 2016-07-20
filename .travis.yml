@@ -19,7 +19,7 @@ matrix:
     env: 
     - TOXENV=py27 
     - PIP_INSTALL="pip install --user" 
-    - BUILD_CMD=python setup.py bdist_wheel
+    - BUILD_CMD="python setup.py bdist_wheel"
   - os: linux
     env: TOXENV=py27
   - os: linux
