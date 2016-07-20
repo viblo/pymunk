@@ -1,0 +1,23 @@
+{
+    "package": {
+        "name": "Pymunk",
+        "repo": "generic",
+        "subject": "viblo",
+        "desc": "Temp file host for travis",
+        "licenses": ["MIT"]
+    },
+
+    "version": {
+        "name": "0.5"
+    },
+
+    "files": [ {
+            "includePattern": "dist/(.*)", 
+            "uploadPattern": "dist/$1", 
+            "matrixParams": {
+                "override": 1 
+            }
+        }
+        ],
+    "publish": false
+}

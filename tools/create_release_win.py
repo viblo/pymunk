@@ -11,7 +11,10 @@ def main():
     os.system("python2-64 setup.py bdist_wheel")
     files = os.listdir("dist")
     for file in files:
-        print(file)
+        # see
+        # https://www.python.org/dev/peps/pep-0427/
+        # https://www.python.org/dev/peps/pep-0425/
+        # bdist_wheel give overly strict tags 
         parts = file.split("-")
         if len(parts) == 5 and parts[-1][-3:] == "whl":
             parts[2] = "py2.py3"

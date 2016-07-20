@@ -3,55 +3,58 @@ python: 2.7
 git:
   depth: 3
 sudo: false
-
-
 env:
   global:
-    - PIP_INSTALL=pip install
+  - PIP_INSTALL=pip install
+  - BUILD_CMD=
   matrix:
-    - TRAVIS_4681_WORKAROUND=1
-
+  - TRAVIS_4681_WORKAROUND=1
 matrix:
   include:
-    - os: osx
-      language: generic
-      env: TOXENV=py3 PIP_INSTALL="pip install --user"
-    - os: osx
-      language: generic
-      env: TOXENV=py27 PIP_INSTALL="pip install --user"
-    - os: linux
-      env: TOXENV=py27
-    - os: linux
-      env: TOXENV=py32
-    - os: linux
-      env: TOXENV=py33
-    - os: linux
-      env: TOXENV=py34
-    - os: linux
-      env: TOXENV=pypy
-    - os: linux
-      env: TOXENV=pypy3
-    - os: linux
-      env: TOXENV=docs
+  - os: osx
+    language: generic
+    env: TOXENV=py3 PIP_INSTALL="pip install --user"
+  - os: osx
+    language: generic
+    env: 
+    - TOXENV=py27 
+    - PIP_INSTALL="pip install --user" 
+    - BUILD_CMD=python setup.py bdist_wheel
+  - os: linux
+    env: TOXENV=py27
+  - os: linux
+    env: TOXENV=py32
+  - os: linux
+    env: TOXENV=py33
+  - os: linux
+    env: TOXENV=py34
+  - os: linux
+    env: TOXENV=pypy
+  - os: linux
+    env: TOXENV=pypy3
+  - os: linux
+    env: TOXENV=docs
   exclude:
-    - env: TRAVIS_4681_WORKAROUND=1
-      
+  - env: TRAVIS_4681_WORKAROUND=1
 before_install:
-  - chmod ugo+x .travis_before_install.sh 
-  - ./.travis_before_install.sh
-  
+- chmod ugo+x .travis_before_install.sh
+- "./.travis_before_install.sh"
 install:
-  - echo $PATH
-  - which pip
-  - which python
-  - | 
-      if [[ $TRAVIS_OS_NAME == 'osx' ]]; then 
-        travis_retry python -m pip install --user "virtualenv<14.0.0" tox; 
-      fi
-  - | 
-      if [[ $TRAVIS_OS_NAME != 'osx' ]]; then 
-        travis_retry python -m pip install "virtualenv<14.0.0" tox; 
-      fi
-
-script: 
-  - python -m tox
+- echo $PATH
+- which pip
+- which python
+- "if [[ $TRAVIS_OS_NAME == 'osx' ]]; then \n  travis_retry python -m pip install
+  --user \"virtualenv<14.0.0\" tox; \nfi\n"
+- "if [[ $TRAVIS_OS_NAME != 'osx' ]]; then \n  travis_retry python -m pip install
+  \"virtualenv<14.0.0\" tox; \nfi\n"
+script:
+- python -m tox
+- $BUILD_CMD
+deploy:
+  provider: bintray
+  file: "bintray.json"
+  user: "viblo"
+  key:
+    secure: A1i4M85KqB5/wp9MB/6U6JK2Np1x2hzY4lhIUXpgxlP6pqNUl35AGp3uakWV9YMubc00qeWMou+/+5yEuRK87ON0LKSJ6BqQoxIaNxiTxvqXn86Pw8ASl+7eU/SB4dDSDfA6Cc6eSZKo+dXMLHL+kSq06Ojumz1ok6tbpiCwrOQ=
+  dry-run: true
+  on: "bintray-osx"
