@@ -5,7 +5,7 @@ git:
 sudo: false
 env:
   global:
-  - PIP_INSTALL=pip install
+  - PIP_INSTALL="pip install"
   - BUILD_CMD=
   matrix:
   - TRAVIS_4681_WORKAROUND=1
