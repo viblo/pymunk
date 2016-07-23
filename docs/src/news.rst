@@ -17,7 +17,7 @@ This is a BIG release of Pymunk! Just in time before Pymunk turns 10 next year!
 * New util module with draw help for matplotlib (with example Jupyter notebooks)
 * Support for automatically generate geometry. Can be used for such things as
   deformable terrain (example included).
-* Removed obsolete submodule pymunk.util.
+* Deprecated obsolete submodule pymunk.util.
 * Lots of smaller improvements
 
 New in this release is also testing on Travis and Appveyor to ensure good code 

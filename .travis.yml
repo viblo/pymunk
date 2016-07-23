@@ -13,7 +13,10 @@ matrix:
   include:
   - os: osx
     language: generic
-    env: TOXENV=py3 PIP_INSTALL="pip install --user"
+    env: 
+    - TOXENV=py3 
+    - PIP_INSTALL="pip install --user"
+    - BUILD_CMD="python setup.py bdist_wheel"
   - os: osx
     language: generic
     env: 
@@ -56,5 +59,5 @@ deploy:
   user: "viblo"
   key:
     secure: A1i4M85KqB5/wp9MB/6U6JK2Np1x2hzY4lhIUXpgxlP6pqNUl35AGp3uakWV9YMubc00qeWMou+/+5yEuRK87ON0LKSJ6BqQoxIaNxiTxvqXn86Pw8ASl+7eU/SB4dDSDfA6Cc6eSZKo+dXMLHL+kSq06Ojumz1ok6tbpiCwrOQ=
-  dry-run: true
+  dry-run: false
   on: "bintray-osx"
