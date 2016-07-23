@@ -46,10 +46,7 @@ install:
 - echo $PATH
 - which pip
 - which python
-- "if [[ $TRAVIS_OS_NAME == 'osx' ]]; then \n  travis_retry python -m pip install
-  --user \"virtualenv<14.0.0\" tox; \nfi\n"
-- "if [[ $TRAVIS_OS_NAME != 'osx' ]]; then \n  travis_retry python -m pip install
-  \"virtualenv<14.0.0\" tox; \nfi\n"
+- "travis_retry python $PIP_INSTALL 'virtualenv<14.0.0' tox wheel"
 script:
 - python -m tox
 - $BUILD_CMD
