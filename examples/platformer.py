@@ -263,9 +263,9 @@ def main():
         ### Draw stuff
         space.debug_draw(draw_options)
         
-        direction_offset = 48+(1*direction+1)/2 * 48
+        direction_offset = 48+(1*direction+1)//2 * 48
         if grounding['body'] != None and abs(target_vx) > 1:
-            animation_offset = 32 * (frame_number / 8 % 4)
+            animation_offset = 32 * (frame_number // 8 % 4)
         elif grounding['body'] is None:
             animation_offset = 32*1
         else:
