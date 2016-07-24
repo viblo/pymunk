@@ -56,5 +56,5 @@ deploy:
   user: "viblo"
   key:
     secure: A1i4M85KqB5/wp9MB/6U6JK2Np1x2hzY4lhIUXpgxlP6pqNUl35AGp3uakWV9YMubc00qeWMou+/+5yEuRK87ON0LKSJ6BqQoxIaNxiTxvqXn86Pw8ASl+7eU/SB4dDSDfA6Cc6eSZKo+dXMLHL+kSq06Ojumz1ok6tbpiCwrOQ=
-  dry-run: false
+  dry-run: true
   on: "bintray-osx"
