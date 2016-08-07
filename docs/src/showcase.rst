@@ -28,8 +28,23 @@ Games
 
         A cave exploration game where you explore caves by descending into them 
         on ropes.
+
+Non-Games
+=========
+
+.. list-table::
+    :widths: 40 60 
+
+    * - .. image:: _static/reinforcement-learning-car.png
+      - `Self Driving Car <https://github.com/harvitronix/reinforcement-learning-car>`_
         
+        :subscript:`made by Matt Harvey. Retrieved 2016-08-07`
+        
+        A project that trains a virtual car to how to move an object around a 
+        screen (drive itself) without running into obstacles using a type of 
+        reinforcement learning called Q-Learning.         
     
+
 Papers / Science
 ================
 
