@@ -45,7 +45,7 @@ for x in range(0,101):
     dist = dist ** 1.005
     
     offset = 0
-    offset = [0.0, -0.80, -1.0, -0.80][((x*18) % 360)/18 % 4]
+    offset = [0.0, -0.80, -1.0, -0.80][((x*18) % 360)//18 % 4]
     offset = .8 + offset
     
     offset *= dist**2.8 / 100.
@@ -155,7 +155,7 @@ def on_draw():
     a = []
     for b in static_bs:
         a += [b.position.x, b.position.y]
-        pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_POINTS, ('v2f',a))
+        pyglet.graphics.draw(len(a)//2, pyglet.gl.GL_POINTS, ('v2f',a))
     
     # web crossings / bodies
     pyglet.gl.glColor3f(.8,.8,.8)
@@ -163,7 +163,7 @@ def on_draw():
     for b in bs:
         a += [b.position.x, b.position.y]
     pyglet.gl.glPointSize(4)
-    pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_POINTS, ('v2f',a))
+    pyglet.graphics.draw(len(a)//2, pyglet.gl.GL_POINTS, ('v2f',a))
     
     
     # web net / constraints
@@ -172,7 +172,7 @@ def on_draw():
         a += [j.a.position.x, j.a.position.y, j.b.position.x, j.b.position.y]
         pass
     
-    pyglet.graphics.draw(len(a)/2, pyglet.gl.GL_LINES, ('v2f',a))
+    pyglet.graphics.draw(len(a)//2, pyglet.gl.GL_LINES, ('v2f',a))
      
     # anything else
     

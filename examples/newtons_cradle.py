@@ -65,7 +65,7 @@ def reset_bodies(space):
         body.torque = 0
         body.velocity = 0,0
         body.angular_velocity = 0
-    color = random.choice(THECOLORS.values())
+    color = random.choice(list(THECOLORS.values()))
     for shape in space.shapes:
         shape.color = color
     
