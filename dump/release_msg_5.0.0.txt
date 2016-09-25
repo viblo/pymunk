@@ -1,0 +1,39 @@
+Hi everyone,
+
+Im very happy to announce the release of Pymunk 5.0!
+
+
+Background
+---------- 
+
+Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
+you need 2d rigid body physics from Python. Perfect when you need 2d physics 
+in your game, demo or other application! It is built on top of the very 
+capable 2d physics library Chipmunk.
+
+See http://www.pymunk.org for more details and instructions on what Pymunk is 
+and how to use it.
+
+
+Changes
+-------
+
+This is a BIG release of Pymunk! Just in time before Pymunk turns 10 next year!
+
+* Support for 64 Python on Windows
+* Updated to use Chipmunk 7 which includes lots of great improvements
+* Updated to use CFFI for wrapping, giving improved development and packaging 
+  (wheels, yay!)
+* New util module with draw help for matplotlib (with example Jupyter notebooks)
+* Support for automatically generate geometry. Can be used for such things as
+  deformable terrain (example included).
+* Deprecated obsolete submodule pymunk.util.
+* Lots of smaller improvements
+
+New in this release is also testing on Travis and Appveyor to ensure good code 
+quality.
+
+I hope you will enjoy this new release!
+
+Thanks,
+Victor

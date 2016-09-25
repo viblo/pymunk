@@ -67,7 +67,8 @@
     <span class="sd">&quot;&quot;&quot;Base class for all the shapes.</span>
 
 <span class="sd">    You usually dont want to create instances of this class directly but use</span>
-<span class="sd">    one of the specialized shapes instead.</span>
+<span class="sd">    one of the specialized shapes instead (:py:class:`Circle`, </span>
+<span class="sd">    :py:class:`Poly` or :py:class:`Segment`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_space</span> <span class="o">=</span> <span class="bp">None</span> <span class="c1"># Weak ref to the space holding this body (if any)</span>
@@ -102,8 +103,8 @@
     <span class="n">collision_type</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_collision_type</span><span class="p">,</span> <span class="n">_set_collision_type</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;User defined collision type for the shape.</span>
 
-<span class="s2">        See add_collisionpair_func function for more information on when to</span>
-<span class="s2">        use this property.</span>
+<span class="s2">        See :py:meth:`Space.add_collision_handler` function for more </span>
+<span class="s2">        information on when to use this property.</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -134,12 +135,12 @@
     <span class="n">friction</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_friction</span><span class="p">,</span> <span class="n">_set_friction</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Friction coefficient.</span>
 
-<span class="s2">        pymunk uses the Coulomb friction model, a value of 0.0 is</span>
+<span class="s2">        Pymunk uses the Coulomb friction model, a value of 0.0 is</span>
 <span class="s2">        frictionless.</span>
 
 <span class="s2">        A value over 1.0 is perfectly fine.</span>
 
-<span class="s2">        Some real world example values from wikipedia (Remember that</span>
+<span class="s2">        Some real world example values from Wikipedia (Remember that</span>
 <span class="s2">        it is what looks good that is important, not the exact value).</span>
 
 <span class="s2">        ==============  ======  ========</span>
@@ -209,16 +210,21 @@
     <span class="k">def</span> <span class="nf">_get_bb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">BB</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetBB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
 
-    <span class="n">bb</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_bb</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The bounding box of the shape.</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_bb</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The bounding box :py:class:`BB` of the shape.</span>
 
-<span class="s2">    Only guaranteed to be valid after Shape.cache_bb() or Space.step() is</span>
-<span class="s2">    called. Moving a body that a shape is connected to does not update it&#39;s</span>
-<span class="s2">    bounding box. For shapes used for queries that aren&#39;t attached to bodies,</span>
-<span class="s2">    you can also use Shape.update().</span>
+<span class="s2">        Only guaranteed to be valid after :py:meth:`Shape.cache_bb` or </span>
+<span class="s2">        :py:meth:`Space.step` is called. Moving a body that a shape is </span>
+<span class="s2">        connected to does not update it&#39;s bounding box. For shapes used for </span>
+<span class="s2">        queries that aren&#39;t attached to bodies, you can also use </span>
+<span class="s2">        :py:meth:`Shape.update`.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Shape.point_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Shape.point_query">[docs]</a>    <span class="k">def</span> <span class="nf">point_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check if the given point lies within the shape.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Check if the given point lies within the shape.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Tuple of (distance, info) </span>
+<span class="sd">        :rtype: (float, :py:class:`PointQueryInfo`) </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpPointQueryInfo *&quot;</span><span class="p">)</span>
         <span class="n">distance</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapePointQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">PointQueryInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">))</span>
@@ -230,6 +236,8 @@
 
 <div class="viewcode-block" id="Shape.segment_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Shape.segment_query">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if the line segment from start to end intersects the shape.</span>
+
+<span class="sd">        :rtype: :py:class:`SegmentQueryInfo`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpSegmentQueryInfo *&quot;</span><span class="p">)</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeSegmentQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
@@ -243,7 +251,7 @@
 <div class="viewcode-block" id="Shape.shapes_collide"><a class="viewcode-back" href="../../pymunk.html#pymunk.Shape.shapes_collide">[docs]</a>    <span class="k">def</span> <span class="nf">shapes_collide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get contact information about this shape and shape b.</span>
 <span class="sd">        </span>
-<span class="sd">        Returns ContactPointSet</span>
+<span class="sd">        :rtype: :py:class:`ContactPointSet`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_points</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapesCollide</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ContactPointSet</span><span class="o">.</span><span class="n">_from_cp</span><span class="p">(</span><span class="n">_points</span><span class="p">)</span></div>
@@ -254,7 +262,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
     <span class="n">space</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_space</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get the Space that shape has been added to (or None).&quot;&quot;&quot;</span><span class="p">)</span></div>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get the :py:class:`Space` that shape has been added to (or </span>
+<span class="s2">        None).</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Circle"><a class="viewcode-back" href="../../pymunk.html#pymunk.Circle">[docs]</a><span class="k">class</span> <span class="nc">Circle</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A circle shape defined by a radius</span>
@@ -321,15 +331,10 @@
 <div class="viewcode-block" id="Segment.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Segment.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a Segment</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            body : `Body`</span>
-<span class="sd">                The body to attach the segment to</span>
-<span class="sd">            a : (x,y) or `Vec2d`</span>
-<span class="sd">                The first endpoint of the segment</span>
-<span class="sd">            b : (x,y) or `Vec2d`</span>
-<span class="sd">                The second endpoint of the segment</span>
-<span class="sd">            radius : float</span>
-<span class="sd">                The thickness of the segment</span>
+<span class="sd">        :param Body body: The body to attach the segment to</span>
+<span class="sd">        :param a: The first endpoint of the segment</span>
+<span class="sd">        :param b: The second endpoint of the segment</span>
+<span class="sd">        :param float radius: The thickness of the segment</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">body</span>
         <span class="n">body_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span> <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span>
@@ -539,6 +544,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../benchmarks.html">Benchmarks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk">Source Repository</a></li>

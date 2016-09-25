@@ -98,6 +98,7 @@ Contents
     examples
     showcase
     tutorials
+    benchmarks
     advanced
     Issue Tracker <https://github.com/viblo/pymunk/issues>
     Source Repository <https://github.com/viblo/pymunk>

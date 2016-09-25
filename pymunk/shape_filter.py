@@ -2,8 +2,7 @@ from collections import namedtuple
 
 class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     """
-    
-    Chipmunk has two primary means of ignoring collisions: groups and 
+    Pymunk has two primary means of ignoring collisions: groups and 
     category masks.
 
     Groups are used to ignore collisions between parts on a complex object. A 
@@ -32,7 +31,7 @@ class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     ============= =============== =============
     
     Note that everything in this example collides with walls. Additionally, 
-    the enemies collide with eachother.
+    the enemies collide with each other.
 
     By default, objects exist in every category and collide with every category.
 
@@ -49,10 +48,34 @@ class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     collisions before running the expensive collision detection code, so 
     using groups or category masks is preferred.
 
+    Example of how category and mask can be used to filter out player from 
+    enemy object:
+
+    >>> import pymunk
+    >>> s = pymunk.Space()
+    >>> player_b = pymunk.Body(1,1)
+    >>> player_c = pymunk.Circle(player_b, 10)
+    >>> s.add(player_b, player_c)
+    >>> player_c.filter = pymunk.ShapeFilter(categories=0x1)
+    >>> hit = s.point_query_nearest((0,0), 0, pymunk.ShapeFilter())
+    >>> hit != None
+    True
+    >>> filter = pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS ^ 0x1)
+    >>> hit = s.point_query_nearest((0,0), 0, filter)
+    >>> hit == None
+    True
+    >>> enemy_b = pymunk.Body(1,1)
+    >>> enemy_c = pymunk.Circle(enemy_b, 10)
+    >>> s.add(enemy_b, enemy_c)
+    >>> hit = s.point_query_nearest((0,0), 0, filter)
+    >>> hit != None
+    True
+
     """
     __slots__ = ()    
 
     ALL_CATEGORIES = 0xffffffff
+
     ALL_MASKS = 0xffffffff
 
     def __new__(cls, group = 0, categories = 0xffffffff, mask = 0xffffffff):

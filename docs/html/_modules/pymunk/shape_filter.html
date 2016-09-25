@@ -53,8 +53,7 @@
 
 <div class="viewcode-block" id="ShapeFilter"><a class="viewcode-back" href="../../pymunk.html#pymunk.ShapeFilter">[docs]</a><span class="k">class</span> <span class="nc">ShapeFilter</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;ShapeFilter&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="s1">&#39;categories&#39;</span><span class="p">,</span> <span class="s1">&#39;mask&#39;</span><span class="p">])):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    </span>
-<span class="sd">    Chipmunk has two primary means of ignoring collisions: groups and </span>
+<span class="sd">    Pymunk has two primary means of ignoring collisions: groups and </span>
 <span class="sd">    category masks.</span>
 
 <span class="sd">    Groups are used to ignore collisions between parts on a complex object. A </span>
@@ -83,7 +82,7 @@
 <span class="sd">    ============= =============== =============</span>
 <span class="sd">    </span>
 <span class="sd">    Note that everything in this example collides with walls. Additionally, </span>
-<span class="sd">    the enemies collide with eachother.</span>
+<span class="sd">    the enemies collide with each other.</span>
 
 <span class="sd">    By default, objects exist in every category and collide with every category.</span>
 
@@ -100,10 +99,34 @@
 <span class="sd">    collisions before running the expensive collision detection code, so </span>
 <span class="sd">    using groups or category masks is preferred.</span>
 
+<span class="sd">    Example of how category and mask can be used to filter out player from </span>
+<span class="sd">    enemy object:</span>
+
+<span class="sd">    &gt;&gt;&gt; import pymunk</span>
+<span class="sd">    &gt;&gt;&gt; s = pymunk.Space()</span>
+<span class="sd">    &gt;&gt;&gt; player_b = pymunk.Body(1,1)</span>
+<span class="sd">    &gt;&gt;&gt; player_c = pymunk.Circle(player_b, 10)</span>
+<span class="sd">    &gt;&gt;&gt; s.add(player_b, player_c)</span>
+<span class="sd">    &gt;&gt;&gt; player_c.filter = pymunk.ShapeFilter(categories=0x1)</span>
+<span class="sd">    &gt;&gt;&gt; hit = s.point_query_nearest((0,0), 0, pymunk.ShapeFilter())</span>
+<span class="sd">    &gt;&gt;&gt; hit != None</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; filter = pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS ^ 0x1)</span>
+<span class="sd">    &gt;&gt;&gt; hit = s.point_query_nearest((0,0), 0, filter)</span>
+<span class="sd">    &gt;&gt;&gt; hit == None</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; enemy_b = pymunk.Body(1,1)</span>
+<span class="sd">    &gt;&gt;&gt; enemy_c = pymunk.Circle(enemy_b, 10)</span>
+<span class="sd">    &gt;&gt;&gt; s.add(enemy_b, enemy_c)</span>
+<span class="sd">    &gt;&gt;&gt; hit = s.point_query_nearest((0,0), 0, filter)</span>
+<span class="sd">    &gt;&gt;&gt; hit != None</span>
+<span class="sd">    True</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>    
 
     <span class="n">ALL_CATEGORIES</span> <span class="o">=</span> <span class="mh">0xffffffff</span>
+
     <span class="n">ALL_MASKS</span> <span class="o">=</span> <span class="mh">0xffffffff</span>
 
     <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">group</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">categories</span> <span class="o">=</span> <span class="mh">0xffffffff</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="mh">0xffffffff</span><span class="p">):</span>
@@ -137,6 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../benchmarks.html">Benchmarks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk">Source Repository</a></li>

@@ -141,9 +141,9 @@ class Body(object):
         doc="""Position of the body.
 
         When changing the position you may also want to call
-        Space.reindex_shapes_for_body() to update the collision detection
-        information for the attached shapes if plan to make any queries
-        against the space.""")
+        :py:func:`Space.reindex_shapes_for_body` to update the collision 
+        detection information for the attached shapes if plan to make any 
+        queries against the space.""")
 
     def _set_center_of_gravity(self, cog):
         cp.cpBodySetCenterOfGravity(self._body, cog)
@@ -181,10 +181,10 @@ class Body(object):
         doc="""Rotation of the body in radians.
 
         When changing the rotation you may also want to call
-        Space.reindex_shapes_for_body() to update the collision detection
-        information for the attached shapes if plan to make any queries
-        against the space. A body rotates around its center of gravity, not
-        its position.
+        :py:class:`Space.reindex_shapes_for_body` to update the collision 
+        detection information for the attached shapes if plan to make any 
+        queries against the space. A body rotates around its center of gravity, 
+        not its position.
 
         .. Note::
             If you get small/no changes to the angle when for example a
@@ -220,26 +220,10 @@ class Body(object):
         else:
             return None
     space = property(_get_space,
-        doc="""Get the cpSpace that body has been added to (or None).""")
+        doc="""Get the :py:class:`Space` that the body has been added to (or 
+        None).""")
 
     def _set_velocity_func(self, func):
-        """The velocity callback function. The velocity callback function
-        is called each time step, and can be used to set a body's velocity.
-
-            ``func(body, gravity, damping, dt) -> None``
-
-            Callback Parameters
-                body : `Body`
-                    Body that should have its velocity calculated
-                gravity : `Vec2d`
-                    The gravity vector
-                damping : float
-                    The damping
-                dt : float
-                    Delta time since last step.
-        """
-        
-        
         @ffi.callback("typedef void (*cpBodyVelocityFunc)"
             "(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt)")
         def _impl(_, gravity, damping, dt):
@@ -248,21 +232,16 @@ class Body(object):
         self._velocity_callback = _impl
         cp.cpBodySetVelocityUpdateFunc(self._body, _impl)
     velocity_func = property(fset=_set_velocity_func,
-        doc=_set_velocity_func.__doc__)
+        doc="""The velocity callback function. 
+        
+        The velocity callback function is called each time step, and can be 
+        used to set a body's velocity.
+
+            ``func(body : Body, gravity, damping, dt)``
+
+        """)
 
     def _set_position_func(self, func):
-        """The position callback function. The position callback function
-        is called each time step and can be used to update the body's position.
-
-            ``func(body, dt) -> None``
-
-            Callback Parameters
-                body : `Body`
-                    Body that should have its velocity calculated
-                dt : float
-                    Delta time since last step.
-        """
-
         @ffi.callback("typedef void (*cpBodyPositionFunc)"
             "(cpBody *body, cpFloat dt)")
         def _impl(_, dt):
@@ -271,7 +250,13 @@ class Body(object):
         self._position_callback = _impl
         cp.cpBodySetPositionUpdateFunc(self._body, _impl)
     position_func = property(fset=_set_position_func,
-        doc=_set_position_func.__doc__)
+        doc="""The position callback function. 
+        
+        The position callback function is called each time step and can be 
+        used to update the body's position.
+
+            ``func(body, dt) -> None``
+        """)
 
     def _get_kinetic_energy(self):
         #todo: use ffi method
@@ -315,47 +300,23 @@ class Body(object):
         instantaneously by adding directly to the velocity of an object.
         Both impulses and forces are affected the mass of an object. Doubling
         the mass of the object will halve the effect.
-
-        :Parameters:
-            force : (x,y) or `Vec2d`
-                Force to be applied
-            point : (x,y) or `Vec2d`
-                World point
         """
         cp.cpBodyApplyForceAtWorldPoint(self._body, force, point)
 
     def apply_force_at_local_point(self, force, point):
         """Add the local force force to body as if applied from the body
         local point.
-
-        :Parameters:
-            force : (x,y) or `Vec2d`
-                Force to be applied
-            point : (x,y) or `Vec2d`
-                Local point
         """
         cp.cpBodyApplyForceAtLocalPoint(self._body, force, point)
 
     def apply_impulse_at_world_point(self, impulse, point=(0, 0)):
         """Add the impulse impulse to body as if applied from the world point.
-
-        :Parameters:
-            impulse : (x,y) or `Vec2d`
-                Impulse to be applied
-            point : (x,y) or `Vec2d`
-                World point
         """
         cp.cpBodyApplyImpulseAtWorldPoint(self._body, impulse, point)
 
     def apply_impulse_at_local_point(self, impulse, point=(0, 0)):
         """Add the local impulse impulse to body as if applied from the body
         local point.
-
-        :Parameters:
-            impulse : (x,y) or `Vec2d`
-                Impulse to be applied
-            point : (x,y) or `Vec2d`
-                Local point
         """
         cp.cpBodyApplyImpulseAtLocalPoint(self._body, impulse, point)
 
@@ -380,14 +341,15 @@ class Body(object):
         """Force a body to fall asleep immediately along with other bodies
         in a group.
 
-        When objects in Chipmunk sleep, they sleep as a group of all objects
+        When objects in Pymunk sleep, they sleep as a group of all objects
         that are touching or jointed together. When an object is woken up,
-        all of the objects in its group are woken up. Body.sleep_with_group()
-        allows you group sleeping objects together. It acts identically to
-        Body.sleep() if you pass NULL as group by starting a new group. If
-        you pass a sleeping body for group, body will be awoken when group is
-        awoken. You can use this to initialize levels and start stacks of
-        objects in a pre-sleeping state.
+        all of the objects in its group are woken up. 
+        :py:func:`Body.sleep_with_group` allows you group sleeping objects 
+        together. It acts identically to :py:func:`Body.sleep` if you pass 
+        None as group by starting a new group. If you pass a sleeping body 
+        for group, body will be awoken when group is awoken. You can use this 
+        to initialize levels and start stacks of objects in a pre-sleeping 
+        state.
         """
         if self._space == None:
             raise Exception("Body not added to space")
@@ -405,7 +367,8 @@ class Body(object):
         return cp.cpBodyGetType(self._body)
     body_type = property(_get_type
         , _set_type
-        , doc="""The type of a body (DYNAMIC, KINEMATIC, STATIC).
+        , doc="""The type of a body (:py:const:`Body.DYNAMIC`, 
+        :py:const:`Body.KINEMATIC` or :py:const:`Body.STATIC`).
 
         When changing an body to a dynamic body, the mass and moment of
         inertia are recalculated from the shapes added to the body. Custom
@@ -420,7 +383,7 @@ class Body(object):
             ``func(arbiter, *args, **kwargs) -> None``
 
             Callback Parameters
-                arbiter : `Arbiter`
+                arbiter : :py:class:`Arbiter`
                     The Arbiter
                 args
                     Optional parameters passed to the callback function.
@@ -465,18 +428,14 @@ class Body(object):
         the (0,0) is at the center of gravity of the body and the axis rotate
         along with the body.
 
-        :Parameters:
-            v : (x,y) or `Vec2d`
-                Vector in body local coordinates
+        :param v: Vector in body local coordinates
         """
         return Vec2d(cp.cpBodyLocalToWorld(self._body, v))
 
     def world_to_local(self, v):
         """Convert world space coordinates to body local coordinates
 
-        :Parameters:
-            v : (x,y) or `Vec2d`
-                Vector in world space coordinates
+        :param v: Vector in world space coordinates
         """
         return Vec2d(cp.cpBodyWorldToLocal(self._body, v))
 

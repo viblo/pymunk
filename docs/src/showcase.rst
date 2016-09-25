@@ -11,6 +11,18 @@ Games
 .. list-table:: 
     :widths: 40 60
 
+    * - .. image:: _static/beneath-the-ice.png
+      - `Beneath the Ice <https://pyweek.org/e/chimera22/>`_
+
+        :subscript:`make by Team Chimera (mit-mit, Lucid Design Ar). Retrieved 
+        2016-09-25`
+
+        **Winner of PyWeek 22** (Overall Team Entry)
+
+        Beneath the Ice is a submarine exploration game and puzzle solving 
+        adventure! Uncover a mysterious pariah who can't let you discover his 
+        secrets, who can't let you in! Team Chimera take 3!  
+
     * - .. image:: _static/invisipin.png
       - `Invisipin <https://pyweek.org/e/Tee-py20/>`_  
         

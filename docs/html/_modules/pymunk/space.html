@@ -298,7 +298,7 @@
 <div class="viewcode-block" id="Space.remove"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">objs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove one or many shapes, bodies or constraints from the space</span>
 
-<span class="sd">        Unlike Chipmunk and earlier versions of pymunk its now allowed to</span>
+<span class="sd">        Unlike Chipmunk and earlier versions of Pymunk its now allowed to</span>
 <span class="sd">        remove objects even from a callback during the simulation step.</span>
 <span class="sd">        However, the removal will not be performed until the end of the step.</span>
 
@@ -399,6 +399,8 @@
 <span class="sd">        Using a fixed time step is highly recommended. Doing so will increase </span>
 <span class="sd">        the efficiency of the contact persistence, requiring an order of </span>
 <span class="sd">        magnitude fewer iterations to resolve the collisions in the usual case.</span>
+
+<span class="sd">        :param float dt: Time step length</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="bp">True</span>
@@ -424,17 +426,22 @@
 
 
 <div class="viewcode-block" id="Space.add_collision_handler"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add_collision_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_collision_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">,</span> <span class="n">collision_type_b</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the CollisionHandler for collisions between objects ot</span>
-<span class="sd">        type collision_type_a and collision_type_b.</span>
+        <span class="sd">&quot;&quot;&quot;Return the :py:class:`CollisionHandler` for collisions between </span>
+<span class="sd">        objects of type collision_type_a and collision_type_b.</span>
 
 <span class="sd">        Fill the desired collision callback functions, for details see the</span>
-<span class="sd">        CollisionHandler object.</span>
+<span class="sd">        :py:class:`CollisionHandler` object.</span>
 
-<span class="sd">        Whenever shapes with collision types (Shape.collision_type) a and b</span>
-<span class="sd">        collide, this handler will be used to process the collision events.</span>
-<span class="sd">        When a new collision handler is created, the callbacks will all be</span>
+<span class="sd">        Whenever shapes with collision types (:py:attr:`Shape.collision_type`) </span>
+<span class="sd">        a and b collide, this handler will be used to process the collision </span>
+<span class="sd">        events. When a new collision handler is created, the callbacks will all be</span>
 <span class="sd">        set to builtin callbacks that perform the default behavior (call the</span>
 <span class="sd">        wildcard handlers, and accept all collisions).</span>
+
+<span class="sd">        :param int collision_type_a: Collision type a</span>
+<span class="sd">        :param int collision_type_b: Collision type b</span>
+
+<span class="sd">        :rtype: :py:class:`CollisionHandler`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">collision_type_a</span><span class="p">,</span> <span class="n">collision_type_b</span><span class="p">)</span> 
@@ -467,8 +474,13 @@
 
 <span class="sd">        When a new wildcard handler is created, the callbacks will all be</span>
 <span class="sd">        set to builtin callbacks that perform the default behavior. (accept</span>
-<span class="sd">        all collisions in begin() and pre_solve(), or do nothing for</span>
-<span class="sd">        post_solve() and separate().</span>
+<span class="sd">        all collisions in :py:func:`~CollisionHandler.begin` and </span>
+<span class="sd">        :py:func:`~CollisionHandler.pre_solve`, or do nothing for</span>
+<span class="sd">        :py:func:`~CollisionHandler.post_solve` and </span>
+<span class="sd">        :py:func:`~CollisionHandler.separate`.</span>
+
+<span class="sd">        :param int collision_type_a: Collision type</span>
+<span class="sd">        :rtype: :py:class:`CollisionHandler`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">collision_type_a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
@@ -530,19 +542,15 @@
 <span class="sd">            collision handler for the &#39;separate&#39; event if it the shape was</span>
 <span class="sd">            touching when removed.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            callback_function : ``func(space, key, *args, **kwargs)``</span>
-<span class="sd">                The callback function.</span>
-<span class="sd">            obj : Any object</span>
-<span class="sd">                This object is used as a key, you can only have one callback</span>
-<span class="sd">                for a single object. It is passed on to the callback function.</span>
-<span class="sd">            args</span>
-<span class="sd">                Optional parameters passed to the callback function.</span>
-<span class="sd">            kwargs</span>
-<span class="sd">                Optional keyword parameters passed on to the callback function.</span>
+<span class="sd">        :param callback_function: The callback function</span>
+<span class="sd">        :type callback_function: `func(space : Space, key, *args, **kwargs)`</span>
+<span class="sd">        :param Any key: </span>
+<span class="sd">            This object is used as a key, you can only have one callback</span>
+<span class="sd">            for a single object. It is passed on to the callback function.</span>
+<span class="sd">        :param args: Optional parameters passed to the callback</span>
+<span class="sd">        :param kwargs: Optional keyword parameters passed on to the callback    </span>
 
-<span class="sd">        :Return:</span>
-<span class="sd">            True if key was not previously added, False otherwise</span>
+<span class="sd">        :return: True if key was not previously added, False otherwise</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">:</span>
@@ -557,21 +565,21 @@
 <div class="viewcode-block" id="Space.point_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.point_query">[docs]</a>    <span class="k">def</span> <span class="nf">point_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query space at point for shapes within the given distance range.</span>
 
-<span class="sd">        Return a list of `PointQueryInfo`.</span>
-
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
 <span class="sd">        collision detection. Sensor shapes are included. If a maxDistance of</span>
 <span class="sd">        0.0 is used, the point must lie inside a shape. Negative max_distance</span>
 <span class="sd">        is also allowed meaning that the point must be a under a certain</span>
 <span class="sd">        depth within a shape to be considered a match.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            point : (x,y) or `Vec2d`</span>
-<span class="sd">                Define where to check for collision in the space.</span>
-<span class="sd">            max_distnace : int</span>
-<span class="sd">                Match only within this distance.</span>
-<span class="sd">            shape_filter : ShapeFilter</span>
-<span class="sd">                Only pick shapes matching the filter.</span>
+<span class="sd">        See :py:class:`ShapeFilter` for details about how the shape_filter </span>
+<span class="sd">        parameter can be used.</span>
+
+<span class="sd">        :param point: Where to check for collision in the Space</span>
+<span class="sd">        :type point: :py:class:`~vec2d.Vec2d` or (float,float)</span>
+<span class="sd">        :param float max_distance: Match only within this distance</span>
+<span class="sd">        :param ShapeFilter shape_filter: Only pick shapes matching the filter</span>
+
+<span class="sd">        :rtype: [:py:class:`PointQueryInfo`] </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
@@ -606,21 +614,21 @@
         <span class="sd">&quot;&quot;&quot;Query space at point the nearest shape within the given distance</span>
 <span class="sd">        range.</span>
 
-<span class="sd">        Return a `PointQueryInfo` or None if nothing was hit.</span>
-
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
 <span class="sd">        collision detection. Sensor shapes are included. If a maxDistance of</span>
 <span class="sd">        0.0 is used, the point must lie inside a shape. Negative max_distance</span>
 <span class="sd">        is also allowed meaning that the point must be a under a certain</span>
 <span class="sd">        depth within a shape to be considered a match.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            point : (x,y) or `Vec2d`</span>
-<span class="sd">                Define where to check for collision in the space.</span>
-<span class="sd">            max_distance : int</span>
-<span class="sd">                Match only within this distance.</span>
-<span class="sd">            shape_filter : ShapeFilter</span>
-<span class="sd">                Only pick shapes matching the filter.</span>
+<span class="sd">        See :py:class:`ShapeFilter` for details about how the shape_filter </span>
+<span class="sd">        parameter can be used.</span>
+
+<span class="sd">        :param point: Where to check for collision in the Space</span>
+<span class="sd">        :type point: :py:class:`~vec2d.Vec2d` or (float,float)</span>
+<span class="sd">        :param float max_distance: Match only within this distance</span>
+<span class="sd">        :param ShapeFilter shape_filter: Only pick shapes matching the filter</span>
+
+<span class="sd">        :rtype: :py:class:`PointQueryInfo` or None  </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpPointQueryInfo *&quot;</span><span class="p">)</span>
         <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQueryNearest</span><span class="p">(</span>
@@ -646,8 +654,15 @@
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
 <span class="sd">        collision detection. Sensor shapes are included.</span>
 
-<span class="sd">        :Return:</span>
-<span class="sd">            [`SegmentQueryInfo`] - One SegmentQueryInfo object for each hit.</span>
+<span class="sd">        See :py:class:`ShapeFilter` for details about how the shape_filter </span>
+<span class="sd">        parameter can be used.</span>
+
+<span class="sd">        :param start: Starting point</span>
+<span class="sd">        :param end: End point</span>
+<span class="sd">        :param float radius: Radius</span>
+<span class="sd">        :param ShapeFilter shape_filter: Shape filter</span>
+
+<span class="sd">        :rtype: [:py:class:`SegmentQueryInfo`]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
@@ -664,16 +679,17 @@
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span></div>
 
-<div class="viewcode-block" id="Space.segment_query_first"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.segment_query_first">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query_first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span>  <span class="n">shape_filter</span><span class="p">):</span>
+<div class="viewcode-block" id="Space.segment_query_first"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.segment_query_first">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query_first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query space along the line segment from start to end with the</span>
 <span class="sd">        given radius.</span>
 
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
 <span class="sd">        collision detection. Sensor shapes are included.</span>
 
-<span class="sd">        :Return:</span>
-<span class="sd">            `SegmentQueryInfo` - SegmentQueryInfo object or None if nothing</span>
-<span class="sd">            was hit.</span>
+<span class="sd">        See :py:class:`ShapeFilter` for details about how the shape_filter </span>
+<span class="sd">        parameter can be used.</span>
+
+<span class="sd">        :rtype: :py:class:`SegmentQueryInfo` or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpSegmentQueryInfo *&quot;</span><span class="p">)</span>
         <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQueryFirst</span><span class="p">(</span>
@@ -698,7 +714,10 @@
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
 <span class="sd">        collision detection. Sensor shapes are included.</span>
 
-<span class="sd">        Returns a list of shapes hit.</span>
+<span class="sd">        :param BB bb: Bounding box</span>
+<span class="sd">        :param ShapeFilter shape_filter: Shape filter</span>
+
+<span class="sd">        :rtype: [:py:class:`Shape`]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
@@ -716,7 +735,10 @@
 <div class="viewcode-block" id="Space.shape_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.shape_query">[docs]</a>    <span class="k">def</span> <span class="nf">shape_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query a space for any shapes overlapping the given shape</span>
 
-<span class="sd">        Returns a list of shapes.</span>
+<span class="sd">        :param shape: Shape to query with</span>
+<span class="sd">        :type shape: :py:class:`Circle`, :py:class:`Poly` or :py:class:`Segment`</span>
+
+<span class="sd">        :rtype: [:py:class:`ShapeQueryInfo`]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
@@ -740,7 +762,16 @@
 
 <span class="sd">        If you use a graphics backend that is already supported, such as pygame </span>
 <span class="sd">        and pyglet, you can use the predefined options in their x_util modules, </span>
-<span class="sd">        for example pygame_util.draw_options().</span>
+<span class="sd">        for example :py:class:`pygame_util.DrawOptions`.</span>
+
+<span class="sd">        Its also possible to write your own graphics backend, see </span>
+<span class="sd">        :py:class:`SpaceDebugDrawOptions`.</span>
+
+<span class="sd">        If you require any advanced or optimized drawing its probably best to </span>
+<span class="sd">        not use this funtion for the drawing since its meant for debugging </span>
+<span class="sd">        and quick scripting. </span>
+
+<span class="sd">        :type options: :py:class:`SpaceDebugDrawOptions`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="c1"># we need to hold h until the end of cpSpaceDebugDraw to prevent GC</span>
@@ -777,6 +808,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../benchmarks.html">Benchmarks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk">Source Repository</a></li>

@@ -247,7 +247,7 @@ class Space(object):
     def remove(self, *objs):
         """Remove one or many shapes, bodies or constraints from the space
 
-        Unlike Chipmunk and earlier versions of pymunk its now allowed to
+        Unlike Chipmunk and earlier versions of Pymunk its now allowed to
         remove objects even from a callback during the simulation step.
         However, the removal will not be performed until the end of the step.
 
@@ -348,6 +348,8 @@ class Space(object):
         Using a fixed time step is highly recommended. Doing so will increase 
         the efficiency of the contact persistence, requiring an order of 
         magnitude fewer iterations to resolve the collisions in the usual case.
+
+        :param float dt: Time step length
         """
 
         self._in_step = True
@@ -373,17 +375,22 @@ class Space(object):
 
 
     def add_collision_handler(self, collision_type_a, collision_type_b):
-        """Return the CollisionHandler for collisions between objects ot
-        type collision_type_a and collision_type_b.
+        """Return the :py:class:`CollisionHandler` for collisions between 
+        objects of type collision_type_a and collision_type_b.
 
         Fill the desired collision callback functions, for details see the
-        CollisionHandler object.
+        :py:class:`CollisionHandler` object.
 
-        Whenever shapes with collision types (Shape.collision_type) a and b
-        collide, this handler will be used to process the collision events.
-        When a new collision handler is created, the callbacks will all be
+        Whenever shapes with collision types (:py:attr:`Shape.collision_type`) 
+        a and b collide, this handler will be used to process the collision 
+        events. When a new collision handler is created, the callbacks will all be
         set to builtin callbacks that perform the default behavior (call the
         wildcard handlers, and accept all collisions).
+
+        :param int collision_type_a: Collision type a
+        :param int collision_type_b: Collision type b
+
+        :rtype: :py:class:`CollisionHandler`
         """
         
         key = (collision_type_a, collision_type_b) 
@@ -416,8 +423,13 @@ class Space(object):
 
         When a new wildcard handler is created, the callbacks will all be
         set to builtin callbacks that perform the default behavior. (accept
-        all collisions in begin() and pre_solve(), or do nothing for
-        post_solve() and separate().
+        all collisions in :py:func:`~CollisionHandler.begin` and 
+        :py:func:`~CollisionHandler.pre_solve`, or do nothing for
+        :py:func:`~CollisionHandler.post_solve` and 
+        :py:func:`~CollisionHandler.separate`.
+
+        :param int collision_type_a: Collision type
+        :rtype: :py:class:`CollisionHandler`
         """
 
         if collision_type_a in self._handlers:
@@ -479,19 +491,15 @@ class Space(object):
             collision handler for the 'separate' event if it the shape was
             touching when removed.
 
-        :Parameters:
-            callback_function : ``func(space, key, *args, **kwargs)``
-                The callback function.
-            obj : Any object
-                This object is used as a key, you can only have one callback
-                for a single object. It is passed on to the callback function.
-            args
-                Optional parameters passed to the callback function.
-            kwargs
-                Optional keyword parameters passed on to the callback function.
+        :param callback_function: The callback function
+        :type callback_function: `func(space : Space, key, *args, **kwargs)`
+        :param Any key: 
+            This object is used as a key, you can only have one callback
+            for a single object. It is passed on to the callback function.
+        :param args: Optional parameters passed to the callback
+        :param kwargs: Optional keyword parameters passed on to the callback    
 
-        :Return:
-            True if key was not previously added, False otherwise
+        :return: True if key was not previously added, False otherwise
         """
 
         if key in self._post_step_callbacks:
@@ -506,21 +514,21 @@ class Space(object):
     def point_query(self, point, max_distance, shape_filter):
         """Query space at point for shapes within the given distance range.
 
-        Return a list of `PointQueryInfo`.
-
         The filter is applied to the query and follows the same rules as the
         collision detection. Sensor shapes are included. If a maxDistance of
         0.0 is used, the point must lie inside a shape. Negative max_distance
         is also allowed meaning that the point must be a under a certain
         depth within a shape to be considered a match.
 
-        :Parameters:
-            point : (x,y) or `Vec2d`
-                Define where to check for collision in the space.
-            max_distnace : int
-                Match only within this distance.
-            shape_filter : ShapeFilter
-                Only pick shapes matching the filter.
+        See :py:class:`ShapeFilter` for details about how the shape_filter 
+        parameter can be used.
+
+        :param point: Where to check for collision in the Space
+        :type point: :py:class:`~vec2d.Vec2d` or (float,float)
+        :param float max_distance: Match only within this distance
+        :param ShapeFilter shape_filter: Only pick shapes matching the filter
+
+        :rtype: [:py:class:`PointQueryInfo`] 
         """
 
         self.__query_hits = []
@@ -555,21 +563,21 @@ class Space(object):
         """Query space at point the nearest shape within the given distance
         range.
 
-        Return a `PointQueryInfo` or None if nothing was hit.
-
         The filter is applied to the query and follows the same rules as the
         collision detection. Sensor shapes are included. If a maxDistance of
         0.0 is used, the point must lie inside a shape. Negative max_distance
         is also allowed meaning that the point must be a under a certain
         depth within a shape to be considered a match.
 
-        :Parameters:
-            point : (x,y) or `Vec2d`
-                Define where to check for collision in the space.
-            max_distance : int
-                Match only within this distance.
-            shape_filter : ShapeFilter
-                Only pick shapes matching the filter.
+        See :py:class:`ShapeFilter` for details about how the shape_filter 
+        parameter can be used.
+
+        :param point: Where to check for collision in the Space
+        :type point: :py:class:`~vec2d.Vec2d` or (float,float)
+        :param float max_distance: Match only within this distance
+        :param ShapeFilter shape_filter: Only pick shapes matching the filter
+
+        :rtype: :py:class:`PointQueryInfo` or None  
         """
         info = ffi.new("cpPointQueryInfo *")
         _shape = cp.cpSpacePointQueryNearest(
@@ -595,8 +603,15 @@ class Space(object):
         The filter is applied to the query and follows the same rules as the
         collision detection. Sensor shapes are included.
 
-        :Return:
-            [`SegmentQueryInfo`] - One SegmentQueryInfo object for each hit.
+        See :py:class:`ShapeFilter` for details about how the shape_filter 
+        parameter can be used.
+
+        :param start: Starting point
+        :param end: End point
+        :param float radius: Radius
+        :param ShapeFilter shape_filter: Shape filter
+
+        :rtype: [:py:class:`SegmentQueryInfo`]
         """
 
         self.__query_hits = []
@@ -613,16 +628,17 @@ class Space(object):
         cp.cpSpaceSegmentQuery(self._space, start, end, radius, shape_filter, cf, data)
         return self.__query_hits
 
-    def segment_query_first(self, start, end, radius,  shape_filter):
+    def segment_query_first(self, start, end, radius, shape_filter):
         """Query space along the line segment from start to end with the
         given radius.
 
         The filter is applied to the query and follows the same rules as the
         collision detection. Sensor shapes are included.
 
-        :Return:
-            `SegmentQueryInfo` - SegmentQueryInfo object or None if nothing
-            was hit.
+        See :py:class:`ShapeFilter` for details about how the shape_filter 
+        parameter can be used.
+
+        :rtype: :py:class:`SegmentQueryInfo` or None
         """
         info = ffi.new("cpSegmentQueryInfo *")
         _shape = cp.cpSpaceSegmentQueryFirst(
@@ -647,7 +663,10 @@ class Space(object):
         The filter is applied to the query and follows the same rules as the
         collision detection. Sensor shapes are included.
 
-        Returns a list of shapes hit.
+        :param BB bb: Bounding box
+        :param ShapeFilter shape_filter: Shape filter
+
+        :rtype: [:py:class:`Shape`]
         """
 
         self.__query_hits = []
@@ -665,7 +684,10 @@ class Space(object):
     def shape_query(self, shape):
         """Query a space for any shapes overlapping the given shape
 
-        Returns a list of shapes.
+        :param shape: Shape to query with
+        :type shape: :py:class:`Circle`, :py:class:`Poly` or :py:class:`Segment`
+
+        :rtype: [:py:class:`ShapeQueryInfo`]
         """
 
         self.__query_hits = []
@@ -689,7 +711,16 @@ class Space(object):
 
         If you use a graphics backend that is already supported, such as pygame 
         and pyglet, you can use the predefined options in their x_util modules, 
-        for example pygame_util.draw_options().
+        for example :py:class:`pygame_util.DrawOptions`.
+
+        Its also possible to write your own graphics backend, see 
+        :py:class:`SpaceDebugDrawOptions`.
+
+        If you require any advanced or optimized drawing its probably best to 
+        not use this funtion for the drawing since its meant for debugging 
+        and quick scripting. 
+
+        :type options: :py:class:`SpaceDebugDrawOptions`
         """
         h = ffi.new_handle(self)
         # we need to hold h until the end of cpSpaceDebugDraw to prevent GC

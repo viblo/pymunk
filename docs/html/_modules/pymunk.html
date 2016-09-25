@@ -85,10 +85,10 @@
 <span class="sd">exactly which Chipmunk library file it loaded. For example::</span>
 
 <span class="sd">    &gt;&gt;&gt; import pymunk</span>
-<span class="sd">    </span>
-<span class="sd">    Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]</span>
 
+<span class="sd">    Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
 
@@ -99,8 +99,8 @@
         <span class="p">,</span> <span class="s2">&quot;SegmentQueryInfo&quot;</span><span class="p">,</span> <span class="s2">&quot;ContactPoint&quot;</span><span class="p">,</span> <span class="s2">&quot;ContactPointSet&quot;</span><span class="p">,</span> <span class="s2">&quot;Arbiter&quot;</span>
         <span class="p">,</span> <span class="s2">&quot;CollisionHandler&quot;</span> 
         <span class="p">,</span> <span class="s2">&quot;BB&quot;</span><span class="p">,</span> <span class="s2">&quot;ShapeFilter&quot;</span>
-        <span class="p">,</span> <span class="s2">&quot;Transform&quot;</span><span class="p">,</span> <span class="s2">&quot;PointQueryInfo&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;SpaceDebugDrawOptions&quot;</span><span class="p">]</span>
+        <span class="p">,</span> <span class="s2">&quot;Transform&quot;</span><span class="p">,</span> <span class="s2">&quot;PointQueryInfo&quot;</span><span class="p">,</span> <span class="s2">&quot;ShapeQueryInfo&quot;</span>
+        <span class="p">,</span> <span class="s2">&quot;SpaceDebugDrawOptions&quot;</span><span class="p">]</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -118,7 +118,7 @@
 <span class="kn">from</span> <span class="nn">.bb</span> <span class="kn">import</span> <span class="n">BB</span>
 <span class="kn">from</span> <span class="nn">.body</span> <span class="kn">import</span> <span class="n">Body</span>
 <span class="kn">from</span> <span class="nn">.collision_handler</span> <span class="kn">import</span> <span class="n">CollisionHandler</span>
-<span class="kn">from</span> <span class="nn">.query_info</span> <span class="kn">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span>
+<span class="kn">from</span> <span class="nn">.query_info</span> <span class="kn">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span><span class="p">,</span> <span class="n">ShapeQueryInfo</span>
 <span class="kn">from</span> <span class="nn">.shapes</span> <span class="kn">import</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Poly</span><span class="p">,</span> <span class="n">Segment</span>
 <span class="kn">from</span> <span class="nn">.space</span> <span class="kn">import</span> <span class="n">Space</span>
 <span class="kn">from</span> <span class="nn">.space_debug_draw_options</span> <span class="kn">import</span> <span class="n">SpaceDebugDrawOptions</span>
@@ -153,13 +153,13 @@
 <span class="n">chipmunk_path</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib_path</span>
 <span class="sd">&quot;&quot;&quot;The path to the Chipmunk library loaded.</span>
 
-<span class="sd">Useful in case you are packaging a pymunk program with for example Py2exe or </span>
+<span class="sd">Useful in case you are packaging a Pymunk program with for example Py2exe or </span>
 <span class="sd">PyInstaller and need to know what library file to include. Please see the </span>
-<span class="sd">py2exe examples in the examples folder of Pymunk for example of this.</span>
+<span class="sd">Py2exe examples in the examples folder of Pymunk for example of this.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">inf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
-<span class="sd">&quot;&quot;&quot;Infinity that can be passed as mass or inertia to Body.</span>
+<span class="sd">&quot;&quot;&quot;Infinity that can be passed as mass or inertia to a :py:class:`Body`.</span>
 
 <span class="sd">Useful when you for example want a body that cannot rotate, just set its</span>
 <span class="sd">moment to inf. Just remember that if two objects with both infinite masses</span>
@@ -167,8 +167,8 @@
 <span class="sd">moment.</span>
 
 <span class="sd">.. note::</span>
-<span class="sd">    In previous versions of pymunk you used inf to create static bodies. This</span>
-<span class="sd">    has changed. See the Body documentation for details.</span>
+<span class="sd">    In previous versions of Pymunk you used inf to create static bodies. This</span>
+<span class="sd">    has changed. See :py:class:`Body` for details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="moment_for_circle"><a class="viewcode-back" href="../pymunk.html#pymunk.moment_for_circle">[docs]</a><span class="k">def</span> <span class="nf">moment_for_circle</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
@@ -249,6 +249,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">Benchmarks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk/issues">Issue Tracker</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/viblo/pymunk">Source Repository</a></li>

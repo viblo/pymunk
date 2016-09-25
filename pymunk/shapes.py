@@ -16,7 +16,8 @@ class Shape(object):
     """Base class for all the shapes.
 
     You usually dont want to create instances of this class directly but use
-    one of the specialized shapes instead.
+    one of the specialized shapes instead (:py:class:`Circle`, 
+    :py:class:`Poly` or :py:class:`Segment`).
     """
 
     _space = None # Weak ref to the space holding this body (if any)
@@ -51,8 +52,8 @@ class Shape(object):
     collision_type = property(_get_collision_type, _set_collision_type,
         doc="""User defined collision type for the shape.
 
-        See add_collisionpair_func function for more information on when to
-        use this property.
+        See :py:meth:`Space.add_collision_handler` function for more 
+        information on when to use this property.
         """)
 
     def _get_filter(self):
@@ -83,12 +84,12 @@ class Shape(object):
     friction = property(_get_friction, _set_friction,
         doc="""Friction coefficient.
 
-        pymunk uses the Coulomb friction model, a value of 0.0 is
+        Pymunk uses the Coulomb friction model, a value of 0.0 is
         frictionless.
 
         A value over 1.0 is perfectly fine.
 
-        Some real world example values from wikipedia (Remember that
+        Some real world example values from Wikipedia (Remember that
         it is what looks good that is important, not the exact value).
 
         ==============  ======  ========
@@ -158,16 +159,21 @@ class Shape(object):
     def _get_bb(self):
         return BB(cp.cpShapeGetBB(self._shape))
 
-    bb = property(_get_bb, doc="""The bounding box of the shape.
+    bb = property(_get_bb, doc="""The bounding box :py:class:`BB` of the shape.
 
-    Only guaranteed to be valid after Shape.cache_bb() or Space.step() is
-    called. Moving a body that a shape is connected to does not update it's
-    bounding box. For shapes used for queries that aren't attached to bodies,
-    you can also use Shape.update().
+        Only guaranteed to be valid after :py:meth:`Shape.cache_bb` or 
+        :py:meth:`Space.step` is called. Moving a body that a shape is 
+        connected to does not update it's bounding box. For shapes used for 
+        queries that aren't attached to bodies, you can also use 
+        :py:meth:`Shape.update`.
     """)
 
     def point_query(self, p):
-        """Check if the given point lies within the shape."""
+        """Check if the given point lies within the shape.
+        
+        :return: Tuple of (distance, info) 
+        :rtype: (float, :py:class:`PointQueryInfo`) 
+        """
         info = ffi.new("cpPointQueryInfo *")
         distance = cp.cpShapePointQuery(self._shape, p, info)
         return PointQueryInfo(self, Vec2d(info.point), info.distance, Vec2d(info.gradient))
@@ -179,6 +185,8 @@ class Shape(object):
 
     def segment_query(self, start, end, radius=0):
         """Check if the line segment from start to end intersects the shape.
+
+        :rtype: :py:class:`SegmentQueryInfo`
         """
         info = ffi.new("cpSegmentQueryInfo *")
         r = cp.cpShapeSegmentQuery(self._shape, start, end, radius, info)
@@ -192,7 +200,7 @@ class Shape(object):
     def shapes_collide(self, b):
         """Get contact information about this shape and shape b.
         
-        Returns ContactPointSet
+        :rtype: :py:class:`ContactPointSet`
         """
         _points = cp.cpShapesCollide(self._shape, b._shape)
         return ContactPointSet._from_cp(_points)
@@ -203,7 +211,9 @@ class Shape(object):
         else:
             return None
     space = property(_get_space,
-        doc="""Get the Space that shape has been added to (or None).""")
+        doc="""Get the :py:class:`Space` that shape has been added to (or 
+        None).
+        """)
 
 class Circle(Shape):
     """A circle shape defined by a radius
@@ -270,15 +280,10 @@ class Segment(Shape):
     def __init__(self, body, a, b, radius):
         """Create a Segment
 
-        :Parameters:
-            body : `Body`
-                The body to attach the segment to
-            a : (x,y) or `Vec2d`
-                The first endpoint of the segment
-            b : (x,y) or `Vec2d`
-                The second endpoint of the segment
-            radius : float
-                The thickness of the segment
+        :param Body body: The body to attach the segment to
+        :param a: The first endpoint of the segment
+        :param b: The second endpoint of the segment
+        :param float radius: The thickness of the segment
         """
         self._body = body
         body_body = ffi.NULL if body is None else body._body

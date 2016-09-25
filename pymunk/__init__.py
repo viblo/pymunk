@@ -35,10 +35,10 @@ file. As long as you haven't turned off the debug mode a print will show
 exactly which Chipmunk library file it loaded. For example::
 
     >>> import pymunk
-    
-    Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 
+    Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 """
+
 __docformat__ = "reStructuredText"
 
 
@@ -49,8 +49,8 @@ __all__ = ["inf", "version", "chipmunk_version"
         , "SegmentQueryInfo", "ContactPoint", "ContactPointSet", "Arbiter"
         , "CollisionHandler" 
         , "BB", "ShapeFilter"
-        , "Transform", "PointQueryInfo",
-        "SpaceDebugDrawOptions"]
+        , "Transform", "PointQueryInfo", "ShapeQueryInfo"
+        , "SpaceDebugDrawOptions"]
 
 import warnings
 import sys
@@ -68,7 +68,7 @@ from .arbiter import Arbiter
 from .bb import BB
 from .body import Body
 from .collision_handler import CollisionHandler
-from .query_info import PointQueryInfo, SegmentQueryInfo
+from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shapes import Shape, Circle, Poly, Segment
 from .space import Space
 from .space_debug_draw_options import SpaceDebugDrawOptions
@@ -103,13 +103,13 @@ is a release then the second part will be empty
 chipmunk_path = _chipmunk_cffi.lib_path
 """The path to the Chipmunk library loaded.
 
-Useful in case you are packaging a pymunk program with for example Py2exe or 
+Useful in case you are packaging a Pymunk program with for example Py2exe or 
 PyInstaller and need to know what library file to include. Please see the 
-py2exe examples in the examples folder of Pymunk for example of this.
+Py2exe examples in the examples folder of Pymunk for example of this.
 """
 
 inf = float('inf')
-"""Infinity that can be passed as mass or inertia to Body.
+"""Infinity that can be passed as mass or inertia to a :py:class:`Body`.
 
 Useful when you for example want a body that cannot rotate, just set its
 moment to inf. Just remember that if two objects with both infinite masses
@@ -117,8 +117,8 @@ collides the world might explode. Similary effects can happen with infinite
 moment.
 
 .. note::
-    In previous versions of pymunk you used inf to create static bodies. This
-    has changed. See the Body documentation for details.
+    In previous versions of Pymunk you used inf to create static bodies. This
+    has changed. See :py:class:`Body` for details.
 """
 
 def moment_for_circle(mass, inner_radius, outer_radius, offset=(0, 0)):
