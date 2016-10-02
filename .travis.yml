@@ -5,6 +5,7 @@ git:
 sudo: false
 env:
   global:
+  - PYTHON="python"
   - PIP_INSTALL="pip install"
   - BUILD_CMD=
   matrix:
@@ -15,9 +16,10 @@ matrix:
     osx_image: xcode6.4
     language: generic
     env: 
+    - PYTHON="python3"
     - TOXENV=py3 
     - PIP_INSTALL="pip install --user"
-    - BUILD_CMD="python setup.py bdist_wheel"
+    - BUILD_CMD="python3 setup.py bdist_wheel"
   - os: osx
     osx_image: xcode6.4
     language: generic
@@ -46,10 +48,10 @@ before_install:
 - "./.travis_before_install.sh"
 install:
 - echo $PATH
-- which python
-- "travis_retry python -m $PIP_INSTALL \"virtualenv<14.0.0\" tox wheel"
+- which $PYTHON
+- "travis_retry $PYTHON -m $PIP_INSTALL \"virtualenv<14.0.0\" tox wheel"
 script:
-- python -m tox
+- $PYTHON -m tox
 - $BUILD_CMD
 deploy:
   provider: bintray
