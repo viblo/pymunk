@@ -134,9 +134,10 @@ class Body(object):
         """)
 
     def _set_position(self, pos):
-        cp.cpBodySetPosition(self._body, pos)
+        cp.cpBodySetPosition(self._body, tuple(pos))
     def _get_position(self):
-        return Vec2d(cp.cpBodyGetPosition(self._body))
+        p = cp.cpBodyGetPosition(self._body)
+        return Vec2d._fromcffi(p)
     position = property(_get_position, _set_position,
         doc="""Position of the body.
 
@@ -146,9 +147,9 @@ class Body(object):
         queries against the space.""")
 
     def _set_center_of_gravity(self, cog):
-        cp.cpBodySetCenterOfGravity(self._body, cog)
+        cp.cpBodySetCenterOfGravity(self._body, tuple(cog))
     def _get_center_of_gravity(self):
-        return Vec2d(cp.cpBodyGetCenterOfGravity(self._body))
+        return Vec2d._fromcffi(cp.cpBodyGetCenterOfGravity(self._body))
     center_of_gravity = property(_get_center_of_gravity,
         _set_center_of_gravity,
         doc="""Location of the center of gravity in body local coordinates.
@@ -158,16 +159,16 @@ class Body(object):
         """)
 
     def _set_velocity(self, vel):
-        cp.cpBodySetVelocity(self._body, vel)
+        cp.cpBodySetVelocity(self._body, tuple(vel))
     def _get_velocity(self):
-        return Vec2d(cp.cpBodyGetVelocity(self._body))
+        return Vec2d._fromcffi(cp.cpBodyGetVelocity(self._body))
     velocity = property(_get_velocity, _set_velocity,
         doc="""Linear velocity of the center of gravity of the body.""")
 
     def _set_force(self, f):
-        cp.cpBodySetForce(self._body, f)
+        cp.cpBodySetForce(self._body, tuple(f))
     def _get_force(self):
-        return Vec2d(cp.cpBodyGetForce(self._body))
+        return Vec2d._fromcffi(cp.cpBodyGetForce(self._body))
     force = property(_get_force, _set_force,
         doc="""Force applied to the center of gravity of the body.
 
@@ -210,7 +211,7 @@ class Body(object):
         This value is reset for every time step.""")
 
     def _get_rotation_vector(self):
-        return Vec2d(cp.cpBodyGetRotation(self._body))
+        return Vec2d._fromcffi(cp.cpBodyGetRotation(self._body))
     rotation_vector = property(_get_rotation_vector,
         doc="""The rotation vector for the body.""")
 
@@ -227,7 +228,7 @@ class Body(object):
         @ffi.callback("typedef void (*cpBodyVelocityFunc)"
             "(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt)")
         def _impl(_, gravity, damping, dt):
-            return func(self, Vec2d(gravity), damping, dt)
+            return func(self, Vec2d._fromcffi(gravity), damping, dt)
 
         self._velocity_callback = _impl
         cp.cpBodySetVelocityUpdateFunc(self._body, _impl)
@@ -276,7 +277,7 @@ class Body(object):
 
         Updates the velocity of the body using Euler integration.
         """
-        cp.cpBodyUpdateVelocity(body._body, gravity, damping, dt)
+        cp.cpBodyUpdateVelocity(body._body, tuple(gravity), damping, dt)
 
     @staticmethod
     def update_position(body, dt):
@@ -301,24 +302,24 @@ class Body(object):
         Both impulses and forces are affected the mass of an object. Doubling
         the mass of the object will halve the effect.
         """
-        cp.cpBodyApplyForceAtWorldPoint(self._body, force, point)
+        cp.cpBodyApplyForceAtWorldPoint(self._body, force, tuple(point))
 
     def apply_force_at_local_point(self, force, point):
         """Add the local force force to body as if applied from the body
         local point.
         """
-        cp.cpBodyApplyForceAtLocalPoint(self._body, force, point)
+        cp.cpBodyApplyForceAtLocalPoint(self._body, force, tuple(point))
 
     def apply_impulse_at_world_point(self, impulse, point=(0, 0)):
         """Add the impulse impulse to body as if applied from the world point.
         """
-        cp.cpBodyApplyImpulseAtWorldPoint(self._body, impulse, point)
+        cp.cpBodyApplyImpulseAtWorldPoint(self._body, impulse, tuple(point))
 
     def apply_impulse_at_local_point(self, impulse, point=(0, 0)):
         """Add the local impulse impulse to body as if applied from the body
         local point.
         """
-        cp.cpBodyApplyImpulseAtLocalPoint(self._body, impulse, point)
+        cp.cpBodyApplyImpulseAtLocalPoint(self._body, impulse, tuple(point))
 
 
     def activate(self):
@@ -430,14 +431,14 @@ class Body(object):
 
         :param v: Vector in body local coordinates
         """
-        return Vec2d(cp.cpBodyLocalToWorld(self._body, v))
+        return Vec2d._fromcffi(cp.cpBodyLocalToWorld(self._body, tuple(v)))
 
     def world_to_local(self, v):
         """Convert world space coordinates to body local coordinates
 
         :param v: Vector in world space coordinates
         """
-        return Vec2d(cp.cpBodyWorldToLocal(self._body, v))
+        return Vec2d._fromcffi(cp.cpBodyWorldToLocal(self._body, tuple(v)))
 
     def velocity_at_world_point(self, point):
         """Get the absolute velocity of the rigid body at the given world
@@ -447,10 +448,12 @@ class Body(object):
         surface of a body since the angular velocity affects everything
         except the center of gravity.
         """
-        return Vec2d(cp.cpBodyGetVelocityAtWorldPoint(self._body, point))
+        return Vec2d._fromcffi(
+            cp.cpBodyGetVelocityAtWorldPoint(self._body, tuple(point)))
 
     def velocity_at_local_point(self, point):
         """ Get the absolute velocity of the rigid body at the given body
         local point
         """
-        return Vec2d(cp.cpBodyGetVelocityAtLocalPoint(self._body, point))
+        return Vec2d._fromcffi(
+            cp.cpBodyGetVelocityAtLocalPoint(self._body, tuple(point)))

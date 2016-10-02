@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.pyglet_util Module &mdash; pymunk 5.0.0 documentation</title>
+    <title>pymunk.pyglet_util Module &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" />
     <link rel="up" title="API Reference" href="pymunk.html" />
     <link rel="next" title="pymunkoptions Module" href="pymunkoptions.html" />
     <link rel="prev" title="pymunk.pygame_util Module" href="pymunk.pygame_util.html" /> 
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="pymunk.pygame_util.html" title="pymunk.pygame_util Module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="pymunk.html" accesskey="U">API Reference</a> &raquo;</li> 
       </ul>
     </div>  
@@ -92,19 +92,23 @@ drawing, but there is probably room for optimizations still).</p>
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/pyglet_util.html#DrawOptions.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pyglet_util.DrawOptions.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw a pymunk.Space.</p>
 <p>Typical usage:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">pyglet_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">myspace</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">pyglet_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can control the color of a Shape by setting shape.color to the color 
 you want it drawn in.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="c1"># will draw my_shape in red</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="c1"># will draw my_shape in red</span>
 </pre></div>
 </div>
 <p>You can optionally pass in a batch to use for drawing. Just 
 remember that you need to call draw yourself.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">pyglet_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">batch</span><span class="o">=</span><span class="n">my_batch</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">myspace</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_batch</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">Batch</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">pyglet_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">batch</span><span class="o">=</span><span class="n">my_batch</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_batch</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -290,7 +294,7 @@ need to call draw on it yourself.</p>
         <li class="right" >
           <a href="pymunk.pygame_util.html" title="pymunk.pygame_util Module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="pymunk.html" >API Reference</a> &raquo;</li> 
       </ul>
     </div>

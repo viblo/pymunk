@@ -1,4 +1,3 @@
-__version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 from . import _chipmunk_cffi
@@ -31,7 +30,9 @@ class Shape(object):
     def _get_shapeid(self):
         return cp.cpShapeGetUserData(self._shape)
     def _set_shapeid(self):
-        cp.cpShapeSetUserData(self._shape, ffi.cast("cpDataPointer", Shape._shapeid_counter))
+        cp.cpShapeSetUserData(
+            self._shape, 
+            ffi.cast("cpDataPointer", Shape._shapeid_counter))
         Shape._shapeid_counter += 1
 
     def _get_sensor(self):
@@ -115,9 +116,9 @@ class Shape(object):
         """)
 
     def _get_surface_velocity(self):
-        return Vec2d(cp.cpShapeGetSurfaceVelocity(self._shape))
+        return Vec2d._fromcffi(cp.cpShapeGetSurfaceVelocity(self._shape))
     def _set_surface_velocity(self, surface_v):
-        cp.cpShapeSetSurfaceVelocity(self._shape, surface_v)
+        cp.cpShapeSetSurfaceVelocity(self._shape, tuple(surface_v))
     surface_velocity = property(_get_surface_velocity, _set_surface_velocity,
         doc="""The surface velocity of the object.
 
@@ -170,16 +171,22 @@ class Shape(object):
 
     def point_query(self, p):
         """Check if the given point lies within the shape.
-        
+
+        A negative distance means the point is within the shape.
+
         :return: Tuple of (distance, info) 
         :rtype: (float, :py:class:`PointQueryInfo`) 
         """
         info = ffi.new("cpPointQueryInfo *")
-        distance = cp.cpShapePointQuery(self._shape, p, info)
-        return PointQueryInfo(self, Vec2d(info.point), info.distance, Vec2d(info.gradient))
+        distance = cp.cpShapePointQuery(self._shape, tuple(p), info)
+        
         ud = cp.cpShapeGetUserData(info.shape)
         assert ud == self._get_shapeid()
-        x = PointQueryInfo(self, info.point, info.distance, info.gradient)
+        x = PointQueryInfo(
+            self, 
+            Vec2d._fromcffi(info.point), 
+            info.distance, 
+            Vec2d._fromcffi(info.gradient))
         return distance, x
 
 
@@ -189,13 +196,16 @@ class Shape(object):
         :rtype: :py:class:`SegmentQueryInfo`
         """
         info = ffi.new("cpSegmentQueryInfo *")
-        r = cp.cpShapeSegmentQuery(self._shape, start, end, radius, info)
+        r = cp.cpShapeSegmentQuery(
+            self._shape, tuple(start), tuple(end), radius, info)
         if r:
             ud = cp.cpShapeGetUserData(info.shape)
             assert ud == self._get_shapeid()
-            return SegmentQueryInfo(self, Vec2d(info.point), Vec2d(info.normal), info.alpha)
+            return SegmentQueryInfo(
+                self, Vec2d._fromcffi(info.point), Vec2d._fromcffi(info.normal), info.alpha)
         else:
-            return SegmentQueryInfo(None, Vec2d(info.point), Vec2d(info.normal), info.alpha)
+            return SegmentQueryInfo(
+                None, Vec2d._fromcffi(info.point), Vec2d._fromcffi(info.normal), info.alpha)
 
     def shapes_collide(self, b):
         """Get contact information about this shape and shape b.
@@ -234,7 +244,8 @@ class Circle(Shape):
             body._shapes.add(self)
 
         self._shape = ffi.gc(
-            cp.cpCircleShapeNew(body_body, radius, offset), cp.cpShapeFree)
+            cp.cpCircleShapeNew(body_body, radius, tuple(offset)), 
+            cp.cpShapeFree)
         self._set_shapeid()
 
     def unsafe_set_radius(self, r):
@@ -261,10 +272,10 @@ class Circle(Shape):
             not result in realistic physical behavior. Only use if you know
             what you are doing!
         """
-        cp.cpCircleShapeSetOffset(self._shape, o)
+        cp.cpCircleShapeSetOffset(self._shape, tuple(o))
 
     def _get_offset (self):
-        return Vec2d(cp.cpCircleShapeGetOffset(self._shape))
+        return Vec2d._fromcffi(cp.cpCircleShapeGetOffset(self._shape))
     offset = property(_get_offset, doc="""Offset. (body space coordinates)""")
 
 
@@ -291,16 +302,17 @@ class Segment(Shape):
             body._shapes.add(self)
             
         self._shape = ffi.gc(
-            cp.cpSegmentShapeNew(body_body, a, b, radius), cp.cpShapeFree)
+            cp.cpSegmentShapeNew(body_body, tuple(a), tuple(b), radius), 
+            cp.cpShapeFree)
         self._set_shapeid()
 
     def _get_a(self):
-        return Vec2d(cp.cpSegmentShapeGetA(self._shape))
+        return Vec2d._fromcffi(cp.cpSegmentShapeGetA(self._shape))
     a = property(_get_a,
         doc="""The first of the two endpoints for this segment""")
 
     def _get_b(self):
-        return Vec2d(cp.cpSegmentShapeGetB(self._shape))
+        return Vec2d._fromcffi(cp.cpSegmentShapeGetB(self._shape))
     b = property(_get_b,
         doc="""The second of the two endpoints for this segment""")
 
@@ -313,10 +325,10 @@ class Segment(Shape):
             not result in realistic physical behavior. Only use if you know
             what you are doing!
         """
-        cp.cpSegmentShapeSetEndpoints(self._shape, a, b)
+        cp.cpSegmentShapeSetEndpoints(self._shape, tuple(a), tuple(b))
         
     def _get_normal(self):
-        return Vec2d(cp.cpSegmentShapeGetNormal(self._shape))
+        return Vec2d._fromcffi(cp.cpSegmentShapeGetNormal(self._shape))
     normal = property(_get_normal,
         doc="""The normal""")
 
@@ -341,7 +353,7 @@ class Segment(Shape):
         segments. By setting the neighbor segment endpoints you can tell
         Chipmunk to avoid colliding with the inner parts of the crack.
         """
-        cp.cpSegmentShapeSetNeighbors(self._shape, prev, next)
+        cp.cpSegmentShapeSetNeighbors(self._shape, tuple(prev), tuple(next))
 
 class Poly(Shape):
     """A convex polygon shape
@@ -355,19 +367,17 @@ class Poly(Shape):
     def __init__(self, body, vertices, transform=None, radius=0):
         """Create a polygon.
 
-            A convex hull will be calculated from the vertexes automatically.
+        A convex hull will be calculated from the vertexes automatically.
 
-            body : `Body`
-                The body to attach the poly to
-            vertices : [(x,y)] or [`Vec2d`]
-                Define a convex hull of the polygon with a counterclockwise
-                winding.
-            transform : `Transform`
-                Transform will be applied to every vertex.
-            radius : int
-                Set the radius of the poly shape. Adding a small radius will
-                bevel the corners and can significantly reduce problems where
-                the poly gets stuck on seams in your geometry.
+        Adding a small radius will bevel the corners and can significantly 
+        reduce problems where the poly gets stuck on seams in your geometry.
+
+        :param Body body: The body to attach the poly to
+        :param [(float,float)] vertices: Define a convex hull of the polygon 
+            with a counterclockwise winding.
+        :param Transform transform: Transform will be applied to every vertex.
+        :param float radius: Set the radius of the poly shape
+                
         """
 
         self._body = body
@@ -379,7 +389,8 @@ class Poly(Shape):
         if transform == None:
             transform = Transform.identity()
 
-        s = cp.cpPolyShapeNew(body_body, len(vertices), vertices, transform, radius)
+        vs = map(tuple, vertices)
+        s = cp.cpPolyShapeNew(body_body, len(vertices), vs, transform, radius)
         self._shape = ffi.gc(s, cp.cpShapeFree)
         self._set_shapeid()
 
@@ -402,53 +413,77 @@ class Poly(Shape):
 
     @staticmethod
     def create_box(body, size=(10,10), radius=0):
-        """Convenience function to create a box.
+        """Convenience function to create a box given a width and height.
 
         The boxes will always be centered at the center of gravity of the
         body you are attaching them to.  If you want to create an off-center
         box, you will need to use the normal constructor Poly(...).
 
-            body : `Body`
-                The body to attach the poly to
-            size : `(w,h)` or `Vec2d` or `BB`
-                Size of the box
-            radius : `float`
-                Adding a small radius will bevel the corners and can
-                significantly reduce problems where the box gets stuck on
-                seams in your geometry.
+        Adding a small radius will bevel the corners and can significantly 
+        reduce problems where the box gets stuck on seams in your geometry.
 
+        :param Body body: The body to attach the poly to
+        :param size: Size of the box as (width, height)
+        :type size: (`float, float`)
+        :param float radius: Radius of poly
+        :rtype: :py:class:`Poly`
         """
 
         self = Poly.__new__(Poly)
-
         self._body = body
 
         body_body = ffi.NULL if body is None else body._body
         if body != None:
             body._shapes.add(self)
 
-        if isinstance(size, BB):
-            self._shape = ffi.gc(
-                cp.cpBoxShapeNew2(body_body, size._bb[0], radius),
-                cp.cpShapeFree)
-        else:
-            self._shape = ffi.gc(
-                cp.cpBoxShapeNew(body_body, size[0], size[1], radius),
-                cp.cpShapeFree)
+        self._shape = ffi.gc(
+            cp.cpBoxShapeNew(body_body, size[0], size[1], radius),
+            cp.cpShapeFree)
 
         self._set_shapeid()
+        return self
 
+    @staticmethod
+    def create_box_bb(body, bb, radius=0):
+        """Convenience function to create a box shape from a :py:class:`BB`.
+        
+        The boxes will always be centered at the center of gravity of the
+        body you are attaching them to.  If you want to create an off-center
+        box, you will need to use the normal constructor Poly(..).
+
+        Adding a small radius will bevel the corners and can significantly 
+        reduce problems where the box gets stuck on seams in your geometry.
+
+        :param Body body: The body to attach the poly to
+        :param BB bb: Size of the box
+        :param float radius: Radius of poly
+        :rtype: :py:class:`Poly`
+        """
+
+        self = Poly.__new__(Poly)
+        self._body = body
+
+        body_body = ffi.NULL if body is None else body._body
+        if body != None:
+            body._shapes.add(self)
+
+        self._shape = ffi.gc(
+            cp.cpBoxShapeNew2(body_body, bb._bb[0], radius),
+            cp.cpShapeFree)
+        
+        self._set_shapeid()
         return self
 
     def get_vertices(self):
         """Get the vertices in local coordinates for the polygon
 
-        :return: [`Vec2d`] in local coords
+        :return: The vertices in local coords
+        :rtype: [:py:class:`Vec2d`]
         """
         verts = []
         l = cp.cpPolyShapeGetCount(self._shape)
         for i in range(l):
-            verts.append(Vec2d(cp.cpPolyShapeGetVert(self._shape, i)))
+            verts.append(Vec2d._fromcffi(cp.cpPolyShapeGetVert(self._shape, i)))
         return verts
 
     def unsafe_set_vertices(self, vertices, transform=None):
@@ -460,8 +495,9 @@ class Poly(Shape):
             not result in realistic physical behavior. Only use if you know
             what you are doing!
         """
+        vs = map(tuple, vertices)
         if transform == None:
-            cp.cpPolyShapeSetVertsRaw(self._shape, len(vertices), vertices)
+            cp.cpPolyShapeSetVertsRaw(self._shape, len(vertices), vs)
             return
             
-        cp.cpPolyShapeSetVerts(self._shape, len(vertices), vertices, transform)
+        cp.cpPolyShapeSetVerts(self._shape, len(vertices), vs, transform)

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.shapes &mdash; pymunk 5.0.0 documentation</title>
+    <title>pymunk.shapes &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="../../index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="../../index.html" />
     <link rel="up" title="pymunk" href="../pymunk.html" /> 
   </head>
   <body role="document">
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
       </ul>
@@ -49,8 +49,7 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk.shapes</h1><div class="highlight"><pre>
-<span></span><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;$Id$&quot;</span>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
+<span></span><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
@@ -82,7 +81,9 @@
     <span class="k">def</span> <span class="nf">_get_shapeid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetUserData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_shapeid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeSetUserData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;cpDataPointer&quot;</span><span class="p">,</span> <span class="n">Shape</span><span class="o">.</span><span class="n">_shapeid_counter</span><span class="p">))</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeSetUserData</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> 
+            <span class="n">ffi</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;cpDataPointer&quot;</span><span class="p">,</span> <span class="n">Shape</span><span class="o">.</span><span class="n">_shapeid_counter</span><span class="p">))</span>
         <span class="n">Shape</span><span class="o">.</span><span class="n">_shapeid_counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">def</span> <span class="nf">_get_sensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -166,9 +167,9 @@
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_surface_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetSurfaceVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetSurfaceVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_surface_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_v</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeSetSurfaceVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">surface_v</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeSetSurfaceVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">surface_v</span><span class="p">))</span>
     <span class="n">surface_velocity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_surface_velocity</span><span class="p">,</span> <span class="n">_set_surface_velocity</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The surface velocity of the object.</span>
 
@@ -221,16 +222,22 @@
 
 <div class="viewcode-block" id="Shape.point_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Shape.point_query">[docs]</a>    <span class="k">def</span> <span class="nf">point_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if the given point lies within the shape.</span>
-<span class="sd">        </span>
+
+<span class="sd">        A negative distance means the point is within the shape.</span>
+
 <span class="sd">        :return: Tuple of (distance, info) </span>
 <span class="sd">        :rtype: (float, :py:class:`PointQueryInfo`) </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpPointQueryInfo *&quot;</span><span class="p">)</span>
-        <span class="n">distance</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapePointQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">PointQueryInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">))</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapePointQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+        
         <span class="n">ud</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetUserData</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">ud</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shapeid</span><span class="p">()</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">PointQueryInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">PointQueryInfo</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> 
+            <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> 
+            <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">distance</span><span class="p">,</span> <span class="n">x</span></div>
 
 
@@ -240,13 +247,16 @@
 <span class="sd">        :rtype: :py:class:`SegmentQueryInfo`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpSegmentQueryInfo *&quot;</span><span class="p">)</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeSegmentQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeSegmentQuery</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">end</span><span class="p">),</span> <span class="n">radius</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">r</span><span class="p">:</span>
             <span class="n">ud</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetUserData</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
             <span class="k">assert</span> <span class="n">ud</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shapeid</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">normal</span><span class="p">),</span> <span class="n">info</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">normal</span><span class="p">),</span> <span class="n">info</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">normal</span><span class="p">),</span> <span class="n">info</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span>
+                <span class="bp">None</span><span class="p">,</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">normal</span><span class="p">),</span> <span class="n">info</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Shape.shapes_collide"><a class="viewcode-back" href="../../pymunk.html#pymunk.Shape.shapes_collide">[docs]</a>    <span class="k">def</span> <span class="nf">shapes_collide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get contact information about this shape and shape b.</span>
@@ -285,7 +295,8 @@
             <span class="n">body</span><span class="o">.</span><span class="n">_shapes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpCircleShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">offset</span><span class="p">),</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpCircleShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">offset</span><span class="p">)),</span> 
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_shapeid</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Circle.unsafe_set_radius"><a class="viewcode-back" href="../../pymunk.html#pymunk.Circle.unsafe_set_radius">[docs]</a>    <span class="k">def</span> <span class="nf">unsafe_set_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
@@ -312,10 +323,10 @@
 <span class="sd">            not result in realistic physical behavior. Only use if you know</span>
 <span class="sd">            what you are doing!</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpCircleShapeSetOffset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpCircleShapeSetOffset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">o</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">_get_offset</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpCircleShapeGetOffset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpCircleShapeGetOffset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
     <span class="n">offset</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_offset</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Offset. (body space coordinates)&quot;&quot;&quot;</span><span class="p">)</span></div>
 
 
@@ -342,16 +353,17 @@
             <span class="n">body</span><span class="o">.</span><span class="n">_shapes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">),</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">radius</span><span class="p">),</span> 
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_shapeid</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_get_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeGetA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeGetA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
     <span class="n">a</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_a</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The first of the two endpoints for this segment&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeGetB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeGetB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
     <span class="n">b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_b</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The second of the two endpoints for this segment&quot;&quot;&quot;</span><span class="p">)</span>
 
@@ -364,10 +376,10 @@
 <span class="sd">            not result in realistic physical behavior. Only use if you know</span>
 <span class="sd">            what you are doing!</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeSetEndpoints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeSetEndpoints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">b</span><span class="p">))</span></div>
         
     <span class="k">def</span> <span class="nf">_get_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeGetNormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeGetNormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span>
     <span class="n">normal</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_normal</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The normal&quot;&quot;&quot;</span><span class="p">)</span>
 
@@ -392,7 +404,7 @@
 <span class="sd">        segments. By setting the neighbor segment endpoints you can tell</span>
 <span class="sd">        Chipmunk to avoid colliding with the inner parts of the crack.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeSetNeighbors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="nb">next</span><span class="p">)</span></div></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSegmentShapeSetNeighbors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">prev</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">next</span><span class="p">))</span></div></div>
 
 <div class="viewcode-block" id="Poly"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly">[docs]</a><span class="k">class</span> <span class="nc">Poly</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A convex polygon shape</span>
@@ -406,19 +418,17 @@
 <div class="viewcode-block" id="Poly.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a polygon.</span>
 
-<span class="sd">            A convex hull will be calculated from the vertexes automatically.</span>
+<span class="sd">        A convex hull will be calculated from the vertexes automatically.</span>
 
-<span class="sd">            body : `Body`</span>
-<span class="sd">                The body to attach the poly to</span>
-<span class="sd">            vertices : [(x,y)] or [`Vec2d`]</span>
-<span class="sd">                Define a convex hull of the polygon with a counterclockwise</span>
-<span class="sd">                winding.</span>
-<span class="sd">            transform : `Transform`</span>
-<span class="sd">                Transform will be applied to every vertex.</span>
-<span class="sd">            radius : int</span>
-<span class="sd">                Set the radius of the poly shape. Adding a small radius will</span>
-<span class="sd">                bevel the corners and can significantly reduce problems where</span>
-<span class="sd">                the poly gets stuck on seams in your geometry.</span>
+<span class="sd">        Adding a small radius will bevel the corners and can significantly </span>
+<span class="sd">        reduce problems where the poly gets stuck on seams in your geometry.</span>
+
+<span class="sd">        :param Body body: The body to attach the poly to</span>
+<span class="sd">        :param [(float,float)] vertices: Define a convex hull of the polygon </span>
+<span class="sd">            with a counterclockwise winding.</span>
+<span class="sd">        :param Transform transform: Transform will be applied to every vertex.</span>
+<span class="sd">        :param float radius: Set the radius of the poly shape</span>
+<span class="sd">                </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">body</span>
@@ -430,7 +440,8 @@
         <span class="k">if</span> <span class="n">transform</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">transform</span> <span class="o">=</span> <span class="n">Transform</span><span class="o">.</span><span class="n">identity</span><span class="p">()</span>
 
-        <span class="n">s</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="n">vs</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vs</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_shapeid</span><span class="p">()</span></div>
 
@@ -453,53 +464,77 @@
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Poly.create_box"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.create_box">[docs]</a>    <span class="k">def</span> <span class="nf">create_box</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convenience function to create a box.</span>
+        <span class="sd">&quot;&quot;&quot;Convenience function to create a box given a width and height.</span>
 
 <span class="sd">        The boxes will always be centered at the center of gravity of the</span>
 <span class="sd">        body you are attaching them to.  If you want to create an off-center</span>
 <span class="sd">        box, you will need to use the normal constructor Poly(...).</span>
 
-<span class="sd">            body : `Body`</span>
-<span class="sd">                The body to attach the poly to</span>
-<span class="sd">            size : `(w,h)` or `Vec2d` or `BB`</span>
-<span class="sd">                Size of the box</span>
-<span class="sd">            radius : `float`</span>
-<span class="sd">                Adding a small radius will bevel the corners and can</span>
-<span class="sd">                significantly reduce problems where the box gets stuck on</span>
-<span class="sd">                seams in your geometry.</span>
+<span class="sd">        Adding a small radius will bevel the corners and can significantly </span>
+<span class="sd">        reduce problems where the box gets stuck on seams in your geometry.</span>
 
+<span class="sd">        :param Body body: The body to attach the poly to</span>
+<span class="sd">        :param size: Size of the box as (width, height)</span>
+<span class="sd">        :type size: (`float, float`)</span>
+<span class="sd">        :param float radius: Radius of poly</span>
+<span class="sd">        :rtype: :py:class:`Poly`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span> <span class="o">=</span> <span class="n">Poly</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">Poly</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">body</span>
 
         <span class="n">body_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span> <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span>
         <span class="k">if</span> <span class="n">body</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">body</span><span class="o">.</span><span class="n">_shapes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">BB</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
-                <span class="n">cp</span><span class="o">.</span><span class="n">cpBoxShapeNew2</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="n">size</span><span class="o">.</span><span class="n">_bb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">radius</span><span class="p">),</span>
-                <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
-                <span class="n">cp</span><span class="o">.</span><span class="n">cpBoxShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">radius</span><span class="p">),</span>
-                <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpBoxShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">radius</span><span class="p">),</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_shapeid</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Poly.create_box_bb"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.create_box_bb">[docs]</a>    <span class="k">def</span> <span class="nf">create_box_bb</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convenience function to create a box shape from a :py:class:`BB`.</span>
+<span class="sd">        </span>
+<span class="sd">        The boxes will always be centered at the center of gravity of the</span>
+<span class="sd">        body you are attaching them to.  If you want to create an off-center</span>
+<span class="sd">        box, you will need to use the normal constructor Poly(..).</span>
+
+<span class="sd">        Adding a small radius will bevel the corners and can significantly </span>
+<span class="sd">        reduce problems where the box gets stuck on seams in your geometry.</span>
+
+<span class="sd">        :param Body body: The body to attach the poly to</span>
+<span class="sd">        :param BB bb: Size of the box</span>
+<span class="sd">        :param float radius: Radius of poly</span>
+<span class="sd">        :rtype: :py:class:`Poly`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">Poly</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">Poly</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">body</span>
+
+        <span class="n">body_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span> <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span>
+        <span class="k">if</span> <span class="n">body</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">body</span><span class="o">.</span><span class="n">_shapes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpBoxShapeNew2</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">radius</span><span class="p">),</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_shapeid</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Poly.get_vertices"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.get_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the vertices in local coordinates for the polygon</span>
 
-<span class="sd">        :return: [`Vec2d`] in local coords</span>
+<span class="sd">        :return: The vertices in local coords</span>
+<span class="sd">        :rtype: [:py:class:`Vec2d`]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">verts</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">l</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeGetCount</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
-            <span class="n">verts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeGetVert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">i</span><span class="p">)))</span>
+            <span class="n">verts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeGetVert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">i</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">verts</span></div>
 
 <div class="viewcode-block" id="Poly.unsafe_set_vertices"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.unsafe_set_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">unsafe_set_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -511,11 +546,12 @@
 <span class="sd">            not result in realistic physical behavior. Only use if you know</span>
 <span class="sd">            what you are doing!</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vs</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">transform</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeSetVertsRaw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vertices</span><span class="p">)</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeSetVertsRaw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vs</span><span class="p">)</span>
             <span class="k">return</span>
             
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeSetVerts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">transform</span><span class="p">)</span></div></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeSetVerts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vs</span><span class="p">,</span> <span class="n">transform</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -575,7 +611,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
       </ul>

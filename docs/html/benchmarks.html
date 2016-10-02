@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Benchmarks &mdash; pymunk 5.0.0 documentation</title>
+    <title>Benchmarks &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" />
     <link rel="next" title="Advanced" href="advanced.html" />
     <link rel="prev" title="Slide and Pin Joint Demo Step by Step" href="tutorials/SlideAndPinJoint.html" /> 
   </head>
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="tutorials/SlideAndPinJoint.html" title="Slide and Pin Joint Demo Step by Step"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -87,9 +87,6 @@ using a callback, for example as a collision handler or a position function:</p>
 </pre></div>
 </div>
 <p>(see <cite>pymunk-callback.py</cite>)</p>
-<p>The computer used for these tests is a HP G1 1040 laptop with a Intel i7-4600U.</p>
-<p>I ran the tests inside a virtual box VM running Debian (since installation of
-other libraries than pymunk is a bit tricky on Windows)</p>
 <div class="section" id="results">
 <h3>Results:<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h3>
 <p>Tests run on a HP G1 1040 laptop with a Intel i7-4600U. Laptop runs Windows,
@@ -97,6 +94,9 @@ and the tests were run inside a VirtualBox VM running 64bit Debian. The CPython
 tests uses CPython from Conda, while the Pypy tests used a
 manually downloaded Pypy. CPython 2.7 is using Cffi 1.7, the other tests
 Cffi 1.8.</p>
+<p>Remember that these results doesnt tell you how you game/application will
+perform, they can more be seen as a help to identify performance issues and
+know differences between Pythons.</p>
 <div class="section" id="pymunk-get">
 <h4>Pymunk-Get:<a class="headerlink" href="#pymunk-get" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
@@ -114,12 +114,17 @@ Cffi 1.8.</p>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>Pymunk 5.0</td>
+<tr class="row-even"><td>Pymunk 5.1</td>
+<td>2.1s</td>
+<td>2.2s</td>
+<td>0.36s</td>
+</tr>
+<tr class="row-odd"><td>Pymunk 5.0</td>
 <td>4.3s</td>
 <td>4.5s</td>
 <td>0.37s</td>
 </tr>
-<tr class="row-odd"><td>Pymunk 4.0</td>
+<tr class="row-even"><td>Pymunk 4.0</td>
 <td>1.0s</td>
 <td>0.9s</td>
 <td>0.52s</td>
@@ -144,12 +149,17 @@ Cffi 1.8.</p>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>Pymunk 5.0</td>
+<tr class="row-even"><td>Pymunk 5.1</td>
+<td>5.7s</td>
+<td>6.8s</td>
+<td>1.1s</td>
+</tr>
+<tr class="row-odd"><td>Pymunk 5.0</td>
 <td>6.5s</td>
 <td>7.3s</td>
 <td>1.0s</td>
 </tr>
-<tr class="row-odd"><td>Pymunk 4.0</td>
+<tr class="row-even"><td>Pymunk 4.0</td>
 <td>5.1s</td>
 <td>6.5s</td>
 <td>4.5s</td>
@@ -161,6 +171,8 @@ possibility since that is much faster than regular CPython. We can also see
 that moving from Ctypes to Cffi between Pymunk 4 and 5 had a negative impact in
 CPython, but positive impact on Pypy, and Pymunk 5 together with Pypy is with a
 big margin the fastest option.</p>
+<p>The speed increase between 5.0 and 5.1 happend because the Vec2d class and how
+its handled internally in pymunk was changed to improve performance.</p>
 </div>
 </div>
 </div>
@@ -253,7 +265,7 @@ big margin the fastest option.</p>
         <li class="right" >
           <a href="tutorials/SlideAndPinJoint.html" title="Slide and Pin Joint Demo Step by Step"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

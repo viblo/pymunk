@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API Reference &mdash; pymunk 5.0.0 documentation</title>
+    <title>API Reference &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" />
     <link rel="next" title="pymunk.autogeometry Module" href="pymunk.autogeometry.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
   </head>
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="installation.html" title="Installation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -104,7 +104,7 @@ has changed. See <a class="reference internal" href="#pymunk.Body" title="pymunk
 
 <dl class="data">
 <dt id="pymunk.version">
-<code class="descclassname">pymunk.</code><code class="descname">version</code><em class="property"> = '5.0.0'</em><a class="headerlink" href="#pymunk.version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">version</code><em class="property"> = '5.1.0'</em><a class="headerlink" href="#pymunk.version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from git).</p>
@@ -112,7 +112,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x045E26D0&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x048135B0&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -1131,6 +1131,7 @@ it is what looks good that is important, not the exact value).</p>
 <dt id="pymunk.Shape.point_query">
 <code class="descname">point_query</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Shape.point_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Shape.point_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the given point lies within the shape.</p>
+<p>A negative distance means the point is within the shape.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1368,6 +1369,7 @@ it is what looks good that is important, not the exact value).</p>
 <dt id="pymunk.Circle.point_query">
 <code class="descname">point_query</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.Circle.point_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the given point lies within the shape.</p>
+<p>A negative distance means the point is within the shape.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1488,19 +1490,23 @@ shape is not attached to a body.</p>
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>body</em>, <em>vertices</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Poly.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a polygon.</p>
 <p>A convex hull will be calculated from the vertexes automatically.</p>
-<dl class="docutils">
-<dt>body</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Body</cite></span><dd>The body to attach the poly to</dd>
-<dt>vertices</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">[(x,y)] or [<cite>Vec2d</cite>]</span><dd>Define a convex hull of the polygon with a counterclockwise
-winding.</dd>
-<dt>transform</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Transform</cite></span><dd>Transform will be applied to every vertex.</dd>
-<dt>radius</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd>Set the radius of the poly shape. Adding a small radius will
-bevel the corners and can significantly reduce problems where
-the poly gets stuck on seams in your geometry.</dd>
-</dl>
+<p>Adding a small radius will bevel the corners and can significantly 
+reduce problems where the poly gets stuck on seams in your geometry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>body</strong> (<a class="reference internal" href="#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; The body to attach the poly to</li>
+<li><strong>vertices</strong> (<em>[(float,float)]</em>) &#8211; Define a convex hull of the polygon 
+with a counterclockwise winding.</li>
+<li><strong>transform</strong> (<a class="reference internal" href="#pymunk.Transform" title="pymunk.Transform"><em>Transform</em></a>) &#8211; Transform will be applied to every vertex.</li>
+<li><strong>radius</strong> (<em>float</em>) &#8211; Set the radius of the poly shape</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -1538,22 +1544,55 @@ information on when to use this property.</p>
 <dl class="staticmethod">
 <dt id="pymunk.Poly.create_box">
 <em class="property">static </em><code class="descname">create_box</code><span class="sig-paren">(</span><em>body</em>, <em>size=(10</em>, <em>10)</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Poly.create_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.create_box" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convenience function to create a box.</p>
+<dd><p>Convenience function to create a box given a width and height.</p>
 <p>The boxes will always be centered at the center of gravity of the
 body you are attaching them to.  If you want to create an off-center
 box, you will need to use the normal constructor Poly(...).</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>body</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Body</cite></span><dd>The body to attach the poly to</dd>
-<dt>size</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><cite>(w,h)</cite> or <cite>Vec2d</cite> or <cite>BB</cite></span><dd>Size of the box</dd>
-<dt>radius</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><cite>float</cite></span><dd>Adding a small radius will bevel the corners and can
-significantly reduce problems where the box gets stuck on
-seams in your geometry.</dd>
-</dl>
-</div></blockquote>
+<p>Adding a small radius will bevel the corners and can significantly 
+reduce problems where the box gets stuck on seams in your geometry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>body</strong> (<a class="reference internal" href="#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; The body to attach the poly to</li>
+<li><strong>size</strong> ((<cite>float, float</cite>)) &#8211; Size of the box as (width, height)</li>
+<li><strong>radius</strong> (<em>float</em>) &#8211; Radius of poly</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal"><span class="pre">Poly</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymunk.Poly.create_box_bb">
+<em class="property">static </em><code class="descname">create_box_bb</code><span class="sig-paren">(</span><em>body</em>, <em>bb</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Poly.create_box_bb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.create_box_bb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to create a box shape from a <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal"><span class="pre">BB</span></code></a>.</p>
+<p>The boxes will always be centered at the center of gravity of the
+body you are attaching them to.  If you want to create an off-center
+box, you will need to use the normal constructor Poly(..).</p>
+<p>Adding a small radius will bevel the corners and can significantly 
+reduce problems where the box gets stuck on seams in your geometry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>body</strong> (<a class="reference internal" href="#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; The body to attach the poly to</li>
+<li><strong>bb</strong> (<a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) &#8211; Size of the box</li>
+<li><strong>radius</strong> (<em>float</em>) &#8211; Radius of poly</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal"><span class="pre">Poly</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -1669,7 +1708,9 @@ it is what looks good that is important, not the exact value).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">[<cite>Vec2d</cite>] in local coords</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The vertices in local coords</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">[<code class="xref py py-class docutils literal"><span class="pre">Vec2d</span></code>]</td>
 </tr>
 </tbody>
 </table>
@@ -1679,6 +1720,7 @@ it is what looks good that is important, not the exact value).</p>
 <dt id="pymunk.Poly.point_query">
 <code class="descname">point_query</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.Poly.point_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the given point lies within the shape.</p>
+<p>A negative distance means the point is within the shape.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1975,6 +2017,7 @@ it is what looks good that is important, not the exact value).</p>
 <dt id="pymunk.Segment.point_query">
 <code class="descname">point_query</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.Segment.point_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the given point lies within the shape.</p>
+<p>A negative distance means the point is within the shape.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2451,7 +2494,7 @@ contact with something or when deallocating the space.</p>
 <dt id="pymunk.BB.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/bb.html#BB.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.BB.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new instance of a bounding box.</p>
-<p>Can be created with zero size with bb = BB() or with four args defining 
+<p>Can be created with zero size with b`b = BB() or with four args defining 
 left, bottom, right and top: bb = BB(left, bottom, right, top)</p>
 </dd></dl>
 
@@ -3099,7 +3142,7 @@ directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
         <li class="right" >
           <a href="installation.html" title="Installation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

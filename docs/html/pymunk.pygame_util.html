@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.pygame_util Module &mdash; pymunk 5.0.0 documentation</title>
+    <title>pymunk.pygame_util Module &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" />
     <link rel="up" title="API Reference" href="pymunk.html" />
     <link rel="next" title="pymunk.pyglet_util Module" href="pymunk.pyglet_util.html" />
     <link rel="prev" title="pymunk.matplotlib_util Module" href="pymunk.matplotlib_util.html" /> 
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="pymunk.matplotlib_util.html" title="pymunk.matplotlib_util Module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="pymunk.html" accesskey="U">API Reference</a> &raquo;</li> 
       </ul>
     </div>  
@@ -91,13 +91,16 @@ about your coordinate system and not in any way optimized.</p>
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>surface</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/pygame_util.html#DrawOptions.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.pygame_util.DrawOptions.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw a pymunk.Space on a pygame.Surface object.</p>
 <p>Typical usage:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">myspace</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can control the color of a shape by setting shape.color to the color 
 you want it drawn in.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_shape</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;pink&quot;</span><span class="p">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;pink&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>See pygame_util.demo.py for a full example</p>
@@ -301,7 +304,7 @@ pymunk coordinates</p>
         <li class="right" >
           <a href="pymunk.matplotlib_util.html" title="pymunk.matplotlib_util Module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="pymunk.html" >API Reference</a> &raquo;</li> 
       </ul>
     </div>

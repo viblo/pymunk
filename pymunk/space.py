@@ -117,9 +117,9 @@ class Space(object):
 
 
     def _set_gravity(self, gravity_vector):
-        cp.cpSpaceSetGravity(self._space, gravity_vector)
+        cp.cpSpaceSetGravity(self._space, tuple(gravity_vector))
     def _get_gravity(self):
-        return Vec2d(cp.cpSpaceGetGravity(self._space))
+        return Vec2d._fromcffi(cp.cpSpaceGetGravity(self._space))
     gravity = property(_get_gravity, _set_gravity
         , doc="""Global gravity applied to the space.
 
@@ -538,11 +538,16 @@ class Space(object):
         def cf(_shape, point, distance, gradient, data):
             # space = ffi.from_handle(data)
             shape = self._get_shape(_shape)
-            p = PointQueryInfo(shape, Vec2d(point), distance, Vec2d(gradient))
+            p = PointQueryInfo(
+                shape, 
+                Vec2d._fromcffi(point), 
+                distance, 
+                Vec2d._fromcffi(gradient))
             self.__query_hits.append(p)
             
         data = ffi.new_handle(self)
-        cp.cpSpacePointQuery(self._space, point, max_distance, shape_filter, cf, data)
+        cp.cpSpacePointQuery(
+            self._space, tuple(point), max_distance, shape_filter, cf, data)
         return self.__query_hits
 
     def _get_shape(self, _shape):
@@ -582,7 +587,7 @@ class Space(object):
         info = ffi.new("cpPointQueryInfo *")
         _shape = cp.cpSpacePointQueryNearest(
             self._space, 
-            point, max_distance, 
+            tuple(point), max_distance, 
             shape_filter, info)
         
         shape = self._get_shape(_shape)
@@ -590,9 +595,9 @@ class Space(object):
         if shape != None:
             return PointQueryInfo(
                 shape, 
-                Vec2d(info.point), 
+                Vec2d._fromcffi(info.point), 
                 info.distance, 
-                Vec2d(info.gradient))
+                Vec2d._fromcffi(info.gradient))
         return None
 
 
@@ -621,11 +626,17 @@ class Space(object):
             " void *data)")
         def cf(_shape, point, normal, alpha, data):
             shape = self._get_shape(_shape)
-            p = SegmentQueryInfo(shape, Vec2d(point), Vec2d(normal), alpha)
+            p = SegmentQueryInfo(
+                shape, Vec2d._fromcffi(point), Vec2d._fromcffi(normal), alpha)
             self.__query_hits.append(p)
             
         data = ffi.new_handle(self)
-        cp.cpSpaceSegmentQuery(self._space, start, end, radius, shape_filter, cf, data)
+        cp.cpSpaceSegmentQuery(
+            self._space, 
+            tuple(start), tuple(end), 
+            radius, 
+            shape_filter, cf, 
+            data)
         return self.__query_hits
 
     def segment_query_first(self, start, end, radius, shape_filter):
@@ -643,7 +654,7 @@ class Space(object):
         info = ffi.new("cpSegmentQueryInfo *")
         _shape = cp.cpSpaceSegmentQueryFirst(
             self._space, 
-            start, end, 
+            tuple(start), tuple(end), 
             radius, shape_filter, 
             info)
 
@@ -651,8 +662,8 @@ class Space(object):
         if shape != None:
             return SegmentQueryInfo(
                 shape, 
-                Vec2d(info.point), 
-                Vec2d(info.normal), 
+                Vec2d._fromcffi(info.point), 
+                Vec2d._fromcffi(info.normal), 
                 info.alpha)
         return None
 

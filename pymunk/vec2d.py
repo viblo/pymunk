@@ -31,13 +31,13 @@ do not need to explicitly do conversions if you happen to have a tuple::
 
     >>> import pymunk
     >>> space = pymunk.Space()
-    >>> print space.gravity
+    >>> space.gravity
     Vec2d(0.0, 0.0)
     >>> space.gravity = 3,5
-    >>> print space.gravity
+    >>> space.gravity
     Vec2d(3.0, 5.0)
     >>> space.gravity += 2,6
-    >>> print space.gravity
+    >>> space.gravity
     Vec2d(5.0, 11.0)
 
 """
@@ -49,23 +49,57 @@ import math
 
 __all__ = ["Vec2d"]
 
-class Vec2d(list):
+class Vec2d(object):
     """2d vector class, supports vector and scalar operators, and also 
     provides some high level functions.
     """
-    __slots__ = ()
-        
+    __slots__ = ("x", "y")
+
+    @staticmethod        
+    def _fromcffi(p):
+        """Used as a speedy way to create Vec2ds internally in pymunk."""
+        v = Vec2d.__new__(Vec2d)
+        v.x = p.x
+        v.y = p.y
+        return v 
+
     def __init__(self, x_or_pair=None, y = None):
         if x_or_pair != None:
             if y == None:
                 if hasattr(x_or_pair, "x") and hasattr(x_or_pair, "y"):
-                    super(Vec2d, self).__init__([x_or_pair.x, x_or_pair.y])
+                    self.x = x_or_pair.x
+                    self.y = x_or_pair.y
                 else:
-                    super(Vec2d, self).__init__(x_or_pair)
+                    self.x = x_or_pair[0]
+                    self.y = x_or_pair[1]
             else:
-                super(Vec2d, self).__init__([x_or_pair, y])
+                self.x = x_or_pair
+                self.y = y
         else:
-            super(Vec2d, self).__init__([0,0])
+            self.x = 0
+            self.y = 0
+
+    def __getitem__(self, i):
+        if i == 0:
+            return self.x
+        elif i == 1:
+            return self.y
+        raise IndexError()
+
+    def __iter__(self):
+        yield self.x
+        yield self.y
+
+    def __len__(self):
+        return 2
+
+    def __setitem__(self, i, value):
+        if i == 0:
+            self.x = value
+        elif i == 1:
+            self.y = value
+        else:
+            raise IndexError()
    
     # String representaion (for debugging)
     def __repr__(self):
@@ -266,21 +300,7 @@ class Vec2d(list):
         return Vec2d(-self.x, -self.y)
  
     
-    def _get_x(self):
-        return self[0]
-
-    def _set_x(self, x):
-        self[0] = x
-        
-    x = property(_get_x, _set_x)
-    
-    def _get_y(self):
-        return self[1]
-
-    def _set_y(self, y):
-        self[1] = y
-    
-    y = property(_get_y, _set_y)
+   
  
     # vectory functions
     def get_length_sqrd(self): 
@@ -481,6 +501,6 @@ class Vec2d(list):
         callable = Vec2d
         args = (self.x, self.y)
         return (callable, args)
-
+    
 
 

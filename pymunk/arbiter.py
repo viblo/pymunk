@@ -105,7 +105,7 @@ class Arbiter(object):
         """)
 
     def _get_surface_velocity(self):
-        return Vec2d(cp.cpArbiterGetSurfaceVelocity(self._arbiter))
+        return Vec2d._fromcffi(cp.cpArbiterGetSurfaceVelocity(self._arbiter))
     def _set_surface_velocity(self, velocity):
         cp.cpArbiterSetSurfaceVelocity(self._arbiter, velocity)
     surface_velocity = property(_get_surface_velocity, _set_surface_velocity,
@@ -122,7 +122,7 @@ class Arbiter(object):
         """)
 
     def _get_total_impulse(self):
-        return Vec2d(cp.cpArbiterTotalImpulse(self._arbiter))
+        return Vec2d._fromcffi(cp.cpArbiterTotalImpulse(self._arbiter))
     total_impulse = property(_get_total_impulse,
         doc="""Returns the impulse that was applied this step to resolve the
         collision.

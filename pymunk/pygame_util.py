@@ -58,13 +58,16 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         
         Typical usage::
         
-        >>> options = pymunk.pygame_util.DrawOptions(screen)
-        >>> myspace.debug_draw(options)
+        >>> surface = pygame.Surface((10,10))
+        >>> s = pymunk.Space()
+        >>> options = pymunk.pygame_util.DrawOptions(surface)
+        >>> s.debug_draw(options)
             
         You can control the color of a shape by setting shape.color to the color 
         you want it drawn in.
         
-        >>> my_shape.color = pygame.color.THECOLORS["pink"]
+        >>> c = pymunk.Circle(None, 10)
+        >>> c.color = pygame.color.THECOLORS["pink"]
         
         See pygame_util.demo.py for a full example
         

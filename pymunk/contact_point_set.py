@@ -50,7 +50,10 @@ class ContactPointSet(object):
         points = [] 
         for i in range(_points.count):
             _p = _points.points[i]
-            p = ContactPoint(Vec2d(_p.pointA), Vec2d(_p.pointB), _p.distance)
+            p = ContactPoint(
+                Vec2d._fromcffi(_p.pointA), 
+                Vec2d._fromcffi(_p.pointB), 
+                _p.distance)
             points.append(p)
         
         return cls(normal, points)

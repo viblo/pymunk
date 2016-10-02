@@ -14,7 +14,7 @@ class BB(object):
     def __init__(self, *args):
         """Create a new instance of a bounding box. 
         
-        Can be created with zero size with bb = BB() or with four args defining 
+        Can be created with zero size with b`b = BB() or with four args defining 
         left, bottom, right and top: bb = BB(left, bottom, right, top)
         """
         if len(args) == 0:
@@ -55,7 +55,7 @@ class BB(object):
     def intersects_segment(self, a, b):
         """Returns true if the segment defined by endpoints a and b
         intersect this bb."""
-        return bool(lib._cpBBIntersectsSegment(self._bb[0], a, b))
+        return bool(lib._cpBBIntersectsSegment(self._bb[0], tuple(a), tuple(b)))
 
     def contains(self, other):
         """Returns true if bb completley contains the other bb"""
@@ -63,7 +63,7 @@ class BB(object):
 
     def contains_vect(self, v):
         """Returns true if this bb contains the vector v"""
-        return bool(lib._cpBBContainsVect(self._bb[0], v))
+        return bool(lib._cpBBContainsVect(self._bb[0], tuple(v)))
 
     def merge(self, other):
         """Return the minimal bounding box that contains both this bb and the
@@ -75,11 +75,11 @@ class BB(object):
         """Return the minimal bounding box that contans both this bounding box
         and the vector v
         """
-        return BB(lib._cpBBExpand(self._bb[0], v))
+        return BB(lib._cpBBExpand(self._bb[0], tuple(v)))
 
     def center(self):
         """Return the center"""
-        return Vec2d(lib._cpBBCenter(self._bb[0]))
+        return Vec2d._fromcffi(lib._cpBBCenter(self._bb[0]))
 
     def area(self):
         """Return the area"""
@@ -96,17 +96,17 @@ class BB(object):
 
         Returns infinity if it doesnt hit
         """
-        return lib._cpBBSegmentQuery(self._bb[0], a, b)
+        return lib._cpBBSegmentQuery(self._bb[0], tuple(a), tuple(b))
 
     def clamp_vect(self, v):
         """Returns a copy of the vector v clamped to the bounding box"""
-        return Vec2d(lib._cpBBClampVect(self._bb[0], v))
+        return Vec2d._fromcffi(lib._cpBBClampVect(self._bb[0], tuple(v)))
 
     '''
     def wrap_vect(self, v):
         """Returns a copy of v wrapped to the bounding box.
 
-        That is, BB(0,0,10,10).wrap_vect((5,5)) == Vec2d(10,10)
+        That is, BB(0,0,10,10).wrap_vect((5,5)) == Vec2d._fromcffi(10,10)
         """
         return lib._cpBBWrapVect(self._bb[0], v)
     '''

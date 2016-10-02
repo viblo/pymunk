@@ -48,19 +48,23 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         
         Typical usage::
         
-        >>> options = pyglet_util.DrawOptions()
-        >>> myspace.debug_draw(options)
+        >>> s = pymunk.Space()
+        >>> options = pymunk.pyglet_util.DrawOptions()
+        >>> s.debug_draw(options)
         
         You can control the color of a Shape by setting shape.color to the color 
         you want it drawn in.
         
-        >>> my_shape.color = (255, 0, 0, 255) # will draw my_shape in red
+        >>> c = pymunk.Circle(None, 10)
+        >>> c.color = (255, 0, 0, 255) # will draw my_shape in red
         
         You can optionally pass in a batch to use for drawing. Just 
         remember that you need to call draw yourself.
         
-        >>> options = pyglet_util.DrawOptions(batch=my_batch)
-        >>> myspace.debug_draw(options)
+        >>> my_batch = pyglet.graphics.Batch()
+        >>> s = pymunk.Space()
+        >>> options = pymunk.pyglet_util.DrawOptions(batch=my_batch)
+        >>> s.debug_draw(options)
         >>> my_batch.draw()
         
         See pyglet_util.demo.py for a full example
@@ -91,7 +95,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
             self.batch.draw()
 
     def draw_circle(self, pos, angle, radius, outline_color, fill_color):
-        circle_center = Vec2d(pos)
+        circle_center = pos
         
         #http://slabode.exofire.net/circle_draw.shtml
         num_segments = int(4 * math.sqrt(radius))
@@ -138,8 +142,8 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
 
     def draw_segment(self, a, b, color):
-        pv1 = Vec2d(a)
-        pv2 = Vec2d(b)
+        pv1 = a
+        pv2 = b
         line = (int(pv1.x), int(pv1.y), int(pv2.x), int(pv2.y))
         
         self.batch.add(2, pyglet.gl.GL_LINES, None,
@@ -148,8 +152,8 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
 
     def draw_fat_segment(self, a, b, radius, outline_color, fill_color):
-        pv1 = Vec2d(a)
-        pv2 = Vec2d(b)
+        pv1 = a
+        pv2 = b
         d = pv2 - pv1
         a = -math.atan2(d.x, d.y)
         radius = max(radius, 1)

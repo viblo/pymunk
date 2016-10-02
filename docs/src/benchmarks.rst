@@ -49,12 +49,17 @@ tests uses CPython from Conda, while the Pypy tests used a
 manually downloaded Pypy. CPython 2.7 is using Cffi 1.7, the other tests 
 Cffi 1.8.
 
+Remember that these results doesnt tell you how you game/application will 
+perform, they can more be seen as a help to identify performance issues and
+know differences between Pythons.
+
 Pymunk-Get:
 +++++++++++
 
 ==========  ==============  =============  ==========
 ..          CPython 2.7.12  CPython 3.5.2  Pypy 5.4.1
 ==========  ==============  =============  ==========
+Pymunk 5.1  2.1s            2.2s           0.36s
 Pymunk 5.0  4.3s            4.5s           0.37s
 Pymunk 4.0  1.0s            0.9s           0.52s
 ==========  ==============  =============  ==========
@@ -65,6 +70,7 @@ Pymunk-Callback:
 ==========  ==============  =============  ==========
 ..          CPython 2.7.12  CPython 3.5.2  Pypy 5.4.1
 ==========  ==============  =============  ==========
+Pymunk 5.1  5.7s            6.8s           1.1s
 Pymunk 5.0  6.5s            7.3s           1.0s
 Pymunk 4.0  5.1s            6.5s           4.5s
 ==========  ==============  =============  ==========
@@ -74,3 +80,6 @@ possibility since that is much faster than regular CPython. We can also see
 that moving from Ctypes to Cffi between Pymunk 4 and 5 had a negative impact in 
 CPython, but positive impact on Pypy, and Pymunk 5 together with Pypy is with a 
 big margin the fastest option. 
+
+The speed increase between 5.0 and 5.1 happend because the Vec2d class and how
+its handled internally in pymunk was changed to improve performance.

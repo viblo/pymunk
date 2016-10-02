@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.space &mdash; pymunk 5.0.0 documentation</title>
+    <title>pymunk.space &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="../../index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="../../index.html" />
     <link rel="up" title="pymunk" href="../pymunk.html" /> 
   </head>
   <body role="document">
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
       </ul>
@@ -168,9 +168,9 @@
 
 
     <span class="k">def</span> <span class="nf">_set_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gravity_vector</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSetGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">gravity_vector</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSetGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">gravity_vector</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_get_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">))</span>
     <span class="n">gravity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_gravity</span><span class="p">,</span> <span class="n">_set_gravity</span>
         <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Global gravity applied to the space.</span>
 
@@ -589,11 +589,16 @@
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="c1"># space = ffi.from_handle(data)</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="n">PointQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">distance</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">gradient</span><span class="p">))</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">PointQueryInfo</span><span class="p">(</span>
+                <span class="n">shape</span><span class="p">,</span> 
+                <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> 
+                <span class="n">distance</span><span class="p">,</span> 
+                <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">gradient</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
             
         <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQuery</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span></div>
 
     <span class="k">def</span> <span class="nf">_get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_shape</span><span class="p">):</span>
@@ -633,7 +638,7 @@
         <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpPointQueryInfo *&quot;</span><span class="p">)</span>
         <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQueryNearest</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> 
-            <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> 
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">max_distance</span><span class="p">,</span> 
             <span class="n">shape_filter</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
         
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
@@ -641,9 +646,9 @@
         <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">PointQueryInfo</span><span class="p">(</span>
                 <span class="n">shape</span><span class="p">,</span> 
-                <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> 
+                <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> 
                 <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> 
-                <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">))</span>
+                <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">None</span></div>
 
 
@@ -672,11 +677,17 @@
             <span class="s2">&quot; void *data)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">normal</span><span class="p">),</span> <span class="n">alpha</span><span class="p">)</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span>
+                <span class="n">shape</span><span class="p">,</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">normal</span><span class="p">),</span> <span class="n">alpha</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
             
         <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQuery</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> 
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">end</span><span class="p">),</span> 
+            <span class="n">radius</span><span class="p">,</span> 
+            <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> 
+            <span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span></div>
 
 <div class="viewcode-block" id="Space.segment_query_first"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.segment_query_first">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query_first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
@@ -694,7 +705,7 @@
         <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpSegmentQueryInfo *&quot;</span><span class="p">)</span>
         <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQueryFirst</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> 
-            <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> 
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">end</span><span class="p">),</span> 
             <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> 
             <span class="n">info</span><span class="p">)</span>
 
@@ -702,8 +713,8 @@
         <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span>
                 <span class="n">shape</span><span class="p">,</span> 
-                <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> 
-                <span class="n">Vec2d</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">normal</span><span class="p">),</span> 
+                <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> 
+                <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">normal</span><span class="p">),</span> 
                 <span class="n">info</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">None</span></div>
 
@@ -839,7 +850,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
       </ul>

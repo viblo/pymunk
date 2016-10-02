@@ -7,7 +7,7 @@ capable 2d physics library Chipmunk.
 
 2007 - 2016, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest Pymunk release (5.0.0), 
+This release is based on the latest Pymunk release (5.1.0), 
 using Chipmunk 7.0 rev d7603e3927 (source included)
 
 :Homepage: http://www.pymunk.org

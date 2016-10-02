@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.pyglet_util &mdash; pymunk 5.0.0 documentation</title>
+    <title>pymunk.pyglet_util &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="../../index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="../../index.html" />
     <link rel="up" title="pymunk" href="../pymunk.html" /> 
   </head>
   <body role="document">
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
       </ul>
@@ -99,19 +99,23 @@
 <span class="sd">        </span>
 <span class="sd">        Typical usage::</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; options = pyglet_util.DrawOptions()</span>
-<span class="sd">        &gt;&gt;&gt; myspace.debug_draw(options)</span>
+<span class="sd">        &gt;&gt;&gt; s = pymunk.Space()</span>
+<span class="sd">        &gt;&gt;&gt; options = pymunk.pyglet_util.DrawOptions()</span>
+<span class="sd">        &gt;&gt;&gt; s.debug_draw(options)</span>
 <span class="sd">        </span>
 <span class="sd">        You can control the color of a Shape by setting shape.color to the color </span>
 <span class="sd">        you want it drawn in.</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; my_shape.color = (255, 0, 0, 255) # will draw my_shape in red</span>
+<span class="sd">        &gt;&gt;&gt; c = pymunk.Circle(None, 10)</span>
+<span class="sd">        &gt;&gt;&gt; c.color = (255, 0, 0, 255) # will draw my_shape in red</span>
 <span class="sd">        </span>
 <span class="sd">        You can optionally pass in a batch to use for drawing. Just </span>
 <span class="sd">        remember that you need to call draw yourself.</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; options = pyglet_util.DrawOptions(batch=my_batch)</span>
-<span class="sd">        &gt;&gt;&gt; myspace.debug_draw(options)</span>
+<span class="sd">        &gt;&gt;&gt; my_batch = pyglet.graphics.Batch()</span>
+<span class="sd">        &gt;&gt;&gt; s = pymunk.Space()</span>
+<span class="sd">        &gt;&gt;&gt; options = pymunk.pyglet_util.DrawOptions(batch=my_batch)</span>
+<span class="sd">        &gt;&gt;&gt; s.debug_draw(options)</span>
 <span class="sd">        &gt;&gt;&gt; my_batch.draw()</span>
 <span class="sd">        </span>
 <span class="sd">        See pyglet_util.demo.py for a full example</span>
@@ -142,7 +146,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 
 <div class="viewcode-block" id="DrawOptions.draw_circle"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_circle">[docs]</a>    <span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
-        <span class="n">circle_center</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">circle_center</span> <span class="o">=</span> <span class="n">pos</span>
         
         <span class="c1">#http://slabode.exofire.net/circle_draw.shtml</span>
         <span class="n">num_segments</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">radius</span><span class="p">))</span>
@@ -189,8 +193,8 @@
 
 
 <div class="viewcode-block" id="DrawOptions.draw_segment"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">pv1</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="n">pv2</span> <span class="o">=</span> <span class="n">b</span>
         <span class="n">line</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pv1</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv1</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv2</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv2</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
@@ -199,8 +203,8 @@
 
 
 <div class="viewcode-block" id="DrawOptions.draw_fat_segment"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_fat_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_fat_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-        <span class="n">pv2</span> <span class="o">=</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">pv1</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="n">pv2</span> <span class="o">=</span> <span class="n">b</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">pv2</span> <span class="o">-</span> <span class="n">pv1</span>
         <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
         <span class="n">radius</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -310,7 +314,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
       </ul>

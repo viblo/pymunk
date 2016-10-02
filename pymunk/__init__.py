@@ -74,7 +74,7 @@ from .space import Space
 from .space_debug_draw_options import SpaceDebugDrawOptions
 from pymunk.constraint import *
 
-version = "5.0.0"
+version = "5.1.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from git).

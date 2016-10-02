@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.constraint &mdash; pymunk 5.0.0 documentation</title>
+    <title>pymunk.constraint &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="../../index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="../../index.html" />
     <link rel="up" title="pymunk" href="../pymunk.html" /> 
   </head>
   <body role="document">
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
       </ul>
@@ -90,7 +90,6 @@
 <span class="sd">    allowfullscreen&gt;&lt;/iframe&gt;</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;$Id$&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
@@ -197,20 +196,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">anchor_a</span><span class="p">,</span> <span class="n">anchor_b</span><span class="p">),</span> 
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointNew</span><span class="p">(</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> 
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_b</span><span class="p">)),</span> 
             <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_get_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointSetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">anchor</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointSetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span>
     <span class="n">anchor_a</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_a</span><span class="p">,</span> <span class="n">_set_anchor_a</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">anchor</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span>
     <span class="n">anchor_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_b</span><span class="p">,</span> <span class="n">_set_anchor_b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -230,20 +231,21 @@
 <span class="sd">        distances of the anchor points.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">anchor_a</span><span class="p">,</span> <span class="n">anchor_b</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">),</span> 
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> 
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_b</span><span class="p">),</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">),</span> 
             <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_get_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointSetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">anchor</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointSetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span>
     <span class="n">anchor_a</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_a</span><span class="p">,</span> <span class="n">_set_anchor_a</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">anchor</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span>
     <span class="n">anchor_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_b</span><span class="p">,</span> <span class="n">_set_anchor_b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -273,21 +275,20 @@
 <span class="sd">        That is, either create the joint with PivotJoint(a, b, pivot) or</span>
 <span class="sd">        PivotJoint(a, b, anchor_a, anchor_b).</span>
 
-<span class="sd">            a : `Body`</span>
-<span class="sd">                The first of the two bodies</span>
-<span class="sd">            b : `Body`</span>
-<span class="sd">                The second of the two bodies</span>
-<span class="sd">            args : [Vec2d] or [Vec2d,Vec2d]</span>
-<span class="sd">                Either one pivot point, or two anchor points</span>
+<span class="sd">        :param Body a: The first of the two bodies</span>
+<span class="sd">        :param Body b: The second of the two bodies</span>
+<span class="sd">        :param args: Either one pivot point, or two anchor points</span>
+<span class="sd">        :type args: (float,float) or (float,float) (float,float)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
-                <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> 
+                <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> 
                 <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
-                <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointNew2</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointNew2</span><span class="p">(</span>
+                    <span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> 
                 <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;You must specify either one pivot point&quot;</span>
@@ -296,15 +297,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_get_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointSetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">anchor</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointSetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span>
     <span class="n">anchor_a</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_a</span><span class="p">,</span> <span class="n">_set_anchor_a</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">anchor</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span>
     <span class="n">anchor_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_b</span><span class="p">,</span> <span class="n">_set_anchor_b</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GrooveJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GrooveJoint">[docs]</a><span class="k">class</span> <span class="nc">GrooveJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
@@ -318,26 +319,29 @@
 <span class="sd">        All coordinates are body local.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">groove_a</span><span class="p">,</span> <span class="n">groove_b</span><span class="p">,</span> <span class="n">anchor_b</span><span class="p">),</span> 
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointNew</span><span class="p">(</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> 
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">groove_a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">groove_b</span><span class="p">),</span> 
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_b</span><span class="p">)),</span> 
             <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_get_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">anchor</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span>
     <span class="n">anchor_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_b</span><span class="p">,</span> <span class="n">_set_anchor_b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_groove_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointGetGrooveA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointGetGrooveA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_groove_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groove</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointSetGrooveA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">groove</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointSetGrooveA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">groove</span><span class="p">))</span>
     <span class="n">groove_a</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_groove_a</span><span class="p">,</span> <span class="n">_set_groove_a</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_groove_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointGetGrooveB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointGetGrooveB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_groove_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groove</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointSetGrooveB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">groove</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointSetGrooveB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">groove</span><span class="p">))</span>
     <span class="n">groove_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_groove_b</span><span class="p">,</span> <span class="n">_set_groove_b</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DampedSpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring">[docs]</a><span class="k">class</span> <span class="nc">DampedSpring</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
@@ -345,33 +349,33 @@
 <div class="viewcode-block" id="DampedSpring.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">anchor_a</span><span class="p">,</span> <span class="n">anchor_b</span><span class="p">,</span> <span class="n">rest_length</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Defined much like a slide joint.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            anchor_a : Vec2d or (x,y)</span>
-<span class="sd">                Anchor point a, relative to body a</span>
-<span class="sd">            anchor_b : Vec2d or (x,y)</span>
-<span class="sd">                Anchor point b, relative to body b</span>
-<span class="sd">            rest_length : float</span>
-<span class="sd">                The distance the spring wants to be.</span>
-<span class="sd">            stiffness : float</span>
-<span class="sd">                The spring constant (Young&#39;s modulus).</span>
-<span class="sd">            damping : float</span>
-<span class="sd">                How soft to make the damping of the spring.</span>
+<span class="sd">        :param Body a: Body a</span>
+<span class="sd">        :param Body b: Body b</span>
+<span class="sd">        :param anchor_a: Anchor point a, relative to body a</span>
+<span class="sd">        :type anchor_a: `(float,float)`</span>
+<span class="sd">        :param anchor_b: Anchor point b, relative to body b</span>
+<span class="sd">        :type anchor_b: `(float,float)`</span>
+<span class="sd">        :param float rest_length: The distance the spring wants to be.</span>
+<span class="sd">        :param float stiffness: The spring constant (Young&#39;s modulus).</span>
+<span class="sd">        :param float damping: How soft to make the damping of the spring.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span>
-            <span class="n">anchor_a</span><span class="p">,</span> <span class="n">anchor_b</span><span class="p">,</span> <span class="n">rest_length</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringNew</span><span class="p">(</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_b</span><span class="p">),</span> 
+            <span class="n">rest_length</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_get_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringSetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">anchor</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringSetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span>
     <span class="n">anchor_a</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_a</span><span class="p">,</span> <span class="n">_set_anchor_a</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">anchor</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span>
     <span class="n">anchor_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_b</span><span class="p">,</span> <span class="n">_set_anchor_b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_rest_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -400,13 +404,12 @@
 <div class="viewcode-block" id="DampedRotarySpring.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedRotarySpring.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rest_angle</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Like a damped spring, but works in an angular fashion.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            rest_angle : float</span>
-<span class="sd">                The relative angle in radians that the bodies want to have</span>
-<span class="sd">            stiffness : float</span>
-<span class="sd">                The spring constant (Young&#39;s modulus).</span>
-<span class="sd">            damping : float</span>
-<span class="sd">                How soft to make the damping of the spring.</span>
+<span class="sd">        :param Body a: Body a</span>
+<span class="sd">        :param Body b: Body b</span>
+<span class="sd">        :param float rest_angle: The relative angle in radians that the bodies </span>
+<span class="sd">            want to have</span>
+<span class="sd">        :param float stiffness: The spring constant (Young&#39;s modulus).</span>
+<span class="sd">        :param float damping: How soft to make the damping of the spring.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedRotarySpringNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> 
             <span class="n">rest_angle</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
@@ -597,7 +600,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
       </ul>

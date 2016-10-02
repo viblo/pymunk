@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.pygame_util &mdash; pymunk 5.0.0 documentation</title>
+    <title>pymunk.pygame_util &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="../../index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="../../index.html" />
     <link rel="up" title="pymunk" href="../pymunk.html" /> 
   </head>
   <body role="document">
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
       </ul>
@@ -109,13 +109,16 @@
 <span class="sd">        </span>
 <span class="sd">        Typical usage::</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; options = pymunk.pygame_util.DrawOptions(screen)</span>
-<span class="sd">        &gt;&gt;&gt; myspace.debug_draw(options)</span>
+<span class="sd">        &gt;&gt;&gt; surface = pygame.Surface((10,10))</span>
+<span class="sd">        &gt;&gt;&gt; s = pymunk.Space()</span>
+<span class="sd">        &gt;&gt;&gt; options = pymunk.pygame_util.DrawOptions(surface)</span>
+<span class="sd">        &gt;&gt;&gt; s.debug_draw(options)</span>
 <span class="sd">            </span>
 <span class="sd">        You can control the color of a shape by setting shape.color to the color </span>
 <span class="sd">        you want it drawn in.</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; my_shape.color = pygame.color.THECOLORS[&quot;pink&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; c = pymunk.Circle(None, 10)</span>
+<span class="sd">        &gt;&gt;&gt; c.color = pygame.color.THECOLORS[&quot;pink&quot;]</span>
 <span class="sd">        </span>
 <span class="sd">        See pygame_util.demo.py for a full example</span>
 <span class="sd">        </span>
@@ -248,7 +251,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
       </ul>

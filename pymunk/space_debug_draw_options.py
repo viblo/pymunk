@@ -54,14 +54,15 @@ class SpaceDebugDrawOptions(object):
             "cpDataPointer data)")
         def f1(pos, angle, radius, outline_color, fill_color, data):
             self.draw_circle(
-                Vec2d(pos), angle, radius, 
+                Vec2d._fromcffi(pos), angle, radius, 
                 self._c(outline_color), self._c(fill_color))
         _options.drawCircle = f1
 
         @ffi.callback("typedef void (*cpSpaceDebugDrawSegmentImpl)"
             "(cpVect a, cpVect b, cpSpaceDebugColor color, cpDataPointer data)")
         def f2(a, b, color, data):
-            self.draw_segment(Vec2d(a), Vec2d(b), self._c(color))
+            self.draw_segment(
+                Vec2d._fromcffi(a), Vec2d._fromcffi(b), self._c(color))
         _options.drawSegment = f2
 
         @ffi.callback("typedef void (*cpSpaceDebugDrawFatSegmentImpl)"
@@ -70,7 +71,7 @@ class SpaceDebugDrawOptions(object):
             "cpDataPointer data)")
         def f3(a, b, radius, outline_color, fill_color, data):
             self.draw_fat_segment(
-                Vec2d(a), Vec2d(b), radius, 
+                Vec2d._fromcffi(a), Vec2d._fromcffi(b), radius, 
                 self._c(outline_color), self._c(fill_color))
         _options.drawFatSegment = f3
 
@@ -81,7 +82,7 @@ class SpaceDebugDrawOptions(object):
         def f4(count, verts, radius, outline_color, fill_color, data):
             vs = []
             for i in range(count):
-                vs.append(Vec2d(verts[i]))
+                vs.append(Vec2d._fromcffi(verts[i]))
             self.draw_polygon(
                 vs, radius, 
                 self._c(outline_color), self._c(fill_color))   
@@ -91,7 +92,7 @@ class SpaceDebugDrawOptions(object):
             "(cpFloat size, cpVect pos, cpSpaceDebugColor color, "
             "cpDataPointer data)")
         def f5(size, pos, color, data):
-            self.draw_dot(size, Vec2d(pos), self._c(color))
+            self.draw_dot(size, Vec2d._fromcffi(pos), self._c(color))
         _options.drawDot = f5
 
         @ffi.callback("typedef cpSpaceDebugColor "

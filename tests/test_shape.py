@@ -9,15 +9,19 @@ class UnitTestShape(unittest.TestCase):
         b = p.Body(10,10)
         c = p.Circle(b, 5)
         c.cache_bb()
-        info = c.point_query((0,0))
-        #self.assertEqual(r, -5)
+        
+        distance, info = c.point_query((0,0))
+        
+        self.assertEqual(distance, -5)
         self.assertEqual(info.shape, c)
+        
         self.assertEqual(str(info.point), "Vec2d(nan, nan)")
         self.assertEqual(info.distance, -5)
         self.assertEqual(info.gradient, (0,1))
 
-        info = c.point_query((11,0))
-        #self.assertEqual(r, 6)
+        distance, info = c.point_query((11,0))
+        
+        self.assertEqual(distance, 6)
         self.assertEqual(info.shape, c)
         self.assertEqual(info.point, (5,0))
         self.assertEqual(info.distance, 6)
@@ -292,7 +296,7 @@ class UnitTestPoly(unittest.TestCase):
         c = p.Poly.create_box(None, (4,2), 3)
         self.assertEqual(c.get_vertices(), [(2,-1), (2,1), (-2,1), (-2,-1)])
 
-        c = p.Poly.create_box(None, p.BB(1,2,3,4), 3)
+        c = p.Poly.create_box_bb(None, p.BB(1,2,3,4), 3)
         self.assertEqual(c.get_vertices(), [(3,2), (3,4), (1,4), (1,2)])
 
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.autogeometry &mdash; pymunk 5.0.0 documentation</title>
+    <title>pymunk.autogeometry &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="../../index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="../../index.html" />
     <link rel="up" title="pymunk" href="../pymunk.html" /> 
   </head>
   <body role="document">
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
       </ul>
@@ -50,6 +50,8 @@
             
   <h1>Source code for pymunk.autogeometry</h1><div class="highlight"><pre>
 <span></span><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
 
 <span class="kn">from</span> <span class="nn">._chipmunk_cffi</span> <span class="kn">import</span> <span class="n">lib</span><span class="p">,</span> <span class="n">ffi</span>
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
@@ -69,16 +71,16 @@
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_set</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
         <span class="n">line</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_set</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
-            <span class="n">line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">_set</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+            <span class="n">line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">_set</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">lines</span>
     
 <div class="viewcode-block" id="is_closed"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.is_closed">[docs]</a><span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="n">polyline</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns true if the first vertex is equal to the last.</span>
 <span class="sd">    </span>
-<span class="sd">    :Parameters:</span>
-<span class="sd">        polyline : [(x,y)] or [`Vec2d`]</span>
-<span class="sd">            Polyline to simplify.</span>
+<span class="sd">    :param polyline: Polyline to simplify.</span>
+<span class="sd">    :type polyline: [(float,float)]</span>
+<span class="sd">    :rtype: `bool`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineIsClosed</span><span class="p">(</span><span class="n">_to_chipmunk</span><span class="p">(</span><span class="n">polyline</span><span class="p">)))</span></div>
 
@@ -89,17 +91,16 @@
 <span class="sd">    This works very well on smooth or gently curved shapes, but not well on </span>
 <span class="sd">    straight edged or angular shapes.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        polyline : [(x,y)] or [`Vec2d`]</span>
-<span class="sd">            Polyline to simplify.</span>
-<span class="sd">        tolerance : float</span>
-<span class="sd">            A higher value means more error is tolerated.</span>
+<span class="sd">    :param polyline: Polyline to simplify.</span>
+<span class="sd">    :type polyline: [(float,float)]</span>
+<span class="sd">    :param float tolerance: A higher value means more error is tolerated.</span>
+<span class="sd">    :rtype: [(float,float)]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_line</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineSimplifyCurves</span><span class="p">(</span><span class="n">_to_chipmunk</span><span class="p">(</span><span class="n">polyline</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
     <span class="n">simplified</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_line</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
-        <span class="n">simplified</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">_line</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="n">simplified</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">_line</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">simplified</span></div>
 
 <div class="viewcode-block" id="simplify_vertexes"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.simplify_vertexes">[docs]</a><span class="k">def</span> <span class="nf">simplify_vertexes</span><span class="p">(</span><span class="n">polyline</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">):</span>
@@ -108,31 +109,29 @@
 <span class="sd">    This works well on straigt edged or angular shapes, not as well on smooth </span>
 <span class="sd">    shapes.    </span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        polyline : [(x,y)] or [`Vec2d`]</span>
-<span class="sd">            Polyline to simplify.</span>
-<span class="sd">        tolerance : float</span>
-<span class="sd">            A higher value means more error is tolerated.</span>
+<span class="sd">    :param polyline: Polyline to simplify.</span>
+<span class="sd">    :type polyline: [(float,float)]</span>
+<span class="sd">    :param float tolerance: A higher value means more error is tolerated.</span>
+<span class="sd">    :rtype: [(float,float)]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_line</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineSimplifyVertexes</span><span class="p">(</span><span class="n">_to_chipmunk</span><span class="p">(</span><span class="n">polyline</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
     <span class="n">simplified</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_line</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
-        <span class="n">simplified</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">_line</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="n">simplified</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">_line</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">simplified</span></div>
 
 <div class="viewcode-block" id="to_convex_hull"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.to_convex_hull">[docs]</a><span class="k">def</span> <span class="nf">to_convex_hull</span><span class="p">(</span><span class="n">polyline</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the convex hull of a polyline as a looped polyline.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        polyline : [(x,y)] or [`Vec2d`]</span>
-<span class="sd">            The polyline to generate the hull for.</span>
-<span class="sd">        tolerance : float</span>
-<span class="sd">            A higher value means more error is tolerated.</span>
+<span class="sd">    :param polyline: Polyline to simplify.</span>
+<span class="sd">    :type polyline: [(float,float)]</span>
+<span class="sd">    :param float tolerance: A higher value means more error is tolerated.</span>
+<span class="sd">    :rtype: [(float,float)]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_line</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineToConvexHull</span><span class="p">(</span><span class="n">_to_chipmunk</span><span class="p">(</span><span class="n">polyline</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
     <span class="n">hull</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_line</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
-        <span class="n">hull</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">_line</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="n">hull</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">_line</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">hull</span></div>
 
 <div class="viewcode-block" id="convex_decomposition"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.convex_decomposition">[docs]</a><span class="k">def</span> <span class="nf">convex_decomposition</span><span class="p">(</span><span class="n">polyline</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">):</span>
@@ -141,26 +140,26 @@
 <span class="sd">    Returns a list of convex hulls that match the original shape to within </span>
 <span class="sd">    tolerance.</span>
 <span class="sd">    </span>
-<span class="sd">    NOTE: If the input is a self intersecting polygon, the output might end up </span>
-<span class="sd">    overly simplified.</span>
+<span class="sd">    .. note:: </span>
+<span class="sd">        If the input is a self intersecting polygon, the output might end up </span>
+<span class="sd">        overly simplified.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        polyline : [(x,y)] or [`Vec2d`]</span>
-<span class="sd">            The polyline to get the convex hulls for.</span>
-<span class="sd">        tolerance : float</span>
-<span class="sd">            A higher value means more error is tolerated.</span>
-<span class="sd">        </span>
+<span class="sd">    :param polyline: Polyline to simplify.</span>
+<span class="sd">    :type polyline: [(float,float)]</span>
+<span class="sd">    :param float tolerance: A higher value means more error is tolerated.</span>
+<span class="sd">    :rtype: [(float,float)]    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_line</span> <span class="o">=</span> <span class="n">_to_chipmunk</span><span class="p">(</span><span class="n">polyline</span><span class="p">)</span>
     <span class="n">_set</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineConvexDecomposition</span><span class="p">(</span><span class="n">_line</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_from_polyline_set</span><span class="p">(</span><span class="n">_set</span><span class="p">)</span></div>
 
-<span class="kn">import</span> <span class="nn">collections</span>
+
 <div class="viewcode-block" id="PolylineSet"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.PolylineSet">[docs]</a><span class="k">class</span> <span class="nc">PolylineSet</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">Sequence</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A set of Polylines. </span>
 <span class="sd">    </span>
-<span class="sd">    Mainly intended to be used for its `collect_segment()` function when generating</span>
-<span class="sd">    geometry with the `march_soft()` and `march_hard()` functions.    </span>
+<span class="sd">    Mainly intended to be used for its :py:meth:`collect_segment` function </span>
+<span class="sd">    when generating geometry with the :py:func:`march_soft` and </span>
+<span class="sd">    :py:func:`march_hard` functions.    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="PolylineSet.__init__"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.PolylineSet.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">free</span><span class="p">(</span><span class="n">_set</span><span class="p">):</span>
@@ -172,8 +171,12 @@
 <span class="sd">        </span>
 <span class="sd">        A segment will either start a new polyline, join two others, or add to </span>
 <span class="sd">        or loop an existing polyline. This is mostly intended to be used as a </span>
-<span class="sd">        callback directly from `march_soft()` or `march_hard()`.</span>
+<span class="sd">        callback directly from :py:func:`march_soft` or :py:func:`march_hard`.</span>
 <span class="sd">        </span>
+<span class="sd">        :param v0: Start of segment</span>
+<span class="sd">        :type v0: (float,float)</span>
+<span class="sd">        :param v1: End of segment</span>
+<span class="sd">        :type v1: (float,float)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineSetCollectSegment</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set</span><span class="p">)</span></div>
 
@@ -185,7 +188,7 @@
             <span class="k">raise</span> <span class="ne">IndexError</span>
         <span class="n">line</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_set</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
-            <span class="n">line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_set</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="n">line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_set</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">line</span></div>
 
 <div class="viewcode-block" id="march_soft"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.march_soft">[docs]</a><span class="k">def</span> <span class="nf">march_soft</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span> <span class="n">x_samples</span><span class="p">,</span> <span class="n">y_samples</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">segment_func</span><span class="p">,</span> <span class="n">sample_func</span><span class="p">):</span>
@@ -194,33 +197,28 @@
 <span class="sd">    The given number of samples will be taken and spread across the bounding </span>
 <span class="sd">    box area using the sampling function and context. </span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        bb : `BB`</span>
-<span class="sd">            bounding box of the area to sample within.</span>
-<span class="sd">        x_samples : int</span>
-<span class="sd">            Number of samples in x</span>
-<span class="sd">        y_samples : int </span>
-<span class="sd">            Number of samples in y</span>
-<span class="sd">        threshold : float</span>
-<span class="sd">            A higher value means more error is tolerated</span>
-<span class="sd">        segment_func : ``func(v0, v1)``</span>
-<span class="sd">            The segment function will be called for each segment detected that </span>
-<span class="sd">            lies along the density contour for threshold. v0 and v1 are `Vec2d`.</span>
-<span class="sd">        sample_func : ``func(point) -&gt; float``</span>
-<span class="sd">            The sample function will be called for x_samples * y_samples spread</span>
-<span class="sd">            across the bounding box area, and should return a float. point is </span>
-<span class="sd">            a `Vec2d`.</span>
+<span class="sd">    :param BB bb: Bounding box of the area to sample within</span>
+<span class="sd">    :param int x_samples: Number of samples in x</span>
+<span class="sd">    :param int y_samples: Number of samples in y</span>
+<span class="sd">    :param float threshold: A higher value means more error is tolerated</span>
+<span class="sd">    :param segment_func: The segment function will be called for each segment </span>
+<span class="sd">        detected that lies along the density contour for threshold. </span>
+<span class="sd">    :type segment_func: ``func(v0 : Vec2d, v1 : Vec2d)``</span>
+<span class="sd">    :param sample_func: The sample function will be called for </span>
+<span class="sd">        x_samples * y_samples spread across the bounding box area, and should </span>
+<span class="sd">        return a float. </span>
+<span class="sd">    :type sample_func: ``func(point: Vec2d) -&gt; float``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpMarchSegmentFunc)&quot;</span>
         <span class="s2">&quot;(cpVect v0, cpVect v1, void *data)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_seg_f</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
-        <span class="n">segment_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">v0</span><span class="p">),</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span>
+        <span class="n">segment_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v0</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span>
         
     <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef cpFloat (*cpMarchSampleFunc)&quot;</span>
         <span class="s2">&quot;(cpVect point, void *data)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_sam_f</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">sample_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">sample_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
     
     <span class="n">lib</span><span class="o">.</span><span class="n">cpMarchSoft</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_samples</span><span class="p">,</span> <span class="n">y_samples</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> 
         <span class="n">_seg_f</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">_sam_f</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">)</span></div>
@@ -231,32 +229,28 @@
 <span class="sd">    The given number of samples will be taken and spread across the bounding </span>
 <span class="sd">    box area using the sampling function and context. </span>
 
-<span class="sd">     :Parameters:</span>
-<span class="sd">        bb : `BB`</span>
-<span class="sd">            bounding box of the area to sample within.</span>
-<span class="sd">        x_samples : int</span>
-<span class="sd">            Number of samples in x</span>
-<span class="sd">        y_samples : int </span>
-<span class="sd">            Number of samples in y</span>
-<span class="sd">        threshold : float</span>
-<span class="sd">            A higher value means more error is tolerated</span>
-<span class="sd">        segment_func : ``func(v0, v1)``</span>
-<span class="sd">            The segment function will be called for each segment detected that </span>
-<span class="sd">            lies along the density contour for threshold. v0 and v1 are `Vec2d`.</span>
-<span class="sd">        sample_func : ``func(point) -&gt; float``</span>
-<span class="sd">            The sample function will be called for x_samples * y_samples spread</span>
-<span class="sd">            across the bounding box area, and should return a float. point is </span>
-<span class="sd">            a `Vec2d`.</span>
+<span class="sd">    :param BB bb: Bounding box of the area to sample within</span>
+<span class="sd">    :param int x_samples: Number of samples in x</span>
+<span class="sd">    :param int y_samples: Number of samples in y</span>
+<span class="sd">    :param float threshold: A higher value means more error is tolerated</span>
+<span class="sd">    :param segment_func: The segment function will be called for each segment </span>
+<span class="sd">        detected that lies along the density contour for threshold. </span>
+<span class="sd">    :type segment_func: ``func(v0 : Vec2d, v1 : Vec2d)``</span>
+<span class="sd">    :param sample_func: The sample function will be called for </span>
+<span class="sd">        x_samples * y_samples spread across the bounding box area, and should </span>
+<span class="sd">        return a float. </span>
+<span class="sd">    :type sample_func: ``func(point: Vec2d) -&gt; float``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpMarchSegmentFunc)&quot;</span>
         <span class="s2">&quot;(cpVect v0, cpVect v1, void *data)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_seg_f</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
-        <span class="n">segment_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">v0</span><span class="p">),</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span>
+        <span class="n">segment_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v0</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span>
         
     <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef cpFloat (*cpMarchSampleFunc)&quot;</span>
         <span class="s2">&quot;(cpVect point, void *data)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_sam_f</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">sample_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">sample_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
     
     <span class="n">lib</span><span class="o">.</span><span class="n">cpMarchHard</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_samples</span><span class="p">,</span> <span class="n">y_samples</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> 
         <span class="n">_seg_f</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">_sam_f</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">)</span></div>
@@ -319,7 +313,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
       </ul>

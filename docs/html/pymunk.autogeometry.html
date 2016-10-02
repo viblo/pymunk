@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.autogeometry Module &mdash; pymunk 5.0.0 documentation</title>
+    <title>pymunk.autogeometry Module &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" />
     <link rel="up" title="API Reference" href="pymunk.html" />
     <link rel="next" title="pymunk.constraint Module" href="pymunk.constraint.html" />
     <link rel="prev" title="API Reference" href="pymunk.html" /> 
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="pymunk.html" title="API Reference"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="pymunk.html" accesskey="U">API Reference</a> &raquo;</li> 
       </ul>
     </div>  
@@ -64,8 +64,9 @@
 <em class="property">class </em><code class="descclassname">pymunk.autogeometry.</code><code class="descname">PolylineSet</code><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">collections.abc.Sequence</span></code></p>
 <p>A set of Polylines.</p>
-<p>Mainly intended to be used for its <cite>collect_segment()</cite> function when generating
-geometry with the <cite>march_soft()</cite> and <cite>march_hard()</cite> functions.</p>
+<p>Mainly intended to be used for its <a class="reference internal" href="#pymunk.autogeometry.PolylineSet.collect_segment" title="pymunk.autogeometry.PolylineSet.collect_segment"><code class="xref py py-meth docutils literal"><span class="pre">collect_segment()</span></code></a> function 
+when generating geometry with the <a class="reference internal" href="#pymunk.autogeometry.march_soft" title="pymunk.autogeometry.march_soft"><code class="xref py py-func docutils literal"><span class="pre">march_soft()</span></code></a> and 
+<a class="reference internal" href="#pymunk.autogeometry.march_hard" title="pymunk.autogeometry.march_hard"><code class="xref py py-func docutils literal"><span class="pre">march_hard()</span></code></a> functions.</p>
 <dl class="method">
 <dt id="pymunk.autogeometry.PolylineSet.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet.__init__" title="Permalink to this definition">¶</a></dt>
@@ -77,7 +78,19 @@ geometry with the <cite>march_soft()</cite> and <cite>march_hard()</cite> functi
 <dd><p>Add a line segment to a polyline set.</p>
 <p>A segment will either start a new polyline, join two others, or add to 
 or loop an existing polyline. This is mostly intended to be used as a 
-callback directly from <cite>march_soft()</cite> or <cite>march_hard()</cite>.</p>
+callback directly from <a class="reference internal" href="#pymunk.autogeometry.march_soft" title="pymunk.autogeometry.march_soft"><code class="xref py py-func docutils literal"><span class="pre">march_soft()</span></code></a> or <a class="reference internal" href="#pymunk.autogeometry.march_hard" title="pymunk.autogeometry.march_hard"><code class="xref py py-func docutils literal"><span class="pre">march_hard()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>v0</strong> (<em>(float,float)</em>) &#8211; Start of segment</li>
+<li><strong>v1</strong> (<em>(float,float)</em>) &#8211; End of segment</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -99,20 +112,22 @@ callback directly from <cite>march_soft()</cite> or <cite>march_hard()</cite>.</
 <dd><p>Get an approximate convex decomposition from a polyline.</p>
 <p>Returns a list of convex hulls that match the original shape to within 
 tolerance.</p>
-<p>NOTE: If the input is a self intersecting polygon, the output might end up 
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the input is a self intersecting polygon, the output might end up 
 overly simplified.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt>polyline</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">[(x,y)] or [<cite>Vec2d</cite>]</span><dd><p class="first last">The polyline to get the convex hulls for.</p>
-</dd>
-<dt>tolerance</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">A higher value means more error is tolerated.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polyline</strong> (<em>[(float,float)]</em>) &#8211; Polyline to simplify.</li>
+<li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
 </td>
 </tr>
 </tbody>
@@ -127,12 +142,9 @@ overly simplified.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt>polyline</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">[(x,y)] or [<cite>Vec2d</cite>]</span><dd><p class="first last">Polyline to simplify.</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polyline</strong> (<em>[(float,float)]</em>) &#8211; Polyline to simplify.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><cite>bool</cite></td>
 </tr>
 </tbody>
 </table>
@@ -144,39 +156,25 @@ overly simplified.</p>
 <dd><p>Trace an aliased curve of an image along a particular threshold.</p>
 <p>The given number of samples will be taken and spread across the bounding 
 box area using the sampling function and context.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt>bb</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><cite>BB</cite></span><dd><p class="first last">bounding box of the area to sample within.</p>
-</dd>
-<dt>x_samples</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Number of samples in x</p>
-</dd>
-<dt>y_samples</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">int </span><dd><p class="first last">Number of samples in y</p>
-</dd>
-<dt>threshold</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">A higher value means more error is tolerated</p>
-</dd>
-<dt>segment_func</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><code class="docutils literal"><span class="pre">func(v0,</span> <span class="pre">v1)</span></code></span><dd><p class="first last">The segment function will be called for each segment detected that 
-lies along the density contour for threshold. v0 and v1 are <cite>Vec2d</cite>.</p>
-</dd>
-<dt>sample_func</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><code class="docutils literal"><span class="pre">func(point)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code></span><dd><p class="first last">The sample function will be called for x_samples * y_samples spread
-across the bounding box area, and should return a float. point is 
-a <cite>Vec2d</cite>.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) &#8211; Bounding box of the area to sample within</li>
+<li><strong>x_samples</strong> (<em>int</em>) &#8211; Number of samples in x</li>
+<li><strong>y_samples</strong> (<em>int</em>) &#8211; Number of samples in y</li>
+<li><strong>threshold</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated</li>
+<li><strong>segment_func</strong> (<code class="docutils literal"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) &#8211; The segment function will be called for each segment 
+detected that lies along the density contour for threshold.</li>
+<li><strong>sample_func</strong> (<code class="docutils literal"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) &#8211; The sample function will be called for 
+x_samples * y_samples spread across the bounding box area, and should 
+return a float.</li>
+</ul>
 </td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 </dd></dl>
 
 <dl class="function">
@@ -189,29 +187,17 @@ box area using the sampling function and context.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt>bb</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><cite>BB</cite></span><dd><p class="first last">bounding box of the area to sample within.</p>
-</dd>
-<dt>x_samples</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Number of samples in x</p>
-</dd>
-<dt>y_samples</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">int </span><dd><p class="first last">Number of samples in y</p>
-</dd>
-<dt>threshold</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">A higher value means more error is tolerated</p>
-</dd>
-<dt>segment_func</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><code class="docutils literal"><span class="pre">func(v0,</span> <span class="pre">v1)</span></code></span><dd><p class="first last">The segment function will be called for each segment detected that 
-lies along the density contour for threshold. v0 and v1 are <cite>Vec2d</cite>.</p>
-</dd>
-<dt>sample_func</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><code class="docutils literal"><span class="pre">func(point)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code></span><dd><p class="first last">The sample function will be called for x_samples * y_samples spread
-across the bounding box area, and should return a float. point is 
-a <cite>Vec2d</cite>.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) &#8211; Bounding box of the area to sample within</li>
+<li><strong>x_samples</strong> (<em>int</em>) &#8211; Number of samples in x</li>
+<li><strong>y_samples</strong> (<em>int</em>) &#8211; Number of samples in y</li>
+<li><strong>threshold</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated</li>
+<li><strong>segment_func</strong> (<code class="docutils literal"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) &#8211; The segment function will be called for each segment 
+detected that lies along the density contour for threshold.</li>
+<li><strong>sample_func</strong> (<code class="docutils literal"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) &#8211; The sample function will be called for 
+x_samples * y_samples spread across the bounding box area, and should 
+return a float.</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -229,14 +215,13 @@ straight edged or angular shapes.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt>polyline</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">[(x,y)] or [<cite>Vec2d</cite>]</span><dd><p class="first last">Polyline to simplify.</p>
-</dd>
-<dt>tolerance</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">A higher value means more error is tolerated.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polyline</strong> (<em>[(float,float)]</em>) &#8211; Polyline to simplify.</li>
+<li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
 </td>
 </tr>
 </tbody>
@@ -253,14 +238,13 @@ shapes.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt>polyline</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">[(x,y)] or [<cite>Vec2d</cite>]</span><dd><p class="first last">Polyline to simplify.</p>
-</dd>
-<dt>tolerance</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">A higher value means more error is tolerated.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polyline</strong> (<em>[(float,float)]</em>) &#8211; Polyline to simplify.</li>
+<li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
 </td>
 </tr>
 </tbody>
@@ -275,14 +259,13 @@ shapes.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt>polyline</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">[(x,y)] or [<cite>Vec2d</cite>]</span><dd><p class="first last">The polyline to generate the hull for.</p>
-</dd>
-<dt>tolerance</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">A higher value means more error is tolerated.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polyline</strong> (<em>[(float,float)]</em>) &#8211; Polyline to simplify.</li>
+<li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
 </td>
 </tr>
 </tbody>
@@ -380,7 +363,7 @@ shapes.</p>
         <li class="right" >
           <a href="pymunk.html" title="API Reference"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="pymunk.html" >API Reference</a> &raquo;</li> 
       </ul>
     </div>

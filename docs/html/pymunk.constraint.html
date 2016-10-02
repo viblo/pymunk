@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.constraint Module &mdash; pymunk 5.0.0 documentation</title>
+    <title>pymunk.constraint Module &mdash; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.0.0 documentation" href="index.html" />
+    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" />
     <link rel="up" title="API Reference" href="pymunk.html" />
     <link rel="next" title="pymunk.vec2d Module" href="pymunk.vec2d.html" />
     <link rel="prev" title="pymunk.autogeometry Module" href="pymunk.autogeometry.html" /> 
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="pymunk.autogeometry.html" title="pymunk.autogeometry Module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="pymunk.html" accesskey="U">API Reference</a> &raquo;</li> 
       </ul>
     </div>  
@@ -161,17 +161,14 @@ bodies.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt>rest_angle</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">The relative angle in radians that the bodies want to have</p>
-</dd>
-<dt>stiffness</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">The spring constant (Young&#8217;s modulus).</p>
-</dd>
-<dt>damping</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">How soft to make the damping of the spring.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body a</li>
+<li><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body b</li>
+<li><strong>rest_angle</strong> (<em>float</em>) &#8211; The relative angle in radians that the bodies 
+want to have</li>
+<li><strong>stiffness</strong> (<em>float</em>) &#8211; The spring constant (Young&#8217;s modulus).</li>
+<li><strong>damping</strong> (<em>float</em>) &#8211; How soft to make the damping of the spring.</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -276,23 +273,15 @@ bodies.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt>anchor_a</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">Vec2d or (x,y)</span><dd><p class="first last">Anchor point a, relative to body a</p>
-</dd>
-<dt>anchor_b</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">Vec2d or (x,y)</span><dd><p class="first last">Anchor point b, relative to body b</p>
-</dd>
-<dt>rest_length</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">The distance the spring wants to be.</p>
-</dd>
-<dt>stiffness</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">The spring constant (Young&#8217;s modulus).</p>
-</dd>
-<dt>damping</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">How soft to make the damping of the spring.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body a</li>
+<li><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body b</li>
+<li><strong>anchor_a</strong> (<cite>(float,float)</cite>) &#8211; Anchor point a, relative to body a</li>
+<li><strong>anchor_b</strong> (<cite>(float,float)</cite>) &#8211; Anchor point b, relative to body b</li>
+<li><strong>rest_length</strong> (<em>float</em>) &#8211; The distance the spring wants to be.</li>
+<li><strong>stiffness</strong> (<em>float</em>) &#8211; The spring constant (Young&#8217;s modulus).</li>
+<li><strong>damping</strong> (<em>float</em>) &#8211; How soft to make the damping of the spring.</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -695,16 +684,19 @@ points, but make sure you have the bodies in the right place as the
 joint will fix itself as soon as you start simulating the space.</p>
 <p>That is, either create the joint with PivotJoint(a, b, pivot) or
 PivotJoint(a, b, anchor_a, anchor_b).</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>a</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Body</cite></span><dd>The first of the two bodies</dd>
-<dt>b</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier"><cite>Body</cite></span><dd>The second of the two bodies</dd>
-<dt>args</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">[Vec2d] or [Vec2d,Vec2d]</span><dd>Either one pivot point, or two anchor points</dd>
-</dl>
-</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; The first of the two bodies</li>
+<li><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; The second of the two bodies</li>
+<li><strong>args</strong> (<em>(float,float) or (float,float) (float,float)</em>) &#8211; Either one pivot point, or two anchor points</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -1250,7 +1242,7 @@ bodies.</p>
         <li class="right" >
           <a href="pymunk.autogeometry.html" title="pymunk.autogeometry Module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.0.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="pymunk.html" >API Reference</a> &raquo;</li> 
       </ul>
     </div>

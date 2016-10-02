@@ -14,7 +14,7 @@ Games
     * - .. image:: _static/beneath-the-ice.png
       - `Beneath the Ice <https://pyweek.org/e/chimera22/>`_
 
-        :subscript:`make by Team Chimera (mit-mit, Lucid Design Ar) Retrieved 
+        :subscript:`make by Team Chimera (mit-mit, Lucid Design Ar). Retrieved 
         2016-09-25`
 
         **Winner of PyWeek 22** (Overall Team Entry)
