@@ -12,12 +12,14 @@ env:
 matrix:
   include:
   - os: osx
+    osx_image: xcode7
     language: generic
     env: 
     - TOXENV=py3 
     - PIP_INSTALL="pip install --user"
     - BUILD_CMD="python setup.py bdist_wheel"
   - os: osx
+    osx_image: xcode7
     language: generic
     env: 
     - TOXENV=py27 
