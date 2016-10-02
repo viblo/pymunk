@@ -389,7 +389,7 @@ class Poly(Shape):
         if transform == None:
             transform = Transform.identity()
 
-        vs = map(tuple, vertices)
+        vs = list(map(tuple, vertices))
         s = cp.cpPolyShapeNew(body_body, len(vertices), vs, transform, radius)
         self._shape = ffi.gc(s, cp.cpShapeFree)
         self._set_shapeid()
@@ -495,7 +495,7 @@ class Poly(Shape):
             not result in realistic physical behavior. Only use if you know
             what you are doing!
         """
-        vs = map(tuple, vertices)
+        vs = list(map(tuple, vertices))
         if transform == None:
             cp.cpPolyShapeSetVertsRaw(self._shape, len(vertices), vs)
             return
