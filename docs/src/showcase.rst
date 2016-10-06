@@ -62,6 +62,14 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Espeso, David R., Esteban Martínez-García, Victor De Lorenzo, and Ángel Goñi-Moreno. 
+  "Physical forces shape group identity of swimming Pseudomonas putida cells." 
+  Frontiers in Microbiology 7 (2016).
+
+* Goni-Moreno, Angel, and Martyn Amos. 
+  "DiSCUS: A Simulation Platform for Conjugation Computing." 
+  In International Conference on Unconventional Computation and Natural Computation, pp. 181-191. Springer International Publishing, 2015.
+
 * Amos, Martyn, et al. 
   "Bacterial computing with engineered populations." 
   *Phil. Trans. R. Soc. A* 373.2046 (2015): 20140218.
@@ -101,12 +109,9 @@ Pymunk has been used or referenced in a number of scientific papers
   "Surface gesture & object tracking on tabletop devices."
   Diss. Virginia Polytechnic Institute and State University, 2010.
 
-* Goni-Moreno, Angel, and Martyn Amos. 
-  "DiSCUS: A Simulation Platform for Conjugation Computing." (2000).
-
 * Agrawal, Vivek, and Ryan Kerwin. 
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2016-01-25. If something is missing or wrong, please contact 
+List last updated 2016-10-07. If something is missing or wrong, please contact 
 me!
