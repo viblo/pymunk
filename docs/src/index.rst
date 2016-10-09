@@ -7,9 +7,13 @@ you need 2d rigid body physics from Python. Perfect when you need 2d physics
 in your game, demo or other application! It is built on top of the very 
 capable 2d physics library `Chipmunk <http://chipmunk-physics.net>`_.
 
-The first version was released in 2007 and is still actively developed and 
-maintained today. 
+The first version was released in 2007 and Pymunk is still actively developed 
+and maintained today. 
 
+Pymunk has been used with success in many projects, big and small. For example: 
+2 Pyweek game competition winners, more than 10 published scientific papers 
+and even in a self-driving car simulation! See :doc:`showcase` for some 
+examples.
 
 Getting Started
 ===============
