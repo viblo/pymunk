@@ -134,7 +134,7 @@ def moment_for_segment(mass, a, b, radius):
 
     The endpoints a and b are relative to the body
     """
-    return cp.cpMomentForSegment(mass, a, b, radius)
+    return cp.cpMomentForSegment(mass, tuple(a), tuple(b), radius)
 
 def moment_for_box(mass, size):
     """Calculate the moment of inertia for a solid box centered on the body.
@@ -149,7 +149,8 @@ def moment_for_poly(mass, vertices,  offset=(0, 0), radius=0):
     Assumes the polygon center of gravity is at its centroid. The offset is
     added to each vertex.
     """
-    return cp.cpMomentForPoly(mass, len(vertices), vertices, offset, radius)
+    vs = list(map(tuple, vertices))
+    return cp.cpMomentForPoly(mass, len(vertices), vs, tuple(offset), radius)
     
 def area_for_circle(inner_radius, outer_radius):
     """Area of a hollow circle."""
@@ -160,14 +161,15 @@ def area_for_segment(a, b, radius):
 
     (Will always be zero if radius is zero)
     """
-    return cp.cpAreaForSegment(a, b, radius)
+    return cp.cpAreaForSegment(tuple(a), tuple(b), radius)
 
 def area_for_poly(vertices, radius=0):
     """Signed area of a polygon shape.
 
     Returns a negative number for polygons with a clockwise winding.
     """
-    return cp.cpAreaForPoly(len(vertices), vertices, radius)
+    vs = list(map(tuple, vertices))
+    return cp.cpAreaForPoly(len(vertices), vs, radius)
 
 
 #del cp, ct, u

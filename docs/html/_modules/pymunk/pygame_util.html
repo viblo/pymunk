@@ -113,7 +113,21 @@
 <span class="sd">        &gt;&gt;&gt; s = pymunk.Space()</span>
 <span class="sd">        &gt;&gt;&gt; options = pymunk.pygame_util.DrawOptions(surface)</span>
 <span class="sd">        &gt;&gt;&gt; s.debug_draw(options)</span>
-<span class="sd">            </span>
+
+<span class="sd">        Since pygame uses a coordinate system where y points down (compared to</span>
+<span class="sd">        most other cases where a positive y points upwards), we might want to</span>
+<span class="sd">        make adjustments for that with the :py:data:`positive_y_is_up` variable.</span>
+
+<span class="sd">        By default drawing is done with positive y pointing up, but that will </span>
+<span class="sd">        make conversion from pygame coordinate to pymunk coordinate nessecary. </span>
+<span class="sd">        If you do a lot of those (for example, lots of mouse input) it might be </span>
+<span class="sd">        more convenient to set it to False::</span>
+
+<span class="sd">        &gt;&gt;&gt; positive_y_is_up = False</span>
+<span class="sd">        &gt;&gt;&gt; # Draw verything the pygame way, (0,0) in the top left corner </span>
+<span class="sd">        &gt;&gt;&gt; positive_y_is_up = True</span>
+<span class="sd">        &gt;&gt;&gt; # Draw everything the pymunk way, (0,0) in the bottom left corner</span>
+
 <span class="sd">        You can control the color of a shape by setting shape.color to the color </span>
 <span class="sd">        you want it drawn in.</span>
 <span class="sd">        </span>
@@ -213,7 +227,6 @@
 </div>
 <h3><a href="../../index.html">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Readme</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>

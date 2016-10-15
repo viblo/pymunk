@@ -97,6 +97,19 @@ about your coordinate system and not in any way optimized.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Since pygame uses a coordinate system where y points down (compared to
+most other cases where a positive y points upwards), we might want to
+make adjustments for that with the <code class="xref py py-data docutils literal"><span class="pre">positive_y_is_up</span></code> variable.</p>
+<p>By default drawing is done with positive y pointing up, but that will 
+make conversion from pygame coordinate to pymunk coordinate nessecary. 
+If you do a lot of those (for example, lots of mouse input) it might be 
+more convenient to set it to False:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">positive_y_is_up</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Draw verything the pygame way, (0,0) in the top left corner </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">positive_y_is_up</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Draw everything the pymunk way, (0,0) in the bottom left corner</span>
+</pre></div>
+</div>
 <p>You can control the color of a shape by setting shape.color to the color 
 you want it drawn in.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -235,7 +248,6 @@ pymunk coordinates</p>
 </div>
 <h3><a href="index.html">Table Of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="readme.html">Readme</a></li>
 <li class="toctree-l1"><a class="reference internal" href="news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="pymunk.html">API Reference</a><ul class="current">

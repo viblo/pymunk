@@ -5,7 +5,7 @@ News
 ..
   Pymunk 5.1.0
   ------------
-  *Victor - 2016-10-01*
+  *Victor - 2016-10-16*
 
   **A speedier Pymunk has been released!**
 

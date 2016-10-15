@@ -62,7 +62,21 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         >>> s = pymunk.Space()
         >>> options = pymunk.pygame_util.DrawOptions(surface)
         >>> s.debug_draw(options)
-            
+
+        Since pygame uses a coordinate system where y points down (compared to
+        most other cases where a positive y points upwards), we might want to
+        make adjustments for that with the :py:data:`positive_y_is_up` variable.
+
+        By default drawing is done with positive y pointing up, but that will 
+        make conversion from pygame coordinate to pymunk coordinate nessecary. 
+        If you do a lot of those (for example, lots of mouse input) it might be 
+        more convenient to set it to False::
+
+        >>> positive_y_is_up = False
+        >>> # Draw verything the pygame way, (0,0) in the top left corner 
+        >>> positive_y_is_up = True
+        >>> # Draw everything the pymunk way, (0,0) in the bottom left corner
+
         You can control the color of a shape by setting shape.color to the color 
         you want it drawn in.
         

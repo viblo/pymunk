@@ -24,9 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" />
-    <link rel="next" title="News" href="news.html" />
-    <link rel="prev" title="Pymunk" href="index.html" /> 
+    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -38,12 +36,6 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="news.html" title="News"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Pymunk"
-             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -55,34 +47,24 @@
             
   <div class="section" id="readme">
 <h1>Readme<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="about">
-<h2>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pymunk">
+<h2>Pymunk<a class="headerlink" href="#pymunk" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/pymunk_logo_animation.gif" src="_images/pymunk_logo_animation.gif" />
 <p>Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
-you need 2d rigid body physics from Python. It is built on top of the very
-capable 2d physics library Chipmunk.</p>
+you need 2d rigid body physics from Python. Perfect when you need 2d physics
+in your game, demo or other application! It is built on top of the very
+capable 2d physics library <a class="reference external" href="http://chipmunk-physics.net">Chipmunk</a>.</p>
+<p>The first version was released in 2007 and Pymunk is still actively developed
+and maintained today.</p>
+<p>Pymunk has been used with success in many projects, big and small. For example:
+2 Pyweek game competition winners, more than 10 published scientific papers
+and even in a self-driving car simulation! See <a class="reference internal" href="showcase.html"><span class="doc">Showcase</span></a> for some
+examples.</p>
 <p>2007 - 2016, Victor Blomqvist - <a class="reference external" href="mailto:vb&#37;&#52;&#48;viblo&#46;se">vb<span>&#64;</span>viblo<span>&#46;</span>se</a>, MIT License</p>
 <p>This release is based on the latest Pymunk release (5.1.0),
 using Chipmunk 7.0 rev d7603e3927 (source included)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Homepage:</th><td class="field-body"><a class="reference external" href="http://www.pymunk.org">http://www.pymunk.org</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Forum:</th><td class="field-body"><a class="reference external" href="http://chipmunk-physics.net/forum/">http://chipmunk-physics.net/forum/</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Email:</th><td class="field-body"><a class="reference external" href="mailto:vb&#37;&#52;&#48;viblo&#46;se">vb<span>&#64;</span>viblo<span>&#46;</span>se</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Getting the latest source:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">git clone <a class="reference external" href="https://github.com/viblo/pymunk.git">https://github.com/viblo/pymunk.git</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Chipmunk:</th><td class="field-body"><a class="reference external" href="http://chipmunk-physics.net/">http://chipmunk-physics.net/</a></td>
-</tr>
-</tbody>
-</table>
-</div>
 <div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
 <p>In the normal case pymunk can be installed with pip:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span>
 </pre></div>
@@ -91,7 +73,7 @@ using Chipmunk 7.0 rev d7603e3927 (source included)</p>
 need a working gcc compiler.</p>
 </div>
 <div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
 <p>Quick code example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymunk</span>               <span class="c1"># Import pymunk..</span>
 
@@ -112,14 +94,73 @@ need a working gcc compiler.</p>
 (in examples/).</p>
 </div>
 <div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
 <p>The source distribution of Pymunk ships with a number of demos in the examples
 directory, and it also contains the full documentaiton including API reference.</p>
 <p>You can also find the full documentation including examples and API reference
 on the pymunk homepage, <a class="reference external" href="http://www.pymunk.org">http://www.pymunk.org</a></p>
 </div>
+<div class="section" id="the-pymunk-vision">
+<h3>The Pymunk Vision<a class="headerlink" href="#the-pymunk-vision" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>&#8220;<em>Make 2d physics easy to include in your game</em>&#8220;</div></blockquote>
+<p>It is (or is striving to be):</p>
+<ul class="simple">
+<li><strong>Easy to use</strong> - It should be easy to use, no complicated stuff should be
+needed to add physics to your game/program.</li>
+<li><strong>&#8220;Pythonic&#8221;</strong> - It should not be visible that a c-library (chipmunk) is in
+the bottom, it should feel like a Python library (no strange naming, OO,
+no memory handling and more)</li>
+<li><strong>Simple to build &amp; install</strong> - You shouldn&#8217;t need to have a zillion of
+libraries installed to make it install, or do a lot of command line tricks.</li>
+<li><strong>Multi-platform</strong> - Should work on both Windows, *nix and OSX.</li>
+<li><strong>Non-intrusive</strong> - It should not put restrictions on how you structure
+your program and not force you to use a special game loop, it should be
+possible to use with other libraries like Pygame and Pyglet.</li>
+</ul>
+</div>
+<div class="section" id="contact-support">
+<h3>Contact &amp; Support<a class="headerlink" href="#contact-support" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils" id="id1">
+<dt><strong>Homepage</strong></dt>
+<dd><a class="reference external" href="http://www.pymunk.org/">http://www.pymunk.org/</a></dd>
+<dt><strong>Stackoverflow</strong></dt>
+<dd>You can ask questions/browse old ones at stackoverflow, just look for
+the pymunk tag. <a class="reference external" href="http://stackoverflow.com/questions/tagged/pymunk">http://stackoverflow.com/questions/tagged/pymunk</a></dd>
+<dt><strong>Forum</strong></dt>
+<dd>Currently pymunk has no separate forum, but uses the general Chipmunk
+forum at <a class="reference external" href="http://chipmunk-physics.net/forum/index.php">http://chipmunk-physics.net/forum/index.php</a> Many issues
+are the same, like how to create a rag doll or why a fast moving object
+pass through a wall. If you have a Pymunk specific question feel free to
+mark your post with [pymunk] to make it stand out a bit.</dd>
+<dt><strong>E-Mail</strong></dt>
+<dd>You can email me directly at <a class="reference external" href="mailto:vb&#37;&#52;&#48;viblo&#46;se">vb<span>&#64;</span>viblo<span>&#46;</span>se</a></dd>
+<dt><strong>Issue Tracker</strong></dt>
+<dd>Please use the issue tracker at github to report any issues you find:
+<a class="reference external" href="https://github.com/viblo/pymunk/issues">https://github.com/viblo/pymunk/issues</a></dd>
+</dl>
+<p>Regardless of the method you use I will try to answer your questions as soon
+as I see them. (And if you ask on SO or the forum other people might help as
+well!)</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p>If you like pymunk and find it useful and have a few minutes to spare I
+would love to hear from you. What would <em>really</em> be nice is a real
+postcard from the place where you are! :)</p>
+<dl class="last docutils">
+<dt>Pymunk&#8217;s address is:</dt>
+<dd><div class="first last line-block">
+<div class="line">Pymunk c/o Victor Blomqvist</div>
+<div class="line">Carl Thunbergs Vag 9</div>
+<div class="line">169 69 Solna</div>
+<div class="line">SWEDEN</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
 <div class="section" id="dependencies-requirements">
-<h2>Dependencies / Requirements<a class="headerlink" href="#dependencies-requirements" title="Permalink to this headline">¶</a></h2>
+<h3>Dependencies / Requirements<a class="headerlink" href="#dependencies-requirements" title="Permalink to this headline">¶</a></h3>
 <p>Basically Pymunk have been made to be as easy to install and distribute as
 possible, usually <cite>pip install</cite> will take care of everything for you.</p>
 <ul class="simple">
@@ -137,8 +178,14 @@ based demos)</li>
 <li>Sphinx (optional, you need it to build documentation)</li>
 </ul>
 </div>
-<div class="section" id="chipmunk">
-<h2>Chipmunk<a class="headerlink" href="#chipmunk" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python-2-python-3">
+<h3>Python 2 &amp; Python 3<a class="headerlink" href="#python-2-python-3" title="Permalink to this headline">¶</a></h3>
+<p>Pymunk has been tested and runs fine on both Python 2 and Python 3. It has
+been tested on recent versions of CPython (2 and 3) and Pypy. For an exact
+list of tested versions see the Travis and Appveyor test configs.</p>
+</div>
+<div class="section" id="id2">
+<h3>Chipmunk<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Pymunk is built on top of the c library Chipmunk. It uses CFFI to interface
 with the Chipmunk library file. Because of this Chipmunk has to be compiled
 before it can be used with Pymunk. Compilation has to be done with GCC or
@@ -162,6 +209,7 @@ in a good way if built with build_clib.</p>
 body.py and others).</p>
 </div>
 </div>
+</div>
 
 
           </div>
@@ -182,16 +230,7 @@ body.py and others).</p>
 	</p>
 </div>
 <h3><a href="index.html">Table Of Contents</a></h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Readme</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#about">About</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dependencies-requirements">Dependencies / Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#chipmunk">Chipmunk</a></li>
-</ul>
-</li>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pymunk.html">API Reference</a></li>
@@ -206,12 +245,6 @@ body.py and others).</p>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Pymunk</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="news.html"
-                        title="next chapter">News</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -242,12 +275,6 @@ body.py and others).</p>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="news.html" title="News"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Pymunk"
-             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>

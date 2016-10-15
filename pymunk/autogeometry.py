@@ -12,7 +12,7 @@ def _to_chipmunk(polyline):
     _line = ffi.new("cpPolyline *", {"verts": l})
     _line.count = l
     _line.capacity = l
-    _line.verts = polyline
+    _line.verts = list(map(tuple, polyline))
     return _line
 
 def _from_polyline_set(_set):
@@ -127,7 +127,7 @@ class PolylineSet(collections.Sequence):
         :param v1: End of segment
         :type v1: (float,float)
         """
-        lib.cpPolylineSetCollectSegment(v0, v1, self._set)
+        lib.cpPolylineSetCollectSegment(tuple(v0), tuple(v1), self._set)
 
     def __len__(self):
         return self._set.count
@@ -141,7 +141,7 @@ class PolylineSet(collections.Sequence):
         return line
 
 def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
-    """Trace an anti-aliased contour of an image along a particular threshold.
+    """Trace an *anti-aliased* contour of an image along a particular threshold.
 
     The given number of samples will be taken and spread across the bounding 
     box area using the sampling function and context. 
@@ -173,7 +173,7 @@ def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
         _seg_f, ffi.NULL, _sam_f, ffi.NULL)
 
 def march_hard(bb, x_samples, y_samples, threshold, segment_func, sample_func):
-    """Trace an aliased curve of an image along a particular threshold.
+    """Trace an *aliased* curve of an image along a particular threshold.
 
     The given number of samples will be taken and spread across the bounding 
     box area using the sampling function and context. 

@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
     <link rel="top" title="pymunk 5.1.0 documentation" href="#" />
-    <link rel="next" title="Readme" href="readme.html" /> 
+    <link rel="next" title="News" href="news.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -38,7 +38,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="readme.html" title="Readme"
+          <a href="news.html" title="News"
              accesskey="N">next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">pymunk 5.1.0 documentation</a> &raquo;</li> 
       </ul>
@@ -51,18 +51,56 @@
             
   <div class="section" id="pymunk">
 <h1>Pymunk<a class="headerlink" href="#pymunk" title="Permalink to this headline">¶</a></h1>
+<img alt="_images/pymunk_logo_animation.gif" src="_images/pymunk_logo_animation.gif" />
 <p>Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
 you need 2d rigid body physics from Python. Perfect when you need 2d physics
 in your game, demo or other application! It is built on top of the very
 capable 2d physics library <a class="reference external" href="http://chipmunk-physics.net">Chipmunk</a>.</p>
-<p>The first version was released in 2007 and is still actively developed and
-maintained today.</p>
-<div class="section" id="getting-started">
-<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>To get started quickly take a look in the <a class="reference internal" href="readme.html"><span class="doc">Readme</span></a>, it contains a
-summary of the most important things and is quick to read. When done its a
-good idea to take a look at the included <a class="reference internal" href="examples.html"><span class="doc">Examples</span></a>, read the
-<a class="reference internal" href="tutorials.html"><span class="doc">Tutorials</span></a> and take a look in the <a class="reference internal" href="pymunk.html"><span class="doc">API Reference</span></a>.</p>
+<p>The first version was released in 2007 and Pymunk is still actively developed
+and maintained today.</p>
+<p>Pymunk has been used with success in many projects, big and small. For example:
+2 Pyweek game competition winners, more than 10 published scientific papers
+and even in a self-driving car simulation! See <a class="reference internal" href="showcase.html"><span class="doc">Showcase</span></a> for some
+examples.</p>
+<p>2007 - 2016, Victor Blomqvist - <a class="reference external" href="mailto:vb&#37;&#52;&#48;viblo&#46;se">vb<span>&#64;</span>viblo<span>&#46;</span>se</a>, MIT License</p>
+<p>This release is based on the latest Pymunk release (5.1.0),
+using Chipmunk 7.0 rev d7603e3927 (source included)</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>In the normal case pymunk can be installed with pip:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span>
+</pre></div>
+</div>
+<p>It has one (or two) dependencies. CFFI and if not on Windows or OSX you also
+need a working gcc compiler.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Quick code example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymunk</span>               <span class="c1"># Import pymunk..</span>
+
+<span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>      <span class="c1"># Create a Space which contain the simulation</span>
+<span class="n">space</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1000</span>     <span class="c1"># Set its gravity</span>
+
+<span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1666</span><span class="p">)</span>  <span class="c1"># Create a Body with mass and moment</span>
+<span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span><span class="mi">100</span>      <span class="c1"># Set the position of the body</span>
+
+<span class="n">poly</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Poly</span><span class="o">.</span><span class="n">create_box</span><span class="p">(</span><span class="n">body</span><span class="p">)</span> <span class="c1"># Create a box shape and attach to body</span>
+<span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">poly</span><span class="p">)</span>       <span class="c1"># Add both body and shape to the simulation</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>                 <span class="c1"># Infinite loop simulation</span>
+    <span class="n">space</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>        <span class="c1"># Step the simulation one step forward</span>
+</pre></div>
+</div>
+<p>For more detailed and advanced examples, take a look at the included demos
+(in examples/).</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>The source distribution of Pymunk ships with a number of demos in the examples
+directory, and it also contains the full documentaiton including API reference.</p>
+<p>You can also find the full documentation including examples and API reference
+on the pymunk homepage, <a class="reference external" href="http://www.pymunk.org">http://www.pymunk.org</a></p>
 </div>
 <div class="section" id="the-pymunk-vision">
 <h2>The Pymunk Vision<a class="headerlink" href="#the-pymunk-vision" title="Permalink to this headline">¶</a></h2>
@@ -83,15 +121,11 @@ your program and not force you to use a special game loop, it should be
 possible to use with other libraries like Pygame and Pyglet.</li>
 </ul>
 </div>
-<div class="section" id="python-2-python-3">
-<h2>Python 2 &amp; Python 3<a class="headerlink" href="#python-2-python-3" title="Permalink to this headline">¶</a></h2>
-<p>Pymunk has been tested and runs fine on both Python 2 and Python 3. It has
-been tested on recent versions of CPython (2 and 3) and Pypy. For an exact
-list of tested versions see the Travis and Appveyor test configs.</p>
-</div>
 <div class="section" id="contact-support">
 <h2>Contact &amp; Support<a class="headerlink" href="#contact-support" title="Permalink to this headline">¶</a></h2>
 <dl class="docutils" id="id1">
+<dt><strong>Homepage</strong></dt>
+<dd><a class="reference external" href="http://www.pymunk.org/">http://www.pymunk.org/</a></dd>
 <dt><strong>Stackoverflow</strong></dt>
 <dd>You can ask questions/browse old ones at stackoverflow, just look for
 the pymunk tag. <a class="reference external" href="http://stackoverflow.com/questions/tagged/pymunk">http://stackoverflow.com/questions/tagged/pymunk</a></dd>
@@ -127,19 +161,59 @@ postcard from the place where you are! :)</p>
 </dl>
 </div>
 </div>
+<div class="section" id="dependencies-requirements">
+<h2>Dependencies / Requirements<a class="headerlink" href="#dependencies-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Basically Pymunk have been made to be as easy to install and distribute as
+possible, usually <cite>pip install</cite> will take care of everything for you.</p>
+<ul class="simple">
+<li>Python (Runs on CPython 2.7 and 3.X. Pypy and Pypy3)</li>
+<li>Chipmunk (Source included, and on Windows and OSX its already compiled)</li>
+<li>CFFI (will be installed automatically by Pip)</li>
+<li>Setuptools (should be included with Pip)</li>
+</ul>
+<ul class="simple">
+<li>GCC and friends (optional, you need it to compile Chipmunk)</li>
+<li>Pygame (optional, you need it to run the Pygame based demos)</li>
+<li>Pyglet (optional, you need it to run the Pyglet based demos)</li>
+<li>Matplotlib &amp; Jupyter Notebook (optional, you need it to run the Matplotlib
+based demos)</li>
+<li>Sphinx (optional, you need it to build documentation)</li>
+</ul>
+</div>
+<div class="section" id="python-2-python-3">
+<h2>Python 2 &amp; Python 3<a class="headerlink" href="#python-2-python-3" title="Permalink to this headline">¶</a></h2>
+<p>Pymunk has been tested and runs fine on both Python 2 and Python 3. It has
+been tested on recent versions of CPython (2 and 3) and Pypy. For an exact
+list of tested versions see the Travis and Appveyor test configs.</p>
+</div>
+<div class="section" id="id2">
+<h2>Chipmunk<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>Pymunk is built on top of the c library Chipmunk. It uses CFFI to interface
+with the Chipmunk library file. Because of this Chipmunk has to be compiled
+before it can be used with Pymunk. Compilation has to be done with GCC or
+another compiler that uses the same flags.</p>
+<p>The source distribution does not include a precompiled Chipmunk library file,
+instead you need to build it yourself.</p>
+<p>There are basically two options, either building it automatically as part of
+installation using for example Pip:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">dist</span><span class="o">.</span><span class="n">zip</span>
+</pre></div>
+</div>
+<p>Or if you have the source unpacked / you got pymunk by cloning its git repo,
+you can explicitly tell pymunk to compile it inplace:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span>
+</pre></div>
+</div>
+<p>Note that chipmunk is actually not built as a python extension, but distutils /
+setuptools doesnt currently handle pure native libraries that needs to be built
+in a good way if built with build_clib.</p>
+<p>The compiled file goes into the /pymunk folder (same as space.py,
+body.py and others).</p>
+</div>
 <div class="section" id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="readme.html">Readme</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#about">About</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#example">Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#dependencies-requirements">Dependencies / Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readme.html#chipmunk">Chipmunk</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="news.html">News</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="news.html#pymunk-5-0-0">Pymunk 5.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="news.html#move-from-ctypes-to-cffi">Move from ctypes to CFFI?</a></li>
@@ -189,6 +263,7 @@ postcard from the place where you are! :)</p>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#damped-rotary-spring-pointer-py">damped_rotary_spring_pointer.py</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#deformable-py">deformable.py</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#flipper-py">flipper.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#index-video-py">index_video.py</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#newtons-cradle-py">newtons_cradle.py</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#no-debug-py">no_debug.py</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#platformer-py">platformer.py</a></li>
@@ -285,7 +360,6 @@ postcard from the place where you are! :)</p>
 </div>
 <h3><a href="#">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="readme.html">Readme</a></li>
 <li class="toctree-l1"><a class="reference internal" href="news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pymunk.html">API Reference</a></li>
@@ -301,8 +375,8 @@ postcard from the place where you are! :)</p>
 </ul>
 
   <h4>Next topic</h4>
-  <p class="topless"><a href="readme.html"
-                        title="next chapter">Readme</a></p>
+  <p class="topless"><a href="news.html"
+                        title="next chapter">News</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -334,7 +408,7 @@ postcard from the place where you are! :)</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="readme.html" title="Readme"
+          <a href="news.html" title="News"
              >next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">pymunk 5.1.0 documentation</a> &raquo;</li> 
       </ul>

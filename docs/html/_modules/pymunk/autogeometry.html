@@ -63,7 +63,7 @@
     <span class="n">_line</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpPolyline *&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;verts&quot;</span><span class="p">:</span> <span class="n">l</span><span class="p">})</span>
     <span class="n">_line</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">l</span>
     <span class="n">_line</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">l</span>
-    <span class="n">_line</span><span class="o">.</span><span class="n">verts</span> <span class="o">=</span> <span class="n">polyline</span>
+    <span class="n">_line</span><span class="o">.</span><span class="n">verts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">polyline</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">_line</span>
 
 <span class="k">def</span> <span class="nf">_from_polyline_set</span><span class="p">(</span><span class="n">_set</span><span class="p">):</span>
@@ -178,7 +178,7 @@
 <span class="sd">        :param v1: End of segment</span>
 <span class="sd">        :type v1: (float,float)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineSetCollectSegment</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set</span><span class="p">)</span></div>
+        <span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineSetCollectSegment</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">v0</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set</span><span class="o">.</span><span class="n">count</span>
@@ -192,7 +192,7 @@
         <span class="k">return</span> <span class="n">line</span></div>
 
 <div class="viewcode-block" id="march_soft"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.march_soft">[docs]</a><span class="k">def</span> <span class="nf">march_soft</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span> <span class="n">x_samples</span><span class="p">,</span> <span class="n">y_samples</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">segment_func</span><span class="p">,</span> <span class="n">sample_func</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Trace an anti-aliased contour of an image along a particular threshold.</span>
+    <span class="sd">&quot;&quot;&quot;Trace an *anti-aliased* contour of an image along a particular threshold.</span>
 
 <span class="sd">    The given number of samples will be taken and spread across the bounding </span>
 <span class="sd">    box area using the sampling function and context. </span>
@@ -224,7 +224,7 @@
         <span class="n">_seg_f</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">_sam_f</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="march_hard"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.march_hard">[docs]</a><span class="k">def</span> <span class="nf">march_hard</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span> <span class="n">x_samples</span><span class="p">,</span> <span class="n">y_samples</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">segment_func</span><span class="p">,</span> <span class="n">sample_func</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Trace an aliased curve of an image along a particular threshold.</span>
+    <span class="sd">&quot;&quot;&quot;Trace an *aliased* curve of an image along a particular threshold.</span>
 
 <span class="sd">    The given number of samples will be taken and spread across the bounding </span>
 <span class="sd">    box area using the sampling function and context. </span>
@@ -275,7 +275,6 @@
 </div>
 <h3><a href="../../index.html">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Readme</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>

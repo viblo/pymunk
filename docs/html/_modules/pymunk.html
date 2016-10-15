@@ -184,7 +184,7 @@
 
 <span class="sd">    The endpoints a and b are relative to the body</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForSegment</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForSegment</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">radius</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="moment_for_box"><a class="viewcode-back" href="../pymunk.html#pymunk.moment_for_box">[docs]</a><span class="k">def</span> <span class="nf">moment_for_box</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the moment of inertia for a solid box centered on the body.</span>
@@ -199,7 +199,8 @@
 <span class="sd">    Assumes the polygon center of gravity is at its centroid. The offset is</span>
 <span class="sd">    added to each vertex.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForPoly</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
+    <span class="n">vs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">vertices</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForPoly</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vs</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">offset</span><span class="p">),</span> <span class="n">radius</span><span class="p">)</span></div>
     
 <span class="k">def</span> <span class="nf">area_for_circle</span><span class="p">(</span><span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Area of a hollow circle.&quot;&quot;&quot;</span>
@@ -210,14 +211,15 @@
 
 <span class="sd">    (Will always be zero if radius is zero)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpAreaForSegment</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpAreaForSegment</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">radius</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">area_for_poly</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Signed area of a polygon shape.</span>
 
 <span class="sd">    Returns a negative number for polygons with a clockwise winding.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpAreaForPoly</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+    <span class="n">vs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">vertices</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpAreaForPoly</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vs</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
 
 
 <span class="c1">#del cp, ct, u</span>
@@ -242,7 +244,6 @@
 </div>
 <h3><a href="../index.html">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../readme.html">Readme</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pymunk.html">API Reference</a></li>

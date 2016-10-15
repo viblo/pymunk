@@ -63,7 +63,8 @@ class Shape(object):
     def _set_filter(self, f):
         cp.cpShapeSetFilter(self._shape, f)
     filter = property(_get_filter, _set_filter,
-        doc="""Set the collision filter for this shape.""")
+        doc="""Set the collision :py:class:`ShapeFilter` for this shape.
+        """)
 
 
     def _get_elasticity(self):

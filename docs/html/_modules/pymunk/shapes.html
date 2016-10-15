@@ -114,7 +114,8 @@
     <span class="k">def</span> <span class="nf">_set_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeSetFilter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
     <span class="nb">filter</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_filter</span><span class="p">,</span> <span class="n">_set_filter</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Set the collision filter for this shape.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Set the collision :py:class:`ShapeFilter` for this shape.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">_get_elasticity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -440,7 +441,7 @@
         <span class="k">if</span> <span class="n">transform</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">transform</span> <span class="o">=</span> <span class="n">Transform</span><span class="o">.</span><span class="n">identity</span><span class="p">()</span>
 
-        <span class="n">vs</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
+        <span class="n">vs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">vertices</span><span class="p">))</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeNew</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vs</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_shapeid</span><span class="p">()</span></div>
@@ -546,7 +547,7 @@
 <span class="sd">            not result in realistic physical behavior. Only use if you know</span>
 <span class="sd">            what you are doing!</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vs</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
+        <span class="n">vs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">vertices</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">transform</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeSetVertsRaw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vs</span><span class="p">)</span>
             <span class="k">return</span>
@@ -573,7 +574,6 @@
 </div>
 <h3><a href="../../index.html">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Readme</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
