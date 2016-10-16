@@ -55,6 +55,27 @@
             
   <div class="section" id="news">
 <h1>News<a class="headerlink" href="#news" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pymunk-5-1-0">
+<h2>Pymunk 5.1.0<a class="headerlink" href="#pymunk-5-1-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Victor - 2016-10-17</em></p>
+<p><strong>A speedier Pymunk has been released!</strong></p>
+<p>This release is made as follow up on the <a class="reference internal" href="benchmarks.html"><span class="doc">Benchmarks</span></a> done on
+Pymunk 5.0 and 4.0. Pymunk 5.0 is already very fast on Pypy, but had some
+regressions in CPython. Turns out one big part in the change is how Vec2ds are
+handled in the two versions. Pymunk 5.1 contains optimized code to help reduce
+a big portion of this difference.</p>
+<p>Changes</p>
+<ul class="simple">
+<li>Big performance increase compared to Pymunk 5.0 thanks to improved Vec2d
+handling.</li>
+<li>Documentation improvements.</li>
+<li>Small change in the return type of Shape.point_query. Now it correctly
+return a tuple of (distance, info) as is written in the docs.</li>
+<li>Split Poly.create_box into two methods, Poly.create_box and
+Poly.create_box_bb to make it more clear what is happening.</li>
+</ul>
+<p>I hope you will enjoy this new release!</p>
+</div>
 <div class="section" id="pymunk-5-0-0">
 <h2>Pymunk 5.0.0<a class="headerlink" href="#pymunk-5-0-0" title="Permalink to this headline">¶</a></h2>
 <p><em>Victor - 2016-07-17</em></p>
@@ -280,6 +301,7 @@ number were increased).</p>
 <h3><a href="index.html">Table Of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pymunk-5-1-0">Pymunk 5.1.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-5-0-0">Pymunk 5.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#move-from-ctypes-to-cffi">Move from ctypes to CFFI?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#travis-ci-tox">Travis-ci &amp; tox</a></li>

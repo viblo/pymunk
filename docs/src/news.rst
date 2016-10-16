@@ -2,30 +2,30 @@
 News 
 ****
 
-..
-  Pymunk 5.1.0
-  ------------
-  *Victor - 2016-10-16*
 
-  **A speedier Pymunk has been released!**
+Pymunk 5.1.0
+------------
+*Victor - 2016-10-17*
 
-  This release is made as follow up on the :doc:`benchmarks` done on 
-  Pymunk 5.0 and 4.0. Pymunk 5.0 is already very fast on Pypy, but had some 
-  regressions in CPython. Turns out one big part in the change is how Vec2ds are 
-  handled in the two versions. Pymunk 5.1 contains optimized code to help reduce 
-  a big portion of this difference. 
+**A speedier Pymunk has been released!**
 
-  Changes
+This release is made as follow up on the :doc:`benchmarks` done on 
+Pymunk 5.0 and 4.0. Pymunk 5.0 is already very fast on Pypy, but had some 
+regressions in CPython. Turns out one big part in the change is how Vec2ds are 
+handled in the two versions. Pymunk 5.1 contains optimized code to help reduce 
+a big portion of this difference. 
 
-  - Big performance increase compared to Pymunk 5.0 thanks to improved Vec2d 
-    handling.
-  - Documentation improvements.
-  - Small change in the return type of Shape.point_query. Now it correctly 
-    return a tuple of (distance, info) as is written in the docs.
-  - Split Poly.create_box into two methods, Poly.create_box and 
-    Poly.create_box_bb to make it more clear what is happening. 
+Changes
 
-  I hope you will enjoy this new release!
+- Big performance increase compared to Pymunk 5.0 thanks to improved Vec2d 
+  handling.
+- Documentation improvements.
+- Small change in the return type of Shape.point_query. Now it correctly 
+  return a tuple of (distance, info) as is written in the docs.
+- Split Poly.create_box into two methods, Poly.create_box and 
+  Poly.create_box_bb to make it more clear what is happening. 
+
+I hope you will enjoy this new release!
 
 
 Pymunk 5.0.0
