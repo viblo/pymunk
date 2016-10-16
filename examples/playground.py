@@ -219,9 +219,9 @@ class PhysicsDemo:
                     self.wall_points.append(p)
                 elif self.shape_to_remove is not None:
                     
-                    self.balls = filter(lambda a: a != self.shape_to_remove, self.balls)
-                    self.walls = filter(lambda a: a != self.shape_to_remove, self.walls)
-                    self.polys = filter(lambda a: a != self.shape_to_remove, self.polys)
+                    self.balls = list(filter(lambda a: a != self.shape_to_remove, self.balls))
+                    self.walls = list(filter(lambda a: a != self.shape_to_remove, self.walls))
+                    self.polys = list(filter(lambda a: a != self.shape_to_remove, self.polys))
                     self.space.remove(self.shape_to_remove.body, self.shape_to_remove)
                     
             elif event.type == KEYUP and event.key in (K_RCTRL, K_LCTRL):

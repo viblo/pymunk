@@ -302,24 +302,24 @@ class Body(object):
         Both impulses and forces are affected the mass of an object. Doubling
         the mass of the object will halve the effect.
         """
-        cp.cpBodyApplyForceAtWorldPoint(self._body, force, tuple(point))
+        cp.cpBodyApplyForceAtWorldPoint(self._body, tuple(force), tuple(point))
 
     def apply_force_at_local_point(self, force, point):
         """Add the local force force to body as if applied from the body
         local point.
         """
-        cp.cpBodyApplyForceAtLocalPoint(self._body, force, tuple(point))
+        cp.cpBodyApplyForceAtLocalPoint(self._body, tuple(force), tuple(point))
 
     def apply_impulse_at_world_point(self, impulse, point=(0, 0)):
         """Add the impulse impulse to body as if applied from the world point.
         """
-        cp.cpBodyApplyImpulseAtWorldPoint(self._body, impulse, tuple(point))
+        cp.cpBodyApplyImpulseAtWorldPoint(self._body, tuple(impulse), tuple(point))
 
     def apply_impulse_at_local_point(self, impulse, point=(0, 0)):
         """Add the local impulse impulse to body as if applied from the body
         local point.
         """
-        cp.cpBodyApplyImpulseAtLocalPoint(self._body, impulse, tuple(point))
+        cp.cpBodyApplyImpulseAtLocalPoint(self._body, tuple(impulse), tuple(point))
 
 
     def activate(self):
