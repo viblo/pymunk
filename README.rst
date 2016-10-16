@@ -2,8 +2,7 @@
 Pymunk
 ******
 
-.. image:: _static/pymunk_logo_animation.gif
-
+.. image:: http://www.pymunk.org/en/latest/_images/pymunk_logo_animation.gif
 
 Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever 
 you need 2d rigid body physics from Python. Perfect when you need 2d physics 
