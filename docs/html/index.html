@@ -51,7 +51,7 @@
             
   <div class="section" id="pymunk">
 <h1>Pymunk<a class="headerlink" href="#pymunk" title="Permalink to this headline">¶</a></h1>
-<img alt="http://www.pymunk.org/en/latest/_images/pymunk_logo_animation.gif" src="http://www.pymunk.org/en/latest/_images/pymunk_logo_animation.gif" />
+<img alt="https://raw.githubusercontent.com/viblo/pymunk/master/docs/src/_static/pymunk_logo_animation.gif" src="https://raw.githubusercontent.com/viblo/pymunk/master/docs/src/_static/pymunk_logo_animation.gif" />
 <p>Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
 you need 2d rigid body physics from Python. Perfect when you need 2d physics
 in your game, demo or other application! It is built on top of the very
@@ -60,8 +60,8 @@ capable 2d physics library <a class="reference external" href="http://chipmunk-p
 and maintained today.</p>
 <p>Pymunk has been used with success in many projects, big and small. For example:
 2 Pyweek game competition winners, more than 10 published scientific papers
-and even in a self-driving car simulation! See <a class="reference internal" href="showcase.html"><span class="doc">Showcase</span></a> for some
-examples.</p>
+and even in a self-driving car simulation! See the Showcases section on the
+pymunk webpage for some examples.</p>
 <p>2007 - 2016, Victor Blomqvist - <a class="reference external" href="mailto:vb&#37;&#52;&#48;viblo&#46;se">vb<span>&#64;</span>viblo<span>&#46;</span>se</a>, MIT License</p>
 <p>This release is based on the latest Pymunk release (5.1.0),
 using Chipmunk 7.0 rev d7603e3927 (source included)</p>
@@ -186,8 +186,11 @@ based demos)</li>
 been tested on recent versions of CPython (2 and 3) and Pypy. For an exact
 list of tested versions see the Travis and Appveyor test configs.</p>
 </div>
-<div class="section" id="id2">
-<h2>Chipmunk<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="chipmunk-compilation">
+<h2>Chipmunk Compilation<a class="headerlink" href="#chipmunk-compilation" title="Permalink to this headline">¶</a></h2>
+<p>This section is only required in case you dont install pymunk the normal way
+(<cite>pip install</cite> or <cite>setup.py install</cite>). Otherwise its handled automatically by
+the install command.</p>
 <p>Pymunk is built on top of the c library Chipmunk. It uses CFFI to interface
 with the Chipmunk library file. Because of this Chipmunk has to be compiled
 before it can be used with Pymunk. Compilation has to be done with GCC or

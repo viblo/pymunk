@@ -36,7 +36,7 @@ Pymunk 5.0.0
 
 This is a BIG release of Pymunk! Just in time before Pymunk turns 10 next year! 
 
-* Support for 64 Python on Windows
+* Support for 64 bit Python on Windows
 * Updated to use Chipmunk 7 which includes lots of great improvements
 * Updated to use CFFI for wrapping, giving improved development and packaging 
   (wheels, yay!)

@@ -1,6 +1,5 @@
-******
 Pymunk
-******
+======
 
 .. image::  https://raw.githubusercontent.com/viblo/pymunk/master/docs/src/_static/pymunk_logo_animation.gif
 
@@ -14,8 +13,8 @@ and maintained today.
 
 Pymunk has been used with success in many projects, big and small. For example: 
 2 Pyweek game competition winners, more than 10 published scientific papers 
-and even in a self-driving car simulation! See :doc:`showcase` for some 
-examples.
+and even in a self-driving car simulation! See the Showcases section on the 
+pymunk webpage for some examples.
 
 2007 - 2016, Victor Blomqvist - vb@viblo.se, MIT License
 
@@ -155,8 +154,12 @@ been tested on recent versions of CPython (2 and 3) and Pypy. For an exact
 list of tested versions see the Travis and Appveyor test configs.
 
 
-Chipmunk
---------
+Chipmunk Compilation
+--------------------
+
+This section is only required in case you dont install pymunk the normal way 
+(`pip install` or `setup.py install`). Otherwise its handled automatically by 
+the install command.
 
 Pymunk is built on top of the c library Chipmunk. It uses CFFI to interface
 with the Chipmunk library file. Because of this Chipmunk has to be compiled

@@ -33,6 +33,13 @@ Games
         A pachinko-like puzzle game. Play some balls and watch their movement 
         carefully (i.e. collect data) to reconstruct the board!
 
+    * - .. image:: _static/angry-birds-python.png
+      - `Angry Birds in Python <https://github.com/estevaofon/angry-birds-python>`_
+
+        :subscript:`made by Estevao Fonseca. Retrieved 2016-10-30`
+
+        Angry Birds game written in python using pygame and pymunk 
+
     * - .. image:: _static/SubTerrex.png
       - `SubTerrex <http://www.pygame.org/project-SubTerrex-2389-.html>`_  
         
@@ -46,6 +53,18 @@ Non-Games
 
 .. list-table::
     :widths: 40 60 
+
+    * - .. image:: _static/carrom-rl.png
+      - `Carrom Simulation <https://github.com/samiranrl/Carrom_rl>`_ 
+    
+        :subscript:`made by Samiran Roy. Retrieved 2016-10-27`
+
+        An open source Carrom Simulator interface for testing 
+        intelligent/learning agents. It provides an interface that allows 
+        you to design agents that that play carrom. It is built in python, 
+        using pygame + pymunk. This is the course project for 
+        CS 747 - Foundations of Intelligent and Learning Agents, taught by 
+        Prof. Shivaram Kalyanakrishnan at IIT Bombay.
 
     * - .. image:: _static/reinforcement-learning-car.png
       - `Self Driving Car <https://github.com/harvitronix/reinforcement-learning-car>`_
