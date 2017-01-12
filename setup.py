@@ -59,10 +59,13 @@ class build_chipmunk(build_ext, object):
         if not self.debug:
             compiler_preargs.append('-DNDEBUG')
         
-        if get_arch() == 64 and platform.system() == 'Linux':
-            compiler_preargs += ['-m64', '-fPIC', '-O3']
-        elif get_arch() == 32 and platform.system() == 'Linux':
-            compiler_preargs += ['-m32', '-fPIC', '-O3']
+        if platform.system() == 'Linux':
+            compiler_preargs += ['-fPIC', '-O3']
+            if get_arch() == 64 and not platform.machine().startswith('arm'):
+                compiler_preargs += ['-m64']
+            elif get_arch() == 32 and not platform.machine().startswith('arm'):
+                compiler_preargs += ['-m32']
+
         elif platform.system() == 'Darwin':
             #No -O3 on OSX. There's a bug in the clang compiler when using O3.
             compiler_preargs += ['-arch', 'i386', '-arch', 'x86_64']
