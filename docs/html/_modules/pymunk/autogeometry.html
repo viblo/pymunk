@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.autogeometry &mdash; pymunk 5.1.0 documentation</title>
+    <title>pymunk.autogeometry &#8212; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -17,15 +17,16 @@
         VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.1.0 documentation" href="../../index.html" />
-    <link rel="up" title="pymunk" href="../pymunk.html" /> 
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -37,9 +38,9 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -53,9 +54,9 @@
 
 <span class="kn">import</span> <span class="nn">collections</span>
 
-<span class="kn">from</span> <span class="nn">._chipmunk_cffi</span> <span class="kn">import</span> <span class="n">lib</span><span class="p">,</span> <span class="n">ffi</span>
-<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
-<span class="kn">from</span> <span class="nn">.bb</span> <span class="kn">import</span> <span class="n">BB</span>
+<span class="kn">from</span> <span class="nn">._chipmunk_cffi</span> <span class="k">import</span> <span class="n">lib</span><span class="p">,</span> <span class="n">ffi</span>
+<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">.bb</span> <span class="k">import</span> <span class="n">BB</span>
 
 
 <span class="k">def</span> <span class="nf">_to_chipmunk</span><span class="p">(</span><span class="n">polyline</span><span class="p">):</span>
@@ -163,7 +164,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="PolylineSet.__init__"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.PolylineSet.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">free</span><span class="p">(</span><span class="n">_set</span><span class="p">):</span>
-            <span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineSetFree</span><span class="p">(</span><span class="n">_set</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineSetFree</span><span class="p">(</span><span class="n">_set</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">cpPolylineSetNew</span><span class="p">(),</span> <span class="n">free</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PolylineSet.collect_segment"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.PolylineSet.collect_segment">[docs]</a>    <span class="k">def</span> <span class="nf">collect_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">):</span>
@@ -210,12 +211,12 @@
 <span class="sd">    :type sample_func: ``func(point: Vec2d) -&gt; float``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpMarchSegmentFunc)&quot;</span>
+    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpMarchSegmentFunc)&quot;</span>
         <span class="s2">&quot;(cpVect v0, cpVect v1, void *data)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_seg_f</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
         <span class="n">segment_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v0</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span>
         
-    <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef cpFloat (*cpMarchSampleFunc)&quot;</span>
+    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef cpFloat (*cpMarchSampleFunc)&quot;</span>
         <span class="s2">&quot;(cpVect point, void *data)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_sam_f</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">sample_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
@@ -242,12 +243,12 @@
 <span class="sd">    :type sample_func: ``func(point: Vec2d) -&gt; float``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpMarchSegmentFunc)&quot;</span>
+    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpMarchSegmentFunc)&quot;</span>
         <span class="s2">&quot;(cpVect v0, cpVect v1, void *data)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_seg_f</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
         <span class="n">segment_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v0</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span>
         
-    <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef cpFloat (*cpMarchSampleFunc)&quot;</span>
+    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef cpFloat (*cpMarchSampleFunc)&quot;</span>
         <span class="s2">&quot;(cpVect point, void *data)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_sam_f</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">sample_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
@@ -312,14 +313,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.3.
+        &#169; Copyright 2013, Victor Blomqvist.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

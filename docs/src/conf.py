@@ -151,7 +151,12 @@ exclude_patterns = ["_templates"]
 pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = []
+modindex_common_prefix = ["pymunk."]
+
+methodindex_common_prefix = ["pymunk."]
+
+classindex_common_prefix = ["pymunk."]
+
 
 suppress_warnings = ['image.nonlocal_uri']
 # -- Options for HTML output ---------------------------------------------------

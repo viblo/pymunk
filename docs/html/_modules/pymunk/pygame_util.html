@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.pygame_util &mdash; pymunk 5.1.0 documentation</title>
+    <title>pymunk.pygame_util &#8212; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -17,15 +17,16 @@
         VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.1.0 documentation" href="../../index.html" />
-    <link rel="up" title="pymunk" href="../pymunk.html" /> 
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -37,9 +38,9 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -87,9 +88,9 @@
 <span class="kn">import</span> <span class="nn">pygame</span>
 
 <span class="kn">import</span> <span class="nn">pymunk</span>
-<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
 
-<span class="n">positive_y_is_up</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">positive_y_is_up</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="sd">&quot;&quot;&quot;Make increasing values of y point upwards.</span>
 
 <span class="sd">        y</span>
@@ -151,20 +152,20 @@
         <span class="n">circle_edge</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">circle_edge</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
         <span class="n">line_r</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">radius</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="k">else</span> <span class="mi">1</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">line_r</span><span class="p">)</span>    </div>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">line_r</span><span class="p">)</span>    </div>
 
 <div class="viewcode-block" id="DrawOptions.draw_segment"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
         <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
 
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span></div>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="DrawOptions.draw_fat_segment"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_fat_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_fat_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
         <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
         
         <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">r</span><span class="p">)</span></div>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">r</span><span class="p">)</span></div>
         
 <div class="viewcode-block" id="DrawOptions.draw_polygon"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verts</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
         <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_pygame</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">verts</span><span class="p">]</span>
@@ -172,10 +173,10 @@
         
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">ps</span><span class="p">)</span>
         
-        <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">False</span><span class="p">:</span>
-            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span></div>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="DrawOptions.draw_dot"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_dot">[docs]</a>    <span class="k">def</span> <span class="nf">draw_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
@@ -264,14 +265,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.3.
+        &#169; Copyright 2013, Victor Blomqvist.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

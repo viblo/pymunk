@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.collision_handler &mdash; pymunk 5.1.0 documentation</title>
+    <title>pymunk.collision_handler &#8212; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -17,15 +17,16 @@
         VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.1.0 documentation" href="../../index.html" />
-    <link rel="up" title="pymunk" href="../pymunk.html" /> 
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -37,9 +38,9 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -55,11 +56,11 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>   
 
-<span class="kn">from</span> <span class="nn">.arbiter</span> <span class="kn">import</span> <span class="n">Arbiter</span>
+<span class="kn">from</span> <span class="nn">.arbiter</span> <span class="k">import</span> <span class="n">Arbiter</span>
 
 <div class="viewcode-block" id="CollisionHandler"><a class="viewcode-back" href="../../pymunk.html#pymunk.CollisionHandler">[docs]</a><span class="k">class</span> <span class="nc">CollisionHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A collision handler is a set of 4 function callbacks for the different</span>
@@ -86,10 +87,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="n">_handler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">space</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="p">{}</span></div>
         
@@ -106,7 +107,7 @@
 
     <span class="k">def</span> <span class="nf">_set_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef cpBool (*cpCollisionBeginFunc)&quot;</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef cpBool (*cpCollisionBeginFunc)&quot;</span>
             <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
@@ -127,7 +128,7 @@
                 <span class="s2">&quot; indicate if the collision should be processed or not when&quot;</span>
                 <span class="s2">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
                 <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span> <span class="o">=</span> <span class="n">cf</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">beginFunc</span> <span class="o">=</span> <span class="n">cf</span>
@@ -149,7 +150,7 @@
 
     <span class="k">def</span> <span class="nf">_set_pre_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef cpBool (*cpCollisionPreSolveFunc)&quot;</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef cpBool (*cpCollisionPreSolveFunc)&quot;</span>
             <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
@@ -170,7 +171,7 @@
                 <span class="s2">&quot; indicate if the collision should be processed or not when&quot;</span>
                 <span class="s2">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
                 <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span> <span class="o">=</span> <span class="n">cf</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">preSolveFunc</span> <span class="o">=</span> <span class="n">cf</span> 
@@ -192,7 +193,7 @@
 
     <span class="k">def</span> <span class="nf">_set_post_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
     
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpCollisionPostSolveFunc)&quot;</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpCollisionPostSolveFunc)&quot;</span>
             <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
@@ -216,7 +217,7 @@
 
     <span class="k">def</span> <span class="nf">_set_separate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
     
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpCollisionSeparateFunc)&quot;</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpCollisionSeparateFunc)&quot;</span>
             <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
@@ -295,14 +296,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.3.
+        &#169; Copyright 2013, Victor Blomqvist.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

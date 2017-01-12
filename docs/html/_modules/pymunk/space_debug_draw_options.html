@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.space_debug_draw_options &mdash; pymunk 5.1.0 documentation</title>
+    <title>pymunk.space_debug_draw_options &#8212; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -17,15 +17,16 @@
         VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.1.0 documentation" href="../../index.html" />
-    <link rel="up" title="pymunk" href="../pymunk.html" /> 
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -37,9 +38,9 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -51,12 +52,12 @@
   <h1>Source code for pymunk.space_debug_draw_options</h1><div class="highlight"><pre>
 <span></span><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
 
-<span class="kn">from</span> <span class="nn">._chipmunk_cffi</span> <span class="kn">import</span> <span class="n">lib</span><span class="p">,</span> <span class="n">ffi</span> 
+<span class="kn">from</span> <span class="nn">._chipmunk_cffi</span> <span class="k">import</span> <span class="n">lib</span><span class="p">,</span> <span class="n">ffi</span> 
 
-<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
-<span class="kn">from</span> <span class="nn">.body</span> <span class="kn">import</span> <span class="n">Body</span>
+<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">.body</span> <span class="k">import</span> <span class="n">Body</span>
 
 <span class="k">class</span> <span class="nc">SpaceDebugColor</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;SpaceDebugColor&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">,</span><span class="s2">&quot;g&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;a&quot;</span><span class="p">])):</span>
     <span class="sd">&quot;&quot;&quot;Color tuple used by the debug drawing API.</span>
@@ -99,7 +100,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">collision_point_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">231</span><span class="p">,</span><span class="mi">76</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span>  
 
         
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawCircleImpl)&quot;</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawCircleImpl)&quot;</span>
             <span class="s2">&quot;(cpVect pos, cpFloat angle, cpFloat radius, &quot;</span>
             <span class="s2">&quot;cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, &quot;</span>
             <span class="s2">&quot;cpDataPointer data)&quot;</span><span class="p">)</span>
@@ -109,14 +110,14 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">outline_color</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">fill_color</span><span class="p">))</span>
         <span class="n">_options</span><span class="o">.</span><span class="n">drawCircle</span> <span class="o">=</span> <span class="n">f1</span>
 
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawSegmentImpl)&quot;</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawSegmentImpl)&quot;</span>
             <span class="s2">&quot;(cpVect a, cpVect b, cpSpaceDebugColor color, cpDataPointer data)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">f2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_segment</span><span class="p">(</span>
                 <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
         <span class="n">_options</span><span class="o">.</span><span class="n">drawSegment</span> <span class="o">=</span> <span class="n">f2</span>
 
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawFatSegmentImpl)&quot;</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawFatSegmentImpl)&quot;</span>
             <span class="s2">&quot;(cpVect a, cpVect b, cpFloat radius, &quot;</span>
             <span class="s2">&quot;cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, &quot;</span>
             <span class="s2">&quot;cpDataPointer data)&quot;</span><span class="p">)</span>
@@ -126,7 +127,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">outline_color</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">fill_color</span><span class="p">))</span>
         <span class="n">_options</span><span class="o">.</span><span class="n">drawFatSegment</span> <span class="o">=</span> <span class="n">f3</span>
 
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawPolygonImpl)&quot;</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawPolygonImpl)&quot;</span>
             <span class="s2">&quot;(int count, const cpVect *verts, cpFloat radius, &quot;</span>
             <span class="s2">&quot;cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, &quot;</span>
             <span class="s2">&quot;cpDataPointer data)&quot;</span><span class="p">)</span>
@@ -139,14 +140,14 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">outline_color</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">fill_color</span><span class="p">))</span>   
         <span class="n">_options</span><span class="o">.</span><span class="n">drawPolygon</span> <span class="o">=</span> <span class="n">f4</span>
 
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawDotImpl)&quot;</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawDotImpl)&quot;</span>
             <span class="s2">&quot;(cpFloat size, cpVect pos, cpSpaceDebugColor color, &quot;</span>
             <span class="s2">&quot;cpDataPointer data)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">f5</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_dot</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">pos</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
         <span class="n">_options</span><span class="o">.</span><span class="n">drawDot</span> <span class="o">=</span> <span class="n">f5</span>
 
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s2">&quot;typedef cpSpaceDebugColor &quot;</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef cpSpaceDebugColor &quot;</span>
             <span class="s2">&quot;(*cpSpaceDebugDrawColorForShapeImpl)&quot;</span>
             <span class="s2">&quot;(cpShape *shape, cpDataPointer data)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">f6</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
@@ -162,7 +163,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">f3</span><span class="p">,</span><span class="n">f4</span><span class="p">,</span><span class="n">f5</span><span class="p">,</span><span class="n">f6</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">_get_shape_outline_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">shapeOutlineColor</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">shapeOutlineColor</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">shapeOutlineColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_shape_outline_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">shapeOutlineColor</span> <span class="o">=</span> <span class="n">c</span>
@@ -198,26 +199,26 @@
     <span class="n">flags</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_flags</span><span class="p">,</span> <span class="n">_set_flags</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SpaceDebugDrawOptions.draw_circle"><a class="viewcode-back" href="../../pymunk.html#pymunk.SpaceDebugDrawOptions.draw_circle">[docs]</a>    <span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;draw_circle&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;draw_circle&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SpaceDebugDrawOptions.draw_segment"><a class="viewcode-back" href="../../pymunk.html#pymunk.SpaceDebugDrawOptions.draw_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;draw_segment&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;draw_segment&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SpaceDebugDrawOptions.draw_fat_segment"><a class="viewcode-back" href="../../pymunk.html#pymunk.SpaceDebugDrawOptions.draw_fat_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_fat_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;draw_fat_segment&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;draw_fat_segment&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SpaceDebugDrawOptions.draw_polygon"><a class="viewcode-back" href="../../pymunk.html#pymunk.SpaceDebugDrawOptions.draw_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;draw_polygon&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;draw_polygon&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SpaceDebugDrawOptions.draw_dot"><a class="viewcode-back" href="../../pymunk.html#pymunk.SpaceDebugDrawOptions.draw_dot">[docs]</a>    <span class="k">def</span> <span class="nf">draw_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;draw_dot&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;draw_dot&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SpaceDebugDrawOptions.color_for_shape"><a class="viewcode-back" href="../../pymunk.html#pymunk.SpaceDebugDrawOptions.color_for_shape">[docs]</a>    <span class="k">def</span> <span class="nf">color_for_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">shape</span><span class="o">.</span><span class="n">color</span>
 
         <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_dynamic_color</span>
-        <span class="k">if</span> <span class="n">shape</span><span class="o">.</span><span class="n">body</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">shape</span><span class="o">.</span><span class="n">body</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_static_color</span>
             <span class="k">elif</span> <span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">KINEMATIC</span><span class="p">:</span>
@@ -284,14 +285,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.3.
+        &#169; Copyright 2013, Victor Blomqvist.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

@@ -27,7 +27,7 @@ user; for example using sudo::
 Once installed you should be able to to import pymunk just as any other 
 installed library. pymunk should also work just fine with virtualenv in case 
 you want it installed in a contained environment.
-    
+ 
 
 .. _compile-chipmunk:
 
@@ -55,6 +55,23 @@ https://mingwpy.github.io/
 .. seealso:: 
 
     Module :py:mod:`pymunkoptions` 
-        Options module that control runtime options of pymunk such as debug 
+        Options module that control runtime options of Pymunk such as debug 
         settings. Use pymunkoptions together with release mode compilation to 
         remove all debugs prints.
+
+
+CFFI Installation
+-----------------
+Sometimes you need to manually install the (non-python) dependencies of CFFI. 
+Usually you will notice this as a installation failure when pip tries to 
+install CFFI since CFFI is a dependency of Pymunk. This is not really part of 
+Pymunk, but a brief description is available for your convenience. 
+
+You need to install two extra dependencies for CFFI to install properly. This 
+can be handled by the package manager. The dependencies are `python-dev` and 
+`libffi-dev`. Note that they might have slightly different names depending on 
+the distribution, this is for Debian/Ubuntu. Just install them the normal way, 
+for example like this if you use apt and Pip should be able to install CFFI 
+properly::
+
+    > sudo apt-get install python-dev libffi-dev

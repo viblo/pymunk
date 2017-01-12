@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation &mdash; pymunk 5.1.0 documentation</title>
+    <title>Installation &#8212; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,14 +17,16 @@
         VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API Reference" href="pymunk.html" />
     <link rel="prev" title="News" href="news.html" /> 
   </head>
@@ -44,7 +46,7 @@
         <li class="right" >
           <a href="news.html" title="News"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -104,10 +106,26 @@ distributed with pymunk were compiled with the mingwpy GCC compiler at
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
 <dt>Module <a class="reference internal" href="pymunkoptions.html#module-pymunkoptions" title="pymunkoptions"><code class="xref py py-mod docutils literal"><span class="pre">pymunkoptions</span></code></a></dt>
-<dd>Options module that control runtime options of pymunk such as debug
+<dd>Options module that control runtime options of Pymunk such as debug
 settings. Use pymunkoptions together with release mode compilation to
 remove all debugs prints.</dd>
 </dl>
+</div>
+</div>
+<div class="section" id="cffi-installation">
+<h2>CFFI Installation<a class="headerlink" href="#cffi-installation" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you need to manually install the (non-python) dependencies of CFFI.
+Usually you will notice this as a installation failure when pip tries to
+install CFFI since CFFI is a dependency of Pymunk. This is not really part of
+Pymunk, but a brief description is available for your convenience.</p>
+<p>You need to install two extra dependencies for CFFI to install properly. This
+can be handled by the package manager. The dependencies are <cite>python-dev</cite> and
+<cite>libffi-dev</cite>. Note that they might have slightly different names depending on
+the distribution, this is for Debian/Ubuntu. Just install them the normal way,
+for example like this if you use apt and Pip should be able to install CFFI
+properly:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">libffi</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -136,6 +154,7 @@ remove all debugs prints.</dd>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-pymunk">Install pymunk</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compile-chipmunk">Compile Chipmunk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cffi-installation">CFFI Installation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pymunk.html">API Reference</a></li>
@@ -159,7 +178,7 @@ remove all debugs prints.</dd>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/installation.txt"
+      <li><a href="_sources/installation.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -192,12 +211,12 @@ remove all debugs prints.</dd>
         <li class="right" >
           <a href="news.html" title="News"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.3.
+        &#169; Copyright 2013, Victor Blomqvist.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

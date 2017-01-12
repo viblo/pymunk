@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.autogeometry Module &mdash; pymunk 5.1.0 documentation</title>
+    <title>pymunk.autogeometry Module &#8212; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,15 +17,16 @@
         VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" />
-    <link rel="up" title="API Reference" href="pymunk.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pymunk.constraint Module" href="pymunk.constraint.html" />
     <link rel="prev" title="API Reference" href="pymunk.html" /> 
   </head>
@@ -45,8 +46,8 @@
         <li class="right" >
           <a href="pymunk.html" title="API Reference"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="pymunk.html" accesskey="U">API Reference</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pymunk.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -57,12 +58,12 @@
             
   <div class="section" id="pymunk-autogeometry-module">
 <h1><a class="reference internal" href="#module-pymunk.autogeometry" title="pymunk.autogeometry"><code class="xref py py-mod docutils literal"><span class="pre">pymunk.autogeometry</span></code></a> Module<a class="headerlink" href="#pymunk-autogeometry-module" title="Permalink to this headline">¶</a></h1>
-<div class="custom-index container">
+<div class="custom-index docutils container">
 <script type="text/javascript" src='_static/pymunk.js'></script></div>
 <span class="target" id="module-pymunk.autogeometry"></span><dl class="class">
 <dt id="pymunk.autogeometry.PolylineSet">
 <em class="property">class </em><code class="descclassname">pymunk.autogeometry.</code><code class="descname">PolylineSet</code><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">collections.abc.Sequence</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">_abcoll.Sequence</span></code></p>
 <p>A set of Polylines.</p>
 <p>Mainly intended to be used for its <a class="reference internal" href="#pymunk.autogeometry.PolylineSet.collect_segment" title="pymunk.autogeometry.PolylineSet.collect_segment"><code class="xref py py-meth docutils literal"><span class="pre">collect_segment()</span></code></a> function 
 when generating geometry with the <a class="reference internal" href="#pymunk.autogeometry.march_soft" title="pymunk.autogeometry.march_soft"><code class="xref py py-func docutils literal"><span class="pre">march_soft()</span></code></a> and 
@@ -84,8 +85,8 @@ callback directly from <a class="reference internal" href="#pymunk.autogeometry.
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>v0</strong> (<em>(float,float)</em>) &#8211; Start of segment</li>
-<li><strong>v1</strong> (<em>(float,float)</em>) &#8211; End of segment</li>
+<li><strong>v0</strong> (<em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em>) &#8211; Start of segment</li>
+<li><strong>v1</strong> (<em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em>) &#8211; End of segment</li>
 </ul>
 </td>
 </tr>
@@ -122,7 +123,7 @@ overly simplified.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em>[(float,float)]</em>) &#8211; Polyline to simplify.</li>
+<li><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</li>
 <li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
 </ul>
 </td>
@@ -142,7 +143,7 @@ overly simplified.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polyline</strong> (<em>[(float,float)]</em>) &#8211; Polyline to simplify.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><cite>bool</cite></td>
 </tr>
@@ -216,7 +217,7 @@ straight edged or angular shapes.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em>[(float,float)]</em>) &#8211; Polyline to simplify.</li>
+<li><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</li>
 <li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
 </ul>
 </td>
@@ -239,7 +240,7 @@ shapes.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em>[(float,float)]</em>) &#8211; Polyline to simplify.</li>
+<li><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</li>
 <li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
 </ul>
 </td>
@@ -260,7 +261,7 @@ shapes.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em>[(float,float)]</em>) &#8211; Polyline to simplify.</li>
+<li><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</li>
 <li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
 </ul>
 </td>
@@ -329,7 +330,7 @@ shapes.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/pymunk.autogeometry.txt"
+      <li><a href="_sources/pymunk.autogeometry.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -362,13 +363,13 @@ shapes.</p>
         <li class="right" >
           <a href="pymunk.html" title="API Reference"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="pymunk.html" >API Reference</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pymunk.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.3.
+        &#169; Copyright 2013, Victor Blomqvist.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API Reference &mdash; pymunk 5.1.0 documentation</title>
+    <title>API Reference &#8212; pymunk 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,14 +17,16 @@
         VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.1.0 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pymunk.autogeometry Module" href="pymunk.autogeometry.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
   </head>
@@ -44,7 +46,7 @@
         <li class="right" >
           <a href="installation.html" title="Installation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -57,7 +59,7 @@
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="pymunk-package">
 <h2><a class="reference internal" href="#module-pymunk" title="pymunk"><code class="xref py py-mod docutils literal"><span class="pre">pymunk</span></code></a> Package<a class="headerlink" href="#pymunk-package" title="Permalink to this headline">¶</a></h2>
-<div class="submodule-index container">
+<div class="submodule-index docutils container">
 <p class="rubric">Submodules</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -71,7 +73,7 @@
 </ul>
 </div>
 </div>
-<div class="custom-index container">
+<div class="custom-index docutils container">
 <script type="text/javascript" src='_static/pymunk.js'></script></div>
 <p class="rubric">pymunk</p>
 <span class="target" id="module-pymunk"></span><p>pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
@@ -112,7 +114,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x03EA35F0&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -1498,7 +1500,7 @@ reduce problems where the poly gets stuck on seams in your geometry.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>body</strong> (<a class="reference internal" href="#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; The body to attach the poly to</li>
-<li><strong>vertices</strong> (<em>[(float,float)]</em>) &#8211; Define a convex hull of the polygon 
+<li><strong>vertices</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Define a convex hull of the polygon 
 with a counterclockwise winding.</li>
 <li><strong>transform</strong> (<a class="reference internal" href="#pymunk.Transform" title="pymunk.Transform"><em>Transform</em></a>) &#8211; Transform will be applied to every vertex.</li>
 <li><strong>radius</strong> (<em>float</em>) &#8211; Set the radius of the poly shape</li>
@@ -2190,7 +2192,7 @@ The normalized distance along the query segment in the range [0, 1]</p>
 <dl class="attribute">
 <dt id="pymunk.SegmentQueryInfo.__init__">
 <code class="descname">__init__</code><a class="headerlink" href="#pymunk.SegmentQueryInfo.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2690,18 +2692,18 @@ enemy object:</p>
 </div>
 <dl class="attribute">
 <dt id="pymunk.ShapeFilter.ALL_CATEGORIES">
-<code class="descname">ALL_CATEGORIES</code><em class="property"> = 4294967295</em><a class="headerlink" href="#pymunk.ShapeFilter.ALL_CATEGORIES" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ALL_CATEGORIES</code><em class="property"> = 4294967295L</em><a class="headerlink" href="#pymunk.ShapeFilter.ALL_CATEGORIES" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.ShapeFilter.ALL_MASKS">
-<code class="descname">ALL_MASKS</code><em class="property"> = 4294967295</em><a class="headerlink" href="#pymunk.ShapeFilter.ALL_MASKS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ALL_MASKS</code><em class="property"> = 4294967295L</em><a class="headerlink" href="#pymunk.ShapeFilter.ALL_MASKS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.ShapeFilter.__init__">
 <code class="descname">__init__</code><a class="headerlink" href="#pymunk.ShapeFilter.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2789,7 +2791,7 @@ enemy object:</p>
 <dl class="attribute">
 <dt id="pymunk.Transform.__init__">
 <code class="descname">__init__</code><a class="headerlink" href="#pymunk.Transform.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2871,7 +2873,7 @@ very small values of info.distance.</div></blockquote>
 <dl class="attribute">
 <dt id="pymunk.PointQueryInfo.__init__">
 <code class="descname">__init__</code><a class="headerlink" href="#pymunk.PointQueryInfo.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
 </dd></dl>
 
 <dl class="method">
@@ -2920,7 +2922,7 @@ they also return where a shape was hit. This object hold that information.</p>
 <dl class="attribute">
 <dt id="pymunk.ShapeQueryInfo.__init__">
 <code class="descname">__init__</code><a class="headerlink" href="#pymunk.ShapeQueryInfo.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3108,7 +3110,7 @@ directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/pymunk.txt"
+      <li><a href="_sources/pymunk.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -3141,12 +3143,12 @@ directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
         <li class="right" >
           <a href="installation.html" title="Installation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.3.
+        &#169; Copyright 2013, Victor Blomqvist.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

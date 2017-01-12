@@ -81,6 +81,10 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Baheti, Ashutosh, and Arobinda Gupta. 
+  "Non-linear Barrier Coverage using Mobile Wireless Sensors." 
+  arXiv preprint arXiv:1611.07397 (2016).
+
 * Espeso, David R., Esteban Martínez-García, Victor De Lorenzo, and Ángel Goñi-Moreno. 
   "Physical forces shape group identity of swimming Pseudomonas putida cells." 
   Frontiers in Microbiology 7 (2016).
@@ -134,3 +138,5 @@ Pymunk has been used or referenced in a number of scientific papers
   
 List last updated 2016-10-07. If something is missing or wrong, please contact 
 me!
+
+.. (list made using "Chicago" style citation)
