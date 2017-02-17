@@ -48,6 +48,8 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         
         Typical usage::
         
+        >>> import pymunk
+        >>> import pymunk.pygame_util
         >>> s = pymunk.Space()
         >>> options = pymunk.pyglet_util.DrawOptions()
         >>> s.debug_draw(options)

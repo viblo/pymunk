@@ -31,7 +31,10 @@ about your coordinate system and not in any way optimized.
 
 __docformat__ = "reStructuredText"
 
-__all__ = ["DrawOptions", "get_mouse_pos", "to_pygame", "from_pygame"]
+__all__ = [
+    "DrawOptions", "get_mouse_pos", "to_pygame", "from_pygame", 
+    "positive_y_is_up"
+    ]
 
 import pygame
 
@@ -41,13 +44,26 @@ from pymunk.vec2d import Vec2d
 positive_y_is_up = True
 """Make increasing values of y point upwards.
 
+When True::
+
         y
         ^
         |   . (2, 2)
         |
     ----+------ > x
         |
+        |     . (3, -2)
+        |
+
+When False::
+
+        y
+        ^
         |   . (2, -2)
+        |
+    ----+------ > x
+        |
+        |      . (3, 2)
         |
 
 """
@@ -57,7 +73,9 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         """Draw a pymunk.Space on a pygame.Surface object.
         
         Typical usage::
-        
+
+        >>> import pymunk
+        >>> import pymunk.pygame_util
         >>> surface = pygame.Surface((10,10))
         >>> s = pymunk.Space()
         >>> options = pymunk.pygame_util.DrawOptions(surface)

@@ -21,8 +21,12 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         """DrawOptions for space.debug_draw() to draw a space on a ax object. 
 
         Typical usage::
-
-        >>> fix, ax = matplotlib.subplot()
+        
+        >>> import matplotlib as mpl
+        >>> import pymunk
+        >>> import pymunk.matplotlib_util
+        >>> my_space = pymunk.Space()
+        >>> fix, ax = mpl.subplot()
         >>> options = pymunk.matplotlib_util.DrawOptions(ax)
         >>> my_space.debug_draw(options)
 

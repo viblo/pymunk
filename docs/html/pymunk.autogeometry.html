@@ -60,81 +60,42 @@
 <h1><a class="reference internal" href="#module-pymunk.autogeometry" title="pymunk.autogeometry"><code class="xref py py-mod docutils literal"><span class="pre">pymunk.autogeometry</span></code></a> Module<a class="headerlink" href="#pymunk-autogeometry-module" title="Permalink to this headline">¶</a></h1>
 <div class="custom-index docutils container">
 <script type="text/javascript" src='_static/pymunk.js'></script></div>
-<span class="target" id="module-pymunk.autogeometry"></span><dl class="class">
-<dt id="pymunk.autogeometry.PolylineSet">
-<em class="property">class </em><code class="descclassname">pymunk.autogeometry.</code><code class="descname">PolylineSet</code><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">_abcoll.Sequence</span></code></p>
-<p>A set of Polylines.</p>
-<p>Mainly intended to be used for its <a class="reference internal" href="#pymunk.autogeometry.PolylineSet.collect_segment" title="pymunk.autogeometry.PolylineSet.collect_segment"><code class="xref py py-meth docutils literal"><span class="pre">collect_segment()</span></code></a> function 
-when generating geometry with the <a class="reference internal" href="#pymunk.autogeometry.march_soft" title="pymunk.autogeometry.march_soft"><code class="xref py py-func docutils literal"><span class="pre">march_soft()</span></code></a> and 
-<a class="reference internal" href="#pymunk.autogeometry.march_hard" title="pymunk.autogeometry.march_hard"><code class="xref py py-func docutils literal"><span class="pre">march_hard()</span></code></a> functions.</p>
-<dl class="method">
-<dt id="pymunk.autogeometry.PolylineSet.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="target" id="module-pymunk.autogeometry"></span><p>This module contain functions for automatic generation of geometry, for 
+example from an image.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pymunk.autogeometry</span> <span class="k">import</span> <span class="n">march_soft</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="s2">&quot;  xx   &quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;  xx   &quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;  xx   &quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;  xx   &quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;  xx   &quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;  xxxxx&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;  xxxxx&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
 
-<dl class="method">
-<dt id="pymunk.autogeometry.PolylineSet.collect_segment">
-<code class="descname">collect_segment</code><span class="sig-paren">(</span><em>v0</em>, <em>v1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet.collect_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet.collect_segment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a line segment to a polyline set.</p>
-<p>A segment will either start a new polyline, join two others, or add to 
-or loop an existing polyline. This is mostly intended to be used as a 
-callback directly from <a class="reference internal" href="#pymunk.autogeometry.march_soft" title="pymunk.autogeometry.march_soft"><code class="xref py py-func docutils literal"><span class="pre">march_soft()</span></code></a> or <a class="reference internal" href="#pymunk.autogeometry.march_hard" title="pymunk.autogeometry.march_hard"><code class="xref py py-func docutils literal"><span class="pre">march_hard()</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>v0</strong> (<em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em>) &#8211; Start of segment</li>
-<li><strong>v1</strong> (<em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em>) &#8211; End of segment</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">segment_func</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">tuple</span><span class="p">(</span><span class="n">v0</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v1</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">sample_func</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">img</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span> <span class="k">else</span> <span class="mi">0</span>
 
-<dl class="method">
-<dt id="pymunk.autogeometry.PolylineSet.count">
-<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &rarr; integer -- return number of occurrences of value<a class="headerlink" href="#pymunk.autogeometry.PolylineSet.count" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pymunk.autogeometry.PolylineSet.index">
-<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &rarr; integer -- return first index of value.<a class="headerlink" href="#pymunk.autogeometry.PolylineSet.index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raises ValueError if the value is not present.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.autogeometry.convex_decomposition">
-<code class="descclassname">pymunk.autogeometry.</code><code class="descname">convex_decomposition</code><span class="sig-paren">(</span><em>polyline</em>, <em>tolerance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#convex_decomposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.convex_decomposition" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get an approximate convex decomposition from a polyline.</p>
-<p>Returns a list of convex hulls that match the original shape to within 
-tolerance.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the input is a self intersecting polygon, the output might end up 
-overly simplified.</p>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">march_soft</span><span class="p">(</span><span class="n">pymunk</span><span class="o">.</span><span class="n">BB</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">segment_func</span><span class="p">,</span> <span class="n">sample_func</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">))</span>
+<span class="go">13</span>
+</pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</li>
-<li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<p>The information in segments can now be used to create geometry, for example as 
+a Pymunk Poly or Segment:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">segment</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">static_body</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  
+<span class="gp">... </span>    <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="function">
 <dt id="pymunk.autogeometry.is_closed">
 <code class="descclassname">pymunk.autogeometry.</code><code class="descname">is_closed</code><span class="sig-paren">(</span><em>polyline</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#is_closed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.is_closed" title="Permalink to this definition">¶</a></dt>
@@ -146,60 +107,6 @@ overly simplified.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><cite>bool</cite></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.autogeometry.march_hard">
-<code class="descclassname">pymunk.autogeometry.</code><code class="descname">march_hard</code><span class="sig-paren">(</span><em>bb</em>, <em>x_samples</em>, <em>y_samples</em>, <em>threshold</em>, <em>segment_func</em>, <em>sample_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#march_hard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.march_hard" title="Permalink to this definition">¶</a></dt>
-<dd><p>Trace an <em>aliased</em> curve of an image along a particular threshold.</p>
-<p>The given number of samples will be taken and spread across the bounding 
-box area using the sampling function and context.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) &#8211; Bounding box of the area to sample within</li>
-<li><strong>x_samples</strong> (<em>int</em>) &#8211; Number of samples in x</li>
-<li><strong>y_samples</strong> (<em>int</em>) &#8211; Number of samples in y</li>
-<li><strong>threshold</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated</li>
-<li><strong>segment_func</strong> (<code class="docutils literal"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) &#8211; The segment function will be called for each segment 
-detected that lies along the density contour for threshold.</li>
-<li><strong>sample_func</strong> (<code class="docutils literal"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) &#8211; The sample function will be called for 
-x_samples * y_samples spread across the bounding box area, and should 
-return a float.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pymunk.autogeometry.march_soft">
-<code class="descclassname">pymunk.autogeometry.</code><code class="descname">march_soft</code><span class="sig-paren">(</span><em>bb</em>, <em>x_samples</em>, <em>y_samples</em>, <em>threshold</em>, <em>segment_func</em>, <em>sample_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#march_soft"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.march_soft" title="Permalink to this definition">¶</a></dt>
-<dd><p>Trace an <em>anti-aliased</em> contour of an image along a particular threshold.</p>
-<p>The given number of samples will be taken and spread across the bounding 
-box area using the sampling function and context.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) &#8211; Bounding box of the area to sample within</li>
-<li><strong>x_samples</strong> (<em>int</em>) &#8211; Number of samples in x</li>
-<li><strong>y_samples</strong> (<em>int</em>) &#8211; Number of samples in y</li>
-<li><strong>threshold</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated</li>
-<li><strong>segment_func</strong> (<code class="docutils literal"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) &#8211; The segment function will be called for each segment 
-detected that lies along the density contour for threshold.</li>
-<li><strong>sample_func</strong> (<code class="docutils literal"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) &#8211; The sample function will be called for 
-x_samples * y_samples spread across the bounding box area, and should 
-return a float.</li>
-</ul>
-</td>
 </tr>
 </tbody>
 </table>
@@ -267,6 +174,135 @@ shapes.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.autogeometry.convex_decomposition">
+<code class="descclassname">pymunk.autogeometry.</code><code class="descname">convex_decomposition</code><span class="sig-paren">(</span><em>polyline</em>, <em>tolerance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#convex_decomposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.convex_decomposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an approximate convex decomposition from a polyline.</p>
+<p>Returns a list of convex hulls that match the original shape to within 
+tolerance.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the input is a self intersecting polygon, the output might end up 
+overly simplified.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</li>
+<li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pymunk.autogeometry.PolylineSet">
+<em class="property">class </em><code class="descclassname">pymunk.autogeometry.</code><code class="descname">PolylineSet</code><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">_abcoll.Sequence</span></code></p>
+<p>A set of Polylines.</p>
+<p>Mainly intended to be used for its <a class="reference internal" href="#pymunk.autogeometry.PolylineSet.collect_segment" title="pymunk.autogeometry.PolylineSet.collect_segment"><code class="xref py py-meth docutils literal"><span class="pre">collect_segment()</span></code></a> function 
+when generating geometry with the <a class="reference internal" href="#pymunk.autogeometry.march_soft" title="pymunk.autogeometry.march_soft"><code class="xref py py-func docutils literal"><span class="pre">march_soft()</span></code></a> and 
+<a class="reference internal" href="#pymunk.autogeometry.march_hard" title="pymunk.autogeometry.march_hard"><code class="xref py py-func docutils literal"><span class="pre">march_hard()</span></code></a> functions.</p>
+<dl class="method">
+<dt id="pymunk.autogeometry.PolylineSet.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.autogeometry.PolylineSet.collect_segment">
+<code class="descname">collect_segment</code><span class="sig-paren">(</span><em>v0</em>, <em>v1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet.collect_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet.collect_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a line segment to a polyline set.</p>
+<p>A segment will either start a new polyline, join two others, or add to 
+or loop an existing polyline. This is mostly intended to be used as a 
+callback directly from <a class="reference internal" href="#pymunk.autogeometry.march_soft" title="pymunk.autogeometry.march_soft"><code class="xref py py-func docutils literal"><span class="pre">march_soft()</span></code></a> or <a class="reference internal" href="#pymunk.autogeometry.march_hard" title="pymunk.autogeometry.march_hard"><code class="xref py py-func docutils literal"><span class="pre">march_hard()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>v0</strong> (<em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em>) &#8211; Start of segment</li>
+<li><strong>v1</strong> (<em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em>) &#8211; End of segment</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.autogeometry.PolylineSet.count">
+<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &rarr; integer -- return number of occurrences of value<a class="headerlink" href="#pymunk.autogeometry.PolylineSet.count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymunk.autogeometry.PolylineSet.index">
+<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &rarr; integer -- return first index of value.<a class="headerlink" href="#pymunk.autogeometry.PolylineSet.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises ValueError if the value is not present.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.autogeometry.march_soft">
+<code class="descclassname">pymunk.autogeometry.</code><code class="descname">march_soft</code><span class="sig-paren">(</span><em>bb</em>, <em>x_samples</em>, <em>y_samples</em>, <em>threshold</em>, <em>segment_func</em>, <em>sample_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#march_soft"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.march_soft" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trace an <em>anti-aliased</em> contour of an image along a particular threshold.</p>
+<p>The given number of samples will be taken and spread across the bounding 
+box area using the sampling function and context.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) &#8211; Bounding box of the area to sample within</li>
+<li><strong>x_samples</strong> (<em>int</em>) &#8211; Number of samples in x</li>
+<li><strong>y_samples</strong> (<em>int</em>) &#8211; Number of samples in y</li>
+<li><strong>threshold</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated</li>
+<li><strong>segment_func</strong> (<code class="docutils literal"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) &#8211; The segment function will be called for each segment 
+detected that lies along the density contour for threshold.</li>
+<li><strong>sample_func</strong> (<code class="docutils literal"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) &#8211; The sample function will be called for 
+x_samples * y_samples spread across the bounding box area, and should 
+return a float.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymunk.autogeometry.march_hard">
+<code class="descclassname">pymunk.autogeometry.</code><code class="descname">march_hard</code><span class="sig-paren">(</span><em>bb</em>, <em>x_samples</em>, <em>y_samples</em>, <em>threshold</em>, <em>segment_func</em>, <em>sample_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#march_hard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.march_hard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trace an <em>aliased</em> curve of an image along a particular threshold.</p>
+<p>The given number of samples will be taken and spread across the bounding 
+box area using the sampling function and context.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) &#8211; Bounding box of the area to sample within</li>
+<li><strong>x_samples</strong> (<em>int</em>) &#8211; Number of samples in x</li>
+<li><strong>y_samples</strong> (<em>int</em>) &#8211; Number of samples in y</li>
+<li><strong>threshold</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated</li>
+<li><strong>segment_func</strong> (<code class="docutils literal"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) &#8211; The segment function will be called for each segment 
+detected that lies along the density contour for threshold.</li>
+<li><strong>sample_func</strong> (<code class="docutils literal"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) &#8211; The sample function will be called for 
+x_samples * y_samples spread across the bounding box area, and should 
+return a float.</li>
+</ul>
 </td>
 </tr>
 </tbody>

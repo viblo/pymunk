@@ -78,6 +78,16 @@ do not need to explicitly do conversions if you happen to have a tuple:</p>
 <span class="go">Vec2d(5.0, 11.0)</span>
 </pre></div>
 </div>
+<p>More examples:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Vec2d</span><span class="p">(</span><span class="mf">7.3</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">)</span>
+<span class="go">Vec2d(7.3, 4.2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Vec2d</span><span class="p">((</span><span class="mf">7.3</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">))</span>
+<span class="go">Vec2d(7.3, 4.2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Vec2d</span><span class="p">(</span><span class="mf">7.3</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="go">Vec2d(8.3, 6.2)</span>
+</pre></div>
+</div>
 <dl class="class">
 <dt id="pymunk.vec2d.Vec2d">
 <em class="property">class </em><code class="descclassname">pymunk.vec2d.</code><code class="descname">Vec2d</code><span class="sig-paren">(</span><em>x_or_pair=None</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/vec2d.html#Vec2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.vec2d.Vec2d" title="Permalink to this definition">¶</a></dt>

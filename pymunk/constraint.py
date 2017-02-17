@@ -38,6 +38,15 @@ http://www.youtube.com/watch?v=ZgJJZTS0aMM
     src="http://www.youtube.com/embed/ZgJJZTS0aMM" frameborder="0"
     allowfullscreen></iframe>
 
+
+Example::
+
+>>> import pymunk
+>>> s = pymunk.Space()
+>>> a,b = pymunk.Body(10,10), pymunk.Body(10,10)
+>>> c = pymunk.PivotJoint(a, b, (0,0))
+>>> s.add(c)
+
 """
 __docformat__ = "reStructuredText"
 

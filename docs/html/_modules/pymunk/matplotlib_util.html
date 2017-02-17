@@ -73,8 +73,12 @@
         <span class="sd">&quot;&quot;&quot;DrawOptions for space.debug_draw() to draw a space on a ax object. </span>
 
 <span class="sd">        Typical usage::</span>
-
-<span class="sd">        &gt;&gt;&gt; fix, ax = matplotlib.subplot()</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib as mpl</span>
+<span class="sd">        &gt;&gt;&gt; import pymunk</span>
+<span class="sd">        &gt;&gt;&gt; import pymunk.matplotlib_util</span>
+<span class="sd">        &gt;&gt;&gt; my_space = pymunk.Space()</span>
+<span class="sd">        &gt;&gt;&gt; fix, ax = mpl.subplot()</span>
 <span class="sd">        &gt;&gt;&gt; options = pymunk.matplotlib_util.DrawOptions(ax)</span>
 <span class="sd">        &gt;&gt;&gt; my_space.debug_draw(options)</span>
 

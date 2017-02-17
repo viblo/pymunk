@@ -1,11 +1,53 @@
+"""This module contain functions for automatic generation of geometry, for 
+example from an image.
+
+Example::
+
+    >>> import pymunk
+    >>> from pymunk.autogeometry import march_soft
+    >>> img = [
+    ...     "  xx   ",
+    ...     "  xx   ",
+    ...     "  xx   ",
+    ...     "  xx   ",
+    ...     "  xx   ",
+    ...     "  xxxxx",
+    ...     "  xxxxx",
+    ... ]
+    >>> segments = []
+
+    >>> def segment_func(v0, v1):
+    ...     segments.append((tuple(v0), tuple(v1)))
+    >>> def sample_func(point):
+    ...     x = int(point.x)
+    ...     y = int(point.y)
+    ...     return 1 if img[y][x] == "x" else 0
+
+    >>> march_soft(pymunk.BB(0,0,6,6), 7, 7, .5, segment_func, sample_func)
+    >>> print(len(segments))
+    13
+
+The information in segments can now be used to create geometry, for example as 
+a Pymunk Poly or Segment::
+
+    >>> s = pymunk.Space()
+    >>> for (a,b) in segments:
+    ...     segment = pymunk.Segment(s.static_body, a, b, 5)  
+    ...     s.add(segment)
+
+
+"""
 __docformat__ = "reStructuredText"
+
+__all__ = ["is_closed", "simplify_curves", "simplify_vertexes", 
+    "to_convex_hull", "convex_decomposition", "PolylineSet", "march_soft", 
+    "march_hard"]
 
 import collections
 
 from ._chipmunk_cffi import lib, ffi
 from .vec2d import Vec2d
 from .bb import BB
-
 
 def _to_chipmunk(polyline):
     l = len(polyline)

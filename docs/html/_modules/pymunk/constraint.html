@@ -90,6 +90,15 @@
 <span class="sd">    src=&quot;http://www.youtube.com/embed/ZgJJZTS0aMM&quot; frameborder=&quot;0&quot;</span>
 <span class="sd">    allowfullscreen&gt;&lt;/iframe&gt;</span>
 
+
+<span class="sd">Example::</span>
+
+<span class="sd">&gt;&gt;&gt; import pymunk</span>
+<span class="sd">&gt;&gt;&gt; s = pymunk.Space()</span>
+<span class="sd">&gt;&gt;&gt; a,b = pymunk.Body(10,10), pymunk.Body(10,10)</span>
+<span class="sd">&gt;&gt;&gt; c = pymunk.PivotJoint(a, b, (0,0))</span>
+<span class="sd">&gt;&gt;&gt; s.add(c)</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 

@@ -39,9 +39,18 @@ do not need to explicitly do conversions if you happen to have a tuple::
     >>> space.gravity += 2,6
     >>> space.gravity
     Vec2d(5.0, 11.0)
+    
+More examples::
 
+    >>> from pymunk.vec2d import Vec2d
+    >>> Vec2d(7.3, 4.2)
+    Vec2d(7.3, 4.2)
+    >>> Vec2d((7.3, 4.2))
+    Vec2d(7.3, 4.2)
+    >>> Vec2d(7.3, 4.2) + Vec2d((1,2))
+    Vec2d(8.3, 6.2)
+    
 """
-__version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 import operator
