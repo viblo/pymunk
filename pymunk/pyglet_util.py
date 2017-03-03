@@ -175,15 +175,21 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
                     ('c4B', fill_color.as_int() * l))
 
     def draw_polygon(self, verts, radius, outline_color, fill_color):
-        ps = verts
-            
         mode = pyglet.gl.GL_TRIANGLE_STRIP
-        ps = [ps[1],ps[2], ps[0]] + ps[3:]
+
+        l = len(verts)
+        mid = len(verts) // 2 
         
         vs = []
-        for p in [ps[0]] + ps + [ps[-1]]:
-                vs += [p.x, p.y]
+        for i in range(mid):
+            vs += [verts[i].x, verts[i].y]
+            vs += [verts[l-1-i].x, verts[l-1-i].y]
+
+        if l%2:
+            vs += [verts[mid].x, verts[mid].y]
             
+        vs = [vs[0], vs[1]] + vs + [vs[-2], vs[-1]]
+
         l = len(vs)//2
         self.batch.add(l, mode, None,
                     ('v2f', vs),

@@ -57,7 +57,7 @@ def fill_space(space, custom_color=(255,255,0,255)):
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (50,430)
     t = pymunk.Transform(ty=-100)
-    s = pymunk.Poly(b, [(0, -50), (50, 0), (30, 50),(-30, 50),(-50, 0)], t)
+    s = pymunk.Poly(b, [(0.0, -30.0), (19.0, -23.0), (30.0, -5.0), (26.0, 15.0), (10.0, 28.0), (-10.0, 28.0), (-26.0, 15.0), (-30.0, -5.0), (-19.0, -23.0)], t)
     space.add(s)
     
     ### Kinematic
@@ -111,9 +111,9 @@ def fill_space(space, custom_color=(255,255,0,255)):
     b = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
     b.position = (230,430)
     t = pymunk.Transform(ty=-100)
-    s = pymunk.Poly(b, [(0, -50), (50, 0), (30, 50),(-30, 50),(-50, 0)], t)
+    s = pymunk.Poly(b, [(19.0, -50.0), (30.0, -5.0), (26.0, 15.0), (10.0, 38.0), (-10.0, 38.0), (-26.0, 15.0), (-30.0, -5.0), (-19.0, -50.0)], t)
     space.add(s)
-    
+
     ### Dynamic
     captions.append(((390,680), "Dynamic Shapes"))
 

@@ -3,7 +3,6 @@
 See pygame_util_demo.py for a comparison to pygame.
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import sys
