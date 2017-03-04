@@ -46,10 +46,18 @@ class UnitTestAutoGeometry(unittest.TestCase):
 
     def test_convex_decomposition(self):
         # TODO: Use a more complicated polygon as test case
-        p1 = [(0,0), (0,10), (5,5), (20, 20), (10,10), (5,0)]
-        expected = [[(0,0), (20,20), (0, 10), (0, 0)]]
+        p1 = [(0,0), (5,0), (10,10), (20,20), (5,5), (0,10), (0,0)]
+        expected = [[(0.0,0.0), (5.0,0.0), (6.25, 2.5), (5.0,5.0),(0.0,10.0), (0.0,0.0)], 
+            [(10.0,10.0), (20.0,20.0), (10.0,10.0)],
+            [(5.0,5.0), (6.25, 2.5), (10.0,10.0), (5.0,5.0)]
+            ]
+
         actual = a.convex_decomposition(p1, .1)
-        self.assertEqual(actual, expected)
+        
+        for x in range(len(actual)):
+            for y in range(len(actual[x])):
+                self.assertAlmostEqual(actual[x][y].x, expected[x][y][0])
+                self.assertAlmostEqual(actual[x][y].y, expected[x][y][1])
 
     def test_march_soft(self):
         img = [
