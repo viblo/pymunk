@@ -155,8 +155,7 @@ class UnitTestBody(unittest.TestCase):
         b2 = p.Body(1,1, body_type=p.Body.DYNAMIC)
         self.assertEqual(b1.body_type, p.Body.DYNAMIC)
         self.assertEqual(b2.body_type, p.Body.DYNAMIC)
-
-
+       
     def testKinematic(self):
         b = p.Body(body_type=p.Body.KINEMATIC)
         self.assertEqual(b.body_type, p.Body.KINEMATIC)
@@ -165,7 +164,22 @@ class UnitTestBody(unittest.TestCase):
         b = p.Body(body_type=p.Body.STATIC)
         self.assertEqual(b.body_type, p.Body.STATIC)
 
-
+    def testMassMomentFromShape(self):
+        s = p.Space()
+        
+        b = p.Body()
+        b.mass = 2
+        c = p.Circle(b, 10, (2,3))
+        c.mass = 3
+        
+        self.assertEqual(b.mass, 0)
+        s.add(b, c)
+        self.assertEqual(b.mass, 3)
+        c.mass = 4
+        self.assertEqual(b.mass, 4)
+        self.assertEqual(b.center_of_gravity.x, 2)
+        self.assertEqual(b.center_of_gravity.y, 3)
+        self.assertEqual(b.moment, 200)
 
     def testPositionFunction(self):
         s = p.Space()

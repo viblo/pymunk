@@ -50,6 +50,39 @@ class UnitTestShape(unittest.TestCase):
         self.assertAlmostEqual(info.normal.y, -1)
         self.assertEqual(info.alpha, 0.45)
 
+    def testMass(self):
+        c = p.Circle(None, 1)
+        self.assertEqual(c.mass, 0)
+        c.mass = 2
+        self.assertEqual(c.mass, 2)
+
+    def testDensity(self):
+        c = p.Circle(None, 1)
+        self.assertEqual(c.density, 0)
+        c.density = 2
+        self.assertEqual(c.density, 2)
+
+    def testMoment(self):
+        c = p.Circle(None, 5)
+        self.assertEqual(c.moment, 0)
+        c.density = 2
+        self.assertAlmostEqual(c.moment, 1963.4954084936207)
+        c.density = 0
+        c.mass = 2
+        self.assertAlmostEqual(c.moment, 25)
+
+    def testArea(self):
+        c = p.Circle(None, 5)
+        self.assertEqual(c.area, 78.53981633974483)
+        
+    def testCenterOfGravity(self):
+        c = p.Circle(None, 5)
+        self.assertEqual(c.center_of_gravity.x, 0)
+        self.assertEqual(c.center_of_gravity.y, 0)
+        c = p.Circle(None, 5, (10,5))
+        self.assertEqual(c.center_of_gravity.x, 10)
+        self.assertEqual(c.center_of_gravity.y, 5)
+
     def testNoBody(self):
         c = p.Circle(None, 1)
         self.assertEqual(c.body, None)

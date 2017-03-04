@@ -73,16 +73,17 @@ class Body(object):
         create a body with a mass and moment of 0, and set the mass or
         density of each collision shape added to the body. Chipmunk will
         automatically calculate the mass, moment of inertia, and center of
-        gravity for you. This is probably preferred in most cases.
+        gravity for you. This is probably preferred in most cases. Note that 
+        these will only be correctly calculated after the body and shape are 
+        added to a space.
 
         The other option is to set the mass of the body when it's created,
         and leave the mass of the shapes added to it as 0.0. This approach is
         more flexible, but is not as easy to use. Don't set the mass of both
         the body and the shapes. If you do so, it will recalculate and
-        overwite your custom mass value when the shapes are added to the body.
+        overwrite your custom mass value when the shapes are added to the body.
         """
         if body_type == Body.DYNAMIC:
-            assert mass != 0 and moment != 0, "dynamic body with 0 mass and/or moment"
             self._body = ffi.gc(cp.cpBodyNew(mass, moment), cp.cpBodyFree)
         elif body_type == Body.KINEMATIC:
             self._body = ffi.gc(cp.cpBodyNewKinematic(), cp.cpBodyFree)

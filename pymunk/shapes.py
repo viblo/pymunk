@@ -35,6 +35,46 @@ class Shape(object):
             ffi.cast("cpDataPointer", Shape._shapeid_counter))
         Shape._shapeid_counter += 1
 
+    def _get_mass(self):
+        return cp.cpShapeGetMass(self._shape)
+    def _set_mass(self, mass):
+        cp.cpShapeSetMass(self._shape, mass)
+    mass = property(_get_mass, _set_mass, 
+        doc="""The mass of this shape.
+
+        This is useful when you let Pymunk calculate the total mass and inertia 
+        of a body from the shapes attached to it. (Instead of setting the body 
+        mass and inertia directly)
+        """)
+
+    def _get_density(self):
+        return cp.cpShapeGetDensity(self._shape)
+    def _set_density(self, density):
+        cp.cpShapeSetDensity(self._shape, density)
+    density = property(_get_density, _set_density, 
+        doc="""The density of this shape.
+        
+        This is useful when you let Pymunk calculate the total mass and inertia 
+        of a body from the shapes attached to it. (Instead of setting the body 
+        mass and inertia directly)
+        """)
+
+    def _get_moment(self):
+        """The calculated moment of this shape."""
+        return cp.cpShapeGetMoment(self._shape)
+    moment = property(_get_moment, doc=_get_moment.__doc__)
+
+    def _get_area(self):
+        """The calculated area of this shape."""
+        return cp.cpShapeGetArea(self._shape)
+    area = property(_get_area, doc=_get_area.__doc__)
+
+    def _get_center_of_gravity(self):
+        """The calculated center of gravity of this shape."""
+        return cp.cpShapeGetCenterOfGravity(self._shape)
+    center_of_gravity = property(_get_center_of_gravity, 
+        doc=_get_center_of_gravity.__doc__)
+
     def _get_sensor(self):
         return cp.cpShapeGetSensor(self._shape)
     def _set_sensor(self, is_sensor):
