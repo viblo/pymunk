@@ -125,16 +125,17 @@
 <span class="sd">        create a body with a mass and moment of 0, and set the mass or</span>
 <span class="sd">        density of each collision shape added to the body. Chipmunk will</span>
 <span class="sd">        automatically calculate the mass, moment of inertia, and center of</span>
-<span class="sd">        gravity for you. This is probably preferred in most cases.</span>
+<span class="sd">        gravity for you. This is probably preferred in most cases. Note that </span>
+<span class="sd">        these will only be correctly calculated after the body and shape are </span>
+<span class="sd">        added to a space.</span>
 
 <span class="sd">        The other option is to set the mass of the body when it&#39;s created,</span>
 <span class="sd">        and leave the mass of the shapes added to it as 0.0. This approach is</span>
 <span class="sd">        more flexible, but is not as easy to use. Don&#39;t set the mass of both</span>
 <span class="sd">        the body and the shapes. If you do so, it will recalculate and</span>
-<span class="sd">        overwite your custom mass value when the shapes are added to the body.</span>
+<span class="sd">        overwrite your custom mass value when the shapes are added to the body.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="n">mass</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">moment</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;dynamic body with 0 mass and/or moment&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNew</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">moment</span><span class="p">),</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyFree</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">KINEMATIC</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNewKinematic</span><span class="p">(),</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyFree</span><span class="p">)</span>

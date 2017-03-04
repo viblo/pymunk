@@ -114,7 +114,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x037FB170&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x036E7330&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -668,12 +668,14 @@ use Chipmunk&#8217;s moment calculations to estimate the moment for you.</p>
 create a body with a mass and moment of 0, and set the mass or
 density of each collision shape added to the body. Chipmunk will
 automatically calculate the mass, moment of inertia, and center of
-gravity for you. This is probably preferred in most cases.</p>
+gravity for you. This is probably preferred in most cases. Note that 
+these will only be correctly calculated after the body and shape are 
+added to a space.</p>
 <p>The other option is to set the mass of the body when it&#8217;s created,
 and leave the mass of the shapes added to it as 0.0. This approach is
 more flexible, but is not as easy to use. Don&#8217;t set the mass of both
 the body and the shapes. If you do so, it will recalculate and
-overwite your custom mass value when the shapes are added to the body.</p>
+overwrite your custom mass value when the shapes are added to the body.</p>
 </dd></dl>
 
 <dl class="method">
@@ -993,6 +995,12 @@ one of the specialized shapes instead (<a class="reference internal" href="#pymu
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="pymunk.Shape.area">
+<code class="descname">area</code><a class="headerlink" href="#pymunk.Shape.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated area of this shape.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pymunk.Shape.bb">
 <code class="descname">bb</code><a class="headerlink" href="#pymunk.Shape.bb" title="Permalink to this definition">¶</a></dt>
 <dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal"><span class="pre">BB</span></code></a> of the shape.</p>
@@ -1017,11 +1025,26 @@ indicate that this shape doesnt belong to a body.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pymunk.Shape.center_of_gravity">
+<code class="descname">center_of_gravity</code><a class="headerlink" href="#pymunk.Shape.center_of_gravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated center of gravity of this shape.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pymunk.Shape.collision_type">
 <code class="descname">collision_type</code><a class="headerlink" href="#pymunk.Shape.collision_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>User defined collision type for the shape.</p>
 <p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
 information on when to use this property.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Shape.density">
+<code class="descname">density</code><a class="headerlink" href="#pymunk.Shape.density" title="Permalink to this definition">¶</a></dt>
+<dd><p>The density of this shape.</p>
+<p>This is useful when you let Pymunk calculate the total mass and inertia 
+of a body from the shapes attached to it. (Instead of setting the body 
+mass and inertia directly)</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1129,6 +1152,21 @@ it is what looks good that is important, not the exact value).</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pymunk.Shape.mass">
+<code class="descname">mass</code><a class="headerlink" href="#pymunk.Shape.mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mass of this shape.</p>
+<p>This is useful when you let Pymunk calculate the total mass and inertia 
+of a body from the shapes attached to it. (Instead of setting the body 
+mass and inertia directly)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Shape.moment">
+<code class="descname">moment</code><a class="headerlink" href="#pymunk.Shape.moment" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated moment of this shape.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pymunk.Shape.point_query">
 <code class="descname">point_query</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Shape.point_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Shape.point_query" title="Permalink to this definition">¶</a></dt>
@@ -1225,6 +1263,12 @@ shape is not attached to a body.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pymunk.Circle.area">
+<code class="descname">area</code><a class="headerlink" href="#pymunk.Circle.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated area of this shape.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pymunk.Circle.bb">
 <code class="descname">bb</code><a class="headerlink" href="#pymunk.Circle.bb" title="Permalink to this definition">¶</a></dt>
 <dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal"><span class="pre">BB</span></code></a> of the shape.</p>
@@ -1249,11 +1293,26 @@ indicate that this shape doesnt belong to a body.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pymunk.Circle.center_of_gravity">
+<code class="descname">center_of_gravity</code><a class="headerlink" href="#pymunk.Circle.center_of_gravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated center of gravity of this shape.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pymunk.Circle.collision_type">
 <code class="descname">collision_type</code><a class="headerlink" href="#pymunk.Circle.collision_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>User defined collision type for the shape.</p>
 <p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
 information on when to use this property.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Circle.density">
+<code class="descname">density</code><a class="headerlink" href="#pymunk.Circle.density" title="Permalink to this definition">¶</a></dt>
+<dd><p>The density of this shape.</p>
+<p>This is useful when you let Pymunk calculate the total mass and inertia 
+of a body from the shapes attached to it. (Instead of setting the body 
+mass and inertia directly)</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1359,6 +1418,21 @@ it is what looks good that is important, not the exact value).</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Circle.mass">
+<code class="descname">mass</code><a class="headerlink" href="#pymunk.Circle.mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mass of this shape.</p>
+<p>This is useful when you let Pymunk calculate the total mass and inertia 
+of a body from the shapes attached to it. (Instead of setting the body 
+mass and inertia directly)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Circle.moment">
+<code class="descname">moment</code><a class="headerlink" href="#pymunk.Circle.moment" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated moment of this shape.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1512,6 +1586,12 @@ with a counterclockwise winding.</li>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pymunk.Poly.area">
+<code class="descname">area</code><a class="headerlink" href="#pymunk.Poly.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated area of this shape.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pymunk.Poly.bb">
 <code class="descname">bb</code><a class="headerlink" href="#pymunk.Poly.bb" title="Permalink to this definition">¶</a></dt>
 <dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal"><span class="pre">BB</span></code></a> of the shape.</p>
@@ -1533,6 +1613,12 @@ indicate that this shape doesnt belong to a body.</p>
 <dt id="pymunk.Poly.cache_bb">
 <code class="descname">cache_bb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.Poly.cache_bb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update and returns the bouding box of this shape</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Poly.center_of_gravity">
+<code class="descname">center_of_gravity</code><a class="headerlink" href="#pymunk.Poly.center_of_gravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated center of gravity of this shape.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1595,6 +1681,15 @@ reduce problems where the box gets stuck on seams in your geometry.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Poly.density">
+<code class="descname">density</code><a class="headerlink" href="#pymunk.Poly.density" title="Permalink to this definition">¶</a></dt>
+<dd><p>The density of this shape.</p>
+<p>This is useful when you let Pymunk calculate the total mass and inertia 
+of a body from the shapes attached to it. (Instead of setting the body 
+mass and inertia directly)</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1716,6 +1811,21 @@ it is what looks good that is important, not the exact value).</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Poly.mass">
+<code class="descname">mass</code><a class="headerlink" href="#pymunk.Poly.mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mass of this shape.</p>
+<p>This is useful when you let Pymunk calculate the total mass and inertia 
+of a body from the shapes attached to it. (Instead of setting the body 
+mass and inertia directly)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Poly.moment">
+<code class="descname">moment</code><a class="headerlink" href="#pymunk.Poly.moment" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated moment of this shape.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1867,6 +1977,12 @@ shape is not attached to a body.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pymunk.Segment.area">
+<code class="descname">area</code><a class="headerlink" href="#pymunk.Segment.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated area of this shape.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pymunk.Segment.b">
 <code class="descname">b</code><a class="headerlink" href="#pymunk.Segment.b" title="Permalink to this definition">¶</a></dt>
 <dd><p>The second of the two endpoints for this segment</p>
@@ -1897,11 +2013,26 @@ indicate that this shape doesnt belong to a body.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pymunk.Segment.center_of_gravity">
+<code class="descname">center_of_gravity</code><a class="headerlink" href="#pymunk.Segment.center_of_gravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated center of gravity of this shape.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pymunk.Segment.collision_type">
 <code class="descname">collision_type</code><a class="headerlink" href="#pymunk.Segment.collision_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>User defined collision type for the shape.</p>
 <p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
 information on when to use this property.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Segment.density">
+<code class="descname">density</code><a class="headerlink" href="#pymunk.Segment.density" title="Permalink to this definition">¶</a></dt>
+<dd><p>The density of this shape.</p>
+<p>This is useful when you let Pymunk calculate the total mass and inertia 
+of a body from the shapes attached to it. (Instead of setting the body 
+mass and inertia directly)</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2007,6 +2138,21 @@ it is what looks good that is important, not the exact value).</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Segment.mass">
+<code class="descname">mass</code><a class="headerlink" href="#pymunk.Segment.mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mass of this shape.</p>
+<p>This is useful when you let Pymunk calculate the total mass and inertia 
+of a body from the shapes attached to it. (Instead of setting the body 
+mass and inertia directly)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.Segment.moment">
+<code class="descname">moment</code><a class="headerlink" href="#pymunk.Segment.moment" title="Permalink to this definition">¶</a></dt>
+<dd><p>The calculated moment of this shape.</p>
 </dd></dl>
 
 <dl class="attribute">

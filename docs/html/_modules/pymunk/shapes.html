@@ -87,6 +87,46 @@
             <span class="n">ffi</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;cpDataPointer&quot;</span><span class="p">,</span> <span class="n">Shape</span><span class="o">.</span><span class="n">_shapeid_counter</span><span class="p">))</span>
         <span class="n">Shape</span><span class="o">.</span><span class="n">_shapeid_counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
+    <span class="k">def</span> <span class="nf">_get_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetMass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mass</span><span class="p">):</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeSetMass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">mass</span><span class="p">)</span>
+    <span class="n">mass</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_mass</span><span class="p">,</span> <span class="n">_set_mass</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The mass of this shape.</span>
+
+<span class="s2">        This is useful when you let Pymunk calculate the total mass and inertia </span>
+<span class="s2">        of a body from the shapes attached to it. (Instead of setting the body </span>
+<span class="s2">        mass and inertia directly)</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetDensity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeSetDensity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">density</span><span class="p">)</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_density</span><span class="p">,</span> <span class="n">_set_density</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The density of this shape.</span>
+<span class="s2">        </span>
+<span class="s2">        This is useful when you let Pymunk calculate the total mass and inertia </span>
+<span class="s2">        of a body from the shapes attached to it. (Instead of setting the body </span>
+<span class="s2">        mass and inertia directly)</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_moment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The calculated moment of this shape.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetMoment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+    <span class="n">moment</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_moment</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">_get_moment</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The calculated area of this shape.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetArea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_area</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">_get_area</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_center_of_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The calculated center of gravity of this shape.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetCenterOfGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+    <span class="n">center_of_gravity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_center_of_gravity</span><span class="p">,</span> 
+        <span class="n">doc</span><span class="o">=</span><span class="n">_get_center_of_gravity</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_get_sensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetSensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_sensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_sensor</span><span class="p">):</span>
