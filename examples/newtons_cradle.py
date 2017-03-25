@@ -1,6 +1,5 @@
 """A screensaver version of Newton's Cradle with an interactive mode. 
 """
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import sys, random

@@ -7,7 +7,6 @@ sleeping bodies.
 __docformat__ = "reStructuredText"
 
 import sys
-import threading
 import random
 random.seed(5) # try keep difference the random factor the same each run.
 
@@ -142,12 +141,6 @@ def box(space):
     b.position = 600,box_y
     box_y -= 30
     space.add(b,s)
-
-def gravity_reverse(space):
-    print("reverse grav", space.gravity)
-    
-    space.gravity = space.gravity * (1,-1)
-    print("reverse grav", space.gravity)
 
 def car(space):
     pos = Vec2d(100,200)
