@@ -28,26 +28,14 @@ def load_library(ffi, libname, debug_lib=True):
     except:
         pass
     
-    if arch == "64":
-        arch_param = "64"
-    else:
-        arch_param = ""
-    
-    if s in ('Linux', 'FreeBSD'):
-        libfn = "lib%s%s.so" % (libname, arch_param)
-        
-    elif s in ('Windows', 'Microsoft'):
-        libfn = "%s%s.dll" % (libname, arch_param)
-        
-    elif s == 'Darwin':
-        libfn = "lib%s.dylib" % libname
-        
     # we use *nix library naming as default
-    else: 
-        libfn = "lib%s.so" % libname
-        
-    libfn = os.path.join(path, libfn)
+    pattern = "lib%s.so"
+    if s in ('Windows', 'Microsoft'):
+        pattern = "%s.dll"    
+    elif s == 'Darwin':
+        pattern = "lib%s.dylib"
     
+    libfn = os.path.join(path, pattern % libname)
     
     if debug_lib:
         print ("Loading chipmunk for %s (%sbit) [%s]" % (s, arch, libfn))
