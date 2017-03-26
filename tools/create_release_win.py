@@ -5,7 +5,7 @@ import shutil
 
 def main():
     os.chdir("..")
-    shutil.rmtree("dist")
+    shutil.rmtree("dist", True)
     os.system("python setup.py sdist")
     os.system("python2 setup.py bdist_wheel")
     os.system("python2-64 setup.py bdist_wheel")
