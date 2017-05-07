@@ -4,13 +4,13 @@ v5.x
 - use travis ci to build osx chipmunk lib file and run tests? https://docs.travis-ci.com/user/osx-ci-environment/
 - benchmark against pymunk 4 (done!), cymunk on pypy and cpython
 - cache pip downloads on appveyor?
-- Think about split between pymunk.util and pymunk modules
 - Think about experimental repr of Body
 - Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js  
 - add better example benchmark for threaded solver on non-windows
-- do we still need pymunk.inf?
-
+- automatic test build of android apk on travis 
 
 v6+
 ---
-???
+- Remake BB into namedtuple (will change APi and therefor api bump to 6)
+- Think about split between pymunk.util and pymunk modules
+- do we still need pymunk.inf?

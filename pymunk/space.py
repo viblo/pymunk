@@ -688,7 +688,7 @@ class Space(object):
             self.__query_hits.append(shape)
         
         data = ffi.new_handle(self)
-        cp.cpSpaceBBQuery(self._space, bb._bb[0], shape_filter, cf, data)
+        cp.cpSpaceBBQuery(self._space, bb._bb, shape_filter, cf, data)
         return self.__query_hits
 
 

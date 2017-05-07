@@ -509,7 +509,7 @@ class Poly(Shape):
             body._shapes.add(self)
 
         self._shape = ffi.gc(
-            cp.cpBoxShapeNew2(body_body, bb._bb[0], radius),
+            cp.cpBoxShapeNew2(body_body, bb._bb, radius),
             cp.cpShapeFree)
         
         self._set_shapeid()

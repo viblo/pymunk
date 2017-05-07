@@ -29,6 +29,14 @@ class UnitTestBB(unittest.TestCase):
         self.assertEqual(bb_circle.right, 6)
         self.assertEqual(bb_circle.top, 6)
 
+    def testMerge(self):
+        bb1 = p.BB(0,0,10,10)
+        bb2 = p.BB(2,0,10,10)
+        bb3 = p.BB(10,10,15,15)
+
+        self.assertEqual(bb1.merge(bb2), p.BB(0,0,10,10))
+        self.assertEqual(bb2.merge(bb3).merge(bb1), p.BB(0,0,15,15))
+
     def testMethods(self):
         bb1 = p.BB(0,0,10,10)
         bb2 = p.BB(10,10,20,20)
@@ -48,8 +56,6 @@ class UnitTestBB(unittest.TestCase):
 
         self.assertTrue(bb1.contains_vect(v1))
         self.assertFalse(bb1.contains_vect(v2))
-
-        self.assertEqual(bb1.merge(bb2), p.BB(0,0,20,20))
 
         self.assertEqual(bb1.expand(v1), bb1)
         self.assertEqual(bb1.expand(-v2), p.BB(-100,-3,10,10))

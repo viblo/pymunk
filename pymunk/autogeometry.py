@@ -211,7 +211,7 @@ def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
     def _sam_f(point, _data):
         return sample_func(Vec2d._fromcffi(point))
     
-    lib.cpMarchSoft(bb._bb[0], x_samples, y_samples, threshold, 
+    lib.cpMarchSoft(bb._bb, x_samples, y_samples, threshold, 
         _seg_f, ffi.NULL, _sam_f, ffi.NULL)
 
 def march_hard(bb, x_samples, y_samples, threshold, segment_func, sample_func):
@@ -243,5 +243,5 @@ def march_hard(bb, x_samples, y_samples, threshold, segment_func, sample_func):
     def _sam_f(point, _data):
         return sample_func(Vec2d._fromcffi(point))
     
-    lib.cpMarchHard(bb._bb[0], x_samples, y_samples, threshold, 
+    lib.cpMarchHard(bb._bb, x_samples, y_samples, threshold, 
         _seg_f, ffi.NULL, _sam_f, ffi.NULL)

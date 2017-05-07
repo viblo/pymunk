@@ -1,4 +1,3 @@
-__version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 from . import _chipmunk_cffi
@@ -14,15 +13,17 @@ class BB(object):
     def __init__(self, *args):
         """Create a new instance of a bounding box. 
         
-        Can be created with zero size with b`b = BB() or with four args defining 
+        Can be created with zero size with bb = BB() or with four args defining 
         left, bottom, right and top: bb = BB(left, bottom, right, top)
         """
         if len(args) == 0:
-            self._bb = ffi.new("cpBB *")
+            self._bbp = ffi.new("cpBB *")
+            self._bb = self._bbp[0]
         elif len(args) == 1:
             self._bb = args[0]
         else:
-            self._bb = ffi.new("cpBB *", args)
+            self._bbp = ffi.new("cpBB *", args)
+            self._bb = self._bbp[0]
 
     @staticmethod
     def newForCircle(p, r):
@@ -50,57 +51,57 @@ class BB(object):
 
     def intersects(self, other):
         """Returns true if the bounding boxes intersect"""
-        return bool(lib._cpBBIntersects(self._bb[0], other._bb[0]))
+        return bool(lib._cpBBIntersects(self._bb, other._bb))
 
     def intersects_segment(self, a, b):
         """Returns true if the segment defined by endpoints a and b
         intersect this bb."""
-        return bool(lib._cpBBIntersectsSegment(self._bb[0], tuple(a), tuple(b)))
+        return bool(lib._cpBBIntersectsSegment(self._bb, tuple(a), tuple(b)))
 
     def contains(self, other):
         """Returns true if bb completley contains the other bb"""
-        return bool(lib._cpBBContainsBB(self._bb[0], other._bb[0]))
+        return bool(lib._cpBBContainsBB(self._bb, other._bb))
 
     def contains_vect(self, v):
         """Returns true if this bb contains the vector v"""
-        return bool(lib._cpBBContainsVect(self._bb[0], tuple(v)))
+        return bool(lib._cpBBContainsVect(self._bb, tuple(v)))
 
     def merge(self, other):
         """Return the minimal bounding box that contains both this bb and the
         other bb
         """
-        return BB(lib._cpBBMerge(self._bb[0], other._bb[0]))
+        return BB(lib._cpBBMerge(self._bb, other._bb))
 
     def expand(self, v):
         """Return the minimal bounding box that contans both this bounding box
         and the vector v
         """
-        return BB(lib._cpBBExpand(self._bb[0], tuple(v)))
+        return BB(lib._cpBBExpand(self._bb, tuple(v)))
 
     def center(self):
         """Return the center"""
-        return Vec2d._fromcffi(lib._cpBBCenter(self._bb[0]))
+        return Vec2d._fromcffi(lib._cpBBCenter(self._bb))
 
     def area(self):
         """Return the area"""
-        return lib._cpBBArea(self._bb[0])
+        return lib._cpBBArea(self._bb)
 
     def merged_area(self, other):
         """Merges this and other then returns the area of the merged bounding
         box.
         """
-        return lib._cpBBMergedArea(self._bb[0], other._bb[0])
+        return lib._cpBBMergedArea(self._bb, other._bb)
 
     def segment_query(self, a, b):
         """Returns the fraction along the segment query the BB is hit.
 
         Returns infinity if it doesnt hit
         """
-        return lib._cpBBSegmentQuery(self._bb[0], tuple(a), tuple(b))
+        return lib._cpBBSegmentQuery(self._bb, tuple(a), tuple(b))
 
     def clamp_vect(self, v):
         """Returns a copy of the vector v clamped to the bounding box"""
-        return Vec2d._fromcffi(lib._cpBBClampVect(self._bb[0], tuple(v)))
+        return Vec2d._fromcffi(lib._cpBBClampVect(self._bb, tuple(v)))
 
     '''
     def wrap_vect(self, v):
