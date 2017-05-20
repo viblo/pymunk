@@ -21,7 +21,7 @@ class Space(object):
     and joints to it and then step them all forward together through time.
     """
     def __init__(self, threaded=False):
-        """Create a new instace of the Space. 
+        """Create a new instance of the Space. 
         
         If you set threaded=True the step function will run in threaded mode
         which might give a speedup. Note that even when you set threaded=True 
@@ -349,6 +349,19 @@ class Space(object):
         the efficiency of the contact persistence, requiring an order of 
         magnitude fewer iterations to resolve the collisions in the usual case.
 
+        It is not the same to call step 10 times with a dt of 0.1 and 
+        calling it 100 times with a dt of 0.01 even if the end result is 
+        that the simulation moved forward 100 units. Performing  multiple 
+        calls with a smaller dt creates a more stable and accurate 
+        simulation. Therefor it sometimes make sense to have a little for loop
+        around the step call, like in this example:
+
+        >>> import pymunk
+        >>> s = pymunk.Space()
+        >>> steps = 10
+        >>> for x in range(steps): # move simulation forward 0.1 seconds:
+        ...     s.step(0.1 / steps)
+        
         :param float dt: Time step length
         """
 

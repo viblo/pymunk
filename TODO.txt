@@ -9,8 +9,9 @@ v5.x
 - add better example benchmark for threaded solver on non-windows
 - automatic test build of android apk on travis 
 
-v6+
+v6+ (all potentially breaking changes)
 ---
-- Remake BB into namedtuple (will change APi and therefor api bump to 6)
+- Remake BB into namedtuple
 - Think about split between pymunk.util and pymunk modules
 - do we still need pymunk.inf?
+- make shape.sensor return bool instead of int
