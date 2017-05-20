@@ -1,6 +1,7 @@
 import pymunk as p
 from pymunk.vec2d import Vec2d
 import unittest
+import pickle
 
 ####################################################################
 class UnitTestConstraint(unittest.TestCase):
@@ -66,6 +67,30 @@ class UnitTestConstraint(unittest.TestCase):
         j.activate_bodies()
         self.assertFalse(a.is_sleeping)
         self.assertFalse(b.is_sleeping)
+
+    def testPickle(self):
+        a,b = p.Body(4,5), p.Body(10,10)
+        a.custom = "a"
+        b.custom = "b"
+        j = p.PivotJoint(a,b,(1,2))
+        j.custom = "test"
+        j.max_force = 2
+        j.error_bias = 3
+        j.max_bias = 4
+        j.collide_bodies = False
+
+        s = pickle.dumps(j, 2)
+        j2 = pickle.loads(s)
+        self.assertEqual(j.custom, j2.custom)
+        self.assertEqual(j.max_force, j2.max_force)
+        self.assertEqual(j.error_bias, j2.error_bias)
+        self.assertEqual(j.max_bias, j2.max_bias)
+        self.assertEqual(j.collide_bodies, j2.collide_bodies)
+        self.assertEqual(j.a.custom, j2.a.custom)
+        self.assertEqual(j.b.custom, j2.b.custom)
+
+
+
 
 class UnitTestPinJoint(unittest.TestCase):
     def testAnchor(self):

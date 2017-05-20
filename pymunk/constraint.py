@@ -142,6 +142,67 @@ class Constraint(object):
         a._constraints.add(self)
         b._constraints.add(self)
 
+    _pickle_attrs_init = ['a', 'b']
+    _pickle_attrs_general = ['max_force', 'error_bias', 'max_bias', 
+        'collide_bodies']
+    _pickle_attrs_special = []
+
+    def __getstate__(self):
+        """Return the state of this object
+        
+        This method allows the usage of the :mod:`copy` and :mod:`pickle`
+        modules with this class.
+        """
+
+        attrs = Constraint._pickle_attrs_init + \
+            self.__class__._pickle_attrs_init + \
+            Constraint._pickle_attrs_general + \
+            self.__class__._pickle_attrs_general
+
+        d = {}
+        for a in attrs:
+            d[a] = self.__getattribute__(a)
+        
+        #d['is_sleeping'] = self.is_sleeping
+        #d['_velocity_func'] = self._velocity_func_base
+        #d['_position_func'] = self._position_func_base
+
+        for k,v in self.__dict__.items():
+            if k[0] != '_':
+                d[k] = v
+        print(d)
+        return d
+
+    def __setstate__(self, state):
+        """Unpack this object from a saved state.
+
+        This method allows the usage of the :mod:`copy` and :mod:`pickle`
+        modules with this class.
+        """
+        print(state)
+        init_d = []
+        init_attrs = Constraint._pickle_attrs_init + \
+            self.__class__._pickle_attrs_init
+
+        for a in init_attrs:
+            init_d.append(state[a])
+        print("init_D", init_d)
+        self.__init__(*init_d)
+
+        for a in Constraint._pickle_attrs_general + \
+            self.__class__._pickle_attrs_general:
+            self.__setattr__(a, state[a])
+            
+        for k,v in state.items():
+            if k in Constraint._pickle_attrs_init or \
+                k in self.__class__._pickle_attrs_init or \
+                k in Constraint._pickle_attrs_general or \
+                k in self.__class__._pickle_attrs_general:
+                continue
+            else:
+                self.__setattr__(k, v)
+        
+
 class PinJoint(Constraint):
     """Keeps the anchor points at a set distance from one another."""
     def __init__(self, a, b, anchor_a=(0,0), anchor_b=(0,0)):
@@ -220,6 +281,9 @@ class SlideJoint(Constraint):
 
 class PivotJoint(Constraint):
     """Simply allow two objects to pivot about a single point."""
+
+    _pickle_attrs_init = ['anchor_a', 'anchor_b']
+
     def __init__(self, a, b, *args):
         """a and b are the two bodies to connect, and pivot is the point in
         world coordinates of the pivot.
@@ -238,7 +302,6 @@ class PivotJoint(Constraint):
         :param args: Either one pivot point, or two anchor points
         :type args: (float,float) or (float,float) (float,float)
         """
-
         if len(args) == 1:
             self._constraint = ffi.gc(
                 cp.cpPivotJointNew(a._body, b._body, tuple(args[0])), 
