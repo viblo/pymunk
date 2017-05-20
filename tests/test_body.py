@@ -1,6 +1,7 @@
 import pymunk as p
 from pymunk.vec2d import Vec2d
 import unittest
+import pickle
 
 ####################################################################
 
@@ -258,6 +259,50 @@ class UnitTestBody(unittest.TestCase):
         self.assertTrue(s1 in b1.shapes)
         self.assertTrue(s2 in b1.shapes)
         self.assertTrue(s1 not in s.static_body.shapes)
+
+
+    def testPickle(self):
+        b = p.Body(1, 2)
+        b.custom = "test"
+        b.position = 3,4
+        b.center_of_gravity = 5,6
+        b.velocity = 7,8
+        b.force = 9,10
+        b.angle = 11
+        b.angular_velocity = 12
+        b.torque = 13
+        
+        b.position_func = pf
+        b.velocity_func = vf
+
+        s = pickle.dumps(b)
+        b2 = pickle.loads(s)
+
+        self.assertEqual(b.mass, b2.mass)
+        self.assertEqual(b.moment, b2.moment)
+        self.assertEqual(b.body_type, b2.body_type)
+        self.assertEqual(b.custom, b2.custom)
+        self.assertEqual(b.position, b2.position)
+        self.assertEqual(b.center_of_gravity, b2.center_of_gravity)
+        self.assertEqual(b.velocity, b2.velocity)
+        self.assertEqual(b.force, b2.force)
+        self.assertEqual(b.angle, b2.angle)
+        self.assertEqual(b.angular_velocity, b2.angular_velocity)
+        self.assertEqual(b.torque, b2.torque)
+        
+        space = p.Space()
+        space.add(b2)
+        space.step(0.1)
+        self.assertTrue(b2.pf)
+        self.assertTrue(b2.vf)
+
+# Needs to be here for the lowest pickle protocol to work    
+def pf(body, dt):
+    body.pf = True
+
+def vf(body, gravity, damping, dt):
+    body.vf = True
+    
 
 ####################################################################
 if __name__ == "__main__":

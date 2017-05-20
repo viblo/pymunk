@@ -2,6 +2,8 @@ import pymunk as p
 from pymunk.vec2d import Vec2d
 import unittest
 
+import pickle
+
 class UnitTestShapeFilter(unittest.TestCase):
     def testInit(self):
         f = p.ShapeFilter()
@@ -24,6 +26,12 @@ class UnitTestShapeFilter(unittest.TestCase):
         f3 = p.ShapeFilter(2,3,4)
         self.assertTrue(f1 == f2)
         self.assertTrue(f1 != f3)
+
+    def testPickle(self):
+        x = p.ShapeFilter(1,2,3)
+        s = pickle.dumps(x, 2)
+        actual = pickle.loads(s)
+        self.assertEqual(x, actual)
 
 class UnitTestContactPoint(unittest.TestCase):
     pass

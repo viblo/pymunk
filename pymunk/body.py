@@ -93,8 +93,10 @@ class Body(object):
         self._init()
 
     def _init(self):
-        self._position_callback = None # To prevent the gc to collect the callbacks.
-        self._velocity_callback = None # To prevent the gc to collect the callbacks.
+        self._position_func = None # To prevent the gc to collect the callbacks.
+        self._velocity_func = None # To prevent the gc to collect the callbacks.
+        self._position_func_base = None # For pickle
+        self._velocity_func_base = None # For pickle
 
         self._space = None # Weak ref to the space holding this body (if any)
 
@@ -231,7 +233,8 @@ class Body(object):
         def _impl(_, gravity, damping, dt):
             return func(self, Vec2d._fromcffi(gravity), damping, dt)
 
-        self._velocity_callback = _impl
+        self._velocity_func_base = func
+        self._velocity_func = _impl
         cp.cpBodySetVelocityUpdateFunc(self._body, _impl)
     velocity_func = property(fset=_set_velocity_func,
         doc="""The velocity callback function. 
@@ -248,8 +251,9 @@ class Body(object):
             "(cpBody *body, cpFloat dt)")
         def _impl(_, dt):
             return func(self, dt)
-            
-        self._position_callback = _impl
+
+        self._position_func_base = func    
+        self._position_func = _impl
         cp.cpBodySetPositionUpdateFunc(self._body, _impl)
     position_func = property(fset=_set_position_func,
         doc="""The position callback function. 
@@ -374,7 +378,7 @@ class Body(object):
 
         When changing an body to a dynamic body, the mass and moment of
         inertia are recalculated from the shapes added to the body. Custom
-        calculated moments of inertia are not preseved when changing types.
+        calculated moments of inertia are not preserved when changing types.
         This function cannot be called directly in a collision callback.
         """)
 
@@ -411,7 +415,7 @@ class Body(object):
     constraints = property(_get_constraints,
         doc="""Get the constraints this body is attached to.
 
-        The body only keeps a weak referenece to the constraints and a
+        The body only keeps a weak reference to the constraints and a
         live body wont prevent GC of the attached constraints""")
 
     def _get_shapes(self):
@@ -458,3 +462,66 @@ class Body(object):
         """
         return Vec2d._fromcffi(
             cp.cpBodyGetVelocityAtLocalPoint(self._body, tuple(point)))
+
+    
+    _pickle_attrs_init = ['mass', 'moment', 'body_type']
+    _pickle_attrs_general = ['force', 'angle', 'position', 'center_of_gravity', 
+        'velocity',  'angular_velocity', 'torque']
+    _pickle_attrs_special = ['is_sleeping', '_velocity_func', '_position_func']
+
+    def __getstate__(self):
+        """Return the state of this object
+        
+        This method allows the usage of the :mod:`copy` and :mod:`pickle`
+        modules with this class.
+        """
+        
+        d = {}
+        for a in Body._pickle_attrs_init:
+            d[a] = self.__getattribute__(a)
+        for a in Body._pickle_attrs_general:
+            d[a] = self.__getattribute__(a)
+
+        d['is_sleeping'] = self.is_sleeping
+        d['_velocity_func'] = self._velocity_func_base
+        d['_position_func'] = self._position_func_base
+
+        for k,v in self.__dict__.items():
+            if k[0] != '_':
+                d[k] = v
+        
+        return d
+
+    def __setstate__(self, state):
+        """Unpack this object from a saved state.
+
+        This method allows the usage of the :mod:`copy` and :mod:`pickle`
+        modules with this class.
+        """
+        self.__init__(state['mass'], state['moment'], state['body_type'])
+
+        # Note: the order of assignment is important!    
+        for a in Body._pickle_attrs_general:
+            self.__setattr__(a, state[a])
+            
+        for k,v in state.items():
+            if k in Body._pickle_attrs_init:
+                continue
+            elif k in Body._pickle_attrs_special:
+                continue
+            elif k in Body._pickle_attrs_general:
+                continue
+            else:
+                self.__setattr__(k, v)
+
+        if state['is_sleeping']:
+            #todo: what to do, sleep requires a space??
+            self.sleep()
+
+        f = state['_velocity_func']
+        if f != None:
+            self.velocity_func = f
+
+        f = state['_position_func']
+        if f != None:
+            self.position_func = f
