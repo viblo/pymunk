@@ -276,7 +276,8 @@ class Circle(Shape):
         body's center of gravity in body local coordinates.
 
         It is legal to send in None as body argument to indicate that this
-        shape is not attached to a body.
+        shape is not attached to a body. However, you must attach it to a body
+        before adding the shape to a space or used for a space shape query.
         """
 
         self._body = body
@@ -325,13 +326,14 @@ class Segment(Shape):
 
     Meant mainly as a static shape. Can be beveled in order to give them a
     thickness.
-
-    It is legal to send in None as body argument to indicate that this
-    shape is not attached to a body.
     """
     def __init__(self, body, a, b, radius):
         """Create a Segment
 
+        It is legal to send in None as body argument to indicate that this
+        shape is not attached to a body. However, you must attach it to a body
+        before adding the shape to a space or used for a space shape query.
+    
         :param Body body: The body to attach the segment to
         :param a: The first endpoint of the segment
         :param b: The second endpoint of the segment
@@ -400,9 +402,6 @@ class Poly(Shape):
     """A convex polygon shape
 
     Slowest, but most flexible collision shape.
-
-    It is legal to send in None as body argument to indicate that this
-    shape is not attached to a body.
     """
 
     def __init__(self, body, vertices, transform=None, radius=0):
@@ -413,6 +412,10 @@ class Poly(Shape):
         Adding a small radius will bevel the corners and can significantly 
         reduce problems where the poly gets stuck on seams in your geometry.
 
+        It is legal to send in None as body argument to indicate that this
+        shape is not attached to a body. However, you must attach it to a body
+        before adding the shape to a space or used for a space shape query.
+    
         :param Body body: The body to attach the poly to
         :param [(float,float)] vertices: Define a convex hull of the polygon 
             with a counterclockwise winding.
