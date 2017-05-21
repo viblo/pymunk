@@ -4,12 +4,16 @@ from . import _chipmunk_cffi
 lib = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 from .vec2d import Vec2d
+from ._pickle import PickleMixin
 
-class BB(object):
+class BB(PickleMixin, object):
     """Simple bounding box.
 
     Stored as left, bottom, right, top values.
     """
+
+    _pickle_attrs_init = ['left', 'bottom', 'right', 'top']
+
     def __init__(self, *args):
         """Create a new instance of a bounding box. 
         

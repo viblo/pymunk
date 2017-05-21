@@ -10,14 +10,20 @@ from .bb import BB
 from .query_info import PointQueryInfo, SegmentQueryInfo
 from .contact_point_set import ContactPointSet
 from .vec2d import Vec2d
+from ._pickle import PickleMixin
 
-class Shape(object):
+class Shape(PickleMixin, object):
     """Base class for all the shapes.
 
     You usually dont want to create instances of this class directly but use
     one of the specialized shapes instead (:py:class:`Circle`, 
     :py:class:`Poly` or :py:class:`Segment`).
     """
+
+    _pickle_attrs_init = ['body']
+    _pickle_attrs_general = ['sensor', 'collision_type', 
+        'filter', 'elasticity', 'friction', 'surface_velocity']
+    _pickle_attrs_skip = ['mass', 'density']
 
     _space = None # Weak ref to the space holding this body (if any)
 
@@ -195,7 +201,7 @@ class Shape(object):
         return BB(bb)
 
     def cache_bb(self):
-        """Update and returns the bouding box of this shape"""
+        """Update and returns the bounding box of this shape"""
         return BB(cp.cpShapeCacheBB(self._shape))
 
     def _get_bb(self):
@@ -265,12 +271,31 @@ class Shape(object):
         doc="""Get the :py:class:`Space` that shape has been added to (or 
         None).
         """)
+    
+    def __getstate__(self):
+        """Return the state of this object
+        
+        This method allows the usage of the :mod:`copy` and :mod:`pickle`
+        modules with this class.
+        """
+        d = super(Shape, self).__getstate__()
+
+        if self.mass > 0:
+            d['general'].append(('mass', self.mass))
+        if self.density > 0:
+            d['general'].append(('density', self.density))
+
+        return d
+
 
 class Circle(Shape):
     """A circle shape defined by a radius
 
     This is the fastest and simplest collision shape
     """
+
+    _pickle_attrs_init = ['radius', 'offset']
+
     def __init__(self, body, radius, offset = (0, 0)):
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates.
@@ -327,6 +352,9 @@ class Segment(Shape):
     Meant mainly as a static shape. Can be beveled in order to give them a
     thickness.
     """
+
+    _pickle_attrs_init = ['a', 'b', 'radius']
+
     def __init__(self, body, a, b, radius):
         """Create a Segment
 
@@ -403,6 +431,8 @@ class Poly(Shape):
 
     Slowest, but most flexible collision shape.
     """
+
+    _pickle_attrs_init = []
 
     def __init__(self, body, vertices, transform=None, radius=0):
         """Create a polygon.
@@ -545,3 +575,16 @@ class Poly(Shape):
             return
             
         cp.cpPolyShapeSetVerts(self._shape, len(vertices), vs, transform)
+
+    def __getstate__(self):
+        """Return the state of this object
+        
+        This method allows the usage of the :mod:`copy` and :mod:`pickle`
+        modules with this class.
+        """
+        d = super(Poly, self).__getstate__()
+
+        d['init'].append(('vertices', self.get_vertices()))
+        d['init'].append(('transform', None))
+        d['init'].append(('radius', self.radius))
+        return d

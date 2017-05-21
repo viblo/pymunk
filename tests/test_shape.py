@@ -1,6 +1,7 @@
 import pymunk as p
 from pymunk.vec2d import Vec2d
 import unittest
+import pickle
 
 ####################################################################
 
@@ -173,6 +174,40 @@ class UnitTestShape(unittest.TestCase):
         self.assertEqual(point.point_b, (-10,0))
         self.assertEqual(point.distance, -20) 
 
+    def testPickle(self):
+        b = p.Body(1,2)
+        c = p.Circle(b, 3, (4,5))
+        c.sensor = True
+        c.collision_type = 6
+        c.filter = p.ShapeFilter()
+        c.elasticity = 7
+        c.friction = 8
+        c.surface_velocity = (9,10)
+
+        s = pickle.dumps(c)
+        c2 = pickle.loads(s)
+
+        self.assertEqual(c.sensor, c2.sensor)
+        self.assertEqual(c.collision_type, c2.collision_type)
+        self.assertEqual(c.filter, c2.filter)
+        self.assertEqual(c.elasticity, c2.elasticity)
+        self.assertEqual(c.friction, c2.friction)
+        self.assertEqual(c.surface_velocity, c2.surface_velocity)
+        self.assertEqual(c.density, c2.density)
+        self.assertEqual(c.mass, c2.mass)
+        self.assertEqual(c.body.mass, c2.body.mass)
+
+        c = p.Circle(None,1)
+        c.mass = 2
+        c.density = 3
+
+        s = pickle.dumps(c)
+        c2 = pickle.loads(s)
+
+        self.assertEqual(c.mass, c2.mass)
+        self.assertEqual(c.density, c2.density)
+        
+
 
 class UnitTestCircle(unittest.TestCase):
     def testCircleBB(self):
@@ -215,6 +250,15 @@ class UnitTestCircle(unittest.TestCase):
         c.unsafe_set_radius(3)
         
         self.assertEqual(c.radius, 3)
+
+    def testPickle(self):
+        c = p.Circle(None, 3, (4,5))
+
+        s = pickle.dumps(c)
+        c2 = pickle.loads(s)
+
+        self.assertEqual(c.radius, c2.radius)
+        self.assertEqual(c.offset, c2.offset)
 
 class UnitTestSegment(unittest.TestCase):
     def testBB(self):
@@ -266,6 +310,16 @@ class UnitTestSegment(unittest.TestCase):
         s.step(.1)
 
         self.assertEqual(1, self.num_of_begins)
+
+    def testPickle(self):
+        c = p.Segment(None, (1,2), (3,4), 5)
+
+        s = pickle.dumps(c)
+        c2 = pickle.loads(s)
+
+        self.assertEqual(c.a, c2.a)
+        self.assertEqual(c.b, c2.b)
+        self.assertEqual(c.radius, c2.radius)
 
 class UnitTestPoly(unittest.TestCase):
     def testInit(self):
@@ -332,6 +386,15 @@ class UnitTestPoly(unittest.TestCase):
         c = p.Poly.create_box_bb(None, p.BB(1,2,3,4), 3)
         self.assertEqual(c.get_vertices(), [(3,2), (3,4), (1,4), (1,2)])
 
+
+    def testPickle(self):
+        c = p.Poly(None, [(1,2), (3,4), (5,6)], radius = 5)
+
+        s = pickle.dumps(c)
+        c2 = pickle.loads(s)
+
+        self.assertEqual(c.get_vertices(), c2.get_vertices())
+        self.assertEqual(c.radius, c2.radius)
 
 ####################################################################
 if __name__ == "__main__":

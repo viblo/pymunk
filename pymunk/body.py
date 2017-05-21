@@ -7,8 +7,9 @@ cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi    
 from .vec2d import Vec2d
 from .arbiter import Arbiter
+from ._pickle import PickleMixin
 
-class Body(object):
+class Body(PickleMixin, object):
     """A rigid body
 
     * Use forces to modify the rigid bodies if possible. This is likely to be
@@ -60,6 +61,12 @@ class Body(object):
     useful for simplifying your code by allowing different parts of your
     static geometry to be initialized or moved separately.
     """
+
+    _pickle_attrs_init = ['mass', 'moment', 'body_type']
+    _pickle_attrs_general = ['force', 'angle', 'position', 'center_of_gravity', 
+        'velocity',  'angular_velocity', 'torque']
+    _pickle_attrs_skip = ['is_sleeping', '_velocity_func', '_position_func']
+
     def __init__(self, mass=0, moment=0, body_type=DYNAMIC):
         """Create a new Body
 
@@ -251,7 +258,7 @@ class Body(object):
             "(cpBody *body, cpFloat dt)")
         def _impl(_, dt):
             return func(self, dt)
-
+        
         self._position_func_base = func    
         self._position_func = _impl
         cp.cpBodySetPositionUpdateFunc(self._body, _impl)
@@ -463,33 +470,18 @@ class Body(object):
         return Vec2d._fromcffi(
             cp.cpBodyGetVelocityAtLocalPoint(self._body, tuple(point)))
 
-    
-    _pickle_attrs_init = ['mass', 'moment', 'body_type']
-    _pickle_attrs_general = ['force', 'angle', 'position', 'center_of_gravity', 
-        'velocity',  'angular_velocity', 'torque']
-    _pickle_attrs_special = ['is_sleeping', '_velocity_func', '_position_func']
-
     def __getstate__(self):
         """Return the state of this object
         
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
-        
-        d = {}
-        for a in Body._pickle_attrs_init:
-            d[a] = self.__getattribute__(a)
-        for a in Body._pickle_attrs_general:
-            d[a] = self.__getattribute__(a)
+        d = super(Body, self).__getstate__()
 
-        d['is_sleeping'] = self.is_sleeping
-        d['_velocity_func'] = self._velocity_func_base
-        d['_position_func'] = self._position_func_base
+        d['special'].append(('is_sleeping', self.is_sleeping))
+        d['special'].append(('_velocity_func', self._velocity_func_base))
+        d['special'].append(('_position_func', self._position_func_base))
 
-        for k,v in self.__dict__.items():
-            if k[0] != '_':
-                d[k] = v
-        
         return d
 
     def __setstate__(self, state):
@@ -498,30 +490,12 @@ class Body(object):
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
-        self.__init__(state['mass'], state['moment'], state['body_type'])
-
-        # Note: the order of assignment is important!    
-        for a in Body._pickle_attrs_general:
-            self.__setattr__(a, state[a])
-            
-        for k,v in state.items():
-            if k in Body._pickle_attrs_init:
-                continue
-            elif k in Body._pickle_attrs_special:
-                continue
-            elif k in Body._pickle_attrs_general:
-                continue
-            else:
-                self.__setattr__(k, v)
-
-        if state['is_sleeping']:
-            #todo: what to do, sleep requires a space??
-            self.sleep()
-
-        f = state['_velocity_func']
-        if f != None:
-            self.velocity_func = f
-
-        f = state['_position_func']
-        if f != None:
-            self.position_func = f
+        super(Body, self).__setstate__(state)
+        
+        for k,v in state['special']:
+            if k == 'is_sleeping' and v:
+                self.sleep()
+            elif k == '_velocity_func' and v != None:
+                self.velocity_func = v
+            elif k == '_position_func' and v != None:
+                self.position_func = v

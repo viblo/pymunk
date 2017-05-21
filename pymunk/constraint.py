@@ -51,17 +51,23 @@ Example::
 __docformat__ = "reStructuredText"
 
 from .vec2d import Vec2d
+from ._pickle import PickleMixin
 
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-class Constraint(object):
+class Constraint(PickleMixin, object):
     """Base class of all constraints.
 
     You usually don't want to create instances of this class directly, but
     instead use one of the specific constraints such as the PinJoint.
     """
+
+    _pickle_attrs_init = ['a', 'b']
+    _pickle_attrs_general = ['max_force', 'error_bias', 'max_bias', 
+        'collide_bodies']
+
     def __init__(self, constraint=None):
         self._constraint = constraint
         
@@ -142,60 +148,7 @@ class Constraint(object):
         a._constraints.add(self)
         b._constraints.add(self)
 
-    _pickle_attrs_init = ['a', 'b']
-    _pickle_attrs_general = ['max_force', 'error_bias', 'max_bias', 
-        'collide_bodies']
-
-    def __getstate__(self):
-        """Return the state of this object
-        
-        This method allows the usage of the :mod:`copy` and :mod:`pickle`
-        modules with this class.
-        """
-
-        attrs = Constraint._pickle_attrs_init + \
-            self.__class__._pickle_attrs_init + \
-            Constraint._pickle_attrs_general + \
-            self.__class__._pickle_attrs_general
-
-        d = {}
-        for a in attrs:
-            d[a] = self.__getattribute__(a)
-        
-        for k,v in self.__dict__.items():
-            if k[0] != '_':
-                d[k] = v
-        
-        return d
-
-    def __setstate__(self, state):
-        """Unpack this object from a saved state.
-
-        This method allows the usage of the :mod:`copy` and :mod:`pickle`
-        modules with this class.
-        """
-        init_d = []
-        init_attrs = Constraint._pickle_attrs_init + \
-            self.__class__._pickle_attrs_init
-
-        for a in init_attrs:
-            init_d.append(state[a])
-        self.__init__(*init_d)
-
-        for a in Constraint._pickle_attrs_general + \
-            self.__class__._pickle_attrs_general:
-            self.__setattr__(a, state[a])
-            
-        for k,v in state.items():
-            if k in Constraint._pickle_attrs_init or \
-                k in self.__class__._pickle_attrs_init or \
-                k in Constraint._pickle_attrs_general or \
-                k in self.__class__._pickle_attrs_general:
-                continue
-            else:
-                self.__setattr__(k, v)
-        
-
+    
 class PinJoint(Constraint):
     """Keeps the anchor points at a set distance from one another."""
 

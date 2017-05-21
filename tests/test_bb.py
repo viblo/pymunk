@@ -1,7 +1,7 @@
 import pymunk as p
 from pymunk.vec2d import Vec2d
 import unittest
-
+import pickle
 
 class UnitTestBB(unittest.TestCase):
     def setUp(self):
@@ -72,3 +72,11 @@ class UnitTestBB(unittest.TestCase):
         self.assertEqual(bb1.clamp_vect(v2), Vec2d(10,3))
 
         #self.assertEqual(bb1.wrap_vect((11,11)), (1,1))
+
+    def testPickle(self):
+        x = p.BB(4,4,5,5)
+
+        s = pickle.dumps(x, 2)
+        actual = pickle.loads(s)
+
+        self.assertEqual(x, actual)
