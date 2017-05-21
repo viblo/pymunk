@@ -145,7 +145,6 @@ class Constraint(object):
     _pickle_attrs_init = ['a', 'b']
     _pickle_attrs_general = ['max_force', 'error_bias', 'max_bias', 
         'collide_bodies']
-    _pickle_attrs_special = []
 
     def __getstate__(self):
         """Return the state of this object
@@ -163,14 +162,10 @@ class Constraint(object):
         for a in attrs:
             d[a] = self.__getattribute__(a)
         
-        #d['is_sleeping'] = self.is_sleeping
-        #d['_velocity_func'] = self._velocity_func_base
-        #d['_position_func'] = self._position_func_base
-
         for k,v in self.__dict__.items():
             if k[0] != '_':
                 d[k] = v
-        print(d)
+        
         return d
 
     def __setstate__(self, state):
@@ -179,14 +174,12 @@ class Constraint(object):
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
-        print(state)
         init_d = []
         init_attrs = Constraint._pickle_attrs_init + \
             self.__class__._pickle_attrs_init
 
         for a in init_attrs:
             init_d.append(state[a])
-        print("init_D", init_d)
         self.__init__(*init_d)
 
         for a in Constraint._pickle_attrs_general + \
@@ -205,6 +198,9 @@ class Constraint(object):
 
 class PinJoint(Constraint):
     """Keeps the anchor points at a set distance from one another."""
+
+    _pickle_attrs_init = ['anchor_a', 'anchor_b']
+
     def __init__(self, a, b, anchor_a=(0,0), anchor_b=(0,0)):
         """a and b are the two bodies to connect, and anchor_a and anchor_b are
         the anchor points on those bodies.
@@ -244,6 +240,9 @@ class SlideJoint(Constraint):
     A chain could be modeled using this joint. It keeps the anchor points
     from getting to far apart, but will allow them to get closer together.
     """
+
+    _pickle_attrs_init = ['anchor_a', 'anchor_b', 'min', 'max']
+
     def __init__(self, a, b, anchor_a, anchor_b, min, max):
         """a and b are the two bodies to connect, anchor_a and anchor_b are the
         anchor points on those bodies, and min and max define the allowed
@@ -333,6 +332,9 @@ class GrooveJoint(Constraint):
     """Similar to a pivot joint, but one of the anchors is
     on a linear slide instead of being fixed.
     """
+
+    _pickle_attrs_init = ['groove_a', 'groove_b', 'anchor_b']
+
     def __init__(self, a, b, groove_a, groove_b, anchor_b):
         """The groove goes from groove_a to groove_b on body a, and the pivot
         is attached to anchor_b on body b.
@@ -367,6 +369,10 @@ class GrooveJoint(Constraint):
 
 class DampedSpring(Constraint):
     """A damped spring"""
+
+    _pickle_attrs_init = ['anchor_a', 'anchor_b', 'rest_length', 'stiffness', 
+        'damping']
+
     def __init__(self, a, b, anchor_a, anchor_b, rest_length, stiffness, damping):
         """Defined much like a slide joint.
 
@@ -422,6 +428,9 @@ class DampedSpring(Constraint):
 
 class DampedRotarySpring(Constraint):
     """Like a damped spring, but works in an angular fashion"""
+
+    _pickle_attrs_init = ['rest_angle', 'stiffness', 'damping']
+
     def __init__(self, a, b, rest_angle, stiffness, damping):
         """Like a damped spring, but works in an angular fashion.
 
@@ -461,6 +470,9 @@ class DampedRotarySpring(Constraint):
 
 class RotaryLimitJoint(Constraint):
     """Constrains the relative rotations of two bodies."""
+
+    _pickle_attrs_init = ['min', 'max']
+
     def __init__(self, a, b, min, max):
         """Constrains the relative rotations of two bodies.
 
@@ -487,6 +499,9 @@ class RotaryLimitJoint(Constraint):
 
 class RatchetJoint(Constraint):
     """Works like a socket wrench."""
+
+    _pickle_attrs_init = ['phase', 'ratchet']
+
     def __init__(self, a, b, phase, ratchet):
         """Works like a socket wrench.
 
@@ -518,6 +533,9 @@ class RatchetJoint(Constraint):
 
 class GearJoint(Constraint):
     """Keeps the angular velocity ratio of a pair of bodies constant."""
+
+    _pickle_attrs_init = ['phase', 'ratio']
+
     def __init__(self, a, b, phase, ratio):
         """Keeps the angular velocity ratio of a pair of bodies constant.
 
@@ -544,6 +562,9 @@ class GearJoint(Constraint):
 
 class SimpleMotor(Constraint):
     """Keeps the relative angular velocity of a pair of bodies constant."""
+
+    _pickle_attrs_init = ['rate']
+
     def __init__(self, a, b, rate):
         """Keeps the relative angular velocity of a pair of bodies constant.
 
