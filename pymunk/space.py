@@ -15,11 +15,18 @@ from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shapes import Shape, Circle, Poly, Segment
 from .contact_point_set import ContactPointSet
 from pymunk.constraint import Constraint
+from ._pickle import PickleMixin
 
-class Space(object):
+class Space(PickleMixin, object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes
     and joints to it and then step them all forward together through time.
     """
+
+    _pickle_attrs_init = ['threaded']
+    _pickle_attrs_general = ['iterations', 'gravity', 'damping', 
+        'idle_speed_threshold', 'sleep_time_threshold', 'collision_slop',
+        'collision_bias', 'collision_persistence', 'threads']
+
     def __init__(self, threaded=False):
         """Create a new instance of the Space. 
         
@@ -38,11 +45,7 @@ class Space(object):
         else:
             self._space = ffi.gc(cp.cpSpaceNew(), cp.cpSpaceFree)
 
-        self._static_body = None
-
         self._handlers = {} # To prevent the gc to collect the callbacks.
-        self._handlers_key = 0
-        self._default_handler = None
 
         self._post_step_callbacks = {}
         self._removed_shapes = {}
@@ -415,14 +418,6 @@ class Space(object):
         self._handlers[key] = ch
         return ch
         
-        p = h.contents.userData
-        if p == None:
-            p = self._handlers_key
-            self._handlers_key += 1
-            self._handlers[p] = CollisionHandler(h, self)
-
-        return self._handlers[p]
-
     def add_wildcard_collision_handler(self, collision_type_a):
         """Add a wildcard collision handler for given collision type.
 
@@ -452,16 +447,6 @@ class Space(object):
         ch = CollisionHandler(h, self)
         self._handlers[collision_type_a] = ch
         return ch
-        
-        
-        return CollisionHandler(h, self)
-        p = h.contents.userData
-        if p == None:
-            p = self._handlers_key
-            self._handlers_key += 1
-            self._handlers[p] = CollisionHandler(h, self)
-
-        return self._handlers[p]
 
     def add_default_collision_handler(self):
         """Return a reference to the default collision handler or that is
@@ -479,14 +464,6 @@ class Space(object):
         h = CollisionHandler(_h, self)
         self._handlers[None] = h
         return h
-        
-        p = h.contents.userData
-        if p == None:
-            p = self._handlers_key
-            self._handlers_key += 1
-            self._handlers[p] = CollisionHandler(h, self)
-
-        return self._handlers[p]
 
     def add_post_step_callback(self, callback_function, key, *args, **kwargs):
         """Add a function to be called last in the next simulation step.
@@ -503,6 +480,9 @@ class Space(object):
             If you remove a shape from the callback it will trigger the
             collision handler for the 'separate' event if it the shape was
             touching when removed.
+
+        .. Note::
+            Post step callbacks are not included in pickle / copy of the space.
 
         :param callback_function: The callback function
         :type callback_function: `func(space : Space, key, *args, **kwargs)`
@@ -753,3 +733,68 @@ class Space(object):
         with options:
             cp.cpSpaceDebugDraw(self._space, options._options)
         
+    def __getstate__(self):
+        """Return the state of this object
+        
+        This method allows the usage of the :mod:`copy` and :mod:`pickle`
+        modules with this class.
+        """
+        d = super(Space, self).__getstate__()
+
+        d['special'].append(('shapes', self.shapes))
+        d['special'].append(('bodies', self.bodies))
+        d['special'].append(('constraints', self.constraints))
+        if self._static_body != None:
+            d['special'].append(('_static_body', self._static_body))
+        
+        handlers = []
+        for k,v in self._handlers.items():
+            h = {}
+            if v._begin_base != None:
+                h['_begin_base'] = v._begin_base
+            if v._pre_solve_base != None:
+                h['_pre_solve_base'] = v._pre_solve_base
+            if v._post_solve_base != None:
+                h['_post_solve_base'] = v._post_solve_base
+            if v._separate_base != None:
+                h['_separate_base'] = v._separate_base
+            handlers.append((k,h))
+            
+        d['special'].append(('_handlers', handlers))
+            
+        return d
+
+    def __setstate__(self, state):
+        """Unpack this object from a saved state.
+
+        This method allows the usage of the :mod:`copy` and :mod:`pickle`
+        modules with this class.
+        """
+        super(Space, self).__setstate__(state)
+        
+        for k,v in state['special']:
+            if k == 'shapes':
+                self.add(*v)
+            if k == 'bodies':
+                self.add(*v)
+            if k == 'constraints':
+                self.add(*v)
+            if k == '_static_body':
+                self._static_body = v
+                self._static_body._space = self
+            if k == '_handlers':
+                for k, hd in v:
+                    if k == None:
+                        h = self.add_default_collision_handler()
+                    elif isinstance(k,tuple):
+                        h = self.add_collision_handler(k[0], k[1])
+                    else:
+                        h = self.add_wildcard_collision_handler(k)
+                    if '_begin_base' in hd:
+                        h.begin = hd['_begin_base'] 
+                    if '_pre_solve_base' in hd:
+                        h.pre_solve = hd['_pre_solve_base'] 
+                    if '_post_solve_base' in hd:
+                        h.post_solve = hd['_post_solve_base'] 
+                    if '_separate_base' in hd:
+                        h.separate = hd['_separate_base'] 

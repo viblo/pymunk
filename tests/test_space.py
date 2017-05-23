@@ -2,6 +2,7 @@ from __future__ import with_statement
 import sys, io
 import unittest
 import warnings
+import pickle
 
 from pymunk import *
 import pymunk as p
@@ -671,6 +672,89 @@ class UnitTestSpace(unittest.TestCase):
             "SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))\n")
         self.assertEqual(msg, new_out.getvalue())
 
+    def testPickle(self):
+        s = p.Space(threaded=True)
+        s.iterations = 2
+        s.gravity = 3,4
+        s.damping = 5
+        s.idle_speed_threshold = 6
+        s.sleep_time_threshold = 7
+        s.collision_slop = 8
+        s.collision_bias = 9
+        s.collision_persistence = 10
+        s.threads = 2
+
+        b1 = p.Body(1,2)
+        b2 = p.Body(3,4)
+        c1 = p.Circle(b1, 7)
+        c2 = p.Circle(b1, 8)
+        c3 = p.Circle(s.static_body, 9)
+        s.add(b1,b2, c1, c2, c3)
+
+        s.static_body.custom = "x"
+
+        j1 = p.PinJoint(b1, b2)
+        j2 = p.PinJoint(s.static_body, b2)
+        s.add(j1,j2)
+
+        h = s.add_default_collision_handler()
+        h.begin = f1
+
+        h = s.add_wildcard_collision_handler(1)
+        h.pre_solve = f1
+
+        h = s.add_collision_handler(1, 2)
+        h.post_solve = f1
+
+        h = s.add_collision_handler(3,4)
+        h.separate = f1
+
+        ss = pickle.dumps(s)
+        s2 = pickle.loads(ss)
+
+        self.assertEqual(s.threaded, s2.threaded)
+        self.assertEqual(s.iterations, s2.iterations)
+        self.assertEqual(s.gravity, s2.gravity)
+        self.assertEqual(s.damping, s2.damping)
+        self.assertEqual(s.idle_speed_threshold, s2.idle_speed_threshold)
+        self.assertEqual(s.sleep_time_threshold, s2.sleep_time_threshold)
+        self.assertEqual(s.collision_slop, s2.collision_slop)
+        self.assertEqual(s.collision_bias, s2.collision_bias)
+        self.assertEqual(s.collision_persistence, s2.collision_persistence)
+        self.assertEqual(s.threads, s2.threads)
+
+        self.assertEqual(sorted([c.radius for c in s2.shapes]), [7,8,9])
+        self.assertEqual(sorted([b.mass for b in s2.bodies]), [1,3])
+        self.assertEqual(s.static_body.custom, s2.static_body.custom)
+        ja = [j.a for j in s2.constraints]
+        self.assertIn(s2.static_body, ja)
+
+        h2 = s2.add_default_collision_handler()
+        self.assertIsNotNone(h2.begin)
+        self.assertIsNone(h2.pre_solve)
+        self.assertIsNone(h2.post_solve)
+        self.assertIsNone(h2.separate)
+
+        h2 = s2.add_wildcard_collision_handler(1)
+        self.assertIsNone(h2.begin)
+        self.assertIsNotNone(h2.pre_solve)
+        self.assertIsNone(h2.post_solve)
+        self.assertIsNone(h2.separate)
+
+        h2 = s2.add_collision_handler(1,2)
+        self.assertIsNone(h2.begin)
+        self.assertIsNone(h2.pre_solve)
+        self.assertIsNotNone(h2.post_solve)
+        self.assertIsNone(h2.separate)
+
+        h2 = s2.add_collision_handler(3,4)
+        self.assertIsNone(h2.begin)
+        self.assertIsNone(h2.pre_solve)
+        self.assertIsNone(h2.post_solve)
+        self.assertIsNotNone(h2.separate)
+
+def f1(*args, **kwargs):
+    pass
 
 ####################################################################
 if __name__ == "__main__":

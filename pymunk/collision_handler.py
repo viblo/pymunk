@@ -12,19 +12,19 @@ from .arbiter import Arbiter
 
 class CollisionHandler(object):
     """A collision handler is a set of 4 function callbacks for the different
-    collision events that pymunk recognizes.
+    collision events that Pymunk recognizes.
 
     Collision callbacks are closely associated with Arbiter objects. You
     should familiarize yourself with those as well.
 
     Note #1: Shapes tagged as sensors (Shape.sensor == true) never generate
     collisions that get processed, so collisions between sensors shapes and
-    other shapes will never call the postSolve() callback. They still
-    generate begin(), and separate() callbacks, and the preSolve() callback
+    other shapes will never call the post_solve() callback. They still
+    generate begin(), and separate() callbacks, and the pre_solve() callback
     is also called every frame even though there is no collision response.
-    Note #2: preSolve() callbacks are called before the sleeping algorithm
-    runs. If an object falls asleep, its postSolve() callback won't be
-    called until it's reawoken.
+    Note #2: pre_solve() callbacks are called before the sleeping algorithm
+    runs. If an object falls asleep, its post_solve() callback won't be
+    called until it's re-awoken.
     """
     def __init__(self, _handler, space, *args, **kwargs):
         """Initialize a CollisionHandler object from the Chipmunk equivalent
@@ -36,9 +36,13 @@ class CollisionHandler(object):
         self._handler = _handler
         self._space = space
         self._begin = None
+        self._begin_base = None # For pickle
         self._pre_solve = None
+        self._pre_solve_base = None # For pickle
         self._post_solve = None
+        self._post_solve_base = None # For pickle
         self._separate = None
+        self._separate_base = None # For pickle
 
         self._data = {}
         
@@ -79,6 +83,7 @@ class CollisionHandler(object):
             return True
         
         self._begin = cf
+        self._begin_base = func
         self._handler.beginFunc = cf
 
     def _get_begin(self):
@@ -122,6 +127,7 @@ class CollisionHandler(object):
             return True
         
         self._pre_solve = cf
+        self._pre_solve_base = func
         self._handler.preSolveFunc = cf 
         
     def _get_pre_solve(self):
@@ -147,6 +153,7 @@ class CollisionHandler(object):
             func(Arbiter(_arb, self._space), self._space, self._data)
                 
         self._post_solve = cf
+        self._post_solve_base = func
         self._handler.postSolveFunc = cf
 
     def _get_post_solve(self):
@@ -171,6 +178,7 @@ class CollisionHandler(object):
             func(Arbiter(_arb, self._space), self._space, self._data)
                 
         self._separate = cf
+        self._separate_base = func
         self._handler.separateFunc = cf
 
     def _get_separate(self):
@@ -184,5 +192,5 @@ class CollisionHandler(object):
 
         To ensure that begin()/separate() are always called in balanced
         pairs, it will also be called when removing a shape while its in
-        contact with something or when deallocating the space.
+        contact with something or when de-allocating the space.
         """)

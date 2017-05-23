@@ -9,6 +9,7 @@ class PickleMixin(object):
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
+        
         attrs_init = []
         attrs_general = []
         for t in list(type(self).__bases__) + [type(self)]:
@@ -41,6 +42,7 @@ class PickleMixin(object):
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
+        
         init_attrs = []
 
         init_args = [v for k,v in state['init']]
@@ -51,3 +53,5 @@ class PickleMixin(object):
 
         for k,v in state['custom']:
             self.__setattr__(k,v)
+
+        
