@@ -3,7 +3,7 @@ __docformat__ = "reStructuredText"
 import weakref
 from weakref import WeakSet
 import platform
-    
+
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi    

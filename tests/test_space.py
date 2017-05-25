@@ -3,6 +3,7 @@ import sys, io
 import unittest
 import warnings
 import pickle
+import copy
 
 from pymunk import *
 import pymunk as p
@@ -672,7 +673,11 @@ class UnitTestSpace(unittest.TestCase):
             "SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))\n")
         self.assertEqual(msg, new_out.getvalue())
 
-    def testPickle(self):
+    def testCopyMethods(self):
+        self._testCopyMethod(lambda x: pickle.loads(pickle.dumps(x)))
+        self._testCopyMethod(lambda x: copy.deepcopy(x))
+
+    def _testCopyMethod(self, copy_func):
         s = p.Space(threaded=True)
         s.iterations = 2
         s.gravity = 3,4
@@ -709,9 +714,8 @@ class UnitTestSpace(unittest.TestCase):
         h = s.add_collision_handler(3,4)
         h.separate = f1
 
-        ss = pickle.dumps(s)
-        s2 = pickle.loads(ss)
-
+        s2 = copy_func(s)
+        
         self.assertEqual(s.threaded, s2.threaded)
         self.assertEqual(s.iterations, s2.iterations)
         self.assertEqual(s.gravity, s2.gravity)

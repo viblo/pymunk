@@ -10,8 +10,6 @@ v5.x
 - automatic test build of android apk on travis 
 
 - pickle: fix shape id 
-- pickle: test copy.deepcopy 
-- pickle: make example 
 
 v6+ (all potentially breaking changes)
 ---

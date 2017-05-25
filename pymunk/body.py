@@ -494,7 +494,7 @@ class Body(PickleMixin, object):
         
         for k,v in state['special']:
             if k == 'is_sleeping' and v:
-                self.sleep()
+                pass
             elif k == '_velocity_func' and v != None:
                 self.velocity_func = v
             elif k == '_position_func' and v != None:
