@@ -18,6 +18,9 @@ class Shape(PickleMixin, object):
     You usually dont want to create instances of this class directly but use
     one of the specialized shapes instead (:py:class:`Circle`, 
     :py:class:`Poly` or :py:class:`Segment`).
+
+    All the shapes can be copied and pickled. If you copy/pickle a shape the 
+    body (if any) will also be copied.
     """
 
     _pickle_attrs_init = ['body']

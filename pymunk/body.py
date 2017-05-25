@@ -20,6 +20,11 @@ class Body(PickleMixin, object):
     * Don't modify a body's position every step unless you really know what
       you are doing. Otherwise you're likely to get the position/velocity badly
       out of sync.
+
+    A Body can be copied and pickled with the standard library copy and pickle 
+    methods. Sleeping bodies that are copied will be awake in the fresh copy. 
+    When a Body is copied any spaces, shapes or constraints attached to the body
+    will not be copied.
     """
 
     DYNAMIC = cp.CP_BODY_TYPE_DYNAMIC

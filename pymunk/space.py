@@ -20,6 +20,24 @@ from ._pickle import PickleMixin
 class Space(PickleMixin, object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes
     and joints to it and then step them all forward together through time.
+
+    A Space can be copied and pickled. Note that any post step callbacks are 
+    not copied. Also note that some internal collision cache data is not copied,
+    which can make the simulation a bit unstable the first few steps of the 
+    fresh copy.
+
+    Custom properties set on the space will also be copied/pickled.
+
+    Any collision handlers will also be copied/pickled. Note that depending on 
+    the pickle protocol used there are some restrictions on what functions can 
+    be copied/pickled.
+
+    Example::
+
+    >>> import pymunk, copy, pickle
+    >>> space = pymunk.Space()
+    >>> space2 = copy.deepcopy(space)
+    >>> space3 = pickle.loads(pickle.dumps(space))
     """
 
     _pickle_attrs_init = ['threaded']

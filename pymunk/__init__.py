@@ -92,12 +92,12 @@ The string is in the following format:
 <cpVersionString>R<github commit of chipmunk>
 where cpVersionString is a version string set by Chipmunk and the git commit
 hash corresponds to the git hash of the chipmunk source from
-github.com/slembcke/Chipmunk2D included with pymunk. If the Chipmunk version
+github.com/slembcke/Chipmunk2D included with Pymunk. If the Chipmunk version
 is a release then the second part will be empty
 
 .. note::
     This is also the version of the Chipmunk source files included in the
-    chipmunk_src folder (normally included in the pymunk source distribution).
+    chipmunk_src folder (normally included in the Pymunk source distribution).
 """
 
 chipmunk_path = _chipmunk_cffi.lib_path
@@ -113,7 +113,7 @@ inf = float('inf')
 
 Useful when you for example want a body that cannot rotate, just set its
 moment to inf. Just remember that if two objects with both infinite masses
-collides the world might explode. Similary effects can happen with infinite
+collides the world might explode. Similar effects can happen with infinite
 moment.
 
 .. note::

@@ -28,6 +28,9 @@ body, or they can be more abstract like the gear joint or motors.
 
 This submodule contain all the constraints that are supported by pymunk.
 
+All the constraints support copy and pickle from the standard library. Custom 
+properties set on a constraint will also be copied/pickled.
+
 Chipmunk has a good overview of the different constraint on youtube which
 works fine to showcase them in pymunk as well.
 http://www.youtube.com/watch?v=ZgJJZTS0aMM
