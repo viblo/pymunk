@@ -14,7 +14,7 @@ and maintained today.
 Pymunk has been used with success in many projects, big and small. For example: 
 2 Pyweek game competition winners, more than 10 published scientific papers 
 and even in a self-driving car simulation! See the Showcases section on the 
-pymunk webpage for some examples.
+Pymunk webpage for some examples.
 
 2007 - 2017, Victor Blomqvist - vb@viblo.se, MIT License
 
@@ -60,10 +60,10 @@ Documentation
 -------------
 
 The source distribution of Pymunk ships with a number of demos in the examples
-directory, and it also contains the full documentaiton including API reference.
+directory, and it also contains the full documentation including API reference.
 
 You can also find the full documentation including examples and API reference 
-on the pymunk homepage, http://www.pymunk.org
+on the Pymunk homepage, http://www.pymunk.org
 
 
 The Pymunk Vision
@@ -94,11 +94,11 @@ Contact & Support
     http://www.pymunk.org/
 
 **Stackoverflow**
-    You can ask questions/browse old ones at stackoverflow, just look for 
-    the pymunk tag. http://stackoverflow.com/questions/tagged/pymunk
+    You can ask questions/browse old ones at Stackoverflow, just look for 
+    the Pymunk tag. http://stackoverflow.com/questions/tagged/pymunk
 
 **Forum**
-    Currently pymunk has no separate forum, but uses the general Chipmunk 
+    Currently Pymunk has no separate forum, but uses the general Chipmunk 
     forum at http://chipmunk-physics.net/forum/index.php Many issues 
     are the same, like how to create a rag doll or why a fast moving object 
     pass through a wall. If you have a Pymunk specific question feel free to 
@@ -116,7 +116,7 @@ as I see them. (And if you ask on SO or the forum other people might help as
 well!)
     
 .. attention::
-    If you like pymunk and find it useful and have a few minutes to spare I 
+    If you like Pymunk and find it useful and have a few minutes to spare I 
     would love to hear from you. What would *really* be nice is a real 
     postcard from the place where you are! :) 
     
@@ -174,13 +174,13 @@ installation using for example Pip::
 
     > pip install pymunk-source-dist.zip
 
-Or if you have the source unpacked / you got pymunk by cloning its git repo, 
-you can explicitly tell pymunk to compile it inplace::    
+Or if you have the source unpacked / you got Pymunk by cloning its git repo, 
+you can explicitly tell Pymunk to compile it inplace::    
 
     > python setup.py build_ext --inplace
 
 Note that chipmunk is actually not built as a python extension, but distutils /
-setuptools doesnt currently handle pure native libraries that needs to be built 
+setuptools doesn't currently handle pure native libraries that needs to be built 
 in a good way if built with build_clib.
 
 The compiled file goes into the /pymunk folder (same as space.py, 

@@ -8,7 +8,7 @@ v5.x
 - Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js  
 - add better example benchmark for threaded solver on non-windows
 - automatic test build of android apk on travis 
-
+- cleanup implementation of autoexample sphinx extension
 - pickle: fix shape id 
 
 v6+ (all potentially breaking changes)
