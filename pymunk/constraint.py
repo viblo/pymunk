@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2016 Victor Blomqvist
+# Copyright (c) 2007-2017 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,13 @@ each other. (how they constrain each other). Constraints can be simple
 joints that allow bodies to pivot around each other like the bones in your
 body, or they can be more abstract like the gear joint or motors.
 
-This submodule contain all the constraints that are supported by pymunk.
+This submodule contain all the constraints that are supported by Pymunk.
 
 All the constraints support copy and pickle from the standard library. Custom 
 properties set on a constraint will also be copied/pickled.
 
 Chipmunk has a good overview of the different constraint on youtube which
-works fine to showcase them in pymunk as well.
+works fine to showcase them in Pymunk as well.
 http://www.youtube.com/watch?v=ZgJJZTS0aMM
 
 .. raw:: html

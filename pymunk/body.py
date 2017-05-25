@@ -197,7 +197,7 @@ class Body(PickleMixin, object):
         doc="""Rotation of the body in radians.
 
         When changing the rotation you may also want to call
-        :py:class:`Space.reindex_shapes_for_body` to update the collision 
+        :py:func:`Space.reindex_shapes_for_body` to update the collision 
         detection information for the attached shapes if plan to make any 
         queries against the space. A body rotates around its center of gravity, 
         not its position.

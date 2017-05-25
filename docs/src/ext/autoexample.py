@@ -47,7 +47,7 @@ from docutils.nodes import fully_normalize_name
 def setup(app):
     app.add_directive('autoexample', AutoExampleDirective)
 
-def parse_example(basepath, filename, img_folder, img_folder_os):
+def parse_example(basepath, filename, img_folder, img_folder_os, source_url):
     path = os.path.join(basepath, filename)
     with open(path) as f:
         content = f.read().strip()
@@ -56,12 +56,18 @@ def parse_example(basepath, filename, img_folder, img_folder_os):
     if docstring == None:
         return []
 
+    s = []
+
     # Header
-    s = [filename, "".ljust(len(filename), '-')]
+    s.append(".. _" + filename + ":")
+    s.append("")
+    header = filename
+    s += [header, "".ljust(len(header), '-')]
+    
     
     # Location 
     folder = os.path.basename(basepath)
-    s.append("Location: *%s/%s*" % (folder, filename))
+    s.append("Source: `%s/%s <%s/%s>`_" % (folder, filename, source_url, filename))
     
     # Docstring
     s.append("")
@@ -83,29 +89,79 @@ def parse_example(basepath, filename, img_folder, img_folder_os):
             
     s.append("")
     return s
+
+def parse_folder_example(basepath, foldername, img_folder, img_folder_os, source_url):
+    path = os.path.join(basepath, foldername, "main.py")
+    if not os.path.isfile(path):
+        return []
+    with open(path) as f:
+        content = f.read().strip()
+    n = ast.parse(content)
+    docstring = ast.get_docstring(n)
+    if docstring == None:
+        return []
     
-def parse_examples(path, img_folder, img_folder_os):
+    s = []
+
+    # Header
+    s.append(".. _" + foldername + ":")
+    s.append("")
+    header = foldername
+    s += [header, "".ljust(len(header), '-')]
+    
+    
+    # Location 
+    folder = os.path.basename(basepath)
+    s.append("Source: `%s/%s <%s/%s>`_" % (folder, foldername, source_url, foldername))
+    
+    # Docstring
+    s.append("")
+    s.append(docstring)
+    s.append("")
+    
+    # Screenshot
+    img_name,_ = os.path.splitext(foldername)
+    img_name += ".png"
+    if img_folder != None:
+        #print os.path.abspath(img_folder)
+        #print os.path.abspath(img_folder_os)
+        img_path = os.path.join(img_folder, img_name)
+        img_path_os = os.path.join(img_folder_os, img_name)
+        if os.path.isfile(img_path_os):
+            s.append("")
+            s.append(".. image:: " + img_path)
+            s.append("")
+            
+    s.append("")
+    return s
+
+    
+def parse_examples(path, img_folder, img_folder_os, source_url):
     lines = []
     print("autoexample: documenting files in " + path)
     #print os.getcwd()
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            path = os.path.join(root, file)
-            if not os.path.isfile(path):
-                continue
-            _, ext = os.path.splitext(path)
+
+    for name in os.listdir(path):
+        fullpath = os.path.join(path, name)
+        if os.path.isfile(fullpath):
+            _, ext = os.path.splitext(fullpath)
             if ext != ".py":
                 continue
-            print("autoexample: documenting " + file)
-            lines += parse_example(root, file, img_folder, img_folder_os)
-
+            print("autoexample: documenting " + name)
+            lines += parse_example(path, name, img_folder, img_folder_os, source_url)
+        elif os.path.isdir(fullpath):
+            print("autoexample: documenting folder " + name)
+            lines += parse_folder_example(path, name, img_folder, img_folder_os, source_url)
     return "\n".join(lines)
     
 class AutoExampleDirective(Directive):
     # this enables content in the directive
     #has_content = True
     required_arguments = 1
-    option_spec = {'image_folder': str}
+    option_spec = {
+        'image_folder': str,
+        'source_url': str,
+    }
     
     def run(self):
         source = self.state_machine.input_lines.source(self.lineno - self.state_machine.input_offset - 1)
@@ -123,7 +179,7 @@ class AutoExampleDirective(Directive):
             # But that cannot be used for the .. image:: tag, instead we need to use the raw option!
             img_folder_os = os.path.normpath(os.path.join(source_dir, self.options["image_folder"]))
             img_folder = self.options["image_folder"]
-        rawtext = parse_examples(path, img_folder, img_folder_os)
+        rawtext = parse_examples(path, img_folder, img_folder_os, self.options['source_url'])
 
         include_lines = statemachine.string2lines(rawtext, self.state.document.settings.tab_width,
                                                   convert_whitespace=True)
