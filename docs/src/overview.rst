@@ -2,6 +2,9 @@
 Overview
 ********
 
+Basics
+======
+
 There are 4 basic classes you will use in Pymunk.
 
 **Rigid Bodies** (:py:class:`pymunk.Body`)
@@ -25,11 +28,9 @@ There are 4 basic classes you will use in Pymunk.
     and joints to a space, and then update the space as a whole. They control 
     how all the rigid bodies, shapes, and constraints interact together.
 
-As a complement it can be good to read the Chipmunk docs 
-<http://chipmunk-physics.net/release/ChipmunkLatest-Docs/>. Its made for 
-Chipmunk, but Pymunk is build on top of Chipmunk and share most of the concepts,
-with the main difference being that Pymunk is used from Python while Chipmunk is 
-a C-library.
+The actual simulation is done by the Space. After adding the objects that 
+should be simulated to the Space time is moved forward in small steps with the
+:py:meth:`pymunk.Space.step` function. 
 
 
 Model your physics objects
@@ -104,6 +105,11 @@ There are exceptions to this of course, when you actually want realism over the
 looks. In the end it is up to you as a user of Pymunk to decide. 
 
 
+Game loop / moving time forward
+===============================
+
+TODO
+
 Copy and Load/Save Pymunk objects
 =================================
 
@@ -115,3 +121,13 @@ use of the pickle infrastructure.
 
 See the :ref:`copy_and_pickle.py` example for an example on how to save, load 
 and copy Pymunk objects.
+
+
+Additional info
+===============
+
+As a complement to the Pymunk docs it can be good to read the Chipmunk docs 
+<http://chipmunk-physics.net/release/ChipmunkLatest-Docs/>. Its made for 
+Chipmunk, but Pymunk is build on top of Chipmunk and share most of the concepts,
+with the main difference being that Pymunk is used from Python while Chipmunk is 
+a C-library.
