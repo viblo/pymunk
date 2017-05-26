@@ -8,6 +8,7 @@ Contents
     
     news
     installation
+    overview
     pymunk
     examples
     showcase

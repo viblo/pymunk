@@ -1,0 +1,61 @@
+**************************
+Android Stacking Game Kivy
+**************************
+
+This is a tutorial on how to build a basic tower stacking game for Android using
+Pymunk together with Kivy and Python-for-Android. The tower will be built by 
+stacking rectangular blocks on top of each other, with semi-realistic physics to
+make it interesting.
+
+In the end we will have a game that can run on Android and on the common 
+desktop systems (Windows, Linux and OSX). The Android specific parts of this 
+tutorial can be easily skipped in case you have no interest in Android/mobile 
+development. 
+
+In order to test your game you will need a Android phone that can install apps
+on the side, since we wont release the game on Google App Store. 
+
+
+
+Requirements
+============
+
+I will assume that you have at least a basic coding experience in Python. It is 
+also good if you can open a command prompt and run some commands there.
+However, no special knowledge of Pymunk, Kivy or Android development is required
+to follow this tutorial. 
+
+The end result will be a Android game, 
+
+
+The plan
+========
+
+The goal is to build a simple tower stacking / building game. Blocks 
+(rectangles) come from the top of the screen and the player need to place them 
+on top of each other to build as high tower as possible. The game is controlled 
+with the mouse or finger in case of a touch screen.
+
+<show sketches of game>
+
+
+We can break down the game into several small steps. 
+
+I will write down the requirements in a 
+
+In terms of features we need: 
+1. A floor in the bottom of the screen on which the blocks can land.
+2. Creation of blocks of random size, contr
+3. A way to measure when/if the tower is stable.
+4. Keeping track of the total height of the (stable) tower.
+5. Detect if the tower falls over.
+6. A high score
+
+In addition:
+1. Pack the game into an APK that can run on Android.
+
+
+First Steps: A blank window
+===========================
+
+Lets start! 

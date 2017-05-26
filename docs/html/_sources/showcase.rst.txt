@@ -54,6 +54,17 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/billiARds.png
+      - `billiARds  A Game of Augmented Reality Pool 
+        <https://youtu.be/5ft3SDvuhgw>`_
+
+        :subscript:`made by Alex Baikovitz. Retrieved 2017-05-21`
+
+        Alex built billiARds for his 15-112 (Fundamentals of Programming and 
+        Computer Science) term project at Carnegie Mellon University.
+        Made in Python3 using OpenCV, Pygame, and Pymunk. Users can simply use 
+        a pool cue stick and run the program on any ordinary surface.
+
     * - .. image:: _static/pyphysicssandbox.png
       - `pyPhysicsSandbox <https://github.com/jshaffstall/PyPhysicsSandbox>`_
 

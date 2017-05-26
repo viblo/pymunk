@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.body &#8212; pymunk 5.1.0 documentation</title>
+    <title>pymunk.body &#8212; pymunk 5.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.1.0',
+        VERSION:     '5.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &#187;</li> 
       </ul>
@@ -59,8 +59,9 @@
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>    
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">.arbiter</span> <span class="k">import</span> <span class="n">Arbiter</span>
+<span class="kn">from</span> <span class="nn">._pickle</span> <span class="k">import</span> <span class="n">PickleMixin</span>
 
-<div class="viewcode-block" id="Body"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body">[docs]</a><span class="k">class</span> <span class="nc">Body</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Body"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body">[docs]</a><span class="k">class</span> <span class="nc">Body</span><span class="p">(</span><span class="n">PickleMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A rigid body</span>
 
 <span class="sd">    * Use forces to modify the rigid bodies if possible. This is likely to be</span>
@@ -71,6 +72,11 @@
 <span class="sd">    * Don&#39;t modify a body&#39;s position every step unless you really know what</span>
 <span class="sd">      you are doing. Otherwise you&#39;re likely to get the position/velocity badly</span>
 <span class="sd">      out of sync.</span>
+
+<span class="sd">    A Body can be copied and pickled with the standard library copy and pickle </span>
+<span class="sd">    methods. Sleeping bodies that are copied will be awake in the fresh copy. </span>
+<span class="sd">    When a Body is copied any spaces, shapes or constraints attached to the body</span>
+<span class="sd">    will not be copied.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">DYNAMIC</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">CP_BODY_TYPE_DYNAMIC</span>
@@ -112,6 +118,12 @@
 <span class="sd">    useful for simplifying your code by allowing different parts of your</span>
 <span class="sd">    static geometry to be initialized or moved separately.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="s1">&#39;moment&#39;</span><span class="p">,</span> <span class="s1">&#39;body_type&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_general</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;force&#39;</span><span class="p">,</span> <span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="s1">&#39;center_of_gravity&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;velocity&#39;</span><span class="p">,</span>  <span class="s1">&#39;angular_velocity&#39;</span><span class="p">,</span> <span class="s1">&#39;torque&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_skip</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;is_sleeping&#39;</span><span class="p">,</span> <span class="s1">&#39;_velocity_func&#39;</span><span class="p">,</span> <span class="s1">&#39;_position_func&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="Body.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">moment</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">body_type</span><span class="o">=</span><span class="n">DYNAMIC</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new Body</span>
 
@@ -145,8 +157,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_position_callback</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># To prevent the gc to collect the callbacks.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_callback</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># To prevent the gc to collect the callbacks.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position_func</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># To prevent the gc to collect the callbacks.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># To prevent the gc to collect the callbacks.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position_func_base</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># For pickle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func_base</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># For pickle</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Weak ref to the space holding this body (if any)</span>
 
@@ -235,7 +249,7 @@
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Rotation of the body in radians.</span>
 
 <span class="s2">        When changing the rotation you may also want to call</span>
-<span class="s2">        :py:class:`Space.reindex_shapes_for_body` to update the collision </span>
+<span class="s2">        :py:func:`Space.reindex_shapes_for_body` to update the collision </span>
 <span class="s2">        detection information for the attached shapes if plan to make any </span>
 <span class="s2">        queries against the space. A body rotates around its center of gravity, </span>
 <span class="s2">        not its position.</span>
@@ -283,7 +297,8 @@
         <span class="k">def</span> <span class="nf">_impl</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">gravity</span><span class="p">),</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_callback</span> <span class="o">=</span> <span class="n">_impl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func_base</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func</span> <span class="o">=</span> <span class="n">_impl</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetVelocityUpdateFunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">_impl</span><span class="p">)</span>
     <span class="n">velocity_func</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fset</span><span class="o">=</span><span class="n">_set_velocity_func</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The velocity callback function. </span>
@@ -300,8 +315,9 @@
             <span class="s2">&quot;(cpBody *body, cpFloat dt)&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">_impl</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
-            
-        <span class="bp">self</span><span class="o">.</span><span class="n">_position_callback</span> <span class="o">=</span> <span class="n">_impl</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position_func_base</span> <span class="o">=</span> <span class="n">func</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position_func</span> <span class="o">=</span> <span class="n">_impl</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetPositionUpdateFunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">_impl</span><span class="p">)</span>
     <span class="n">position_func</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fset</span><span class="o">=</span><span class="n">_set_position_func</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The position callback function. </span>
@@ -426,7 +442,7 @@
 
 <span class="s2">        When changing an body to a dynamic body, the mass and moment of</span>
 <span class="s2">        inertia are recalculated from the shapes added to the body. Custom</span>
-<span class="s2">        calculated moments of inertia are not preseved when changing types.</span>
+<span class="s2">        calculated moments of inertia are not preserved when changing types.</span>
 <span class="s2">        This function cannot be called directly in a collision callback.</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
@@ -463,7 +479,7 @@
     <span class="n">constraints</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_constraints</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get the constraints this body is attached to.</span>
 
-<span class="s2">        The body only keeps a weak referenece to the constraints and a</span>
+<span class="s2">        The body only keeps a weak reference to the constraints and a</span>
 <span class="s2">        live body wont prevent GC of the attached constraints&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -509,7 +525,37 @@
 <span class="sd">        local point</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocityAtLocalPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">)))</span></div></div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocityAtLocalPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">)))</span></div>
+
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the state of this object</span>
+<span class="sd">        </span>
+<span class="sd">        This method allows the usage of the :mod:`copy` and :mod:`pickle`</span>
+<span class="sd">        modules with this class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Body</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getstate__</span><span class="p">()</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;is_sleeping&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_sleeping</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;_velocity_func&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func_base</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;_position_func&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_func_base</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Unpack this object from a saved state.</span>
+
+<span class="sd">        This method allows the usage of the :mod:`copy` and :mod:`pickle`</span>
+<span class="sd">        modules with this class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Body</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setstate__</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;is_sleeping&#39;</span> <span class="ow">and</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;_velocity_func&#39;</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velocity_func</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;_position_func&#39;</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">position_func</span> <span class="o">=</span> <span class="n">v</span></div>
 </pre></div>
 
           </div>
@@ -533,6 +579,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
@@ -568,7 +615,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &#187;</li> 
       </ul>

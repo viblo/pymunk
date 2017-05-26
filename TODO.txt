@@ -10,6 +10,7 @@ v5.x
 - automatic test build of android apk on travis 
 - cleanup implementation of autoexample sphinx extension
 - pickle: fix shape id 
+- make example of good timestep handling
 
 v6+ (all potentially breaking changes)
 ---

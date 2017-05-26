@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.constraint &#8212; pymunk 5.1.0 documentation</title>
+    <title>pymunk.constraint &#8212; pymunk 5.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.1.0',
+        VERSION:     '5.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &#187;</li> 
       </ul>
@@ -52,7 +52,7 @@
   <h1>Source code for pymunk.constraint</h1><div class="highlight"><pre>
 <span></span><span class="c1"># ----------------------------------------------------------------------------</span>
 <span class="c1"># pymunk</span>
-<span class="c1"># Copyright (c) 2007-2016 Victor Blomqvist</span>
+<span class="c1"># Copyright (c) 2007-2017 Victor Blomqvist</span>
 <span class="c1">#</span>
 <span class="c1"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
 <span class="c1"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
@@ -78,10 +78,13 @@
 <span class="sd">joints that allow bodies to pivot around each other like the bones in your</span>
 <span class="sd">body, or they can be more abstract like the gear joint or motors.</span>
 
-<span class="sd">This submodule contain all the constraints that are supported by pymunk.</span>
+<span class="sd">This submodule contain all the constraints that are supported by Pymunk.</span>
+
+<span class="sd">All the constraints support copy and pickle from the standard library. Custom </span>
+<span class="sd">properties set on a constraint will also be copied/pickled.</span>
 
 <span class="sd">Chipmunk has a good overview of the different constraint on youtube which</span>
-<span class="sd">works fine to showcase them in pymunk as well.</span>
+<span class="sd">works fine to showcase them in Pymunk as well.</span>
 <span class="sd">http://www.youtube.com/watch?v=ZgJJZTS0aMM</span>
 
 <span class="sd">.. raw:: html</span>
@@ -103,17 +106,23 @@
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">._pickle</span> <span class="k">import</span> <span class="n">PickleMixin</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>
 
-<div class="viewcode-block" id="Constraint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint">[docs]</a><span class="k">class</span> <span class="nc">Constraint</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Constraint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint">[docs]</a><span class="k">class</span> <span class="nc">Constraint</span><span class="p">(</span><span class="n">PickleMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class of all constraints.</span>
 
 <span class="sd">    You usually don&#39;t want to create instances of this class directly, but</span>
 <span class="sd">    instead use one of the specific constraints such as the PinJoint.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_general</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;max_force&#39;</span><span class="p">,</span> <span class="s1">&#39;error_bias&#39;</span><span class="p">,</span> <span class="s1">&#39;max_bias&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;collide_bodies&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="Constraint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constraint</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">constraint</span></div>
         
@@ -194,8 +203,12 @@
         <span class="n">a</span><span class="o">.</span><span class="n">_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">b</span><span class="o">.</span><span class="n">_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
+    
 <div class="viewcode-block" id="PinJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PinJoint">[docs]</a><span class="k">class</span> <span class="nc">PinJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Keeps the anchor points at a set distance from one another.&quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;anchor_a&#39;</span><span class="p">,</span> <span class="s1">&#39;anchor_b&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="PinJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PinJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">anchor_a</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">anchor_b</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;a and b are the two bodies to connect, and anchor_a and anchor_b are</span>
 <span class="sd">        the anchor points on those bodies.</span>
@@ -235,6 +248,9 @@
 <span class="sd">    A chain could be modeled using this joint. It keeps the anchor points</span>
 <span class="sd">    from getting to far apart, but will allow them to get closer together.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;anchor_a&#39;</span><span class="p">,</span> <span class="s1">&#39;anchor_b&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="SlideJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SlideJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">anchor_a</span><span class="p">,</span> <span class="n">anchor_b</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;a and b are the two bodies to connect, anchor_a and anchor_b are the</span>
 <span class="sd">        anchor points on those bodies, and min and max define the allowed</span>
@@ -272,6 +288,9 @@
 
 <div class="viewcode-block" id="PivotJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PivotJoint">[docs]</a><span class="k">class</span> <span class="nc">PivotJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Simply allow two objects to pivot about a single point.&quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;anchor_a&#39;</span><span class="p">,</span> <span class="s1">&#39;anchor_b&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="PivotJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PivotJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;a and b are the two bodies to connect, and pivot is the point in</span>
 <span class="sd">        world coordinates of the pivot.</span>
@@ -290,7 +309,6 @@
 <span class="sd">        :param args: Either one pivot point, or two anchor points</span>
 <span class="sd">        :type args: (float,float) or (float,float) (float,float)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
                 <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> 
@@ -322,6 +340,9 @@
     <span class="sd">&quot;&quot;&quot;Similar to a pivot joint, but one of the anchors is</span>
 <span class="sd">    on a linear slide instead of being fixed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;groove_a&#39;</span><span class="p">,</span> <span class="s1">&#39;groove_b&#39;</span><span class="p">,</span> <span class="s1">&#39;anchor_b&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="GrooveJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GrooveJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">groove_a</span><span class="p">,</span> <span class="n">groove_b</span><span class="p">,</span> <span class="n">anchor_b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The groove goes from groove_a to groove_b on body a, and the pivot</span>
 <span class="sd">        is attached to anchor_b on body b.</span>
@@ -356,6 +377,10 @@
 
 <div class="viewcode-block" id="DampedSpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring">[docs]</a><span class="k">class</span> <span class="nc">DampedSpring</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A damped spring&quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;anchor_a&#39;</span><span class="p">,</span> <span class="s1">&#39;anchor_b&#39;</span><span class="p">,</span> <span class="s1">&#39;rest_length&#39;</span><span class="p">,</span> <span class="s1">&#39;stiffness&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;damping&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="DampedSpring.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">anchor_a</span><span class="p">,</span> <span class="n">anchor_b</span><span class="p">,</span> <span class="n">rest_length</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Defined much like a slide joint.</span>
 
@@ -411,6 +436,9 @@
 
 <div class="viewcode-block" id="DampedRotarySpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedRotarySpring">[docs]</a><span class="k">class</span> <span class="nc">DampedRotarySpring</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Like a damped spring, but works in an angular fashion&quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rest_angle&#39;</span><span class="p">,</span> <span class="s1">&#39;stiffness&#39;</span><span class="p">,</span> <span class="s1">&#39;damping&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="DampedRotarySpring.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedRotarySpring.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rest_angle</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Like a damped spring, but works in an angular fashion.</span>
 
@@ -450,6 +478,9 @@
 
 <div class="viewcode-block" id="RotaryLimitJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint">[docs]</a><span class="k">class</span> <span class="nc">RotaryLimitJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Constrains the relative rotations of two bodies.&quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="RotaryLimitJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constrains the relative rotations of two bodies.</span>
 
@@ -476,6 +507,9 @@
 
 <div class="viewcode-block" id="RatchetJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint">[docs]</a><span class="k">class</span> <span class="nc">RatchetJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Works like a socket wrench.&quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;phase&#39;</span><span class="p">,</span> <span class="s1">&#39;ratchet&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="RatchetJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Works like a socket wrench.</span>
 
@@ -507,6 +541,9 @@
 
 <div class="viewcode-block" id="GearJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint">[docs]</a><span class="k">class</span> <span class="nc">GearJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Keeps the angular velocity ratio of a pair of bodies constant.&quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;phase&#39;</span><span class="p">,</span> <span class="s1">&#39;ratio&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="GearJoint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratio</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Keeps the angular velocity ratio of a pair of bodies constant.</span>
 
@@ -533,6 +570,9 @@
 
 <div class="viewcode-block" id="SimpleMotor"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor">[docs]</a><span class="k">class</span> <span class="nc">SimpleMotor</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Keeps the relative angular velocity of a pair of bodies constant.&quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="SimpleMotor.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Keeps the relative angular velocity of a pair of bodies constant.</span>
 
@@ -574,6 +614,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
@@ -609,7 +650,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &#187;</li> 
       </ul>

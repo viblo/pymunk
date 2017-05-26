@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.autogeometry &#8212; pymunk 5.1.0 documentation</title>
+    <title>pymunk.autogeometry &#8212; pymunk 5.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.1.0',
+        VERSION:     '5.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &#187;</li> 
       </ul>
@@ -263,7 +263,7 @@
     <span class="k">def</span> <span class="nf">_sam_f</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">sample_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
     
-    <span class="n">lib</span><span class="o">.</span><span class="n">cpMarchSoft</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_samples</span><span class="p">,</span> <span class="n">y_samples</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> 
+    <span class="n">lib</span><span class="o">.</span><span class="n">cpMarchSoft</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">x_samples</span><span class="p">,</span> <span class="n">y_samples</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> 
         <span class="n">_seg_f</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">_sam_f</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="march_hard"><a class="viewcode-back" href="../../pymunk.autogeometry.html#pymunk.autogeometry.march_hard">[docs]</a><span class="k">def</span> <span class="nf">march_hard</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span> <span class="n">x_samples</span><span class="p">,</span> <span class="n">y_samples</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">segment_func</span><span class="p">,</span> <span class="n">sample_func</span><span class="p">):</span>
@@ -295,7 +295,7 @@
     <span class="k">def</span> <span class="nf">_sam_f</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">sample_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
     
-    <span class="n">lib</span><span class="o">.</span><span class="n">cpMarchHard</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_samples</span><span class="p">,</span> <span class="n">y_samples</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> 
+    <span class="n">lib</span><span class="o">.</span><span class="n">cpMarchHard</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">x_samples</span><span class="p">,</span> <span class="n">y_samples</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> 
         <span class="n">_seg_f</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">_sam_f</span><span class="p">,</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">)</span></div>
 </pre></div>
 
@@ -320,6 +320,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
@@ -355,7 +356,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &#187;</li> 
       </ul>

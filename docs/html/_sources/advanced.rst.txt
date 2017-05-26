@@ -7,8 +7,8 @@ want a better understanding of Pymunk for example to extend it.
 
 First off, Pymunk is a pythonic wrapper around the C-library Chipmunk. 
 
-To wrap Chipmunk pymunk uses Cffi. On top of the Cffi wrapping is a handmade 
-pythonic layer on top to make it nice to use from Python programs.
+To wrap Chipmunk Pymunk uses CFFI. On top of the CFFI wrapping is a handmade 
+pythonic layer to make it nice to use from Python code.
 
 Why CFFI?
 ---------

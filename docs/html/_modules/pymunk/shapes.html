@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.shapes &#8212; pymunk 5.1.0 documentation</title>
+    <title>pymunk.shapes &#8212; pymunk 5.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.1.0',
+        VERSION:     '5.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &#187;</li> 
       </ul>
@@ -62,14 +62,23 @@
 <span class="kn">from</span> <span class="nn">.query_info</span> <span class="k">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span>
 <span class="kn">from</span> <span class="nn">.contact_point_set</span> <span class="k">import</span> <span class="n">ContactPointSet</span>
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">._pickle</span> <span class="k">import</span> <span class="n">PickleMixin</span>
 
-<div class="viewcode-block" id="Shape"><a class="viewcode-back" href="../../pymunk.html#pymunk.Shape">[docs]</a><span class="k">class</span> <span class="nc">Shape</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Shape"><a class="viewcode-back" href="../../pymunk.html#pymunk.Shape">[docs]</a><span class="k">class</span> <span class="nc">Shape</span><span class="p">(</span><span class="n">PickleMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for all the shapes.</span>
 
 <span class="sd">    You usually dont want to create instances of this class directly but use</span>
 <span class="sd">    one of the specialized shapes instead (:py:class:`Circle`, </span>
 <span class="sd">    :py:class:`Poly` or :py:class:`Segment`).</span>
+
+<span class="sd">    All the shapes can be copied and pickled. If you copy/pickle a shape the </span>
+<span class="sd">    body (if any) will also be copied.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_general</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sensor&#39;</span><span class="p">,</span> <span class="s1">&#39;collision_type&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="s1">&#39;elasticity&#39;</span><span class="p">,</span> <span class="s1">&#39;friction&#39;</span><span class="p">,</span> <span class="s1">&#39;surface_velocity&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_skip</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="s1">&#39;density&#39;</span><span class="p">]</span>
 
     <span class="n">_space</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Weak ref to the space holding this body (if any)</span>
 
@@ -247,7 +256,7 @@
         <span class="k">return</span> <span class="n">BB</span><span class="p">(</span><span class="n">bb</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Shape.cache_bb"><a class="viewcode-back" href="../../pymunk.html#pymunk.Shape.cache_bb">[docs]</a>    <span class="k">def</span> <span class="nf">cache_bb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update and returns the bouding box of this shape&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Update and returns the bounding box of this shape&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">BB</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpShapeCacheBB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">_get_bb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -316,19 +325,39 @@
     <span class="n">space</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_space</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get the :py:class:`Space` that shape has been added to (or </span>
 <span class="s2">        None).</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span></div>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the state of this object</span>
+<span class="sd">        </span>
+<span class="sd">        This method allows the usage of the :mod:`copy` and :mod:`pickle`</span>
+<span class="sd">        modules with this class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Shape</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getstate__</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">d</span></div>
+
 
 <div class="viewcode-block" id="Circle"><a class="viewcode-back" href="../../pymunk.html#pymunk.Circle">[docs]</a><span class="k">class</span> <span class="nc">Circle</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A circle shape defined by a radius</span>
 
 <span class="sd">    This is the fastest and simplest collision shape</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="s1">&#39;offset&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="Circle.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Circle.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;body is the body attach the circle to, offset is the offset from the</span>
 <span class="sd">        body&#39;s center of gravity in body local coordinates.</span>
 
 <span class="sd">        It is legal to send in None as body argument to indicate that this</span>
-<span class="sd">        shape is not attached to a body.</span>
+<span class="sd">        shape is not attached to a body. However, you must attach it to a body</span>
+<span class="sd">        before adding the shape to a space or used for a space shape query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">body</span>
@@ -377,13 +406,17 @@
 
 <span class="sd">    Meant mainly as a static shape. Can be beveled in order to give them a</span>
 <span class="sd">    thickness.</span>
-
-<span class="sd">    It is legal to send in None as body argument to indicate that this</span>
-<span class="sd">    shape is not attached to a body.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;radius&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="Segment.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Segment.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a Segment</span>
 
+<span class="sd">        It is legal to send in None as body argument to indicate that this</span>
+<span class="sd">        shape is not attached to a body. However, you must attach it to a body</span>
+<span class="sd">        before adding the shape to a space or used for a space shape query.</span>
+<span class="sd">    </span>
 <span class="sd">        :param Body body: The body to attach the segment to</span>
 <span class="sd">        :param a: The first endpoint of the segment</span>
 <span class="sd">        :param b: The second endpoint of the segment</span>
@@ -452,10 +485,9 @@
     <span class="sd">&quot;&quot;&quot;A convex polygon shape</span>
 
 <span class="sd">    Slowest, but most flexible collision shape.</span>
-
-<span class="sd">    It is legal to send in None as body argument to indicate that this</span>
-<span class="sd">    shape is not attached to a body.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="Poly.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a polygon.</span>
@@ -465,6 +497,10 @@
 <span class="sd">        Adding a small radius will bevel the corners and can significantly </span>
 <span class="sd">        reduce problems where the poly gets stuck on seams in your geometry.</span>
 
+<span class="sd">        It is legal to send in None as body argument to indicate that this</span>
+<span class="sd">        shape is not attached to a body. However, you must attach it to a body</span>
+<span class="sd">        before adding the shape to a space or used for a space shape query.</span>
+<span class="sd">    </span>
 <span class="sd">        :param Body body: The body to attach the poly to</span>
 <span class="sd">        :param [(float,float)] vertices: Define a convex hull of the polygon </span>
 <span class="sd">            with a counterclockwise winding.</span>
@@ -561,7 +597,7 @@
             <span class="n">body</span><span class="o">.</span><span class="n">_shapes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpBoxShapeNew2</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">radius</span><span class="p">),</span>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpBoxShapeNew2</span><span class="p">(</span><span class="n">body_body</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">radius</span><span class="p">),</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeFree</span><span class="p">)</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_shapeid</span><span class="p">()</span>
@@ -593,7 +629,20 @@
             <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeSetVertsRaw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vs</span><span class="p">)</span>
             <span class="k">return</span>
             
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeSetVerts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vs</span><span class="p">,</span> <span class="n">transform</span><span class="p">)</span></div></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpPolyShapeSetVerts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="n">vs</span><span class="p">,</span> <span class="n">transform</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the state of this object</span>
+<span class="sd">        </span>
+<span class="sd">        This method allows the usage of the :mod:`copy` and :mod:`pickle`</span>
+<span class="sd">        modules with this class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Poly</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getstate__</span><span class="p">()</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;init&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;vertices&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">()))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;init&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;transform&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;init&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">d</span></div>
 </pre></div>
 
           </div>
@@ -617,6 +666,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
@@ -652,7 +702,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &#187;</li> 
       </ul>

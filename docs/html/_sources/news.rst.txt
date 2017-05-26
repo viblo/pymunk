@@ -2,6 +2,28 @@
 News 
 ****
 
+Pymunk 5.2.0
+------------
+*Victor - 2017-03-25*
+
+**Customize compile for ARM / Android**
+
+The main reason for this relase is the ARM / Android cross compilation support 
+thanks to the possibility to override the ccompiler and linker. After this 
+relase is out its possible to create a python-for-android build recipe for 
+Pymunk without patching the Pymunk code. It should also be easier to build for 
+other environments.
+
+Changes
+
+- Allow customization of the compilation of chipmunk by allowing overriding the 
+  compiler and linker with the CC, CFLAGS, LD and LDFLAGS environment variables.
+  (usually you dont need this, but in some cases its useful)
+- Fix sometimes broken Poly draw with pyglet_util.
+- Add feature to let you set the mass of shapes and let Pymunk automatically 
+  calculate the body mass and moment.
+- Done use separate library naming for 32 and 64 bit builds. (Should not have 
+  any visible effect)
 
 Pymunk 5.1.0
 ------------

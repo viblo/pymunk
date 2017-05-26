@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.space &#8212; pymunk 5.1.0 documentation</title>
+    <title>pymunk.space &#8212; pymunk 5.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.1.0',
+        VERSION:     '5.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &#187;</li> 
       </ul>
@@ -55,7 +55,7 @@
 <span class="kn">import</span> <span class="nn">weakref</span>
 <span class="kn">from</span> <span class="nn">weakref</span> <span class="k">import</span> <span class="n">WeakSet</span>
 <span class="kn">import</span> <span class="nn">platform</span>
-    
+
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>    
@@ -67,13 +67,38 @@
 <span class="kn">from</span> <span class="nn">.shapes</span> <span class="k">import</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Poly</span><span class="p">,</span> <span class="n">Segment</span>
 <span class="kn">from</span> <span class="nn">.contact_point_set</span> <span class="k">import</span> <span class="n">ContactPointSet</span>
 <span class="kn">from</span> <span class="nn">pymunk.constraint</span> <span class="k">import</span> <span class="n">Constraint</span>
+<span class="kn">from</span> <span class="nn">._pickle</span> <span class="k">import</span> <span class="n">PickleMixin</span>
 
-<div class="viewcode-block" id="Space"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space">[docs]</a><span class="k">class</span> <span class="nc">Space</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Space"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space">[docs]</a><span class="k">class</span> <span class="nc">Space</span><span class="p">(</span><span class="n">PickleMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Spaces are the basic unit of simulation. You add rigid bodies, shapes</span>
 <span class="sd">    and joints to it and then step them all forward together through time.</span>
+
+<span class="sd">    A Space can be copied and pickled. Note that any post step callbacks are </span>
+<span class="sd">    not copied. Also note that some internal collision cache data is not copied,</span>
+<span class="sd">    which can make the simulation a bit unstable the first few steps of the </span>
+<span class="sd">    fresh copy.</span>
+
+<span class="sd">    Custom properties set on the space will also be copied/pickled.</span>
+
+<span class="sd">    Any collision handlers will also be copied/pickled. Note that depending on </span>
+<span class="sd">    the pickle protocol used there are some restrictions on what functions can </span>
+<span class="sd">    be copied/pickled.</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">    &gt;&gt;&gt; import pymunk, copy, pickle</span>
+<span class="sd">    &gt;&gt;&gt; space = pymunk.Space()</span>
+<span class="sd">    &gt;&gt;&gt; space2 = copy.deepcopy(space)</span>
+<span class="sd">    &gt;&gt;&gt; space3 = pickle.loads(pickle.dumps(space))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;threaded&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_general</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;iterations&#39;</span><span class="p">,</span> <span class="s1">&#39;gravity&#39;</span><span class="p">,</span> <span class="s1">&#39;damping&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;idle_speed_threshold&#39;</span><span class="p">,</span> <span class="s1">&#39;sleep_time_threshold&#39;</span><span class="p">,</span> <span class="s1">&#39;collision_slop&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;collision_bias&#39;</span><span class="p">,</span> <span class="s1">&#39;collision_persistence&#39;</span><span class="p">,</span> <span class="s1">&#39;threads&#39;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="Space.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threaded</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new instace of the Space. </span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of the Space. </span>
 <span class="sd">        </span>
 <span class="sd">        If you set threaded=True the step function will run in threaded mode</span>
 <span class="sd">        which might give a speedup. Note that even when you set threaded=True </span>
@@ -90,11 +115,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceNew</span><span class="p">(),</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceFree</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="kc">None</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># To prevent the gc to collect the callbacks.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_default_handler</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_removed_shapes</span> <span class="o">=</span> <span class="p">{}</span>
@@ -401,6 +422,19 @@
 <span class="sd">        the efficiency of the contact persistence, requiring an order of </span>
 <span class="sd">        magnitude fewer iterations to resolve the collisions in the usual case.</span>
 
+<span class="sd">        It is not the same to call step 10 times with a dt of 0.1 and </span>
+<span class="sd">        calling it 100 times with a dt of 0.01 even if the end result is </span>
+<span class="sd">        that the simulation moved forward 100 units. Performing  multiple </span>
+<span class="sd">        calls with a smaller dt creates a more stable and accurate </span>
+<span class="sd">        simulation. Therefor it sometimes make sense to have a little for loop</span>
+<span class="sd">        around the step call, like in this example:</span>
+
+<span class="sd">        &gt;&gt;&gt; import pymunk</span>
+<span class="sd">        &gt;&gt;&gt; s = pymunk.Space()</span>
+<span class="sd">        &gt;&gt;&gt; steps = 10</span>
+<span class="sd">        &gt;&gt;&gt; for x in range(steps): # move simulation forward 0.1 seconds:</span>
+<span class="sd">        ...     s.step(0.1 / steps)</span>
+<span class="sd">        </span>
 <span class="sd">        :param float dt: Time step length</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -452,16 +486,8 @@
         <span class="n">h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddCollisionHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">,</span> <span class="n">collision_type_b</span><span class="p">)</span>
         <span class="n">ch</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch</span>
-        <span class="k">return</span> <span class="n">ch</span>
+        <span class="k">return</span> <span class="n">ch</span></div>
         
-        <span class="n">p</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">userData</span>
-        <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">p</span><span class="p">]</span></div>
-
 <div class="viewcode-block" id="Space.add_wildcard_collision_handler"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add_wildcard_collision_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_wildcard_collision_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a wildcard collision handler for given collision type.</span>
 
@@ -490,17 +516,7 @@
         <span class="n">h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddWildcardHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">)</span>
         <span class="n">ch</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">collision_type_a</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch</span>
-        <span class="k">return</span> <span class="n">ch</span>
-        
-        
-        <span class="k">return</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">userData</span>
-        <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">p</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">ch</span></div>
 
 <div class="viewcode-block" id="Space.add_default_collision_handler"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add_default_collision_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_default_collision_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a reference to the default collision handler or that is</span>
@@ -517,15 +533,7 @@
         <span class="n">_h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddDefaultCollisionHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">_h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
-        <span class="k">return</span> <span class="n">h</span>
-        
-        <span class="n">p</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">userData</span>
-        <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handlers_key</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">p</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">h</span></div>
 
 <div class="viewcode-block" id="Space.add_post_step_callback"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add_post_step_callback">[docs]</a>    <span class="k">def</span> <span class="nf">add_post_step_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_function</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a function to be called last in the next simulation step.</span>
@@ -542,6 +550,9 @@
 <span class="sd">            If you remove a shape from the callback it will trigger the</span>
 <span class="sd">            collision handler for the &#39;separate&#39; event if it the shape was</span>
 <span class="sd">            touching when removed.</span>
+
+<span class="sd">        .. Note::</span>
+<span class="sd">            Post step callbacks are not included in pickle / copy of the space.</span>
 
 <span class="sd">        :param callback_function: The callback function</span>
 <span class="sd">        :type callback_function: `func(space : Space, key, *args, **kwargs)`</span>
@@ -740,7 +751,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
         
         <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceBBQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceBBQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span></div>
 
 
@@ -790,8 +801,73 @@
         <span class="n">options</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">h</span>
         
         <span class="k">with</span> <span class="n">options</span><span class="p">:</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceDebugDraw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span></div></div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceDebugDraw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span></div>
         
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the state of this object</span>
+<span class="sd">        </span>
+<span class="sd">        This method allows the usage of the :mod:`copy` and :mod:`pickle`</span>
+<span class="sd">        modules with this class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Space</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getstate__</span><span class="p">()</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;shapes&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shapes</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;bodies&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bodies</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;constraints&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;_static_body&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span><span class="p">))</span>
+        
+        <span class="n">handlers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_begin_base</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">h</span><span class="p">[</span><span class="s1">&#39;_begin_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_begin_base</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_pre_solve_base</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">h</span><span class="p">[</span><span class="s1">&#39;_pre_solve_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_pre_solve_base</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_post_solve_base</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">h</span><span class="p">[</span><span class="s1">&#39;_post_solve_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_post_solve_base</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_separate_base</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">h</span><span class="p">[</span><span class="s1">&#39;_separate_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_separate_base</span>
+            <span class="n">handlers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span><span class="n">h</span><span class="p">))</span>
+            
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;_handlers&#39;</span><span class="p">,</span> <span class="n">handlers</span><span class="p">))</span>
+            
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Unpack this object from a saved state.</span>
+
+<span class="sd">        This method allows the usage of the :mod:`copy` and :mod:`pickle`</span>
+<span class="sd">        modules with this class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Space</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setstate__</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;shapes&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;bodies&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;constraints&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;_static_body&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="n">v</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;_handlers&#39;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">hd</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_default_collision_handler</span><span class="p">()</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">tuple</span><span class="p">):</span>
+                        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_collision_handler</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_wildcard_collision_handler</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="s1">&#39;_begin_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
+                        <span class="n">h</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_begin_base&#39;</span><span class="p">]</span> 
+                    <span class="k">if</span> <span class="s1">&#39;_pre_solve_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
+                        <span class="n">h</span><span class="o">.</span><span class="n">pre_solve</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_pre_solve_base&#39;</span><span class="p">]</span> 
+                    <span class="k">if</span> <span class="s1">&#39;_post_solve_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
+                        <span class="n">h</span><span class="o">.</span><span class="n">post_solve</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_post_solve_base&#39;</span><span class="p">]</span> 
+                    <span class="k">if</span> <span class="s1">&#39;_separate_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
+                        <span class="n">h</span><span class="o">.</span><span class="n">separate</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_separate_base&#39;</span><span class="p">]</span> </div>
 </pre></div>
 
           </div>
@@ -815,6 +891,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pymunk.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
@@ -850,7 +927,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &#187;</li> 
       </ul>
