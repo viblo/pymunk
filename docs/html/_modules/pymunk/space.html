@@ -586,6 +586,10 @@
 <span class="sd">        See :py:class:`ShapeFilter` for details about how the shape_filter </span>
 <span class="sd">        parameter can be used.</span>
 
+<span class="sd">        .. Note::</span>
+<span class="sd">            Sensor shapes are included in the result (In </span>
+<span class="sd">            :py:meth:`Space.point_query_nearest` they are not)</span>
+
 <span class="sd">        :param point: Where to check for collision in the Space</span>
 <span class="sd">        :type point: :py:class:`~vec2d.Vec2d` or (float,float)</span>
 <span class="sd">        :param float max_distance: Match only within this distance</span>
@@ -640,6 +644,10 @@
 <span class="sd">        See :py:class:`ShapeFilter` for details about how the shape_filter </span>
 <span class="sd">        parameter can be used.</span>
 
+<span class="sd">        .. Note::</span>
+<span class="sd">            Sensor shapes are not included in the result (In </span>
+<span class="sd">            :py:meth:`Space.point_query` they are)</span>
+
 <span class="sd">        :param point: Where to check for collision in the Space</span>
 <span class="sd">        :type point: :py:class:`~vec2d.Vec2d` or (float,float)</span>
 <span class="sd">        :param float max_distance: Match only within this distance</span>
@@ -669,10 +677,14 @@
 <span class="sd">        given radius.</span>
 
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
-<span class="sd">        collision detection. Sensor shapes are included.</span>
+<span class="sd">        collision detection.</span>
 
 <span class="sd">        See :py:class:`ShapeFilter` for details about how the shape_filter </span>
 <span class="sd">        parameter can be used.</span>
+
+<span class="sd">        .. Note::</span>
+<span class="sd">            Sensor shapes are included in the result (In </span>
+<span class="sd">            :py:meth:`Space.segment_query_first` they are not)</span>
 
 <span class="sd">        :param start: Starting point</span>
 <span class="sd">        :param end: End point</span>
@@ -707,7 +719,11 @@
 <span class="sd">        given radius.</span>
 
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
-<span class="sd">        collision detection. Sensor shapes are included.</span>
+<span class="sd">        collision detection.</span>
+
+<span class="sd">        .. Note::</span>
+<span class="sd">            Sensor shapes are not included in the result (In </span>
+<span class="sd">            :py:meth:`Space.segment_query` they are)</span>
 
 <span class="sd">        See :py:class:`ShapeFilter` for details about how the shape_filter </span>
 <span class="sd">        parameter can be used.</span>
@@ -736,6 +752,9 @@
 
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
 <span class="sd">        collision detection. Sensor shapes are included.</span>
+
+<span class="sd">        .. Note::</span>
+<span class="sd">            Sensor shapes are included in the result</span>
 
 <span class="sd">        :param BB bb: Bounding box</span>
 <span class="sd">        :param ShapeFilter shape_filter: Shape filter</span>

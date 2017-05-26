@@ -534,6 +534,10 @@ class Space(PickleMixin, object):
         See :py:class:`ShapeFilter` for details about how the shape_filter 
         parameter can be used.
 
+        .. Note::
+            Sensor shapes are included in the result (In 
+            :py:meth:`Space.point_query_nearest` they are not)
+
         :param point: Where to check for collision in the Space
         :type point: :py:class:`~vec2d.Vec2d` or (float,float)
         :param float max_distance: Match only within this distance
@@ -588,6 +592,10 @@ class Space(PickleMixin, object):
         See :py:class:`ShapeFilter` for details about how the shape_filter 
         parameter can be used.
 
+        .. Note::
+            Sensor shapes are not included in the result (In 
+            :py:meth:`Space.point_query` they are)
+
         :param point: Where to check for collision in the Space
         :type point: :py:class:`~vec2d.Vec2d` or (float,float)
         :param float max_distance: Match only within this distance
@@ -617,10 +625,14 @@ class Space(PickleMixin, object):
         given radius.
 
         The filter is applied to the query and follows the same rules as the
-        collision detection. Sensor shapes are included.
+        collision detection.
 
         See :py:class:`ShapeFilter` for details about how the shape_filter 
         parameter can be used.
+
+        .. Note::
+            Sensor shapes are included in the result (In 
+            :py:meth:`Space.segment_query_first` they are not)
 
         :param start: Starting point
         :param end: End point
@@ -655,7 +667,11 @@ class Space(PickleMixin, object):
         given radius.
 
         The filter is applied to the query and follows the same rules as the
-        collision detection. Sensor shapes are included.
+        collision detection.
+
+        .. Note::
+            Sensor shapes are not included in the result (In 
+            :py:meth:`Space.segment_query` they are)
 
         See :py:class:`ShapeFilter` for details about how the shape_filter 
         parameter can be used.
@@ -684,6 +700,9 @@ class Space(PickleMixin, object):
 
         The filter is applied to the query and follows the same rules as the
         collision detection. Sensor shapes are included.
+
+        .. Note::
+            Sensor shapes are included in the result
 
         :param BB bb: Bounding box
         :param ShapeFilter shape_filter: Shape filter

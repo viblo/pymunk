@@ -18,3 +18,5 @@ v6+ (all potentially breaking changes)
 - Think about split between pymunk.util and pymunk modules
 - do we still need pymunk.inf?
 - make shape.sensor return bool instead of int
+- Think about overriding behavior of sensor shapes in segment and point_query 
+  vs segment_first and point_query_nearest (one hits sensors the other does not)

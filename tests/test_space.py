@@ -236,6 +236,16 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hits[1].distance, 1)
         self.assertEqual(hits[1].gradient, (1,0))
 
+
+    def testPointQuerySensor(self):
+        s = p.Space()
+        c = p.Circle(s.static_body, 10)
+        c.sensor = True
+        s.add(c)
+        hits = s.point_query((0,0), 100, p.ShapeFilter())
+        self.assertEqual(len(hits), 1)
+
+
     def testPointQueryNearest(self):
         s = p.Space()
         b1 = p.Body(1,1)
@@ -258,6 +268,15 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hit.distance, 1)
         self.assertEqual(hit.gradient, (1,0))
 
+    def testPointQueryNearestSensor(self):
+        s = p.Space()
+        c = p.Circle(s.static_body, 10)
+        c.sensor = True
+        s.add(c)
+        hit = s.point_query_nearest((0,0), 100, p.ShapeFilter())
+        self.assertEqual(hit, None)
+
+
     def testBBQuery(self):
         s = p.Space()
 
@@ -277,8 +296,17 @@ class UnitTestSpace(unittest.TestCase):
         self.assertTrue(s2 in hits)
         self.assertTrue(s1 not in hits)
 
-    def testShapeQuery(self):
 
+    def testBBQuerySensor(self):
+        s = p.Space()
+        c = p.Circle(s.static_body, 10)
+        c.sensor = True
+        s.add(c)
+        hits = s.bb_query(p.BB(0,0,10,10), p.ShapeFilter())
+        self.assertEqual(len(hits), 1)
+
+
+    def testShapeQuery(self):
         b = p.Body(body_type=p.Body.KINEMATIC)
         s = p.Circle(b, 2)
         b.position = 20,1
@@ -287,6 +315,15 @@ class UnitTestSpace(unittest.TestCase):
         
         self.assertEqual(len(hits), 1)
         self.assertEqual(self.s2, hits[0].shape)
+
+
+    def testShapeQuerySensor(self):
+        s = p.Space()
+        c = p.Circle(s.static_body, 10)
+        c.sensor = True
+        s.add(c)
+        hits = s.shape_query(p.Circle(None, 200))
+        self.assertEqual(len(hits), 1)
 
 
     def testStaticPointQueries(self):
@@ -404,6 +441,14 @@ class UnitTestSpace(unittest.TestCase):
         hits = s.segment_query((-13, 50), (131,50), 0, p.ShapeFilter())
         self.assertEqual(len(hits), 0)
 
+    def testSegmentQuerySensor(self):
+        s = p.Space()
+        c = p.Circle(s.static_body, 10)
+        c.sensor = True
+        s.add(c)
+        hits = s.segment_query((-20,0), (20,0), 1, p.ShapeFilter())
+        self.assertEqual(len(hits), 1)
+
     def testSegmentQueryFirst(self):
         s = p.Space()
 
@@ -426,6 +471,14 @@ class UnitTestSpace(unittest.TestCase):
 
         hit = s.segment_query_first((-13, 50), (131,50), 0, p.ShapeFilter())
         self.assertEqual(hit, None)
+
+    def testSegmentQueryFirstSensor(self):
+        s = p.Space()
+        c = p.Circle(s.static_body, 10)
+        c.sensor = True
+        s.add(c)
+        hit = s.segment_query_first((-20,0), (20,0), 1, p.ShapeFilter())
+        self.assertIsNone(hit)
 
     def testStaticSegmentQueries(self):
         b = p.Body(body_type=p.Body.KINEMATIC)

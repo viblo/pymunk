@@ -114,7 +114,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x036A11F0&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -290,6 +290,10 @@ all collisions in <a class="reference internal" href="#pymunk.CollisionHandler.b
 <dd><p>Query space to find all shapes near bb.</p>
 <p>The filter is applied to the query and follows the same rules as the
 collision detection. Sensor shapes are included.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Sensor shapes are included in the result</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -443,6 +447,11 @@ is also allowed meaning that the point must be a under a certain
 depth within a shape to be considered a match.</p>
 <p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
 parameter can be used.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Sensor shapes are included in the result (In 
+<a class="reference internal" href="#pymunk.Space.point_query_nearest" title="pymunk.Space.point_query_nearest"><code class="xref py py-meth docutils literal"><span class="pre">Space.point_query_nearest()</span></code></a> they are not)</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -473,6 +482,11 @@ is also allowed meaning that the point must be a under a certain
 depth within a shape to be considered a match.</p>
 <p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
 parameter can be used.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Sensor shapes are not included in the result (In 
+<a class="reference internal" href="#pymunk.Space.point_query" title="pymunk.Space.point_query"><code class="xref py py-meth docutils literal"><span class="pre">Space.point_query()</span></code></a> they are)</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -532,9 +546,14 @@ body, remove the joints and shapes attached to it.</p>
 <dd><p>Query space along the line segment from start to end with the
 given radius.</p>
 <p>The filter is applied to the query and follows the same rules as the
-collision detection. Sensor shapes are included.</p>
+collision detection.</p>
 <p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
 parameter can be used.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Sensor shapes are included in the result (In 
+<a class="reference internal" href="#pymunk.Space.segment_query_first" title="pymunk.Space.segment_query_first"><code class="xref py py-meth docutils literal"><span class="pre">Space.segment_query_first()</span></code></a> they are not)</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -560,7 +579,12 @@ parameter can be used.</p>
 <dd><p>Query space along the line segment from start to end with the
 given radius.</p>
 <p>The filter is applied to the query and follows the same rules as the
-collision detection. Sensor shapes are included.</p>
+collision detection.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Sensor shapes are not included in the result (In 
+<a class="reference internal" href="#pymunk.Space.segment_query" title="pymunk.Space.segment_query"><code class="xref py py-meth docutils literal"><span class="pre">Space.segment_query()</span></code></a> they are)</p>
+</div>
 <p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
 parameter can be used.</p>
 <table class="docutils field-list" frame="void" rules="none">
