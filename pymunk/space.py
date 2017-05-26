@@ -526,10 +526,10 @@ class Space(PickleMixin, object):
         """Query space at point for shapes within the given distance range.
 
         The filter is applied to the query and follows the same rules as the
-        collision detection. Sensor shapes are included. If a maxDistance of
-        0.0 is used, the point must lie inside a shape. Negative max_distance
-        is also allowed meaning that the point must be a under a certain
-        depth within a shape to be considered a match.
+        collision detection. If a maxDistance of 0.0 is used, the point must 
+        lie inside a shape. Negative max_distance is also allowed meaning that 
+        the point must be a under a certain depth within a shape to be 
+        considered a match.
 
         See :py:class:`ShapeFilter` for details about how the shape_filter 
         parameter can be used.
@@ -584,10 +584,10 @@ class Space(PickleMixin, object):
         range.
 
         The filter is applied to the query and follows the same rules as the
-        collision detection. Sensor shapes are included. If a maxDistance of
-        0.0 is used, the point must lie inside a shape. Negative max_distance
-        is also allowed meaning that the point must be a under a certain
-        depth within a shape to be considered a match.
+        collision detection. If a maxDistance of 0.0 is used, the point must 
+        lie inside a shape. Negative max_distance is also allowed meaning that 
+        the point must be a under a certain depth within a shape to be 
+        considered a match.
 
         See :py:class:`ShapeFilter` for details about how the shape_filter 
         parameter can be used.
@@ -699,7 +699,7 @@ class Space(PickleMixin, object):
         """Query space to find all shapes near bb.
 
         The filter is applied to the query and follows the same rules as the
-        collision detection. Sensor shapes are included.
+        collision detection.
 
         .. Note::
             Sensor shapes are included in the result
@@ -724,6 +724,9 @@ class Space(PickleMixin, object):
 
     def shape_query(self, shape):
         """Query a space for any shapes overlapping the given shape
+
+        .. Note::
+            Sensor shapes are included in the result
 
         :param shape: Shape to query with
         :type shape: :py:class:`Circle`, :py:class:`Poly` or :py:class:`Segment`
