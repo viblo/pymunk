@@ -554,6 +554,21 @@ class Poly(Shape):
     def get_vertices(self):
         """Get the vertices in local coordinates for the polygon
 
+        If you need the vertices in world coordinates then the vertices can be 
+        transformed by adding the body position and each vertex rotated by the 
+        body rotation in the following way::
+
+            >>> import pymunk
+            >>> b = pymunk.Body()
+            >>> b.position = 1,2
+            >>> b.angle = 0.5
+            >>> shape = pymunk.Poly(b, [(0,0), (10,0), (10,10)])
+            >>> for v in shape.get_vertices():
+            ...     print(v.rotated(shape.body.angle) + shape.body.position)
+            Vec2d(1.0, 2.0)
+            Vec2d(9.7758256189, 6.79425538604)
+            Vec2d(4.98157023286, 15.5700810049)
+
         :return: The vertices in local coords
         :rtype: [:py:class:`Vec2d`]
         """
