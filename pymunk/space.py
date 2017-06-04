@@ -3,6 +3,7 @@ __docformat__ = "reStructuredText"
 import weakref
 from weakref import WeakSet
 import platform
+import copy
 
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
@@ -14,8 +15,9 @@ from .collision_handler import CollisionHandler
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shapes import Shape, Circle, Poly, Segment
 from .contact_point_set import ContactPointSet
-from pymunk.constraint import Constraint
 from ._pickle import PickleMixin
+from pymunk.constraint import Constraint
+
 
 class Space(PickleMixin, object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes
@@ -34,9 +36,9 @@ class Space(PickleMixin, object):
 
     Example::
 
-    >>> import pymunk, copy, pickle
+    >>> import pymunk, pickle
     >>> space = pymunk.Space()
-    >>> space2 = copy.deepcopy(space)
+    >>> space2 = space.copy()
     >>> space3 = pickle.loads(pickle.dumps(space))
     """
 
@@ -838,3 +840,7 @@ class Space(PickleMixin, object):
                         h.post_solve = hd['_post_solve_base'] 
                     if '_separate_base' in hd:
                         h.separate = hd['_separate_base'] 
+
+    def copy(self):
+        """Create a deep copy of this space."""
+        return copy.deepcopy(self)

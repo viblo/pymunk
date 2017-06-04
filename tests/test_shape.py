@@ -206,6 +206,8 @@ class UnitTestShape(unittest.TestCase):
 
         self.assertEqual(c.mass, c2.mass)
         self.assertEqual(c.density, c2.density)
+
+        c2 = c.copy()
         
 
 

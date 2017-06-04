@@ -89,6 +89,8 @@ class UnitTestConstraint(unittest.TestCase):
         self.assertEqual(j.a.custom, j2.a.custom)
         self.assertEqual(j.b.custom, j2.b.custom)
 
+        j2 = j.copy()
+
 class UnitTestPinJoint(unittest.TestCase):
     def testAnchor(self):
         a,b = p.Body(10,10), p.Body(20,20)

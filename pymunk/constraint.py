@@ -150,6 +150,11 @@ class Constraint(PickleMixin, object):
         self._b = b
         a._constraints.add(self)
         b._constraints.add(self)
+    
+    def copy(self):
+        """Create a deep copy of this constraint."""
+        return copy.deepcopy(self)
+
 
     
 class PinJoint(Constraint):

@@ -1,5 +1,7 @@
 __docformat__ = "reStructuredText"
 
+import copy
+
 from . import _chipmunk_cffi
 lib = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
@@ -115,3 +117,7 @@ class BB(PickleMixin, object):
         """
         return lib._cpBBWrapVect(self._bb[0], v)
     '''
+
+    def copy(self):
+        """Create a deep copy of this BB."""
+        return copy.deepcopy(self)

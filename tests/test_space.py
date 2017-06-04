@@ -729,6 +729,7 @@ class UnitTestSpace(unittest.TestCase):
     def testCopyMethods(self):
         self._testCopyMethod(lambda x: pickle.loads(pickle.dumps(x)))
         self._testCopyMethod(lambda x: copy.deepcopy(x))
+        self._testCopyMethod(lambda x: x.copy())
 
     def _testCopyMethod(self, copy_func):
         s = p.Space(threaded=True)

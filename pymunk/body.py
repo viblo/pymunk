@@ -1,6 +1,7 @@
 __docformat__ = "reStructuredText"
 
 from weakref import WeakSet
+import copy
     
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
@@ -21,10 +22,9 @@ class Body(PickleMixin, object):
       you are doing. Otherwise you're likely to get the position/velocity badly
       out of sync.
 
-    A Body can be copied and pickled with the standard library copy and pickle 
-    methods. Sleeping bodies that are copied will be awake in the fresh copy. 
-    When a Body is copied any spaces, shapes or constraints attached to the body
-    will not be copied.
+    A Body can be copied and pickled. Sleeping bodies that are copied will be 
+    awake in the fresh copy. When a Body is copied any spaces, shapes or 
+    constraints attached to the body will not be copied.
     """
 
     DYNAMIC = cp.CP_BODY_TYPE_DYNAMIC
@@ -504,3 +504,7 @@ class Body(PickleMixin, object):
                 self.velocity_func = v
             elif k == '_position_func' and v != None:
                 self.position_func = v
+    
+    def copy(self):
+        """Create a deep copy of this body."""
+        return copy.deepcopy(self)

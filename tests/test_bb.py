@@ -80,3 +80,5 @@ class UnitTestBB(unittest.TestCase):
         actual = pickle.loads(s)
 
         self.assertEqual(x, actual)
+
+        x2 = x.copy()

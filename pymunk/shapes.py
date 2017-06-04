@@ -1,5 +1,7 @@
 __docformat__ = "reStructuredText"
 
+import copy
+
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
@@ -290,6 +292,9 @@ class Shape(PickleMixin, object):
 
         return d
 
+    def copy(self):
+        """Create a deep copy of this shape."""
+        return copy.deepcopy(self)
 
 class Circle(Shape):
     """A circle shape defined by a radius

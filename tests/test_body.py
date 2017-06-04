@@ -296,6 +296,8 @@ class UnitTestBody(unittest.TestCase):
         self.assertTrue(b2.pf)
         self.assertTrue(b2.vf)
 
+        b2 = b.copy()
+
 # Needs to be here for the lowest pickle protocol to work    
 def pf(body, dt):
     body.pf = True
