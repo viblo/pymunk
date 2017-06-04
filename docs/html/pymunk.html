@@ -114,7 +114,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x036A11F0&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object at 0x036FF3B0&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -148,9 +148,9 @@ fresh copy.</p>
 the pickle protocol used there are some restrictions on what functions can 
 be copied/pickled.</p>
 <p>Example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span><span class="o">,</span> <span class="nn">copy</span><span class="o">,</span> <span class="nn">pickle</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span><span class="o">,</span> <span class="nn">pickle</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">space2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">space</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">space2</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">space3</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">space</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -289,7 +289,7 @@ all collisions in <a class="reference internal" href="#pymunk.CollisionHandler.b
 <code class="descname">bb_query</code><span class="sig-paren">(</span><em>bb</em>, <em>shape_filter</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/space.html#Space.bb_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.bb_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query space to find all shapes near bb.</p>
 <p>The filter is applied to the query and follows the same rules as the
-collision detection. Sensor shapes are included.</p>
+collision detection.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Sensor shapes are included in the result</p>
@@ -361,6 +361,12 @@ overlapping. It defaults to 0.1.</p>
 <dt id="pymunk.Space.constraints">
 <code class="descname">constraints</code><a class="headerlink" href="#pymunk.Space.constraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of the constraints added to this space</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.Space.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/space.html#Space.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this space.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -441,10 +447,10 @@ sufficient for most simple games.</p>
 <code class="descname">point_query</code><span class="sig-paren">(</span><em>point</em>, <em>max_distance</em>, <em>shape_filter</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/space.html#Space.point_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.point_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query space at point for shapes within the given distance range.</p>
 <p>The filter is applied to the query and follows the same rules as the
-collision detection. Sensor shapes are included. If a maxDistance of
-0.0 is used, the point must lie inside a shape. Negative max_distance
-is also allowed meaning that the point must be a under a certain
-depth within a shape to be considered a match.</p>
+collision detection. If a maxDistance of 0.0 is used, the point must 
+lie inside a shape. Negative max_distance is also allowed meaning that 
+the point must be a under a certain depth within a shape to be 
+considered a match.</p>
 <p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
 parameter can be used.</p>
 <div class="admonition note">
@@ -476,10 +482,10 @@ parameter can be used.</p>
 <dd><p>Query space at point the nearest shape within the given distance
 range.</p>
 <p>The filter is applied to the query and follows the same rules as the
-collision detection. Sensor shapes are included. If a maxDistance of
-0.0 is used, the point must lie inside a shape. Negative max_distance
-is also allowed meaning that the point must be a under a certain
-depth within a shape to be considered a match.</p>
+collision detection. If a maxDistance of 0.0 is used, the point must 
+lie inside a shape. Negative max_distance is also allowed meaning that 
+the point must be a under a certain depth within a shape to be 
+considered a match.</p>
 <p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
 parameter can be used.</p>
 <div class="admonition note">
@@ -601,6 +607,10 @@ parameter can be used.</p>
 <dt id="pymunk.Space.shape_query">
 <code class="descname">shape_query</code><span class="sig-paren">(</span><em>shape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/space.html#Space.shape_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.shape_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query a space for any shapes overlapping the given shape</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Sensor shapes are included in the result</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -694,10 +704,9 @@ Experiment freely, but be warned.</li>
 you are doing. Otherwise you&#8217;re likely to get the position/velocity badly
 out of sync.</li>
 </ul>
-<p>A Body can be copied and pickled with the standard library copy and pickle 
-methods. Sleeping bodies that are copied will be awake in the fresh copy. 
-When a Body is copied any spaces, shapes or constraints attached to the body
-will not be copied.</p>
+<p>A Body can be copied and pickled. Sleeping bodies that are copied will be 
+awake in the fresh copy. When a Body is copied any spaces, shapes or 
+constraints attached to the body will not be copied.</p>
 <dl class="attribute">
 <dt id="pymunk.Body.DYNAMIC">
 <code class="descname">DYNAMIC</code><a class="headerlink" href="#pymunk.Body.DYNAMIC" title="Permalink to this definition">¶</a></dt>
@@ -827,6 +836,12 @@ same as the position of the body.</p>
 <dd><p>Get the constraints this body is attached to.</p>
 <p>The body only keeps a weak reference to the constraints and a
 live body wont prevent GC of the attached constraints</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.Body.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/body.html#Body.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this body.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1100,6 +1115,12 @@ indicate that this shape doesnt belong to a body.</p>
 information on when to use this property.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pymunk.Shape.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Shape.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Shape.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this shape.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.Shape.density">
 <code class="descname">density</code><a class="headerlink" href="#pymunk.Shape.density" title="Permalink to this definition">¶</a></dt>
@@ -1367,6 +1388,12 @@ indicate that this shape doesnt belong to a body.</p>
 <dd><p>User defined collision type for the shape.</p>
 <p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
 information on when to use this property.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.Circle.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.Circle.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this shape.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1693,6 +1720,12 @@ indicate that this shape doesnt belong to a body.</p>
 information on when to use this property.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pymunk.Poly.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.Poly.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this shape.</p>
+</dd></dl>
+
 <dl class="staticmethod">
 <dt id="pymunk.Poly.create_box">
 <em class="property">static </em><code class="descname">create_box</code><span class="sig-paren">(</span><em>body</em>, <em>size=(10</em>, <em>10)</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Poly.create_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.create_box" title="Permalink to this definition">¶</a></dt>
@@ -1865,6 +1898,21 @@ it is what looks good that is important, not the exact value).</p>
 <dt id="pymunk.Poly.get_vertices">
 <code class="descname">get_vertices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Poly.get_vertices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.get_vertices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the vertices in local coordinates for the polygon</p>
+<p>If you need the vertices in world coordinates then the vertices can be 
+transformed by adding the body position and each vertex rotated by the 
+body rotation in the following way:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shape</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Poly</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">shape</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+<span class="go">Vec2d(1.0, 2.0)</span>
+<span class="go">Vec2d(9.7758256189, 6.79425538604)</span>
+<span class="go">Vec2d(4.98157023286, 15.5700810049)</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2089,6 +2137,12 @@ indicate that this shape doesnt belong to a body.</p>
 <dd><p>User defined collision type for the shape.</p>
 <p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
 information on when to use this property.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.Segment.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.Segment.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this shape.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2744,6 +2798,12 @@ left, bottom, right and top: bb = BB(left, bottom, right, top)</p>
 <dt id="pymunk.BB.contains_vect">
 <code class="descname">contains_vect</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/bb.html#BB.contains_vect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.BB.contains_vect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns true if this bb contains the vector v</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.BB.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/bb.html#BB.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.BB.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this BB.</p>
 </dd></dl>
 
 <dl class="method">

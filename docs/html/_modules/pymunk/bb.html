@@ -52,6 +52,8 @@
   <h1>Source code for pymunk.bb</h1><div class="highlight"><pre>
 <span></span><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
+<span class="kn">import</span> <span class="nn">copy</span>
+
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">lib</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>
@@ -166,7 +168,11 @@
 <span class="sd">        That is, BB(0,0,10,10).wrap_vect((5,5)) == Vec2d._fromcffi(10,10)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        return lib._cpBBWrapVect(self._bb[0], v)</span>
-<span class="sd">    &#39;&#39;&#39;</span></div>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="BB.copy"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a deep copy of this BB.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

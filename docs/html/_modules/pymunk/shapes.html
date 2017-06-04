@@ -52,6 +52,8 @@
   <h1>Source code for pymunk.shapes</h1><div class="highlight"><pre>
 <span></span><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
+<span class="kn">import</span> <span class="nn">copy</span>
+
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>
@@ -340,8 +342,11 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">d</span><span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">d</span></div>
+        <span class="k">return</span> <span class="n">d</span>
 
+<div class="viewcode-block" id="Shape.copy"><a class="viewcode-back" href="../../pymunk.html#pymunk.Shape.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a deep copy of this shape.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="Circle"><a class="viewcode-back" href="../../pymunk.html#pymunk.Circle">[docs]</a><span class="k">class</span> <span class="nc">Circle</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A circle shape defined by a radius</span>
@@ -605,6 +610,21 @@
 
 <div class="viewcode-block" id="Poly.get_vertices"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.get_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the vertices in local coordinates for the polygon</span>
+
+<span class="sd">        If you need the vertices in world coordinates then the vertices can be </span>
+<span class="sd">        transformed by adding the body position and each vertex rotated by the </span>
+<span class="sd">        body rotation in the following way::</span>
+
+<span class="sd">            &gt;&gt;&gt; import pymunk</span>
+<span class="sd">            &gt;&gt;&gt; b = pymunk.Body()</span>
+<span class="sd">            &gt;&gt;&gt; b.position = 1,2</span>
+<span class="sd">            &gt;&gt;&gt; b.angle = 0.5</span>
+<span class="sd">            &gt;&gt;&gt; shape = pymunk.Poly(b, [(0,0), (10,0), (10,10)])</span>
+<span class="sd">            &gt;&gt;&gt; for v in shape.get_vertices():</span>
+<span class="sd">            ...     print(v.rotated(shape.body.angle) + shape.body.position)</span>
+<span class="sd">            Vec2d(1.0, 2.0)</span>
+<span class="sd">            Vec2d(9.7758256189, 6.79425538604)</span>
+<span class="sd">            Vec2d(4.98157023286, 15.5700810049)</span>
 
 <span class="sd">        :return: The vertices in local coords</span>
 <span class="sd">        :rtype: [:py:class:`Vec2d`]</span>

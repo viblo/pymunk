@@ -55,6 +55,7 @@
 <span class="kn">import</span> <span class="nn">weakref</span>
 <span class="kn">from</span> <span class="nn">weakref</span> <span class="k">import</span> <span class="n">WeakSet</span>
 <span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">copy</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
@@ -66,8 +67,9 @@
 <span class="kn">from</span> <span class="nn">.query_info</span> <span class="k">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span><span class="p">,</span> <span class="n">ShapeQueryInfo</span>
 <span class="kn">from</span> <span class="nn">.shapes</span> <span class="k">import</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Poly</span><span class="p">,</span> <span class="n">Segment</span>
 <span class="kn">from</span> <span class="nn">.contact_point_set</span> <span class="k">import</span> <span class="n">ContactPointSet</span>
-<span class="kn">from</span> <span class="nn">pymunk.constraint</span> <span class="k">import</span> <span class="n">Constraint</span>
 <span class="kn">from</span> <span class="nn">._pickle</span> <span class="k">import</span> <span class="n">PickleMixin</span>
+<span class="kn">from</span> <span class="nn">pymunk.constraint</span> <span class="k">import</span> <span class="n">Constraint</span>
+
 
 <div class="viewcode-block" id="Space"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space">[docs]</a><span class="k">class</span> <span class="nc">Space</span><span class="p">(</span><span class="n">PickleMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Spaces are the basic unit of simulation. You add rigid bodies, shapes</span>
@@ -86,9 +88,9 @@
 
 <span class="sd">    Example::</span>
 
-<span class="sd">    &gt;&gt;&gt; import pymunk, copy, pickle</span>
+<span class="sd">    &gt;&gt;&gt; import pymunk, pickle</span>
 <span class="sd">    &gt;&gt;&gt; space = pymunk.Space()</span>
-<span class="sd">    &gt;&gt;&gt; space2 = copy.deepcopy(space)</span>
+<span class="sd">    &gt;&gt;&gt; space2 = space.copy()</span>
 <span class="sd">    &gt;&gt;&gt; space3 = pickle.loads(pickle.dumps(space))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -578,10 +580,10 @@
         <span class="sd">&quot;&quot;&quot;Query space at point for shapes within the given distance range.</span>
 
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
-<span class="sd">        collision detection. Sensor shapes are included. If a maxDistance of</span>
-<span class="sd">        0.0 is used, the point must lie inside a shape. Negative max_distance</span>
-<span class="sd">        is also allowed meaning that the point must be a under a certain</span>
-<span class="sd">        depth within a shape to be considered a match.</span>
+<span class="sd">        collision detection. If a maxDistance of 0.0 is used, the point must </span>
+<span class="sd">        lie inside a shape. Negative max_distance is also allowed meaning that </span>
+<span class="sd">        the point must be a under a certain depth within a shape to be </span>
+<span class="sd">        considered a match.</span>
 
 <span class="sd">        See :py:class:`ShapeFilter` for details about how the shape_filter </span>
 <span class="sd">        parameter can be used.</span>
@@ -636,10 +638,10 @@
 <span class="sd">        range.</span>
 
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
-<span class="sd">        collision detection. Sensor shapes are included. If a maxDistance of</span>
-<span class="sd">        0.0 is used, the point must lie inside a shape. Negative max_distance</span>
-<span class="sd">        is also allowed meaning that the point must be a under a certain</span>
-<span class="sd">        depth within a shape to be considered a match.</span>
+<span class="sd">        collision detection. If a maxDistance of 0.0 is used, the point must </span>
+<span class="sd">        lie inside a shape. Negative max_distance is also allowed meaning that </span>
+<span class="sd">        the point must be a under a certain depth within a shape to be </span>
+<span class="sd">        considered a match.</span>
 
 <span class="sd">        See :py:class:`ShapeFilter` for details about how the shape_filter </span>
 <span class="sd">        parameter can be used.</span>
@@ -751,7 +753,7 @@
         <span class="sd">&quot;&quot;&quot;Query space to find all shapes near bb.</span>
 
 <span class="sd">        The filter is applied to the query and follows the same rules as the</span>
-<span class="sd">        collision detection. Sensor shapes are included.</span>
+<span class="sd">        collision detection.</span>
 
 <span class="sd">        .. Note::</span>
 <span class="sd">            Sensor shapes are included in the result</span>
@@ -776,6 +778,9 @@
 
 <div class="viewcode-block" id="Space.shape_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.shape_query">[docs]</a>    <span class="k">def</span> <span class="nf">shape_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query a space for any shapes overlapping the given shape</span>
+
+<span class="sd">        .. Note::</span>
+<span class="sd">            Sensor shapes are included in the result</span>
 
 <span class="sd">        :param shape: Shape to query with</span>
 <span class="sd">        :type shape: :py:class:`Circle`, :py:class:`Poly` or :py:class:`Segment`</span>
@@ -886,7 +891,11 @@
                     <span class="k">if</span> <span class="s1">&#39;_post_solve_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
                         <span class="n">h</span><span class="o">.</span><span class="n">post_solve</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_post_solve_base&#39;</span><span class="p">]</span> 
                     <span class="k">if</span> <span class="s1">&#39;_separate_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
-                        <span class="n">h</span><span class="o">.</span><span class="n">separate</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_separate_base&#39;</span><span class="p">]</span> </div>
+                        <span class="n">h</span><span class="o">.</span><span class="n">separate</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_separate_base&#39;</span><span class="p">]</span> 
+
+<div class="viewcode-block" id="Space.copy"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a deep copy of this space.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

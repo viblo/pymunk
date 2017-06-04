@@ -105,6 +105,14 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Constraint&quot;</span><span class="p">,</span> <span class="s2">&quot;PinJoint&quot;</span><span class="p">,</span> <span class="s2">&quot;SlideJoint&quot;</span><span class="p">,</span> <span class="s2">&quot;PivotJoint&quot;</span><span class="p">,</span> <span class="s2">&quot;GrooveJoint&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DampedSpring&quot;</span><span class="p">,</span> <span class="s2">&quot;DampedRotarySpring&quot;</span><span class="p">,</span> <span class="s2">&quot;RotaryLimitJoint&quot;</span><span class="p">,</span> <span class="s2">&quot;RatchetJoint&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GearJoint&quot;</span><span class="p">,</span> <span class="s2">&quot;SimpleMotor&quot;</span>
+    <span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+
 <span class="kn">from</span> <span class="nn">.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
 <span class="kn">from</span> <span class="nn">._pickle</span> <span class="k">import</span> <span class="n">PickleMixin</span>
 
@@ -201,7 +209,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_a</span> <span class="o">=</span> <span class="n">a</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_b</span> <span class="o">=</span> <span class="n">b</span>
         <span class="n">a</span><span class="o">.</span><span class="n">_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">b</span><span class="o">.</span><span class="n">_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">b</span><span class="o">.</span><span class="n">_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="Constraint.copy"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a deep copy of this constraint.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+
 
     
 <div class="viewcode-block" id="PinJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PinJoint">[docs]</a><span class="k">class</span> <span class="nc">PinJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>

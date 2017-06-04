@@ -53,6 +53,7 @@
 <span></span><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
 <span class="kn">from</span> <span class="nn">weakref</span> <span class="k">import</span> <span class="n">WeakSet</span>
+<span class="kn">import</span> <span class="nn">copy</span>
     
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
@@ -73,10 +74,9 @@
 <span class="sd">      you are doing. Otherwise you&#39;re likely to get the position/velocity badly</span>
 <span class="sd">      out of sync.</span>
 
-<span class="sd">    A Body can be copied and pickled with the standard library copy and pickle </span>
-<span class="sd">    methods. Sleeping bodies that are copied will be awake in the fresh copy. </span>
-<span class="sd">    When a Body is copied any spaces, shapes or constraints attached to the body</span>
-<span class="sd">    will not be copied.</span>
+<span class="sd">    A Body can be copied and pickled. Sleeping bodies that are copied will be </span>
+<span class="sd">    awake in the fresh copy. When a Body is copied any spaces, shapes or </span>
+<span class="sd">    constraints attached to the body will not be copied.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">DYNAMIC</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">CP_BODY_TYPE_DYNAMIC</span>
@@ -555,7 +555,11 @@
             <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;_velocity_func&#39;</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">velocity_func</span> <span class="o">=</span> <span class="n">v</span>
             <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;_position_func&#39;</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">position_func</span> <span class="o">=</span> <span class="n">v</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">position_func</span> <span class="o">=</span> <span class="n">v</span>
+    
+<div class="viewcode-block" id="Body.copy"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a deep copy of this body.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

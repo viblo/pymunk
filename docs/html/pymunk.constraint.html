@@ -120,6 +120,12 @@ Defaults to True. This can be used to create a chain that self
 collides, but adjacent links in the chain do not collide.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pymunk.constraint.Constraint.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#Constraint.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.Constraint.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.Constraint.error_bias">
 <code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.Constraint.error_bias" title="Permalink to this definition">¶</a></dt>
@@ -152,428 +158,6 @@ correction.</p>
 <dl class="attribute">
 <dt id="pymunk.constraint.Constraint.max_force">
 <code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.Constraint.max_force" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum force that the constraint can use to act on the two
-bodies.</p>
-<p>Defaults to infinity</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pymunk.constraint.DampedRotarySpring">
-<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">DampedRotarySpring</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>rest_angle</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedRotarySpring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
-<p>Like a damped spring, but works in an angular fashion</p>
-<dl class="method">
-<dt id="pymunk.constraint.DampedRotarySpring.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>rest_angle</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedRotarySpring.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Like a damped spring, but works in an angular fashion.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body a</li>
-<li><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body b</li>
-<li><strong>rest_angle</strong> (<em>float</em>) &#8211; The relative angle in radians that the bodies 
-want to have</li>
-<li><strong>stiffness</strong> (<em>float</em>) &#8211; The spring constant (Young&#8217;s modulus).</li>
-<li><strong>damping</strong> (<em>float</em>) &#8211; How soft to make the damping of the spring.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedRotarySpring.a">
-<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.a" title="Permalink to this definition">¶</a></dt>
-<dd><p>The first of the two bodies constrained</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymunk.constraint.DampedRotarySpring.activate_bodies">
-<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.activate_bodies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Activate the bodies this constraint is attached to</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedRotarySpring.b">
-<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.b" title="Permalink to this definition">¶</a></dt>
-<dd><p>The second of the two bodies constrained</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedRotarySpring.collide_bodies">
-<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.collide_bodies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constraints can be used for filtering collisions too.</p>
-<p>When two bodies collide, Pymunk ignores the collisions if this property
-is set to False on any constraint that connects the two bodies.
-Defaults to True. This can be used to create a chain that self
-collides, but adjacent links in the chain do not collide.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedRotarySpring.damping">
-<code class="descname">damping</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.damping" title="Permalink to this definition">¶</a></dt>
-<dd><p>How soft to make the damping of the spring.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedRotarySpring.error_bias">
-<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.error_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>The percentage of joint error that remains unfixed after a
-second.</p>
-<p>This works exactly the same as the collision bias property of a space,
-but applies to fixing error (stretching) of joints instead of
-overlapping collisions.</p>
-<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
-the error every 1/60th of a second.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedRotarySpring.impulse">
-<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.impulse" title="Permalink to this definition">¶</a></dt>
-<dd><p>The most recent impulse that constraint applied.</p>
-<p>To convert this to a force, divide by the timestep passed to
-space.step(). You can use this to implement breakable joints to check
-if the force they attempted to apply exceeded a certain threshold.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedRotarySpring.max_bias">
-<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.max_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum speed at which the constraint can apply error
-correction.</p>
-<p>Defaults to infinity</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedRotarySpring.max_force">
-<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.max_force" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum force that the constraint can use to act on the two
-bodies.</p>
-<p>Defaults to infinity</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedRotarySpring.rest_angle">
-<code class="descname">rest_angle</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.rest_angle" title="Permalink to this definition">¶</a></dt>
-<dd><p>The relative angle in radians that the bodies want to have</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedRotarySpring.stiffness">
-<code class="descname">stiffness</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.stiffness" title="Permalink to this definition">¶</a></dt>
-<dd><p>The spring constant (Young&#8217;s modulus).</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pymunk.constraint.DampedSpring">
-<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">DampedSpring</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>rest_length</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedSpring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedSpring" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
-<p>A damped spring</p>
-<dl class="method">
-<dt id="pymunk.constraint.DampedSpring.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>rest_length</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedSpring.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedSpring.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Defined much like a slide joint.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body a</li>
-<li><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body b</li>
-<li><strong>anchor_a</strong> (<cite>(float,float)</cite>) &#8211; Anchor point a, relative to body a</li>
-<li><strong>anchor_b</strong> (<cite>(float,float)</cite>) &#8211; Anchor point b, relative to body b</li>
-<li><strong>rest_length</strong> (<em>float</em>) &#8211; The distance the spring wants to be.</li>
-<li><strong>stiffness</strong> (<em>float</em>) &#8211; The spring constant (Young&#8217;s modulus).</li>
-<li><strong>damping</strong> (<em>float</em>) &#8211; How soft to make the damping of the spring.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.a">
-<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.a" title="Permalink to this definition">¶</a></dt>
-<dd><p>The first of the two bodies constrained</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymunk.constraint.DampedSpring.activate_bodies">
-<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.DampedSpring.activate_bodies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Activate the bodies this constraint is attached to</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.anchor_a">
-<code class="descname">anchor_a</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.anchor_a" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.anchor_b">
-<code class="descname">anchor_b</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.anchor_b" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.b">
-<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.b" title="Permalink to this definition">¶</a></dt>
-<dd><p>The second of the two bodies constrained</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.collide_bodies">
-<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.collide_bodies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constraints can be used for filtering collisions too.</p>
-<p>When two bodies collide, Pymunk ignores the collisions if this property
-is set to False on any constraint that connects the two bodies.
-Defaults to True. This can be used to create a chain that self
-collides, but adjacent links in the chain do not collide.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.damping">
-<code class="descname">damping</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.damping" title="Permalink to this definition">¶</a></dt>
-<dd><p>How soft to make the damping of the spring.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.error_bias">
-<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.error_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>The percentage of joint error that remains unfixed after a
-second.</p>
-<p>This works exactly the same as the collision bias property of a space,
-but applies to fixing error (stretching) of joints instead of
-overlapping collisions.</p>
-<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
-the error every 1/60th of a second.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.impulse">
-<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.impulse" title="Permalink to this definition">¶</a></dt>
-<dd><p>The most recent impulse that constraint applied.</p>
-<p>To convert this to a force, divide by the timestep passed to
-space.step(). You can use this to implement breakable joints to check
-if the force they attempted to apply exceeded a certain threshold.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.max_bias">
-<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.max_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum speed at which the constraint can apply error
-correction.</p>
-<p>Defaults to infinity</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.max_force">
-<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.max_force" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum force that the constraint can use to act on the two
-bodies.</p>
-<p>Defaults to infinity</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.rest_length">
-<code class="descname">rest_length</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.rest_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>The distance the spring wants to be.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.DampedSpring.stiffness">
-<code class="descname">stiffness</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.stiffness" title="Permalink to this definition">¶</a></dt>
-<dd><p>The spring constant (Young&#8217;s modulus).</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pymunk.constraint.GearJoint">
-<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">GearJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#GearJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GearJoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
-<p>Keeps the angular velocity ratio of a pair of bodies constant.</p>
-<dl class="method">
-<dt id="pymunk.constraint.GearJoint.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#GearJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GearJoint.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Keeps the angular velocity ratio of a pair of bodies constant.</p>
-<p>ratio is always measured in absolute terms. It is currently not
-possible to set the ratio in relation to a third body&#8217;s angular
-velocity. phase is the initial angular offset of the two bodies.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GearJoint.a">
-<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.GearJoint.a" title="Permalink to this definition">¶</a></dt>
-<dd><p>The first of the two bodies constrained</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymunk.constraint.GearJoint.activate_bodies">
-<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.GearJoint.activate_bodies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Activate the bodies this constraint is attached to</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GearJoint.b">
-<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.GearJoint.b" title="Permalink to this definition">¶</a></dt>
-<dd><p>The second of the two bodies constrained</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GearJoint.collide_bodies">
-<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.GearJoint.collide_bodies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constraints can be used for filtering collisions too.</p>
-<p>When two bodies collide, Pymunk ignores the collisions if this property
-is set to False on any constraint that connects the two bodies.
-Defaults to True. This can be used to create a chain that self
-collides, but adjacent links in the chain do not collide.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GearJoint.error_bias">
-<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.GearJoint.error_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>The percentage of joint error that remains unfixed after a
-second.</p>
-<p>This works exactly the same as the collision bias property of a space,
-but applies to fixing error (stretching) of joints instead of
-overlapping collisions.</p>
-<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
-the error every 1/60th of a second.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GearJoint.impulse">
-<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.GearJoint.impulse" title="Permalink to this definition">¶</a></dt>
-<dd><p>The most recent impulse that constraint applied.</p>
-<p>To convert this to a force, divide by the timestep passed to
-space.step(). You can use this to implement breakable joints to check
-if the force they attempted to apply exceeded a certain threshold.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GearJoint.max_bias">
-<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.GearJoint.max_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum speed at which the constraint can apply error
-correction.</p>
-<p>Defaults to infinity</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GearJoint.max_force">
-<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.GearJoint.max_force" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum force that the constraint can use to act on the two
-bodies.</p>
-<p>Defaults to infinity</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GearJoint.phase">
-<code class="descname">phase</code><a class="headerlink" href="#pymunk.constraint.GearJoint.phase" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GearJoint.ratio">
-<code class="descname">ratio</code><a class="headerlink" href="#pymunk.constraint.GearJoint.ratio" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pymunk.constraint.GrooveJoint">
-<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">GrooveJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>groove_a</em>, <em>groove_b</em>, <em>anchor_b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#GrooveJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GrooveJoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
-<p>Similar to a pivot joint, but one of the anchors is
-on a linear slide instead of being fixed.</p>
-<dl class="method">
-<dt id="pymunk.constraint.GrooveJoint.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>groove_a</em>, <em>groove_b</em>, <em>anchor_b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#GrooveJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GrooveJoint.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>The groove goes from groove_a to groove_b on body a, and the pivot
-is attached to anchor_b on body b.</p>
-<p>All coordinates are body local.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GrooveJoint.a">
-<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.a" title="Permalink to this definition">¶</a></dt>
-<dd><p>The first of the two bodies constrained</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymunk.constraint.GrooveJoint.activate_bodies">
-<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.GrooveJoint.activate_bodies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Activate the bodies this constraint is attached to</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GrooveJoint.anchor_b">
-<code class="descname">anchor_b</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.anchor_b" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GrooveJoint.b">
-<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.b" title="Permalink to this definition">¶</a></dt>
-<dd><p>The second of the two bodies constrained</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GrooveJoint.collide_bodies">
-<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.collide_bodies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constraints can be used for filtering collisions too.</p>
-<p>When two bodies collide, Pymunk ignores the collisions if this property
-is set to False on any constraint that connects the two bodies.
-Defaults to True. This can be used to create a chain that self
-collides, but adjacent links in the chain do not collide.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GrooveJoint.error_bias">
-<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.error_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>The percentage of joint error that remains unfixed after a
-second.</p>
-<p>This works exactly the same as the collision bias property of a space,
-but applies to fixing error (stretching) of joints instead of
-overlapping collisions.</p>
-<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
-the error every 1/60th of a second.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GrooveJoint.groove_a">
-<code class="descname">groove_a</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.groove_a" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GrooveJoint.groove_b">
-<code class="descname">groove_b</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.groove_b" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GrooveJoint.impulse">
-<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.impulse" title="Permalink to this definition">¶</a></dt>
-<dd><p>The most recent impulse that constraint applied.</p>
-<p>To convert this to a force, divide by the timestep passed to
-space.step(). You can use this to implement breakable joints to check
-if the force they attempted to apply exceeded a certain threshold.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GrooveJoint.max_bias">
-<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.max_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum speed at which the constraint can apply error
-correction.</p>
-<p>Defaults to infinity</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.GrooveJoint.max_force">
-<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.max_force" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximum force that the constraint can use to act on the two
 bodies.</p>
 <p>Defaults to infinity</p>
@@ -634,6 +218,12 @@ Defaults to True. This can be used to create a chain that self
 collides, but adjacent links in the chain do not collide.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pymunk.constraint.PinJoint.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.PinJoint.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.PinJoint.distance">
 <code class="descname">distance</code><a class="headerlink" href="#pymunk.constraint.PinJoint.distance" title="Permalink to this definition">¶</a></dt>
@@ -675,6 +265,114 @@ correction.</p>
 bodies.</p>
 <p>Defaults to infinity</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymunk.constraint.SlideJoint">
+<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">SlideJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>min</em>, <em>max</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#SlideJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.SlideJoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<p>Like pin joints, but have a minimum and maximum distance.
+A chain could be modeled using this joint. It keeps the anchor points
+from getting to far apart, but will allow them to get closer together.</p>
+<dl class="method">
+<dt id="pymunk.constraint.SlideJoint.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>min</em>, <em>max</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#SlideJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.SlideJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>a and b are the two bodies to connect, anchor_a and anchor_b are the
+anchor points on those bodies, and min and max define the allowed
+distances of the anchor points.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.a">
+<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.a" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first of the two bodies constrained</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.SlideJoint.activate_bodies">
+<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.SlideJoint.activate_bodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the bodies this constraint is attached to</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.anchor_a">
+<code class="descname">anchor_a</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.anchor_a" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.anchor_b">
+<code class="descname">anchor_b</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.anchor_b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.b">
+<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second of the two bodies constrained</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.collide_bodies">
+<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.collide_bodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constraints can be used for filtering collisions too.</p>
+<p>When two bodies collide, Pymunk ignores the collisions if this property
+is set to False on any constraint that connects the two bodies.
+Defaults to True. This can be used to create a chain that self
+collides, but adjacent links in the chain do not collide.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.SlideJoint.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.SlideJoint.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.error_bias">
+<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.error_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The percentage of joint error that remains unfixed after a
+second.</p>
+<p>This works exactly the same as the collision bias property of a space,
+but applies to fixing error (stretching) of joints instead of
+overlapping collisions.</p>
+<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
+the error every 1/60th of a second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.impulse">
+<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>The most recent impulse that constraint applied.</p>
+<p>To convert this to a force, divide by the timestep passed to
+space.step(). You can use this to implement breakable joints to check
+if the force they attempted to apply exceeded a certain threshold.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.max">
+<code class="descname">max</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.max" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.max_bias">
+<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.max_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum speed at which the constraint can apply error
+correction.</p>
+<p>Defaults to infinity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.max_force">
+<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.max_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum force that the constraint can use to act on the two
+bodies.</p>
+<p>Defaults to infinity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.SlideJoint.min">
+<code class="descname">min</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.min" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -748,6 +446,12 @@ Defaults to True. This can be used to create a chain that self
 collides, but adjacent links in the chain do not collide.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pymunk.constraint.PivotJoint.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.PivotJoint.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pymunk.constraint.PivotJoint.error_bias">
 <code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.PivotJoint.error_bias" title="Permalink to this definition">¶</a></dt>
@@ -788,44 +492,45 @@ bodies.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="pymunk.constraint.RatchetJoint">
-<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">RatchetJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratchet</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#RatchetJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.RatchetJoint" title="Permalink to this definition">¶</a></dt>
+<dt id="pymunk.constraint.GrooveJoint">
+<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">GrooveJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>groove_a</em>, <em>groove_b</em>, <em>anchor_b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#GrooveJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GrooveJoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
-<p>Works like a socket wrench.</p>
+<p>Similar to a pivot joint, but one of the anchors is
+on a linear slide instead of being fixed.</p>
 <dl class="method">
-<dt id="pymunk.constraint.RatchetJoint.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratchet</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#RatchetJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.RatchetJoint.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Works like a socket wrench.</p>
-<p>ratchet is the distance between &#8220;clicks&#8221;, phase is the initial offset
-to use when deciding where the ratchet angles are.</p>
+<dt id="pymunk.constraint.GrooveJoint.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>groove_a</em>, <em>groove_b</em>, <em>anchor_b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#GrooveJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GrooveJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>The groove goes from groove_a to groove_b on body a, and the pivot
+is attached to anchor_b on body b.</p>
+<p>All coordinates are body local.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.constraint.RatchetJoint.a">
-<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.a" title="Permalink to this definition">¶</a></dt>
+<dt id="pymunk.constraint.GrooveJoint.a">
+<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.a" title="Permalink to this definition">¶</a></dt>
 <dd><p>The first of the two bodies constrained</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pymunk.constraint.RatchetJoint.activate_bodies">
-<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.RatchetJoint.activate_bodies" title="Permalink to this definition">¶</a></dt>
+<dt id="pymunk.constraint.GrooveJoint.activate_bodies">
+<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.GrooveJoint.activate_bodies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate the bodies this constraint is attached to</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.constraint.RatchetJoint.angle">
-<code class="descname">angle</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.angle" title="Permalink to this definition">¶</a></dt>
+<dt id="pymunk.constraint.GrooveJoint.anchor_b">
+<code class="descname">anchor_b</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.anchor_b" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.constraint.RatchetJoint.b">
-<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.b" title="Permalink to this definition">¶</a></dt>
+<dt id="pymunk.constraint.GrooveJoint.b">
+<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.b" title="Permalink to this definition">¶</a></dt>
 <dd><p>The second of the two bodies constrained</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.constraint.RatchetJoint.collide_bodies">
-<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.collide_bodies" title="Permalink to this definition">¶</a></dt>
+<dt id="pymunk.constraint.GrooveJoint.collide_bodies">
+<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.collide_bodies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constraints can be used for filtering collisions too.</p>
 <p>When two bodies collide, Pymunk ignores the collisions if this property
 is set to False on any constraint that connects the two bodies.
@@ -833,9 +538,15 @@ Defaults to True. This can be used to create a chain that self
 collides, but adjacent links in the chain do not collide.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pymunk.constraint.GrooveJoint.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.GrooveJoint.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
+</dd></dl>
+
 <dl class="attribute">
-<dt id="pymunk.constraint.RatchetJoint.error_bias">
-<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.error_bias" title="Permalink to this definition">¶</a></dt>
+<dt id="pymunk.constraint.GrooveJoint.error_bias">
+<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.error_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>The percentage of joint error that remains unfixed after a
 second.</p>
 <p>This works exactly the same as the collision bias property of a space,
@@ -846,8 +557,18 @@ the error every 1/60th of a second.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.constraint.RatchetJoint.impulse">
-<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.impulse" title="Permalink to this definition">¶</a></dt>
+<dt id="pymunk.constraint.GrooveJoint.groove_a">
+<code class="descname">groove_a</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.groove_a" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GrooveJoint.groove_b">
+<code class="descname">groove_b</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.groove_b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GrooveJoint.impulse">
+<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.impulse" title="Permalink to this definition">¶</a></dt>
 <dd><p>The most recent impulse that constraint applied.</p>
 <p>To convert this to a force, divide by the timestep passed to
 space.step(). You can use this to implement breakable joints to check
@@ -855,30 +576,267 @@ if the force they attempted to apply exceeded a certain threshold.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.constraint.RatchetJoint.max_bias">
-<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.max_bias" title="Permalink to this definition">¶</a></dt>
+<dt id="pymunk.constraint.GrooveJoint.max_bias">
+<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.max_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximum speed at which the constraint can apply error
 correction.</p>
 <p>Defaults to infinity</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.constraint.RatchetJoint.max_force">
-<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.max_force" title="Permalink to this definition">¶</a></dt>
+<dt id="pymunk.constraint.GrooveJoint.max_force">
+<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.GrooveJoint.max_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum force that the constraint can use to act on the two
+bodies.</p>
+<p>Defaults to infinity</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymunk.constraint.DampedSpring">
+<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">DampedSpring</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>rest_length</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedSpring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedSpring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<p>A damped spring</p>
+<dl class="method">
+<dt id="pymunk.constraint.DampedSpring.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>rest_length</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedSpring.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedSpring.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defined much like a slide joint.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body a</li>
+<li><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body b</li>
+<li><strong>anchor_a</strong> (<cite>(float,float)</cite>) &#8211; Anchor point a, relative to body a</li>
+<li><strong>anchor_b</strong> (<cite>(float,float)</cite>) &#8211; Anchor point b, relative to body b</li>
+<li><strong>rest_length</strong> (<em>float</em>) &#8211; The distance the spring wants to be.</li>
+<li><strong>stiffness</strong> (<em>float</em>) &#8211; The spring constant (Young&#8217;s modulus).</li>
+<li><strong>damping</strong> (<em>float</em>) &#8211; How soft to make the damping of the spring.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedSpring.a">
+<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.a" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first of the two bodies constrained</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.DampedSpring.activate_bodies">
+<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.DampedSpring.activate_bodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the bodies this constraint is attached to</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedSpring.anchor_a">
+<code class="descname">anchor_a</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.anchor_a" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedSpring.anchor_b">
+<code class="descname">anchor_b</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.anchor_b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedSpring.b">
+<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second of the two bodies constrained</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedSpring.collide_bodies">
+<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.collide_bodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constraints can be used for filtering collisions too.</p>
+<p>When two bodies collide, Pymunk ignores the collisions if this property
+is set to False on any constraint that connects the two bodies.
+Defaults to True. This can be used to create a chain that self
+collides, but adjacent links in the chain do not collide.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.DampedSpring.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.DampedSpring.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedSpring.damping">
+<code class="descname">damping</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.damping" title="Permalink to this definition">¶</a></dt>
+<dd><p>How soft to make the damping of the spring.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedSpring.error_bias">
+<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.error_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The percentage of joint error that remains unfixed after a
+second.</p>
+<p>This works exactly the same as the collision bias property of a space,
+but applies to fixing error (stretching) of joints instead of
+overlapping collisions.</p>
+<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
+the error every 1/60th of a second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedSpring.impulse">
+<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>The most recent impulse that constraint applied.</p>
+<p>To convert this to a force, divide by the timestep passed to
+space.step(). You can use this to implement breakable joints to check
+if the force they attempted to apply exceeded a certain threshold.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedSpring.max_bias">
+<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.max_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum speed at which the constraint can apply error
+correction.</p>
+<p>Defaults to infinity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedSpring.max_force">
+<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.max_force" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximum force that the constraint can use to act on the two
 bodies.</p>
 <p>Defaults to infinity</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.constraint.RatchetJoint.phase">
-<code class="descname">phase</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.phase" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pymunk.constraint.DampedSpring.rest_length">
+<code class="descname">rest_length</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.rest_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>The distance the spring wants to be.</p>
+</dd></dl>
 
 <dl class="attribute">
-<dt id="pymunk.constraint.RatchetJoint.ratchet">
-<code class="descname">ratchet</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.ratchet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pymunk.constraint.DampedSpring.stiffness">
+<code class="descname">stiffness</code><a class="headerlink" href="#pymunk.constraint.DampedSpring.stiffness" title="Permalink to this definition">¶</a></dt>
+<dd><p>The spring constant (Young&#8217;s modulus).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymunk.constraint.DampedRotarySpring">
+<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">DampedRotarySpring</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>rest_angle</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedRotarySpring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<p>Like a damped spring, but works in an angular fashion</p>
+<dl class="method">
+<dt id="pymunk.constraint.DampedRotarySpring.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>rest_angle</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedRotarySpring.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like a damped spring, but works in an angular fashion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body a</li>
+<li><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) &#8211; Body b</li>
+<li><strong>rest_angle</strong> (<em>float</em>) &#8211; The relative angle in radians that the bodies 
+want to have</li>
+<li><strong>stiffness</strong> (<em>float</em>) &#8211; The spring constant (Young&#8217;s modulus).</li>
+<li><strong>damping</strong> (<em>float</em>) &#8211; How soft to make the damping of the spring.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedRotarySpring.a">
+<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.a" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first of the two bodies constrained</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.DampedRotarySpring.activate_bodies">
+<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.activate_bodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the bodies this constraint is attached to</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedRotarySpring.b">
+<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second of the two bodies constrained</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedRotarySpring.collide_bodies">
+<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.collide_bodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constraints can be used for filtering collisions too.</p>
+<p>When two bodies collide, Pymunk ignores the collisions if this property
+is set to False on any constraint that connects the two bodies.
+Defaults to True. This can be used to create a chain that self
+collides, but adjacent links in the chain do not collide.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.DampedRotarySpring.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedRotarySpring.damping">
+<code class="descname">damping</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.damping" title="Permalink to this definition">¶</a></dt>
+<dd><p>How soft to make the damping of the spring.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedRotarySpring.error_bias">
+<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.error_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The percentage of joint error that remains unfixed after a
+second.</p>
+<p>This works exactly the same as the collision bias property of a space,
+but applies to fixing error (stretching) of joints instead of
+overlapping collisions.</p>
+<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
+the error every 1/60th of a second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedRotarySpring.impulse">
+<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>The most recent impulse that constraint applied.</p>
+<p>To convert this to a force, divide by the timestep passed to
+space.step(). You can use this to implement breakable joints to check
+if the force they attempted to apply exceeded a certain threshold.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedRotarySpring.max_bias">
+<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.max_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum speed at which the constraint can apply error
+correction.</p>
+<p>Defaults to infinity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedRotarySpring.max_force">
+<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.max_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum force that the constraint can use to act on the two
+bodies.</p>
+<p>Defaults to infinity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedRotarySpring.rest_angle">
+<code class="descname">rest_angle</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.rest_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>The relative angle in radians that the bodies want to have</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.DampedRotarySpring.stiffness">
+<code class="descname">stiffness</code><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.stiffness" title="Permalink to this definition">¶</a></dt>
+<dd><p>The spring constant (Young&#8217;s modulus).</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -922,6 +880,12 @@ revolution.</p>
 is set to False on any constraint that connects the two bodies.
 Defaults to True. This can be used to create a chain that self
 collides, but adjacent links in the chain do not collide.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.RotaryLimitJoint.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.RotaryLimitJoint.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -974,6 +938,204 @@ bodies.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="pymunk.constraint.RatchetJoint">
+<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">RatchetJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratchet</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#RatchetJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.RatchetJoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<p>Works like a socket wrench.</p>
+<dl class="method">
+<dt id="pymunk.constraint.RatchetJoint.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratchet</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#RatchetJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.RatchetJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Works like a socket wrench.</p>
+<p>ratchet is the distance between &#8220;clicks&#8221;, phase is the initial offset
+to use when deciding where the ratchet angles are.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.RatchetJoint.a">
+<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.a" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first of the two bodies constrained</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.RatchetJoint.activate_bodies">
+<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.RatchetJoint.activate_bodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the bodies this constraint is attached to</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.RatchetJoint.angle">
+<code class="descname">angle</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.RatchetJoint.b">
+<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second of the two bodies constrained</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.RatchetJoint.collide_bodies">
+<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.collide_bodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constraints can be used for filtering collisions too.</p>
+<p>When two bodies collide, Pymunk ignores the collisions if this property
+is set to False on any constraint that connects the two bodies.
+Defaults to True. This can be used to create a chain that self
+collides, but adjacent links in the chain do not collide.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.RatchetJoint.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.RatchetJoint.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.RatchetJoint.error_bias">
+<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.error_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The percentage of joint error that remains unfixed after a
+second.</p>
+<p>This works exactly the same as the collision bias property of a space,
+but applies to fixing error (stretching) of joints instead of
+overlapping collisions.</p>
+<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
+the error every 1/60th of a second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.RatchetJoint.impulse">
+<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>The most recent impulse that constraint applied.</p>
+<p>To convert this to a force, divide by the timestep passed to
+space.step(). You can use this to implement breakable joints to check
+if the force they attempted to apply exceeded a certain threshold.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.RatchetJoint.max_bias">
+<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.max_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum speed at which the constraint can apply error
+correction.</p>
+<p>Defaults to infinity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.RatchetJoint.max_force">
+<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.max_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum force that the constraint can use to act on the two
+bodies.</p>
+<p>Defaults to infinity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.RatchetJoint.phase">
+<code class="descname">phase</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.phase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.RatchetJoint.ratchet">
+<code class="descname">ratchet</code><a class="headerlink" href="#pymunk.constraint.RatchetJoint.ratchet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymunk.constraint.GearJoint">
+<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">GearJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#GearJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GearJoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<p>Keeps the angular velocity ratio of a pair of bodies constant.</p>
+<dl class="method">
+<dt id="pymunk.constraint.GearJoint.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#GearJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GearJoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keeps the angular velocity ratio of a pair of bodies constant.</p>
+<p>ratio is always measured in absolute terms. It is currently not
+possible to set the ratio in relation to a third body&#8217;s angular
+velocity. phase is the initial angular offset of the two bodies.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GearJoint.a">
+<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.GearJoint.a" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first of the two bodies constrained</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.GearJoint.activate_bodies">
+<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.GearJoint.activate_bodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the bodies this constraint is attached to</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GearJoint.b">
+<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.GearJoint.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second of the two bodies constrained</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GearJoint.collide_bodies">
+<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.GearJoint.collide_bodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constraints can be used for filtering collisions too.</p>
+<p>When two bodies collide, Pymunk ignores the collisions if this property
+is set to False on any constraint that connects the two bodies.
+Defaults to True. This can be used to create a chain that self
+collides, but adjacent links in the chain do not collide.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.GearJoint.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.GearJoint.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GearJoint.error_bias">
+<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.GearJoint.error_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The percentage of joint error that remains unfixed after a
+second.</p>
+<p>This works exactly the same as the collision bias property of a space,
+but applies to fixing error (stretching) of joints instead of
+overlapping collisions.</p>
+<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
+the error every 1/60th of a second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GearJoint.impulse">
+<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.GearJoint.impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>The most recent impulse that constraint applied.</p>
+<p>To convert this to a force, divide by the timestep passed to
+space.step(). You can use this to implement breakable joints to check
+if the force they attempted to apply exceeded a certain threshold.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GearJoint.max_bias">
+<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.GearJoint.max_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum speed at which the constraint can apply error
+correction.</p>
+<p>Defaults to infinity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GearJoint.max_force">
+<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.GearJoint.max_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum force that the constraint can use to act on the two
+bodies.</p>
+<p>Defaults to infinity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GearJoint.phase">
+<code class="descname">phase</code><a class="headerlink" href="#pymunk.constraint.GearJoint.phase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymunk.constraint.GearJoint.ratio">
+<code class="descname">ratio</code><a class="headerlink" href="#pymunk.constraint.GearJoint.ratio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pymunk.constraint.SimpleMotor">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">SimpleMotor</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>rate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#SimpleMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.SimpleMotor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
@@ -1013,6 +1175,12 @@ able to apply a nearly infinite torque to keep the bodies moving.</p>
 is set to False on any constraint that connects the two bodies.
 Defaults to True. This can be used to create a chain that self
 collides, but adjacent links in the chain do not collide.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymunk.constraint.SimpleMotor.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.SimpleMotor.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a deep copy of this constraint.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1057,108 +1225,6 @@ bodies.</p>
 <code class="descname">rate</code><a class="headerlink" href="#pymunk.constraint.SimpleMotor.rate" title="Permalink to this definition">¶</a></dt>
 <dd><p>The desired relative angular velocity</p>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pymunk.constraint.SlideJoint">
-<em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">SlideJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>min</em>, <em>max</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#SlideJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.SlideJoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
-<p>Like pin joints, but have a minimum and maximum distance.
-A chain could be modeled using this joint. It keeps the anchor points
-from getting to far apart, but will allow them to get closer together.</p>
-<dl class="method">
-<dt id="pymunk.constraint.SlideJoint.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>min</em>, <em>max</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#SlideJoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.SlideJoint.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>a and b are the two bodies to connect, anchor_a and anchor_b are the
-anchor points on those bodies, and min and max define the allowed
-distances of the anchor points.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.a">
-<code class="descname">a</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.a" title="Permalink to this definition">¶</a></dt>
-<dd><p>The first of the two bodies constrained</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymunk.constraint.SlideJoint.activate_bodies">
-<code class="descname">activate_bodies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymunk.constraint.SlideJoint.activate_bodies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Activate the bodies this constraint is attached to</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.anchor_a">
-<code class="descname">anchor_a</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.anchor_a" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.anchor_b">
-<code class="descname">anchor_b</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.anchor_b" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.b">
-<code class="descname">b</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.b" title="Permalink to this definition">¶</a></dt>
-<dd><p>The second of the two bodies constrained</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.collide_bodies">
-<code class="descname">collide_bodies</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.collide_bodies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constraints can be used for filtering collisions too.</p>
-<p>When two bodies collide, Pymunk ignores the collisions if this property
-is set to False on any constraint that connects the two bodies.
-Defaults to True. This can be used to create a chain that self
-collides, but adjacent links in the chain do not collide.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.error_bias">
-<code class="descname">error_bias</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.error_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>The percentage of joint error that remains unfixed after a
-second.</p>
-<p>This works exactly the same as the collision bias property of a space,
-but applies to fixing error (stretching) of joints instead of
-overlapping collisions.</p>
-<p>Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
-the error every 1/60th of a second.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.impulse">
-<code class="descname">impulse</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.impulse" title="Permalink to this definition">¶</a></dt>
-<dd><p>The most recent impulse that constraint applied.</p>
-<p>To convert this to a force, divide by the timestep passed to
-space.step(). You can use this to implement breakable joints to check
-if the force they attempted to apply exceeded a certain threshold.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.max">
-<code class="descname">max</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.max" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.max_bias">
-<code class="descname">max_bias</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.max_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum speed at which the constraint can apply error
-correction.</p>
-<p>Defaults to infinity</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.max_force">
-<code class="descname">max_force</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.max_force" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum force that the constraint can use to act on the two
-bodies.</p>
-<p>Defaults to infinity</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pymunk.constraint.SlideJoint.min">
-<code class="descname">min</code><a class="headerlink" href="#pymunk.constraint.SlideJoint.min" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
