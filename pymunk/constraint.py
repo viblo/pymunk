@@ -53,6 +53,14 @@ Example::
 """
 __docformat__ = "reStructuredText"
 
+__all__ = [
+    "Constraint", "PinJoint", "SlideJoint", "PivotJoint", "GrooveJoint",
+    "DampedSpring", "DampedRotarySpring", "RotaryLimitJoint", "RatchetJoint",
+    "GearJoint", "SimpleMotor"
+    ]
+
+import copy
+
 from .vec2d import Vec2d
 from ._pickle import PickleMixin
 
