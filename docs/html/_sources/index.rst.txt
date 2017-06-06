@@ -1,8 +1,3 @@
-.. meta used for Google search console 
-
-.. meta::
-    :google-site-verification: FOPxQNUiVHW4jvjsrd-ZMZ8BnGvDVgxKA3WUsR1vgPA
-
 .. include:: ../../README.rst
         
 Contents
