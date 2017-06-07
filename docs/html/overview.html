@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -8,7 +8,7 @@
     
     <title>Overview &#8212; pymunk 5.2.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -28,27 +28,16 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API Reference" href="pymunk.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
+    <link rel="prev" title="Installation" href="installation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pymunk.html" title="API Reference"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="installation.html" title="Installation"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.2.0 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -63,15 +52,15 @@
 <dl class="docutils">
 <dt><strong>Rigid Bodies</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><code class="xref py py-class docutils literal"><span class="pre">pymunk.Body</span></code></a>)</dt>
 <dd>A rigid body holds the physical properties of an object. (mass, position,
-rotation, velocity, etc.) It does not have a shape by itself. If you&#8217;ve
+rotation, velocity, etc.) It does not have a shape by itself. If you’ve
 done physics with particles before, rigid bodies differ mostly in that they
 are able to rotate. Rigid bodies generally tend to have a 1:1 correlation
 to sprites in a game. You should structure your game so that you use the
 position and rotation of the rigid body for drawing your sprite.</dd>
 <dt><strong>Collision Shapes</strong> (<a class="reference internal" href="pymunk.html#pymunk.Circle" title="pymunk.Circle"><code class="xref py py-class docutils literal"><span class="pre">pymunk.Circle</span></code></a>, <a class="reference internal" href="pymunk.html#pymunk.Segment" title="pymunk.Segment"><code class="xref py py-class docutils literal"><span class="pre">pymunk.Segment</span></code></a> and <a class="reference internal" href="pymunk.html#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal"><span class="pre">pymunk.Poly</span></code></a>)</dt>
-<dd>By attaching shapes to bodies, you can define the a body&#8217;s shape. You can
+<dd>By attaching shapes to bodies, you can define the a body’s shape. You can
 attach many shapes to a single body to define a complex shape, or none if
-it doesn&#8217;t require a shape.</dd>
+it doesn’t require a shape.</dd>
 <dt><strong>Constraints/Joints</strong> (<a class="reference internal" href="pymunk.constraint.html#pymunk.constraint.PinJoint" title="pymunk.constraint.PinJoint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.PinJoint</span></code></a>, <a class="reference internal" href="pymunk.constraint.html#pymunk.constraint.SimpleMotor" title="pymunk.constraint.SimpleMotor"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.SimpleMotor</span></code></a> and many others)</dt>
 <dd>You can attach joints between two bodies to constrain their behavior.</dd>
 <dt><strong>Spaces</strong> (<a class="reference internal" href="pymunk.html#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal"><span class="pre">pymunk.Space</span></code></a>)</dt>
@@ -87,7 +76,7 @@ should be simulated to the Space time is moved forward in small steps with the
 <h2>Model your physics objects<a class="headerlink" href="#model-your-physics-objects" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="object-shape">
 <h3>Object shape<a class="headerlink" href="#object-shape" title="Permalink to this headline">¶</a></h3>
-<p>What you see on the screen doesn&#8217;t necessarily have to be exactly the same
+<p>What you see on the screen doesn’t necessarily have to be exactly the same
 shape as the actual physics object. Usually the shape used for collision
 detection (and other physics simulation) is much simplified version of what is
 drawn on the screen. Even high end AAA games separate the collision shape from
@@ -134,8 +123,8 @@ that you should use)</p>
 <p>Together with the units another key insight when setting up your simulation is
 to remember that it is a simulation, and in many cases the look and feel is
 much more important than actual realism. So for example, if you want to model
-a flipper game, the real power of the flipper and launchers doesn&#8217;t matter at
-all, what is important is that the game feels &#8220;right&#8221; and is fun to use for
+a flipper game, the real power of the flipper and launchers doesn’t matter at
+all, what is important is that the game feels “right” and is fun to use for
 your users.</p>
 <p>Sometimes it make sense to start out with realistic units, to give you a feel
 for how big mass should be in comparison to gravity for example.</p>
@@ -222,13 +211,15 @@ a C-library.</p>
 <li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/pymunk/">Downloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="installation.html"
-                        title="previous chapter">Installation</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="pymunk.html"
-                        title="next chapter">API Reference</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="pymunk.html" title="next chapter">API Reference</a></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -250,27 +241,20 @@ a C-library.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pymunk.html" title="API Reference"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="installation.html" title="Installation"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.2.0 documentation</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2013, Victor Blomqvist.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/overview.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-    </div>
+
+    
+
+    
   </body>
 </html>

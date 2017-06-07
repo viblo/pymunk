@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -8,7 +8,7 @@
     
     <title>Slide and Pin Joint Demo Step by Step &#8212; pymunk 5.2.0 documentation</title>
     
-    <link rel="stylesheet" href="../_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -28,28 +28,16 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Benchmarks" href="../benchmarks.html" />
-    <link rel="prev" title="Tutorials" href="../tutorials.html" /> 
+    <link rel="prev" title="Tutorials" href="../tutorials.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../benchmarks.html" title="Benchmarks"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../tutorials.html" title="Tutorials"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../tutorials.html" accesskey="U">Tutorials</a> &#187;</li> 
-      </ul>
-    </div>  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -78,7 +66,7 @@ similar libraries as well, for example you could easily translate this
 tutorial to use Pyglet instead.</p>
 <p>Pymunk is built on top of the 2d physics library Chipmunk. Chipmunk itself
 is written in C meaning Pymunk need to call into the c code. The Cffi
-library helps with this, however if you are on a platform that I haven&#8217;t been
+library helps with this, however if you are on a platform that I haven’t been
 able to compile it on you might have to do it yourself. The good news is that
 it is very easy to do, in fact if you got Pymunk by Pip install its arelady
 done!</p>
@@ -108,13 +96,13 @@ explained pretty good in this citation from the Chipmunk docs:</p>
 <dl class="docutils">
 <dt>Rigid bodies</dt>
 <dd>A rigid body holds the physical properties of an object. (mass, position,
-rotation, velocity, etc.) It does not have a shape by itself. If you&#8217;ve
+rotation, velocity, etc.) It does not have a shape by itself. If you’ve
 done physics with particles before, rigid bodies differ mostly in that they
 are able to rotate.</dd>
 <dt>Collision shapes</dt>
-<dd>By attaching shapes to bodies, you can define the a body&#8217;s shape. You can
+<dd>By attaching shapes to bodies, you can define the a body’s shape. You can
 attach many shapes to a single body to define a complex shape, or none if
-it doesn&#8217;t require a shape.</dd>
+it doesn’t require a shape.</dd>
 <dt>Constraints/joints</dt>
 <dd>You can attach joints between two bodies to constrain their behavior.</dd>
 <dt>Spaces</dt>
@@ -155,14 +143,14 @@ as the concepts are the same, just that Pymunk is more pythonic to use.</p>
         <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
         <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
 <p>The code will display a blank window, and will run a physics simulation of an
 empty space.</p>
 <ol class="arabic simple">
-<li>We need to import pymunk in order to use it...</li>
+<li>We need to import pymunk in order to use it…</li>
 <li>We then create a space and set its gravity to something good. Remember
 that what is important is what looks good on screen, not what the real
 world value is. -900 will make a good looking simulation, but feel free
@@ -282,14 +270,14 @@ balls you should see a couple of balls falling. Yay!</p>
         <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
         <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="a-static-l">
 <h2>A static L<a class="headerlink" href="#a-static-l" title="Permalink to this headline">¶</a></h2>
-<p>Falling balls are quite boring. We don&#8217;t see any physics simulation except
+<p>Falling balls are quite boring. We don’t see any physics simulation except
 basic gravity, and everyone can do gravity without help from a physics library.
 So lets add something the balls can land on, two static lines forming an L. As
 with the balls we start with a function to add an L to the space:</p>
@@ -304,7 +292,7 @@ with the balls we start with a function to add an L to the space:</p>
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li>We create a &#8220;static&#8221; body. The important step is to never add it to the
+<li>We create a “static” body. The important step is to never add it to the
 space like the dynamic ball bodies. Note how static bodies are created by
 setting the body_type of the body.</li>
 <li>A line shaped shape is created here.</li>
@@ -326,7 +314,7 @@ just to show what it could look like:</p>
 <ol class="arabic simple">
 <li>In order to get the position with the line rotation we use this calculation.
 line.a is the first endpoint of the line, line.b the second. At the moment
-the lines are static, and not rotated so we don&#8217;t really have to do this
+the lines are static, and not rotated so we don’t really have to do this
 extra calculation, but we will soon make them move and rotate.</li>
 <li>This is a little function to convert coordinates from pymunk to pygame
 world. Now that we have it we can use it in the draw_ball() function as
@@ -385,7 +373,7 @@ an inverted L shape in the middle will balls spawning and hitting the shape.</p>
         <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
         <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="p">(</span><span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -395,7 +383,7 @@ an inverted L shape in the middle will balls spawning and hitting the shape.</p>
 <p>A static L shape is pretty boring. So lets make it a bit more exciting by
 adding two joints, one that it can rotate around, and one that prevents it from
 rotating too much. In this part we only add the rotation joint, and in the next
-we constrain it. As our static L shape won&#8217;t be static anymore we also rename
+we constrain it. As our static L shape won’t be static anymore we also rename
 the function to add_L().</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
     <span class="n">rotation_center_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span> <span class="c1"># 1</span>
@@ -483,7 +471,7 @@ body.</li>
 <p>And now, done! You should have an inverted L shape in the middle of the screen
 being filled will balls, tipping over releasing them, tipping back and start
 over. You can check slide_and_pinjoint.py included in pymunk, but it
-doesn&#8217;t follow this tutorial exactly as I factored out a couple of blocks
+doesn’t follow this tutorial exactly as I factored out a couple of blocks
 to functions to make it easier to follow in tutorial form.</p>
 <p>If anything is unclear, not working feel free to raise an issue on github. If
 you have an idea for another tutorial you want to read, or some example code
@@ -573,7 +561,7 @@ chipmunk forum)</p>
         <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
         <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -627,13 +615,17 @@ chipmunk forum)</p>
 <li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/pymunk/">Downloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="../tutorials.html"
-                        title="previous chapter">Tutorials</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="../benchmarks.html"
-                        title="next chapter">Benchmarks</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorials.html">Tutorials</a><ul>
+      <li>Previous: <a href="../tutorials.html" title="previous chapter">Tutorials</a></li>
+      <li>Next: <a href="../benchmarks.html" title="next chapter">Benchmarks</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -655,28 +647,20 @@ chipmunk forum)</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../benchmarks.html" title="Benchmarks"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="../tutorials.html" title="Tutorials"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../tutorials.html" >Tutorials</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2013, Victor Blomqvist.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/tutorials/SlideAndPinJoint.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-    </div>
+
+    
+
+    
   </body>
 </html>

@@ -163,7 +163,7 @@ suppress_warnings = ['image.nonlocal_uri']
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'classic'
+html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -177,19 +177,11 @@ html_theme = 'classic'
 # color palette #a0c0ff #345aa6 #EEEEEE #000000
 
 # color palette #355F7C #6c9cbe #EEEEEE #000000 (unused: #82a5be #113651 #354c5d)
-html_theme_options = {
-    'relbarbgcolor': '#6c9cbe',
-    'sidebarbgcolor': '#EEEEEE',
-    'headbgcolor':  '#EEEEEE',
-    'headtextcolor': '#355F7C',
-    'headlinkcolor': '#355F7C',
-    'footerbgcolor': '#355F7C',
-    'sidebartextcolor': '#000000',
-    'sidebarlinkcolor': '#355F7C',
-    'linkcolor': '#355F7C',
-    'visitedlinkcolor': '#355F7C',
-}
 
+html_theme_options = {
+    'font_family': '"Lucida Grande",Arial,sans-serif',
+    'head_font_family': '"Lucida Grande",Arial,sans-serif'
+}
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
@@ -215,7 +207,7 @@ html_favicon = "_static/pymunk_favicon.ico"
 html_static_path = ['_static']
 
 
-html_style = "pymunk.css"
+#html_style = "pymunk.css"
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -226,8 +218,15 @@ html_style = "pymunk.css"
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-html_sidebars = {'**': ['badges.html', 'globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
-                 }
+html_sidebars = {
+    '**': [
+        'badges.html', 
+        'globaltoc.html', 
+        'relations.html', 
+        'sourcelink.html', 
+        'searchbox.html'
+    ],
+}
 
 #html_sidebars = {'[rieta]*': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
 #                 'pymunk*': ['globaltoc.html', 'classtoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html']}

@@ -16,14 +16,14 @@
 body {
     font-family: sans-serif;
     font-size: 100%;
-    background-color: #355F7C;
+    background-color: #11303d;
     color: #000;
     margin: 0;
     padding: 0;
 }
 
 div.document {
-    background-color: #EEEEEE;
+    background-color: #1c4e63;
 }
 
 div.documentwrapper {
@@ -55,7 +55,7 @@ div.footer a {
 }
 
 div.related {
-    background-color: #6c9cbe;
+    background-color: #133f52;
     line-height: 30px;
     color: #ffffff;
 }
@@ -69,7 +69,7 @@ div.sphinxsidebar {
 
 div.sphinxsidebar h3 {
     font-family: 'Trebuchet MS', sans-serif;
-    color: #000000;
+    color: #ffffff;
     font-size: 1.4em;
     font-weight: normal;
     margin: 0;
@@ -77,12 +77,12 @@ div.sphinxsidebar h3 {
 }
 
 div.sphinxsidebar h3 a {
-    color: #000000;
+    color: #ffffff;
 }
 
 div.sphinxsidebar h4 {
     font-family: 'Trebuchet MS', sans-serif;
-    color: #000000;
+    color: #ffffff;
     font-size: 1.3em;
     font-weight: normal;
     margin: 5px 0 0 0;
@@ -90,7 +90,7 @@ div.sphinxsidebar h4 {
 }
 
 div.sphinxsidebar p {
-    color: #000000;
+    color: #ffffff;
 }
 
 div.sphinxsidebar p.topless {
@@ -100,15 +100,15 @@ div.sphinxsidebar p.topless {
 div.sphinxsidebar ul {
     margin: 10px;
     padding: 0;
-    color: #000000;
+    color: #ffffff;
 }
 
 div.sphinxsidebar a {
-    color: #355F7C;
+    color: #98dbcc;
 }
 
 div.sphinxsidebar input {
-    border: 1px solid #355F7C;
+    border: 1px solid #98dbcc;
     font-family: sans-serif;
     font-size: 1em;
 }
@@ -118,12 +118,12 @@ div.sphinxsidebar input {
 /* -- hyperlink styles ------------------------------------------------------ */
 
 a {
-    color: #355F7C;
+    color: #355f7c;
     text-decoration: none;
 }
 
 a:visited {
-    color: #355F7C;
+    color: #355f7c;
     text-decoration: none;
 }
 
@@ -142,9 +142,9 @@ div.body h4,
 div.body h5,
 div.body h6 {
     font-family: 'Trebuchet MS', sans-serif;
-    background-color: #EEEEEE;
+    background-color: #f2f2f2;
     font-weight: normal;
-    color: #355F7C;
+    color: #20435c;
     border-bottom: 1px solid #ccc;
     margin: 20px -20px 10px -20px;
     padding: 3px 0 3px 10px;
@@ -158,14 +158,14 @@ div.body h5 { font-size: 110%; }
 div.body h6 { font-size: 100%; }
 
 a.headerlink {
-    color: #355F7C;
+    color: #c60f0f;
     font-size: 0.8em;
     padding: 0 4px 0 4px;
     text-decoration: none;
 }
 
 a.headerlink:hover {
-    background-color: #355F7C;
+    background-color: #c60f0f;
     color: white;
 }
 

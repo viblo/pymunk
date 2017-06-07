@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -8,7 +8,7 @@
     
     <title>Pymunk &#8212; pymunk 5.2.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -27,24 +27,16 @@
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="News" href="news.html" /> 
+    <link rel="next" title="News" href="news.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="news.html" title="News"
-             accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">pymunk 5.2.0 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -107,15 +99,15 @@ on the Pymunk homepage, <a class="reference external" href="http://www.pymunk.or
 <div class="section" id="the-pymunk-vision">
 <h2>The Pymunk Vision<a class="headerlink" href="#the-pymunk-vision" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div>&#8220;<em>Make 2d physics easy to include in your game</em>&#8220;</div></blockquote>
+<div>“<em>Make 2d physics easy to include in your game</em>”</div></blockquote>
 <p>It is (or is striving to be):</p>
 <ul class="simple">
 <li><strong>Easy to use</strong> - It should be easy to use, no complicated stuff should be
 needed to add physics to your game/program.</li>
-<li><strong>&#8220;Pythonic&#8221;</strong> - It should not be visible that a c-library (chipmunk) is in
+<li><strong>“Pythonic”</strong> - It should not be visible that a c-library (chipmunk) is in
 the bottom, it should feel like a Python library (no strange naming, OO,
 no memory handling and more)</li>
-<li><strong>Simple to build &amp; install</strong> - You shouldn&#8217;t need to have a zillion of
+<li><strong>Simple to build &amp; install</strong> - You shouldn’t need to have a zillion of
 libraries installed to make it install, or do a lot of command line tricks.</li>
 <li><strong>Multi-platform</strong> - Should work on both Windows, *nix and OSX.</li>
 <li><strong>Non-intrusive</strong> - It should not put restrictions on how you structure
@@ -152,7 +144,7 @@ well!)</p>
 would love to hear from you. What would <em>really</em> be nice is a real
 postcard from the place where you are! :)</p>
 <dl class="last docutils">
-<dt>Pymunk&#8217;s address is:</dt>
+<dt>Pymunk’s address is:</dt>
 <dd><div class="first last line-block">
 <div class="line">Pymunk c/o Victor Blomqvist</div>
 <div class="line">Carl Thunbergs Vag 9</div>
@@ -210,7 +202,7 @@ you can explicitly tell Pymunk to compile it inplace:</p>
 </pre></div>
 </div>
 <p>Note that chipmunk is actually not built as a python extension, but distutils /
-setuptools doesn&#8217;t currently handle pure native libraries that needs to be built
+setuptools doesn’t currently handle pure native libraries that needs to be built
 in a good way if built with build_clib.</p>
 <p>The compiled file goes into the /pymunk folder (same as space.py,
 body.py and others).</p>
@@ -220,6 +212,7 @@ body.py and others).</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="news.html">News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="news.html#new-page-theme">New page theme</a></li>
 <li class="toctree-l2"><a class="reference internal" href="news.html#pymunk-on-android">Pymunk on Android</a></li>
 <li class="toctree-l2"><a class="reference internal" href="news.html#pymunk-5-2-0">Pymunk 5.2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="news.html#pymunk-5-1-0">Pymunk 5.1.0</a></li>
@@ -398,10 +391,14 @@ body.py and others).</p>
 <li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/pymunk/">Downloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
-
-  <h4>Next topic</h4>
-  <p class="topless"><a href="news.html"
-                        title="next chapter">News</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="news.html" title="next chapter">News</a></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -423,24 +420,20 @@ body.py and others).</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="news.html" title="News"
-             >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">pymunk 5.2.0 documentation</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2013, Victor Blomqvist.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-    </div>
+
+    
+
+    
   </body>
 </html>

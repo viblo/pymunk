@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -8,7 +8,7 @@
     
     <title>News &#8212; pymunk 5.2.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -28,27 +28,16 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Installation" href="installation.html" />
-    <link rel="prev" title="Pymunk" href="index.html" /> 
+    <link rel="prev" title="Pymunk" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="installation.html" title="Installation"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Pymunk"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.2.0 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -57,6 +46,16 @@
             
   <div class="section" id="news">
 <h1>News<a class="headerlink" href="#news" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="new-page-theme">
+<h2>New page theme<a class="headerlink" href="#new-page-theme" title="Permalink to this headline">¶</a></h2>
+<p><em>Victor - 2017-06-07</em></p>
+<p><strong>An mobile friendlier experience!</strong></p>
+<p>A couple of days ago I noticed that the Pymunk web page get a significant
+amount of traffic from mobile, and at the same time the Sphinx theme it uses
+is not built for mobile browsing. So as a result I decided to change theme to
+something that can scale down to mobile size better. I hope the new page gives
+a better experience for everyone!</p>
+</div>
 <div class="section" id="pymunk-on-android">
 <h2>Pymunk on Android<a class="headerlink" href="#pymunk-on-android" title="Permalink to this headline">¶</a></h2>
 <p><em>Victor - 2017-06-04</em></p>
@@ -227,7 +226,7 @@ on OSX. Pypy 2.1 on one of the above platforms.</p>
 <div class="section" id="pymunk-3-0-0">
 <h2>pymunk 3.0.0<a class="headerlink" href="#pymunk-3-0-0" title="Permalink to this headline">¶</a></h2>
 <p><em>Victor - 2012-09-02</em></p>
-<p><strong>I&#8217;m happy to announce pymunk 3!</strong></p>
+<p><strong>I’m happy to announce pymunk 3!</strong></p>
 <p>This release is a definite improvement over the 2.x release line of pymunk.
 It features a much improved documentation, an updated Chipmunk version with
 accompanying API adjustments, more and cooler examples. Also, to help to do
@@ -236,7 +235,7 @@ can draw most physics objects on a pygame surface. Check out the new
 pygame_util_demo.py example to get an understanding of how it works.</p>
 <p>Another new feature is improved support to run in non-debug mode. Its now
 possible to pass a compile flag to setup.py to build Chipmunk in release mode
-and there&#8217;s a new module, pymunkoptions that can be used to turn pymunk debug
+and there’s a new module, pymunkoptions that can be used to turn pymunk debug
 prints off.</p>
 <p>This release has been tested and runs on CPython 2.6, 2.7, 3.2.
 At least one run of the unit tests have been made on the following
@@ -285,12 +284,12 @@ to None, not using infinity. inf will be removed in an upcoming release.</p>
 <div class="section" id="pymunk-2-0-0">
 <h2>pymunk 2.0.0<a class="headerlink" href="#pymunk-2-0-0" title="Permalink to this headline">¶</a></h2>
 <p><em>Victor - 2011-09-04</em></p>
-<p><strong>Today I&#8217;m happy to announce the new pymunk 2 release!</strong></p>
+<p><strong>Today I’m happy to announce the new pymunk 2 release!</strong></p>
 <p>New goodies in this release comes mainly form the updated chipmunk library. Its
 now possible for bodies to sleep, there is a new data structure holding the
 objects and other smaller improvements. The updated version number comes mainly
 from the new sleep methods.</p>
-<p>Another new item in the release is some simplification, you now don&#8217;t need to
+<p>Another new item in the release is some simplification, you now don’t need to
 initialize pymunk on your own, thats done automatically on import. Another cool
 feature is that pymunk passes all its unit tests on the latest pypy source
 which I think is a great thing! Have not had time to do any performance tests,
@@ -337,6 +336,7 @@ number were increased).</p>
 <h3><a href="index.html">Table Of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#new-page-theme">New page theme</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-on-android">Pymunk on Android</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-5-2-0">Pymunk 5.2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-5-1-0">Pymunk 5.1.0</a></li>
@@ -364,13 +364,15 @@ number were increased).</p>
 <li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/pymunk/">Downloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Pymunk</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="installation.html"
-                        title="next chapter">Installation</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Pymunk</a></li>
+      <li>Next: <a href="installation.html" title="next chapter">Installation</a></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -392,27 +394,20 @@ number were increased).</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="installation.html" title="Installation"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Pymunk"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.2.0 documentation</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2013, Victor Blomqvist.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/news.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-    </div>
+
+    
+
+    
   </body>
 </html>

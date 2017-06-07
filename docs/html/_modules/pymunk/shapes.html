@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -8,7 +8,7 @@
     
     <title>pymunk.shapes &#8212; pymunk 5.2.0 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -26,23 +26,16 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../pymunk.html" accesskey="U">pymunk</a> &#187;</li> 
-      </ul>
-    </div>  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -125,18 +118,18 @@
     <span class="k">def</span> <span class="nf">_get_moment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The calculated moment of this shape.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetMoment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
-    <span class="n">moment</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_moment</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">_get_moment</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">moment</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_moment</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">_get_moment</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The calculated area of this shape.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetArea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
-    <span class="n">area</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_area</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">_get_area</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_area</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">_get_area</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_center_of_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The calculated center of gravity of this shape.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetCenterOfGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
     <span class="n">center_of_gravity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_center_of_gravity</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="n">_get_center_of_gravity</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">_get_center_of_gravity</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_sensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetSensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
@@ -545,8 +538,8 @@
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The radius of the poly shape. Extends the poly in all</span>
 <span class="s2">        directions with the given radius&quot;&quot;&quot;</span><span class="p">)</span>
 
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Poly.create_box"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.create_box">[docs]</a>    <span class="k">def</span> <span class="nf">create_box</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="Poly.create_box"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.create_box">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create_box</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convenience function to create a box given a width and height.</span>
 
 <span class="sd">        The boxes will always be centered at the center of gravity of the</span>
@@ -563,7 +556,7 @@
 <span class="sd">        :rtype: :py:class:`Poly`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span> <span class="o">=</span> <span class="n">Poly</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">Poly</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">Poly</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">Poly</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">body</span>
 
         <span class="n">body_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span> <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span>
@@ -577,8 +570,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_shapeid</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Poly.create_box_bb"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.create_box_bb">[docs]</a>    <span class="k">def</span> <span class="nf">create_box_bb</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="Poly.create_box_bb"><a class="viewcode-back" href="../../pymunk.html#pymunk.Poly.create_box_bb">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create_box_bb</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convenience function to create a box shape from a :py:class:`BB`.</span>
 <span class="sd">        </span>
 <span class="sd">        The boxes will always be centered at the center of gravity of the</span>
@@ -594,7 +587,7 @@
 <span class="sd">        :rtype: :py:class:`Poly`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span> <span class="o">=</span> <span class="n">Poly</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">Poly</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">Poly</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">Poly</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">body</span>
 
         <span class="n">body_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span> <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span>
@@ -698,7 +691,17 @@
 <li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/pymunk/">Downloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
-
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  <li><a href="../pymunk.html">pymunk</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
@@ -713,23 +716,17 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../pymunk.html" >pymunk</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2013, Victor Blomqvist.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-    </div>
+
+    
+
+    
   </body>
 </html>

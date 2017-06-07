@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -8,7 +8,7 @@
     
     <title>pymunk.autogeometry Module &#8212; pymunk 5.2.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -28,28 +28,16 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pymunk.constraint Module" href="pymunk.constraint.html" />
-    <link rel="prev" title="API Reference" href="pymunk.html" /> 
+    <link rel="prev" title="API Reference" href="pymunk.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pymunk.constraint.html" title="pymunk.constraint Module"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="pymunk.html" title="API Reference"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.2.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pymunk.html" accesskey="U">API Reference</a> &#187;</li> 
-      </ul>
-    </div>  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -104,7 +92,7 @@ a Pymunk Poly or Segment:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><cite>bool</cite></td>
 </tr>
@@ -124,8 +112,8 @@ straight edged or angular shapes.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</li>
-<li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
+<li><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</li>
+<li><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</li>
 </ul>
 </td>
 </tr>
@@ -139,7 +127,7 @@ straight edged or angular shapes.</p>
 <dl class="function">
 <dt id="pymunk.autogeometry.simplify_vertexes">
 <code class="descclassname">pymunk.autogeometry.</code><code class="descname">simplify_vertexes</code><span class="sig-paren">(</span><em>polyline</em>, <em>tolerance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#simplify_vertexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.simplify_vertexes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a copy of a polyline simplified by discarding &#8220;flat&#8221; vertexes.</p>
+<dd><p>Returns a copy of a polyline simplified by discarding “flat” vertexes.</p>
 <p>This works well on straigt edged or angular shapes, not as well on smooth 
 shapes.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -147,8 +135,8 @@ shapes.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</li>
-<li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
+<li><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</li>
+<li><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</li>
 </ul>
 </td>
 </tr>
@@ -168,8 +156,8 @@ shapes.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</li>
-<li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
+<li><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</li>
+<li><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</li>
 </ul>
 </td>
 </tr>
@@ -196,8 +184,8 @@ overly simplified.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em></em><em>[</em><em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em><em>]</em><em></em>) &#8211; Polyline to simplify.</li>
-<li><strong>tolerance</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated.</li>
+<li><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</li>
+<li><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</li>
 </ul>
 </td>
 </tr>
@@ -233,8 +221,8 @@ callback directly from <a class="reference internal" href="#pymunk.autogeometry.
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>v0</strong> (<em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em>) &#8211; Start of segment</li>
-<li><strong>v1</strong> (<em></em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em></em>) &#8211; End of segment</li>
+<li><strong>v0</strong> (<em>(</em><em>float</em><em>,</em><em>float</em><em>)</em>) – Start of segment</li>
+<li><strong>v1</strong> (<em>(</em><em>float</em><em>,</em><em>float</em><em>)</em>) – End of segment</li>
 </ul>
 </td>
 </tr>
@@ -244,12 +232,12 @@ callback directly from <a class="reference internal" href="#pymunk.autogeometry.
 
 <dl class="method">
 <dt id="pymunk.autogeometry.PolylineSet.count">
-<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &rarr; integer -- return number of occurrences of value<a class="headerlink" href="#pymunk.autogeometry.PolylineSet.count" title="Permalink to this definition">¶</a></dt>
+<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer – return number of occurrences of value<a class="headerlink" href="#pymunk.autogeometry.PolylineSet.count" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pymunk.autogeometry.PolylineSet.index">
-<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &rarr; integer -- return first index of value.<a class="headerlink" href="#pymunk.autogeometry.PolylineSet.index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer – return first index of value.<a class="headerlink" href="#pymunk.autogeometry.PolylineSet.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
@@ -266,13 +254,13 @@ box area using the sampling function and context.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) &#8211; Bounding box of the area to sample within</li>
-<li><strong>x_samples</strong> (<em>int</em>) &#8211; Number of samples in x</li>
-<li><strong>y_samples</strong> (<em>int</em>) &#8211; Number of samples in y</li>
-<li><strong>threshold</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated</li>
-<li><strong>segment_func</strong> (<code class="docutils literal"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) &#8211; The segment function will be called for each segment 
+<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) – Bounding box of the area to sample within</li>
+<li><strong>x_samples</strong> (<em>int</em>) – Number of samples in x</li>
+<li><strong>y_samples</strong> (<em>int</em>) – Number of samples in y</li>
+<li><strong>threshold</strong> (<em>float</em>) – A higher value means more error is tolerated</li>
+<li><strong>segment_func</strong> (<code class="docutils literal"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) – The segment function will be called for each segment 
 detected that lies along the density contour for threshold.</li>
-<li><strong>sample_func</strong> (<code class="docutils literal"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) &#8211; The sample function will be called for 
+<li><strong>sample_func</strong> (<code class="docutils literal"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) – The sample function will be called for 
 x_samples * y_samples spread across the bounding box area, and should 
 return a float.</li>
 </ul>
@@ -293,13 +281,13 @@ box area using the sampling function and context.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) &#8211; Bounding box of the area to sample within</li>
-<li><strong>x_samples</strong> (<em>int</em>) &#8211; Number of samples in x</li>
-<li><strong>y_samples</strong> (<em>int</em>) &#8211; Number of samples in y</li>
-<li><strong>threshold</strong> (<em>float</em>) &#8211; A higher value means more error is tolerated</li>
-<li><strong>segment_func</strong> (<code class="docutils literal"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) &#8211; The segment function will be called for each segment 
+<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) – Bounding box of the area to sample within</li>
+<li><strong>x_samples</strong> (<em>int</em>) – Number of samples in x</li>
+<li><strong>y_samples</strong> (<em>int</em>) – Number of samples in y</li>
+<li><strong>threshold</strong> (<em>float</em>) – A higher value means more error is tolerated</li>
+<li><strong>segment_func</strong> (<code class="docutils literal"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) – The segment function will be called for each segment 
 detected that lies along the density contour for threshold.</li>
-<li><strong>sample_func</strong> (<code class="docutils literal"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) &#8211; The sample function will be called for 
+<li><strong>sample_func</strong> (<code class="docutils literal"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) – The sample function will be called for 
 x_samples * y_samples spread across the bounding box area, and should 
 return a float.</li>
 </ul>
@@ -357,13 +345,17 @@ return a float.</li>
 <li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/pymunk/">Downloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="pymunk.html"
-                        title="previous chapter">API Reference</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="pymunk.constraint.html"
-                        title="next chapter"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="pymunk.html">API Reference</a><ul>
+      <li>Previous: <a href="pymunk.html" title="previous chapter">API Reference</a></li>
+      <li>Next: <a href="pymunk.constraint.html" title="next chapter"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -385,28 +377,20 @@ return a float.</li>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pymunk.constraint.html" title="pymunk.constraint Module"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="pymunk.html" title="API Reference"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pymunk 5.2.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pymunk.html" >API Reference</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2013, Victor Blomqvist.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pymunk.autogeometry.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-    </div>
+
+    
+
+    
   </body>
 </html>

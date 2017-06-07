@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -8,7 +8,7 @@
     
     <title>_abcoll &#8212; pymunk 5.2.0 documentation</title>
     
-    <link rel="stylesheet" href="../_static/pymunk.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -26,22 +26,16 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/pymunk_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
-      </ul>
-    </div>  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -74,7 +68,7 @@
 
 <span class="k">def</span> <span class="nf">_hasattr</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">attr</span> <span class="ow">in</span> <span class="n">B</span><span class="o">.</span><span class="n">__dict__</span> <span class="k">for</span> <span class="n">B</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">__mro__</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">attr</span> <span class="ow">in</span> <span class="n">B</span><span class="o">.</span><span class="vm">__dict__</span> <span class="k">for</span> <span class="n">B</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
         <span class="c1"># Old-style class</span>
         <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
@@ -88,12 +82,12 @@
         <span class="k">return</span> <span class="mi">0</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">cls</span> <span class="ow">is</span> <span class="n">Hashable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="n">Hashable</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">B</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="n">__mro__</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="s2">&quot;__hash__&quot;</span> <span class="ow">in</span> <span class="n">B</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">B</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s2">&quot;__hash__&quot;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">B</span> <span class="ow">in</span> <span class="n">C</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;__hash__&quot;</span> <span class="ow">in</span> <span class="n">B</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">B</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;__hash__&quot;</span><span class="p">]:</span>
                             <span class="k">return</span> <span class="kc">True</span>
                         <span class="k">break</span>
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
@@ -112,8 +106,8 @@
             <span class="k">yield</span> <span class="kc">None</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">cls</span> <span class="ow">is</span> <span class="n">Iterable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="n">Iterable</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_hasattr</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
@@ -132,8 +126,8 @@
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">cls</span> <span class="ow">is</span> <span class="n">Iterator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="n">Iterator</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_hasattr</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="s2">&quot;next&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_hasattr</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
@@ -147,8 +141,8 @@
         <span class="k">return</span> <span class="mi">0</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">cls</span> <span class="ow">is</span> <span class="n">Sized</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="n">Sized</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_hasattr</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
@@ -162,8 +156,8 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">cls</span> <span class="ow">is</span> <span class="n">Container</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="n">Container</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_hasattr</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="s2">&quot;__contains__&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
@@ -177,8 +171,8 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">cls</span> <span class="ow">is</span> <span class="n">Callable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__subclasshook__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="n">Callable</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_hasattr</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="s2">&quot;__call__&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
@@ -211,12 +205,12 @@
     <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Set</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__le__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__le__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Set</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ge__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__ge__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Set</span><span class="p">):</span>
@@ -231,26 +225,26 @@
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Set</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__le__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__le__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span> <span class="o">==</span> <span class="n">other</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_from_iterable</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">it</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_from_iterable</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">it</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Construct an instance of the class from any iterable input.</span>
 
 <span class="sd">        Must override this method if the class constructor signature</span>
 <span class="sd">        does not accept an iterable for an input.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_iterable</span><span class="p">(</span><span class="n">value</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">other</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span>
 
-    <span class="n">__rand__</span> <span class="o">=</span> <span class="n">__and__</span>
+    <span class="fm">__rand__</span> <span class="o">=</span> <span class="fm">__and__</span>
 
     <span class="k">def</span> <span class="nf">isdisjoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="s1">&#39;Return True if two sets have a null intersection.&#39;</span>
@@ -265,7 +259,7 @@
         <span class="n">chain</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">s</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_iterable</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span>
 
-    <span class="n">__ror__</span> <span class="o">=</span> <span class="n">__or__</span>
+    <span class="fm">__ror__</span> <span class="o">=</span> <span class="fm">__or__</span>
 
     <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Set</span><span class="p">):</span>
@@ -290,10 +284,10 @@
             <span class="n">other</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_iterable</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span> <span class="o">-</span> <span class="n">other</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">other</span> <span class="o">-</span> <span class="bp">self</span><span class="p">)</span>
 
-    <span class="n">__rxor__</span> <span class="o">=</span> <span class="n">__xor__</span>
+    <span class="fm">__rxor__</span> <span class="o">=</span> <span class="fm">__xor__</span>
 
     <span class="c1"># Sets are not hashable by default, but subclasses can change this</span>
-    <span class="n">__hash__</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="fm">__hash__</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the hash value of a set.</span>
@@ -469,7 +463,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
 
     <span class="c1"># Mappings are not hashable by default, but subclasses can change this</span>
-    <span class="n">__hash__</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="fm">__hash__</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
@@ -776,7 +770,15 @@
 <li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/pymunk/">Downloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
-
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -791,22 +793,17 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pymunk 5.2.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2013, Victor Blomqvist.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2013, Victor Blomqvist.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-    </div>
+
+    
+
+    
   </body>
 </html>

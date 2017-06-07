@@ -2,6 +2,19 @@
 News 
 ****
 
+New page theme
+------------------
+*Victor - 2017-06-07*
+
+**An mobile friendlier experience!**
+
+A couple of days ago I noticed that the Pymunk web page get a significant 
+amount of traffic from mobile, and at the same time the Sphinx theme it uses 
+is not built for mobile browsing. So as a result I decided to change theme to 
+something that can scale down to mobile size better. I hope the new page gives 
+a better experience for everyone!
+
+
 Pymunk on Android
 -----------------
 *Victor - 2017-06-04*
