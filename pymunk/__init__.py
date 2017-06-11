@@ -22,12 +22,12 @@
 # ----------------------------------------------------------------------------
 
 """
-pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
+Pymunk is a easy-to-use pythonic 2d physics library that can be used whenever
 you need 2d rigid body physics from Python.
 
 Homepage: http://www.pymunk.org
 
-This is the main containing module of pymunk. It contains among other things
+This is the main containing module of Pymunk. It contains among other things
 the very central Space, Body and Shape classes.
 
 When you import this module it will automatically load the chipmunk library

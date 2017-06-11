@@ -141,7 +141,7 @@ def parse_examples(path, img_folder, img_folder_os, source_url):
     print("autoexample: documenting files in " + path)
     #print os.getcwd()
 
-    for name in os.listdir(path):
+    for name in sorted(os.listdir(path)):
         fullpath = os.path.join(path, name)
         if os.path.isfile(fullpath):
             _, ext = os.path.splitext(fullpath)

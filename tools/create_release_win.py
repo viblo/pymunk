@@ -6,7 +6,7 @@ import shutil
 def main():
     os.chdir("..")
     shutil.rmtree("dist", True)
-    os.system("python setup.py sdist")
+    os.system("python setup.py sdist --formats=zip")
     os.system("python2 setup.py bdist_wheel")
     os.system("python2-64 setup.py bdist_wheel")
     files = os.listdir("dist")
@@ -24,19 +24,23 @@ def main():
     print("""
     Remember (before running this script!): 
     - change version number in readme, setup.py and __init__ 
-    - test in at least cpython 2.7, 3.x and pypy
-    - validate test results of travis and appveyor
+    - test in at least CPython 2.7, 3.x and Pypy
+    - validate test results of Travis and Appveyor
     - write news entry and put in news.rst
+    - make sure all images are optimized (for example with tinypng.com)
     - regenerate the api docs
+    
     """)
     print("""
-    Once the relase is done, remember to:
+    Once the release is done, remember to:
+    - tag code on github with version
     - Upload files on pypi
-    - Update pymunk entry on pygame.org
+    - Update Pymunk entry on pygame.org
     - Make release announcement at the chipmunk forum
     - Possibly: make release announcement on the pyglet list
     - Possibly: make release announcement on the pygame list
     - Possibly: make release announcement on the python announce list
+    - Possibly: make release announcement on the kivy mailing list
     """)
     os.chdir("tools")
     
