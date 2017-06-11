@@ -1,7 +1,6 @@
-"""This example shows how you can copy, save and load a space using pickle and 
-copy from the standard library.
+"""This example shows how you can copy, save and load a space using pickle.
 """
-import copy, pickle
+import pickle
 
 import pygame
 from pygame.locals import *
@@ -50,7 +49,7 @@ def main():
 
     for x in range(3):
         for y in range(7):
-            box = copy.deepcopy(template_box)
+            box = template_box.copy()
             box.body.position = 200+x*30, 10+y*20
             space1.add(box, box.body)
             
@@ -62,11 +61,12 @@ def main():
     ball.color = THECOLORS['red']
     space1.add(ball, b)
 
-    space2 = copy.deepcopy(space1)
+    # this is the same as space2 = copy.deepcopy(space1)
+    space2 = space1.copy()
     space2.sleep_time_threshold = float('inf')
 
-    backup1 = copy.deepcopy(space1)
-    backup2 = copy.deepcopy(space2)
+    backup1 = space1.copy()
+    backup2 = space2.copy()
 
     while True:
         for event in pygame.event.get():
@@ -84,8 +84,8 @@ def main():
             elif event.type == KEYDOWN and event.key == K_r:
                 space1 = backup1
                 space2 = backup2
-                backup1 = copy.deepcopy(space1)
-                backup2 = copy.deepcopy(space2)
+                backup1 = space1.copy() 
+                backup2 = space2.copy()
             elif event.type == KEYDOWN and event.key == K_SPACE:
                 # find all bodies with a circle shape in all spaces
                 for s in space1.shapes + space2.shapes:
