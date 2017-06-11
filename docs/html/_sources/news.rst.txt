@@ -2,6 +2,37 @@
 News 
 ****
 
+Pymunk 5.3.0
+------------
+*Victor - 2017-06-11*
+
+**Pickle and copy support!**
+
+New in this release is pickle (save and load) and copy support. This has been 
+on my mind for a long time, and when I got a feature request for it on Github 
+by Rick-C-137 I had the final push to make it happen.  See 
+`examples/copy_and_pickle.py 
+<https://github.com/viblo/pymunk/tree/master/examples/copy_and_pickle.py>`_ 
+for an example.
+
+The feature itself is very easy to use, pickle works just as expected, and copy
+is a simple method call. However, be aware that support for pickle of Spaces 
+with callback functions depends on the pickle protocol version. The oldest 
+pickle protocol have limited capability to pickle functions, so to get maximum 
+functionality use the latest pickle protocol possible.
+
+Changes:
+
+- Pickle support. Most objects can be pickled and un-pickled.
+- Copy support and method. Most objects now have a copy() function. Also the 
+  standard library copy.deepcopy() function works as expected.
+- Fixed bugs in BB.merge and other BB functions.
+- Improved documentation and tests.
+- New Kivy example (as mentioned in earlier news entry).
+
+I hope you will like it!
+
+
 New page theme
 ------------------
 *Victor - 2017-06-07*
@@ -41,11 +72,11 @@ Pymunk 5.2.0
 ------------
 *Victor - 2017-03-25*
 
-**Customize compile for ARM / Android**
+**Customized compile for ARM / Android**
 
-The main reason for this relase is the ARM / Android cross compilation support 
+The main reason for this release is the ARM / Android cross compilation support 
 thanks to the possibility to override the ccompiler and linker. After this 
-relase is out its possible to create a python-for-android build recipe for 
+release is out its possible to create a python-for-android build recipe for 
 Pymunk without patching the Pymunk code. It should also be easier to build for 
 other environments.
 
@@ -116,12 +147,12 @@ Move from ctypes to CFFI?
 
 **Should pymunk move to CFFI?**
 
-To make developement of pymunk easier Im planning to move from using ctypes
+To make development of pymunk easier Im planning to move from using ctypes
 to CFFI for the low level Chipmunk wrapping. The idea is that CFFI is a 
 active project which should mean it will be easier to get help, for example
 around the 64bit python problems on windows.
 
-Please take a look at Iseue 99 on github which tracks this switch.
+Please take a look at Issue 99 on github which tracks this switch.
 https://github.com/viblo/pymunk/issues/99
 
 
@@ -178,7 +209,7 @@ pymunk 4.0.0
 
 **A new release of pymunk is here!**
 
-This release is definatley a milestone, pymunk is now over 5 years old! 
+This release is definitely a milestone, pymunk is now over 5 years old! 
 (first version was released in February 2008, for the pyweek competition)
 
 
@@ -214,7 +245,7 @@ on OSX. Pypy 2.1 on one of the above platforms.
 Changes
 
 - New draw module to help with pyglet prototyping
-- Updated Chipmunk verison, with new collision detected code.
+- Updated Chipmunk version, with new collision detected code.
 - Added, improved and fixed broken examples
 - Possible to switch bodies on shapes
 - Made it legal do add and remove bodies during a simulation step

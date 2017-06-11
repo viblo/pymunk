@@ -10,7 +10,7 @@ Micro benchmarks
 ----------------
 
 In order to measure the overhead created by Pymunk in the most common cases I 
-have created two micro bechmarks. They should show the speed of the actual 
+have created two micro benchmarks. They should show the speed of the actual 
 wrapping code, which can tell how big overhead Pymunk creates, and how big 
 difference different wrapping methods does.
 
@@ -49,7 +49,7 @@ tests uses CPython from Conda, while the Pypy tests used a
 manually downloaded Pypy. CPython 2.7 is using Cffi 1.7, the other tests 
 Cffi 1.8.
 
-Remember that these results doesnt tell you how you game/application will 
+Remember that these results doesn't tell you how you game/application will 
 perform, they can more be seen as a help to identify performance issues and
 know differences between Pythons.
 
@@ -81,5 +81,5 @@ that moving from Ctypes to Cffi between Pymunk 4 and 5 had a negative impact in
 CPython, but positive impact on Pypy, and Pymunk 5 together with Pypy is with a 
 big margin the fastest option. 
 
-The speed increase between 5.0 and 5.1 happend because the Vec2d class and how
-its handled internally in pymunk was changed to improve performance.
+The speed increase between 5.0 and 5.1 happened because the Vec2d class and how
+its handled internally in Pymunk was changed to improve performance.

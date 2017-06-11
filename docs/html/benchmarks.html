@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Benchmarks &#8212; pymunk 5.2.0 documentation</title>
+    <title>Benchmarks &#8212; pymunk 5.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.2.0',
+        VERSION:     '5.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -52,7 +52,7 @@ of benchmarks.</p>
 <div class="section" id="micro-benchmarks">
 <h2>Micro benchmarks<a class="headerlink" href="#micro-benchmarks" title="Permalink to this headline">¶</a></h2>
 <p>In order to measure the overhead created by Pymunk in the most common cases I
-have created two micro bechmarks. They should show the speed of the actual
+have created two micro benchmarks. They should show the speed of the actual
 wrapping code, which can tell how big overhead Pymunk creates, and how big
 difference different wrapping methods does.</p>
 <p>The most common thing a typical program using Pymunk does is to read out the
@@ -85,7 +85,7 @@ and the tests were run inside a VirtualBox VM running 64bit Debian. The CPython
 tests uses CPython from Conda, while the Pypy tests used a
 manually downloaded Pypy. CPython 2.7 is using Cffi 1.7, the other tests
 Cffi 1.8.</p>
-<p>Remember that these results doesnt tell you how you game/application will
+<p>Remember that these results doesn’t tell you how you game/application will
 perform, they can more be seen as a help to identify performance issues and
 know differences between Pythons.</p>
 <div class="section" id="pymunk-get">
@@ -162,8 +162,8 @@ possibility since that is much faster than regular CPython. We can also see
 that moving from Ctypes to Cffi between Pymunk 4 and 5 had a negative impact in
 CPython, but positive impact on Pypy, and Pymunk 5 together with Pypy is with a
 big margin the fastest option.</p>
-<p>The speed increase between 5.0 and 5.1 happend because the Vec2d class and how
-its handled internally in pymunk was changed to improve performance.</p>
+<p>The speed increase between 5.0 and 5.1 happened because the Vec2d class and how
+its handled internally in Pymunk was changed to improve performance.</p>
 </div>
 </div>
 </div>

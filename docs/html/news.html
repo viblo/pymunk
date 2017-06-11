@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>News &#8212; pymunk 5.2.0 documentation</title>
+    <title>News &#8212; pymunk 5.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.2.0',
+        VERSION:     '5.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -46,6 +46,31 @@
             
   <div class="section" id="news">
 <h1>News<a class="headerlink" href="#news" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pymunk-5-3-0">
+<h2>Pymunk 5.3.0<a class="headerlink" href="#pymunk-5-3-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Victor - 2017-06-11</em></p>
+<p><strong>Pickle and copy support!</strong></p>
+<p>New in this release is pickle (save and load) and copy support. This has been
+on my mind for a long time, and when I got a feature request for it on Github
+by Rick-C-137 I had the final push to make it happen.  See
+<a class="reference external" href="https://github.com/viblo/pymunk/tree/master/examples/copy_and_pickle.py">examples/copy_and_pickle.py</a>
+for an example.</p>
+<p>The feature itself is very easy to use, pickle works just as expected, and copy
+is a simple method call. However, be aware that support for pickle of Spaces
+with callback functions depends on the pickle protocol version. The oldest
+pickle protocol have limited capability to pickle functions, so to get maximum
+functionality use the latest pickle protocol possible.</p>
+<p>Changes:</p>
+<ul class="simple">
+<li>Pickle support. Most objects can be pickled and un-pickled.</li>
+<li>Copy support and method. Most objects now have a copy() function. Also the
+standard library copy.deepcopy() function works as expected.</li>
+<li>Fixed bugs in BB.merge and other BB functions.</li>
+<li>Improved documentation and tests.</li>
+<li>New Kivy example (as mentioned in earlier news entry).</li>
+</ul>
+<p>I hope you will like it!</p>
+</div>
 <div class="section" id="new-page-theme">
 <h2>New page theme<a class="headerlink" href="#new-page-theme" title="Permalink to this headline">¶</a></h2>
 <p><em>Victor - 2017-06-07</em></p>
@@ -72,10 +97,10 @@ allowfullscreen></iframe></div>
 <div class="section" id="pymunk-5-2-0">
 <h2>Pymunk 5.2.0<a class="headerlink" href="#pymunk-5-2-0" title="Permalink to this headline">¶</a></h2>
 <p><em>Victor - 2017-03-25</em></p>
-<p><strong>Customize compile for ARM / Android</strong></p>
-<p>The main reason for this relase is the ARM / Android cross compilation support
+<p><strong>Customized compile for ARM / Android</strong></p>
+<p>The main reason for this release is the ARM / Android cross compilation support
 thanks to the possibility to override the ccompiler and linker. After this
-relase is out its possible to create a python-for-android build recipe for
+release is out its possible to create a python-for-android build recipe for
 Pymunk without patching the Pymunk code. It should also be easier to build for
 other environments.</p>
 <p>Changes</p>
@@ -135,11 +160,11 @@ quality.</p>
 <h2>Move from ctypes to CFFI?<a class="headerlink" href="#move-from-ctypes-to-cffi" title="Permalink to this headline">¶</a></h2>
 <p><em>Victor - 2016-05-19</em></p>
 <p><strong>Should pymunk move to CFFI?</strong></p>
-<p>To make developement of pymunk easier Im planning to move from using ctypes
+<p>To make development of pymunk easier Im planning to move from using ctypes
 to CFFI for the low level Chipmunk wrapping. The idea is that CFFI is a
 active project which should mean it will be easier to get help, for example
 around the 64bit python problems on windows.</p>
-<p>Please take a look at Iseue 99 on github which tracks this switch.
+<p>Please take a look at Issue 99 on github which tracks this switch.
 <a class="reference external" href="https://github.com/viblo/pymunk/issues/99">https://github.com/viblo/pymunk/issues/99</a></p>
 </div>
 <div class="section" id="travis-ci-tox">
@@ -180,7 +205,7 @@ github.</p>
 <h2>pymunk 4.0.0<a class="headerlink" href="#pymunk-4-0-0" title="Permalink to this headline">¶</a></h2>
 <p><em>Victor - 2013-08-25</em></p>
 <p><strong>A new release of pymunk is here!</strong></p>
-<p>This release is definatley a milestone, pymunk is now over 5 years old!
+<p>This release is definitely a milestone, pymunk is now over 5 years old!
 (first version was released in February 2008, for the pyweek competition)</p>
 <p>In this release a number of improvements have been made to pymunk. It
 includes debug drawing for pyglet (debug draw for pygame was introduced in
@@ -207,7 +232,7 @@ on OSX. Pypy 2.1 on one of the above platforms.</p>
 <p>Changes</p>
 <ul class="simple">
 <li>New draw module to help with pyglet prototyping</li>
-<li>Updated Chipmunk verison, with new collision detected code.</li>
+<li>Updated Chipmunk version, with new collision detected code.</li>
 <li>Added, improved and fixed broken examples</li>
 <li>Possible to switch bodies on shapes</li>
 <li>Made it legal do add and remove bodies during a simulation step</li>
@@ -336,6 +361,7 @@ number were increased).</p>
 <h3><a href="index.html">Table Of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pymunk-5-3-0">Pymunk 5.3.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#new-page-theme">New page theme</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-on-android">Pymunk on Android</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pymunk-5-2-0">Pymunk 5.2.0</a></li>

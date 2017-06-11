@@ -59,7 +59,6 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-#from . import util as u
 from .vec2d import Vec2d
 from .shape_filter import ShapeFilter
 from .transform import Transform
@@ -74,7 +73,7 @@ from .space import Space
 from .space_debug_draw_options import SpaceDebugDrawOptions
 from pymunk.constraint import *
 
-version = "5.2.0"
+version = "5.3.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from git).

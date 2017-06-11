@@ -57,3 +57,7 @@ div.sphinxsidebar {
     border-bottom: 1px solid #888;
     padding: 20px 10px 20px 10px;
 }
+
+div.body h2 {
+    margin-top: 40px;
+}
