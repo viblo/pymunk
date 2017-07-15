@@ -59,8 +59,7 @@ class CollisionHandler(object):
 
     def _set_begin(self, func):
         
-        @ffi.callback("typedef cpBool (*cpCollisionBeginFunc)"
-            "(cpArbiter *arb, cpSpace *space, cpDataPointer userData)")
+        @ffi.callback("cpCollisionBeginFunc")
         def cf(_arb, _space, _):
             x = func(Arbiter(_arb, self._space), self._space, self._data)
             if isinstance(x,int):
@@ -103,8 +102,7 @@ class CollisionHandler(object):
 
     def _set_pre_solve(self, func):
         
-        @ffi.callback("typedef cpBool (*cpCollisionPreSolveFunc)"
-            "(cpArbiter *arb, cpSpace *space, cpDataPointer userData)")
+        @ffi.callback("cpCollisionPreSolveFunc")
         def cf(_arb, _space, _data):
             x = func(Arbiter(_arb, self._space), self._space, self._data)
             if isinstance(x,int):
@@ -147,8 +145,7 @@ class CollisionHandler(object):
 
     def _set_post_solve(self, func):
     
-        @ffi.callback("typedef void (*cpCollisionPostSolveFunc)"
-            "(cpArbiter *arb, cpSpace *space, cpDataPointer userData)")
+        @ffi.callback("cpCollisionPostSolveFunc")
         def cf(_arb, _space, _data):
             func(Arbiter(_arb, self._space), self._space, self._data)
                 
@@ -172,8 +169,7 @@ class CollisionHandler(object):
 
     def _set_separate(self, func):
     
-        @ffi.callback("typedef void (*cpCollisionSeparateFunc)"
-            "(cpArbiter *arb, cpSpace *space, cpDataPointer userData)")
+        @ffi.callback("cpCollisionSeparateFunc")
         def cf(_arb, _space, _data):
             func(Arbiter(_arb, self._space), self._space, self._data)
                 

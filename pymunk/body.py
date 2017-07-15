@@ -240,8 +240,7 @@ class Body(PickleMixin, object):
         None).""")
 
     def _set_velocity_func(self, func):
-        @ffi.callback("typedef void (*cpBodyVelocityFunc)"
-            "(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt)")
+        @ffi.callback("cpBodyVelocityFunc")
         def _impl(_, gravity, damping, dt):
             return func(self, Vec2d._fromcffi(gravity), damping, dt)
 
@@ -259,8 +258,7 @@ class Body(PickleMixin, object):
         """)
 
     def _set_position_func(self, func):
-        @ffi.callback("typedef void (*cpBodyPositionFunc)"
-            "(cpBody *body, cpFloat dt)")
+        @ffi.callback("cpBodyPositionFunc")
         def _impl(_, dt):
             return func(self, dt)
         
@@ -412,8 +410,7 @@ class Body(PickleMixin, object):
 
             Do not hold on to the Arbiter after the callback!
         """
-        @ffi.callback("typedef void (*cpBodyArbiterIteratorFunc)"
-            "(cpBody *body, cpArbiter *arbiter, void *data)")
+        @ffi.callback("cpBodyArbiterIteratorFunc")
         def cf(_body, _arbiter, _data):
             arbiter = Arbiter(_arbiter, self._space)
             func(arbiter, *args, **kwargs)

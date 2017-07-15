@@ -48,37 +48,27 @@ class SpaceDebugDrawOptions(object):
         self.collision_point_color = (231,76,60,255)  
 
         
-        @ffi.callback("typedef void (*cpSpaceDebugDrawCircleImpl)"
-            "(cpVect pos, cpFloat angle, cpFloat radius, "
-            "cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, "
-            "cpDataPointer data)")
+        @ffi.callback("cpSpaceDebugDrawCircleImpl")
         def f1(pos, angle, radius, outline_color, fill_color, data):
             self.draw_circle(
                 Vec2d._fromcffi(pos), angle, radius, 
                 self._c(outline_color), self._c(fill_color))
         _options.drawCircle = f1
 
-        @ffi.callback("typedef void (*cpSpaceDebugDrawSegmentImpl)"
-            "(cpVect a, cpVect b, cpSpaceDebugColor color, cpDataPointer data)")
+        @ffi.callback("cpSpaceDebugDrawSegmentImpl")
         def f2(a, b, color, data):
             self.draw_segment(
                 Vec2d._fromcffi(a), Vec2d._fromcffi(b), self._c(color))
         _options.drawSegment = f2
 
-        @ffi.callback("typedef void (*cpSpaceDebugDrawFatSegmentImpl)"
-            "(cpVect a, cpVect b, cpFloat radius, "
-            "cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, "
-            "cpDataPointer data)")
+        @ffi.callback("cpSpaceDebugDrawFatSegmentImpl")
         def f3(a, b, radius, outline_color, fill_color, data):
             self.draw_fat_segment(
                 Vec2d._fromcffi(a), Vec2d._fromcffi(b), radius, 
                 self._c(outline_color), self._c(fill_color))
         _options.drawFatSegment = f3
 
-        @ffi.callback("typedef void (*cpSpaceDebugDrawPolygonImpl)"
-            "(int count, const cpVect *verts, cpFloat radius, "
-            "cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, "
-            "cpDataPointer data)")
+        @ffi.callback("cpSpaceDebugDrawPolygonImpl")
         def f4(count, verts, radius, outline_color, fill_color, data):
             vs = []
             for i in range(count):
@@ -88,16 +78,12 @@ class SpaceDebugDrawOptions(object):
                 self._c(outline_color), self._c(fill_color))   
         _options.drawPolygon = f4
 
-        @ffi.callback("typedef void (*cpSpaceDebugDrawDotImpl)"
-            "(cpFloat size, cpVect pos, cpSpaceDebugColor color, "
-            "cpDataPointer data)")
+        @ffi.callback("cpSpaceDebugDrawDotImpl")
         def f5(size, pos, color, data):
             self.draw_dot(size, Vec2d._fromcffi(pos), self._c(color))
         _options.drawDot = f5
 
-        @ffi.callback("typedef cpSpaceDebugColor "
-            "(*cpSpaceDebugDrawColorForShapeImpl)"
-            "(cpShape *shape, cpDataPointer data)")
+        @ffi.callback("cpSpaceDebugDrawColorForShapeImpl")
         def f6(_shape, data):
             space = ffi.from_handle(data)
             shape = space._get_shape(_shape)

@@ -550,8 +550,7 @@ class Space(PickleMixin, object):
 
         self.__query_hits = []
         
-        @ffi.callback("void (*cpSpacePointQueryFunc)"
-            "(cpShape *shape, cpVect point, cpFloat distance, cpVect gradient, void *data)")
+        @ffi.callback("cpSpacePointQueryFunc")
         def cf(_shape, point, distance, gradient, data):
             # space = ffi.from_handle(data)
             shape = self._get_shape(_shape)
@@ -646,9 +645,7 @@ class Space(PickleMixin, object):
 
         self.__query_hits = []
         
-        @ffi.callback("void (*cpSpaceSegmentQueryFunc)"
-            "(cpShape *shape, cpVect point, cpVect normal, cpFloat alpha,"
-            " void *data)")
+        @ffi.callback("cpSpaceSegmentQueryFunc")
         def cf(_shape, point, normal, alpha, data):
             shape = self._get_shape(_shape)
             p = SegmentQueryInfo(
@@ -713,8 +710,7 @@ class Space(PickleMixin, object):
         """
 
         self.__query_hits = []
-        @ffi.callback("typedef void (*cpSpaceBBQueryFunc)"
-            "(cpShape *shape, void *data)")
+        @ffi.callback("cpSpaceBBQueryFunc")
         def cf(_shape, data):
             shape = self._get_shape(_shape)
             self.__query_hits.append(shape)
@@ -737,8 +733,7 @@ class Space(PickleMixin, object):
         """
 
         self.__query_hits = []
-        @ffi.callback("typedef void (*cpSpaceShapeQueryFunc)"
-            "(cpShape *shape, cpContactPointSet *points, void *data)")
+        @ffi.callback("cpSpaceShapeQueryFunc")
         def cf(_shape, _points, _data):
             shape = self._get_shape(_shape)
             point_set = ContactPointSet._from_cp(_points)

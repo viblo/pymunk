@@ -41,6 +41,7 @@ def main():
     - Possibly: make release announcement on the pygame list
     - Possibly: make release announcement on the python announce list
     - Possibly: make release announcement on the kivy mailing list
+    - Possibly: make PR to update pymunk in python-for-android (remember test!)
     """)
     os.chdir("tools")
     

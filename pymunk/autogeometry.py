@@ -201,13 +201,11 @@ def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
     :type sample_func: ``func(point: Vec2d) -> float``
     """
     
-    @ffi.callback("typedef void (*cpMarchSegmentFunc)"
-        "(cpVect v0, cpVect v1, void *data)")
+    @ffi.callback("cpMarchSegmentFunc")
     def _seg_f(v0, v1, _data):
         segment_func(Vec2d._fromcffi(v0), Vec2d._fromcffi(v1))
         
-    @ffi.callback("typedef cpFloat (*cpMarchSampleFunc)"
-        "(cpVect point, void *data)")
+    @ffi.callback("cpMarchSampleFunc")
     def _sam_f(point, _data):
         return sample_func(Vec2d._fromcffi(point))
     
@@ -233,13 +231,11 @@ def march_hard(bb, x_samples, y_samples, threshold, segment_func, sample_func):
     :type sample_func: ``func(point: Vec2d) -> float``
     """
     
-    @ffi.callback("typedef void (*cpMarchSegmentFunc)"
-        "(cpVect v0, cpVect v1, void *data)")
+    @ffi.callback("cpMarchSegmentFunc")
     def _seg_f(v0, v1, _data):
         segment_func(Vec2d._fromcffi(v0), Vec2d._fromcffi(v1))
         
-    @ffi.callback("typedef cpFloat (*cpMarchSampleFunc)"
-        "(cpVect point, void *data)")
+    @ffi.callback("cpMarchSampleFunc")
     def _sam_f(point, _data):
         return sample_func(Vec2d._fromcffi(point))
     
