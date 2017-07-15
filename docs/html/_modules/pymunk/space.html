@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.space &#8212; pymunk 5.3.0 documentation</title>
+    <title>pymunk.space &#8212; pymunk 5.3.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.3.0',
+        VERSION:     '5.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -595,8 +595,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
         
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;void (*cpSpacePointQueryFunc)&quot;</span>
-            <span class="s2">&quot;(cpShape *shape, cpVect point, cpFloat distance, cpVect gradient, void *data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpacePointQueryFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="c1"># space = ffi.from_handle(data)</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
@@ -691,9 +690,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
         
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;void (*cpSpaceSegmentQueryFunc)&quot;</span>
-            <span class="s2">&quot;(cpShape *shape, cpVect point, cpVect normal, cpFloat alpha,&quot;</span>
-            <span class="s2">&quot; void *data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceSegmentQueryFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span>
@@ -758,8 +755,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceBBQueryFunc)&quot;</span>
-            <span class="s2">&quot;(cpShape *shape, void *data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceBBQueryFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
@@ -782,8 +778,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceShapeQueryFunc)&quot;</span>
-            <span class="s2">&quot;(cpShape *shape, cpContactPointSet *points, void *data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceShapeQueryFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">_points</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
             <span class="n">point_set</span> <span class="o">=</span> <span class="n">ContactPointSet</span><span class="o">.</span><span class="n">_from_cp</span><span class="p">(</span><span class="n">_points</span><span class="p">)</span>

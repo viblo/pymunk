@@ -2,6 +2,20 @@
 News 
 ****
 
+Pymunk 5.3.1
+------------
+*Victor - 2017-07-15*
+
+**Fix for Pycparser 2.18**
+
+This release contains a fix for the recently released Pycparser 2.18 which
+is used by Pymunk indirectly from its use of CFFI.
+
+Changes:
+
+- Fix broken callbacks when using Pycparser 2.18.
+
+
 Pymunk 5.3.0
 ------------
 *Victor - 2017-06-11*

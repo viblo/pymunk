@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.space_debug_draw_options &#8212; pymunk 5.3.0 documentation</title>
+    <title>pymunk.space_debug_draw_options &#8212; pymunk 5.3.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.3.0',
+        VERSION:     '5.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -93,37 +93,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">collision_point_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">231</span><span class="p">,</span><span class="mi">76</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span>  
 
         
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawCircleImpl)&quot;</span>
-            <span class="s2">&quot;(cpVect pos, cpFloat angle, cpFloat radius, &quot;</span>
-            <span class="s2">&quot;cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, &quot;</span>
-            <span class="s2">&quot;cpDataPointer data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceDebugDrawCircleImpl&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">f1</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_circle</span><span class="p">(</span>
                 <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">pos</span><span class="p">),</span> <span class="n">angle</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">outline_color</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">fill_color</span><span class="p">))</span>
         <span class="n">_options</span><span class="o">.</span><span class="n">drawCircle</span> <span class="o">=</span> <span class="n">f1</span>
 
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawSegmentImpl)&quot;</span>
-            <span class="s2">&quot;(cpVect a, cpVect b, cpSpaceDebugColor color, cpDataPointer data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceDebugDrawSegmentImpl&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">f2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_segment</span><span class="p">(</span>
                 <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
         <span class="n">_options</span><span class="o">.</span><span class="n">drawSegment</span> <span class="o">=</span> <span class="n">f2</span>
 
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawFatSegmentImpl)&quot;</span>
-            <span class="s2">&quot;(cpVect a, cpVect b, cpFloat radius, &quot;</span>
-            <span class="s2">&quot;cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, &quot;</span>
-            <span class="s2">&quot;cpDataPointer data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceDebugDrawFatSegmentImpl&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">f3</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_fat_segment</span><span class="p">(</span>
                 <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">radius</span><span class="p">,</span> 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">outline_color</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">fill_color</span><span class="p">))</span>
         <span class="n">_options</span><span class="o">.</span><span class="n">drawFatSegment</span> <span class="o">=</span> <span class="n">f3</span>
 
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawPolygonImpl)&quot;</span>
-            <span class="s2">&quot;(int count, const cpVect *verts, cpFloat radius, &quot;</span>
-            <span class="s2">&quot;cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, &quot;</span>
-            <span class="s2">&quot;cpDataPointer data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceDebugDrawPolygonImpl&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">f4</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">verts</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">vs</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
@@ -133,16 +123,12 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">outline_color</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">fill_color</span><span class="p">))</span>   
         <span class="n">_options</span><span class="o">.</span><span class="n">drawPolygon</span> <span class="o">=</span> <span class="n">f4</span>
 
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpSpaceDebugDrawDotImpl)&quot;</span>
-            <span class="s2">&quot;(cpFloat size, cpVect pos, cpSpaceDebugColor color, &quot;</span>
-            <span class="s2">&quot;cpDataPointer data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceDebugDrawDotImpl&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">f5</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_dot</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">pos</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
         <span class="n">_options</span><span class="o">.</span><span class="n">drawDot</span> <span class="o">=</span> <span class="n">f5</span>
 
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef cpSpaceDebugColor &quot;</span>
-            <span class="s2">&quot;(*cpSpaceDebugDrawColorForShapeImpl)&quot;</span>
-            <span class="s2">&quot;(cpShape *shape, cpDataPointer data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceDebugDrawColorForShapeImpl&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">f6</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">space</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">from_handle</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>

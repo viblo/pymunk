@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.autogeometry &#8212; pymunk 5.3.0 documentation</title>
+    <title>pymunk.autogeometry &#8212; pymunk 5.3.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.3.0',
+        VERSION:     '5.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -246,13 +246,11 @@
 <span class="sd">    :type sample_func: ``func(point: Vec2d) -&gt; float``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpMarchSegmentFunc)&quot;</span>
-        <span class="s2">&quot;(cpVect v0, cpVect v1, void *data)&quot;</span><span class="p">)</span>
+    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpMarchSegmentFunc&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_seg_f</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
         <span class="n">segment_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v0</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span>
         
-    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef cpFloat (*cpMarchSampleFunc)&quot;</span>
-        <span class="s2">&quot;(cpVect point, void *data)&quot;</span><span class="p">)</span>
+    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpMarchSampleFunc&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_sam_f</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">sample_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
     
@@ -278,13 +276,11 @@
 <span class="sd">    :type sample_func: ``func(point: Vec2d) -&gt; float``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpMarchSegmentFunc)&quot;</span>
-        <span class="s2">&quot;(cpVect v0, cpVect v1, void *data)&quot;</span><span class="p">)</span>
+    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpMarchSegmentFunc&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_seg_f</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
         <span class="n">segment_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v0</span><span class="p">),</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span>
         
-    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef cpFloat (*cpMarchSampleFunc)&quot;</span>
-        <span class="s2">&quot;(cpVect point, void *data)&quot;</span><span class="p">)</span>
+    <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpMarchSampleFunc&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_sam_f</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">sample_func</span><span class="p">(</span><span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
     

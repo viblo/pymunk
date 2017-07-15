@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.collision_handler &#8212; pymunk 5.3.0 documentation</title>
+    <title>pymunk.collision_handler &#8212; pymunk 5.3.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.3.0',
+        VERSION:     '5.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -104,8 +104,7 @@
 
     <span class="k">def</span> <span class="nf">_set_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef cpBool (*cpCollisionBeginFunc)&quot;</span>
-            <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpCollisionBeginFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
@@ -148,8 +147,7 @@
 
     <span class="k">def</span> <span class="nf">_set_pre_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef cpBool (*cpCollisionPreSolveFunc)&quot;</span>
-            <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpCollisionPreSolveFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
@@ -192,8 +190,7 @@
 
     <span class="k">def</span> <span class="nf">_set_post_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
     
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpCollisionPostSolveFunc)&quot;</span>
-            <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpCollisionPostSolveFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
                 
@@ -217,8 +214,7 @@
 
     <span class="k">def</span> <span class="nf">_set_separate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
     
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpCollisionSeparateFunc)&quot;</span>
-            <span class="s2">&quot;(cpArbiter *arb, cpSpace *space, cpDataPointer userData)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpCollisionSeparateFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
                 

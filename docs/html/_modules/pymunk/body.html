@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.body &#8212; pymunk 5.3.0 documentation</title>
+    <title>pymunk.body &#8212; pymunk 5.3.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.3.0',
+        VERSION:     '5.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -285,8 +285,7 @@
 <span class="s2">        None).&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_velocity_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpBodyVelocityFunc)&quot;</span>
-            <span class="s2">&quot;(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpBodyVelocityFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">_impl</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">gravity</span><span class="p">),</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
 
@@ -304,8 +303,7 @@
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_position_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpBodyPositionFunc)&quot;</span>
-            <span class="s2">&quot;(cpBody *body, cpFloat dt)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpBodyPositionFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">_impl</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
         
@@ -457,8 +455,7 @@
 
 <span class="sd">            Do not hold on to the Arbiter after the callback!</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;typedef void (*cpBodyArbiterIteratorFunc)&quot;</span>
-            <span class="s2">&quot;(cpBody *body, cpArbiter *arbiter, void *data)&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpBodyArbiterIteratorFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_body</span><span class="p">,</span> <span class="n">_arbiter</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">arbiter</span> <span class="o">=</span> <span class="n">Arbiter</span><span class="p">(</span><span class="n">_arbiter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
             <span class="n">func</span><span class="p">(</span><span class="n">arbiter</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
