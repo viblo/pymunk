@@ -120,9 +120,9 @@ class UnitTestArbiter(unittest.TestCase):
             self.assertAlmostEqual(p1.distance, -14.16904810)
             
             # check that they can be changed
-            ps.normal = 1,0
-            ps.points[0].point_a = 9,10
-            ps.points[0].point_b = -2,-3
+            ps.normal = Vec2d(1,0)
+            ps.points[0].point_a = Vec2d(9,10)
+            ps.points[0].point_b = Vec2d(-2,-3)
             ps.points[0].distance = -10
             
             arb.contact_point_set = ps

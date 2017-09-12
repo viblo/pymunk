@@ -44,12 +44,12 @@ class Arbiter(object):
         # corresponding c struct. 
         
         _set = cp.cpArbiterGetContactPointSet(self._arbiter)
-        _set.normal = point_set.normal
+        _set.normal = tuple(point_set.normal)
         
         if len(point_set.points) == _set.count:
             for i in range(_set.count):
-                _set.points[i].pointA = point_set.points[0].point_a
-                _set.points[i].pointB = point_set.points[0].point_b
+                _set.points[i].pointA = tuple(point_set.points[0].point_a)
+                _set.points[i].pointB = tuple(point_set.points[0].point_b)
                 _set.points[i].distance = point_set.points[0].distance
         else:
             msg = 'Expected {} points, got {} points in point_set'.format(
