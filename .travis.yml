@@ -63,6 +63,7 @@ install:
 script:
 - $PYTHON -m tox
 - $BUILD_CMD
+- cat /home/travis/build/viblo/pymunk/.tox/pypy3/log/pypy3-0.log
 deploy:
   provider: bintray
   file: "bintray.json"
