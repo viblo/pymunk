@@ -101,6 +101,14 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Kister, Ulrike, Konstantin Klamka, Christian Tominski, and Raimund Dachselt. 
+  "GraSp: Combining Spatially‐aware Mobile Devices and a Display Wall for Graph Visualization and Interaction." 
+  In Computer Graphics Forum, vol. 36, no. 3, pp. 503-514. 2017.
+
+* Kim, Neil H., Gloria Lee, Nicholas A. Sherer, K. Michael Martini, Nigel Goldenfeld, and Thomas E. Kuhlman. 
+  "Real-time transposable element activity in individual live cells." 
+  Proceedings of the National Academy of Sciences 113, no. 26 (2016): 7278-7283.
+
 * Baheti, Ashutosh, and Arobinda Gupta. 
   "Non-linear Barrier Coverage using Mobile Wireless Sensors." 
   arXiv preprint arXiv:1611.07397 (2016).
@@ -156,7 +164,7 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2016-10-07. If something is missing or wrong, please contact 
+List last updated 2017-09-14. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
