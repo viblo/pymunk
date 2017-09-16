@@ -2,6 +2,21 @@
 News 
 ****
 
+Pymunk 5.3.2
+------------
+*Victor - 2017-09-16*
+
+**Fixes ContactPointSet updating in Arbiter**
+
+This release contains a fix for the ContactPointSet on Arbiters. With this fix
+its possible to update the contacts during a collision callback, for example
+to update the normal like in the breakout game example. 
+
+Changes:
+
+- Fix Arbiter.contact_point_set 
+
+
 Pymunk 5.3.1
 ------------
 *Victor - 2017-07-15*

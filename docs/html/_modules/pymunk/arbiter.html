@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pymunk.arbiter &#8212; pymunk 5.3.1 documentation</title>
+    <title>pymunk.arbiter &#8212; pymunk 5.3.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.3.1',
+        VERSION:     '5.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -89,12 +89,12 @@
         <span class="c1"># corresponding c struct. </span>
         
         <span class="n">_set</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetContactPointSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
-        <span class="n">_set</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">point_set</span><span class="o">.</span><span class="n">normal</span>
+        <span class="n">_set</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point_set</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="n">_set</span><span class="o">.</span><span class="n">count</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_set</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
-                <span class="n">_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">pointA</span> <span class="o">=</span> <span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">point_a</span>
-                <span class="n">_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">pointB</span> <span class="o">=</span> <span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">point_b</span>
+                <span class="n">_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">pointA</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">point_a</span><span class="p">)</span>
+                <span class="n">_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">pointB</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">point_b</span><span class="p">)</span>
                 <span class="n">_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">point_set</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Expected </span><span class="si">{}</span><span class="s1"> points, got </span><span class="si">{}</span><span class="s1"> points in point_set&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
