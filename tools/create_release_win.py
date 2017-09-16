@@ -34,7 +34,7 @@ def main():
     print("""
     Once the release is done, remember to:
     - tag code on github with version
-    - Upload files on pypi
+    - Upload files on pypi (> python -m twine upload dist/*)
     - Update Pymunk entry on pygame.org
     - Make release announcement at the chipmunk forum
     - Possibly: make release announcement on the pyglet list
