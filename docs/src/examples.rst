@@ -63,7 +63,7 @@ To run directly without installing anything. From the pymunk source folder::
     
 Each example contains something unique. Not all of the examples use the same 
 style. For example, some use the pymunk.pygame_util module to draw stuff, 
-others contain the actual drawing code themselfs. However, each example is 
+others contain the actual drawing code themselves. However, each example is 
 self contained. Except for external libraries (such as pygame) and pymunk each
 example can be run directly to make it easy to read the code and understand 
 what happens even if it means that some code is repeated for each example.

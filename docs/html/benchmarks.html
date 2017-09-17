@@ -48,7 +48,7 @@
 <h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Permalink to this headline">¶</a></h1>
 <p>To get a grip of the actual performance of Pymunk this page contains a number
 of benchmarks.</p>
-<p>The full code of all benchmarks are available under the <cite>benchmarks</cite> folder.</p>
+<p>The full code of all benchmarks are available under the <a class="reference external" href="https://github.com/viblo/pymunk/blob/master/benchmarks">benchmarks</a> folder.</p>
 <div class="section" id="micro-benchmarks">
 <h2>Micro benchmarks<a class="headerlink" href="#micro-benchmarks" title="Permalink to this headline">¶</a></h2>
 <p>In order to measure the overhead created by Pymunk in the most common cases I
@@ -167,6 +167,99 @@ its handled internally in Pymunk was changed to improve performance.</p>
 </div>
 </div>
 </div>
+<div class="section" id="compared-to-other-physics-libraries">
+<h2>Compared to Other Physics Libraries<a class="headerlink" href="#compared-to-other-physics-libraries" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cymunk">
+<h3>Cymunk<a class="headerlink" href="#cymunk" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://github.com/kivy/cymunk">Cymunk</a> is an alternative wrapper around Chipmunk. In contrast to Pymunk it uses Cython for wrapping (Pymunk uses CFFI) which gives it a different performance profile. However, since both are built
+around Chipmunk the overall speed will be very similar, only when information
+passes from/to Chipmunk will there be a difference. This is exactly the kind of
+overhead that the micro benchmarks are made to measure.</p>
+<p>Cymunk is not as feature complete as Pymunk, so in order to compare with Pymunk
+we have to make some adjustments. A major difference is that it does not
+implement the <cite>position_func</cite> function, so instead we do an alternative
+callback test using the collision handler:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">h</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">add_default_collision_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">arb</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">false</span>
+<span class="n">h</span><span class="o">.</span><span class="n">pre_solve</span> <span class="o">=</span> <span class="n">f</span>
+
+<span class="n">s</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(see <cite>pymunk-collision-callback.py and  `cymunk-collision-callback.py</cite>)</p>
+<div class="section" id="id3">
+<h4>Results<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>Tests run on a HP G1 1040 laptop with a Intel i7-4600U. Laptop runs Windows,
+and the tests were run inside a VirtualBox VM running 64bit Debian. The CPython
+tests uses CPython from Conda, while the Pypy tests used a manually downloaded Pypy. Cffi version 1.10.0 and Cython 0.25.2.</p>
+<p>Since Cymunk doesnt have a proper release I used the latest master from its
+Github repository, hash 24845cc retrieved on 2017-09-16.</p>
+<div class="section" id="get">
+<h5>Get:<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h5>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="36%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"></th>
+<th class="head">CPython 3.5.3</th>
+<th class="head">Pypy 5.8</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Pymunk 5.3</td>
+<td>2.14s</td>
+<td>0.33s</td>
+</tr>
+<tr class="row-odd"><td>Cymunk 20170916</td>
+<td>0.41s</td>
+<td>(10.0s)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="collision-callback">
+<h5>Collision-Callback:<a class="headerlink" href="#collision-callback" title="Permalink to this headline">¶</a></h5>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="36%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"></th>
+<th class="head">CPython 3.5.3</th>
+<th class="head">Pypy 5.8</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Pymunk 5.3</td>
+<td>3.71s</td>
+<td>0.58s</td>
+</tr>
+<tr class="row-odd"><td>Pymunk 20170916</td>
+<td>0.95s</td>
+<td>(7.01s)</td>
+</tr>
+</tbody>
+</table>
+<p>(Cymunk results on Pypy within parentheses since Cython is well known to be
+slow on Pypy)</p>
+<p>What we can see from these results is that Cymunk on CPython is much faster
+than Pymunk on CPython, but Pymunk takes the overall victory when we include
+Pypy.</p>
+<p>Something we did not take into account is that you can trade convenience for
+performance and use Cython in the application code as well to speed things up. I
+think this is the approach used in KivEnt which is the primary user of Cymunk.
+However, that requires a much more complicated setup when you develop your
+application because of the compiler requirements and code changes.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -201,6 +294,13 @@ its handled internally in Pymunk was changed to improve performance.</p>
 <li class="toctree-l3"><a class="reference internal" href="#results">Results:</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#pymunk-get">Pymunk-Get:</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pymunk-callback">Pymunk-Callback:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#compared-to-other-physics-libraries">Compared to Other Physics Libraries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cymunk">Cymunk</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Results</a></li>
 </ul>
 </li>
 </ul>
