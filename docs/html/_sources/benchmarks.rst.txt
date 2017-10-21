@@ -139,7 +139,7 @@ Collision-Callback:
 ..               CPython 3.5.3  Pypy 5.8
 ===============  =============  ========
 Pymunk 5.3       3.71s          0.58s
-Pymunk 20170916  0.95s          (7.01s)
+Cymunk 20170916  0.95s          (7.01s)
 ===============  =============  ========
 
 (Cymunk results on Pypy within parentheses since Cython is well known to be 
