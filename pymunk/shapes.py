@@ -14,6 +14,9 @@ from .contact_point_set import ContactPointSet
 from .vec2d import Vec2d
 from ._pickle import PickleMixin
 
+from threading import Lock
+shape_id_lock = Lock()
+
 class Shape(PickleMixin, object):
     """Base class for all the shapes.
 
@@ -41,10 +44,11 @@ class Shape(PickleMixin, object):
     def _get_shapeid(self):
         return cp.cpShapeGetUserData(self._shape)
     def _set_shapeid(self):
-        cp.cpShapeSetUserData(
-            self._shape, 
-            ffi.cast("cpDataPointer", Shape._shapeid_counter))
-        Shape._shapeid_counter += 1
+        with shape_id_lock:
+            cp.cpShapeSetUserData(
+                self._shape,
+                ffi.cast("cpDataPointer", Shape._shapeid_counter))
+            Shape._shapeid_counter += 1
 
     def _get_mass(self):
         return cp.cpShapeGetMass(self._shape)
