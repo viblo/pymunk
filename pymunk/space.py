@@ -1,9 +1,10 @@
 __docformat__ = "reStructuredText"
 
 import weakref
-from weakref import WeakSet
 import platform
 import copy
+import threading
+import queue
 
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
@@ -75,9 +76,9 @@ class Space(PickleMixin, object):
         self._static_body = None
         self._constraints = set()
         
-        self._in_step = False
-        self._add_later = set()
-        self._remove_later = set()
+        self._in_step = threading.Lock()
+        self._add_later = queue.Queue()
+        self._remove_later = queue.Queue()
 
 
     def _get_self(self):
@@ -252,8 +253,9 @@ class Space(PickleMixin, object):
         add will not be performed until the end of the step.
         """
 
-        if self._in_step:
-            self._add_later.add(objs)
+        free = self._in_step.acquire(False)
+        if not free:
+            self._add_later.put(objs)
             return
 
         for o in objs:
@@ -266,6 +268,8 @@ class Space(PickleMixin, object):
             else:
                 for oo in o:
                     self.add(oo)
+
+        self._in_step.release()
 
     def remove(self, *objs):
         """Remove one or many shapes, bodies or constraints from the space
@@ -280,8 +284,10 @@ class Space(PickleMixin, object):
             body, remove the joints and shapes attached to it.
         """
 
-        if self._in_step:
-            self._remove_later.add(objs)
+        free = self._in_step.acquire(False)
+        print(free)
+        if not free:
+            self._remove_later.put(objs)
             return
 
         for o in objs:
@@ -294,6 +300,7 @@ class Space(PickleMixin, object):
             else:
                 for oo in o:
                     self.remove(oo)
+        self._in_step.release()
 
     def _add_shape(self, shape):
         """Adds a shape to the space"""
@@ -388,26 +395,27 @@ class Space(PickleMixin, object):
         :param float dt: Time step length
         """
 
-        self._in_step = True
-        if self.threaded:
-            cp.cpHastySpaceStep(self._space, dt)
-        else:
-            cp.cpSpaceStep(self._space, dt)
-        self._removed_shapes = {}
-        self._in_step = False
+        with self._in_step:
+            if self.threaded:
+                cp.cpHastySpaceStep(self._space, dt)
+            else:
+                cp.cpSpaceStep(self._space, dt)
+            self._removed_shapes = {}
 
-        for objs in self._add_later:
-            self.add(objs)
-        self._add_later.clear()
+            while not self._add_later.empty():
+                objs = self._add_later.get()
+                self.add(objs)
+                self._add_later.task_done()
 
-        for objs in self._remove_later:
-            self.remove(objs)
-        self._remove_later.clear()
-        
-        for key in self._post_step_callbacks:
-            self._post_step_callbacks[key](self)  
-        
-        self._post_step_callbacks = {}  
+            while not self._remove_later.empty():
+                objs = self._remove_later.get()
+                self.remove(objs)
+                self._remove_later.task_done()
+
+            for key in self._post_step_callbacks:
+                self._post_step_callbacks[key](self)
+
+            self._post_step_callbacks = {}
 
 
     def add_collision_handler(self, collision_type_a, collision_type_b):
