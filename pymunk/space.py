@@ -4,7 +4,10 @@ import weakref
 import platform
 import copy
 import threading
-import queue
+try:
+    import queue
+except ImportError:
+    import Queue as queue
 
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
