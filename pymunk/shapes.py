@@ -1,6 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import copy
+import threading
 
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
@@ -14,8 +15,7 @@ from .contact_point_set import ContactPointSet
 from .vec2d import Vec2d
 from ._pickle import PickleMixin
 
-from threading import Lock
-shape_id_lock = Lock()
+_shape_id_lock = threading.Lock()
 
 class Shape(PickleMixin, object):
     """Base class for all the shapes.
@@ -44,7 +44,7 @@ class Shape(PickleMixin, object):
     def _get_shapeid(self):
         return cp.cpShapeGetUserData(self._shape)
     def _set_shapeid(self):
-        with shape_id_lock:
+        with _shape_id_lock:
             cp.cpShapeSetUserData(
                 self._shape,
                 ffi.cast("cpDataPointer", Shape._shapeid_counter))

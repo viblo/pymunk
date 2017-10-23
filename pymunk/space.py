@@ -71,7 +71,7 @@ class Space(PickleMixin, object):
 
         self._handlers = {} # To prevent the gc to collect the callbacks.
 
-        self._post_step_callbacks = {}
+        self._post_step_callbacks = queue.Queue()
         self._removed_shapes = {}
 
         self._shapes = {}
@@ -288,7 +288,7 @@ class Space(PickleMixin, object):
         """
 
         free = self._in_step.acquire(False)
-        print(free)
+
         if not free:
             self._remove_later.put(objs)
             return
@@ -415,10 +415,10 @@ class Space(PickleMixin, object):
                 self.remove(objs)
                 self._remove_later.task_done()
 
-            for key in self._post_step_callbacks:
+            while not self._post_step_callbacks.empty():
+                key = self._post_step_callbacks.get()
                 self._post_step_callbacks[key](self)
-
-            self._post_step_callbacks = {}
+                self._post_step_callbacks.task_done()
 
 
     def add_collision_handler(self, collision_type_a, collision_type_b):
