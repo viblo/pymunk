@@ -19,34 +19,6 @@ from .contact_point_set import ContactPointSet
 from ._pickle import PickleMixin
 from pymunk.constraint import Constraint
 
-class AsyncHandler(threading.Thread):
-    def __init__(self, space):
-        self.space = space
-        self.do_event = threading.Event()
-        self.free_event = threading.Event()
-        threading.Thread.__init__(self, name="AsyncHandler({})".format(self.space), daemon=False)
-
-    def run(self):
-        space = self.space
-        while 1:
-            self.do_event.wait()
-            self.free_event.clear()
-            with space._in_step:
-                for i in range(len(space._add_later)):
-                    objs = space._add_later.popleft()
-                    space.add(objs)
-
-                for i in range(len(space._remove_later)):
-                    objs = space._remove_later.popleft()
-                    space.remove(objs)
-
-                post_step = space._post_step_callbacks.copy()
-                for key in post_step:
-                    space._post_step_callbacks[key](self)
-                    del space._post_step_callbacks[key]
-            self.do_event.clear()
-            self.free_event.set()
-
 class Space(PickleMixin, object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes
     and joints to it and then step them all forward together through time.
@@ -106,9 +78,6 @@ class Space(PickleMixin, object):
         self._in_step = threading.Lock()
         self._add_later = collections.deque()
         self._remove_later = collections.deque()
-
-        self.thread = AsyncHandler(self)
-        self.thread.start()
 
     def _get_self(self):
         return self
@@ -401,7 +370,7 @@ class Space(PickleMixin, object):
         """)
 
 
-    def step(self, dt, blocking = True):
+    def step(self, dt):
         """Update the space for the given time step. 
         
         Using a fixed time step is highly recommended. Doing so will increase 
@@ -430,11 +399,19 @@ class Space(PickleMixin, object):
             else:
                 cp.cpSpaceStep(self._space, dt)
             self._removed_shapes = {}
-            self.thread.do_event.set()
-        if blocking:
-            self.thread.free_event.wait()
 
+        for i in range(len(self._add_later)):
+            objs = self._add_later.popleft()
+            self.add(objs)
 
+        for i in range(len(self._remove_later)):
+            objs = self._remove_later.popleft()
+            self.remove(objs)
+
+        post_step = self._post_step_callbacks.copy()
+        for key in post_step:
+            post_step[key](self)
+            del self._post_step_callbacks[key]
 
     def add_collision_handler(self, collision_type_a, collision_type_b):
         """Return the :py:class:`CollisionHandler` for collisions between 
