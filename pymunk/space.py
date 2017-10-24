@@ -257,6 +257,12 @@ class Space(PickleMixin, object):
             return
 
         for o in objs:
+            self._add(o)
+
+        self._in_step.release()
+
+    def _add(self, *objs):
+        for o in objs:
             if isinstance(o, Body):
                 self._add_body(o)
             elif isinstance(o, Shape):
@@ -265,9 +271,7 @@ class Space(PickleMixin, object):
                 self._add_constraint(o)
             else:
                 for oo in o:
-                    self.add(oo)
-
-        self._in_step.release()
+                    self._add(oo)
 
     def remove(self, *objs):
         """Remove one or many shapes, bodies or constraints from the space
@@ -285,9 +289,14 @@ class Space(PickleMixin, object):
         free = self._in_step.acquire(False)
 
         if not free:
-            self._remove_later.append(objs)
             return
 
+        for o in objs:
+            self._remove(o)
+
+        self._in_step.release()
+
+    def _remove(self, *objs):
         for o in objs:
             if isinstance(o, Body):
                 self._remove_body(o)
@@ -297,8 +306,7 @@ class Space(PickleMixin, object):
                 self._remove_constraint(o)
             else:
                 for oo in o:
-                    self.remove(oo)
-        self._in_step.release()
+                    self._remove(oo)
 
     def _add_shape(self, shape):
         """Adds a shape to the space"""
@@ -402,11 +410,11 @@ class Space(PickleMixin, object):
 
         for i in range(len(self._add_later)):
             objs = self._add_later.popleft()
-            self.add(objs)
+            self._add(objs)
 
         for i in range(len(self._remove_later)):
             objs = self._remove_later.popleft()
-            self.remove(objs)
+            self._remove(objs)
 
         post_step = self._post_step_callbacks.copy()
         for key in post_step:
