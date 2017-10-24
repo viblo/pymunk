@@ -4,7 +4,6 @@ import weakref
 import platform
 import copy
 import threading
-import collections
 
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
