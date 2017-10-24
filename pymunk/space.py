@@ -19,6 +19,7 @@ from .contact_point_set import ContactPointSet
 from ._pickle import PickleMixin
 from pymunk.constraint import Constraint
 
+
 class Space(PickleMixin, object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes
     and joints to it and then step them all forward together through time.
@@ -76,8 +77,8 @@ class Space(PickleMixin, object):
         self._constraints = set()
         
         self._in_step = threading.Lock()
-        self._add_later = collections.deque()
-        self._remove_later = collections.deque()
+        self._add_later = set()
+        self._remove_later = set()
 
     def _get_self(self):
         return self
@@ -253,11 +254,10 @@ class Space(PickleMixin, object):
 
         free = self._in_step.acquire(False)
         if not free:
-            self._add_later.append(objs)
+            self._add_later.add(objs)
             return
 
-        for o in objs:
-            self._add(o)
+        self._add(objs)
 
         self._in_step.release()
 
@@ -289,11 +289,10 @@ class Space(PickleMixin, object):
         free = self._in_step.acquire(False)
 
         if not free:
-            self._remove_later.append(objs)
+            self._remove_later.add(objs)
             return
 
-        for o in objs:
-            self._remove(o)
+        self._remove(objs)
 
         self._in_step.release()
 
@@ -311,23 +310,26 @@ class Space(PickleMixin, object):
 
     def _add_shape(self, shape):
         """Adds a shape to the space"""
-        assert shape._get_shapeid() not in self._shapes, "shape already added to space"
+        if shape._get_shapeid() in self._shapes:return False
         shape._space = weakref.proxy(self)
         self._shapes[shape._get_shapeid()] = shape
         cp.cpSpaceAddShape(self._space, shape._shape)
+        return True
 
     def _add_body(self, body):
         """Adds a body to the space"""
-        assert body not in self._bodies, "body already added to space"
+        if body in self._bodies:return False
         body._space = weakref.proxy(self)
         self._bodies.add(body)
         cp.cpSpaceAddBody(self._space, body._body)
+        return True
 
     def _add_constraint(self, constraint):
         """Adds a constraint to the space"""
-        assert constraint not in self._constraints, "constraint already added to space"
+        if constraint in self._constraints:return False
         self._constraints.add(constraint)
         cp.cpSpaceAddConstraint(self._space, constraint._constraint)
+        return True
 
     def _remove_shape(self, shape):
         """Removes a shape from the space"""
@@ -409,13 +411,13 @@ class Space(PickleMixin, object):
                 cp.cpSpaceStep(self._space, dt)
             self._removed_shapes = {}
 
-        for i in range(len(self._add_later)):
-            objs = self._add_later.popleft()
-            self._add(objs)
+        add_later = self._add_later.copy()
+        self._add_later.intersection_update(add_later)
+        self._add(add_later)
 
-        for i in range(len(self._remove_later)):
-            objs = self._remove_later.popleft()
-            self._remove(objs)
+        remove_later = self._remove_later.copy()
+        self._remove_later.intersection_update(remove_later)
+        self._remove(remove_later)
 
         post_step = self._post_step_callbacks.copy()
         for key in post_step:
