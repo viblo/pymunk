@@ -289,6 +289,7 @@ class Space(PickleMixin, object):
         free = self._in_step.acquire(False)
 
         if not free:
+            self._remove_later.append(objs)
             return
 
         for o in objs:
