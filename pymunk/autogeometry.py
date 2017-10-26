@@ -97,7 +97,7 @@ def simplify_curves(polyline, tolerance):
 def simplify_vertexes(polyline, tolerance):
     """Returns a copy of a polyline simplified by discarding "flat" vertexes.
         
-    This works well on straigt edged or angular shapes, not as well on smooth 
+    This works well on straight edged or angular shapes, not as well on smooth 
     shapes.    
 
     :param polyline: Polyline to simplify.
