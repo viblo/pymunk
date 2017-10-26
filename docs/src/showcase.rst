@@ -115,7 +115,7 @@ Pymunk has been used or referenced in a number of scientific papers
 
 * Baheti, Ashutosh, and Arobinda Gupta. 
   "Non-linear barrier coverage using mobile wireless sensors." 
-   In Computers and Communications (ISCC), 2017 IEEE Symposium on, pp. 804-809. IEEE, 2017.
+  In Computers and Communications (ISCC), 2017 IEEE Symposium on, pp. 804-809. IEEE, 2017.
 
 * Espeso, David R., Esteban Martínez-García, Victor De Lorenzo, and Ángel Goñi-Moreno. 
   "Physical forces shape group identity of swimming Pseudomonas putida cells." 
