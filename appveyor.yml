@@ -26,13 +26,12 @@ init:
 install:
   # tox for testing
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  # testing using msys2
+  - "SET PATH=C:\msys64\mingw32\bin;%PATH%"
   - "python --version"
   - "python -m pip install tox"
   # We need wheel installed to build wheels
   - "python -m pip install --upgrade wheel"
-  # We need mingwpy for compiling
-  - "python -m pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy "
-  - "python -m pip freeze"
   
 build: off
   
