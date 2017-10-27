@@ -24,10 +24,10 @@ init:
   - ECHO %PYTHON%
 
 install:
-  # tox for testing
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   # testing using msys2
   - "SET PATH=C:\\msys64\\mingw32\\bin;%PATH%" 
+  # tox for testing
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "python --version"
   - "python -m pip install tox"
   # We need wheel installed to build wheels
