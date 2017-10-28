@@ -570,10 +570,10 @@ class Poly(Shape):
             >>> shape = pymunk.Poly(b, [(0,0), (10,0), (10,10)])
             >>> for v in shape.get_vertices():
             ...     x,y = v.rotated(shape.body.angle) + shape.body.position
-            ...     print(int(x), int(y))
-            1 2
-            9 6
-            4 15
+            ...     (int(x), int(y))
+            (1, 2)
+            (9, 6)
+            (4, 15)
 
         :return: The vertices in local coords
         :rtype: [:py:class:`Vec2d`]
