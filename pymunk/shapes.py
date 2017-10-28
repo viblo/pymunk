@@ -374,7 +374,7 @@ class Segment(Shape):
         :param a: The first endpoint of the segment
         :param b: The second endpoint of the segment
         :param float radius: The thickness of the segment
-        """
+        """ 
         self._body = body
         body_body = ffi.NULL if body is None else body._body
         if body != None:
@@ -569,10 +569,11 @@ class Poly(Shape):
             >>> b.angle = 0.5
             >>> shape = pymunk.Poly(b, [(0,0), (10,0), (10,10)])
             >>> for v in shape.get_vertices():
-            ...     print(v.rotated(shape.body.angle) + shape.body.position)
-            Vec2d(1.0, 2.0)
-            Vec2d(9.7758256189, 6.79425538604)
-            Vec2d(4.98157023286, 15.5700810049)
+            ...     x,y = v.rotated(shape.body.angle) + shape.body.position
+            ...     print(int(x), int(y))
+            1 2
+            9 6
+            4 15
 
         :return: The vertices in local coords
         :rtype: [:py:class:`Vec2d`]
