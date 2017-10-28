@@ -27,15 +27,12 @@ def get_library_name():
     return libname
 
 
-#print "os.environ !!!!!!!!!!!!!!!!!!!"
-#print os.environ
-
 class build_chipmunk(build_ext, object):
 
     def finalize_options(self):
         if platform.system() == 'Windows':
             print("Running on Windows. GCC will be forced used")
-            self.compiler = "mingw32"
+            self.compiler = "unix"
         
         return super(build_chipmunk, self).finalize_options()
 
@@ -48,8 +45,7 @@ class build_chipmunk(build_ext, object):
 
     def run(self):  
         self.compiler = cc.new_compiler(compiler=self.compiler)
-        #print self.compiler.executables
-
+        #print(self.compiler.executables)
         if "AR" in os.environ:
             self.compiler.set_executable("archiver", os.environ["AR"])
 
@@ -101,13 +97,13 @@ class build_chipmunk(build_ext, object):
                 if get_arch() == 64:
                     compiler_preargs += ['-O3', '-m64']
             
-                for x in self.compiler.executables:
-                    args = getattr(self.compiler, x)
-                    try:
-                        args.remove('-mno-cygwin') #Not available on newer versions of gcc 
-                        args.remove('-mdll')
-                    except:
-                        pass
+                # for x in self.compiler.executables:
+                #     args = getattr(self.compiler, x)
+                #     try:
+                #         args.remove('-mno-cygwin') #Not available on newer versions of gcc 
+                #         args.remove('-mdll')
+                #     except:
+                #         pass
                 
         source_folders = [os.path.join('chipmunk_src','src')]
         sources = []
@@ -115,13 +111,7 @@ class build_chipmunk(build_ext, object):
             for fn in os.listdir(folder):
                 fn_path = os.path.join(folder, fn)
                 if fn[-1] == 'c':
-                    # Ignore cpHastySpace since it depends on pthread which 
-                    # doesnt work in mingwpy gcc (it uses win32 threads)
-                    # Will prevent the code from being multithreaded, would be
-                    # good if some tests could be made to verify the performance
-                    # of this.
-                    if platform.system() != 'Windows' or fn != "cpHastySpace.c":
-                        sources.append(fn_path)
+                    sources.append(fn_path)
                 elif fn[-1] == 'o':
                     os.remove(fn_path)
         
@@ -143,8 +133,6 @@ class build_chipmunk(build_ext, object):
                     linker_preargs += ['-m32']
                 else:
                     linker_preargs += ['-m64']
-                # remove link against msvcr*. this is a bit ugly maybe.. :)
-                self.compiler.dll_libraries = [lib for lib in self.compiler.dll_libraries if not lib.startswith("msvcr")]
             elif platform.system() == 'Darwin':
                 self.compiler.set_executable('linker_so', 
                 ['cc', '-dynamiclib', '-arch', 'i386', '-arch', 'x86_64'])
@@ -215,7 +203,6 @@ setup(
     description = 'Pymunk is a easy-to-use pythonic 2d physics library',
     long_description = long_description,
     packages = ['pymunk','pymunkoptions'],
-    
     include_package_data = True,
     license = 'MIT License',
     classifiers = classifiers,
