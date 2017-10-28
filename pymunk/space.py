@@ -59,7 +59,7 @@ class Space(PickleMixin, object):
         threaded=True has no effect on that platform.
         """
         
-        self.threaded = threaded and platform.system() != 'Windows' 
+        self.threaded = threaded
         if self.threaded:        
             self._space = ffi.gc(cp.cpHastySpaceNew(), cp.cpHastySpaceFree)
         else:
@@ -357,11 +357,10 @@ class Space(PickleMixin, object):
     threads=property(_get_threads, _set_threads, 
         doc="""The number of threads to use for running the step function. 
         
-        Only valid on platforms other than Windows and when the Space was 
-        created with threaded=True. Currently the max limit is 2, setting a
-        higher value wont have any effect. The default is 1 regardless if the 
-        Space was created with threaded=True, to keep determinism in the 
-        simulation.
+        Only valid when the Space was created with threaded=True. Currently the 
+        max limit is 2, setting a higher value wont have any effect. The 
+        default is 1 regardless if the Space was created with threaded=True, 
+        to keep determinism in the simulation.
         """)
 
 

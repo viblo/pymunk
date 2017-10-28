@@ -80,11 +80,8 @@ class UnitTestSpace(unittest.TestCase):
         s = p.Space(threaded=True)
         s.step(1)
         s.threads = 2
-        import platform
-        if platform.system() == 'Windows':
-            self.assertEqual(s.threads, 1)
-        else:
-            self.assertEqual(s.threads, 2)
+        
+        self.assertEqual(s.threads, 2)
         s.step(1)
 
     def testAddRemove(self):

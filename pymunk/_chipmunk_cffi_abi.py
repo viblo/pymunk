@@ -1440,12 +1440,7 @@ h = """
 
     //#define cpPolylineConvexDecomposition_BETA cpPolylineConvexDecomposition
     //cpPolylineSet *cpPolylineConvexDecomposition_BETA(cpPolyline *line, cpFloat tol);
-"""
-import platform
-if platform.system() != 'Windows':
-    # On nonwindows systems we can use the threaded space to get a potential 
-    # speedup. For now this is highly experimental.
-    h += """
+
     struct cpHastySpace;
     typedef struct cpHastySpace cpHastySpace;
 
@@ -1457,7 +1452,7 @@ if platform.system() != 'Windows':
     unsigned long cpHastySpaceGetThreads(cpSpace *space);
 
     void cpHastySpaceStep(cpSpace *space, cpFloat dt);
-    """
+"""
 
 from cffi import FFI
 ffi = FFI()
