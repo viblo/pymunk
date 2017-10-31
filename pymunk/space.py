@@ -253,7 +253,7 @@ class Space(PickleMixin, object):
         """
 
         if self._in_step:
-            self._add_later.add(objs)
+            [self._add_later.add(obj) for obj in objs]
             return
 
         for o in objs:
@@ -281,7 +281,7 @@ class Space(PickleMixin, object):
         """
 
         if self._in_step:
-            self._remove_later.add(objs)
+            [self._remove_later.add(obj) for obj in objs]
             return
 
         for o in objs:

@@ -133,12 +133,14 @@ class UnitTestSpace(unittest.TestCase):
         
         def pre_solve_add(arbiter, space, data):
             space.add(b, c)
+            space.add(c, b)
             self.assertTrue(b not in s.bodies)
             self.assertTrue(c not in s.shapes)
             return True
 
         def pre_solve_remove(arbiter, space, data):
             space.remove(b, c)
+            space.remove(c, b)
             self.assertTrue(b in s.bodies)
             self.assertTrue(c in s.shapes)
             return True
