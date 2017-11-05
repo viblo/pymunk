@@ -117,7 +117,8 @@ Results
 
 Tests run on a HP G1 1040 laptop with a Intel i7-4600U. Laptop runs Windows, 
 and the tests were run inside a VirtualBox VM running 64bit Debian. The CPython
-tests uses CPython from Conda, while the Pypy tests used a manually downloaded Pypy. Cffi version 1.10.0 and Cython 0.25.2.
+tests uses CPython from Conda, while the Pypy tests used a manually downloaded 
+Pypy. Cffi version 1.10.0 and Cython 0.25.2.
 
 Since Cymunk doesnt have a proper release I used the latest master from its 
 Github repository, hash 24845cc retrieved on 2017-09-16.

@@ -38,7 +38,7 @@ class Arbiter(object):
         return ContactPointSet._from_cp(_set)
         
     def _set_contact_point_set(self, point_set):
-        # This has to be done by fetching a new chipmuk point set, update it 
+        # This has to be done by fetching a new Chipmunk point set, update it 
         # according to whats passed in and the pass that back to chipmunk due
         # to the fact that ContactPointSet doesnt contain a reference to the 
         # corresponding c struct. 

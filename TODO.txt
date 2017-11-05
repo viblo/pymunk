@@ -2,10 +2,9 @@ v5.x
 ----
 - use twine to upload to Pypi? https://pypi.python.org/pypi/twine
 - use travis ci to build osx chipmunk lib file and run tests? https://docs.travis-ci.com/user/osx-ci-environment/
-- benchmark against pymunk 4 (done!), cymunk on pypy and cpython
 - Think about experimental repr of Body
 - Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js  
-- add better example benchmark for threaded solver on non-windows
+- add better example benchmark for threaded solver
 - automatic test build of android apk on travis 
 - cleanup implementation of autoexample sphinx extension
 - pickle: fix shape id 
@@ -15,10 +14,13 @@ v6+ (all potentially breaking changes)
 ---
 - Remake BB into namedtuple
 - Think about split between pymunk.util and pymunk modules
-- do we still need pymunk.inf?
+- do we still need pymunk.inf? Yes, for body with normal mass but infinite 
+  moment.
 - make shape.sensor return bool instead of int
 - Think about overriding behavior of sensor shapes in segment and point_query 
   vs segment_first and point_query_nearest (one hits sensors the other does not)
 - Think about return tuple of doubles instead of Vec2d in autogeometry module.
   Skipping the Vec2d can potentially lead to big saving (2x speedup in one 
   microbench). 
+- Make add_collision_handler(a,b) and add_collision_handler(b,a) return the 
+  same handler. Fixes https://github.com/viblo/pymunk/issues/132 

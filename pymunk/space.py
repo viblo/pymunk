@@ -194,7 +194,7 @@ class Space(PickleMixin, object):
         , _set_collision_slop
         , doc="""Amount of overlap between shapes that is allowed.
 
-        To improve stability, set this as high as you can without noticable
+        To improve stability, set this as high as you can without noticeable
         overlapping. It defaults to 0.1.
         """)
 
