@@ -117,7 +117,7 @@ Changes
 - Fix sometimes broken Poly draw with pyglet_util.
 - Add feature to let you set the mass of shapes and let Pymunk automatically 
   calculate the body mass and moment.
-- Done use separate library naming for 32 and 64 bit builds. (Should not have 
+- Dont use separate library naming for 32 and 64 bit builds. (Should not have 
   any visible effect)
 
 

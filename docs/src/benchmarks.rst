@@ -93,7 +93,8 @@ Compared to Other Physics Libraries
 Cymunk
 ######
 
-`Cymunk <https://github.com/kivy/cymunk>`_ is an alternative wrapper around Chipmunk. In contrast to Pymunk it uses Cython for wrapping (Pymunk uses CFFI) which gives it a different performance profile. However, since both are built 
+`Cymunk <https://github.com/kivy/cymunk>`_ is an alternative wrapper around Chipmunk. In contrast to Pymunk it uses Cython for wrapping (Pymunk uses CFFI) 
+which gives it a different performance profile. However, since both are built 
 around Chipmunk the overall speed will be very similar, only when information 
 passes from/to Chipmunk will there be a difference. This is exactly the kind of 
 overhead that the micro benchmarks are made to measure.

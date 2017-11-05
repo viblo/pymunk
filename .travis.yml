@@ -13,7 +13,7 @@ env:
 matrix:
   include:
   - os: osx
-    osx_image: xcode6.4
+    osx_image: xcode9.1
     language: generic
     env: 
     - PYTHON="python3"
@@ -21,7 +21,7 @@ matrix:
     - PIP_INSTALL="pip install --user"
     - BUILD_CMD="python3 setup.py bdist_wheel"
   - os: osx
-    osx_image: xcode6.4
+    osx_image: xcode9.1
     language: generic
     env: 
     - PYTHON=python2""
