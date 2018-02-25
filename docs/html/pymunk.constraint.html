@@ -4,23 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>pymunk.constraint Module &#8212; pymunk 5.3.2 documentation</title>
-    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '5.3.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -35,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -45,7 +33,7 @@
           <div class="body" role="main">
             
   <div class="section" id="pymunk-constraint-module">
-<h1><a class="reference internal" href="#module-pymunk.constraint" title="pymunk.constraint"><code class="xref py py-mod docutils literal"><span class="pre">pymunk.constraint</span></code></a> Module<a class="headerlink" href="#pymunk-constraint-module" title="Permalink to this headline">¶</a></h1>
+<h1><a class="reference internal" href="#module-pymunk.constraint" title="pymunk.constraint"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.constraint</span></code></a> Module<a class="headerlink" href="#pymunk-constraint-module" title="Permalink to this headline">¶</a></h1>
 <div class="custom-index docutils container">
 <script type="text/javascript" src='_static/pymunk.js'></script></div>
 <span class="target" id="module-pymunk.constraint"></span><p>A constraint is something that describes how two bodies interact with
@@ -61,7 +49,7 @@ works fine to showcase them in Pymunk as well.
 <iframe width="420" height="315" style="display: block; margin: 0 auto;"
 src="http://www.youtube.com/embed/ZgJJZTS0aMM" frameborder="0"
 allowfullscreen></iframe><p>Example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">PivotJoint</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
@@ -71,14 +59,15 @@ allowfullscreen></iframe><p>Example:</p>
 <dl class="class">
 <dt id="pymunk.constraint.Constraint">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">Constraint</code><span class="sig-paren">(</span><em>constraint=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#Constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.Constraint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk._pickle.PickleMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk._pickle.PickleMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class of all constraints.</p>
 <p>You usually don’t want to create instances of this class directly, but
 instead use one of the specific constraints such as the PinJoint.</p>
 <dl class="method">
 <dt id="pymunk.constraint.Constraint.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>constraint=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#Constraint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.Constraint.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.constraint.Constraint.a">
@@ -156,7 +145,7 @@ bodies.</p>
 <dl class="class">
 <dt id="pymunk.constraint.PinJoint">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">PinJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a=(0</em>, <em>0)</em>, <em>anchor_b=(0</em>, <em>0)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#PinJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.PinJoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
 <p>Keeps the anchor points at a set distance from one another.</p>
 <dl class="method">
 <dt id="pymunk.constraint.PinJoint.__init__">
@@ -259,7 +248,7 @@ bodies.</p>
 <dl class="class">
 <dt id="pymunk.constraint.SlideJoint">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">SlideJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>min</em>, <em>max</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#SlideJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.SlideJoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
 <p>Like pin joints, but have a minimum and maximum distance.
 A chain could be modeled using this joint. It keeps the anchor points
 from getting to far apart, but will allow them to get closer together.</p>
@@ -367,7 +356,7 @@ bodies.</p>
 <dl class="class">
 <dt id="pymunk.constraint.PivotJoint">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">PivotJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#PivotJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.PivotJoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
 <p>Simply allow two objects to pivot about a single point.</p>
 <dl class="method">
 <dt id="pymunk.constraint.PivotJoint.__init__">
@@ -482,7 +471,7 @@ bodies.</p>
 <dl class="class">
 <dt id="pymunk.constraint.GrooveJoint">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">GrooveJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>groove_a</em>, <em>groove_b</em>, <em>anchor_b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#GrooveJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GrooveJoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
 <p>Similar to a pivot joint, but one of the anchors is
 on a linear slide instead of being fixed.</p>
 <dl class="method">
@@ -584,7 +573,7 @@ bodies.</p>
 <dl class="class">
 <dt id="pymunk.constraint.DampedSpring">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">DampedSpring</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>rest_length</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedSpring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedSpring" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
 <p>A damped spring</p>
 <dl class="method">
 <dt id="pymunk.constraint.DampedSpring.__init__">
@@ -713,7 +702,7 @@ bodies.</p>
 <dl class="class">
 <dt id="pymunk.constraint.DampedRotarySpring">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">DampedRotarySpring</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>rest_angle</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedRotarySpring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
 <p>Like a damped spring, but works in an angular fashion</p>
 <dl class="method">
 <dt id="pymunk.constraint.DampedRotarySpring.__init__">
@@ -831,7 +820,7 @@ bodies.</p>
 <dl class="class">
 <dt id="pymunk.constraint.RotaryLimitJoint">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">RotaryLimitJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>min</em>, <em>max</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#RotaryLimitJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.RotaryLimitJoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
 <p>Constrains the relative rotations of two bodies.</p>
 <dl class="method">
 <dt id="pymunk.constraint.RotaryLimitJoint.__init__">
@@ -928,7 +917,7 @@ bodies.</p>
 <dl class="class">
 <dt id="pymunk.constraint.RatchetJoint">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">RatchetJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratchet</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#RatchetJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.RatchetJoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
 <p>Works like a socket wrench.</p>
 <dl class="method">
 <dt id="pymunk.constraint.RatchetJoint.__init__">
@@ -1029,7 +1018,7 @@ bodies.</p>
 <dl class="class">
 <dt id="pymunk.constraint.GearJoint">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">GearJoint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>phase</em>, <em>ratio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#GearJoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.GearJoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
 <p>Keeps the angular velocity ratio of a pair of bodies constant.</p>
 <dl class="method">
 <dt id="pymunk.constraint.GearJoint.__init__">
@@ -1126,7 +1115,7 @@ bodies.</p>
 <dl class="class">
 <dt id="pymunk.constraint.SimpleMotor">
 <em class="property">class </em><code class="descclassname">pymunk.constraint.</code><code class="descname">SimpleMotor</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>rate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#SimpleMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.SimpleMotor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymunk.constraint.Constraint" title="pymunk.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.Constraint</span></code></a></p>
 <p>Keeps the relative angular velocity of a pair of bodies constant.</p>
 <dl class="method">
 <dt id="pymunk.constraint.SimpleMotor.__init__">
@@ -1242,14 +1231,14 @@ bodies.</p>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="pymunk.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pymunk.html#pymunk-package"><code class="docutils literal"><span class="pre">pymunk</span></code> Package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal"><span class="pre">pymunkoptions</span></code> Module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pymunk.html#pymunk-package"><code class="docutils literal notranslate"><span class="pre">pymunk</span></code> Package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">pymunk.constraint</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal notranslate"><span class="pre">pymunkoptions</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
@@ -1269,8 +1258,8 @@ bodies.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="pymunk.html">API Reference</a><ul>
-      <li>Previous: <a href="pymunk.autogeometry.html" title="previous chapter"><code class="docutils literal"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
-      <li>Next: <a href="pymunk.vec2d.html" title="next chapter"><code class="docutils literal"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
+      <li>Previous: <a href="pymunk.autogeometry.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
+      <li>Next: <a href="pymunk.vec2d.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -1284,12 +1273,14 @@ bodies.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1300,7 +1291,7 @@ bodies.</p>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

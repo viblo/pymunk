@@ -4,23 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Pymunk &#8212; pymunk 5.3.2 documentation</title>
-    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '5.3.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -34,8 +23,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -62,7 +50,7 @@ using Chipmunk 7.0 rev d7603e3927 (source included)</p>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>In the normal case pymunk can be installed with pip:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span>
 </pre></div>
 </div>
 <p>It has one (or two) dependencies. CFFI and if not on Windows or OSX you also
@@ -71,7 +59,7 @@ need a working gcc compiler.</p>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>Quick code example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymunk</span>               <span class="c1"># Import pymunk..</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymunk</span>               <span class="c1"># Import pymunk..</span>
 
 <span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>      <span class="c1"># Create a Space which contain the simulation</span>
 <span class="n">space</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1000</span>     <span class="c1"># Set its gravity</span>
@@ -177,12 +165,12 @@ another compiler that uses the same flags.</p>
 instead you need to build it yourself.</p>
 <p>There are basically two options, either building it automatically as part of
 installation using for example Pip:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">dist</span><span class="o">.</span><span class="n">zip</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">dist</span><span class="o">.</span><span class="n">zip</span>
 </pre></div>
 </div>
 <p>Or if you have the source unpacked / you got Pymunk by cloning its git repo,
 you can explicitly tell Pymunk to compile it inplace:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span>
 </pre></div>
 </div>
 <p>Note that chipmunk is actually not built as a python extension, but distutils /
@@ -196,6 +184,7 @@ body.py and others).</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="news.html">News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="news.html#introduction-video-tutorials">Introduction video tutorials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="news.html#pymunk-5-3-2">Pymunk 5.3.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="news.html#pymunk-5-3-1">Pymunk 5.3.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="news.html#pymunk-5-3-0">Pymunk 5.3.0</a></li>
@@ -234,14 +223,14 @@ body.py and others).</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pymunk.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pymunk.html#pymunk-package"><code class="docutils literal"><span class="pre">pymunk</span></code> Package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal"><span class="pre">pymunkoptions</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymunk.html#pymunk-package"><code class="docutils literal notranslate"><span class="pre">pymunk</span></code> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal notranslate"><span class="pre">pymunk.constraint</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal notranslate"><span class="pre">pymunkoptions</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
@@ -268,6 +257,7 @@ body.py and others).</p>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#flipper-py">flipper.py</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#index-video-py">index_video.py</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#kivy-pymunk-demo">kivy_pymunk_demo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#kivy-timeline">kivy_timeline</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#newtons-cradle-py">newtons_cradle.py</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#no-debug-py">no_debug.py</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples.html#platformer-py">platformer.py</a></li>
@@ -304,7 +294,10 @@ body.py and others).</p>
 <li class="toctree-l3"><a class="reference internal" href="tutorials/SlideAndPinJoint.html#ending">Ending</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials.html#external-tutorials">External Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials.html#external-tutorials">External Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials.html#pymunk-physics-in-pyglet">Pymunk physics in Pyglet</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Benchmarks</a><ul>
@@ -402,12 +395,14 @@ body.py and others).</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -418,7 +413,7 @@ body.py and others).</p>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

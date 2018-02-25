@@ -4,23 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Slide and Pin Joint Demo Step by Step &#8212; pymunk 5.3.2 documentation</title>
-    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '5.3.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -35,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -72,14 +60,14 @@ it is very easy to do, in fact if you got Pymunk by Pip install its arelady
 done!</p>
 <p>When you have pymunk installed, try to import it from the python prompt to
 make sure it works and can be imported:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
 </pre></div>
 </div>
 <p>If you get an error message it might be because pymunk could not find the
 chipmunk library that it depends on. If you install pymunk with pip or setup.py
 install everything should already be correct, but if you got the source and
 want to use it as a stand alone folder you need to build it inplace:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span>
 </pre></div>
 </div>
 <p>More information on installation can be found here:
@@ -115,7 +103,7 @@ It is for the c-library but is a good complement to the Pymunk documentation
 as the concepts are the same, just that Pymunk is more pythonic to use.</p>
 <p>The API documentation for Pymunk can be found here: <a class="reference internal" href="../pymunk.html"><span class="doc">API Reference</span></a>.</p>
 <p>Anyway, we are now ready to write some code:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
 <span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">pymunk</span> <span class="c1">#1</span>
@@ -172,7 +160,7 @@ step is to make a ball spawn once in while. In many of the example demos all
 code is in one big pile in the main() function as they are so small and easy,
 but I will extract some methods in this tutorial to make it more easy to
 follow. First, a function to add a ball to a space:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_ball</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_ball</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
     <span class="n">mass</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">radius</span> <span class="o">=</span> <span class="mi">14</span>
     <span class="n">moment</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">moment_for_circle</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span> <span class="c1"># 1</span>
@@ -202,14 +190,14 @@ manually. The debug drawing functions included with Pymunk are good for putting
 something together easy and quickly, while a polished game for example most
 probably will want to make its own drawing code.</p>
 <p>If we want to draw manually, our draw function could look something like this:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_ball</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">ball</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_ball</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">ball</span><span class="p">):</span>
     <span class="n">p</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="mi">600</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
     <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">radius</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>And then called in this way (given we collected all the ball shapes in a list
 called balls):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">ball</span> <span class="ow">in</span> <span class="n">balls</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">ball</span> <span class="ow">in</span> <span class="n">balls</span><span class="p">:</span>
     <span class="n">draw_ball</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">ball</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -217,18 +205,18 @@ called balls):</p>
 method already included in Pymunk to simplify a bit. In that case we
 first have to create a DrawOptions object with the options (mainly what surface
 to draw on):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">draw_options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">draw_options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>And after that when we want to draw all our shapes we would just do it in this
 way:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">space</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">draw_options</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">space</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">draw_options</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Most of the examples included with Pymunk uses this way of drawing.</p>
 <p>With the add_ball function and the debug_draw call and a little code to spawn
 balls you should see a couple of balls falling. Yay!</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
 <span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">pymunk</span>
@@ -281,7 +269,7 @@ balls you should see a couple of balls falling. Yay!</p>
 basic gravity, and everyone can do gravity without help from a physics library.
 So lets add something the balls can land on, two static lines forming an L. As
 with the balls we start with a function to add an L to the space:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_static_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_static_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
     <span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span> <span class="c1"># 1</span>
     <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
     <span class="n">l1</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># 2</span>
@@ -301,7 +289,7 @@ setting the body_type of the body.</li>
 <p>Since we use Space.debug_draw to draw the space we dont need to do any special
 draw code for the Segments, but I still include a possible draw function here
 just to show what it could look like:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
         <span class="n">body</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">body</span>
         <span class="n">pv1</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span> <span class="c1"># 1</span>
@@ -321,14 +309,14 @@ world. Now that we have it we can use it in the draw_ball() function as
 well. We want to flip the y coordinate (-p.y), and then offset it with the
 screen height (+600). It looks like this:</li>
 </ol>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Small hack to convert pymunk to pygame coordinates&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="o">+</span><span class="mi">600</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>With the full code we should something like the below, and now we should see
 an inverted L shape in the middle will balls spawning and hitting the shape.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
 <span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">pymunk</span>
@@ -385,7 +373,7 @@ adding two joints, one that it can rotate around, and one that prevents it from
 rotating too much. In this part we only add the rotation joint, and in the next
 we constrain it. As our static L shape won’t be static anymore we also rename
 the function to add_L().</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
     <span class="n">rotation_center_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span> <span class="c1"># 1</span>
     <span class="n">rotation_center_body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
 
@@ -417,7 +405,7 @@ of the objects will be stuck to the world.</li>
 <p>In the previous part we added a pin joint, and now its time to constrain the
 rotating L shape to create a more interesting simulation. In order to do this
 we modify the add_L() function:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
     <span class="n">rotation_center_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span>
     <span class="n">rotation_center_body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="p">)</span>
 
@@ -451,7 +439,7 @@ shapes will move.</li>
 require more and more memory and use more and more cpu, and this is of course
 not what we want. So in the final step we add some code to remove balls from
 the simulation when they are bellow the screen.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">balls_to_remove</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">balls_to_remove</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">ball</span> <span class="ow">in</span> <span class="n">balls</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">ball</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># 1</span>
         <span class="n">balls_to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ball</span><span class="p">)</span> <span class="c1"># 2</span>
@@ -478,7 +466,7 @@ you have an idea for another tutorial you want to read, or some example code
 you want to see included in pymunk, please write it somewhere (like in the
 chipmunk forum)</p>
 <p>The full code for this tutorial is:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
 <span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">pymunk</span>
@@ -635,12 +623,14 @@ chipmunk forum)</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -651,7 +641,7 @@ chipmunk forum)</p>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

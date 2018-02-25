@@ -4,23 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>pymunk.constraint &#8212; pymunk 5.3.2 documentation</title>
-    
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '5.3.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -33,8 +22,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -124,8 +112,8 @@
     <span class="n">_pickle_attrs_general</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;max_force&#39;</span><span class="p">,</span> <span class="s1">&#39;error_bias&#39;</span><span class="p">,</span> <span class="s1">&#39;max_bias&#39;</span><span class="p">,</span> 
         <span class="s1">&#39;collide_bodies&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Constraint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constraint</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">constraint</span></div>
+<div class="viewcode-block" id="Constraint.__init__"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constraint</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">constraint</span>
         
     <span class="k">def</span> <span class="nf">_get_max_force</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintGetMaxForce</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
@@ -195,8 +183,8 @@
 
 <div class="viewcode-block" id="Constraint.activate_bodies"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.activate_bodies">[docs]</a>    <span class="k">def</span> <span class="nf">activate_bodies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Activate the bodies this constraint is attached to&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_set_bodies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_a</span> <span class="o">=</span> <span class="n">a</span>
@@ -205,8 +193,8 @@
         <span class="n">b</span><span class="o">.</span><span class="n">_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
     
 <div class="viewcode-block" id="Constraint.copy"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.Constraint.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a deep copy of this constraint.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+        <span class="sd">&quot;&quot;&quot;Create a deep copy of this constraint.&quot;&quot;&quot;</span></div></div>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 
     
@@ -228,8 +216,8 @@
             <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointNew</span><span class="p">(</span>
                 <span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> 
                 <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_b</span><span class="p">)),</span> 
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
@@ -246,8 +234,8 @@
     <span class="k">def</span> <span class="nf">_get_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointGetDist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointSetDist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
-    <span class="n">distance</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_distance</span><span class="p">,</span> <span class="n">_set_distance</span><span class="p">)</span></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpPinJointSetDist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span></div>
+    <span class="n">distance</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_distance</span><span class="p">,</span> <span class="n">_set_distance</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SlideJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SlideJoint">[docs]</a><span class="k">class</span> <span class="nc">SlideJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Like pin joints, but have a minimum and maximum distance.</span>
@@ -265,8 +253,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> 
                 <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_b</span><span class="p">),</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">),</span> 
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
@@ -289,8 +277,8 @@
     <span class="k">def</span> <span class="nf">_get_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointGetMax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointSetMax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
-    <span class="nb">max</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_max</span><span class="p">,</span> <span class="n">_set_max</span><span class="p">)</span></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSlideJointSetMax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span></div>
+    <span class="nb">max</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_max</span><span class="p">,</span> <span class="n">_set_max</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PivotJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.PivotJoint">[docs]</a><span class="k">class</span> <span class="nc">PivotJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Simply allow two objects to pivot about a single point.&quot;&quot;&quot;</span>
@@ -327,8 +315,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;You must specify either one pivot point&quot;</span>
                 <span class="s2">&quot; or two anchor points&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
@@ -339,8 +327,8 @@
     <span class="k">def</span> <span class="nf">_get_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span>
-    <span class="n">anchor_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_b</span><span class="p">,</span> <span class="n">_set_anchor_b</span><span class="p">)</span></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpPivotJointSetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">))</span></div>
+    <span class="n">anchor_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_anchor_b</span><span class="p">,</span> <span class="n">_set_anchor_b</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GrooveJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GrooveJoint">[docs]</a><span class="k">class</span> <span class="nc">GrooveJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Similar to a pivot joint, but one of the anchors is</span>
@@ -360,8 +348,8 @@
                 <span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> 
                 <span class="nb">tuple</span><span class="p">(</span><span class="n">groove_a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">groove_b</span><span class="p">),</span> 
                 <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_b</span><span class="p">)),</span> 
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointGetAnchorB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
@@ -378,8 +366,8 @@
     <span class="k">def</span> <span class="nf">_get_groove_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointGetGrooveB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_set_groove_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groove</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointSetGrooveB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">groove</span><span class="p">))</span>
-    <span class="n">groove_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_groove_b</span><span class="p">,</span> <span class="n">_set_groove_b</span><span class="p">)</span></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpGrooveJointSetGrooveB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">groove</span><span class="p">))</span></div>
+    <span class="n">groove_b</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_groove_b</span><span class="p">,</span> <span class="n">_set_groove_b</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DampedSpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedSpring">[docs]</a><span class="k">class</span> <span class="nc">DampedSpring</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A damped spring&quot;&quot;&quot;</span>
@@ -404,8 +392,8 @@
             <span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span>
             <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor_b</span><span class="p">),</span> 
             <span class="n">rest_length</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringGetAnchorA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">))</span>
@@ -437,8 +425,8 @@
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringGetDamping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_damping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedSpringSetDamping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
-    <span class="n">damping</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_damping</span><span class="p">,</span> <span class="n">_set_damping</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;How soft to make the damping of the spring.&quot;&quot;&quot;</span><span class="p">)</span></div>
+    <span class="n">damping</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_damping</span><span class="p">,</span> <span class="n">_set_damping</span><span class="p">,</span></div>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;How soft to make the damping of the spring.&quot;&quot;&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DampedRotarySpring"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.DampedRotarySpring">[docs]</a><span class="k">class</span> <span class="nc">DampedRotarySpring</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Like a damped spring, but works in an angular fashion&quot;&quot;&quot;</span>
@@ -457,8 +445,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedRotarySpringNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> 
             <span class="n">rest_angle</span><span class="p">,</span> <span class="n">stiffness</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_rest_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedRotarySpringGetRestAngle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
@@ -478,8 +466,8 @@
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedRotarySpringGetDamping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_damping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpDampedRotarySpringSetDamping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
-    <span class="n">damping</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_damping</span><span class="p">,</span> <span class="n">_set_damping</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;How soft to make the damping of the spring.&quot;&quot;&quot;</span><span class="p">)</span></div>
+    <span class="n">damping</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_damping</span><span class="p">,</span> <span class="n">_set_damping</span><span class="p">,</span></div>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;How soft to make the damping of the spring.&quot;&quot;&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="RotaryLimitJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RotaryLimitJoint">[docs]</a><span class="k">class</span> <span class="nc">RotaryLimitJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
@@ -496,8 +484,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">),</span> 
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointGetMin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
@@ -508,8 +496,8 @@
     <span class="k">def</span> <span class="nf">_get_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointGetMax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointSetMax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
-    <span class="nb">max</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_max</span><span class="p">,</span> <span class="n">_set_max</span><span class="p">)</span></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpRotaryLimitJointSetMax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span></div>
+    <span class="nb">max</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_max</span><span class="p">,</span> <span class="n">_set_max</span><span class="p">)</span>
 
 <div class="viewcode-block" id="RatchetJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.RatchetJoint">[docs]</a><span class="k">class</span> <span class="nc">RatchetJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Works like a socket wrench.&quot;&quot;&quot;</span>
@@ -524,8 +512,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">),</span> 
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointGetAngle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
@@ -542,8 +530,8 @@
     <span class="k">def</span> <span class="nf">_get_ratchet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointGetRatchet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_ratchet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointSetRatchet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">)</span>
-    <span class="n">ratchet</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_ratchet</span><span class="p">,</span> <span class="n">_set_ratchet</span><span class="p">)</span></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpRatchetJointSetRatchet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ratchet</span><span class="p">)</span></div>
+    <span class="n">ratchet</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_ratchet</span><span class="p">,</span> <span class="n">_set_ratchet</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GearJoint"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.GearJoint">[docs]</a><span class="k">class</span> <span class="nc">GearJoint</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Keeps the angular velocity ratio of a pair of bodies constant.&quot;&quot;&quot;</span>
@@ -559,8 +547,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ratio</span><span class="p">),</span> 
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointGetPhase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
@@ -571,8 +559,8 @@
     <span class="k">def</span> <span class="nf">_get_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointGetRatio</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratio</span><span class="p">):</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointSetRatio</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ratio</span><span class="p">)</span>
-    <span class="n">ratio</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_ratio</span><span class="p">,</span> <span class="n">_set_ratio</span><span class="p">)</span></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpGearJointSetRatio</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">ratio</span><span class="p">)</span></div>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_ratio</span><span class="p">,</span> <span class="n">_set_ratio</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SimpleMotor"><a class="viewcode-back" href="../../pymunk.constraint.html#pymunk.constraint.SimpleMotor">[docs]</a><span class="k">class</span> <span class="nc">SimpleMotor</span><span class="p">(</span><span class="n">Constraint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Keeps the relative angular velocity of a pair of bodies constant.&quot;&quot;&quot;</span>
@@ -588,15 +576,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpSimpleMotorNew</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">rate</span><span class="p">),</span> 
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpConstraintFree</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bodies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSimpleMotorGetRate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSimpleMotorSetRate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint</span><span class="p">,</span> <span class="n">rate</span><span class="p">)</span>
-    <span class="n">rate</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_rate</span><span class="p">,</span> <span class="n">_set_rate</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The desired relative angular velocity&quot;&quot;&quot;</span><span class="p">)</span></div>
+    <span class="n">rate</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_rate</span><span class="p">,</span> <span class="n">_set_rate</span><span class="p">,</span></div>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The desired relative angular velocity&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -645,12 +633,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -661,7 +651,7 @@
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

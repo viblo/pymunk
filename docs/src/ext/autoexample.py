@@ -82,6 +82,8 @@ def parse_example(basepath, filename, img_folder, img_folder_os, source_url):
         #print os.path.abspath(img_folder_os)
         img_path = os.path.join(img_folder, img_name)
         img_path_os = os.path.join(img_folder_os, img_name)
+        #img_path = os.path.join("../", img_path)
+        img_path = img_path.replace('\\', '/')
         if os.path.isfile(img_path_os):
             s.append("")
             s.append(".. image:: " + img_path)
@@ -127,6 +129,7 @@ def parse_folder_example(basepath, foldername, img_folder, img_folder_os, source
         #print os.path.abspath(img_folder_os)
         img_path = os.path.join(img_folder, img_name)
         img_path_os = os.path.join(img_folder_os, img_name)
+        img_path = img_path.replace('\\', '/')
         if os.path.isfile(img_path_os):
             s.append("")
             s.append(".. image:: " + img_path)

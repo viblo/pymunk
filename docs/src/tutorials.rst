@@ -1,3 +1,4 @@
+=========
 Tutorials
 =========
 
@@ -17,26 +18,25 @@ pymunk.
     tutorials/*
 
 External Tutorials
-------------------
+==================
 
-If you have made a tutorial that is using pymunk in any way and want it 
+If you have made a tutorial that is using Pymunk in any way and want it 
 mentioned here please send me a link and I will happily add it. I also 
 accept full tutorials to include directly here if you prefer, as long as they
 are of reasonable quality and style. Check the source to see how the existing 
 ones are built.
 
-..
-    .. list-table:: 
-        :widths: 40 60
+Pymunk physics in Pyglet
+------------------------
 
-        * - .. image:: _static/tutorials/external_pyboxes.png
-        - `PyBoxes Tutorial / A Physics Driven Game Tutorial 
-            <http://wilsonkoder.com/pymunkTutorial.html>`_  
-            
-            :subscript:`written by Wilson Koder. Retrieved 2014-12-19`
+:subscript:`Created by Attila Toth. Retrieved 2018-02-24`
 
-            The goals of this tutorial are to learn the basics of Pymunk and Pygame
-            and how they can work with each other. 
-            
-            In the tutorial you will implement a basic physics simulation, GUI, 
-            pseudo-wind, pseudo-liquid, anti-aliased drawing of circles and more.
+Youtube user Attila Toth has created a series of youtube videos that gives a 
+good introduction of Pymunk. The videos covers among other things the 3 types 
+of Bodies, the different Shapes and how to use sprite with Pyglet together 
+with Pymunk. 
+
+.. raw:: html
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PL1P11yPQAo7pH9SWZtWdmmLumbp_r19Hs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+

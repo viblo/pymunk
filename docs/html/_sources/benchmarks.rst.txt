@@ -93,7 +93,8 @@ Compared to Other Physics Libraries
 Cymunk
 ######
 
-`Cymunk <https://github.com/kivy/cymunk>`_ is an alternative wrapper around Chipmunk. In contrast to Pymunk it uses Cython for wrapping (Pymunk uses CFFI) which gives it a different performance profile. However, since both are built 
+`Cymunk <https://github.com/kivy/cymunk>`_ is an alternative wrapper around Chipmunk. In contrast to Pymunk it uses Cython for wrapping (Pymunk uses CFFI) 
+which gives it a different performance profile. However, since both are built 
 around Chipmunk the overall speed will be very similar, only when information 
 passes from/to Chipmunk will there be a difference. This is exactly the kind of 
 overhead that the micro benchmarks are made to measure.
@@ -117,7 +118,8 @@ Results
 
 Tests run on a HP G1 1040 laptop with a Intel i7-4600U. Laptop runs Windows, 
 and the tests were run inside a VirtualBox VM running 64bit Debian. The CPython
-tests uses CPython from Conda, while the Pypy tests used a manually downloaded Pypy. Cffi version 1.10.0 and Cython 0.25.2.
+tests uses CPython from Conda, while the Pypy tests used a manually downloaded 
+Pypy. Cffi version 1.10.0 and Cython 0.25.2.
 
 Since Cymunk doesnt have a proper release I used the latest master from its 
 Github repository, hash 24845cc retrieved on 2017-09-16.
@@ -139,7 +141,7 @@ Collision-Callback:
 ..               CPython 3.5.3  Pypy 5.8
 ===============  =============  ========
 Pymunk 5.3       3.71s          0.58s
-Cymunk 20170916  0.95s          (7.01s)
+Pymunk 20170916  0.95s          (7.01s)
 ===============  =============  ========
 
 (Cymunk results on Pypy within parentheses since Cython is well known to be 

@@ -2,6 +2,18 @@
 News 
 ****
 
+Introduction video tutorials
+----------------------------
+*Victor - 2018-02-25*
+
+Youtube user Attila has created a series of videos covering the basics of 
+Pymunk. Take a look here for a gentle introduction into Pymunk:
+ 
+.. raw:: html
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PL1P11yPQAo7pH9SWZtWdmmLumbp_r19Hs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+
 Pymunk 5.3.2
 ------------
 *Victor - 2017-09-16*

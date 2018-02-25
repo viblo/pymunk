@@ -4,23 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>API Reference &#8212; pymunk 5.3.2 documentation</title>
-    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '5.3.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -35,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,18 +35,18 @@
   <div class="section" id="api-reference">
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="pymunk-package">
-<h2><a class="reference internal" href="#module-pymunk" title="pymunk"><code class="xref py py-mod docutils literal"><span class="pre">pymunk</span></code></a> Package<a class="headerlink" href="#pymunk-package" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="#module-pymunk" title="pymunk"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk</span></code></a> Package<a class="headerlink" href="#pymunk-package" title="Permalink to this headline">¶</a></h2>
 <div class="submodule-index docutils container">
 <p class="rubric">Submodules</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal"><span class="pre">pymunkoptions</span></code> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal notranslate"><span class="pre">pymunk.constraint</span></code> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal notranslate"><span class="pre">pymunkoptions</span></code> Module</a></li>
 </ul>
 </div>
 </div>
@@ -73,7 +61,7 @@ the very central Space, Body and Shape classes.</p>
 <p>When you import this module it will automatically load the chipmunk library
 file. As long as you haven’t turned off the debug mode a print will show
 exactly which Chipmunk library file it loaded. For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
 
 <span class="go">Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]</span>
 </pre></div>
@@ -81,7 +69,7 @@ exactly which Chipmunk library file it loaded. For example:</p>
 <dl class="data">
 <dt id="pymunk.inf">
 <code class="descclassname">pymunk.</code><code class="descname">inf</code><em class="property"> = inf</em><a class="headerlink" href="#pymunk.inf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Infinity that can be passed as mass or inertia to a <a class="reference internal" href="#pymunk.Body" title="pymunk.Body"><code class="xref py py-class docutils literal"><span class="pre">Body</span></code></a>.</p>
+<dd><p>Infinity that can be passed as mass or inertia to a <a class="reference internal" href="#pymunk.Body" title="pymunk.Body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Body</span></code></a>.</p>
 <p>Useful when you for example want a body that cannot rotate, just set its
 moment to inf. Just remember that if two objects with both infinite masses
 collides the world might explode. Similar effects can happen with infinite
@@ -89,13 +77,13 @@ moment.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">In previous versions of Pymunk you used inf to create static bodies. This
-has changed. See <a class="reference internal" href="#pymunk.Body" title="pymunk.Body"><code class="xref py py-class docutils literal"><span class="pre">Body</span></code></a> for details.</p>
+has changed. See <a class="reference internal" href="#pymunk.Body" title="pymunk.Body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Body</span></code></a> for details.</p>
 </div>
 </dd></dl>
 
 <dl class="data">
 <dt id="pymunk.version">
-<code class="descclassname">pymunk.</code><code class="descname">version</code><em class="property"> = ‘5.3.2’</em><a class="headerlink" href="#pymunk.version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">version</code><em class="property"> = '5.3.2'</em><a class="headerlink" href="#pymunk.version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from git).</p>
@@ -103,7 +91,7 @@ distribution (i.e. not in a checked-out copy from git).</p>
 
 <dl class="data">
 <dt id="pymunk.chipmunk_version">
-<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = ‘&lt;Mock object&gt;Rd7603e392782079b691d7948405af2dd66648a7a’</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">chipmunk_version</code><em class="property"> = '&lt;Mock object&gt;Rd7603e392782079b691d7948405af2dd66648a7a'</em><a class="headerlink" href="#pymunk.chipmunk_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.</p>
@@ -125,7 +113,7 @@ chipmunk_src folder (normally included in the Pymunk source distribution).</p>
 <dl class="class">
 <dt id="pymunk.Space">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">Space</code><span class="sig-paren">(</span><em>threaded=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/space.html#Space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk._pickle.PickleMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk._pickle.PickleMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Spaces are the basic unit of simulation. You add rigid bodies, shapes
 and joints to it and then step them all forward together through time.</p>
 <p>A Space can be copied and pickled. Note that any post step callbacks are 
@@ -137,7 +125,7 @@ fresh copy.</p>
 the pickle protocol used there are some restrictions on what functions can 
 be copied/pickled.</p>
 <p>Example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span><span class="o">,</span> <span class="nn">pickle</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span><span class="o">,</span> <span class="nn">pickle</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">space2</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">space3</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">space</span><span class="p">))</span>
@@ -167,11 +155,11 @@ add will not be performed until the end of the step.</p>
 <dl class="method">
 <dt id="pymunk.Space.add_collision_handler">
 <code class="descname">add_collision_handler</code><span class="sig-paren">(</span><em>collision_type_a</em>, <em>collision_type_b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/space.html#Space.add_collision_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Space.add_collision_handler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the <a class="reference internal" href="#pymunk.CollisionHandler" title="pymunk.CollisionHandler"><code class="xref py py-class docutils literal"><span class="pre">CollisionHandler</span></code></a> for collisions between 
+<dd><p>Return the <a class="reference internal" href="#pymunk.CollisionHandler" title="pymunk.CollisionHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CollisionHandler</span></code></a> for collisions between 
 objects of type collision_type_a and collision_type_b.</p>
 <p>Fill the desired collision callback functions, for details see the
-<a class="reference internal" href="#pymunk.CollisionHandler" title="pymunk.CollisionHandler"><code class="xref py py-class docutils literal"><span class="pre">CollisionHandler</span></code></a> object.</p>
-<p>Whenever shapes with collision types (<a class="reference internal" href="#pymunk.Shape.collision_type" title="pymunk.Shape.collision_type"><code class="xref py py-attr docutils literal"><span class="pre">Shape.collision_type</span></code></a>) 
+<a class="reference internal" href="#pymunk.CollisionHandler" title="pymunk.CollisionHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CollisionHandler</span></code></a> object.</p>
+<p>Whenever shapes with collision types (<a class="reference internal" href="#pymunk.Shape.collision_type" title="pymunk.Shape.collision_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Shape.collision_type</span></code></a>) 
 a and b collide, this handler will be used to process the collision 
 events. When a new collision handler is created, the callbacks will all be
 set to builtin callbacks that perform the default behavior (call the
@@ -186,7 +174,7 @@ wildcard handlers, and accept all collisions).</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pymunk.CollisionHandler" title="pymunk.CollisionHandler"><code class="xref py py-class docutils literal"><span class="pre">CollisionHandler</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pymunk.CollisionHandler" title="pymunk.CollisionHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CollisionHandler</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -257,17 +245,17 @@ wildcard handlers and what to do with their return values. (See
 Arbiter.call_wildcard*())</p>
 <p>When a new wildcard handler is created, the callbacks will all be
 set to builtin callbacks that perform the default behavior. (accept
-all collisions in <a class="reference internal" href="#pymunk.CollisionHandler.begin" title="pymunk.CollisionHandler.begin"><code class="xref py py-func docutils literal"><span class="pre">begin()</span></code></a> and 
-<a class="reference internal" href="#pymunk.CollisionHandler.pre_solve" title="pymunk.CollisionHandler.pre_solve"><code class="xref py py-func docutils literal"><span class="pre">pre_solve()</span></code></a>, or do nothing for
-<a class="reference internal" href="#pymunk.CollisionHandler.post_solve" title="pymunk.CollisionHandler.post_solve"><code class="xref py py-func docutils literal"><span class="pre">post_solve()</span></code></a> and 
-<a class="reference internal" href="#pymunk.CollisionHandler.separate" title="pymunk.CollisionHandler.separate"><code class="xref py py-func docutils literal"><span class="pre">separate()</span></code></a>.</p>
+all collisions in <a class="reference internal" href="#pymunk.CollisionHandler.begin" title="pymunk.CollisionHandler.begin"><code class="xref py py-func docutils literal notranslate"><span class="pre">begin()</span></code></a> and 
+<a class="reference internal" href="#pymunk.CollisionHandler.pre_solve" title="pymunk.CollisionHandler.pre_solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">pre_solve()</span></code></a>, or do nothing for
+<a class="reference internal" href="#pymunk.CollisionHandler.post_solve" title="pymunk.CollisionHandler.post_solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">post_solve()</span></code></a> and 
+<a class="reference internal" href="#pymunk.CollisionHandler.separate" title="pymunk.CollisionHandler.separate"><code class="xref py py-func docutils literal notranslate"><span class="pre">separate()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>collision_type_a</strong> (<em>int</em>) – Collision type</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.CollisionHandler" title="pymunk.CollisionHandler"><code class="xref py py-class docutils literal"><span class="pre">CollisionHandler</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.CollisionHandler" title="pymunk.CollisionHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CollisionHandler</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -293,7 +281,7 @@ collision detection.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[<a class="reference internal" href="#pymunk.Shape" title="pymunk.Shape"><code class="xref py py-class docutils literal"><span class="pre">Shape</span></code></a>]</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[<a class="reference internal" href="#pymunk.Shape" title="pymunk.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code></a>]</p>
 </td>
 </tr>
 </tbody>
@@ -342,7 +330,7 @@ to 3.</p>
 <dt id="pymunk.Space.collision_slop">
 <code class="descname">collision_slop</code><a class="headerlink" href="#pymunk.Space.collision_slop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Amount of overlap between shapes that is allowed.</p>
-<p>To improve stability, set this as high as you can without noticable
+<p>To improve stability, set this as high as you can without noticeable
 overlapping. It defaults to 0.1.</p>
 </dd></dl>
 
@@ -382,9 +370,9 @@ body basis.</p>
 options.</p>
 <p>If you use a graphics backend that is already supported, such as pygame 
 and pyglet, you can use the predefined options in their x_util modules, 
-for example <a class="reference internal" href="pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions" title="pymunk.pygame_util.DrawOptions"><code class="xref py py-class docutils literal"><span class="pre">pygame_util.DrawOptions</span></code></a>.</p>
+for example <a class="reference internal" href="pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions" title="pymunk.pygame_util.DrawOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">pygame_util.DrawOptions</span></code></a>.</p>
 <p>Its also possible to write your own graphics backend, see 
-<a class="reference internal" href="#pymunk.SpaceDebugDrawOptions" title="pymunk.SpaceDebugDrawOptions"><code class="xref py py-class docutils literal"><span class="pre">SpaceDebugDrawOptions</span></code></a>.</p>
+<a class="reference internal" href="#pymunk.SpaceDebugDrawOptions" title="pymunk.SpaceDebugDrawOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpaceDebugDrawOptions</span></code></a>.</p>
 <p>If you require any advanced or optimized drawing its probably best to 
 not use this funtion for the drawing since its meant for debugging 
 and quick scripting.</p>
@@ -440,25 +428,25 @@ collision detection. If a maxDistance of 0.0 is used, the point must
 lie inside a shape. Negative max_distance is also allowed meaning that 
 the point must be a under a certain depth within a shape to be 
 considered a match.</p>
-<p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
+<p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
 parameter can be used.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Sensor shapes are included in the result (In 
-<a class="reference internal" href="#pymunk.Space.point_query_nearest" title="pymunk.Space.point_query_nearest"><code class="xref py py-meth docutils literal"><span class="pre">Space.point_query_nearest()</span></code></a> they are not)</p>
+<a class="reference internal" href="#pymunk.Space.point_query_nearest" title="pymunk.Space.point_query_nearest"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.point_query_nearest()</span></code></a> they are not)</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>point</strong> (<a class="reference internal" href="pymunk.vec2d.html#pymunk.vec2d.Vec2d" title="pymunk.vec2d.Vec2d"><code class="xref py py-class docutils literal"><span class="pre">Vec2d</span></code></a> or (float,float)) – Where to check for collision in the Space</li>
+<li><strong>point</strong> (<a class="reference internal" href="pymunk.vec2d.html#pymunk.vec2d.Vec2d" title="pymunk.vec2d.Vec2d"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vec2d</span></code></a> or (float,float)) – Where to check for collision in the Space</li>
 <li><strong>max_distance</strong> (<em>float</em>) – Match only within this distance</li>
 <li><strong>shape_filter</strong> (<a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><em>ShapeFilter</em></a>) – Only pick shapes matching the filter</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[<a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">PointQueryInfo</span></code></a>]</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[<a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointQueryInfo</span></code></a>]</p>
 </td>
 </tr>
 </tbody>
@@ -475,25 +463,25 @@ collision detection. If a maxDistance of 0.0 is used, the point must
 lie inside a shape. Negative max_distance is also allowed meaning that 
 the point must be a under a certain depth within a shape to be 
 considered a match.</p>
-<p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
+<p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
 parameter can be used.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Sensor shapes are not included in the result (In 
-<a class="reference internal" href="#pymunk.Space.point_query" title="pymunk.Space.point_query"><code class="xref py py-meth docutils literal"><span class="pre">Space.point_query()</span></code></a> they are)</p>
+<a class="reference internal" href="#pymunk.Space.point_query" title="pymunk.Space.point_query"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.point_query()</span></code></a> they are)</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>point</strong> (<a class="reference internal" href="pymunk.vec2d.html#pymunk.vec2d.Vec2d" title="pymunk.vec2d.Vec2d"><code class="xref py py-class docutils literal"><span class="pre">Vec2d</span></code></a> or (float,float)) – Where to check for collision in the Space</li>
+<li><strong>point</strong> (<a class="reference internal" href="pymunk.vec2d.html#pymunk.vec2d.Vec2d" title="pymunk.vec2d.Vec2d"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vec2d</span></code></a> or (float,float)) – Where to check for collision in the Space</li>
 <li><strong>max_distance</strong> (<em>float</em>) – Match only within this distance</li>
 <li><strong>shape_filter</strong> (<a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><em>ShapeFilter</em></a>) – Only pick shapes matching the filter</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">PointQueryInfo</span></code></a> or None</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointQueryInfo</span></code></a> or None</p>
 </td>
 </tr>
 </tbody>
@@ -542,12 +530,12 @@ body, remove the joints and shapes attached to it.</p>
 given radius.</p>
 <p>The filter is applied to the query and follows the same rules as the
 collision detection.</p>
-<p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
+<p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
 parameter can be used.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Sensor shapes are included in the result (In 
-<a class="reference internal" href="#pymunk.Space.segment_query_first" title="pymunk.Space.segment_query_first"><code class="xref py py-meth docutils literal"><span class="pre">Space.segment_query_first()</span></code></a> they are not)</p>
+<a class="reference internal" href="#pymunk.Space.segment_query_first" title="pymunk.Space.segment_query_first"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.segment_query_first()</span></code></a> they are not)</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -561,7 +549,7 @@ parameter can be used.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[<a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">SegmentQueryInfo</span></code></a>]</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[<a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SegmentQueryInfo</span></code></a>]</p>
 </td>
 </tr>
 </tbody>
@@ -578,15 +566,15 @@ collision detection.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Sensor shapes are not included in the result (In 
-<a class="reference internal" href="#pymunk.Space.segment_query" title="pymunk.Space.segment_query"><code class="xref py py-meth docutils literal"><span class="pre">Space.segment_query()</span></code></a> they are)</p>
+<a class="reference internal" href="#pymunk.Space.segment_query" title="pymunk.Space.segment_query"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.segment_query()</span></code></a> they are)</p>
 </div>
-<p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
+<p>See <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeFilter</span></code></a> for details about how the shape_filter 
 parameter can be used.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">SegmentQueryInfo</span></code></a> or None</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SegmentQueryInfo</span></code></a> or None</td>
 </tr>
 </tbody>
 </table>
@@ -604,9 +592,9 @@ parameter can be used.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>shape</strong> (<a class="reference internal" href="#pymunk.Circle" title="pymunk.Circle"><code class="xref py py-class docutils literal"><span class="pre">Circle</span></code></a>, <a class="reference internal" href="#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal"><span class="pre">Poly</span></code></a> or <a class="reference internal" href="#pymunk.Segment" title="pymunk.Segment"><code class="xref py py-class docutils literal"><span class="pre">Segment</span></code></a>) – Shape to query with</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>shape</strong> (<a class="reference internal" href="#pymunk.Circle" title="pymunk.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circle</span></code></a>, <a class="reference internal" href="#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal notranslate"><span class="pre">Poly</span></code></a> or <a class="reference internal" href="#pymunk.Segment" title="pymunk.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>) – Shape to query with</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">[<a class="reference internal" href="#pymunk.ShapeQueryInfo" title="pymunk.ShapeQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">ShapeQueryInfo</span></code></a>]</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">[<a class="reference internal" href="#pymunk.ShapeQueryInfo" title="pymunk.ShapeQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeQueryInfo</span></code></a>]</td>
 </tr>
 </tbody>
 </table>
@@ -648,7 +636,7 @@ that the simulation moved forward 100 units. Performing  multiple
 calls with a smaller dt creates a more stable and accurate 
 simulation. Therefor it sometimes make sense to have a little for loop
 around the step call, like in this example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">steps</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span> <span class="c1"># move simulation forward 0.1 seconds:</span>
@@ -669,19 +657,18 @@ around the step call, like in this example:</p>
 <dt id="pymunk.Space.threads">
 <code class="descname">threads</code><a class="headerlink" href="#pymunk.Space.threads" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of threads to use for running the step function.</p>
-<p>Only valid on platforms other than Windows and when the Space was 
-created with threaded=True. Currently the max limit is 2, setting a
-higher value wont have any effect. The default is 1 regardless if the 
-Space was created with threaded=True, to keep determinism in the 
-simulation.</p>
+<p>Only valid when the Space was created with threaded=True. Currently the 
+max limit is 2, setting a higher value wont have any effect. The 
+default is 1 regardless if the Space was created with threaded=True, 
+to keep determinism in the simulation.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pymunk.Body">
-<em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">Body</code><span class="sig-paren">(</span><em>mass=0</em>, <em>moment=0</em>, <em>body_type=&lt;class ‘CP_BODY_TYPE_DYNAMIC’&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/body.html#Body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk._pickle.PickleMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">Body</code><span class="sig-paren">(</span><em>mass=0</em>, <em>moment=0</em>, <em>body_type=&lt;class 'CP_BODY_TYPE_DYNAMIC'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/body.html#Body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk._pickle.PickleMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A rigid body</p>
 <ul class="simple">
 <li>Use forces to modify the rigid bodies if possible. This is likely to be
@@ -699,24 +686,24 @@ constraints attached to the body will not be copied.</p>
 <dl class="attribute">
 <dt id="pymunk.Body.DYNAMIC">
 <code class="descname">DYNAMIC</code><a class="headerlink" href="#pymunk.Body.DYNAMIC" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">CP_BODY_TYPE_DYNAMIC</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">CP_BODY_TYPE_DYNAMIC</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.Body.KINEMATIC">
 <code class="descname">KINEMATIC</code><a class="headerlink" href="#pymunk.Body.KINEMATIC" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">CP_BODY_TYPE_KINEMATIC</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">CP_BODY_TYPE_KINEMATIC</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.Body.STATIC">
 <code class="descname">STATIC</code><a class="headerlink" href="#pymunk.Body.STATIC" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">CP_BODY_TYPE_STATIC</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">CP_BODY_TYPE_STATIC</span></code></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pymunk.Body.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>mass=0</em>, <em>moment=0</em>, <em>body_type=&lt;class ‘CP_BODY_TYPE_DYNAMIC’&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/body.html#Body.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>mass=0</em>, <em>moment=0</em>, <em>body_type=&lt;class 'CP_BODY_TYPE_DYNAMIC'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/body.html#Body.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new Body</p>
 <p>Mass and moment are ignored when body_type is KINEMATIC or STATIC.</p>
 <p>Guessing the mass for a body is usually fine, but guessing a moment
@@ -748,7 +735,7 @@ overwrite your custom mass value when the shapes are added to the body.</p>
 <code class="descname">angle</code><a class="headerlink" href="#pymunk.Body.angle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rotation of the body in radians.</p>
 <p>When changing the rotation you may also want to call
-<a class="reference internal" href="#pymunk.Space.reindex_shapes_for_body" title="pymunk.Space.reindex_shapes_for_body"><code class="xref py py-func docutils literal"><span class="pre">Space.reindex_shapes_for_body()</span></code></a> to update the collision 
+<a class="reference internal" href="#pymunk.Space.reindex_shapes_for_body" title="pymunk.Space.reindex_shapes_for_body"><code class="xref py py-func docutils literal notranslate"><span class="pre">Space.reindex_shapes_for_body()</span></code></a> to update the collision 
 detection information for the attached shapes if plan to make any 
 queries against the space. A body rotates around its center of gravity, 
 not its position.</p>
@@ -803,8 +790,8 @@ local point.</p>
 <dl class="attribute">
 <dt id="pymunk.Body.body_type">
 <code class="descname">body_type</code><a class="headerlink" href="#pymunk.Body.body_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>The type of a body (<a class="reference internal" href="#pymunk.Body.DYNAMIC" title="pymunk.Body.DYNAMIC"><code class="xref py py-const docutils literal"><span class="pre">Body.DYNAMIC</span></code></a>, 
-<a class="reference internal" href="#pymunk.Body.KINEMATIC" title="pymunk.Body.KINEMATIC"><code class="xref py py-const docutils literal"><span class="pre">Body.KINEMATIC</span></code></a> or <a class="reference internal" href="#pymunk.Body.STATIC" title="pymunk.Body.STATIC"><code class="xref py py-const docutils literal"><span class="pre">Body.STATIC</span></code></a>).</p>
+<dd><p>The type of a body (<a class="reference internal" href="#pymunk.Body.DYNAMIC" title="pymunk.Body.DYNAMIC"><code class="xref py py-const docutils literal notranslate"><span class="pre">Body.DYNAMIC</span></code></a>, 
+<a class="reference internal" href="#pymunk.Body.KINEMATIC" title="pymunk.Body.KINEMATIC"><code class="xref py py-const docutils literal notranslate"><span class="pre">Body.KINEMATIC</span></code></a> or <a class="reference internal" href="#pymunk.Body.STATIC" title="pymunk.Body.STATIC"><code class="xref py py-const docutils literal notranslate"><span class="pre">Body.STATIC</span></code></a>).</p>
 <p>When changing an body to a dynamic body, the mass and moment of
 inertia are recalculated from the shapes added to the body. Custom
 calculated moments of inertia are not preserved when changing types.
@@ -838,11 +825,11 @@ live body wont prevent GC of the attached constraints</p>
 <code class="descname">each_arbiter</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/body.html#Body.each_arbiter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.each_arbiter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run func on each of the arbiters on this body.</p>
 <blockquote>
-<div><p><code class="docutils literal"><span class="pre">func(arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">None</span></code></p>
+<div><p><code class="docutils literal notranslate"><span class="pre">func(arbiter,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">None</span></code></p>
 <dl class="docutils">
 <dt>Callback Parameters</dt>
 <dd><dl class="first last docutils">
-<dt>arbiter <span class="classifier-delimiter">:</span> <span class="classifier"><a class="reference internal" href="#pymunk.Arbiter" title="pymunk.Arbiter"><code class="xref py py-class docutils literal"><span class="pre">Arbiter</span></code></a></span></dt>
+<dt>arbiter <span class="classifier-delimiter">:</span> <span class="classifier"><a class="reference internal" href="#pymunk.Arbiter" title="pymunk.Arbiter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Arbiter</span></code></a></span></dt>
 <dd>The Arbiter</dd>
 <dt>args</dt>
 <dd>Optional parameters passed to the callback function.</dd>
@@ -912,7 +899,7 @@ along with the body.</p>
 <code class="descname">position</code><a class="headerlink" href="#pymunk.Body.position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Position of the body.</p>
 <p>When changing the position you may also want to call
-<a class="reference internal" href="#pymunk.Space.reindex_shapes_for_body" title="pymunk.Space.reindex_shapes_for_body"><code class="xref py py-func docutils literal"><span class="pre">Space.reindex_shapes_for_body()</span></code></a> to update the collision 
+<a class="reference internal" href="#pymunk.Space.reindex_shapes_for_body" title="pymunk.Space.reindex_shapes_for_body"><code class="xref py py-func docutils literal notranslate"><span class="pre">Space.reindex_shapes_for_body()</span></code></a> to update the collision 
 detection information for the attached shapes if plan to make any 
 queries against the space.</p>
 </dd></dl>
@@ -924,7 +911,7 @@ queries against the space.</p>
 <p>The position callback function is called each time step and can be 
 used to update the body’s position.</p>
 <blockquote>
-<div><code class="docutils literal"><span class="pre">func(body,</span> <span class="pre">dt)</span> <span class="pre">-&gt;</span> <span class="pre">None</span></code></div></blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">func(body,</span> <span class="pre">dt)</span> <span class="pre">-&gt;</span> <span class="pre">None</span></code></div></blockquote>
 </dd></dl>
 
 <dl class="attribute">
@@ -956,8 +943,8 @@ in a group.</p>
 <p>When objects in Pymunk sleep, they sleep as a group of all objects
 that are touching or jointed together. When an object is woken up,
 all of the objects in its group are woken up. 
-<a class="reference internal" href="#pymunk.Body.sleep_with_group" title="pymunk.Body.sleep_with_group"><code class="xref py py-func docutils literal"><span class="pre">Body.sleep_with_group()</span></code></a> allows you group sleeping objects 
-together. It acts identically to <a class="reference internal" href="#pymunk.Body.sleep" title="pymunk.Body.sleep"><code class="xref py py-func docutils literal"><span class="pre">Body.sleep()</span></code></a> if you pass 
+<a class="reference internal" href="#pymunk.Body.sleep_with_group" title="pymunk.Body.sleep_with_group"><code class="xref py py-func docutils literal notranslate"><span class="pre">Body.sleep_with_group()</span></code></a> allows you group sleeping objects 
+together. It acts identically to <a class="reference internal" href="#pymunk.Body.sleep" title="pymunk.Body.sleep"><code class="xref py py-func docutils literal notranslate"><span class="pre">Body.sleep()</span></code></a> if you pass 
 None as group by starting a new group. If you pass a sleeping body 
 for group, body will be awoken when group is awoken. You can use this 
 to initialize levels and start stacks of objects in a pre-sleeping 
@@ -967,7 +954,7 @@ state.</p>
 <dl class="attribute">
 <dt id="pymunk.Body.space">
 <code class="descname">space</code><a class="headerlink" href="#pymunk.Body.space" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the <a class="reference internal" href="#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal"><span class="pre">Space</span></code></a> that the body has been added to (or 
+<dd><p>Get the <a class="reference internal" href="#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code></a> that the body has been added to (or 
 None).</p>
 </dd></dl>
 
@@ -980,7 +967,7 @@ None).</p>
 
 <dl class="staticmethod">
 <dt id="pymunk.Body.update_position">
-<em class="property">static </em><code class="descname">update_position</code><span class="sig-paren">(</span><em>body</em>, <em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/body.html#Body.update_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.update_position" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">update_position</code><span class="sig-paren">(</span><em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/body.html#Body.update_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.update_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default rigid body position integration function.</p>
 <p>Updates the position of the body using Euler integration. Unlike the
 velocity function, it’s unlikely you’ll want to override this
@@ -991,7 +978,7 @@ correction process.</p>
 
 <dl class="staticmethod">
 <dt id="pymunk.Body.update_velocity">
-<em class="property">static </em><code class="descname">update_velocity</code><span class="sig-paren">(</span><em>body</em>, <em>gravity</em>, <em>damping</em>, <em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/body.html#Body.update_velocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.update_velocity" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">update_velocity</code><span class="sig-paren">(</span><em>gravity</em>, <em>damping</em>, <em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/body.html#Body.update_velocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Body.update_velocity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default rigid body velocity integration function.</p>
 <p>Updates the velocity of the body using Euler integration.</p>
 </dd></dl>
@@ -1026,7 +1013,7 @@ except the center of gravity.</p>
 <p>The velocity callback function is called each time step, and can be 
 used to set a body’s velocity.</p>
 <blockquote>
-<div><code class="docutils literal"><span class="pre">func(body</span> <span class="pre">:</span> <span class="pre">Body,</span> <span class="pre">gravity,</span> <span class="pre">damping,</span> <span class="pre">dt)</span></code></div></blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">func(body</span> <span class="pre">:</span> <span class="pre">Body,</span> <span class="pre">gravity,</span> <span class="pre">damping,</span> <span class="pre">dt)</span></code></div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -1048,17 +1035,18 @@ used to set a body’s velocity.</p>
 <dl class="class">
 <dt id="pymunk.Shape">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">Shape</code><span class="sig-paren">(</span><em>shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk._pickle.PickleMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk._pickle.PickleMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class for all the shapes.</p>
 <p>You usually dont want to create instances of this class directly but use
-one of the specialized shapes instead (<a class="reference internal" href="#pymunk.Circle" title="pymunk.Circle"><code class="xref py py-class docutils literal"><span class="pre">Circle</span></code></a>, 
-<a class="reference internal" href="#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal"><span class="pre">Poly</span></code></a> or <a class="reference internal" href="#pymunk.Segment" title="pymunk.Segment"><code class="xref py py-class docutils literal"><span class="pre">Segment</span></code></a>).</p>
+one of the specialized shapes instead (<a class="reference internal" href="#pymunk.Circle" title="pymunk.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circle</span></code></a>, 
+<a class="reference internal" href="#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal notranslate"><span class="pre">Poly</span></code></a> or <a class="reference internal" href="#pymunk.Segment" title="pymunk.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>).</p>
 <p>All the shapes can be copied and pickled. If you copy/pickle a shape the 
 body (if any) will also be copied.</p>
 <dl class="method">
 <dt id="pymunk.Shape.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Shape.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Shape.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.Shape.area">
@@ -1069,12 +1057,12 @@ body (if any) will also be copied.</p>
 <dl class="attribute">
 <dt id="pymunk.Shape.bb">
 <code class="descname">bb</code><a class="headerlink" href="#pymunk.Shape.bb" title="Permalink to this definition">¶</a></dt>
-<dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal"><span class="pre">BB</span></code></a> of the shape.</p>
-<p>Only guaranteed to be valid after <a class="reference internal" href="#pymunk.Shape.cache_bb" title="pymunk.Shape.cache_bb"><code class="xref py py-meth docutils literal"><span class="pre">Shape.cache_bb()</span></code></a> or 
-<a class="reference internal" href="#pymunk.Space.step" title="pymunk.Space.step"><code class="xref py py-meth docutils literal"><span class="pre">Space.step()</span></code></a> is called. Moving a body that a shape is 
+<dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal notranslate"><span class="pre">BB</span></code></a> of the shape.</p>
+<p>Only guaranteed to be valid after <a class="reference internal" href="#pymunk.Shape.cache_bb" title="pymunk.Shape.cache_bb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Shape.cache_bb()</span></code></a> or 
+<a class="reference internal" href="#pymunk.Space.step" title="pymunk.Space.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.step()</span></code></a> is called. Moving a body that a shape is 
 connected to does not update it’s bounding box. For shapes used for 
 queries that aren’t attached to bodies, you can also use 
-<a class="reference internal" href="#pymunk.Shape.update" title="pymunk.Shape.update"><code class="xref py py-meth docutils literal"><span class="pre">Shape.update()</span></code></a>.</p>
+<a class="reference internal" href="#pymunk.Shape.update" title="pymunk.Shape.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Shape.update()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1100,7 +1088,7 @@ indicate that this shape doesnt belong to a body.</p>
 <dt id="pymunk.Shape.collision_type">
 <code class="descname">collision_type</code><a class="headerlink" href="#pymunk.Shape.collision_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>User defined collision type for the shape.</p>
-<p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
+<p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
 information on when to use this property.</p>
 </dd></dl>
 
@@ -1131,7 +1119,7 @@ using 1.0 or greater is not recommended.</p>
 <dl class="attribute">
 <dt id="pymunk.Shape.filter">
 <code class="descname">filter</code><a class="headerlink" href="#pymunk.Shape.filter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the collision <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for this shape.</p>
+<dd><p>Set the collision <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeFilter</span></code></a> for this shape.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1250,7 +1238,7 @@ mass and inertia directly)</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Tuple of (distance, info)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float, <a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">PointQueryInfo</span></code></a>)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float, <a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointQueryInfo</span></code></a>)</td>
 </tr>
 </tbody>
 </table>
@@ -1264,7 +1252,7 @@ mass and inertia directly)</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">SegmentQueryInfo</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SegmentQueryInfo</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -1286,7 +1274,7 @@ collisions.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.ContactPointSet" title="pymunk.ContactPointSet"><code class="xref py py-class docutils literal"><span class="pre">ContactPointSet</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.ContactPointSet" title="pymunk.ContactPointSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContactPointSet</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -1295,7 +1283,7 @@ collisions.</p>
 <dl class="attribute">
 <dt id="pymunk.Shape.space">
 <code class="descname">space</code><a class="headerlink" href="#pymunk.Shape.space" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the <a class="reference internal" href="#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal"><span class="pre">Space</span></code></a> that shape has been added to (or 
+<dd><p>Get the <a class="reference internal" href="#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code></a> that shape has been added to (or 
 None).</p>
 </dd></dl>
 
@@ -1322,7 +1310,7 @@ querying.</p>
 <dl class="class">
 <dt id="pymunk.Circle">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">Circle</code><span class="sig-paren">(</span><em>body</em>, <em>radius</em>, <em>offset=(0</em>, <em>0)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Circle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk.shapes.Shape</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.shapes.Shape</span></code></p>
 <p>A circle shape defined by a radius</p>
 <p>This is the fastest and simplest collision shape</p>
 <dl class="method">
@@ -1344,12 +1332,12 @@ before adding the shape to a space or used for a space shape query.</p>
 <dl class="attribute">
 <dt id="pymunk.Circle.bb">
 <code class="descname">bb</code><a class="headerlink" href="#pymunk.Circle.bb" title="Permalink to this definition">¶</a></dt>
-<dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal"><span class="pre">BB</span></code></a> of the shape.</p>
-<p>Only guaranteed to be valid after <a class="reference internal" href="#pymunk.Shape.cache_bb" title="pymunk.Shape.cache_bb"><code class="xref py py-meth docutils literal"><span class="pre">Shape.cache_bb()</span></code></a> or 
-<a class="reference internal" href="#pymunk.Space.step" title="pymunk.Space.step"><code class="xref py py-meth docutils literal"><span class="pre">Space.step()</span></code></a> is called. Moving a body that a shape is 
+<dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal notranslate"><span class="pre">BB</span></code></a> of the shape.</p>
+<p>Only guaranteed to be valid after <a class="reference internal" href="#pymunk.Shape.cache_bb" title="pymunk.Shape.cache_bb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Shape.cache_bb()</span></code></a> or 
+<a class="reference internal" href="#pymunk.Space.step" title="pymunk.Space.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.step()</span></code></a> is called. Moving a body that a shape is 
 connected to does not update it’s bounding box. For shapes used for 
 queries that aren’t attached to bodies, you can also use 
-<a class="reference internal" href="#pymunk.Shape.update" title="pymunk.Shape.update"><code class="xref py py-meth docutils literal"><span class="pre">Shape.update()</span></code></a>.</p>
+<a class="reference internal" href="#pymunk.Shape.update" title="pymunk.Shape.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Shape.update()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1375,7 +1363,7 @@ indicate that this shape doesnt belong to a body.</p>
 <dt id="pymunk.Circle.collision_type">
 <code class="descname">collision_type</code><a class="headerlink" href="#pymunk.Circle.collision_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>User defined collision type for the shape.</p>
-<p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
+<p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
 information on when to use this property.</p>
 </dd></dl>
 
@@ -1406,7 +1394,7 @@ using 1.0 or greater is not recommended.</p>
 <dl class="attribute">
 <dt id="pymunk.Circle.filter">
 <code class="descname">filter</code><a class="headerlink" href="#pymunk.Circle.filter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the collision <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for this shape.</p>
+<dd><p>Set the collision <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeFilter</span></code></a> for this shape.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1531,7 +1519,7 @@ mass and inertia directly)</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Tuple of (distance, info)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float, <a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">PointQueryInfo</span></code></a>)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float, <a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointQueryInfo</span></code></a>)</td>
 </tr>
 </tbody>
 </table>
@@ -1551,7 +1539,7 @@ mass and inertia directly)</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">SegmentQueryInfo</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SegmentQueryInfo</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -1573,7 +1561,7 @@ collisions.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.ContactPointSet" title="pymunk.ContactPointSet"><code class="xref py py-class docutils literal"><span class="pre">ContactPointSet</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.ContactPointSet" title="pymunk.ContactPointSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContactPointSet</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -1582,7 +1570,7 @@ collisions.</p>
 <dl class="attribute">
 <dt id="pymunk.Circle.space">
 <code class="descname">space</code><a class="headerlink" href="#pymunk.Circle.space" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the <a class="reference internal" href="#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal"><span class="pre">Space</span></code></a> that shape has been added to (or 
+<dd><p>Get the <a class="reference internal" href="#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code></a> that shape has been added to (or 
 None).</p>
 </dd></dl>
 
@@ -1635,7 +1623,7 @@ querying.</p>
 <dl class="class">
 <dt id="pymunk.Poly">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">Poly</code><span class="sig-paren">(</span><em>body</em>, <em>vertices</em>, <em>transform=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Poly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk.shapes.Shape</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.shapes.Shape</span></code></p>
 <p>A convex polygon shape</p>
 <p>Slowest, but most flexible collision shape.</p>
 <dl class="method">
@@ -1674,12 +1662,12 @@ with a counterclockwise winding.</li>
 <dl class="attribute">
 <dt id="pymunk.Poly.bb">
 <code class="descname">bb</code><a class="headerlink" href="#pymunk.Poly.bb" title="Permalink to this definition">¶</a></dt>
-<dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal"><span class="pre">BB</span></code></a> of the shape.</p>
-<p>Only guaranteed to be valid after <a class="reference internal" href="#pymunk.Shape.cache_bb" title="pymunk.Shape.cache_bb"><code class="xref py py-meth docutils literal"><span class="pre">Shape.cache_bb()</span></code></a> or 
-<a class="reference internal" href="#pymunk.Space.step" title="pymunk.Space.step"><code class="xref py py-meth docutils literal"><span class="pre">Space.step()</span></code></a> is called. Moving a body that a shape is 
+<dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal notranslate"><span class="pre">BB</span></code></a> of the shape.</p>
+<p>Only guaranteed to be valid after <a class="reference internal" href="#pymunk.Shape.cache_bb" title="pymunk.Shape.cache_bb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Shape.cache_bb()</span></code></a> or 
+<a class="reference internal" href="#pymunk.Space.step" title="pymunk.Space.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.step()</span></code></a> is called. Moving a body that a shape is 
 connected to does not update it’s bounding box. For shapes used for 
 queries that aren’t attached to bodies, you can also use 
-<a class="reference internal" href="#pymunk.Shape.update" title="pymunk.Shape.update"><code class="xref py py-meth docutils literal"><span class="pre">Shape.update()</span></code></a>.</p>
+<a class="reference internal" href="#pymunk.Shape.update" title="pymunk.Shape.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Shape.update()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1705,7 +1693,7 @@ indicate that this shape doesnt belong to a body.</p>
 <dt id="pymunk.Poly.collision_type">
 <code class="descname">collision_type</code><a class="headerlink" href="#pymunk.Poly.collision_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>User defined collision type for the shape.</p>
-<p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
+<p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
 information on when to use this property.</p>
 </dd></dl>
 
@@ -1717,7 +1705,7 @@ information on when to use this property.</p>
 
 <dl class="staticmethod">
 <dt id="pymunk.Poly.create_box">
-<em class="property">static </em><code class="descname">create_box</code><span class="sig-paren">(</span><em>body</em>, <em>size=(10</em>, <em>10)</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Poly.create_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.create_box" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">create_box</code><span class="sig-paren">(</span><em>size=(10</em>, <em>10)</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Poly.create_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.create_box" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience function to create a box given a width and height.</p>
 <p>The boxes will always be centered at the center of gravity of the
 body you are attaching them to.  If you want to create an off-center
@@ -1735,7 +1723,7 @@ reduce problems where the box gets stuck on seams in your geometry.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal"><span class="pre">Poly</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal notranslate"><span class="pre">Poly</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -1744,8 +1732,8 @@ reduce problems where the box gets stuck on seams in your geometry.</p>
 
 <dl class="staticmethod">
 <dt id="pymunk.Poly.create_box_bb">
-<em class="property">static </em><code class="descname">create_box_bb</code><span class="sig-paren">(</span><em>body</em>, <em>bb</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Poly.create_box_bb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.create_box_bb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convenience function to create a box shape from a <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal"><span class="pre">BB</span></code></a>.</p>
+<em class="property">static </em><code class="descname">create_box_bb</code><span class="sig-paren">(</span><em>bb</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Poly.create_box_bb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Poly.create_box_bb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to create a box shape from a <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal notranslate"><span class="pre">BB</span></code></a>.</p>
 <p>The boxes will always be centered at the center of gravity of the
 body you are attaching them to.  If you want to create an off-center
 box, you will need to use the normal constructor Poly(..).</p>
@@ -1762,7 +1750,7 @@ reduce problems where the box gets stuck on seams in your geometry.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal"><span class="pre">Poly</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal notranslate"><span class="pre">Poly</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -1790,7 +1778,7 @@ using 1.0 or greater is not recommended.</p>
 <dl class="attribute">
 <dt id="pymunk.Poly.filter">
 <code class="descname">filter</code><a class="headerlink" href="#pymunk.Poly.filter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the collision <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for this shape.</p>
+<dd><p>Set the collision <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeFilter</span></code></a> for this shape.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1890,16 +1878,17 @@ it is what looks good that is important, not the exact value).</p>
 <p>If you need the vertices in world coordinates then the vertices can be 
 transformed by adding the body position and each vertex rotated by the 
 body rotation in the following way:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">shape</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Poly</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">shape</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
-<span class="go">Vec2d(1.0, 2.0)</span>
-<span class="go">Vec2d(9.7758256189, 6.79425538604)</span>
-<span class="go">Vec2d(4.98157023286, 15.5700810049)</span>
+<span class="gp">... </span>    <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="go">(1, 2)</span>
+<span class="go">(9, 6)</span>
+<span class="go">(4, 15)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1908,7 +1897,7 @@ body rotation in the following way:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The vertices in local coords</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">[<code class="xref py py-class docutils literal"><span class="pre">Vec2d</span></code>]</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vec2d</span></code>]</td>
 </tr>
 </tbody>
 </table>
@@ -1940,7 +1929,7 @@ mass and inertia directly)</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Tuple of (distance, info)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float, <a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">PointQueryInfo</span></code></a>)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float, <a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointQueryInfo</span></code></a>)</td>
 </tr>
 </tbody>
 </table>
@@ -1961,7 +1950,7 @@ directions with the given radius</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">SegmentQueryInfo</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SegmentQueryInfo</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -1983,7 +1972,7 @@ collisions.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.ContactPointSet" title="pymunk.ContactPointSet"><code class="xref py py-class docutils literal"><span class="pre">ContactPointSet</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.ContactPointSet" title="pymunk.ContactPointSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContactPointSet</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -1992,7 +1981,7 @@ collisions.</p>
 <dl class="attribute">
 <dt id="pymunk.Poly.space">
 <code class="descname">space</code><a class="headerlink" href="#pymunk.Poly.space" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the <a class="reference internal" href="#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal"><span class="pre">Space</span></code></a> that shape has been added to (or 
+<dd><p>Get the <a class="reference internal" href="#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code></a> that shape has been added to (or 
 None).</p>
 </dd></dl>
 
@@ -2045,7 +2034,7 @@ querying.</p>
 <dl class="class">
 <dt id="pymunk.Segment">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">Segment</code><span class="sig-paren">(</span><em>body</em>, <em>a</em>, <em>b</em>, <em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/shapes.html#Segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Segment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk.shapes.Shape</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.shapes.Shape</span></code></p>
 <p>A line segment shape between two points</p>
 <p>Meant mainly as a static shape. Can be beveled in order to give them a
 thickness.</p>
@@ -2093,12 +2082,12 @@ before adding the shape to a space or used for a space shape query.</p>
 <dl class="attribute">
 <dt id="pymunk.Segment.bb">
 <code class="descname">bb</code><a class="headerlink" href="#pymunk.Segment.bb" title="Permalink to this definition">¶</a></dt>
-<dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal"><span class="pre">BB</span></code></a> of the shape.</p>
-<p>Only guaranteed to be valid after <a class="reference internal" href="#pymunk.Shape.cache_bb" title="pymunk.Shape.cache_bb"><code class="xref py py-meth docutils literal"><span class="pre">Shape.cache_bb()</span></code></a> or 
-<a class="reference internal" href="#pymunk.Space.step" title="pymunk.Space.step"><code class="xref py py-meth docutils literal"><span class="pre">Space.step()</span></code></a> is called. Moving a body that a shape is 
+<dd><p>The bounding box <a class="reference internal" href="#pymunk.BB" title="pymunk.BB"><code class="xref py py-class docutils literal notranslate"><span class="pre">BB</span></code></a> of the shape.</p>
+<p>Only guaranteed to be valid after <a class="reference internal" href="#pymunk.Shape.cache_bb" title="pymunk.Shape.cache_bb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Shape.cache_bb()</span></code></a> or 
+<a class="reference internal" href="#pymunk.Space.step" title="pymunk.Space.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.step()</span></code></a> is called. Moving a body that a shape is 
 connected to does not update it’s bounding box. For shapes used for 
 queries that aren’t attached to bodies, you can also use 
-<a class="reference internal" href="#pymunk.Shape.update" title="pymunk.Shape.update"><code class="xref py py-meth docutils literal"><span class="pre">Shape.update()</span></code></a>.</p>
+<a class="reference internal" href="#pymunk.Shape.update" title="pymunk.Shape.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Shape.update()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2124,7 +2113,7 @@ indicate that this shape doesnt belong to a body.</p>
 <dt id="pymunk.Segment.collision_type">
 <code class="descname">collision_type</code><a class="headerlink" href="#pymunk.Segment.collision_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>User defined collision type for the shape.</p>
-<p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
+<p>See <a class="reference internal" href="#pymunk.Space.add_collision_handler" title="pymunk.Space.add_collision_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Space.add_collision_handler()</span></code></a> function for more 
 information on when to use this property.</p>
 </dd></dl>
 
@@ -2155,7 +2144,7 @@ using 1.0 or greater is not recommended.</p>
 <dl class="attribute">
 <dt id="pymunk.Segment.filter">
 <code class="descname">filter</code><a class="headerlink" href="#pymunk.Segment.filter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the collision <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal"><span class="pre">ShapeFilter</span></code></a> for this shape.</p>
+<dd><p>Set the collision <a class="reference internal" href="#pymunk.ShapeFilter" title="pymunk.ShapeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeFilter</span></code></a> for this shape.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2280,7 +2269,7 @@ mass and inertia directly)</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Tuple of (distance, info)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float, <a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">PointQueryInfo</span></code></a>)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float, <a class="reference internal" href="#pymunk.PointQueryInfo" title="pymunk.PointQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointQueryInfo</span></code></a>)</td>
 </tr>
 </tbody>
 </table>
@@ -2300,7 +2289,7 @@ mass and inertia directly)</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal"><span class="pre">SegmentQueryInfo</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.SegmentQueryInfo" title="pymunk.SegmentQueryInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SegmentQueryInfo</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -2331,7 +2320,7 @@ Chipmunk to avoid colliding with the inner parts of the crack.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.ContactPointSet" title="pymunk.ContactPointSet"><code class="xref py py-class docutils literal"><span class="pre">ContactPointSet</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pymunk.ContactPointSet" title="pymunk.ContactPointSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContactPointSet</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -2340,7 +2329,7 @@ Chipmunk to avoid colliding with the inner parts of the crack.</p>
 <dl class="attribute">
 <dt id="pymunk.Segment.space">
 <code class="descname">space</code><a class="headerlink" href="#pymunk.Segment.space" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the <a class="reference internal" href="#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal"><span class="pre">Space</span></code></a> that shape has been added to (or 
+<dd><p>Get the <a class="reference internal" href="#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal notranslate"><span class="pre">Space</span></code></a> that shape has been added to (or 
 None).</p>
 </dd></dl>
 
@@ -2423,7 +2412,7 @@ added to each vertex.</p>
 <dl class="class">
 <dt id="pymunk.SegmentQueryInfo">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">SegmentQueryInfo</code><a class="reference internal" href="_modules/pymunk/query_info.html#SegmentQueryInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.SegmentQueryInfo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk.query_info.SegmentQueryInfo</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.query_info.SegmentQueryInfo</span></code></p>
 <p>Segment queries return more information than just a simple yes or no,
 they also return where a shape was hit and it’s surface normal at the hit
 point. This object hold that information.</p>
@@ -2457,12 +2446,12 @@ The normalized distance along the query segment in the range [0, 1]</p>
 
 <dl class="method">
 <dt id="pymunk.SegmentQueryInfo.count">
-<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer – return number of occurrences of value<a class="headerlink" href="#pymunk.SegmentQueryInfo.count" title="Permalink to this definition">¶</a></dt>
+<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer -- return number of occurrences of value<a class="headerlink" href="#pymunk.SegmentQueryInfo.count" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pymunk.SegmentQueryInfo.index">
-<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer – return first index of value.<a class="headerlink" href="#pymunk.SegmentQueryInfo.index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer -- return first index of value.<a class="headerlink" href="#pymunk.SegmentQueryInfo.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
@@ -2489,7 +2478,7 @@ The normalized distance along the query segment in the range [0, 1]</p>
 <dl class="class">
 <dt id="pymunk.ContactPoint">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">ContactPoint</code><span class="sig-paren">(</span><em>point_a</em>, <em>point_b</em>, <em>distance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/contact_point_set.html#ContactPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.ContactPoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Contains information about a contact point.</p>
 <p>point_a and point_b are the contact position on the surface of each shape.</p>
 <p>distance is the penetration distance of the two shapes. Overlapping 
@@ -2499,7 +2488,8 @@ Arbiter.contact_point_set.</p>
 <dl class="method">
 <dt id="pymunk.ContactPoint.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>point_a</em>, <em>point_b</em>, <em>distance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/contact_point_set.html#ContactPoint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.ContactPoint.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.ContactPoint.distance">
@@ -2521,14 +2511,15 @@ Arbiter.contact_point_set.</p>
 <dl class="class">
 <dt id="pymunk.ContactPointSet">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">ContactPointSet</code><span class="sig-paren">(</span><em>normal</em>, <em>points</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/contact_point_set.html#ContactPointSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.ContactPointSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Contact point sets make getting contact information simpler.</p>
 <p>normal is the normal of the collision</p>
 <p>points is the array of contact points. Can be at most 2 points.</p>
 <dl class="method">
 <dt id="pymunk.ContactPointSet.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>normal</em>, <em>points</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/contact_point_set.html#ContactPointSet.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.ContactPointSet.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.ContactPointSet.normal">
@@ -2545,7 +2536,7 @@ Arbiter.contact_point_set.</p>
 <dl class="class">
 <dt id="pymunk.Arbiter">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">Arbiter</code><span class="sig-paren">(</span><em>_arbiter</em>, <em>space</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/arbiter.html#Arbiter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Arbiter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="docutils">
 <dt>The Arbiter object encapsulates a pair of colliding shapes and all of </dt>
 <dd><p class="first">the data about their collision.</p>
@@ -2659,7 +2650,7 @@ not dynamic friction.</p>
 <dl class="class">
 <dt id="pymunk.CollisionHandler">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">CollisionHandler</code><span class="sig-paren">(</span><em>_handler</em>, <em>space</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/collision_handler.html#CollisionHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.CollisionHandler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A collision handler is a set of 4 function callbacks for the different
 collision events that Pymunk recognizes.</p>
 <p>Collision callbacks are closely associated with Arbiter objects. You
@@ -2687,7 +2678,7 @@ struct and the Space.</p>
 <dt id="pymunk.CollisionHandler.begin">
 <code class="descname">begin</code><a class="headerlink" href="#pymunk.CollisionHandler.begin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two shapes just started touching for the first time this step.</p>
-<p><code class="docutils literal"><span class="pre">func(arbiter,</span> <span class="pre">space,</span> <span class="pre">data)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">func(arbiter,</span> <span class="pre">space,</span> <span class="pre">data)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></code></p>
 <p>Return true from the callback to process the collision normally or
 false to cause pymunk to ignore the collision entirely. If you return
 false, the <cite>pre_solve</cite> and <cite>post_solve</cite> callbacks will never be run,
@@ -2709,7 +2700,7 @@ callbacks.</p>
 <code class="descname">post_solve</code><a class="headerlink" href="#pymunk.CollisionHandler.post_solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two shapes are touching and their collision response has been
 processed.</p>
-<p><code class="docutils literal"><span class="pre">func(arbiter,</span> <span class="pre">space,</span> <span class="pre">data)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">func(arbiter,</span> <span class="pre">space,</span> <span class="pre">data)</span></code></p>
 <p>You can retrieve the collision impulse or kinetic energy at this
 time if you want to use it to calculate sound volumes or damage
 amounts. See Arbiter for more info.</p>
@@ -2719,7 +2710,7 @@ amounts. See Arbiter for more info.</p>
 <dt id="pymunk.CollisionHandler.pre_solve">
 <code class="descname">pre_solve</code><a class="headerlink" href="#pymunk.CollisionHandler.pre_solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two shapes are touching during this step.</p>
-<p><code class="docutils literal"><span class="pre">func(arbiter,</span> <span class="pre">space,</span> <span class="pre">data)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">func(arbiter,</span> <span class="pre">space,</span> <span class="pre">data)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></code></p>
 <p>Return false from the callback to make pymunk ignore the collision
 this step or true to process it normally. Additionally, you may
 override collision values using Arbiter.friction, Arbiter.elasticity
@@ -2732,7 +2723,7 @@ or surface velocity values. See Arbiter for more info.</p>
 <code class="descname">separate</code><a class="headerlink" href="#pymunk.CollisionHandler.separate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two shapes have just stopped touching for the first time this
 step.</p>
-<p><code class="docutils literal"><span class="pre">func(arbiter,</span> <span class="pre">space,</span> <span class="pre">data)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">func(arbiter,</span> <span class="pre">space,</span> <span class="pre">data)</span></code></p>
 <p>To ensure that begin()/separate() are always called in balanced
 pairs, it will also be called when removing a shape while its in
 contact with something or when de-allocating the space.</p>
@@ -2743,7 +2734,7 @@ contact with something or when de-allocating the space.</p>
 <dl class="class">
 <dt id="pymunk.BB">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">BB</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/bb.html#BB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.BB" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk._pickle.PickleMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk._pickle.PickleMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Simple bounding box.</p>
 <p>Stored as left, bottom, right, top values.</p>
 <dl class="method">
@@ -2836,7 +2827,7 @@ box.</p>
 
 <dl class="staticmethod">
 <dt id="pymunk.BB.newForCircle">
-<em class="property">static </em><code class="descname">newForCircle</code><span class="sig-paren">(</span><em>p</em>, <em>r</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/bb.html#BB.newForCircle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.BB.newForCircle" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">newForCircle</code><span class="sig-paren">(</span><em>r</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/bb.html#BB.newForCircle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.BB.newForCircle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience constructor for making a BB fitting a circle at
 position p with radius r.</p>
 </dd></dl>
@@ -2863,7 +2854,7 @@ position p with radius r.</p>
 <dl class="class">
 <dt id="pymunk.ShapeFilter">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">ShapeFilter</code><a class="reference internal" href="_modules/pymunk/shape_filter.html#ShapeFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.ShapeFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk.shape_filter.ShapeFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.shape_filter.ShapeFilter</span></code></p>
 <p>Pymunk has two primary means of ignoring collisions: groups and 
 category masks.</p>
 <p>Groups are used to ignore collisions between parts on a complex object. A 
@@ -2929,7 +2920,7 @@ collisions before running the expensive collision detection code, so
 using groups or category masks is preferred.</p>
 <p>Example of how category and mask can be used to filter out player from 
 enemy object:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">player_b</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">player_c</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">player_b</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -2974,7 +2965,7 @@ enemy object:</p>
 
 <dl class="method">
 <dt id="pymunk.ShapeFilter.count">
-<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer – return number of occurrences of value<a class="headerlink" href="#pymunk.ShapeFilter.count" title="Permalink to this definition">¶</a></dt>
+<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer -- return number of occurrences of value<a class="headerlink" href="#pymunk.ShapeFilter.count" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -2985,7 +2976,7 @@ enemy object:</p>
 
 <dl class="method">
 <dt id="pymunk.ShapeFilter.index">
-<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer – return first index of value.<a class="headerlink" href="#pymunk.ShapeFilter.index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer -- return first index of value.<a class="headerlink" href="#pymunk.ShapeFilter.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
@@ -3000,7 +2991,7 @@ enemy object:</p>
 <dl class="class">
 <dt id="pymunk.Transform">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">Transform</code><a class="reference internal" href="_modules/pymunk/transform.html#Transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.Transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk.transform.Transform</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.transform.Transform</span></code></p>
 <p>Type used for 2x3 affine transforms.</p>
 <p>See wikipedia for details: 
 <a class="reference external" href="http://en.wikipedia.org/wiki/Affine_transformation">http://en.wikipedia.org/wiki/Affine_transformation</a></p>
@@ -3030,19 +3021,19 @@ enemy object:</p>
 </table>
 <dl class="docutils">
 <dt>An instance can be created in this way::</dt>
-<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Transform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Transform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">Transform(a=1, b=2, c=3, d=4, tx=5, ty=6)</span>
 </pre></div>
 </div>
 </dd>
 <dt>Or using the default identity in this way::</dt>
-<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Transform</span><span class="o">.</span><span class="n">identity</span><span class="p">()</span>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Transform</span><span class="o">.</span><span class="n">identity</span><span class="p">()</span>
 <span class="go">Transform(a=1, b=0, c=0, d=1, tx=0, ty=0)</span>
 </pre></div>
 </div>
 </dd>
 <dt>Or overriding only some of the values (on a identity matrix):</dt>
-<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Transform</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">ty</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Transform</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">ty</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="go">Transform(a=1, b=3, c=0, d=1, tx=0, ty=5)</span>
 </pre></div>
 </div>
@@ -3074,7 +3065,7 @@ enemy object:</p>
 
 <dl class="method">
 <dt id="pymunk.Transform.count">
-<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer – return number of occurrences of value<a class="headerlink" href="#pymunk.Transform.count" title="Permalink to this definition">¶</a></dt>
+<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer -- return number of occurrences of value<a class="headerlink" href="#pymunk.Transform.count" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -3091,7 +3082,7 @@ enemy object:</p>
 
 <dl class="method">
 <dt id="pymunk.Transform.index">
-<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer – return first index of value.<a class="headerlink" href="#pymunk.Transform.index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer -- return first index of value.<a class="headerlink" href="#pymunk.Transform.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
@@ -3112,7 +3103,7 @@ enemy object:</p>
 <dl class="class">
 <dt id="pymunk.PointQueryInfo">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">PointQueryInfo</code><a class="reference internal" href="_modules/pymunk/query_info.html#PointQueryInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.PointQueryInfo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk.query_info.PointQueryInfo</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.query_info.PointQueryInfo</span></code></p>
 <p>PointQueryInfo holds the result of a point query made on a Shape or
 Space.</p>
 <p>The properties are as follows</p>
@@ -3138,7 +3129,7 @@ very small values of info.distance.</div></blockquote>
 
 <dl class="method">
 <dt id="pymunk.PointQueryInfo.count">
-<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer – return number of occurrences of value<a class="headerlink" href="#pymunk.PointQueryInfo.count" title="Permalink to this definition">¶</a></dt>
+<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer -- return number of occurrences of value<a class="headerlink" href="#pymunk.PointQueryInfo.count" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -3155,7 +3146,7 @@ very small values of info.distance.</div></blockquote>
 
 <dl class="method">
 <dt id="pymunk.PointQueryInfo.index">
-<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer – return first index of value.<a class="headerlink" href="#pymunk.PointQueryInfo.index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer -- return first index of value.<a class="headerlink" href="#pymunk.PointQueryInfo.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
@@ -3176,7 +3167,7 @@ very small values of info.distance.</div></blockquote>
 <dl class="class">
 <dt id="pymunk.ShapeQueryInfo">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">ShapeQueryInfo</code><a class="reference internal" href="_modules/pymunk/query_info.html#ShapeQueryInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.ShapeQueryInfo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymunk.query_info.ShapeQueryInfo</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.query_info.ShapeQueryInfo</span></code></p>
 <p>Shape queries return more information than just a simple yes or no,
 they also return where a shape was hit. This object hold that information.</p>
 <dl class="attribute">
@@ -3193,12 +3184,12 @@ they also return where a shape was hit. This object hold that information.</p>
 
 <dl class="method">
 <dt id="pymunk.ShapeQueryInfo.count">
-<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer – return number of occurrences of value<a class="headerlink" href="#pymunk.ShapeQueryInfo.count" title="Permalink to this definition">¶</a></dt>
+<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer -- return number of occurrences of value<a class="headerlink" href="#pymunk.ShapeQueryInfo.count" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pymunk.ShapeQueryInfo.index">
-<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer – return first index of value.<a class="headerlink" href="#pymunk.ShapeQueryInfo.index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer -- return first index of value.<a class="headerlink" href="#pymunk.ShapeQueryInfo.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
@@ -3213,32 +3204,33 @@ they also return where a shape was hit. This object hold that information.</p>
 <dl class="class">
 <dt id="pymunk.SpaceDebugDrawOptions">
 <em class="property">class </em><code class="descclassname">pymunk.</code><code class="descname">SpaceDebugDrawOptions</code><a class="reference internal" href="_modules/pymunk/space_debug_draw_options.html#SpaceDebugDrawOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.SpaceDebugDrawOptions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>SpaceDebugDrawOptions configures debug drawing.</p>
 <p>If appropriate its usually easy to use the supplied draw implementations 
 directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
 <dl class="attribute">
 <dt id="pymunk.SpaceDebugDrawOptions.DRAW_COLLISION_POINTS">
 <code class="descname">DRAW_COLLISION_POINTS</code><a class="headerlink" href="#pymunk.SpaceDebugDrawOptions.DRAW_COLLISION_POINTS" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">CP_SPACE_DEBUG_DRAW_COLLISION_POINTS</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">CP_SPACE_DEBUG_DRAW_COLLISION_POINTS</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.SpaceDebugDrawOptions.DRAW_CONSTRAINTS">
 <code class="descname">DRAW_CONSTRAINTS</code><a class="headerlink" href="#pymunk.SpaceDebugDrawOptions.DRAW_CONSTRAINTS" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">CP_SPACE_DEBUG_DRAW_CONSTRAINTS</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">CP_SPACE_DEBUG_DRAW_CONSTRAINTS</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.SpaceDebugDrawOptions.DRAW_SHAPES">
 <code class="descname">DRAW_SHAPES</code><a class="headerlink" href="#pymunk.SpaceDebugDrawOptions.DRAW_SHAPES" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">CP_SPACE_DEBUG_DRAW_SHAPES</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">CP_SPACE_DEBUG_DRAW_SHAPES</span></code></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pymunk.SpaceDebugDrawOptions.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/space_debug_draw_options.html#SpaceDebugDrawOptions.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.SpaceDebugDrawOptions.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pymunk.SpaceDebugDrawOptions.collision_point_color">
@@ -3339,14 +3331,14 @@ directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#pymunk-package"><code class="docutils literal"><span class="pre">pymunk</span></code> Package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal"><span class="pre">pymunk.constraint</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal"><span class="pre">pymunkoptions</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pymunk-package"><code class="docutils literal notranslate"><span class="pre">pymunk</span></code> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal notranslate"><span class="pre">pymunk.constraint</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal notranslate"><span class="pre">pymunkoptions</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
@@ -3366,7 +3358,7 @@ directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="overview.html" title="previous chapter">Overview</a></li>
-      <li>Next: <a href="pymunk.autogeometry.html" title="next chapter"><code class="docutils literal"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
+      <li>Next: <a href="pymunk.autogeometry.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
   </ul></li>
 </ul>
 </div>
@@ -3379,12 +3371,14 @@ directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -3395,7 +3389,7 @@ directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.</p>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
