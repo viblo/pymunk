@@ -54,6 +54,15 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/arcade-library.png
+      - `The Python Arcade Library <http://arcade.academy/examples/index.html>`_
+
+        :subscript:`A made by Paul. Retrieved 2018-03-05`
+
+        Arcade is an easy-to-learn Python library for creating 2D video games. 
+        It is not directly tied to Pymunk, but includes a number of examples 
+        and helper classes to use Pymunk physics from a Arcade application.
+        
     * - .. image:: _static/billiARds.png
       - `billiARds  A Game of Augmented Reality Pool 
         <https://youtu.be/5ft3SDvuhgw>`_
