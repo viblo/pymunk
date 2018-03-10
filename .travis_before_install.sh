@@ -11,7 +11,7 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
         ;;
     py3)
         brew update;
-        brew install python3;
+        brew upgrade python;
         ;;
     esac
     
