@@ -110,6 +110,10 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Li, Yingzhen, and Stephan Mandt. 
+  "A Deep Generative Model for Disentangled Representations of Sequential Data." 
+  arXiv preprint arXiv:1803.02991 (2018).
+
 * Fraccaro, Marco, Simon Kamronn, Ulrich Paquet, and Ole Winther. 
   "A Disentangled Recognition and Nonlinear Dynamics Model for Unsupervised Learning." 
   arXiv preprint arXiv:1710.05741 (2017).
@@ -177,7 +181,7 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2017-10-21. If something is missing or wrong, please contact 
+List last updated 2018-03-17. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
