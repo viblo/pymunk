@@ -123,7 +123,7 @@ looks. In the end it is up to you as a user of Pymunk to decide.</p>
 <div class="section" id="game-loop-moving-time-forward">
 <h2>Game loop / moving time forward<a class="headerlink" href="#game-loop-moving-time-forward" title="Permalink to this headline">¶</a></h2>
 <p>The most important part in your game loop is to keep the dt argument to the
-<a class="reference internal" href="pymunk.html#pymunk.Space.step" title="pymunk.Space.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pymunk.Space.step()</span></code></a> function constant. A constant timestep makes the
+<a class="reference internal" href="pymunk.html#pymunk.Space.step" title="pymunk.Space.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pymunk.Space.step()</span></code></a> function constant. A constant time step makes the
 simulation much more stable and reliable.</p>
 <p>There are several ways to do this, some more complicated than others. Which one
 is best for a particular program depends on the requirements.</p>
@@ -133,6 +133,26 @@ is best for a particular program depends on the requirements.</p>
 <li><a class="reference external" href="http://gafferongames.com/game-physics/fix-your-timestep/">http://gafferongames.com/game-physics/fix-your-timestep/</a></li>
 <li><a class="reference external" href="http://www.koonsolo.com/news/dewitters-gameloop/">http://www.koonsolo.com/news/dewitters-gameloop/</a></li>
 </ul>
+</div>
+<div class="section" id="unstable-simulation">
+<h2>Unstable simulation?<a class="headerlink" href="#unstable-simulation" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes the simulation might not behave as expected. In extreme cases it can
+“blow up” and parts move anywhere without logic.</p>
+<p>There a a number of things to try if this happens:</p>
+<ul class="simple">
+<li>Make all the bodies of similar mass. It is easier for the physics engine to
+handle bodies with similar weight.</li>
+<li>Dont let two objects with infinite mass touch each other.</li>
+<li>Make the center of gravity in the middle of shapes instead of at the edge.</li>
+<li>Very thin shapes can behave strange, try to make them a little wider.</li>
+<li>Have a fixed time step (see the other sections of this guide).</li>
+<li>Call the Space.step function several times with smaller dt instead of only
+one time but with a bigger dt. (See the docs of <cite>Space.step</cite>)</li>
+<li>If you use a Motor joint, make sure to set its max force. Otherwise its power
+will be near infinite.</li>
+</ul>
+<p>(Most of these suggestions are the same for most physics engines, not just
+Pymunk.)</p>
 </div>
 <div class="section" id="copy-and-load-save-pymunk-objects">
 <h2>Copy and Load/Save Pymunk objects<a class="headerlink" href="#copy-and-load-save-pymunk-objects" title="Permalink to this headline">¶</a></h2>
@@ -184,6 +204,7 @@ a C-library.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#game-loop-moving-time-forward">Game loop / moving time forward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unstable-simulation">Unstable simulation?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#copy-and-load-save-pymunk-objects">Copy and Load/Save Pymunk objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#additional-info">Additional info</a></li>
 </ul>

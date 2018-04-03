@@ -6,7 +6,7 @@ Installation
     You will find the latest released version at pypi:  
     https://pypi.python.org/pypi/pymunk
 
-Install pymunk
+Install Pymunk
 ----------------
 
 pymunk can be installed with pip install::
@@ -43,12 +43,12 @@ To compile Chipmunk::
     > python setup.py build_ext 
 
 If you got the source and just want to use it directly you probably want to 
-compile Chipmunk inplace, that way the output is put directly into the correct
+compile Chipmunk in-place, that way the output is put directly into the correct
 place in the source folder::
 
     > python setup.py build_ext --inplace
 
-On Windows you will need to use a gcc-compatible compiler. The prebuilt version
+On Windows you will need to use a gcc-compatible compiler. The pre-built version
 distributed with pymunk were compiled with the mingwpy GCC compiler at 
 https://mingwpy.github.io/ 
   

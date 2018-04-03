@@ -109,7 +109,7 @@ Game loop / moving time forward
 ===============================
 
 The most important part in your game loop is to keep the dt argument to the 
-:py:meth:`pymunk.Space.step` function constant. A constant timestep makes the 
+:py:meth:`pymunk.Space.step` function constant. A constant time step makes the 
 simulation much more stable and reliable.
 
 There are several ways to do this, some more complicated than others. Which one 
@@ -120,6 +120,35 @@ Some good articles:
 * http://gameprogrammingpatterns.com/game-loop.html
 * http://gafferongames.com/game-physics/fix-your-timestep/
 * http://www.koonsolo.com/news/dewitters-gameloop/
+
+
+Unstable simulation? 
+====================
+
+Sometimes the simulation might not behave as expected. In extreme cases it can 
+"blow up" and parts move anywhere without logic. 
+
+There a a number of things to try if this happens:
+
+* Make all the bodies of similar mass. It is easier for the physics engine to 
+  handle bodies with similar weight.
+
+* Dont let two objects with infinite mass touch each other.
+
+* Make the center of gravity in the middle of shapes instead of at the edge.
+
+* Very thin shapes can behave strange, try to make them a little wider.
+
+* Have a fixed time step (see the other sections of this guide).
+
+* Call the Space.step function several times with smaller dt instead of only 
+  one time but with a bigger dt. (See the docs of `Space.step`)
+
+* If you use a Motor joint, make sure to set its max force. Otherwise its power
+  will be near infinite.  
+
+(Most of these suggestions are the same for most physics engines, not just 
+Pymunk.)
 
 
 Copy and Load/Save Pymunk objects

@@ -29,7 +29,7 @@ In the normal case pymunk can be installed with pip::
 
     > pip install pymunk
 
-It has one (or two) dependencies. CFFI and if not on Windows or OSX you also 
+It has one (or two) dependencies. CFFI and if not on Windows you also 
 need a working gcc compiler.
 
 
@@ -155,7 +155,7 @@ with the Chipmunk library file. Because of this Chipmunk has to be compiled
 before it can be used with Pymunk. Compilation has to be done with GCC or 
 another compiler that uses the same flags. 
 
-The source distribution does not include a precompiled Chipmunk library file, 
+The source distribution does not include a pre-compiled Chipmunk library file, 
 instead you need to build it yourself. 
 
 There are basically two options, either building it automatically as part of 
