@@ -82,11 +82,11 @@ class PhysicsDemo:
 
     def create_ball(self, point, mass=1.0, radius=15.0):
 
-        moment = pm.moment_for_circle(mass, radius, 0.0, Vec2d(0,0))
+        moment = pm.moment_for_circle(mass, 0.0, radius)
         ball_body = pm.Body(mass, moment)
         ball_body.position = Vec2d(point)
                 
-        ball_shape = pm.Circle(ball_body, radius, Vec2d(0,0))
+        ball_shape = pm.Circle(ball_body, radius)
         ball_shape.friction = 1.5
         ball_shape.collision_type = COLLTYPE_DEFAULT
         self.space.add(ball_body, ball_shape)
@@ -98,7 +98,7 @@ class PhysicsDemo:
 
     def create_poly(self, points, mass = 5.0, pos = (0,0)):
           
-        moment = pm.moment_for_poly(mass, points, Vec2d(0,0))    
+        moment = pm.moment_for_poly(mass, points)    
         #moment = 1000
         body = pm.Body(mass, moment)
         body.position = Vec2d(pos)       
