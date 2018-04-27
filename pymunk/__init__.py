@@ -126,7 +126,7 @@ def moment_for_circle(mass, inner_radius, outer_radius, offset=(0, 0)):
     inner_radius and outer_radius are the inner and outer diameters.
     (A solid circle has an inner diameter of 0)
     """
-    return cp.cpMomentForCircle(mass, inner_radius, outer_radius, offset)
+    return cp.cpMomentForCircle(mass, inner_radius, outer_radius, tuple(offset))
 
 def moment_for_segment(mass, a, b, radius):
     """ Calculate the moment of inertia for a line segment
@@ -140,7 +140,7 @@ def moment_for_box(mass, size):
     
     size should be a tuple of (width, height)
     """
-    return cp.cpMomentForBox(mass, size[0], size[1])
+    return cp.cpMomentForBox(mass, tuple(size[0]), tuple(size[1]))
 
 def moment_for_poly(mass, vertices,  offset=(0, 0), radius=0):
     """Calculate the moment of inertia for a solid polygon shape.
