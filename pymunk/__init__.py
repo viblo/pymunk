@@ -140,7 +140,7 @@ def moment_for_box(mass, size):
     
     size should be a tuple of (width, height)
     """
-    return cp.cpMomentForBox(mass, tuple(size[0]), tuple(size[1]))
+    return cp.cpMomentForBox(mass, size[0], size[1])
 
 def moment_for_poly(mass, vertices,  offset=(0, 0), radius=0):
     """Calculate the moment of inertia for a solid polygon shape.
