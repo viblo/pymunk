@@ -159,7 +159,7 @@
 <span class="sd">    inner_radius and outer_radius are the inner and outer diameters.</span>
 <span class="sd">    (A solid circle has an inner diameter of 0)</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
-    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForCircle</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpMomentForCircle</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">offset</span><span class="p">))</span>
 
 <div class="viewcode-block" id="moment_for_segment"><a class="viewcode-back" href="../pymunk.html#pymunk.moment_for_segment">[docs]</a><span class="k">def</span> <span class="nf">moment_for_segment</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Calculate the moment of inertia for a line segment</span>

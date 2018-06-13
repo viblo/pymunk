@@ -7,11 +7,27 @@ Installation
     https://pypi.python.org/pypi/pymunk
 
 Install Pymunk
-----------------
+--------------
 
 pymunk can be installed with pip install::
 
     > pip install pymunk
+
+On non-Windows OS such as OSX and Linux you need to have a GCC-compatible 
+compiler installed. 
+
+On OSX you can install one with::
+
+    > xcode-select --install
+
+On Linux you can install one with the package manager, for example on Ubuntu 
+with::
+
+    > sudo apt-get install build-essential
+
+
+Advanced install
+----------------
 
 Another option is to use the standard setup.py way, in case you have downloaded
 the source distribution::
@@ -36,7 +52,9 @@ Compile Chipmunk
 If a compiled binary library of Chipmunk that works on your platform is not 
 included in the release you will need to compile Chipmunk yourself. Another 
 reason to compile chipmunk is if you want to run it in release mode to get 
-rid of the debug prints it generates. 
+rid of the debug prints it generates. If you just use pip install the 
+compilation will happen automatically given that a compiler is available. You 
+can also specifically compile Chipmunk as described below.
 
 To compile Chipmunk::
 

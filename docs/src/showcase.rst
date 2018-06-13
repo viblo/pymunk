@@ -54,10 +54,22 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/virtuaplant.png
+      - `VirtuaPlant <https://wroot.org/projects/virtuaplant/>`_
+
+        :subscript:`made by Jan Seidl. Retrieved 2018-06-13`
+
+        VirtuaPlant is a Industrial Control Systems simulator which adds a 
+        "similar to real-world control logic" to the basic "read/write tags" 
+        feature of most PLC simulators. Paired with a game library and 2d 
+        physics engine, VirtuaPlant is able to present a GUI simulating the 
+        "world view" behind the control system allowing the user to have a 
+        vision of the would-be actions behind the control systems.
+
     * - .. image:: _static/arcade-library.png
       - `The Python Arcade Library <http://arcade.academy/examples/index.html>`_
 
-        :subscript:`A made by Paul. Retrieved 2018-03-05`
+        :subscript:`made by Paul. Retrieved 2018-03-05`
 
         Arcade is an easy-to-learn Python library for creating 2D video games. 
         It is not directly tied to Pymunk, but includes a number of examples 
