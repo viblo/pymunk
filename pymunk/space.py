@@ -445,8 +445,7 @@ class Space(PickleMixin, object):
         projectile that should be destroyed the first time it hits anything.
         There may be a specific collision handler and two wildcard handlers.
         It's up to the specific handler to decide if and when to call the
-        wildcard handlers and what to do with their return values. (See
-        Arbiter.call_wildcard*())
+        wildcard handlers and what to do with their return values.
 
         When a new wildcard handler is created, the callbacks will all be
         set to builtin callbacks that perform the default behavior. (accept
