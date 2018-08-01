@@ -241,8 +241,7 @@ with another object, regardless of its type. A good example is a
 projectile that should be destroyed the first time it hits anything.
 There may be a specific collision handler and two wildcard handlers.
 It’s up to the specific handler to decide if and when to call the
-wildcard handlers and what to do with their return values. (See
-Arbiter.call_wildcard*())</p>
+wildcard handlers and what to do with their return values.</p>
 <p>When a new wildcard handler is created, the callbacks will all be
 set to builtin callbacks that perform the default behavior. (accept
 all collisions in <a class="reference internal" href="#pymunk.CollisionHandler.begin" title="pymunk.CollisionHandler.begin"><code class="xref py py-func docutils literal notranslate"><span class="pre">begin()</span></code></a> and 
@@ -2863,7 +2862,7 @@ want them to allow them to overlap. Groups allow you to do exactly that.
 Shapes that have the same group don’t generate collisions. So by placing 
 all of the shapes in a ragdoll in the same group, you’ll prevent it from 
 colliding against other parts of itself. Category masks allow you to mark 
-which categories an object belongs to and which categories it collidies 
+which categories an object belongs to and which categories it collides 
 with.</p>
 <p>For example, a game has four collision categories: player (0), enemy (1), 
 player bullet (2), and enemy bullet (3). Neither players nor enemies 
@@ -2872,9 +2871,9 @@ with other bullets. However, players collide with enemy bullets, and
 enemies collide with player bullets.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="32%" />
-<col width="37%" />
-<col width="32%" />
+<col width="27%" />
+<col width="31%" />
+<col width="42%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Object</th>
@@ -2884,28 +2883,35 @@ enemies collide with player bullets.</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>Player</td>
-<td>1</td>
-<td>4, 5</td>
+<td>0b00001 (1)</td>
+<td>0b11000 (4, 5)</td>
 </tr>
 <tr class="row-odd"><td>Enemy</td>
-<td>2</td>
-<td>2, 3, 4</td>
+<td>0b00010 (2)</td>
+<td>0b01110 (2, 3, 4)</td>
 </tr>
 <tr class="row-even"><td>Player Bullet</td>
-<td>3</td>
-<td>1, 5</td>
+<td>0b00100 (3)</td>
+<td>0b10001 (1, 5)</td>
 </tr>
 <tr class="row-odd"><td>Enemy Bullet</td>
-<td>4</td>
-<td>2, 5</td>
+<td>0b01000 (4)</td>
+<td>0b10010 (2, 5)</td>
 </tr>
 <tr class="row-even"><td>Walls</td>
-<td>5</td>
-<td>1, 2, 3, 4</td>
+<td>0b10000 (5)</td>
+<td>0b01111 (1, 2, 3, 4)</td>
 </tr>
 </tbody>
 </table>
-<p>Note that everything in this example collides with walls. Additionally, 
+<p>Note that in the table the categories and masks are written as binary 
+values to clearly show the logic. To save space only 5 digits are used. The 
+default type of categories and mask in ShapeFilter is an unsigned int, 
+with a resolution of 32 bits. That means that the you have 32 bits to use, 
+in binary notation that is <cite>0b00000000000000000000000000000000</cite> to 
+<cite>0b11111111111111111111111111111111</cite> which can be written in hex as 
+<cite>0x00000000</cite> to 0xFFFFFFFF`.</p>
+<p>Everything in this example collides with walls. Additionally, 
 the enemies collide with each other.</p>
 <p>By default, objects exist in every category and collide with every category.</p>
 <p>Objects can fall into multiple categories. For instance, you might have a 
@@ -2925,11 +2931,11 @@ enemy object:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">player_b</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">player_c</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">player_b</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">player_b</span><span class="p">,</span> <span class="n">player_c</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">player_c</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">ShapeFilter</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="mh">0x1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">player_c</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">ShapeFilter</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="mb">0b1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">point_query_nearest</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">ShapeFilter</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span> <span class="o">!=</span> <span class="kc">None</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">filter</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">ShapeFilter</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="n">pymunk</span><span class="o">.</span><span class="n">ShapeFilter</span><span class="o">.</span><span class="n">ALL_MASKS</span> <span class="o">^</span> <span class="mh">0x1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">filter</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">ShapeFilter</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="n">pymunk</span><span class="o">.</span><span class="n">ShapeFilter</span><span class="o">.</span><span class="n">ALL_MASKS</span> <span class="o">^</span> <span class="mb">0b1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">point_query_nearest</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span> <span class="o">==</span> <span class="kc">None</span>
 <span class="go">True</span>

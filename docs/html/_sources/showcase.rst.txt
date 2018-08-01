@@ -122,6 +122,10 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Yingzhen, Li, and Stephan Mandt. 
+  "Disentangled Sequential Autoencoder." 
+  In International Conference on Machine Learning, pp. 5656-5665. 2018.
+
 * Melnik, Andrew. 
   "Sensorimotor Processing in the Human Brain and in Cognitive Architectures." 
   (2018).
