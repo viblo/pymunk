@@ -94,6 +94,62 @@ class Body(PickleMixin, object):
         more flexible, but is not as easy to use. Don't set the mass of both
         the body and the shapes. If you do so, it will recalculate and
         overwrite your custom mass value when the shapes are added to the body.
+
+        Examples of the different ways to set up the mass and moment:
+
+        >>> import pymunk
+        >>> radius = 2
+        >>> mass = 3
+        >>> density = 3
+        >>> def print_mass_moment(b): 
+        ...    print("mass={:.0f} moment={:.0f}".format(b.mass, b.moment))
+        
+        >>> # Using Shape.density
+        >>> s = pymunk.Space()
+        >>> b = pymunk.Body()
+        >>> c = pymunk.Circle(b, radius)
+        >>> c.density = density
+        >>> print_mass_moment(b)
+        mass=0 moment=0
+        >>> s.add(b, c)
+        >>> print_mass_moment(b)
+        mass=38 moment=75
+
+        >>> # Using Shape.mass
+        >>> b = pymunk.Body()
+        >>> c = pymunk.Circle(b, radius)
+        >>> c.mass = mass
+        >>> print_mass_moment(b)
+        mass=0 moment=0
+        >>> s.add(b, c)
+        >>> print_mass_moment(b)
+        mass=3 moment=6
+
+        >>> # Using Body constructor
+        >>> moment = pymunk.moment_for_circle(mass, 0, radius)
+        >>> b = pymunk.Body()
+        >>> c = pymunk.Circle(b, radius)
+        >>> c.mass = mass
+        >>> print_mass_moment(b)
+        mass=0 moment=0
+        >>> s.add(b, c)
+        >>> print_mass_moment(b)
+        mass=3 moment=6
+
+        It becomes even more useful to use the mass or density properties of 
+        the shape when you attach multiple shapes to one body, like in this 
+        example with density:
+
+        >>> # Using multiple Shape.density
+        >>> b = pymunk.Body()
+        >>> c1 = pymunk.Circle(b, radius, offset=(10,0))
+        >>> c1.density = density
+        >>> c2 = pymunk.Circle(b, radius, offset=(0,10))
+        >>> c2.density = density
+        >>> s.add(b, c1, c2)
+        >>> int(b.mass), int(b.moment)
+        (75, 3920)
+
         """
         if body_type == Body.DYNAMIC:
             self._body = ffi.gc(cp.cpBodyNew(mass, moment), cp.cpBodyFree)

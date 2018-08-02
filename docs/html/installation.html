@@ -1,31 +1,38 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Installation &#8212; pymunk 5.3.2 documentation</title>
+    
+    <title>Installation &mdash; pymunk 5.3.2 documentation</title>
+    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '5.3.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="pymunk 5.3.2 documentation" href="index.html" />
     <link rel="next" title="Overview" href="overview.html" />
     <link rel="prev" title="News" href="news.html" />
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
-  </head><body>
-  
+  </head>
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -42,18 +49,18 @@
 <div class="section" id="install-pymunk">
 <h2>Install Pymunk<a class="headerlink" href="#install-pymunk" title="Permalink to this headline">¶</a></h2>
 <p>pymunk can be installed with pip install:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pymunk</span>
+<div class="highlight-python"><div class="highlight"><pre>&gt; pip install pymunk
 </pre></div>
 </div>
 <p>On non-Windows OS such as OSX and Linux you need to have a GCC-compatible
 compiler installed.</p>
 <p>On OSX you can install one with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">xcode</span><span class="o">-</span><span class="n">select</span> <span class="o">--</span><span class="n">install</span>
+<div class="highlight-python"><div class="highlight"><pre>&gt; xcode-select --install
 </pre></div>
 </div>
 <p>On Linux you can install one with the package manager, for example on Ubuntu
 with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span>
+<div class="highlight-python"><div class="highlight"><pre>&gt; sudo apt-get install build-essential
 </pre></div>
 </div>
 </div>
@@ -61,13 +68,13 @@ with:</p>
 <h2>Advanced install<a class="headerlink" href="#advanced-install" title="Permalink to this headline">¶</a></h2>
 <p>Another option is to use the standard setup.py way, in case you have downloaded
 the source distribution:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py install
 </pre></div>
 </div>
 <p>Note that this require a GCC compiler, which can be a bit tricky on Windows.
 If you are on Mac OS X or Linux you will probably need to run as a privileged
 user; for example using sudo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+<div class="highlight-python"><div class="highlight"><pre>&gt; sudo python setup.py install
 </pre></div>
 </div>
 <p>Once installed you should be able to to import pymunk just as any other
@@ -83,13 +90,13 @@ rid of the debug prints it generates. If you just use pip install the
 compilation will happen automatically given that a compiler is available. You
 can also specifically compile Chipmunk as described below.</p>
 <p>To compile Chipmunk:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py build_ext
 </pre></div>
 </div>
 <p>If you got the source and just want to use it directly you probably want to
 compile Chipmunk in-place, that way the output is put directly into the correct
 place in the source folder:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py build_ext --inplace
 </pre></div>
 </div>
 <p>On Windows you will need to use a gcc-compatible compiler. The pre-built version
@@ -98,7 +105,7 @@ distributed with pymunk were compiled with the mingwpy GCC compiler at
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
-<dt>Module <a class="reference internal" href="pymunkoptions.html#module-pymunkoptions" title="pymunkoptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunkoptions</span></code></a></dt>
+<dt>Module <a class="reference internal" href="pymunkoptions.html#module-pymunkoptions" title="pymunkoptions"><code class="xref py py-mod docutils literal"><span class="pre">pymunkoptions</span></code></a></dt>
 <dd>Options module that control runtime options of Pymunk such as debug
 settings. Use pymunkoptions together with release mode compilation to
 remove all debugs prints.</dd>
@@ -117,7 +124,7 @@ can be handled by the package manager. The dependencies are <cite>python-dev</ci
 the distribution, this is for Debian/Ubuntu. Just install them the normal way,
 for example like this if you use apt and Pip should be able to install CFFI
 properly:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">libffi</span><span class="o">-</span><span class="n">dev</span>
+<div class="highlight-python"><div class="highlight"><pre>&gt; sudo apt-get install python-dev libffi-dev
 </pre></div>
 </div>
 </div>
@@ -144,7 +151,7 @@ properly:</p>
 <h3><a href="index.html">Table Of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="news.html">News</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-pymunk">Install Pymunk</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#advanced-install">Advanced install</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compile-chipmunk">Compile Chipmunk</a></li>
@@ -175,20 +182,21 @@ properly:</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/installation.rst.txt"
+      <li><a href="_sources/installation.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -199,11 +207,11 @@ properly:</p>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
-      <a href="_sources/installation.rst.txt"
+      <a href="_sources/installation.txt"
           rel="nofollow">Page source</a>
     </div>
 

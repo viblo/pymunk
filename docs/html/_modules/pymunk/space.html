@@ -1,29 +1,37 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pymunk.space &#8212; pymunk 5.3.2 documentation</title>
+    
+    <title>pymunk.space &mdash; pymunk 5.3.2 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '5.3.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="pymunk 5.3.2 documentation" href="../../index.html" />
+    <link rel="up" title="pymunk" href="../pymunk.html" />
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
-  </head><body>
-  
+  </head>
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -31,25 +39,25 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk.space</h1><div class="highlight"><pre>
-<span></span><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
 <span class="kn">import</span> <span class="nn">weakref</span>
-<span class="kn">from</span> <span class="nn">weakref</span> <span class="k">import</span> <span class="n">WeakSet</span>
+<span class="kn">from</span> <span class="nn">weakref</span> <span class="kn">import</span> <span class="n">WeakSet</span>
 <span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>    
     
-<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
-<span class="kn">from</span> <span class="nn">.body</span> <span class="k">import</span> <span class="n">Body</span>
-<span class="kn">from</span> <span class="nn">.collision_handler</span> <span class="k">import</span> <span class="n">CollisionHandler</span>
-<span class="kn">from</span> <span class="nn">.query_info</span> <span class="k">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span><span class="p">,</span> <span class="n">ShapeQueryInfo</span>
-<span class="kn">from</span> <span class="nn">.shapes</span> <span class="k">import</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Poly</span><span class="p">,</span> <span class="n">Segment</span>
-<span class="kn">from</span> <span class="nn">.contact_point_set</span> <span class="k">import</span> <span class="n">ContactPointSet</span>
-<span class="kn">from</span> <span class="nn">._pickle</span> <span class="k">import</span> <span class="n">PickleMixin</span>
-<span class="kn">from</span> <span class="nn">pymunk.constraint</span> <span class="k">import</span> <span class="n">Constraint</span>
+<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">.body</span> <span class="kn">import</span> <span class="n">Body</span>
+<span class="kn">from</span> <span class="nn">.collision_handler</span> <span class="kn">import</span> <span class="n">CollisionHandler</span>
+<span class="kn">from</span> <span class="nn">.query_info</span> <span class="kn">import</span> <span class="n">PointQueryInfo</span><span class="p">,</span> <span class="n">SegmentQueryInfo</span><span class="p">,</span> <span class="n">ShapeQueryInfo</span>
+<span class="kn">from</span> <span class="nn">.shapes</span> <span class="kn">import</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Poly</span><span class="p">,</span> <span class="n">Segment</span>
+<span class="kn">from</span> <span class="nn">.contact_point_set</span> <span class="kn">import</span> <span class="n">ContactPointSet</span>
+<span class="kn">from</span> <span class="nn">._pickle</span> <span class="kn">import</span> <span class="n">PickleMixin</span>
+<span class="kn">from</span> <span class="nn">pymunk.constraint</span> <span class="kn">import</span> <span class="n">Constraint</span>
 
 
 <div class="viewcode-block" id="Space"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space">[docs]</a><span class="k">class</span> <span class="nc">Space</span><span class="p">(</span><span class="n">PickleMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
@@ -75,12 +83,12 @@
 <span class="sd">    &gt;&gt;&gt; space3 = pickle.loads(pickle.dumps(space))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;threaded&#39;</span><span class="p">]</span>
-    <span class="n">_pickle_attrs_general</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;iterations&#39;</span><span class="p">,</span> <span class="s1">&#39;gravity&#39;</span><span class="p">,</span> <span class="s1">&#39;damping&#39;</span><span class="p">,</span> 
-        <span class="s1">&#39;idle_speed_threshold&#39;</span><span class="p">,</span> <span class="s1">&#39;sleep_time_threshold&#39;</span><span class="p">,</span> <span class="s1">&#39;collision_slop&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;collision_bias&#39;</span><span class="p">,</span> <span class="s1">&#39;collision_persistence&#39;</span><span class="p">,</span> <span class="s1">&#39;threads&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;threaded&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_general</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;iterations&#39;</span><span class="p">,</span> <span class="s">&#39;gravity&#39;</span><span class="p">,</span> <span class="s">&#39;damping&#39;</span><span class="p">,</span> 
+        <span class="s">&#39;idle_speed_threshold&#39;</span><span class="p">,</span> <span class="s">&#39;sleep_time_threshold&#39;</span><span class="p">,</span> <span class="s">&#39;collision_slop&#39;</span><span class="p">,</span>
+        <span class="s">&#39;collision_bias&#39;</span><span class="p">,</span> <span class="s">&#39;collision_persistence&#39;</span><span class="p">,</span> <span class="s">&#39;threads&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Space.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threaded</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Space.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threaded</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new instance of the Space. </span>
 <span class="sd">        </span>
 <span class="sd">        If you set threaded=True the step function will run in threaded mode</span>
@@ -98,21 +106,21 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceNew</span><span class="p">(),</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceFree</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># To prevent the gc to collect the callbacks.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span> <span class="o">=</span> <span class="p">{}</span> <span class="c"># To prevent the gc to collect the callbacks.</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_removed_shapes</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bodies</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_add_later</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_later</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_remove_later</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
-
+</div>
     <span class="k">def</span> <span class="nf">_get_self</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -123,17 +131,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
     <span class="n">shapes</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_shapes</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="n">_get_shapes</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">_get_shapes</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_bodies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bodies</span><span class="p">)</span>
     <span class="n">bodies</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_bodies</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A list of the bodies added to this space&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;A list of the bodies added to this space&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span><span class="p">)</span>
     <span class="n">constraints</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_constraints</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A list of the constraints added to this space&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;A list of the constraints added to this space&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_static_body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A dedicated static body for the space. </span>
@@ -141,35 +149,35 @@
 <span class="sd">        You don&#39;t have to use it, but because its memory is managed </span>
 <span class="sd">        automatically with the space its very convenient. </span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">b</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetStaticBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="n">Body</span><span class="o">.</span><span class="n">_init_with_body</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span>
-    <span class="n">static_body</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_static_body</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">_get_static_body</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+    <span class="n">static_body</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_static_body</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">_get_static_body</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_iterations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSetIterations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_get_iterations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetIterations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
     <span class="n">iterations</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_iterations</span><span class="p">,</span> <span class="n">_set_iterations</span>
-        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Iterations allow you to control the accuracy of the solver.</span>
+        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Iterations allow you to control the accuracy of the solver.</span>
 
-<span class="s2">        Defaults to 10.</span>
+<span class="s">        Defaults to 10.</span>
 
-<span class="s2">        Pymunk uses an iterative solver to figure out the forces between</span>
-<span class="s2">        objects in the space. What this means is that it builds a big list of</span>
-<span class="s2">        all of the collisions, joints, and other constraints between the</span>
-<span class="s2">        bodies and makes several passes over the list considering each one</span>
-<span class="s2">        individually. The number of passes it makes is the iteration count,</span>
-<span class="s2">        and each iteration makes the solution more accurate. If you use too</span>
-<span class="s2">        many iterations, the physics should look nice and solid, but may use</span>
-<span class="s2">        up too much CPU time. If you use too few iterations, the simulation</span>
-<span class="s2">        may seem mushy or bouncy when the objects should be solid. Setting</span>
-<span class="s2">        the number of iterations lets you balance between CPU usage and the</span>
-<span class="s2">        accuracy of the physics. Pymunk&#39;s default of 10 iterations is</span>
-<span class="s2">        sufficient for most simple games.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        Pymunk uses an iterative solver to figure out the forces between</span>
+<span class="s">        objects in the space. What this means is that it builds a big list of</span>
+<span class="s">        all of the collisions, joints, and other constraints between the</span>
+<span class="s">        bodies and makes several passes over the list considering each one</span>
+<span class="s">        individually. The number of passes it makes is the iteration count,</span>
+<span class="s">        and each iteration makes the solution more accurate. If you use too</span>
+<span class="s">        many iterations, the physics should look nice and solid, but may use</span>
+<span class="s">        up too much CPU time. If you use too few iterations, the simulation</span>
+<span class="s">        may seem mushy or bouncy when the objects should be solid. Setting</span>
+<span class="s">        the number of iterations lets you balance between CPU usage and the</span>
+<span class="s">        accuracy of the physics. Pymunk&#39;s default of 10 iterations is</span>
+<span class="s">        sufficient for most simple games.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">_set_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gravity_vector</span><span class="p">):</span>
@@ -177,23 +185,23 @@
     <span class="k">def</span> <span class="nf">_get_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">))</span>
     <span class="n">gravity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_gravity</span><span class="p">,</span> <span class="n">_set_gravity</span>
-        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Global gravity applied to the space.</span>
+        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Global gravity applied to the space.</span>
 
-<span class="s2">        Defaults to (0,0). Can be overridden on a per body basis by writing</span>
-<span class="s2">        custom integration functions.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        Defaults to (0,0). Can be overridden on a per body basis by writing</span>
+<span class="s">        custom integration functions.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_damping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSetDamping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_get_damping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetDamping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
     <span class="n">damping</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_damping</span><span class="p">,</span> <span class="n">_set_damping</span>
-        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Amount of simple damping to apply to the space.</span>
+        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Amount of simple damping to apply to the space.</span>
 
-<span class="s2">        A value of 0.9 means that each body will lose 10</span><span class="si">% o</span><span class="s2">f its velocity per</span>
-<span class="s2">        second. Defaults to 1. Like gravity, it can be overridden on a per</span>
-<span class="s2">        body basis.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        A value of 0.9 means that each body will lose 10</span><span class="si">% o</span><span class="s">f its velocity per</span>
+<span class="s">        second. Defaults to 1. Like gravity, it can be overridden on a per</span>
+<span class="s">        body basis.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_idle_speed_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idle_speed_threshold</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSetIdleSpeedThreshold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">idle_speed_threshold</span><span class="p">)</span>
@@ -201,11 +209,11 @@
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetIdleSpeedThreshold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
     <span class="n">idle_speed_threshold</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_idle_speed_threshold</span>
         <span class="p">,</span> <span class="n">_set_idle_speed_threshold</span>
-        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Speed threshold for a body to be considered idle.</span>
+        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Speed threshold for a body to be considered idle.</span>
 
-<span class="s2">        The default value of 0 means the space estimates a good threshold</span>
-<span class="s2">        based on gravity.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        The default value of 0 means the space estimates a good threshold</span>
+<span class="s">        based on gravity.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_sleep_time_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_threshold</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSetSleepTimeThreshold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">sleep_time_threshold</span><span class="p">)</span>
@@ -213,11 +221,11 @@
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetSleepTimeThreshold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
     <span class="n">sleep_time_threshold</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_sleep_time_threshold</span>
         <span class="p">,</span> <span class="n">_set_sleep_time_threshold</span>
-        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Time a group of bodies must remain idle in order to fall</span>
-<span class="s2">        asleep.</span>
+        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Time a group of bodies must remain idle in order to fall</span>
+<span class="s">        asleep.</span>
 
-<span class="s2">        The default value of `inf` disables the sleeping algorithm.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        The default value of `inf` disables the sleeping algorithm.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_collision_slop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_slop</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSetCollisionSlop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">collision_slop</span><span class="p">)</span>
@@ -225,11 +233,11 @@
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetCollisionSlop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
     <span class="n">collision_slop</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_collision_slop</span>
         <span class="p">,</span> <span class="n">_set_collision_slop</span>
-        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Amount of overlap between shapes that is allowed.</span>
+        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Amount of overlap between shapes that is allowed.</span>
 
-<span class="s2">        To improve stability, set this as high as you can without noticeable</span>
-<span class="s2">        overlapping. It defaults to 0.1.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        To improve stability, set this as high as you can without noticeable</span>
+<span class="s">        overlapping. It defaults to 0.1.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_collision_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_bias</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSetCollisionBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">collision_bias</span><span class="p">)</span>
@@ -237,21 +245,21 @@
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetCollisionBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
     <span class="n">collision_bias</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_collision_bias</span>
         <span class="p">,</span> <span class="n">_set_collision_bias</span>
-        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Determines how fast overlapping shapes are pushed apart.</span>
+        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Determines how fast overlapping shapes are pushed apart.</span>
 
-<span class="s2">        Pymunk allows fast moving objects to overlap, then fixes the overlap</span>
-<span class="s2">        over time. Overlapping objects are unavoidable even if swept</span>
-<span class="s2">        collisions are supported, and this is an efficient and stable way to</span>
-<span class="s2">        deal with overlapping objects. The bias value controls what</span>
-<span class="s2">        percentage of overlap remains unfixed after a second and defaults</span>
-<span class="s2">        to ~0.2%. Valid values are in the range from 0 to 1, but using 0 is</span>
-<span class="s2">        not recommended for stability reasons. The default value is</span>
-<span class="s2">        calculated as cpfpow(1.0f - 0.1f, 60.0f) meaning that pymunk attempts</span>
-<span class="s2">        to correct 10</span><span class="si">% o</span><span class="s2">f error ever 1/60th of a second.</span>
+<span class="s">        Pymunk allows fast moving objects to overlap, then fixes the overlap</span>
+<span class="s">        over time. Overlapping objects are unavoidable even if swept</span>
+<span class="s">        collisions are supported, and this is an efficient and stable way to</span>
+<span class="s">        deal with overlapping objects. The bias value controls what</span>
+<span class="s">        percentage of overlap remains unfixed after a second and defaults</span>
+<span class="s">        to ~0.2%. Valid values are in the range from 0 to 1, but using 0 is</span>
+<span class="s">        not recommended for stability reasons. The default value is</span>
+<span class="s">        calculated as cpfpow(1.0f - 0.1f, 60.0f) meaning that pymunk attempts</span>
+<span class="s">        to correct 10</span><span class="si">% o</span><span class="s">f error ever 1/60th of a second.</span>
 
-<span class="s2">        ..Note::</span>
-<span class="s2">            Very very few games will need to change this value.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        ..Note::</span>
+<span class="s">            Very very few games will need to change this value.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_collision_persistence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_persistence</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSetCollisionPersistence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">collision_persistence</span><span class="p">)</span>
@@ -259,23 +267,23 @@
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetCollisionPersistence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
     <span class="n">collision_persistence</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_collision_persistence</span>
         <span class="p">,</span> <span class="n">_set_collision_persistence</span>
-        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The number of frames the space keeps collision solutions</span>
-<span class="s2">        around for.</span>
+        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The number of frames the space keeps collision solutions</span>
+<span class="s">        around for.</span>
 
-<span class="s2">        Helps prevent jittering contacts from getting worse. This defaults</span>
-<span class="s2">        to 3.</span>
+<span class="s">        Helps prevent jittering contacts from getting worse. This defaults</span>
+<span class="s">        to 3.</span>
 
-<span class="s2">        ..Note::</span>
-<span class="s2">            Very very few games will need to change this value.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        ..Note::</span>
+<span class="s">            Very very few games will need to change this value.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_current_time_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceGetCurrentTimeStep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
     <span class="n">current_time_step</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_current_time_step</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Retrieves the current (if you are in a callback from</span>
-<span class="s2">        Space.step()) or most recent (outside of a Space.step() call)</span>
-<span class="s2">        timestep.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Retrieves the current (if you are in a callback from</span>
+<span class="s">        Space.step()) or most recent (outside of a Space.step() call)</span>
+<span class="s">        timestep.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Space.add"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">objs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add one or many shapes, bodies or joints to the space</span>
@@ -297,9 +305,9 @@
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">Constraint</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_add_constraint</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">oo</span> <span class="ow">in</span> <span class="n">o</span><span class="p">:</span></div>
+                <span class="k">for</span> <span class="n">oo</span> <span class="ow">in</span> <span class="n">o</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">oo</span><span class="p">)</span>
-
+</div>
 <div class="viewcode-block" id="Space.remove"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">objs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove one or many shapes, bodies or constraints from the space</span>
 
@@ -325,26 +333,26 @@
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">Constraint</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_remove_constraint</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">oo</span> <span class="ow">in</span> <span class="n">o</span><span class="p">:</span></div>
+                <span class="k">for</span> <span class="n">oo</span> <span class="ow">in</span> <span class="n">o</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">oo</span><span class="p">)</span>
-
+</div>
     <span class="k">def</span> <span class="nf">_add_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Adds a shape to the space&quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="n">shape</span><span class="o">.</span><span class="n">_get_shapeid</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">,</span> <span class="s2">&quot;shape already added to space&quot;</span>
+        <span class="k">assert</span> <span class="n">shape</span><span class="o">.</span><span class="n">_get_shapeid</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">,</span> <span class="s">&quot;shape already added to space&quot;</span>
         <span class="n">shape</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">[</span><span class="n">shape</span><span class="o">.</span><span class="n">_get_shapeid</span><span class="p">()]</span> <span class="o">=</span> <span class="n">shape</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddShape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_add_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Adds a body to the space&quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="n">body</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bodies</span><span class="p">,</span> <span class="s2">&quot;body already added to space&quot;</span>
+        <span class="k">assert</span> <span class="n">body</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bodies</span><span class="p">,</span> <span class="s">&quot;body already added to space&quot;</span>
         <span class="n">body</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bodies</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_add_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constraint</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Adds a constraint to the space&quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="n">constraint</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span><span class="p">,</span> <span class="s2">&quot;constraint already added to space&quot;</span>
+        <span class="k">assert</span> <span class="n">constraint</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span><span class="p">,</span> <span class="s">&quot;constraint already added to space&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddConstraint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">constraint</span><span class="o">.</span><span class="n">_constraint</span><span class="p">)</span>
 
@@ -355,7 +363,7 @@
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceRemoveShape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_remove_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Removes a body from the space&quot;&quot;&quot;</span>
-        <span class="n">body</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">body</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bodies</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceRemoveBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_remove_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constraint</span><span class="p">):</span>
@@ -366,19 +374,19 @@
 <div class="viewcode-block" id="Space.reindex_shape"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.reindex_shape">[docs]</a>    <span class="k">def</span> <span class="nf">reindex_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the collision detection data for a specific shape in the</span>
 <span class="sd">        space.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceReindexShape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
-
+</div>
 <div class="viewcode-block" id="Space.reindex_shapes_for_body"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.reindex_shapes_for_body">[docs]</a>    <span class="k">def</span> <span class="nf">reindex_shapes_for_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reindex all the shapes for a certain body.&quot;&quot;&quot;</span></div>
+        <span class="sd">&quot;&quot;&quot;Reindex all the shapes for a certain body.&quot;&quot;&quot;</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceReindexShapesForBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
-
+</div>
 <div class="viewcode-block" id="Space.reindex_static"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.reindex_static">[docs]</a>    <span class="k">def</span> <span class="nf">reindex_static</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the collision detection info for the static shapes in the</span>
 <span class="sd">        space. You only need to call this if you move one of the static shapes.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceReindexStatic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
-
+</div>
     <span class="k">def</span> <span class="nf">_get_threads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">threaded</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpHastySpaceGetThreads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">))</span>
@@ -388,13 +396,13 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">threaded</span><span class="p">:</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpHastySpaceSetThreads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="n">threads</span><span class="o">=</span><span class="nb">property</span><span class="p">(</span><span class="n">_get_threads</span><span class="p">,</span> <span class="n">_set_threads</span><span class="p">,</span> 
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The number of threads to use for running the step function. </span>
-<span class="s2">        </span>
-<span class="s2">        Only valid when the Space was created with threaded=True. Currently the </span>
-<span class="s2">        max limit is 2, setting a higher value wont have any effect. The </span>
-<span class="s2">        default is 1 regardless if the Space was created with threaded=True, </span>
-<span class="s2">        to keep determinism in the simulation.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The number of threads to use for running the step function. </span>
+<span class="s">        </span>
+<span class="s">        Only valid when the Space was created with threaded=True. Currently the </span>
+<span class="s">        max limit is 2, setting a higher value wont have any effect. The </span>
+<span class="s">        default is 1 regardless if the Space was created with threaded=True, </span>
+<span class="s">        to keep determinism in the simulation.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Space.step"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
@@ -420,13 +428,13 @@
 <span class="sd">        :param float dt: Time step length</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">threaded</span><span class="p">:</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpHastySpaceStep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceStep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_removed_shapes</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_step</span> <span class="o">=</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">objs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_later</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
@@ -438,10 +446,10 @@
         
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">[</span><span class="n">key</span><span class="p">](</span><span class="bp">self</span><span class="p">)</span>  
-        </div>
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span> <span class="o">=</span> <span class="p">{}</span>  
 
-
+</div>
 <div class="viewcode-block" id="Space.add_collision_handler"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add_collision_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_collision_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">,</span> <span class="n">collision_type_b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the :py:class:`CollisionHandler` for collisions between </span>
 <span class="sd">        objects of type collision_type_a and collision_type_b.</span>
@@ -467,9 +475,9 @@
         
         <span class="n">h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddCollisionHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">,</span> <span class="n">collision_type_b</span><span class="p">)</span>
         <span class="n">ch</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch</span>
         <span class="k">return</span> <span class="n">ch</span>
-        
+        </div>
 <div class="viewcode-block" id="Space.add_wildcard_collision_handler"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add_wildcard_collision_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_wildcard_collision_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a wildcard collision handler for given collision type.</span>
 
@@ -496,9 +504,9 @@
             
         <span class="n">h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddWildcardHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">collision_type_a</span><span class="p">)</span>
         <span class="n">ch</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">collision_type_a</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="n">collision_type_a</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch</span>
         <span class="k">return</span> <span class="n">ch</span>
-
+</div>
 <div class="viewcode-block" id="Space.add_default_collision_handler"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add_default_collision_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_default_collision_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a reference to the default collision handler or that is</span>
 <span class="sd">        used to process all collisions that don&#39;t have a more specific</span>
@@ -508,14 +516,14 @@
 <span class="sd">        the wildcard handlers, ANDing their return values together if</span>
 <span class="sd">        applicable.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">None</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span>
         
         <span class="n">_h</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceAddDefaultCollisionHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">CollisionHandler</span><span class="p">(</span><span class="n">_h</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
         <span class="k">return</span> <span class="n">h</span>
-
+</div>
 <div class="viewcode-block" id="Space.add_post_step_callback"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.add_post_step_callback">[docs]</a>    <span class="k">def</span> <span class="nf">add_post_step_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_function</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a function to be called last in the next simulation step.</span>
 
@@ -547,14 +555,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
         
         <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="n">callback_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span></div>
-        <span class="k">return</span> <span class="kc">True</span>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_step_callbacks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="k">return</span> <span class="bp">True</span>
+        </div>
 <div class="viewcode-block" id="Space.point_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.point_query">[docs]</a>    <span class="k">def</span> <span class="nf">point_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query space at point for shapes within the given distance range.</span>
 
@@ -581,9 +589,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
         
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpacePointQueryFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpSpacePointQueryFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-            <span class="c1"># space = ffi.from_handle(data)</span>
+            <span class="c"># space = ffi.from_handle(data)</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">PointQueryInfo</span><span class="p">(</span>
                 <span class="n">shape</span><span class="p">,</span> 
@@ -594,21 +602,21 @@
             
         <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQuery</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span>
-
+</div>
     <span class="k">def</span> <span class="nf">_get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_shape</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">_shape</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">None</span>
 
         <span class="n">shapeid</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpShapeGetUserData</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
-        <span class="c1">#return self._shapes[hashid_private]</span>
+        <span class="c">#return self._shapes[hashid_private]</span>
         <span class="k">if</span> <span class="n">shapeid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">:</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">[</span><span class="n">shapeid</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">shapeid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_removed_shapes</span><span class="p">:</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_removed_shapes</span><span class="p">[</span><span class="n">shapeid</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">shape</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">return</span> <span class="n">shape</span>
 
 <div class="viewcode-block" id="Space.point_query_nearest"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.point_query_nearest">[docs]</a>    <span class="k">def</span> <span class="nf">point_query_nearest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
@@ -635,7 +643,7 @@
 
 <span class="sd">        :rtype: :py:class:`PointQueryInfo` or None  </span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpPointQueryInfo *&quot;</span><span class="p">)</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;cpPointQueryInfo *&quot;</span><span class="p">)</span>
         <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpacePointQueryNearest</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> 
             <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">max_distance</span><span class="p">,</span> 
@@ -643,15 +651,15 @@
         
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">PointQueryInfo</span><span class="p">(</span>
                 <span class="n">shape</span><span class="p">,</span> 
                 <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> 
                 <span class="n">info</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> 
-                <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">))</span></div>
-        <span class="k">return</span> <span class="kc">None</span>
+                <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">gradient</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">None</span>
 
-
+</div>
 <div class="viewcode-block" id="Space.segment_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.segment_query">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query space along the line segment from start to end with the</span>
 <span class="sd">        given radius.</span>
@@ -676,7 +684,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
         
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceSegmentQueryFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpSpaceSegmentQueryFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span>
@@ -689,9 +697,9 @@
             <span class="nb">tuple</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">end</span><span class="p">),</span> 
             <span class="n">radius</span><span class="p">,</span> 
             <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> 
-            <span class="n">data</span><span class="p">)</span></div>
+            <span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span>
-
+</div>
 <div class="viewcode-block" id="Space.segment_query_first"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.segment_query_first">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query_first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query space along the line segment from start to end with the</span>
 <span class="sd">        given radius.</span>
@@ -708,7 +716,7 @@
 
 <span class="sd">        :rtype: :py:class:`SegmentQueryInfo` or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpSegmentQueryInfo *&quot;</span><span class="p">)</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;cpSegmentQueryInfo *&quot;</span><span class="p">)</span>
         <span class="n">_shape</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceSegmentQueryFirst</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> 
             <span class="nb">tuple</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">end</span><span class="p">),</span> 
@@ -716,15 +724,15 @@
             <span class="n">info</span><span class="p">)</span>
 
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">SegmentQueryInfo</span><span class="p">(</span>
                 <span class="n">shape</span><span class="p">,</span> 
                 <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> 
                 <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">normal</span><span class="p">),</span> 
-                <span class="n">info</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span></div>
-        <span class="k">return</span> <span class="kc">None</span>
+                <span class="n">info</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
 
-
+</div>
 <div class="viewcode-block" id="Space.bb_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.bb_query">[docs]</a>    <span class="k">def</span> <span class="nf">bb_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query space to find all shapes near bb.</span>
 
@@ -741,16 +749,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceBBQueryFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpSpaceBBQueryFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
         
         <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceBBQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceBBQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">shape_filter</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span>
 
-
+</div>
 <div class="viewcode-block" id="Space.shape_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.shape_query">[docs]</a>    <span class="k">def</span> <span class="nf">shape_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query a space for any shapes overlapping the given shape</span>
 
@@ -764,7 +772,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpSpaceShapeQueryFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpSpaceShapeQueryFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_shape</span><span class="p">,</span> <span class="n">_points</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">_shape</span><span class="p">)</span>
             <span class="n">point_set</span> <span class="o">=</span> <span class="n">ContactPointSet</span><span class="o">.</span><span class="n">_from_cp</span><span class="p">(</span><span class="n">_points</span><span class="p">)</span>
@@ -773,10 +781,10 @@
             
         <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceShapeQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-</div>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_hits</span>
 
-
+</div>
 <div class="viewcode-block" id="Space.debug_draw"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.debug_draw">[docs]</a>    <span class="k">def</span> <span class="nf">debug_draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Debug draw the current state of the space using the supplied drawing </span>
 <span class="sd">        options.        </span>
@@ -795,12 +803,12 @@
 <span class="sd">        :type options: :py:class:`SpaceDebugDrawOptions`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="c1"># we need to hold h until the end of cpSpaceDebugDraw to prevent GC</span>
+        <span class="c"># we need to hold h until the end of cpSpaceDebugDraw to prevent GC</span>
         <span class="n">options</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">h</span>
         
-        <span class="k">with</span> <span class="n">options</span><span class="p">:</span></div>
+        <span class="k">with</span> <span class="n">options</span><span class="p">:</span>
             <span class="n">cp</span><span class="o">.</span><span class="n">cpSpaceDebugDraw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span>
-        
+        </div>
     <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the state of this object</span>
 <span class="sd">        </span>
@@ -809,26 +817,26 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Space</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getstate__</span><span class="p">()</span>
 
-        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;shapes&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shapes</span><span class="p">))</span>
-        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;bodies&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bodies</span><span class="p">))</span>
-        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;constraints&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;_static_body&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;shapes&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shapes</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;bodies&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bodies</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;constraints&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;_static_body&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span><span class="p">))</span>
         
         <span class="n">handlers</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">h</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_begin_base</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s1">&#39;_begin_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_begin_base</span>
-            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_pre_solve_base</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s1">&#39;_pre_solve_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_pre_solve_base</span>
-            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_post_solve_base</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s1">&#39;_post_solve_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_post_solve_base</span>
-            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_separate_base</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s1">&#39;_separate_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_separate_base</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_begin_base</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">h</span><span class="p">[</span><span class="s">&#39;_begin_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_begin_base</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_pre_solve_base</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">h</span><span class="p">[</span><span class="s">&#39;_pre_solve_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_pre_solve_base</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_post_solve_base</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">h</span><span class="p">[</span><span class="s">&#39;_post_solve_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_post_solve_base</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">_separate_base</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">h</span><span class="p">[</span><span class="s">&#39;_separate_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">_separate_base</span>
             <span class="n">handlers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span><span class="n">h</span><span class="p">))</span>
             
-        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;_handlers&#39;</span><span class="p">,</span> <span class="n">handlers</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;_handlers&#39;</span><span class="p">,</span> <span class="n">handlers</span><span class="p">))</span>
             
         <span class="k">return</span> <span class="n">d</span>
 
@@ -840,36 +848,36 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Space</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setstate__</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
         
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;shapes&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s">&#39;special&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&#39;shapes&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">v</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;bodies&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&#39;bodies&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">v</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;constraints&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&#39;constraints&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">v</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;_static_body&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&#39;_static_body&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span> <span class="o">=</span> <span class="n">v</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_static_body</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="bp">self</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;_handlers&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&#39;_handlers&#39;</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">hd</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
                         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_default_collision_handler</span><span class="p">()</span>
                     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">tuple</span><span class="p">):</span>
                         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_collision_handler</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_wildcard_collision_handler</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="s1">&#39;_begin_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
-                        <span class="n">h</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_begin_base&#39;</span><span class="p">]</span> 
-                    <span class="k">if</span> <span class="s1">&#39;_pre_solve_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
-                        <span class="n">h</span><span class="o">.</span><span class="n">pre_solve</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_pre_solve_base&#39;</span><span class="p">]</span> 
-                    <span class="k">if</span> <span class="s1">&#39;_post_solve_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
-                        <span class="n">h</span><span class="o">.</span><span class="n">post_solve</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_post_solve_base&#39;</span><span class="p">]</span> 
-                    <span class="k">if</span> <span class="s1">&#39;_separate_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
-                        <span class="n">h</span><span class="o">.</span><span class="n">separate</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s1">&#39;_separate_base&#39;</span><span class="p">]</span> 
+                    <span class="k">if</span> <span class="s">&#39;_begin_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
+                        <span class="n">h</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s">&#39;_begin_base&#39;</span><span class="p">]</span> 
+                    <span class="k">if</span> <span class="s">&#39;_pre_solve_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
+                        <span class="n">h</span><span class="o">.</span><span class="n">pre_solve</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s">&#39;_pre_solve_base&#39;</span><span class="p">]</span> 
+                    <span class="k">if</span> <span class="s">&#39;_post_solve_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
+                        <span class="n">h</span><span class="o">.</span><span class="n">post_solve</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s">&#39;_post_solve_base&#39;</span><span class="p">]</span> 
+                    <span class="k">if</span> <span class="s">&#39;_separate_base&#39;</span> <span class="ow">in</span> <span class="n">hd</span><span class="p">:</span>
+                        <span class="n">h</span><span class="o">.</span><span class="n">separate</span> <span class="o">=</span> <span class="n">hd</span><span class="p">[</span><span class="s">&#39;_separate_base&#39;</span><span class="p">]</span> 
 
 <div class="viewcode-block" id="Space.copy"><a class="viewcode-back" href="../../pymunk.html#pymunk.Space.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a deep copy of this space.&quot;&quot;&quot;</span></div></div>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;Create a deep copy of this space.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -918,14 +926,15 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -936,8 +945,8 @@
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
     </div>
 

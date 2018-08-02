@@ -1,29 +1,37 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pymunk.collision_handler &#8212; pymunk 5.3.2 documentation</title>
+    
+    <title>pymunk.collision_handler &mdash; pymunk 5.3.2 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '5.3.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="pymunk 5.3.2 documentation" href="../../index.html" />
+    <link rel="up" title="pymunk" href="../pymunk.html" />
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
-  </head><body>
-  
+  </head>
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -31,17 +39,17 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk.collision_handler</h1><div class="highlight"><pre>
-<span></span><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;$Id$&quot;</span>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;$Id$&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>   
 
-<span class="kn">from</span> <span class="nn">.arbiter</span> <span class="k">import</span> <span class="n">Arbiter</span>
+<span class="kn">from</span> <span class="nn">.arbiter</span> <span class="kn">import</span> <span class="n">Arbiter</span>
 
 <div class="viewcode-block" id="CollisionHandler"><a class="viewcode-back" href="../../pymunk.html#pymunk.CollisionHandler">[docs]</a><span class="k">class</span> <span class="nc">CollisionHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A collision handler is a set of 4 function callbacks for the different</span>
@@ -68,51 +76,51 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="n">_handler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="n">space</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_begin_base</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># For pickle</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve_base</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># For pickle</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve_base</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># For pickle</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_separate_base</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># For pickle</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin_base</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># For pickle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve_base</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># For pickle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve_base</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># For pickle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_separate_base</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># For pickle</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="p">{}</span>
         
-        
+        </div>
     <span class="k">def</span> <span class="nf">_get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_data</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Data property that get passed on into the</span>
-<span class="s2">    callbacks.</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_data</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Data property that get passed on into the</span>
+<span class="s">    callbacks.</span>
 
-<span class="s2">    data is a dictionary and you can not replace it, only fill it with data.</span>
-<span class="s2">    </span>
-<span class="s2">    Usefull if the callback needs some extra data to perform its function. </span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>    
+<span class="s">    data is a dictionary and you can not replace it, only fill it with data.</span>
+<span class="s">    </span>
+<span class="s">    Usefull if the callback needs some extra data to perform its function. </span>
+<span class="s">    &quot;&quot;&quot;</span><span class="p">)</span>    
 
     <span class="k">def</span> <span class="nf">_set_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpCollisionBeginFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpCollisionBeginFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">x</span>
             
             <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_name</span>
-                <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_filename</span>
-                <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_firstlineno</span>
+                <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_name</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_filename</span>
+                <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_firstlineno</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_name</span>
                 <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_filename</span>
                 <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_firstlineno</span>
 
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn_explicit</span><span class="p">(</span>
-                <span class="s2">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s2">&quot;&#39; should return a bool to&quot;</span>
-                <span class="s2">&quot; indicate if the collision should be processed or not when&quot;</span>
-                <span class="s2">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
-                <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">True</span>
+                <span class="s">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s">&quot;&#39; should return a bool to&quot;</span>
+                <span class="s">&quot; indicate if the collision should be processed or not when&quot;</span>
+                <span class="s">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span> <span class="o">=</span> <span class="n">cf</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_begin_base</span> <span class="o">=</span> <span class="n">func</span>
@@ -122,40 +130,40 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_begin</span>
 
     <span class="n">begin</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_begin</span><span class="p">,</span> <span class="n">_set_begin</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes just started touching for the first time this step.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes just started touching for the first time this step.</span>
 
-<span class="s2">        ``func(arbiter, space, data) -&gt; bool``</span>
+<span class="s">        ``func(arbiter, space, data) -&gt; bool``</span>
 
-<span class="s2">        Return true from the callback to process the collision normally or</span>
-<span class="s2">        false to cause pymunk to ignore the collision entirely. If you return</span>
-<span class="s2">        false, the `pre_solve` and `post_solve` callbacks will never be run,</span>
-<span class="s2">        but you will still recieve a separate event when the shapes stop</span>
-<span class="s2">        overlapping.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        Return true from the callback to process the collision normally or</span>
+<span class="s">        false to cause pymunk to ignore the collision entirely. If you return</span>
+<span class="s">        false, the `pre_solve` and `post_solve` callbacks will never be run,</span>
+<span class="s">        but you will still recieve a separate event when the shapes stop</span>
+<span class="s">        overlapping.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_pre_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpCollisionPreSolveFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpCollisionPreSolveFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">x</span>
             
             <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_name</span>
-                <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_filename</span>
-                <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_firstlineno</span>
+                <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_name</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_filename</span>
+                <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_firstlineno</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_name</span>
                 <span class="n">filename</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_filename</span>
                 <span class="n">lineno</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_firstlineno</span>
 
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn_explicit</span><span class="p">(</span>
-                <span class="s2">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s2">&quot;&#39; should return a bool to&quot;</span>
-                <span class="s2">&quot; indicate if the collision should be processed or not when&quot;</span>
-                <span class="s2">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
-                <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">True</span>
+                <span class="s">&quot;Function &#39;&quot;</span> <span class="o">+</span> <span class="n">func_name</span> <span class="o">+</span> <span class="s">&quot;&#39; should return a bool to&quot;</span>
+                <span class="s">&quot; indicate if the collision should be processed or not when&quot;</span>
+                <span class="s">&quot; used as &#39;begin&#39; or &#39;pre_solve&#39; collision callback.&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span> <span class="o">=</span> <span class="n">cf</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve_base</span> <span class="o">=</span> <span class="n">func</span>
@@ -165,20 +173,20 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_solve</span>
 
     <span class="n">pre_solve</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_pre_solve</span><span class="p">,</span> <span class="n">_set_pre_solve</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes are touching during this step.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes are touching during this step.</span>
 
-<span class="s2">        ``func(arbiter, space, data) -&gt; bool``</span>
+<span class="s">        ``func(arbiter, space, data) -&gt; bool``</span>
 
-<span class="s2">        Return false from the callback to make pymunk ignore the collision</span>
-<span class="s2">        this step or true to process it normally. Additionally, you may</span>
-<span class="s2">        override collision values using Arbiter.friction, Arbiter.elasticity</span>
-<span class="s2">        or Arbiter.surfaceVelocity to provide custom friction, elasticity,</span>
-<span class="s2">        or surface velocity values. See Arbiter for more info.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        Return false from the callback to make pymunk ignore the collision</span>
+<span class="s">        this step or true to process it normally. Additionally, you may</span>
+<span class="s">        override collision values using Arbiter.friction, Arbiter.elasticity</span>
+<span class="s">        or Arbiter.surfaceVelocity to provide custom friction, elasticity,</span>
+<span class="s">        or surface velocity values. See Arbiter for more info.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_post_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
     
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpCollisionPostSolveFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpCollisionPostSolveFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
                 
@@ -190,19 +198,19 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_solve</span>
 
     <span class="n">post_solve</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_post_solve</span><span class="p">,</span> <span class="n">_set_post_solve</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes are touching and their collision response has been</span>
-<span class="s2">        processed.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes are touching and their collision response has been</span>
+<span class="s">        processed.</span>
 
-<span class="s2">        ``func(arbiter, space, data)``</span>
+<span class="s">        ``func(arbiter, space, data)``</span>
 
-<span class="s2">        You can retrieve the collision impulse or kinetic energy at this</span>
-<span class="s2">        time if you want to use it to calculate sound volumes or damage</span>
-<span class="s2">        amounts. See Arbiter for more info.</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        You can retrieve the collision impulse or kinetic energy at this</span>
+<span class="s">        time if you want to use it to calculate sound volumes or damage</span>
+<span class="s">        amounts. See Arbiter for more info.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_separate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
     
-        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpCollisionSeparateFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpCollisionSeparateFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="n">_space</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">func</span><span class="p">(</span><span class="n">Arbiter</span><span class="p">(</span><span class="n">_arb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
                 
@@ -214,15 +222,15 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_separate</span>
 
     <span class="n">separate</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_separate</span><span class="p">,</span> <span class="n">_set_separate</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Two shapes have just stopped touching for the first time this</span>
-<span class="s2">        step.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Two shapes have just stopped touching for the first time this</span>
+<span class="s">        step.</span>
 
-<span class="s2">        ``func(arbiter, space, data)``</span>
+<span class="s">        ``func(arbiter, space, data)``</span>
 
-<span class="s2">        To ensure that begin()/separate() are always called in balanced</span>
-<span class="s2">        pairs, it will also be called when removing a shape while its in</span>
-<span class="s2">        contact with something or when de-allocating the space.</span></div>
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s">        To ensure that begin()/separate() are always called in balanced</span>
+<span class="s">        pairs, it will also be called when removing a shape while its in</span>
+<span class="s">        contact with something or when de-allocating the space.</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -271,14 +279,15 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -289,8 +298,8 @@
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
     </div>
 

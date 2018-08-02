@@ -1,31 +1,39 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Slide and Pin Joint Demo Step by Step &#8212; pymunk 5.3.2 documentation</title>
+    
+    <title>Slide and Pin Joint Demo Step by Step &mdash; pymunk 5.3.2 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '5.3.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/pymunk_favicon.ico"/>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="pymunk 5.3.2 documentation" href="../index.html" />
+    <link rel="up" title="Tutorials" href="../tutorials.html" />
     <link rel="next" title="Benchmarks" href="../benchmarks.html" />
     <link rel="prev" title="Tutorials" href="../tutorials.html" />
    
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
-  </head><body>
-  
+  </head>
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -36,7 +44,7 @@
 <h1>Slide and Pin Joint Demo Step by Step<a class="headerlink" href="#slide-and-pin-joint-demo-step-by-step" title="Permalink to this headline">¶</a></h1>
 <p>This is a step by step tutorial explaining the demo slide_and_pinjoint.py
 included in pymunk. You will find a screenshot of it in the list of
-<a class="reference internal" href="../examples.html#id1"><span class="std std-ref">examples</span></a>.
+<a class="reference internal" href="../examples.html#id1"><span>examples</span></a>.
 It is probably a good idea to have the file near by if I
 miss something in the tutorial or something is unclear.</p>
 <img alt="../_images/slide_and_pinjoint1.png" src="../_images/slide_and_pinjoint1.png" />
@@ -54,27 +62,27 @@ similar libraries as well, for example you could easily translate this
 tutorial to use Pyglet instead.</p>
 <p>Pymunk is built on top of the 2d physics library Chipmunk. Chipmunk itself
 is written in C meaning Pymunk need to call into the c code. The Cffi
-library helps with this, however if you are on a platform that I haven’t been
+library helps with this, however if you are on a platform that I haven&#8217;t been
 able to compile it on you might have to do it yourself. The good news is that
 it is very easy to do, in fact if you got Pymunk by Pip install its arelady
 done!</p>
 <p>When you have pymunk installed, try to import it from the python prompt to
 make sure it works and can be imported:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
 </pre></div>
 </div>
 <p>If you get an error message it might be because pymunk could not find the
 chipmunk library that it depends on. If you install pymunk with pip or setup.py
 install everything should already be correct, but if you got the source and
 want to use it as a stand alone folder you need to build it inplace:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python setup.py build_ext --inplace
 </pre></div>
 </div>
 <p>More information on installation can be found here:
-<a class="reference internal" href="../installation.html#id1"><span class="std std-ref">Installation</span></a></p>
+<a class="reference internal" href="../installation.html#id1"><span>Installation</span></a></p>
 <p>If it doesnt work or you have some kind of problem, feel free to write a post
 in the chipmunk forum, contact me directly or add your problem to the issue
-tracker: <a class="reference internal" href="../index.html#id1"><span class="std std-ref">Contact &amp; Support</span></a></p>
+tracker: <a class="reference internal" href="../index.html#id1"><span>Contact &amp; Support</span></a></p>
 </div>
 <div class="section" id="an-empty-simulation">
 <h2>An empty simulation<a class="headerlink" href="#an-empty-simulation" title="Permalink to this headline">¶</a></h2>
@@ -84,13 +92,13 @@ explained pretty good in this citation from the Chipmunk docs:</p>
 <dl class="docutils">
 <dt>Rigid bodies</dt>
 <dd>A rigid body holds the physical properties of an object. (mass, position,
-rotation, velocity, etc.) It does not have a shape by itself. If you’ve
+rotation, velocity, etc.) It does not have a shape by itself. If you&#8217;ve
 done physics with particles before, rigid bodies differ mostly in that they
 are able to rotate.</dd>
 <dt>Collision shapes</dt>
-<dd>By attaching shapes to bodies, you can define the a body’s shape. You can
+<dd>By attaching shapes to bodies, you can define the a body&#8217;s shape. You can
 attach many shapes to a single body to define a complex shape, or none if
-it doesn’t require a shape.</dd>
+it doesn&#8217;t require a shape.</dd>
 <dt>Constraints/joints</dt>
 <dd>You can attach joints between two bodies to constrain their behavior.</dd>
 <dt>Spaces</dt>
@@ -101,23 +109,23 @@ and joints to a space, and then update the space as a whole.</dd>
 <a class="reference external" href="http://chipmunk-physics.net/release/ChipmunkLatest-Docs/">http://chipmunk-physics.net/release/ChipmunkLatest-Docs/</a>
 It is for the c-library but is a good complement to the Pymunk documentation
 as the concepts are the same, just that Pymunk is more pythonic to use.</p>
-<p>The API documentation for Pymunk can be found here: <a class="reference internal" href="../pymunk.html"><span class="doc">API Reference</span></a>.</p>
+<p>The API documentation for Pymunk can be found here: <a class="reference internal" href="../pymunk.html"><em>API Reference</em></a>.</p>
 <p>Anyway, we are now ready to write some code:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
-<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">pymunk</span> <span class="c1">#1</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pymunk</span> <span class="c">#1</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
     <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">600</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
-    <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Joints. Just wait and the L will tip over&quot;</span><span class="p">)</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s">&quot;Joints. Just wait and the L will tip over&quot;</span><span class="p">)</span>
     <span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
 
-    <span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span> <span class="c1">#2</span>
+    <span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span> <span class="c">#2</span>
     <span class="n">space</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">900.0</span><span class="p">)</span>
 
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -126,19 +134,19 @@ as the concepts are the same, just that Pymunk is more pythonic to use.</p>
 
         <span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span>
 
-        <span class="n">space</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">50.0</span><span class="p">)</span> <span class="c1">#3</span>
+        <span class="n">space</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">50.0</span><span class="p">)</span> <span class="c">#3</span>
 
         <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
         <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
 <p>The code will display a blank window, and will run a physics simulation of an
 empty space.</p>
 <ol class="arabic simple">
-<li>We need to import pymunk in order to use it…</li>
+<li>We need to import pymunk in order to use it...</li>
 <li>We then create a space and set its gravity to something good. Remember
 that what is important is what looks good on screen, not what the real
 world value is. -900 will make a good looking simulation, but feel free
@@ -160,15 +168,15 @@ step is to make a ball spawn once in while. In many of the example demos all
 code is in one big pile in the main() function as they are so small and easy,
 but I will extract some methods in this tutorial to make it more easy to
 follow. First, a function to add a ball to a space:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_ball</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">add_ball</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
     <span class="n">mass</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">radius</span> <span class="o">=</span> <span class="mi">14</span>
-    <span class="n">moment</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">moment_for_circle</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span> <span class="c1"># 1</span>
-    <span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">moment</span><span class="p">)</span> <span class="c1"># 2</span>
+    <span class="n">moment</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">moment_for_circle</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span> <span class="c"># 1</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">moment</span><span class="p">)</span> <span class="c"># 2</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="mi">380</span><span class="p">)</span>
-    <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="mi">550</span> <span class="c1"># 3</span>
-    <span class="n">shape</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span> <span class="c1"># 4</span>
-    <span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span> <span class="c1"># 5</span>
+    <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="mi">550</span> <span class="c"># 3</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span> <span class="c"># 4</span>
+    <span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span> <span class="c"># 5</span>
     <span class="k">return</span> <span class="n">shape</span>
 </pre></div>
 </div>
@@ -190,14 +198,14 @@ manually. The debug drawing functions included with Pymunk are good for putting
 something together easy and quickly, while a polished game for example most
 probably will want to make its own drawing code.</p>
 <p>If we want to draw manually, our draw function could look something like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_ball</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">ball</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">draw_ball</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">ball</span><span class="p">):</span>
     <span class="n">p</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="mi">600</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
     <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">radius</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>And then called in this way (given we collected all the ball shapes in a list
 called balls):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">ball</span> <span class="ow">in</span> <span class="n">balls</span><span class="p">:</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">ball</span> <span class="ow">in</span> <span class="n">balls</span><span class="p">:</span>
     <span class="n">draw_ball</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">ball</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -205,28 +213,28 @@ called balls):</p>
 method already included in Pymunk to simplify a bit. In that case we
 first have to create a DrawOptions object with the options (mainly what surface
 to draw on):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">draw_options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">draw_options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>And after that when we want to draw all our shapes we would just do it in this
 way:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">space</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">draw_options</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">space</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">draw_options</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Most of the examples included with Pymunk uses this way of drawing.</p>
 <p>With the add_ball function and the debug_draw call and a little code to spawn
 balls you should see a couple of balls falling. Yay!</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
-<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">pymunk</span>
 
-<span class="c1">#def add_ball(space):</span>
+<span class="c">#def add_ball(space):</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
     <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">600</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
-    <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Joints. Just wait and the L will tip over&quot;</span><span class="p">)</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s">&quot;Joints. Just wait and the L will tip over&quot;</span><span class="p">)</span>
     <span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
 
     <span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
@@ -237,7 +245,7 @@ balls you should see a couple of balls falling. Yay!</p>
 
 
     <span class="n">ticks_to_next_ball</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -258,29 +266,29 @@ balls you should see a couple of balls falling. Yay!</p>
         <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
         <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="a-static-l">
 <h2>A static L<a class="headerlink" href="#a-static-l" title="Permalink to this headline">¶</a></h2>
-<p>Falling balls are quite boring. We don’t see any physics simulation except
+<p>Falling balls are quite boring. We don&#8217;t see any physics simulation except
 basic gravity, and everyone can do gravity without help from a physics library.
 So lets add something the balls can land on, two static lines forming an L. As
 with the balls we start with a function to add an L to the space:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_static_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
-    <span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span> <span class="c1"># 1</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">add_static_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span> <span class="c"># 1</span>
     <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
-    <span class="n">l1</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># 2</span>
+    <span class="n">l1</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span> <span class="c"># 2</span>
     <span class="n">l2</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
 
-    <span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="c1"># 3</span>
+    <span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="c"># 3</span>
     <span class="k">return</span> <span class="n">l1</span><span class="p">,</span><span class="n">l2</span>
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li>We create a “static” body. The important step is to never add it to the
+<li>We create a &#8220;static&#8221; body. The important step is to never add it to the
 space like the dynamic ball bodies. Note how static bodies are created by
 setting the body_type of the body.</li>
 <li>A line shaped shape is created here.</li>
@@ -289,80 +297,80 @@ setting the body_type of the body.</li>
 <p>Since we use Space.debug_draw to draw the space we dont need to do any special
 draw code for the Segments, but I still include a possible draw function here
 just to show what it could look like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
         <span class="n">body</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">body</span>
-        <span class="n">pv1</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span> <span class="c1"># 1</span>
+        <span class="n">pv1</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span> <span class="c"># 1</span>
         <span class="n">pv2</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv1</span><span class="p">)</span> <span class="c1"># 2</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv1</span><span class="p">)</span> <span class="c"># 2</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pv2</span><span class="p">)</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;lightgray&quot;</span><span class="p">],</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s">&quot;lightgray&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span>
 </pre></div>
 </div>
 <ol class="arabic simple">
 <li>In order to get the position with the line rotation we use this calculation.
 line.a is the first endpoint of the line, line.b the second. At the moment
-the lines are static, and not rotated so we don’t really have to do this
+the lines are static, and not rotated so we don&#8217;t really have to do this
 extra calculation, but we will soon make them move and rotate.</li>
 <li>This is a little function to convert coordinates from pymunk to pygame
 world. Now that we have it we can use it in the draw_ball() function as
 well. We want to flip the y coordinate (-p.y), and then offset it with the
 screen height (+600). It looks like this:</li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Small hack to convert pymunk to pygame coordinates&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="o">+</span><span class="mi">600</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>With the full code we should something like the below, and now we should see
 an inverted L shape in the middle will balls spawning and hitting the shape.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">pygame</span>
-<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">pymunk</span>
-<span class="kn">import</span> <span class="nn">math</span>
+<div class="highlight-python"><div class="highlight"><pre>import sys, random
+import pygame
+from pygame.locals import *
+import pymunk
+import math
 
-<span class="c1">#def to_pygame(p):</span>
-<span class="c1">#def add_ball(space):</span>
-<span class="c1">#def add_static_l(space):</span>
+#def to_pygame(p):
+#def add_ball(space):
+#def add_static_l(space):
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
-    <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">600</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
-    <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Joints. Just wait and the L will tip over&quot;</span><span class="p">)</span>
-    <span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((600, 600))
+    pygame.display.set_caption(&quot;Joints. Just wait and the L will tip over&quot;)
+    clock = pygame.time.Clock()
 
-    <span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
-    <span class="n">space</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">900.0</span><span class="p">)</span>
+    space = pymunk.Space()
+    space.gravity = (0.0, -900.0)
 
-    <span class="n">lines</span> <span class="o">=</span> <span class="n">add_static_L</span><span class="p">(</span><span class="n">space</span><span class="p">)</span>
-    <span class="n">balls</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">draw_options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+    lines = add_static_L(space)
+    balls = []
+    draw_options = pymunk.pygame_util.DrawOptions(screen)
 
-    <span class="n">ticks_to_next_ball</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYDOWN</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_ESCAPE</span><span class="p">:</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    ticks_to_next_ball = 10
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                sys.exit(0)
+            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                sys.exit(0)
 
-        <span class="n">ticks_to_next_ball</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">ticks_to_next_ball</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">ticks_to_next_ball</span> <span class="o">=</span> <span class="mi">25</span>
-            <span class="n">ball_shape</span> <span class="o">=</span> <span class="n">add_ball</span><span class="p">(</span><span class="n">space</span><span class="p">)</span>
-            <span class="n">balls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ball_shape</span><span class="p">)</span>
+        ticks_to_next_ball -= 1
+        if ticks_to_next_ball &lt;= 0:
+            ticks_to_next_ball = 25
+            ball_shape = add_ball(space)
+            balls.append(ball_shape)
 
-        <span class="n">space</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">50.0</span><span class="p">)</span>
+        space.step(1/50.0)
 
-        <span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span>
-        <span class="n">space</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">draw_options</span><span class="p">)</span>
+        screen.fill((255,255,255))
+        space.debug_draw(draw_options)
 
-        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
-        <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+        pygame.display.flip()
+        clock.tick(50)
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">main</span><span class="p">()</span>
+if __name__ == &#39;__main__&#39;:
+    (main()
 </pre></div>
 </div>
 </div>
@@ -371,18 +379,18 @@ an inverted L shape in the middle will balls spawning and hitting the shape.</p>
 <p>A static L shape is pretty boring. So lets make it a bit more exciting by
 adding two joints, one that it can rotate around, and one that prevents it from
 rotating too much. In this part we only add the rotation joint, and in the next
-we constrain it. As our static L shape won’t be static anymore we also rename
+we constrain it. As our static L shape won&#8217;t be static anymore we also rename
 the function to add_L().</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
-    <span class="n">rotation_center_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span> <span class="c1"># 1</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">add_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
+    <span class="n">rotation_center_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span> <span class="c"># 1</span>
     <span class="n">rotation_center_body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
 
-    <span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span> <span class="c1"># 2</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span> <span class="c"># 2</span>
     <span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
     <span class="n">l1</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mf">255.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mf">5.0</span><span class="p">)</span>
     <span class="n">l2</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mf">150.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">),</span> <span class="mf">5.0</span><span class="p">)</span>
 
-    <span class="n">rotation_center_joint</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">PinJoint</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">rotation_center_body</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> <span class="c1"># 3</span>
+    <span class="n">rotation_center_joint</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">PinJoint</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">rotation_center_body</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> <span class="c"># 3</span>
 
     <span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">rotation_center_joint</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">l1</span><span class="p">,</span><span class="n">l2</span>
@@ -405,11 +413,11 @@ of the objects will be stuck to the world.</li>
 <p>In the previous part we added a pin joint, and now its time to constrain the
 rotating L shape to create a more interesting simulation. In order to do this
 we modify the add_L() function:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">add_L</span><span class="p">(</span><span class="n">space</span><span class="p">):</span>
     <span class="n">rotation_center_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span>
     <span class="n">rotation_center_body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="p">)</span>
 
-    <span class="n">rotation_limit_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span> <span class="c1"># 1</span>
+    <span class="n">rotation_limit_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span> <span class="c"># 1</span>
     <span class="n">rotation_limit_body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">300</span><span class="p">)</span>
 
     <span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
@@ -419,7 +427,7 @@ we modify the add_L() function:</p>
 
     <span class="n">rotation_center_joint</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">PinJoint</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">rotation_center_body</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
     <span class="n">joint_limit</span> <span class="o">=</span> <span class="mi">25</span>
-    <span class="n">rotation_limit_joint</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">SlideJoint</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">rotation_limit_body</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">joint_limit</span><span class="p">)</span> <span class="c1"># 2</span>
+    <span class="n">rotation_limit_joint</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">SlideJoint</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">rotation_limit_body</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">joint_limit</span><span class="p">)</span> <span class="c"># 2</span>
 
     <span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">rotation_center_joint</span><span class="p">,</span> <span class="n">rotation_limit_joint</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">l1</span><span class="p">,</span><span class="n">l2</span>
@@ -439,14 +447,14 @@ shapes will move.</li>
 require more and more memory and use more and more cpu, and this is of course
 not what we want. So in the final step we add some code to remove balls from
 the simulation when they are bellow the screen.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">balls_to_remove</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">balls_to_remove</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">ball</span> <span class="ow">in</span> <span class="n">balls</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">ball</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># 1</span>
-        <span class="n">balls_to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ball</span><span class="p">)</span> <span class="c1"># 2</span>
+    <span class="k">if</span> <span class="n">ball</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="c"># 1</span>
+        <span class="n">balls_to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ball</span><span class="p">)</span> <span class="c"># 2</span>
 
 <span class="k">for</span> <span class="n">ball</span> <span class="ow">in</span> <span class="n">balls_to_remove</span><span class="p">:</span>
-    <span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ball</span><span class="p">,</span> <span class="n">ball</span><span class="o">.</span><span class="n">body</span><span class="p">)</span> <span class="c1"># 3</span>
-    <span class="n">balls</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ball</span><span class="p">)</span> <span class="c1"># 4</span>
+    <span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ball</span><span class="p">,</span> <span class="n">ball</span><span class="o">.</span><span class="n">body</span><span class="p">)</span> <span class="c"># 3</span>
+    <span class="n">balls</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ball</span><span class="p">)</span> <span class="c"># 4</span>
 </pre></div>
 </div>
 <ol class="arabic simple">
@@ -459,16 +467,16 @@ body.</li>
 <p>And now, done! You should have an inverted L shape in the middle of the screen
 being filled will balls, tipping over releasing them, tipping back and start
 over. You can check slide_and_pinjoint.py included in pymunk, but it
-doesn’t follow this tutorial exactly as I factored out a couple of blocks
+doesn&#8217;t follow this tutorial exactly as I factored out a couple of blocks
 to functions to make it easier to follow in tutorial form.</p>
 <p>If anything is unclear, not working feel free to raise an issue on github. If
 you have an idea for another tutorial you want to read, or some example code
 you want to see included in pymunk, please write it somewhere (like in the
 chipmunk forum)</p>
 <p>The full code for this tutorial is:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
-<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">pymunk</span>
 <span class="kn">import</span> <span class="nn">pymunk.pygame_util</span>
 
@@ -507,7 +515,7 @@ chipmunk forum)</p>
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
     <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">600</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
-    <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Joints. Just wait and the L will tip over&quot;</span><span class="p">)</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s">&quot;Joints. Just wait and the L will tip over&quot;</span><span class="p">)</span>
     <span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
 
     <span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
@@ -518,7 +526,7 @@ chipmunk forum)</p>
     <span class="n">draw_options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">pygame_util</span><span class="o">.</span><span class="n">DrawOptions</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
 
     <span class="n">ticks_to_next_ball</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -549,7 +557,7 @@ chipmunk forum)</p>
         <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
         <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -583,7 +591,7 @@ chipmunk forum)</p>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../showcase.html">Showcase</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Slide and Pin Joint Demo Step by Step</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Slide and Pin Joint Demo Step by Step</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#before-we-start">Before we start</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#an-empty-simulation">An empty simulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#falling-balls">Falling balls</a></li>
@@ -617,20 +625,21 @@ chipmunk forum)</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/tutorials/SlideAndPinJoint.rst.txt"
+      <li><a href="../_sources/tutorials/SlideAndPinJoint.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -641,11 +650,11 @@ chipmunk forum)</p>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
-      <a href="../_sources/tutorials/SlideAndPinJoint.rst.txt"
+      <a href="../_sources/tutorials/SlideAndPinJoint.txt"
           rel="nofollow">Page source</a>
     </div>
 

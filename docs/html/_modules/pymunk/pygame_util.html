@@ -1,29 +1,37 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pymunk.pygame_util &#8212; pymunk 5.3.2 documentation</title>
+    
+    <title>pymunk.pygame_util &mdash; pymunk 5.3.2 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '5.3.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="pymunk 5.3.2 documentation" href="../../index.html" />
+    <link rel="up" title="pymunk" href="../pymunk.html" />
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
-  </head><body>
-  
+  </head>
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -31,28 +39,28 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk.pygame_util</h1><div class="highlight"><pre>
-<span></span><span class="c1"># ----------------------------------------------------------------------------</span>
-<span class="c1"># pymunk</span>
-<span class="c1"># Copyright (c) 2007-2016 Victor Blomqvist</span>
-<span class="c1">#</span>
-<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-<span class="c1"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-<span class="c1"># in the Software without restriction, including without limitation the rights</span>
-<span class="c1"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-<span class="c1"># copies of the Software, and to permit persons to whom the Software is</span>
-<span class="c1"># furnished to do so, subject to the following conditions:</span>
-<span class="c1">#</span>
-<span class="c1"># The above copyright notice and this permission notice shall be included in</span>
-<span class="c1"># all copies or substantial portions of the Software.</span>
-<span class="c1">#</span>
-<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-<span class="c1"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-<span class="c1"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-<span class="c1"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-<span class="c1"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-<span class="c1"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
-<span class="c1"># SOFTWARE.</span>
-<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
+<span class="c"># pymunk</span>
+<span class="c"># Copyright (c) 2007-2016 Victor Blomqvist</span>
+<span class="c">#</span>
+<span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c"># in the Software without restriction, including without limitation the rights</span>
+<span class="c"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c"># copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c"># furnished to do so, subject to the following conditions:</span>
+<span class="c">#</span>
+<span class="c"># The above copyright notice and this permission notice shall be included in</span>
+<span class="c"># all copies or substantial portions of the Software.</span>
+<span class="c">#</span>
+<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c"># SOFTWARE.</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
 <span class="sd">&quot;&quot;&quot;This submodule contains helper functions to help with quick prototyping </span>
 <span class="sd">using pymunk together with pygame.</span>
@@ -62,19 +70,19 @@
 <span class="sd">about your coordinate system and not in any way optimized. </span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;DrawOptions&quot;</span><span class="p">,</span> <span class="s2">&quot;get_mouse_pos&quot;</span><span class="p">,</span> <span class="s2">&quot;to_pygame&quot;</span><span class="p">,</span> <span class="s2">&quot;from_pygame&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;positive_y_is_up&quot;</span>
+    <span class="s">&quot;DrawOptions&quot;</span><span class="p">,</span> <span class="s">&quot;get_mouse_pos&quot;</span><span class="p">,</span> <span class="s">&quot;to_pygame&quot;</span><span class="p">,</span> <span class="s">&quot;from_pygame&quot;</span><span class="p">,</span> 
+    <span class="s">&quot;positive_y_is_up&quot;</span>
     <span class="p">]</span>
 
 <span class="kn">import</span> <span class="nn">pygame</span>
 
 <span class="kn">import</span> <span class="nn">pymunk</span>
-<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 
-<span class="n">positive_y_is_up</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">positive_y_is_up</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="sd">&quot;&quot;&quot;Make increasing values of y point upwards.</span>
 
 <span class="sd">When True::</span>
@@ -140,9 +148,9 @@
 <span class="sd">                surface : pygame.Surface</span>
 <span class="sd">                    Surface that the objects will be drawn on</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span></div>
-        <span class="nb">super</span><span class="p">(</span><span class="n">DrawOptions</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DrawOptions</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+</div>
 <div class="viewcode-block" id="DrawOptions.draw_circle"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_circle">[docs]</a>    <span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
     
@@ -150,43 +158,43 @@
         
         <span class="n">circle_edge</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">circle_edge</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
-        <span class="n">line_r</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">radius</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="k">else</span> <span class="mi">1</span></div>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">line_r</span><span class="p">)</span>    
-
+        <span class="n">line_r</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">radius</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">line_r</span><span class="p">)</span>    
+</div>
 <div class="viewcode-block" id="DrawOptions.draw_segment"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
         <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
-</div>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span>
 
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">])</span>
+</div>
 <div class="viewcode-block" id="DrawOptions.draw_fat_segment"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_fat_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_fat_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
         <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
         
-        <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span></div>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">r</span><span class="p">)</span>
-        
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">r</span><span class="p">)</span>
+        </div>
 <div class="viewcode-block" id="DrawOptions.draw_polygon"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verts</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
         <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_pygame</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">verts</span><span class="p">]</span>
         <span class="n">ps</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
         
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">ps</span><span class="p">)</span>
         
-        <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span></div>
-            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
-
+        <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
+</div>
 <div class="viewcode-block" id="DrawOptions.draw_dot"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_dot">[docs]</a>    <span class="k">def</span> <span class="nf">draw_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span></div></div>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 
-    
+    </div></div>
 <div class="viewcode-block" id="get_mouse_pos"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.get_mouse_pos">[docs]</a><span class="k">def</span> <span class="nf">get_mouse_pos</span><span class="p">(</span><span class="n">surface</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get position of the mouse pointer in pymunk coordinates.&quot;&quot;&quot;</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span></div>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">from_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
-
+</div>
 <div class="viewcode-block" id="to_pygame"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.to_pygame">[docs]</a><span class="k">def</span> <span class="nf">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convenience method to convert pymunk coordinates to pygame surface </span>
 <span class="sd">    local coordinates. </span>
@@ -196,16 +204,16 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">positive_y_is_up</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">surface</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span></div>
+    <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    
+    </div>
 <div class="viewcode-block" id="from_pygame"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.from_pygame">[docs]</a><span class="k">def</span> <span class="nf">from_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convenience method to convert pygame surface local coordinates to </span>
 <span class="sd">    pymunk coordinates    </span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">surface</span><span class="p">)</span>
 
-            
+            </div>
 </pre></div>
 
           </div>
@@ -254,14 +262,15 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -272,8 +281,8 @@
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
     </div>
 

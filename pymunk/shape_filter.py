@@ -11,7 +11,7 @@ class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     Shapes that have the same group don't generate collisions. So by placing 
     all of the shapes in a ragdoll in the same group, you'll prevent it from 
     colliding against other parts of itself. Category masks allow you to mark 
-    which categories an object belongs to and which categories it collidies 
+    which categories an object belongs to and which categories it collides 
     with.
 
     For example, a game has four collision categories: player (0), enemy (1), 
@@ -20,17 +20,25 @@ class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     with other bullets. However, players collide with enemy bullets, and 
     enemies collide with player bullets.
 
-    ============= =============== =============
+    ============= =============== ====================
     Object        Object Category Category Mask
-    ============= =============== =============
-    Player        1               4, 5       
-    Enemy         2               2, 3, 4
-    Player Bullet 3               1, 5
-    Enemy Bullet  4               2, 5
-    Walls         5               1, 2, 3, 4
-    ============= =============== =============
+    ============= =============== ====================
+    Player        0b00001 (1)     0b11000 (4, 5)       
+    Enemy         0b00010 (2)     0b01110 (2, 3, 4)
+    Player Bullet 0b00100 (3)     0b10001 (1, 5)
+    Enemy Bullet  0b01000 (4)     0b10010 (2, 5)
+    Walls         0b10000 (5)     0b01111 (1, 2, 3, 4)
+    ============= =============== ====================
     
-    Note that everything in this example collides with walls. Additionally, 
+    Note that in the table the categories and masks are written as binary 
+    values to clearly show the logic. To save space only 5 digits are used. The 
+    default type of categories and mask in ShapeFilter is an unsigned int, 
+    with a resolution of 32 bits. That means that the you have 32 bits to use, 
+    in binary notation that is `0b00000000000000000000000000000000` to 
+    `0b11111111111111111111111111111111` which can be written in hex as 
+    `0x00000000` to 0xFFFFFFFF`.
+
+    Everything in this example collides with walls. Additionally, 
     the enemies collide with each other.
 
     By default, objects exist in every category and collide with every category.
@@ -56,11 +64,11 @@ class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     >>> player_b = pymunk.Body(1,1)
     >>> player_c = pymunk.Circle(player_b, 10)
     >>> s.add(player_b, player_c)
-    >>> player_c.filter = pymunk.ShapeFilter(categories=0x1)
+    >>> player_c.filter = pymunk.ShapeFilter(categories=0b1)
     >>> hit = s.point_query_nearest((0,0), 0, pymunk.ShapeFilter())
     >>> hit != None
     True
-    >>> filter = pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS ^ 0x1)
+    >>> filter = pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS ^ 0b1)
     >>> hit = s.point_query_nearest((0,0), 0, filter)
     >>> hit == None
     True

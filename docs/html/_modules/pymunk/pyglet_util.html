@@ -1,29 +1,37 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pymunk.pyglet_util &#8212; pymunk 5.3.2 documentation</title>
+    
+    <title>pymunk.pyglet_util &mdash; pymunk 5.3.2 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '5.3.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="pymunk 5.3.2 documentation" href="../../index.html" />
+    <link rel="up" title="pymunk" href="../pymunk.html" />
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
-  </head><body>
-  
+  </head>
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -31,28 +39,28 @@
           <div class="body" role="main">
             
   <h1>Source code for pymunk.pyglet_util</h1><div class="highlight"><pre>
-<span></span><span class="c1"># ----------------------------------------------------------------------------</span>
-<span class="c1"># pymunk</span>
-<span class="c1"># Copyright (c) 2007-2016 Victor Blomqvist</span>
-<span class="c1">#</span>
-<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-<span class="c1"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-<span class="c1"># in the Software without restriction, including without limitation the rights</span>
-<span class="c1"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-<span class="c1"># copies of the Software, and to permit persons to whom the Software is</span>
-<span class="c1"># furnished to do so, subject to the following conditions:</span>
-<span class="c1">#</span>
-<span class="c1"># The above copyright notice and this permission notice shall be included in</span>
-<span class="c1"># all copies or substantial portions of the Software.</span>
-<span class="c1">#</span>
-<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-<span class="c1"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-<span class="c1"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-<span class="c1"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-<span class="c1"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-<span class="c1"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
-<span class="c1"># SOFTWARE.</span>
-<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
+<span class="c"># pymunk</span>
+<span class="c"># Copyright (c) 2007-2016 Victor Blomqvist</span>
+<span class="c">#</span>
+<span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c"># in the Software without restriction, including without limitation the rights</span>
+<span class="c"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c"># copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c"># furnished to do so, subject to the following conditions:</span>
+<span class="c">#</span>
+<span class="c"># The above copyright notice and this permission notice shall be included in</span>
+<span class="c"># all copies or substantial portions of the Software.</span>
+<span class="c">#</span>
+<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c"># SOFTWARE.</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
 <span class="sd">&quot;&quot;&quot;This submodule contains helper functions to help with quick prototyping </span>
 <span class="sd">using pymunk together with pyglet.</span>
@@ -63,9 +71,9 @@
 <span class="sd">drawing, but there is probably room for optimizations still). </span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DrawOptions&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;DrawOptions&quot;</span><span class="p">]</span>
 
 
 <span class="kn">import</span> <span class="nn">math</span>
@@ -73,7 +81,7 @@
 <span class="kn">import</span> <span class="nn">pyglet</span>
 
 <span class="kn">import</span> <span class="nn">pymunk</span>
-<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">pymunk.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
 
 <div class="viewcode-block" id="DrawOptions"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions">[docs]</a><span class="k">class</span> <span class="nc">DrawOptions</span><span class="p">(</span><span class="n">pymunk</span><span class="o">.</span><span class="n">SpaceDebugDrawOptions</span><span class="p">):</span>
 <div class="viewcode-block" id="DrawOptions.__init__"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -112,16 +120,16 @@
 <span class="sd">                    need to call draw on it yourself.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">new_batch</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_batch</span> <span class="o">=</span> <span class="bp">False</span>
         
-        <span class="k">if</span> <span class="s2">&quot;batch&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">new_batch</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="s">&quot;batch&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_batch</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">batch</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;batch&quot;</span><span class="p">]</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">DrawOptions</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
 </div>
-        <span class="nb">super</span><span class="p">(</span><span class="n">DrawOptions</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-
-
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_batch</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">batch</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">Batch</span><span class="p">()</span>
@@ -132,13 +140,13 @@
 <div class="viewcode-block" id="DrawOptions.draw_circle"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_circle">[docs]</a>    <span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
         <span class="n">circle_center</span> <span class="o">=</span> <span class="n">pos</span>
         
-        <span class="c1">#http://slabode.exofire.net/circle_draw.shtml</span>
+        <span class="c">#http://slabode.exofire.net/circle_draw.shtml</span>
         <span class="n">num_segments</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">radius</span><span class="p">))</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">num_segments</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         
-        <span class="n">x</span> <span class="o">=</span> <span class="n">radius</span> <span class="c1"># we start at angle 0</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">radius</span> <span class="c"># we start at angle 0</span>
         <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
         
         <span class="n">ps</span> <span class="o">=</span> <span class="p">[]</span>
@@ -169,23 +177,23 @@
        
 
         <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">bg</span><span class="p">,</span>
-                <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
-                <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
+                <span class="p">(</span><span class="s">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
+                <span class="p">(</span><span class="s">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span><span class="p">,</span> <span class="n">fg</span><span class="p">,</span>
-                <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">cvs</span><span class="p">),</span></div>
-                <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">outline_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
+                <span class="p">(</span><span class="s">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">cvs</span><span class="p">),</span>
+                <span class="p">(</span><span class="s">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">outline_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
 
-
+</div>
 <div class="viewcode-block" id="DrawOptions.draw_segment"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
         <span class="n">pv1</span> <span class="o">=</span> <span class="n">a</span>
         <span class="n">pv2</span> <span class="o">=</span> <span class="n">b</span>
         <span class="n">line</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pv1</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv1</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv2</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pv2</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="p">(</span><span class="s1">&#39;v2i&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">),</span></div>
-                    <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_LINES</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;v2i&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
 
-
+</div>
 <div class="viewcode-block" id="DrawOptions.draw_fat_segment"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_fat_segment">[docs]</a>    <span class="k">def</span> <span class="nf">draw_fat_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
         <span class="n">pv1</span> <span class="o">=</span> <span class="n">a</span>
         <span class="n">pv2</span> <span class="o">=</span> <span class="n">b</span>
@@ -203,10 +211,10 @@
         <span class="n">vs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">,</span><span class="n">p3</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="n">p2</span><span class="p">,</span><span class="n">p3</span><span class="p">,</span><span class="n">p4</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xy</span><span class="p">]</span>
             
         <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_TRIANGLES</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span></div>
-                    <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span> <span class="o">*</span> <span class="n">l</span><span class="p">))</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_TRIANGLES</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span> <span class="o">*</span> <span class="n">l</span><span class="p">))</span>
+</div>
 <div class="viewcode-block" id="DrawOptions.draw_polygon"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verts</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
         <span class="n">mode</span> <span class="o">=</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_TRIANGLE_STRIP</span>
 
@@ -224,22 +232,22 @@
         <span class="n">vs</span> <span class="o">=</span> <span class="p">[</span><span class="n">vs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vs</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+</span> <span class="n">vs</span> <span class="o">+</span> <span class="p">[</span><span class="n">vs</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">vs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
 
         <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span></div>
-                    <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">vs</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
+</div>
 <div class="viewcode-block" id="DrawOptions.draw_dot"><a class="viewcode-back" href="../../pymunk.pyglet_util.html#pymunk.pyglet_util.DrawOptions.draw_dot">[docs]</a>    <span class="k">def</span> <span class="nf">draw_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-        <span class="c1"># todo: optimize this functions</span>
+        <span class="c"># todo: optimize this functions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">GL_POINTS</span><span class="p">,</span> <span class="n">grPointSize</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> 
-                    <span class="p">(</span><span class="s1">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">pos</span><span class="p">),</span></div></div>
-                    <span class="p">(</span><span class="s1">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="mi">1</span><span class="p">))</span>
-
+                    <span class="p">(</span><span class="s">&#39;v2f&#39;</span><span class="p">,</span> <span class="n">pos</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&#39;c4B&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">as_int</span><span class="p">()</span><span class="o">*</span><span class="mi">1</span><span class="p">))</span>
+</div></div>
 <span class="k">class</span> <span class="nc">grPointSize</span><span class="p">(</span><span class="n">pyglet</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">Group</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This pyglet rendering group sets a specific point size.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">grPointSize</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">grPointSize</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
     <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">pyglet</span><span class="o">.</span><span class="n">gl</span><span class="o">.</span><span class="n">glPointSize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
@@ -293,14 +301,15 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -311,8 +320,8 @@
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
     </div>
 
