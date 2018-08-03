@@ -16,6 +16,11 @@ environment:
       MINGW: "mingw32"
     - PYTHON: "C:\\Python36-x64"
       MINGW: "mingw64"
+    - PYTHON: "C:\\Python37"
+      MINGW: "mingw32"
+    - PYTHON: "C:\\Python37-x64"
+      MINGW: "mingw64"
+
 
 #platform:
 #  - x86
