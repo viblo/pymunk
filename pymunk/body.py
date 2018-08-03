@@ -147,8 +147,8 @@ class Body(PickleMixin, object):
         >>> c2 = pymunk.Circle(b, radius, offset=(0,10))
         >>> c2.density = density
         >>> s.add(b, c1, c2)
-        >>> int(b.mass), int(b.moment)
-        (75, 3920)
+        >>> print_mass_moment(b)
+        mass=75 moment=3920
 
         """
         if body_type == Body.DYNAMIC:

@@ -198,7 +198,6 @@ class UnitTestShape(unittest.TestCase):
         self.assertEqual(c.body.mass, c2.body.mass)
 
         c = p.Circle(None,1)
-        c.mass = 2
         c.density = 3
 
         s = pickle.dumps(c)

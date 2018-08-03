@@ -9,6 +9,8 @@ v5.x
 - cleanup implementation of autoexample sphinx extension
 - pickle: fix shape id 
 - make example of good timestep handling
+- update most example code to use shape.density or shape.mass instead of 
+  body.mass and moment.
 
 v6+ (all potentially breaking changes)
 ---
