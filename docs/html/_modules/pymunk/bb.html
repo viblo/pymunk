@@ -1,53 +1,47 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pymunk.bb &mdash; pymunk 5.3.2 documentation</title>
-    
+    <title>pymunk.bb &#8212; pymunk 5.3.2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '5.3.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.3.2 documentation" href="../../index.html" />
-    <link rel="up" title="pymunk" href="../pymunk.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
    
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body role="document">  
+  </head><body>
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for pymunk.bb</h1><div class="highlight"><pre>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
+<span></span><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
 <span class="kn">import</span> <span class="nn">copy</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">lib</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>
-<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
-<span class="kn">from</span> <span class="nn">._pickle</span> <span class="kn">import</span> <span class="n">PickleMixin</span>
+<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">._pickle</span> <span class="k">import</span> <span class="n">PickleMixin</span>
 
 <div class="viewcode-block" id="BB"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB">[docs]</a><span class="k">class</span> <span class="nc">BB</span><span class="p">(</span><span class="n">PickleMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Simple bounding box.</span>
@@ -55,7 +49,7 @@
 <span class="sd">    Stored as left, bottom, right, top values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;left&#39;</span><span class="p">,</span> <span class="s">&#39;bottom&#39;</span><span class="p">,</span> <span class="s">&#39;right&#39;</span><span class="p">,</span> <span class="s">&#39;top&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="BB.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new instance of a bounding box. </span>
@@ -64,32 +58,32 @@
 <span class="sd">        left, bottom, right and top: bb = BB(left, bottom, right, top)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bbp</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;cpBB *&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bbp</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpBB *&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_bb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bbp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_bb</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bbp</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;cpBB *&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bbp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="BB.newForCircle"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.newForCircle">[docs]</a>    <span class="k">def</span> <span class="nf">newForCircle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bbp</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;cpBB *&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bbp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BB.newForCircle"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.newForCircle">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">newForCircle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convenience constructor for making a BB fitting a circle at</span>
 <span class="sd">        position p with radius r.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="n">bb_</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">_cpBBNewForCircle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">BB</span><span class="p">(</span><span class="n">bb_</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="n">BB</span><span class="p">(</span><span class="n">bb_</span><span class="p">)</span></div>
+
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;BB(</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;BB(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">left</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">bottom</span> <span class="ow">and</span> \
             <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">right</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">top</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
     <span class="n">left</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
     <span class="n">bottom</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
@@ -98,58 +92,58 @@
 
 <div class="viewcode-block" id="BB.intersects"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.intersects">[docs]</a>    <span class="k">def</span> <span class="nf">intersects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns true if the bounding boxes intersect&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBIntersects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_bb</span><span class="p">))</span>
-</div>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBIntersects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_bb</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="BB.intersects_segment"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.intersects_segment">[docs]</a>    <span class="k">def</span> <span class="nf">intersects_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns true if the segment defined by endpoints a and b</span>
 <span class="sd">        intersect this bb.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBIntersectsSegment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span>
-</div>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBIntersectsSegment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span></div>
+
 <div class="viewcode-block" id="BB.contains"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns true if bb completley contains the other bb&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBContainsBB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_bb</span><span class="p">))</span>
-</div>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBContainsBB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_bb</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="BB.contains_vect"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.contains_vect">[docs]</a>    <span class="k">def</span> <span class="nf">contains_vect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns true if this bb contains the vector v&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBContainsVect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
-</div>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBContainsVect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span></div>
+
 <div class="viewcode-block" id="BB.merge"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.merge">[docs]</a>    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the minimal bounding box that contains both this bb and the</span>
 <span class="sd">        other bb</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">BB</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBMerge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_bb</span><span class="p">))</span>
-</div>
+        <span class="k">return</span> <span class="n">BB</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBMerge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_bb</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="BB.expand"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.expand">[docs]</a>    <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the minimal bounding box that contans both this bounding box</span>
 <span class="sd">        and the vector v</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">BB</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBExpand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
-</div>
+        <span class="k">return</span> <span class="n">BB</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBExpand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span></div>
+
 <div class="viewcode-block" id="BB.center"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.center">[docs]</a>    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the center&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBCenter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">))</span>
-</div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBCenter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="BB.area"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.area">[docs]</a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the area&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">_cpBBArea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">_cpBBArea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="BB.merged_area"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.merged_area">[docs]</a>    <span class="k">def</span> <span class="nf">merged_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Merges this and other then returns the area of the merged bounding</span>
 <span class="sd">        box.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">_cpBBMergedArea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_bb</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">_cpBBMergedArea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_bb</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="BB.segment_query"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.segment_query">[docs]</a>    <span class="k">def</span> <span class="nf">segment_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the fraction along the segment query the BB is hit.</span>
 
 <span class="sd">        Returns infinity if it doesnt hit</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">_cpBBSegmentQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
-</div>
+        <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">_cpBBSegmentQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">b</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="BB.clamp_vect"><a class="viewcode-back" href="../../pymunk.html#pymunk.BB.clamp_vect">[docs]</a>    <span class="k">def</span> <span class="nf">clamp_vect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a copy of the vector v clamped to the bounding box&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBClampVect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
-</div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">_cpBBClampVect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bb</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span></div>
+
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    def wrap_vect(self, v):</span>
 <span class="sd">        &quot;&quot;&quot;Returns a copy of v wrapped to the bounding box.</span>
@@ -165,6 +159,7 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -210,15 +205,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -229,8 +223,8 @@
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

@@ -27,13 +27,23 @@ class SpaceDebugDrawOptions(object):
     """
 
     DRAW_SHAPES = lib.CP_SPACE_DEBUG_DRAW_SHAPES
-    """Draw shapes"""
+    """Draw shapes.  
+    
+    Use on the flags property to control if shapes should be drawn or not.
+    """
 
     DRAW_CONSTRAINTS = lib.CP_SPACE_DEBUG_DRAW_CONSTRAINTS
-    """Draw constraints"""
+    """Draw constraints. 
+    
+    Use on the flags property to control if constraints should be drawn or not.
+    """
 
     DRAW_COLLISION_POINTS = lib.CP_SPACE_DEBUG_DRAW_COLLISION_POINTS
-    """Draw collision points"""
+    """Draw collision points.
+    
+    Use on the flags property to control if collision points should be drawn or
+    not.
+    """
 
     shape_dynamic_color = SpaceDebugColor(52,152,219,255)
     shape_static_color = SpaceDebugColor(149,165,166,255)
@@ -130,7 +140,40 @@ class SpaceDebugDrawOptions(object):
         return self._options.flags
     def _set_flags(self, f):
         self._options.flags = f
-    flags = property(_get_flags, _set_flags)
+    flags = property(_get_flags, _set_flags,
+        doc="""Bit flags which of shapes, joints and collisions should be drawn.
+
+        By default all 3 flags are set, meaning shapes, joints and collisions 
+        will be drawn.
+
+        Example using the basic text only DebugDraw implementation (normally
+        you would the desired backend instead, such as 
+        `pygame_util.DrawOptions` or `pyglet_util.DrawOptions`):
+
+        >>> import pymunk
+        >>> s = pymunk.Space()
+        >>> b = pymunk.Body()
+        >>> c = pymunk.Circle(b, 10)
+        >>> c.mass = 3
+        >>> s.add(b, c)
+        >>> s.add(pymunk.Circle(s.static_body, 3))
+        >>> options = pymunk.SpaceDebugDrawOptions() 
+        
+        >>> # Only draw the shapes, nothing else:
+        >>> options.flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES
+        >>> s.debug_draw(options) 
+        ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))
+        ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))
+
+        >>> # Draw the shapes and collision points:
+        >>> options.flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES | \
+        ...    pymunk.SpaceDebugDrawOptions.DRAW_COLLISION_POINTS
+        >>> s.debug_draw(options)
+        ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))
+        ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))
+        ('draw_segment', (Vec2d(1.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=231.0, g=76.0, b=60.0, a=255.0)))
+        
+        """)
 
     def draw_circle(self, *args):
         print("draw_circle", args)

@@ -74,10 +74,9 @@ Mass, weight and units
 ----------------------
 
 Sometimes users of Pymunk can be confused as to what unit everything is defined 
-in. For example, is the mass of a Body in gram of kilogram? Pymunk is unit-less
-and does not care which unit you use. If you pass in seconds to a function 
-expecting time, then your time unit is seconds. If you pass in pixels to 
-functions that expect a distance, then your unit of distance is pixels. 
+in. For example, is the mass of a Body in grams or kilograms? Pymunk is 
+unit-less and does not care which unit you use. If you pass in seconds to a function expecting time, then your time unit is seconds. If you pass in pixels
+to functions that expect a distance, then your unit of distance is pixels. 
 
 Then derived units are just a combination of the above. So in the case with 
 seconds and pixels the unit of velocity would be pixels / second.

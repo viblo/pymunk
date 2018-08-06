@@ -1,55 +1,49 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pymunk.body &mdash; pymunk 5.3.2 documentation</title>
-    
+    <title>pymunk.body &#8212; pymunk 5.3.2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '5.3.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
-    <link rel="top" title="pymunk 5.3.2 documentation" href="../../index.html" />
-    <link rel="up" title="pymunk" href="../pymunk.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
    
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body role="document">  
+  </head><body>
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for pymunk.body</h1><div class="highlight"><pre>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;reStructuredText&quot;</span>
+<span></span><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;reStructuredText&quot;</span>
 
-<span class="kn">from</span> <span class="nn">weakref</span> <span class="kn">import</span> <span class="n">WeakSet</span>
+<span class="kn">from</span> <span class="nn">weakref</span> <span class="k">import</span> <span class="n">WeakSet</span>
 <span class="kn">import</span> <span class="nn">copy</span>
     
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_chipmunk_cffi</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_chipmunk_cffi</span>
 <span class="n">cp</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">lib</span>
 <span class="n">ffi</span> <span class="o">=</span> <span class="n">_chipmunk_cffi</span><span class="o">.</span><span class="n">ffi</span>    
-<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="kn">import</span> <span class="n">Vec2d</span>
-<span class="kn">from</span> <span class="nn">.arbiter</span> <span class="kn">import</span> <span class="n">Arbiter</span>
-<span class="kn">from</span> <span class="nn">._pickle</span> <span class="kn">import</span> <span class="n">PickleMixin</span>
+<span class="kn">from</span> <span class="nn">.vec2d</span> <span class="k">import</span> <span class="n">Vec2d</span>
+<span class="kn">from</span> <span class="nn">.arbiter</span> <span class="k">import</span> <span class="n">Arbiter</span>
+<span class="kn">from</span> <span class="nn">._pickle</span> <span class="k">import</span> <span class="n">PickleMixin</span>
 
 <div class="viewcode-block" id="Body"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body">[docs]</a><span class="k">class</span> <span class="nc">Body</span><span class="p">(</span><span class="n">PickleMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A rigid body</span>
@@ -108,10 +102,10 @@
 <span class="sd">    static geometry to be initialized or moved separately.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;mass&#39;</span><span class="p">,</span> <span class="s">&#39;moment&#39;</span><span class="p">,</span> <span class="s">&#39;body_type&#39;</span><span class="p">]</span>
-    <span class="n">_pickle_attrs_general</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;force&#39;</span><span class="p">,</span> <span class="s">&#39;angle&#39;</span><span class="p">,</span> <span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="s">&#39;center_of_gravity&#39;</span><span class="p">,</span> 
-        <span class="s">&#39;velocity&#39;</span><span class="p">,</span>  <span class="s">&#39;angular_velocity&#39;</span><span class="p">,</span> <span class="s">&#39;torque&#39;</span><span class="p">]</span>
-    <span class="n">_pickle_attrs_skip</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;is_sleeping&#39;</span><span class="p">,</span> <span class="s">&#39;_velocity_func&#39;</span><span class="p">,</span> <span class="s">&#39;_position_func&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_init</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="s1">&#39;moment&#39;</span><span class="p">,</span> <span class="s1">&#39;body_type&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_general</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;force&#39;</span><span class="p">,</span> <span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="s1">&#39;center_of_gravity&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;velocity&#39;</span><span class="p">,</span>  <span class="s1">&#39;angular_velocity&#39;</span><span class="p">,</span> <span class="s1">&#39;torque&#39;</span><span class="p">]</span>
+    <span class="n">_pickle_attrs_skip</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;is_sleeping&#39;</span><span class="p">,</span> <span class="s1">&#39;_velocity_func&#39;</span><span class="p">,</span> <span class="s1">&#39;_position_func&#39;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Body.__init__"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">moment</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">body_type</span><span class="o">=</span><span class="n">DYNAMIC</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new Body</span>
@@ -188,8 +182,8 @@
 <span class="sd">        &gt;&gt;&gt; c2 = pymunk.Circle(b, radius, offset=(0,10))</span>
 <span class="sd">        &gt;&gt;&gt; c2.density = density</span>
 <span class="sd">        &gt;&gt;&gt; s.add(b, c1, c2)</span>
-<span class="sd">        &gt;&gt;&gt; int(b.mass), int(b.moment)</span>
-<span class="sd">        (75, 3920)</span>
+<span class="sd">        &gt;&gt;&gt; print_mass_moment(b)</span>
+<span class="sd">        mass=75 moment=3920</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span>
@@ -199,31 +193,31 @@
         <span class="k">elif</span> <span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyNewStatic</span><span class="p">(),</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyFree</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span></div>
+
     <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_position_func</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># To prevent the gc to collect the callbacks.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># To prevent the gc to collect the callbacks.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_position_func_base</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># For pickle</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func_base</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># For pickle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position_func</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># To prevent the gc to collect the callbacks.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># To prevent the gc to collect the callbacks.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position_func_base</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># For pickle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func_base</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># For pickle</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># Weak ref to the space holding this body (if any)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Weak ref to the space holding this body (if any)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span> <span class="o">=</span> <span class="n">WeakSet</span><span class="p">()</span> <span class="c"># weak refs to any constraints attached</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span> <span class="o">=</span> <span class="n">WeakSet</span><span class="p">()</span> <span class="c"># weak refs to any shapes attached</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span> <span class="o">=</span> <span class="n">WeakSet</span><span class="p">()</span> <span class="c1"># weak refs to any constraints attached</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span> <span class="o">=</span> <span class="n">WeakSet</span><span class="p">()</span> <span class="c1"># weak refs to any shapes attached</span>
             
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;Body(</span><span class="si">%r</span><span class="s">, </span><span class="si">%r</span><span class="s">, Body.DYNAMIC)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s1">&#39;Body(</span><span class="si">%r</span><span class="s1">, </span><span class="si">%r</span><span class="s1">, Body.DYNAMIC)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">KINEMATIC</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;Body(Body.KINEMATIC)&#39;</span>
+            <span class="k">return</span> <span class="s1">&#39;Body(Body.KINEMATIC)&#39;</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_type</span> <span class="o">==</span> <span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;Body(Body.STATIC)&#39;</span>
+            <span class="k">return</span> <span class="s1">&#39;Body(Body.STATIC)&#39;</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_init_with_body</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">_body</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_init_with_body</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">_body</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Only used internally in pymunk.&quot;&quot;&quot;</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
         <span class="n">b</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">_body</span>
         <span class="n">b</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">b</span>
@@ -233,17 +227,17 @@
     <span class="k">def</span> <span class="nf">_get_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetMass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
     <span class="n">mass</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_mass</span><span class="p">,</span> <span class="n">_set_mass</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Mass of the body.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Mass of the body.&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_moment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moment</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetMoment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">moment</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_get_moment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetMoment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
     <span class="n">moment</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_moment</span><span class="p">,</span> <span class="n">_set_moment</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Moment of inertia (MoI or sometimes just moment) of the body.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Moment of inertia (MoI or sometimes just moment) of the body.</span>
 
-<span class="s">        The moment is like the rotational mass of a body.</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        The moment is like the rotational mass of a body.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span>
@@ -251,12 +245,12 @@
         <span class="n">p</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     <span class="n">position</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_position</span><span class="p">,</span> <span class="n">_set_position</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Position of the body.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Position of the body.</span>
 
-<span class="s">        When changing the position you may also want to call</span>
-<span class="s">        :py:func:`Space.reindex_shapes_for_body` to update the collision </span>
-<span class="s">        detection information for the attached shapes if plan to make any </span>
-<span class="s">        queries against the space.&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        When changing the position you may also want to call</span>
+<span class="s2">        :py:func:`Space.reindex_shapes_for_body` to update the collision </span>
+<span class="s2">        detection information for the attached shapes if plan to make any </span>
+<span class="s2">        queries against the space.&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_center_of_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cog</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetCenterOfGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">cog</span><span class="p">))</span>
@@ -264,46 +258,46 @@
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetCenterOfGravity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">))</span>
     <span class="n">center_of_gravity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_center_of_gravity</span><span class="p">,</span>
         <span class="n">_set_center_of_gravity</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Location of the center of gravity in body local coordinates.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Location of the center of gravity in body local coordinates.</span>
 
-<span class="s">        The default value is (0, 0), meaning the center of gravity is the</span>
-<span class="s">        same as the position of the body.</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        The default value is (0, 0), meaning the center of gravity is the</span>
+<span class="s2">        same as the position of the body.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vel</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">vel</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_get_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">))</span>
     <span class="n">velocity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_velocity</span><span class="p">,</span> <span class="n">_set_velocity</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Linear velocity of the center of gravity of the body.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Linear velocity of the center of gravity of the body.&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetForce</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">_get_force</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetForce</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">))</span>
     <span class="n">force</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_force</span><span class="p">,</span> <span class="n">_set_force</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Force applied to the center of gravity of the body.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Force applied to the center of gravity of the body.</span>
 
-<span class="s">        This value is reset for every time step.&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        This value is reset for every time step.&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetAngle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_get_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetAngle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
     <span class="n">angle</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_angle</span><span class="p">,</span> <span class="n">_set_angle</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Rotation of the body in radians.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Rotation of the body in radians.</span>
 
-<span class="s">        When changing the rotation you may also want to call</span>
-<span class="s">        :py:func:`Space.reindex_shapes_for_body` to update the collision </span>
-<span class="s">        detection information for the attached shapes if plan to make any </span>
-<span class="s">        queries against the space. A body rotates around its center of gravity, </span>
-<span class="s">        not its position.</span>
+<span class="s2">        When changing the rotation you may also want to call</span>
+<span class="s2">        :py:func:`Space.reindex_shapes_for_body` to update the collision </span>
+<span class="s2">        detection information for the attached shapes if plan to make any </span>
+<span class="s2">        queries against the space. A body rotates around its center of gravity, </span>
+<span class="s2">        not its position.</span>
 
-<span class="s">        .. Note::</span>
-<span class="s">            If you get small/no changes to the angle when for example a</span>
-<span class="s">            ball is &quot;rolling&quot; down a slope it might be because the Circle shape</span>
-<span class="s">            attached to the body or the slope shape does not have any friction</span>
-<span class="s">            set.&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        .. Note::</span>
+<span class="s2">            If you get small/no changes to the angle when for example a</span>
+<span class="s2">            ball is &quot;rolling&quot; down a slope it might be because the Circle shape</span>
+<span class="s2">            attached to the body or the slope shape does not have any friction</span>
+<span class="s2">            set.&quot;&quot;&quot;</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">_set_angular_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
@@ -311,33 +305,33 @@
     <span class="k">def</span> <span class="nf">_get_angular_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetAngularVelocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
     <span class="n">angular_velocity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_angular_velocity</span><span class="p">,</span> <span class="n">_set_angular_velocity</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The angular velocity of the body in radians per second.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The angular velocity of the body in radians per second.&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_torque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetTorque</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_get_torque</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetTorque</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
     <span class="n">torque</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_torque</span><span class="p">,</span> <span class="n">_set_torque</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The torque applied to the body.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The torque applied to the body.</span>
 
-<span class="s">        This value is reset for every time step.&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        This value is reset for every time step.&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_rotation_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetRotation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">))</span>
     <span class="n">rotation_vector</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_rotation_vector</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The rotation vector for the body.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The rotation vector for the body.&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_space</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="o">.</span><span class="n">_get_self</span><span class="p">()</span> <span class="c">#ugly hack because of weakref</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="o">.</span><span class="n">_get_self</span><span class="p">()</span> <span class="c1">#ugly hack because of weakref</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span>
+            <span class="k">return</span> <span class="kc">None</span>
     <span class="n">space</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_space</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the :py:class:`Space` that the body has been added to (or </span>
-<span class="s">        None).&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get the :py:class:`Space` that the body has been added to (or </span>
+<span class="s2">        None).&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_velocity_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpBodyVelocityFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpBodyVelocityFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">_impl</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">gravity</span><span class="p">),</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
 
@@ -345,17 +339,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func</span> <span class="o">=</span> <span class="n">_impl</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetVelocityUpdateFunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">_impl</span><span class="p">)</span>
     <span class="n">velocity_func</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fset</span><span class="o">=</span><span class="n">_set_velocity_func</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The velocity callback function. </span>
-<span class="s">        </span>
-<span class="s">        The velocity callback function is called each time step, and can be </span>
-<span class="s">        used to set a body&#39;s velocity.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The velocity callback function. </span>
+<span class="s2">        </span>
+<span class="s2">        The velocity callback function is called each time step, and can be </span>
+<span class="s2">        used to set a body&#39;s velocity.</span>
 
-<span class="s">            ``func(body : Body, gravity, damping, dt)``</span>
+<span class="s2">            ``func(body : Body, gravity, damping, dt)``</span>
 
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_position_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpBodyPositionFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpBodyPositionFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">_impl</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
         
@@ -363,36 +357,36 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_position_func</span> <span class="o">=</span> <span class="n">_impl</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetPositionUpdateFunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">_impl</span><span class="p">)</span>
     <span class="n">position_func</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fset</span><span class="o">=</span><span class="n">_set_position_func</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The position callback function. </span>
-<span class="s">        </span>
-<span class="s">        The position callback function is called each time step and can be </span>
-<span class="s">        used to update the body&#39;s position.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The position callback function. </span>
+<span class="s2">        </span>
+<span class="s2">        The position callback function is called each time step and can be </span>
+<span class="s2">        used to update the body&#39;s position.</span>
 
-<span class="s">            ``func(body, dt) -&gt; None``</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">            ``func(body, dt) -&gt; None``</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_kinetic_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c">#todo: use ffi method</span>
-        <span class="c">#return cp._cpBodyKineticEnergy(self._body)</span>
+        <span class="c1">#todo: use ffi method</span>
+        <span class="c1">#return cp._cpBodyKineticEnergy(self._body)</span>
 
         <span class="n">vsq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">)</span>
         <span class="n">wsq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_velocity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_velocity</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">vsq</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mass</span> <span class="k">if</span> <span class="n">vsq</span> <span class="k">else</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">wsq</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">moment</span> <span class="k">if</span> <span class="n">wsq</span> <span class="k">else</span> <span class="mf">0.</span><span class="p">)</span>
 
     <span class="n">kinetic_energy</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_kinetic_energy</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the kinetic energy of a body.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get the kinetic energy of a body.&quot;&quot;&quot;</span><span class="p">)</span>
 
 
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Body.update_velocity"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.update_velocity">[docs]</a>    <span class="k">def</span> <span class="nf">update_velocity</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<div class="viewcode-block" id="Body.update_velocity"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.update_velocity">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">update_velocity</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Default rigid body velocity integration function.</span>
 
 <span class="sd">        Updates the velocity of the body using Euler integration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyUpdateVelocity</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">gravity</span><span class="p">),</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
-</div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Body.update_position"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.update_position">[docs]</a>    <span class="k">def</span> <span class="nf">update_position</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyUpdateVelocity</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">gravity</span><span class="p">),</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Body.update_position"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.update_position">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">update_position</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Default rigid body position integration function.</span>
 
 <span class="sd">        Updates the position of the body using Euler integration. Unlike the</span>
@@ -401,8 +395,8 @@
 <span class="sd">        (in Chipmunk) as it&#39;s an important part of the collision/joint</span>
 <span class="sd">        correction process.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyUpdatePosition</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
-</div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyUpdatePosition</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Body.apply_force_at_world_point"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.apply_force_at_world_point">[docs]</a>    <span class="k">def</span> <span class="nf">apply_force_at_world_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add the force force to body as if applied from the world point.</span>
 
@@ -414,42 +408,42 @@
 <span class="sd">        Both impulses and forces are affected the mass of an object. Doubling</span>
 <span class="sd">        the mass of the object will halve the effect.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyApplyForceAtWorldPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">force</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
-</div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyApplyForceAtWorldPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">force</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="Body.apply_force_at_local_point"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.apply_force_at_local_point">[docs]</a>    <span class="k">def</span> <span class="nf">apply_force_at_local_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add the local force force to body as if applied from the body</span>
 <span class="sd">        local point.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyApplyForceAtLocalPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">force</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
-</div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyApplyForceAtLocalPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">force</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="Body.apply_impulse_at_world_point"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.apply_impulse_at_world_point">[docs]</a>    <span class="k">def</span> <span class="nf">apply_impulse_at_world_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">impulse</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;Add the impulse impulse to body as if applied from the world point.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyApplyImpulseAtWorldPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">impulse</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
-</div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyApplyImpulseAtWorldPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">impulse</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="Body.apply_impulse_at_local_point"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.apply_impulse_at_local_point">[docs]</a>    <span class="k">def</span> <span class="nf">apply_impulse_at_local_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">impulse</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;Add the local impulse impulse to body as if applied from the body</span>
 <span class="sd">        local point.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyApplyImpulseAtLocalPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">impulse</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyApplyImpulseAtLocalPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">impulse</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">))</span></div>
 
-</div>
+
 <div class="viewcode-block" id="Body.activate"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reset the idle timer on a body.</span>
 
 <span class="sd">        If it was sleeping, wake it and any other bodies it was touching.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyActivate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
-</div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyActivate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Body.sleep"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.sleep">[docs]</a>    <span class="k">def</span> <span class="nf">sleep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Forces a body to fall asleep immediately even if it&#39;s in midair.</span>
 
 <span class="sd">        Cannot be called from a callback.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Body not added to space&quot;</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
-</div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Body not added to space&quot;</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Body.sleep_with_group"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.sleep_with_group">[docs]</a>    <span class="k">def</span> <span class="nf">sleep_with_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Force a body to fall asleep immediately along with other bodies</span>
 <span class="sd">        in a group.</span>
@@ -464,14 +458,14 @@
 <span class="sd">        to initialize levels and start stacks of objects in a pre-sleeping </span>
 <span class="sd">        state.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Body not added to space&quot;</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySleepWithGroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
-</div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Body not added to space&quot;</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySleepWithGroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span></div>
+
     <span class="k">def</span> <span class="nf">_is_sleeping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyIsSleeping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">))</span>
     <span class="n">is_sleeping</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_is_sleeping</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Returns true if the body is sleeping.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Returns true if the body is sleeping.&quot;&quot;&quot;</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">_set_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body_type</span><span class="p">):</span>
@@ -480,14 +474,14 @@
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetType</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
     <span class="n">body_type</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_type</span>
         <span class="p">,</span> <span class="n">_set_type</span>
-        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;The type of a body (:py:const:`Body.DYNAMIC`, </span>
-<span class="s">        :py:const:`Body.KINEMATIC` or :py:const:`Body.STATIC`).</span>
+        <span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The type of a body (:py:const:`Body.DYNAMIC`, </span>
+<span class="s2">        :py:const:`Body.KINEMATIC` or :py:const:`Body.STATIC`).</span>
 
-<span class="s">        When changing an body to a dynamic body, the mass and moment of</span>
-<span class="s">        inertia are recalculated from the shapes added to the body. Custom</span>
-<span class="s">        calculated moments of inertia are not preserved when changing types.</span>
-<span class="s">        This function cannot be called directly in a collision callback.</span>
-<span class="s">        &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        When changing an body to a dynamic body, the mass and moment of</span>
+<span class="s2">        inertia are recalculated from the shapes added to the body. Custom</span>
+<span class="s2">        calculated moments of inertia are not preserved when changing types.</span>
+<span class="s2">        This function cannot be called directly in a collision callback.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Body.each_arbiter"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.each_arbiter">[docs]</a>    <span class="k">def</span> <span class="nf">each_arbiter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -507,31 +501,31 @@
 
 <span class="sd">            Do not hold on to the Arbiter after the callback!</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nd">@ffi.callback</span><span class="p">(</span><span class="s">&quot;cpBodyArbiterIteratorFunc&quot;</span><span class="p">)</span>
+        <span class="nd">@ffi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;cpBodyArbiterIteratorFunc&quot;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">cf</span><span class="p">(</span><span class="n">_body</span><span class="p">,</span> <span class="n">_arbiter</span><span class="p">,</span> <span class="n">_data</span><span class="p">):</span>
             <span class="n">arbiter</span> <span class="o">=</span> <span class="n">Arbiter</span><span class="p">(</span><span class="n">_arbiter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_space</span><span class="p">)</span>
             <span class="n">func</span><span class="p">(</span><span class="n">arbiter</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             
         <span class="n">data</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyEachArbiter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-</div>
+        <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyEachArbiter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">cf</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+
     <span class="k">def</span> <span class="nf">_get_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span><span class="p">)</span>
 
     <span class="n">constraints</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_constraints</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the constraints this body is attached to.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get the constraints this body is attached to.</span>
 
-<span class="s">        The body only keeps a weak reference to the constraints and a</span>
-<span class="s">        live body wont prevent GC of the attached constraints&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        The body only keeps a weak reference to the constraints and a</span>
+<span class="s2">        live body wont prevent GC of the attached constraints&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">)</span>
 
     <span class="n">shapes</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_shapes</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s">&quot;&quot;&quot;Get the shapes attached to this body.</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get the shapes attached to this body.</span>
 
-<span class="s">        The body only keeps a weak reference to the shapes and a live</span>
-<span class="s">        body wont prevent GC of the attached shapes&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        The body only keeps a weak reference to the shapes and a live</span>
+<span class="s2">        body wont prevent GC of the attached shapes&quot;&quot;&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Body.local_to_world"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.local_to_world">[docs]</a>    <span class="k">def</span> <span class="nf">local_to_world</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert body local coordinates to world space coordinates</span>
@@ -542,15 +536,15 @@
 
 <span class="sd">        :param v: Vector in body local coordinates</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyLocalToWorld</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
-</div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyLocalToWorld</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span></div>
+
 <div class="viewcode-block" id="Body.world_to_local"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.world_to_local">[docs]</a>    <span class="k">def</span> <span class="nf">world_to_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert world space coordinates to body local coordinates</span>
 
 <span class="sd">        :param v: Vector in world space coordinates</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyWorldToLocal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
-</div>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpBodyWorldToLocal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span></div>
+
 <div class="viewcode-block" id="Body.velocity_at_world_point"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.velocity_at_world_point">[docs]</a>    <span class="k">def</span> <span class="nf">velocity_at_world_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the absolute velocity of the rigid body at the given world</span>
 <span class="sd">        point</span>
@@ -560,15 +554,15 @@
 <span class="sd">        except the center of gravity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocityAtWorldPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">)))</span>
-</div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocityAtWorldPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">)))</span></div>
+
 <div class="viewcode-block" id="Body.velocity_at_local_point"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.velocity_at_local_point">[docs]</a>    <span class="k">def</span> <span class="nf">velocity_at_local_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get the absolute velocity of the rigid body at the given body</span>
 <span class="sd">        local point</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span>
-            <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocityAtLocalPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">)))</span>
-</div>
+            <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyGetVelocityAtLocalPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">)))</span></div>
+
     <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the state of this object</span>
 <span class="sd">        </span>
@@ -577,9 +571,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Body</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getstate__</span><span class="p">()</span>
 
-        <span class="n">d</span><span class="p">[</span><span class="s">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;is_sleeping&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_sleeping</span><span class="p">))</span>
-        <span class="n">d</span><span class="p">[</span><span class="s">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;_velocity_func&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func_base</span><span class="p">))</span>
-        <span class="n">d</span><span class="p">[</span><span class="s">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;_position_func&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_func_base</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;is_sleeping&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_sleeping</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;_velocity_func&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_velocity_func_base</span><span class="p">))</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;_position_func&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_func_base</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">d</span>
 
@@ -591,12 +585,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Body</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setstate__</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
         
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s">&#39;special&#39;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&#39;is_sleeping&#39;</span> <span class="ow">and</span> <span class="n">v</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;is_sleeping&#39;</span> <span class="ow">and</span> <span class="n">v</span><span class="p">:</span>
                 <span class="k">pass</span>
-            <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&#39;_velocity_func&#39;</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;_velocity_func&#39;</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">velocity_func</span> <span class="o">=</span> <span class="n">v</span>
-            <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&#39;_position_func&#39;</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;_position_func&#39;</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">position_func</span> <span class="o">=</span> <span class="n">v</span>
     
 <div class="viewcode-block" id="Body.copy"><a class="viewcode-back" href="../../pymunk.html#pymunk.Body.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -605,6 +599,7 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -650,15 +645,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -669,8 +663,8 @@
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 
