@@ -125,7 +125,9 @@ class Arbiter(object):
         doc="""Returns the impulse that was applied this step to resolve the
         collision.
 
-        This property should only be called from a post-solve, post-step""")
+        This property should only be called from a post-solve or each_arbiter
+        callback.
+        """)
 
     def _get_total_ke(self):
         return cp.cpArbiterTotalKE(self._arbiter)
@@ -133,7 +135,8 @@ class Arbiter(object):
         doc="""The amount of energy lost in a collision including static, but
         not dynamic friction.
 
-        This property should only be called from a post-solve, post-step""")
+        This property should only be called from a post-solve or each_arbiter callback.
+        """)
 
     def _get_is_first_contact(self):
         return bool(cp.cpArbiterIsFirstContact(self._arbiter))
