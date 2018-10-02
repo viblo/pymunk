@@ -82,7 +82,11 @@ class build_chipmunk(build_ext, object):
 
             elif platform.system() == 'Darwin':
                 #No -O3 on OSX. There's a bug in the clang compiler when using O3.
-                compiler_preargs += ['-arch', 'i386', '-arch', 'x86_64']
+                mac_ver_float = float('.'.join(platform.mac_ver()[0].split('.')[:2]))
+                if mac_ver_float > 10.12:
+                    compiler_preargs += ['-arch', 'x86_64']
+                else:
+                    compiler_preargs += ['-arch', 'i386', '-arch', 'x86_64']
             
             elif platform.system() == 'Windows':
                 compiler_preargs += ['-shared']
