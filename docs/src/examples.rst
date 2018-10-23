@@ -8,7 +8,8 @@ description and a screenshot (if applicable).
 
 To look at the source code of an example open it on github by following 
 the link. The examples are also included in the source distribution of Pymunk 
-(but not if you install using the wheel file)
+(but not if you install using the wheel file). You can find the source 
+distribution at PyPI, https://pypi.org/project/pymunk/#files (file named pymunk-x.y.z.zip).
 
 Jupyter Notebooks
 =================

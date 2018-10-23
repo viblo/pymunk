@@ -55,6 +55,10 @@ Quick code example::
 For more detailed and advanced examples, take a look at the included demos 
 (in examples/).
 
+Examples are not included if you install with `pip install pymunk`. Instead you
+need to download the source archive (pymunk-x.y.z.zip). Download available from 
+https://pypi.org/project/pymunk/#files
+
 
 Documentation
 -------------

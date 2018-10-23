@@ -160,7 +160,9 @@
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Returns the impulse that was applied this step to resolve the</span>
 <span class="s2">        collision.</span>
 
-<span class="s2">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        This property should only be called from a post-solve or each_arbiter</span>
+<span class="s2">        callback.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_total_ke</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterTotalKE</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">)</span>
@@ -168,7 +170,8 @@
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The amount of energy lost in a collision including static, but</span>
 <span class="s2">        not dynamic friction.</span>
 
-<span class="s2">        This property should only be called from a post-solve, post-step&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        This property should only be called from a post-solve or each_arbiter callback.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_is_first_contact</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterIsFirstContact</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>

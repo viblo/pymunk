@@ -2693,7 +2693,8 @@ of the contact point.</p>
 <code class="descname">total_impulse</code><a class="headerlink" href="#pymunk.Arbiter.total_impulse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the impulse that was applied this step to resolve the
 collision.</p>
-<p>This property should only be called from a post-solve, post-step</p>
+<p>This property should only be called from a post-solve or each_arbiter
+callback.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2701,7 +2702,7 @@ collision.</p>
 <code class="descname">total_ke</code><a class="headerlink" href="#pymunk.Arbiter.total_ke" title="Permalink to this definition">¶</a></dt>
 <dd><p>The amount of energy lost in a collision including static, but
 not dynamic friction.</p>
-<p>This property should only be called from a post-solve, post-step</p>
+<p>This property should only be called from a post-solve or each_arbiter callback.</p>
 </dd></dl>
 
 </dd></dl>

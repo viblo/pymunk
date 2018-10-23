@@ -9,7 +9,7 @@ Installation
 Install Pymunk
 --------------
 
-pymunk can be installed with pip install::
+Pymunk can be installed with pip install::
 
     > pip install pymunk
 
@@ -24,6 +24,15 @@ On Linux you can install one with the package manager, for example on Ubuntu
 with::
 
     > sudo apt-get install build-essential
+
+
+Examples & Documentation
+------------------------
+
+Because of their size are the examples and documentation available in the 
+source distribution of Pymunk, but not the wheels. The source distribution is 
+available from PyPI at https://pypi.org/project/pymunk/#files (Named
+pymunk-x.y.z.zip)
 
 
 Advanced install

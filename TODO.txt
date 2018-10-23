@@ -11,6 +11,8 @@ v5.x
 - make example of good timestep handling
 - update most example code to use shape.density or shape.mass instead of 
   body.mass and moment.
+- maybe it would be good to use pip install pymunk[docs] or something to distribute docs and exmaples?
+- can autosummary be used? (see stackoverflow answer)
 
 v6+ (all potentially breaking changes)
 ---
