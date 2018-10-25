@@ -11,10 +11,31 @@ Games
 .. list-table:: 
     :widths: 40 60
 
+    * - .. image:: _static/My_Sincerest_Apologies.png
+      - `My Sincerest Apologies <https://pyweek.org/e/wasabi24/>`_
+      
+        :subscript:`made by The Larry and Dan show (mauve, larry). Retrieved 
+        2018-10-25`
+
+        **Winner of PyWeek 24** (Overall Team Entry)
+        
+        A game of fun, shooting, and "I'm sorry to put you through this".
+
+        A fabricator robot on Mars was supposed to make a bunch of robots! 
+        But it got lazy and made robots that could make other robots. And 
+        it made them smarter than they should have been. Now they've all 
+        gone off and hidden away behind various tanks and computers. 
+        
+        Happily, he knew how to construct *you*, a simple fighting robot. 
+        It's your job to clean out each area!
+        
+        See Daniel Popes teardown `here <http://mauveweb.co.uk/posts/2018/03/my-sincerest-apologies-teardown.html>`_
+        for additional details
+
     * - .. image:: _static/beneath-the-ice.png
       - `Beneath the Ice <https://pyweek.org/e/chimera22/>`_
 
-        :subscript:`make by Team Chimera (mit-mit, Lucid Design Ar). Retrieved 
+        :subscript:`made by Team Chimera (mit-mit, Lucid Design Ar). Retrieved 
         2016-09-25`
 
         **Winner of PyWeek 22** (Overall Team Entry)
