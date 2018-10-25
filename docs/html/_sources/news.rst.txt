@@ -2,7 +2,28 @@
 News 
 ****
 
-Introduction video tutorials
+Pymunk 5.4.0
+------------
+*Victor - 2018-10-24*
+
+**Fix support for MacOS 10.14**
+
+Main fix is to allow Pymunk to be installed on latest version of MacOS. This 
+release also contain a bunch of minor fixes and as usual an improvement of 
+the docs, tests and examples.
+
+Changes:
+
+- On newer versions of MacOS only compile in 64bit mode (32bit is deprecated)
+- Improved docs, examples and tests
+- Fix in moment_for_* when passed Vec2d instead of tuple
+- Fix case when adding or removing more than one obj to space during step.
+- Allow threaded solver on Windows.
+- Use msys mingw to compile chipmunk on Windows (prev solution was deprecated).
+
+Enjoy!
+
+Introductory video tutorials
 ----------------------------
 *Victor - 2018-02-25*
 

@@ -12,13 +12,13 @@ The first version was released in 2007 and Pymunk is still actively developed
 and maintained today. 
 
 Pymunk has been used with success in many projects, big and small. For example: 
-2 Pyweek game competition winners, more than 10 published scientific papers 
-and even in a self-driving car simulation! See the Showcases section on the 
-Pymunk webpage for some examples.
+3 Pyweek game competition winners, more than a dozen published scientific 
+papers and even in a self-driving car simulation! See the Showcases section on 
+the Pymunk webpage for some examples.
 
-2007 - 2017, Victor Blomqvist - vb@viblo.se, MIT License
+2007 - 2018, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest Pymunk release (5.3.2), 
+This release is based on the latest Pymunk release (5.4.0), 
 using Chipmunk 7.0 rev d7603e3927 (source included)
 
 

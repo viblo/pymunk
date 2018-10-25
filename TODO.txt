@@ -13,6 +13,7 @@ v5.x
   body.mass and moment.
 - maybe it would be good to use pip install pymunk[docs] or something to distribute docs and exmaples?
 - can autosummary be used? (see stackoverflow answer)
+- update doctests to use python3 print instead of python2.
 
 v6+ (all potentially breaking changes)
 ---
