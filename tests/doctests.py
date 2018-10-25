@@ -2,6 +2,7 @@ import doctest
 import unittest
 import pymunk
 import pkgutil
+import sys
 
 
 def load_tests(loader, tests, ignore):
@@ -18,4 +19,8 @@ if __name__ == '__main__':
     print("running doctests")
     suite = unittest.TestSuite()  
     load_tests(None, suite, None)
-    unittest.TextTestRunner().run(suite)
+    res = unittest.TextTestRunner().run(suite)
+    if not res.wasSuccessful():
+        sys.exit(1)
+    
+    
