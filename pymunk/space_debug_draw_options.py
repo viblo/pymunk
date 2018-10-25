@@ -157,6 +157,7 @@ class SpaceDebugDrawOptions(object):
         >>> c.mass = 3
         >>> s.add(b, c)
         >>> s.add(pymunk.Circle(s.static_body, 3))
+        >>> s.step(0.01)
         >>> options = pymunk.SpaceDebugDrawOptions() 
         
         >>> # Only draw the shapes, nothing else:
@@ -166,8 +167,8 @@ class SpaceDebugDrawOptions(object):
         ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))
 
         >>> # Draw the shapes and collision points:
-        >>> options.flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES | \
-        ...    pymunk.SpaceDebugDrawOptions.DRAW_COLLISION_POINTS
+        >>> options.flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES
+        >>> options.flags |= pymunk.SpaceDebugDrawOptions.DRAW_COLLISION_POINTS
         >>> s.debug_draw(options)
         ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))
         ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))
