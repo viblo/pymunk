@@ -148,7 +148,7 @@ class Body(PickleMixin, object):
         >>> c2.density = density
         >>> s.add(b, c1, c2)
         >>> print_mass_moment(b)
-        mass=75 moment=3920
+        mass=75 moment=3921
 
         """
         if body_type == Body.DYNAMIC:
