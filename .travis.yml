@@ -54,7 +54,9 @@ matrix:
   - sudo: required
     services:
       - docker
-    env: TOXENV=manylinux
+    env:
+    - TOXENV=manylinux
+    - GITHUB_UPLOAD=yes
   exclude:
   - env: TRAVIS_4681_WORKAROUND=1
 before_install:
