@@ -28,7 +28,7 @@ matrix:
     - PYTHON=python2""
     - TOXENV=py27
     - PIP_INSTALL="pip install --user"
-    - BUILD_CMD="python2 setup.py bdist_wheel"
+    - BUILD_CMD="python2 setup.py sdist bdist_wheel"
     - GITHUB_UPLOAD=yes
   - os: linux
     env: TOXENV=py27
@@ -84,7 +84,9 @@ deploy:
   provider: releases
   api_key:
     secure: YOUR_API_KEY_ENCRYPTED
-  file: "FILE TO UPLOAD"
+  file:
+  - dist/*.whl
+  - dist/*.tar.gz
   skip_cleanup: true
   draft: true
   on:
