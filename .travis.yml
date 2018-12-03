@@ -15,19 +15,21 @@ matrix:
   - os: osx
     osx_image: xcode9.1
     language: generic
-    env: 
+    env:
     - PYTHON="python3"
-    - TOXENV=py3 
+    - TOXENV=py3
     - PIP_INSTALL="pip install --user"
     - BUILD_CMD="python3 setup.py bdist_wheel"
+    - GITHUB_UPLOAD=yes
   - os: osx
     osx_image: xcode9.1
     language: generic
-    env: 
+    env:
     - PYTHON=python2""
-    - TOXENV=py27 
-    - PIP_INSTALL="pip install --user" 
+    - TOXENV=py27
+    - PIP_INSTALL="pip install --user"
     - BUILD_CMD="python2 setup.py bdist_wheel"
+    - GITHUB_UPLOAD=yes
   - os: linux
     env: TOXENV=py27
     python: 2.7
@@ -40,7 +42,7 @@ matrix:
   - os: linux
     env: TOXENV=py36
     python: 3.6
-# strange random hang error on pypy that is difficult to reproduce. 
+# strange random hang error on pypy that is difficult to reproduce.
 # Disable test for now.
 #  - os: linux
 #    env: TOXENV=pypy
@@ -70,3 +72,23 @@ deploy:
     secure: A1i4M85KqB5/wp9MB/6U6JK2Np1x2hzY4lhIUXpgxlP6pqNUl35AGp3uakWV9YMubc00qeWMou+/+5yEuRK87ON0LKSJ6BqQoxIaNxiTxvqXn86Pw8ASl+7eU/SB4dDSDfA6Cc6eSZKo+dXMLHL+kSq06Ojumz1ok6tbpiCwrOQ=
   dry-run: true
   on: "bintray-osx"
+
+
+# To make a github token for the repo:
+#     https://github.com/settings/tokens
+# Encrypt it with:
+#     travis encrypt <api-token>
+# NOTE: draft releases are enabled.
+#    https://docs.travis-ci.com/user/deployment/releases/#draft-releases-with-draft-true
+deploy:
+  provider: releases
+  api_key:
+    secure: YOUR_API_KEY_ENCRYPTED
+  file: "FILE TO UPLOAD"
+  skip_cleanup: true
+  draft: true
+  on:
+    - GITHUB_UPLOAD=dist/*.whl
+    tags: true
+    condition: $GITHUB_UPLOAD = yes
+    repo: viblo/pymunk
