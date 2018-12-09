@@ -81,16 +81,20 @@ deploy:
 # NOTE: draft releases are enabled.
 #    https://docs.travis-ci.com/user/deployment/releases/#draft-releases-with-draft-true
 deploy:
-  provider: releases
-  api_key:
-    secure: YOUR_API_KEY_ENCRYPTED
-  file:
-  - dist/*.whl
-  - dist/*.tar.gz
-  skip_cleanup: true
-  draft: true
-  on:
-    - GITHUB_UPLOAD=dist/*.whl
-    tags: true
-    condition: $GITHUB_UPLOAD = yes
-    repo: viblo/pymunk
+  - provider: releases
+    api_key:
+      secure: YOUR_API_KEY_ENCRYPTED
+    file_glob: true
+    file:
+      - dist/*.whl
+      - dist/*.tar.gz
+    skip_cleanup: true
+    draft: true
+    on:
+      all_branches: true
+      # branches:
+      #   only:
+      #     - master
+      tag: true
+      repo: viblo/pymunk
+      condition: $GITHUB_UPLOAD = yes
