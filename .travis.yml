@@ -52,6 +52,13 @@ matrix:
     python: pypy3
   - os: linux
     env: TOXENV=docs
+# create linux binary manylinux builds, see tools/manylinux-build
+  - sudo: required
+    services:
+      - docker
+    env:
+    - TOXENV=manylinux
+    - GITHUB_UPLOAD=yes
   exclude:
   - env: TRAVIS_4681_WORKAROUND=1
 before_install:
