@@ -15,18 +15,18 @@ matrix:
   - os: osx
     osx_image: xcode9.1
     language: generic
-    env: 
+    env:
     - PYTHON="python3"
-    - TOXENV=py3 
+    - TOXENV=py3
     - PIP_INSTALL="pip install --user"
     - BUILD_CMD="python3 setup.py bdist_wheel"
   - os: osx
     osx_image: xcode9.1
     language: generic
-    env: 
+    env:
     - PYTHON=python2""
-    - TOXENV=py27 
-    - PIP_INSTALL="pip install --user" 
+    - TOXENV=py27
+    - PIP_INSTALL="pip install --user"
     - BUILD_CMD="python2 setup.py bdist_wheel"
   - os: linux
     env: TOXENV=py27
@@ -40,7 +40,7 @@ matrix:
   - os: linux
     env: TOXENV=py36
     python: 3.6
-# strange random hang error on pypy that is difficult to reproduce. 
+# strange random hang error on pypy that is difficult to reproduce.
 # Disable test for now.
 #  - os: linux
 #    env: TOXENV=pypy
@@ -50,6 +50,13 @@ matrix:
     python: pypy3
   - os: linux
     env: TOXENV=docs
+# create linux binary manylinux builds, see tools/manylinux-build
+  - sudo: required
+    services:
+      - docker
+    env:
+    - TOXENV=manylinux
+    - GITHUB_UPLOAD=yes
   exclude:
   - env: TRAVIS_4681_WORKAROUND=1
 before_install:
