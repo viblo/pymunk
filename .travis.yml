@@ -90,7 +90,7 @@ deploy:
 deploy:
   - provider: releases
     api_key:
-      secure: YOUR_API_KEY_ENCRYPTED
+      secure: D2Jug24KOSk9dLxX6cmWQBPyQ87leHUgtRuZTyNT0RDe7hbFRuse+QELy+5yDnVJh2bIgQL6JVmJuqr6XkR0WgJjB4CJHoOcnZKweE5jomjhSeed94tCEOkAOnvQVbO4seILgu+IdwVHC+0Uv5Wf093/AlLoANo0oMIfBXUVVEI=
     file_glob: true
     file:
       - dist/*.whl
