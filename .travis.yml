@@ -20,6 +20,7 @@ matrix:
     - TOXENV=py3
     - PIP_INSTALL="pip install --user"
     - BUILD_CMD="python3 setup.py bdist_wheel"
+    - GITHUB_UPLOAD=yes
   - os: osx
     osx_image: xcode9.1
     language: generic
@@ -27,7 +28,8 @@ matrix:
     - PYTHON=python2""
     - TOXENV=py27
     - PIP_INSTALL="pip install --user"
-    - BUILD_CMD="python2 setup.py bdist_wheel"
+    - BUILD_CMD="python2 setup.py sdist bdist_wheel"
+    - GITHUB_UPLOAD=yes
   - os: linux
     env: TOXENV=py27
     python: 2.7
@@ -77,3 +79,29 @@ deploy:
     secure: A1i4M85KqB5/wp9MB/6U6JK2Np1x2hzY4lhIUXpgxlP6pqNUl35AGp3uakWV9YMubc00qeWMou+/+5yEuRK87ON0LKSJ6BqQoxIaNxiTxvqXn86Pw8ASl+7eU/SB4dDSDfA6Cc6eSZKo+dXMLHL+kSq06Ojumz1ok6tbpiCwrOQ=
   dry-run: true
   on: "bintray-osx"
+
+
+# To make a github token for the repo:
+#     https://github.com/settings/tokens
+# Encrypt it with:
+#     travis encrypt <api-token>
+# NOTE: draft releases are enabled.
+#    https://docs.travis-ci.com/user/deployment/releases/#draft-releases-with-draft-true
+deploy:
+  - provider: releases
+    api_key:
+      secure: YOUR_API_KEY_ENCRYPTED
+    file_glob: true
+    file:
+      - dist/*.whl
+      - dist/*.tar.gz
+    skip_cleanup: true
+    draft: true
+    on:
+      all_branches: true
+      # branches:
+      #   only:
+      #     - master
+      tag: true
+      repo: viblo/pymunk
+      condition: $GITHUB_UPLOAD = yes
