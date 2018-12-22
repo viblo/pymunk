@@ -95,6 +95,7 @@ deploy:
     file:
       - dist/*.whl
       - dist/*.tar.gz
+      - tools/manylinux-build/wheelhouse/*.whl
     skip_cleanup: true
     draft: true
     on:
