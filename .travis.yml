@@ -25,7 +25,7 @@ matrix:
     osx_image: xcode9.1
     language: generic
     env:
-    - PYTHON=python2""
+    - PYTHON="python2"
     - TOXENV=py27
     - PIP_INSTALL="pip install --user"
     - BUILD_CMD="python2 setup.py bdist_wheel"
@@ -64,16 +64,20 @@ matrix:
     - GITHUB_UPLOAD=yes
   exclude:
   - env: TRAVIS_4681_WORKAROUND=1
+
 before_install:
 - chmod ugo+x .travis_before_install.sh
 - "./.travis_before_install.sh"
+
 install:
 - echo $PATH
 - which $PYTHON
 - "travis_retry $PYTHON -m $PIP_INSTALL virtualenv tox wheel"
+
 script:
 - $PYTHON -m tox
 - $BUILD_CMD
+
 deploy:
   provider: bintray
   file: "bintray.json"
@@ -82,7 +86,6 @@ deploy:
     secure: A1i4M85KqB5/wp9MB/6U6JK2Np1x2hzY4lhIUXpgxlP6pqNUl35AGp3uakWV9YMubc00qeWMou+/+5yEuRK87ON0LKSJ6BqQoxIaNxiTxvqXn86Pw8ASl+7eU/SB4dDSDfA6Cc6eSZKo+dXMLHL+kSq06Ojumz1ok6tbpiCwrOQ=
   dry-run: true
   on: "bintray-osx"
-
 
 # To make a github token for the repo:
 #     https://github.com/settings/tokens
