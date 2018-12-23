@@ -6,6 +6,11 @@ import distutils.ccompiler as cc
 from setuptools import Extension
 from setuptools import setup
 
+try:
+    from wheel.bdist_wheel import bdist_wheel
+except ImportError:
+    bdist_wheel = None
+
 
 def get_arch():
     if sys.maxsize > 2**32:
@@ -174,9 +179,9 @@ classifiers = [
     , 'Programming Language :: Python :: 3'
 ]
 
-from distutils.command import bdist
-bdist.bdist.format_commands += ['msi']
-bdist.bdist.format_command['msi'] = ('bdist_msi', "Microsoft Installer") 
+# from distutils.command import bdist
+# bdist.bdist.format_commands += ['msi']
+# bdist.bdist.format_command['msi'] = ('bdist_msi', "Microsoft Installer") 
 
 with(open('README.rst')) as f:
     long_description = f.read()
@@ -198,6 +203,21 @@ extensions = [("pymunk.chipmunk", {
 
 extensions = [Extension("pymunk.chipmunk", sources)]
 
+class bdist_wheel_universal_extension(bdist_wheel):
+    """
+    bdist_wheel give overly strict tags for python packages that uses native 
+    dynamic linked library called from cffi at runtime.
+
+    References
+    https://www.python.org/dev/peps/pep-0491/
+    https://www.python.org/dev/peps/pep-0427/
+    https://www.python.org/dev/peps/pep-0425/
+    https://github.com/getsentry/milksnake
+    """
+    def get_tag(self):
+        rv = bdist_wheel.get_tag(self)
+        return ('py2.py3', 'none',) + rv[2:]
+
 setup(
     name = 'pymunk',
     url = 'http://www.pymunk.org',
@@ -210,7 +230,10 @@ setup(
     include_package_data = True,
     license = 'MIT License',
     classifiers = classifiers,
-    cmdclass = {'build_ext': build_chipmunk},
+    cmdclass = {
+        'build_ext': build_chipmunk,
+        'bdist_wheel': bdist_wheel_universal_extension
+    },
     install_requires = ['cffi'],
     extras_require = {'dev': ['pyglet','pygame','sphinx']},    
     test_suite = "tests",

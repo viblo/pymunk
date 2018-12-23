@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -x
 
-SUPPORTED_PYTHONS="cp27-cp27mu cp34-cp34m cp35-cp35m cp36-cp36m cp37-cp37m"
+SUPPORTED_PYTHONS="cp37-cp37m"
 
 ls -la /io
 

@@ -9,18 +9,7 @@ def main():
     os.system("python setup.py sdist --formats=zip")
     os.system("python2 setup.py bdist_wheel")
     os.system("python2-64 setup.py bdist_wheel")
-    files = os.listdir("dist")
-    for file in files:
-        # see
-        # https://www.python.org/dev/peps/pep-0427/
-        # https://www.python.org/dev/peps/pep-0425/
-        # bdist_wheel give overly strict tags 
-        parts = file.split("-")
-        if len(parts) == 5 and parts[-1][-3:] == "whl":
-            parts[2] = "py2.py3"
-            parts[3] = "none"
-        newfile = "-".join(parts)
-        os.rename(os.path.join("dist", file), os.path.join("dist", newfile))
+    
     print("""
     Remember (before running this script!): 
     - change version number in readme, setup.py and __init__ 
