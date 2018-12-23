@@ -22,14 +22,15 @@ export SDL_AUDIODRIVER=disk
 export SDL_VIDEODRIVER=dummy
 
 # Install packages and test
-# for PYVER in $SUPPORTED_PYTHONS; do
-#     PYBIN="/opt/python/${PYVER}/bin"
-#     ${PYBIN}/pip install cffi
-#     ${PYBIN}/pip install pymunk --no-index -f /io/tools/manylinux-build/wheelhouse
-#     # TODO: pymunk doesn't bundle tests in the package.
-#     #       Maybe we can still test using the test folder?
-#     # (cd $HOME; ${PYBIN}/python -m pygame.tests --exclude opengl,music)
-# done
+for PYVER in $SUPPORTED_PYTHONS; do
+    PYBIN="/opt/python/${PYVER}/bin"
+    ${PYBIN}/pip install cffi
+    ${PYBIN}/pip install pymunk \
+      --no-index -f /io/tools/manylinux-build/wheelhouse
+    # TODO: pymunk doesn't bundle tests in the package.
+    #       Maybe we can still test using the test folder?
+    # (cd $HOME; ${PYBIN}/python -m pygame.tests --exclude opengl,music)
+done
 
 echo "Here are the binary wheels for linux:"
 ls /io/tools/manylinux-build/wheelhouse
