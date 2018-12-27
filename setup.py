@@ -76,7 +76,9 @@ class build_chipmunk(build_ext, object):
             compiler_preargs.append('-DNDEBUG')
         
         if "CFLAGS" in os.environ:
-            compiler_preargs.append(os.environ["CFLAGS"])
+            cflags = os.environ["CFLAGS"].strip()
+            if cflags != "":
+                compiler_preargs.append(cflags)
         else:
             if platform.system() == 'Linux':
                 compiler_preargs += ['-fPIC', '-O3']
