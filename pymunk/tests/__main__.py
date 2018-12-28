@@ -12,6 +12,10 @@ def main():
 
     doctests.load_tests(None, suite, None)
 
+    wasSuccessful = True
+
+    filtered_suite = unittest.TestSuite()
+
     if len(sys.argv) > 1:
         m = sys.argv[1]
 
@@ -27,11 +31,14 @@ def main():
             if isinstance(test, doctest.DocTestCase) \
                 and m.startswith("doctest") \
                 or m in str(test.id()):
-                unittest.TextTestRunner(verbosity=2).run(test)
-    else:
-        unittest.TextTestRunner(verbosity=2).run(suite)
+                filtered_suite.addTest(test)
+        suite = filtered_suite
+    
+    res = unittest.TextTestRunner(verbosity=2).run(suite)
+    wasSuccessful = res.wasSuccessful()
 
-    return
+    sys.exit(not wasSuccessful)
+    
 
 if __name__ == '__main__':
     import os

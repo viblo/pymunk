@@ -169,7 +169,7 @@ Tests
 
 There are a number of unit tests included in the pymunk.tests package 
 (pymunk/tests). Not exactly all the code is tested, but most of it (at the time
- of writing its about 85% of the core parts). 
+of writing its about 85% of the core parts). 
 
 The tests can be run by calling the module ::
 

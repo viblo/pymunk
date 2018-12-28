@@ -47,7 +47,7 @@ install:
 build: off
   
 test_script:
-  - "tox -e py"
+  - "tox -e py -vv"
   
 after_test:
   - "python setup.py bdist_wheel"

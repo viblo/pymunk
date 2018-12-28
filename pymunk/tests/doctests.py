@@ -20,7 +20,6 @@ if __name__ == '__main__':
     suite = unittest.TestSuite()  
     load_tests(None, suite, None)
     res = unittest.TextTestRunner().run(suite)
-    if not res.wasSuccessful():
-        sys.exit(1)
+    sys.exit(not res.wasSuccessful())
     
     
