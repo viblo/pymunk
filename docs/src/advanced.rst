@@ -167,14 +167,13 @@ tools/*
 Tests
 -----
 
-There are a number of unit tests included in the tests folder. Not exactly all
-the code is tested, but most of it (at the time of writing its about 85% of 
-the core parts). 
+There are a number of unit tests included in the pymunk.tests package 
+(pymunk/tests). Not exactly all the code is tested, but most of it (at the time
+ of writing its about 85% of the core parts). 
 
-There is a helper script in the tools folder to easily run the tests::
+The tests can be run by calling the module ::
 
-    > cd tools
-    > python run_tests.py
+    > python -m pymunk.tests
     
     
 Working with non-wrapped parts of Chipmunk

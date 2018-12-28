@@ -15,7 +15,5 @@ prune examples/.ipynb_checkpoints
 recursive-include chipmunk_src *.c
 recursive-include chipmunk_src *.h
 recursive-include chipmunk_src *.txt
-#tests
-recursive-include tests *.py
 #tools
 recursive-include tools *.py
