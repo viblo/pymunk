@@ -27,9 +27,7 @@ for PYVER in $SUPPORTED_PYTHONS; do
     ${PYBIN}/pip install cffi
     ${PYBIN}/pip install pymunk \
       --no-index -f /io/tools/manylinux-build/wheelhouse
-    # TODO: pymunk doesn't bundle tests in the package.
-    #       Maybe we can still test using the test folder?
-    # (cd $HOME; ${PYBIN}/python -m pygame.tests --exclude opengl,music)
+    (cd $HOME; ${PYBIN}/python -m pymunk.tests UnitTest)
 done
 
 echo "Here are the binary wheels for linux:"

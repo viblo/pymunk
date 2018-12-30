@@ -21,7 +21,6 @@ environment:
     - PYTHON: "C:\\Python37-x64"
       MINGW: "mingw64"
 
-
 #platform:
 #  - x86
   #- x64
@@ -44,13 +43,12 @@ install:
   # We need wheel installed to build wheels
   - "python -m pip install --upgrade wheel"
   
-build: off
-  
+build_script: 
+  - python setup.py bdist_wheel
+
 test_script:
-  - "tox -e py -vv"
-  
-after_test:
-  - "python setup.py bdist_wheel"
+  # get the wheel file and use it as input to tox
+  - python -c "import glob,tox;tox.cmdline(['-e', 'py', '-vv', '--installpkg', glob.glob('dist/*.whl')[0]])"
 
 artifacts:
   - path: dist\*
