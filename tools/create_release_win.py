@@ -8,7 +8,6 @@ def main():
     shutil.rmtree("dist", True)
     os.system("python setup.py sdist --formats=zip")
     os.system("python2 setup.py bdist_wheel")
-    os.system("python2-64 setup.py bdist_wheel")
     
     print("""
     Remember (before running this script!): 
@@ -23,9 +22,10 @@ def main():
     print("""
     Once the release is done, remember to:
     - tag code on github with version
+    - Download dists from github release and appveyor
     - Upload files on pypi (> python -m twine upload dist/*)
     - Update Pymunk entry on pygame.org
-    - Make release announcement at the chipmunk forum
+    - Possibly: Make release announcement at the chipmunk forum
     - Possibly: make release announcement on the pyglet list
     - Possibly: make release announcement on the pygame list
     - Possibly: make release announcement on the python announce list

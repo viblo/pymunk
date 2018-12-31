@@ -29,8 +29,7 @@ In the normal case pymunk can be installed with pip::
 
     > pip install pymunk
 
-It has one (or two) dependencies. CFFI and if not on Windows you also 
-need a working gcc compiler.
+It has one direct dependency. CFFI.
 
 
 Example

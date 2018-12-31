@@ -1,7 +1,6 @@
 v5.x
 ----
 - use twine to upload to Pypi? https://pypi.python.org/pypi/twine
-- use travis ci to build osx chipmunk lib file and run tests? https://docs.travis-ci.com/user/osx-ci-environment/
 - Think about experimental repr of Body
 - Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js  
 - add better example benchmark for threaded solver
@@ -14,6 +13,7 @@ v5.x
 - maybe it would be good to use pip install pymunk[docs] or something to distribute docs and exmaples?
 - can autosummary be used? (see stackoverflow answer)
 - update doctests to use python3 print instead of python2.
+- tests of py2exe/pyinstaller/cx_freeze?
 
 v6+ (all potentially breaking changes)
 ---
