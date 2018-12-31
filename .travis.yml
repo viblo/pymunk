@@ -105,10 +105,10 @@ deploy:
     skip_cleanup: true
     draft: true
     on:
-      all_branches: true
-      # branches:
-      #   only:
-      #     - master
+      # all_branches: true
+      branches:
+        only:
+          - master
       tag: true
       repo: viblo/pymunk
       condition: $GITHUB_UPLOAD = yes
