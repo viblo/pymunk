@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pymunk.matplotlib_util Module &#8212; pymunk 5.4.0 documentation</title>
+    <title>pymunk.matplotlib_util Module &#8212; pymunk 5.4.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -157,6 +157,7 @@ you would the desired backend instead, such as
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">mass</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">static_body</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">SpaceDebugDrawOptions</span><span class="p">()</span> 
 </pre></div>
 </div>
@@ -168,7 +169,8 @@ you would the desired backend instead, such as
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Draw the shapes and collision points:</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">SpaceDebugDrawOptions</span><span class="o">.</span><span class="n">DRAW_SHAPES</span> <span class="o">|</span>         <span class="o">...</span>    <span class="n">pymunk</span><span class="o">.</span><span class="n">SpaceDebugDrawOptions</span><span class="o">.</span><span class="n">DRAW_COLLISION_POINTS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">SpaceDebugDrawOptions</span><span class="o">.</span><span class="n">DRAW_SHAPES</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">flags</span> <span class="o">|=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">SpaceDebugDrawOptions</span><span class="o">.</span><span class="n">DRAW_COLLISION_POINTS</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">debug_draw</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 <span class="go">(&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))</span>
 <span class="go">(&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>

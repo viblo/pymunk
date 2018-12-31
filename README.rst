@@ -18,7 +18,7 @@ the Pymunk webpage for some examples.
 
 2007 - 2018, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest Pymunk release (5.5.0), 
+This release is based on the latest Pymunk release (5.4.1), 
 using Chipmunk 7.0 rev d7603e3927 (source included)
 
 
@@ -127,7 +127,7 @@ Basically Pymunk have been made to be as easy to install and distribute as
 possible, usually `pip install` will take care of everything for you.
 
 - Python (Runs on CPython 2.7 and 3.X. Pypy and Pypy3)
-- Chipmunk (Source included, and on Windows and OSX its already compiled)
+- Chipmunk (Compiled library already included on common platforms)
 - CFFI (will be installed automatically by Pip)
 - Setuptools (should be included with Pip)
 

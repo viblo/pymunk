@@ -2,6 +2,24 @@
 News 
 ****
 
+Pymunk 5.4.1
+------------
+*Victor - 2018-12-31*
+
+**Improved packaging**
+
+This release consists of a number of fixes to the packaging of Pymunk. One fix
+that will allow building for conda, and a number of changes to build binary 
+wheels on linux.
+
+Changes:
+
+- Fixes to help Pymunk work with freezers such as cx_Freeze.
+- Better wheels, now they contain the proper tags
+- Fix problems using custom CFLAGS when compiling chipmunk
+
+Enjoy!
+
 Pymunk 5.4.0
 ------------
 *Victor - 2018-10-24*

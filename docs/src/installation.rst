@@ -13,8 +13,8 @@ Pymunk can be installed with pip install::
 
     > pip install pymunk
 
-On non-Windows OS such as OSX and Linux you need to have a GCC-compatible 
-compiler installed. 
+Sometimes on more uncommon platforms you will need to have a GCC-compatible 
+c-compiler installed. 
 
 On OSX you can install one with::
 

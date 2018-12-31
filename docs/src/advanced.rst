@@ -174,6 +174,13 @@ of writing its about 85% of the core parts).
 The tests can be run by calling the module ::
 
     > python -m pymunk.tests
+
+Its possible to control which tests to run, by specifying a filtering 
+argument. The matching is as broad as possible, so `UnitTest` matches all the 
+unit tests, `test_arbiter` all tests in `test_arbiter.py` and 
+`testResetitution` matches the exact `testRestitution` test case ::
+
+    > python -m pymunk.tests testRestitution
     
     
 Working with non-wrapped parts of Chipmunk
