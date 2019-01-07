@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; pymunk 5.4.1 documentation</title>
+    <title>API Reference &#8212; pymunk 5.4.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -85,7 +85,7 @@ has changed. See <a class="reference internal" href="#pymunk.Body" title="pymunk
 
 <dl class="data">
 <dt id="pymunk.version">
-<code class="descclassname">pymunk.</code><code class="descname">version</code><em class="property"> = '5.4.1'</em><a class="headerlink" href="#pymunk.version" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymunk.</code><code class="descname">version</code><em class="property"> = '5.4.2'</em><a class="headerlink" href="#pymunk.version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from git).</p>
@@ -661,7 +661,8 @@ around the step call, like in this example:</p>
 <p>Only valid when the Space was created with threaded=True. Currently the 
 max limit is 2, setting a higher value wont have any effect. The 
 default is 1 regardless if the Space was created with threaded=True, 
-to keep determinism in the simulation.</p>
+to keep determinism in the simulation. Note that Windows does not 
+support the threaded solver.</p>
 </dd></dl>
 
 </dd></dl>

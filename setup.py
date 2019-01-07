@@ -109,22 +109,22 @@ class build_chipmunk(build_ext, object):
                                         '-m32']
                 if get_arch() == 64:
                     compiler_preargs += ['-O3', '-m64']
-            
-                # for x in self.compiler.executables:
-                #     args = getattr(self.compiler, x)
-                #     try:
-                #         args.remove('-mno-cygwin') #Not available on newer versions of gcc 
-                #         args.remove('-mdll')
-                #     except:
-                #         pass
-                
+                            
         source_folders = [os.path.join('chipmunk_src','src')]
         sources = []
         for folder in source_folders:
             for fn in os.listdir(folder):
                 fn_path = os.path.join(folder, fn)
                 if fn[-1] == 'c':
-                    sources.append(fn_path)
+                    # Ignore cpHastySpace since it depends on pthread which 
+                    # creates a dependency on libwinpthread-1.dll when built 
+                    # with  mingw-w64 gcc.
+                    # Will prevent the code from being multithreaded, would be
+                    # good if some tests could be made to verify the performance
+                    # of this.
+                    if platform.system() != 'Windows' or fn != "cpHastySpace.c":
+                        sources.append(fn_path)
+                    #sources.append(fn_path)
                 elif fn[-1] == 'o':
                     os.remove(fn_path)
         
@@ -149,10 +149,7 @@ class build_chipmunk(build_ext, object):
             elif platform.system() == 'Darwin':
                 self.compiler.set_executable('linker_so', 
                 ['cc', '-dynamiclib', '-arch', 'i386', '-arch', 'x86_64'])
-        #here = os.path.abspath(os.path.dirname(__file__))
-        #print("here", here)
-        
-        #print("self.inplace", self.inplace)
+
         if not self.inplace:
             package_dir = os.path.join(self.build_lib, "pymunk")
         else:
@@ -227,7 +224,7 @@ setup(
     url = 'http://www.pymunk.org',
     author = 'Victor Blomqvist',
     author_email = 'vb@viblo.se',
-    version = '5.4.1', # remember to change me for new versions!
+    version = '5.4.2', # remember to change me for new versions!
     description = 'Pymunk is a easy-to-use pythonic 2d physics library',
     long_description = long_description,
     packages = ['pymunk','pymunkoptions', 'pymunk.tests'],

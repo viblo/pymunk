@@ -2,6 +2,22 @@
 News 
 ****
 
+Pymunk 5.4.2
+------------
+*Victor - 2019-01-07*
+
+**Fix for chipmunk.dll load troubles on windows**
+
+This release fixes a problem on Windows that made the chipmunk.dll file depend
+on libwinpthread-1.dll which happened in Pymunk 5.4.1 because of the new build
+setup. The fix means that for now the threaded solver is disabled on Windows. 
+In practice this should not be a big problem, the performance benefit of the 
+threaded solver on a desktop running windows is unclear.
+
+Changes: 
+
+- Disable threaded solver on Windows.
+
 Pymunk 5.4.1
 ------------
 *Victor - 2018-12-31*
