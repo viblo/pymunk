@@ -100,13 +100,6 @@ Contact & Support
     You can ask questions/browse old ones at Stackoverflow, just look for 
     the Pymunk tag. http://stackoverflow.com/questions/tagged/pymunk
 
-**Forum**
-    Currently Pymunk has no separate forum, but uses the general Chipmunk 
-    forum at http://chipmunk-physics.net/forum/index.php Many issues 
-    are the same, like how to create a rag doll or why a fast moving object 
-    pass through a wall. If you have a Pymunk specific question feel free to 
-    mark your post with [pymunk] to make it stand out a bit.
-
 **E-Mail**
     You can email me directly at vb@viblo.se
 
