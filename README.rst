@@ -29,7 +29,11 @@ In the normal case pymunk can be installed with pip::
 
     > pip install pymunk
 
-It has one direct dependency. CFFI.
+It has one direct dependency, CFFI.
+
+Pymunk can also be installed with conda, from the conda-forge channel::
+
+    > conda install -c conda-forge pymunk
 
 
 Example
