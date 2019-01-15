@@ -2,6 +2,15 @@
 News 
 ****
 
+conda install pymunk
+--------------------
+*Victor - 2019-01-15*
+
+Pymunk is now available on Conda-forge, making it possible to use conda install 
+to install Pymunk::
+
+    >conda install -c conda-forge pymunk
+
 Pymunk 5.4.2
 ------------
 *Victor - 2019-01-07*
