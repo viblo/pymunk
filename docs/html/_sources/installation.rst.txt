@@ -12,6 +12,10 @@ Install Pymunk
 Pymunk can be installed with pip install::
 
     > pip install pymunk
+    
+Pymunk can also be installed with conda install, from the conda-forge channel::
+
+    > conda install -c conda-forge pymunk
 
 Sometimes on more uncommon platforms you will need to have a GCC-compatible 
 c-compiler installed. 
