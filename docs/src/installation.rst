@@ -39,8 +39,8 @@ available from PyPI at https://pypi.org/project/pymunk/#files (Named
 pymunk-x.y.z.zip)
 
 
-Advanced install
-----------------
+Advanced - Install
+------------------
 
 Another option is to use the standard setup.py way, in case you have downloaded
 the source distribution::
@@ -58,10 +58,44 @@ installed library. pymunk should also work just fine with virtualenv in case
 you want it installed in a contained environment.
  
 
+Advanced - Running without installation
+---------------------------------------
+
+If you do not want to install Pymunk, for example because you want to bundle it
+with your code, its also possible to run it directly inplace. Given that you have the source code the first thing to do is to compile chipmunk with the 
+inplace option, as described in the :ref:`compile-chipmunk` section. 
+
+To actually import pymunk from its folder you need to do a small path hack, 
+since the pymunk root folder (where setup.py and the README are located) is not 
+part of the package. Instead you should add the path to the pymunk package 
+folder (where files such as space.py and body.py are located)::
+
+    mycodefolder/
+    |-- mycode.py
+    |-- ...
+    |-- pymunk/
+    |   |-- README.rst
+    |   |-- setup.py
+    |   |-- pymunk/
+    |   |   |-- space.py
+    |   |   |-- body.py
+    |   |   |-- ...
+    |   |-- ... 
+
+Then inside you code file (`mycode.py`) import sys and add the pymunk folder to
+the path::
+
+    import sys
+    sys.path.insert(1, 'pymunk')
+    import pymunk
+
+The same trick can be used to import pymunk for a script that is not in the direct parent folder, see for example `run.py` in the examples which update the path to simplify development.
+
 .. _compile-chipmunk:
 
 Compile Chipmunk
 ----------------
+
 If a compiled binary library of Chipmunk that works on your platform is not 
 included in the release you will need to compile Chipmunk yourself. Another 
 reason to compile chipmunk is if you want to run it in release mode to get 
@@ -80,8 +114,8 @@ place in the source folder::
     > python setup.py build_ext --inplace
 
 On Windows you will need to use a gcc-compatible compiler. The pre-built version
-distributed with pymunk were compiled with the mingwpy GCC compiler at 
-https://mingwpy.github.io/ 
+distributed with pymunk were compiled with the MinGW-w64 GCC compiler at 
+https://www.msys2.org/
   
 .. seealso:: 
 
@@ -93,6 +127,7 @@ https://mingwpy.github.io/
 
 CFFI Installation
 -----------------
+
 Sometimes you need to manually install the (non-python) dependencies of CFFI. 
 Usually you will notice this as a installation failure when pip tries to 
 install CFFI since CFFI is a dependency of Pymunk. This is not really part of 

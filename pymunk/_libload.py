@@ -61,9 +61,8 @@ run the build command:
 
 You compile Chipmunk with
 > python setup.py build_ext --inplace
-and then continue as usual with
-> cd examples
-> python basic_test.py
+and then verify with
+> python -m pymunk.test
 
 (for complete instructions please see the readme file)
 
