@@ -107,26 +107,87 @@ class SpaceDebugDrawOptions(object):
         self._callbacks = [f1,f2,f3,f4,f5,f6]
 
     def _get_shape_outline_color(self):
-        print(self._options.shapeOutlineColor)
         return self._c(self._options.shapeOutlineColor)
     def _set_shape_outline_color(self, c):
         self._options.shapeOutlineColor = c
     shape_outline_color = property(_get_shape_outline_color, 
-        _set_shape_outline_color)
+        _set_shape_outline_color,
+        doc="""The outline color of shapes.
+        
+        Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).
+
+        Example:
+
+        >>> import pymunk
+        >>> s = pymunk.Space()
+        >>> c = pymunk.Circle(s.static_body, 10)
+        >>> s.add(c)
+        >>> options = pymunk.SpaceDebugDrawOptions()
+        >>> s.debug_draw(options)
+        ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))
+        >>> options.shape_outline_color = (10,20,30,40)
+        >>> s.debug_draw(options)
+        ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))
+
+        """)
 
     def _get_constraint_color(self):
         return self._c(self._options.constraintColor)
     def _set_constraint_color(self, c):
         self._options.constraintColor = c
     constraint_color = property(_get_constraint_color, 
-        _set_constraint_color)
+        _set_constraint_color,
+        doc="""The color of constraints.
+
+        Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).
+        
+        Example:
+
+        >>> import pymunk
+        >>> s = pymunk.Space()
+        >>> j = pymunk.PivotJoint(s.static_body, s.static_body, (0,0))
+        >>> s.add(j)
+        >>> options = pymunk.SpaceDebugDrawOptions()
+        >>> s.debug_draw(options)
+        ('draw_dot', (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0)))
+        ('draw_dot', (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0)))
+        >>> options.constraint_color = (10,20,30,40)
+        >>> s.debug_draw(options)
+        ('draw_dot', (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0)))
+        ('draw_dot', (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0)))
+
+        """)
 
     def _get_collision_point_color(self):
         return self._c(self._options.collisionPointColor)
     def _set_collision_point_color(self, c):
         self._options.collisionPointColor = c
     collision_point_color = property(_get_collision_point_color, 
-        _set_collision_point_color)
+        _set_collision_point_color,
+        doc="""The color of collisions.
+
+        Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).
+        
+        Example:
+
+        >>> import pymunk
+        >>> s = pymunk.Space()
+        >>> b = pymunk.Body(1,10)
+        >>> c1 = pymunk.Circle(b, 10)
+        >>> c2 = pymunk.Circle(s.static_body, 10)
+        >>> s.add(b, c1, c2)
+        >>> s.step(1)
+        >>> options = pymunk.SpaceDebugDrawOptions()
+        >>> s.debug_draw(options)
+        ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))
+        ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))
+        ('draw_segment', (Vec2d(8.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=231.0, g=76.0, b=60.0, a=255.0)))
+        >>> options.collision_point_color = (10,20,30,40)
+        >>> s.debug_draw(options)
+        ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))
+        ('draw_circle', (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))
+        ('draw_segment', (Vec2d(8.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0)))
+        """)
 
     def __enter__(self):
         pass
