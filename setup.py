@@ -9,7 +9,7 @@ from setuptools import setup
 try:
     from wheel.bdist_wheel import bdist_wheel
 except ImportError:
-    bdist_wheel = None
+    bdist_wheel = object
 
 
 def get_arch():
