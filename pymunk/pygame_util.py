@@ -86,7 +86,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         make adjustments for that with the :py:data:`positive_y_is_up` variable.
 
         By default drawing is done with positive y pointing up, but that will 
-        make conversion from pygame coordinate to pymunk coordinate nessecary. 
+        make conversion from pygame coordinate to pymunk coordinate necessary. 
         If you do a lot of those (for example, lots of mouse input) it might be 
         more convenient to set it to False::
 
@@ -129,9 +129,26 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
     def draw_fat_segment(self, a, b, radius, outline_color, fill_color):
         p1 = to_pygame(a, self.surface)
         p2 = to_pygame(b, self.surface)
-        
+        def rndint(x): return int(round(x))
         r = int(max(1, radius*2))
         pygame.draw.lines(self.surface, fill_color, False, [p1,p2], r)
+        if r > 2:
+            #pygame.draw.circle(self.surface, fill_color, p1, int(radius), 0)
+            #pygame.draw.circle(self.surface, fill_color, p2, int(radius), 0)
+        
+            delta = ( p2[0]-p1[0], p2[1]-p1[1] )
+            orthog = [ delta[1], -delta[0] ]
+            scale = radius / (orthog[0]*orthog[0] + orthog[1]*orthog[1])**0.5
+            orthog[0]*=scale; orthog[1]*=scale
+            points = [
+                ( p1[0]-orthog[0], p1[1]-orthog[1] ),
+                ( p1[0]+orthog[0], p1[1]+orthog[1] ),
+                ( p2[0]+orthog[0], p2[1]+orthog[1] ),
+                ( p2[0]-orthog[0], p2[1]-orthog[1] )
+            ]
+            pygame.draw.polygon(self.surface, fill_color, points)
+            pygame.draw.circle(self.surface, fill_color, (rndint(p1[0]),rndint(p1[1])), rndint(radius))
+            pygame.draw.circle(self.surface, fill_color, (rndint(p2[0]),rndint(p2[1])), rndint(radius))
         
     def draw_polygon(self, verts, radius, outline_color, fill_color):
         ps = [to_pygame(v, self.surface) for v in verts]

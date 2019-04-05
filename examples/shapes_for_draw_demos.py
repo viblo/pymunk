@@ -129,7 +129,7 @@ def fill_space(space, custom_color=(255,255,0,255)):
     b = pymunk.Body(1,1)
     b.position = (380,630)
     b.angle = 3.14/7
-    s = pymunk.Segment(b, (-30,0), (30,0), 2)
+    s = pymunk.Segment(b, (-30,0), (30,0), 7)
     space.add(s)
     
     # Dynamic Circles
