@@ -166,7 +166,10 @@ class Constraint(PickleMixin, object):
 
     
 class PinJoint(Constraint):
-    """Keeps the anchor points at a set distance from one another."""
+    """PinJoint links shapes with a solid bar or pin. 
+    
+    Keeps the anchor points at a set distance from one another.
+    """
 
     _pickle_attrs_init = ['anchor_a', 'anchor_b']
 
@@ -205,7 +208,8 @@ class PinJoint(Constraint):
     distance = property(_get_distance, _set_distance)
 
 class SlideJoint(Constraint):
-    """Like pin joints, but have a minimum and maximum distance.
+    """SlideJoint is like a PinJoint, but have a minimum and maximum distance.
+
     A chain could be modeled using this joint. It keeps the anchor points
     from getting to far apart, but will allow them to get closer together.
     """
@@ -248,7 +252,10 @@ class SlideJoint(Constraint):
     max = property(_get_max, _set_max)
 
 class PivotJoint(Constraint):
-    """Simply allow two objects to pivot about a single point."""
+    """PivotJoint allow two objects to pivot about a single point.
+    
+    Its like a swivel.
+    """
 
     _pickle_attrs_init = ['anchor_a', 'anchor_b']
 
@@ -298,8 +305,9 @@ class PivotJoint(Constraint):
     anchor_b = property(_get_anchor_b, _set_anchor_b)
 
 class GrooveJoint(Constraint):
-    """Similar to a pivot joint, but one of the anchors is
-    on a linear slide instead of being fixed.
+    """GrooveJoint is similar to a PivotJoint, but with a linear slide.
+    
+    One of the anchor points is a line segment that the pivot can slide in instead of being fixed.
     """
 
     _pickle_attrs_init = ['groove_a', 'groove_b', 'anchor_b']
@@ -337,7 +345,10 @@ class GrooveJoint(Constraint):
     groove_b = property(_get_groove_b, _set_groove_b)
 
 class DampedSpring(Constraint):
-    """A damped spring"""
+    """DampedSpring is a damped spring.
+    
+    The spring allows you to define the rest length, stiffness and damping.
+    """
 
     _pickle_attrs_init = ['anchor_a', 'anchor_b', 'rest_length', 'stiffness', 
         'damping']
@@ -396,7 +407,8 @@ class DampedSpring(Constraint):
         doc="""How soft to make the damping of the spring.""")
 
 class DampedRotarySpring(Constraint):
-    """Like a damped spring, but works in an angular fashion"""
+    """DampedRotarySprint works like the DammpedSpring but in a angular fashion.
+    """
 
     _pickle_attrs_init = ['rest_angle', 'stiffness', 'damping']
 
@@ -438,7 +450,7 @@ class DampedRotarySpring(Constraint):
 
 
 class RotaryLimitJoint(Constraint):
-    """Constrains the relative rotations of two bodies."""
+    """RotaryLimitJoint constrains the relative rotations of two bodies."""
 
     _pickle_attrs_init = ['min', 'max']
 
@@ -467,7 +479,7 @@ class RotaryLimitJoint(Constraint):
     max = property(_get_max, _set_max)
 
 class RatchetJoint(Constraint):
-    """Works like a socket wrench."""
+    """RatchetJoint is a rotary ratchet, it works like a socket wrench."""
 
     _pickle_attrs_init = ['phase', 'ratchet']
 
@@ -501,7 +513,8 @@ class RatchetJoint(Constraint):
     ratchet = property(_get_ratchet, _set_ratchet)
 
 class GearJoint(Constraint):
-    """Keeps the angular velocity ratio of a pair of bodies constant."""
+    """GearJoint keeps the angular velocity ratio of a pair of bodies constant.
+    """
 
     _pickle_attrs_init = ['phase', 'ratio']
 
@@ -530,7 +543,9 @@ class GearJoint(Constraint):
     ratio = property(_get_ratio, _set_ratio)
 
 class SimpleMotor(Constraint):
-    """Keeps the relative angular velocity of a pair of bodies constant."""
+    """SimpleMotor keeps the relative angular velocity constant.
+    
+    """
 
     _pickle_attrs_init = ['rate']
 
