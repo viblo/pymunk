@@ -31,7 +31,7 @@ Pymunk physics in Pyglet
 
 :subscript:`Created by Attila Toth. Retrieved 2018-02-24`
 
-Youtube user Attila Toth has created a series of youtube videos that gives a 
+Youtube user Attila Toth has created a series of Youtube videos that gives a 
 good introduction of Pymunk. The videos covers among other things the 3 types 
 of Bodies, the different Shapes and how to use sprite with Pyglet together 
 with Pymunk. 
@@ -40,3 +40,16 @@ with Pymunk.
 
     <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PL1P11yPQAo7pH9SWZtWdmmLumbp_r19Hs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
+Breakout game in Python, Pyglet and Pymunk
+------------------------------------------
+
+:subscript:`Created by Attila Toth. Retrieved 2019-04-14`
+
+Youtube user Attila Toth has created a series of Youtube videos that guide 
+through creating a Breakout like game, similar to the breakout example that
+is included with Pymunk. If you like his first series (Pymunk physics in 
+Pyglet) then this is a great followup.
+
+.. raw:: html
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/6CEjZ8W1xx0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
