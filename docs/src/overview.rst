@@ -21,12 +21,13 @@ There are 4 basic classes you will use in Pymunk.
     it doesn't require a shape.
 
 **Constraints/Joints** (:py:class:`pymunk.constraint.PinJoint`, :py:class:`pymunk.constraint.SimpleMotor` and many others)
-    You can attach joints between two bodies to constrain their behavior.
+    You can attach constraints between two bodies to constrain their behavior, 
+    for example to keep a fixed distance between two bodies.
 
 **Spaces** (:py:class:`pymunk.Space`)
     Spaces are the basic simulation unit in Pymunk. You add bodies, shapes 
-    and joints to a space, and then update the space as a whole. They control 
-    how all the rigid bodies, shapes, and constraints interact together.
+    and constraints to a space, and then update the space as a whole. They 
+    control how all the rigid bodies, shapes, and constraints interact together.
 
 The actual simulation is done by the Space. After adding the objects that 
 should be simulated to the Space time is moved forward in small steps with the
