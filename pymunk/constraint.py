@@ -407,7 +407,7 @@ class DampedSpring(Constraint):
         doc="""How soft to make the damping of the spring.""")
 
 class DampedRotarySpring(Constraint):
-    """DampedRotarySprint works like the DammpedSpring but in a angular fashion.
+    """DampedRotarySpring works like the DammpedSpring but in a angular fashion.
     """
 
     _pickle_attrs_init = ['rest_angle', 'stiffness', 'damping']
