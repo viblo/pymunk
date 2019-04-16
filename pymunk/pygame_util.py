@@ -113,7 +113,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
     def draw_circle(self, pos, angle, radius, outline_color, fill_color):
         p = to_pygame(pos, self.surface)
     
-        pygame.draw.circle(self.surface, fill_color, p, int(radius), 0)
+        pygame.draw.circle(self.surface, fill_color, p, _rndint(radius), 0)
         
         circle_edge = pos + Vec2d(radius, 0).rotated(angle)
         p2 = to_pygame(circle_edge, self.surface)
@@ -129,13 +129,10 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
     def draw_fat_segment(self, a, b, radius, outline_color, fill_color):
         p1 = to_pygame(a, self.surface)
         p2 = to_pygame(b, self.surface)
-        def rndint(x): return int(round(x))
-        r = int(max(1, radius*2))
+        
+        r = _rndint(max(1, radius*2))
         pygame.draw.lines(self.surface, fill_color, False, [p1,p2], r)
         if r > 2:
-            #pygame.draw.circle(self.surface, fill_color, p1, int(radius), 0)
-            #pygame.draw.circle(self.surface, fill_color, p2, int(radius), 0)
-        
             delta = ( p2[0]-p1[0], p2[1]-p1[1] )
             orthog = [ delta[1], -delta[0] ]
             scale = radius / (orthog[0]*orthog[0] + orthog[1]*orthog[1])**0.5
@@ -147,23 +144,27 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
                 ( p2[0]-orthog[0], p2[1]-orthog[1] )
             ]
             pygame.draw.polygon(self.surface, fill_color, points)
-            pygame.draw.circle(self.surface, fill_color, (rndint(p1[0]),rndint(p1[1])), rndint(radius))
-            pygame.draw.circle(self.surface, fill_color, (rndint(p2[0]),rndint(p2[1])), rndint(radius))
+            pygame.draw.circle(self.surface, fill_color, 
+                (_rndint(p1[0]),_rndint(p1[1])), _rndint(radius))
+            pygame.draw.circle(self.surface, fill_color, 
+                (_rndint(p2[0]),_rndint(p2[1])), _rndint(radius))
         
     def draw_polygon(self, verts, radius, outline_color, fill_color):
         ps = [to_pygame(v, self.surface) for v in verts]
         ps += [ps[0]]
-        
+
         pygame.draw.polygon(self.surface, fill_color, ps)
-        
-        if radius < 1 and False:
-            pygame.draw.lines(self.surface, outline_color, False, ps)
-        else:
-            pygame.draw.lines(self.surface, outline_color, False, ps, int(radius*2))
+
+        if radius > 0:
+            for i in range(len(verts)):
+                a = verts[i]
+                b = verts[(i+1) % len(verts)]
+                self.draw_fat_segment(a, b, radius, outline_color, 
+                    outline_color)
 
     def draw_dot(self, size, pos, color):
         p = to_pygame(pos, self.surface)
-        pygame.draw.circle(self.surface, color, p, int(size), 0)
+        pygame.draw.circle(self.surface, color, p, _rndint(size), 0)
 
     
 def get_mouse_pos(surface):
@@ -189,4 +190,5 @@ def from_pygame(p, surface):
     """
     return to_pygame(p,surface)
 
-            
+def _rndint(x): 
+    return int(round(x))            

@@ -157,10 +157,10 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         pv1 = a
         pv2 = b
         d = pv2 - pv1
-        a = -math.atan2(d.x, d.y)
+        atan = -math.atan2(d.x, d.y)
         radius = max(radius, 1)
-        dx = radius * math.cos(a)
-        dy = radius * math.sin(a)
+        dx = radius * math.cos(atan)
+        dy = radius * math.sin(atan)
         
         p1 = pv1 + Vec2d(dx,dy)
         p2 = pv1 - Vec2d(dx,dy)
@@ -174,17 +174,22 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
                     ('v2f', vs),
                     ('c4B', fill_color.as_int() * l))
 
+        self.draw_circle(a, 0, radius, fill_color, fill_color)
+        self.draw_circle(b, 0, radius, fill_color, fill_color)
+
     def draw_polygon(self, verts, radius, outline_color, fill_color):
         mode = pyglet.gl.GL_TRIANGLE_STRIP
 
         l = len(verts)
         mid = len(verts) // 2 
-        
+        if radius >= 3:
+            #print("POLY", verts)
+            pass
         vs = []
         for i in range(mid):
             vs += [verts[i].x, verts[i].y]
             vs += [verts[l-1-i].x, verts[l-1-i].y]
-
+           
         if l%2:
             vs += [verts[mid].x, verts[mid].y]
             
@@ -194,6 +199,16 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         self.batch.add(l, mode, None,
                     ('v2f', vs),
                     ('c4B', fill_color.as_int()*l))
+        
+        if radius > 0:
+            for i in range(len(verts)):
+                a = verts[i]
+                b = verts[(i+1) % len(verts)]
+                #print(a, b)
+                self.draw_fat_segment(a, b, radius, outline_color, outline_color)
+                
+        
+            
 
     def draw_dot(self, size, pos, color):
         # todo: optimize this functions
