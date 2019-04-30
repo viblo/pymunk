@@ -1,6 +1,7 @@
 import os, os.path
 import platform
 import sys
+import subprocess
 from distutils.command.build_ext import build_ext
 import distutils.ccompiler as cc
 from setuptools import Extension
@@ -48,6 +49,15 @@ class build_chipmunk(build_ext, object):
         #print("get_outputs xoutputs", self.xoutputs)
         return self.xoutputs
 
+    def is_android(self):
+        try:
+            machine = subprocess.check_output(
+                self.compiler.compiler + ['-dumpmachine'])
+            return b'android' in machine
+        except:
+            print("Could not detect if on Android. Defaulting to false.")
+            return False
+
     def run(self):  
         self.compiler = cc.new_compiler(compiler=self.compiler)
         #print(self.compiler.executables)
@@ -71,10 +81,11 @@ class build_chipmunk(build_ext, object):
                             # '-DCP_ALLOW_PRIVATE_ACCESS']
                             ]
 
-        
         if not self.debug:
             compiler_preargs.append('-DNDEBUG')
-        
+
+        is_android = self.is_android()
+
         if "CFLAGS" in os.environ:
             cflags = os.environ["CFLAGS"].split()
             for cflag in cflags:
@@ -82,13 +93,16 @@ class build_chipmunk(build_ext, object):
                 if x != "":
                     compiler_preargs.append(x)
         else:
+            if is_android:
+                compiler_preargs += ['-DANDROID']
+
             if platform.system() == 'Linux':
                 compiler_preargs += ['-fPIC', '-O3']
                 if get_arch() == 64 and not platform.machine().startswith('arm'):
                     compiler_preargs += ['-m64']
                 elif get_arch() == 32 and not platform.machine().startswith('arm'):
                     compiler_preargs += ['-m32']
-
+                
             elif platform.system() == 'Darwin':
                 #No -O3 on OSX. There's a bug in the clang compiler when using O3.
                 mac_ver_float = float('.'.join(platform.mac_ver()[0].split('.')[:2]))
@@ -139,13 +153,18 @@ class build_chipmunk(build_ext, object):
                 linker_preargs.append(l)
             #linker_preargs.append("-shared")
         else:
-            if platform.system() == 'Linux' and platform.machine() == 'x86_64':
-                linker_preargs += ['-fPIC']
+            if platform.system() == 'Linux':
+                if platform.machine() == 'x86_64':
+                    linker_preargs += ['-fPIC']
+                if is_android:
+                    linker_preargs += ['-fPIC', '-lm', '-llog']
+
             elif platform.system() == 'Windows':
                 if get_arch() == 32:
                     linker_preargs += ['-m32']
                 else:
                     linker_preargs += ['-m64']
+
             elif platform.system() == 'Darwin':
                 self.compiler.set_executable('linker_so', 
                 ['cc', '-dynamiclib', '-arch', 'i386', '-arch', 'x86_64'])
