@@ -11,6 +11,7 @@ to install Pymunk::
 
     > conda install -c conda-forge pymunk
 
+
 Pymunk 5.4.2
 ------------
 *Victor - 2019-01-07*
@@ -26,6 +27,7 @@ threaded solver on a desktop running windows is unclear.
 Changes: 
 
 - Disable threaded solver on Windows.
+
 
 Pymunk 5.4.1
 ------------
@@ -44,6 +46,7 @@ Changes:
 - Fix problems using custom CFLAGS when compiling chipmunk
 
 Enjoy!
+
 
 Pymunk 5.4.0
 ------------
@@ -65,6 +68,7 @@ Changes:
 - Use msys mingw to compile chipmunk on Windows (prev solution was deprecated).
 
 Enjoy!
+
 
 Introductory video tutorials
 ----------------------------
