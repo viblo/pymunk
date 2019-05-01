@@ -13,6 +13,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -121,7 +122,7 @@
 <span class="sd">        make adjustments for that with the :py:data:`positive_y_is_up` variable.</span>
 
 <span class="sd">        By default drawing is done with positive y pointing up, but that will </span>
-<span class="sd">        make conversion from pygame coordinate to pymunk coordinate nessecary. </span>
+<span class="sd">        make conversion from pygame coordinate to pymunk coordinate necessary. </span>
 <span class="sd">        If you do a lot of those (for example, lots of mouse input) it might be </span>
 <span class="sd">        more convenient to set it to False::</span>
 
@@ -148,7 +149,7 @@
 <div class="viewcode-block" id="DrawOptions.draw_circle"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_circle">[docs]</a>    <span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
     
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">radius</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">_rndint</span><span class="p">(</span><span class="n">radius</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
         
         <span class="n">circle_edge</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">Vec2d</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">circle_edge</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
@@ -165,23 +166,41 @@
         <span class="n">p1</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
         
-        <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">r</span><span class="p">)</span></div>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">_rndint</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">],</span> <span class="n">r</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">orthog</span> <span class="o">=</span> <span class="p">[</span> <span class="n">delta</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">delta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">]</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">/</span> <span class="p">(</span><span class="n">orthog</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">orthog</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">orthog</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">orthog</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mf">0.5</span>
+            <span class="n">orthog</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*=</span><span class="n">scale</span><span class="p">;</span> <span class="n">orthog</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*=</span><span class="n">scale</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">orthog</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">orthog</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">),</span>
+                <span class="p">(</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">orthog</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">orthog</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">),</span>
+                <span class="p">(</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">orthog</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">orthog</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">),</span>
+                <span class="p">(</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">orthog</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">orthog</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+            <span class="p">]</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> 
+                <span class="p">(</span><span class="n">_rndint</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">_rndint</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="n">_rndint</span><span class="p">(</span><span class="n">radius</span><span class="p">))</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> 
+                <span class="p">(</span><span class="n">_rndint</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">_rndint</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="n">_rndint</span><span class="p">(</span><span class="n">radius</span><span class="p">))</span></div>
         
 <div class="viewcode-block" id="DrawOptions.draw_polygon"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verts</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">):</span>
         <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_pygame</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">verts</span><span class="p">]</span>
         <span class="n">ps</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-        
+
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">ps</span><span class="p">)</span>
-        
-        <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">radius</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span></div>
+
+        <span class="k">if</span> <span class="n">radius</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">)):</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">verts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">verts</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">)]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">draw_fat_segment</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">outline_color</span><span class="p">,</span> 
+                    <span class="n">outline_color</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DrawOptions.draw_dot"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.DrawOptions.draw_dot">[docs]</a>    <span class="k">def</span> <span class="nf">draw_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span></div></div>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">_rndint</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span></div></div>
 
     
 <div class="viewcode-block" id="get_mouse_pos"><a class="viewcode-back" href="../../pymunk.pygame_util.html#pymunk.pygame_util.get_mouse_pos">[docs]</a><span class="k">def</span> <span class="nf">get_mouse_pos</span><span class="p">(</span><span class="n">surface</span><span class="p">):</span>
@@ -207,7 +226,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">surface</span><span class="p">)</span></div>
 
-            
+<span class="k">def</span> <span class="nf">_rndint</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>            
 </pre></div>
 
           </div>
@@ -228,7 +248,7 @@
 		</a>
 	</p>
 </div>
-<h3><a href="../../index.html">Table Of Contents</a></h3>
+<h3><a href="../../index.html">Table of Contents</a></h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
@@ -275,7 +295,7 @@
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>

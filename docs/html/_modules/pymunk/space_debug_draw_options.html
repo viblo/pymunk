@@ -13,6 +13,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../../_static/pymunk_favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -142,26 +143,87 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">f3</span><span class="p">,</span><span class="n">f4</span><span class="p">,</span><span class="n">f5</span><span class="p">,</span><span class="n">f6</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">_get_shape_outline_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">shapeOutlineColor</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">shapeOutlineColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_shape_outline_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">shapeOutlineColor</span> <span class="o">=</span> <span class="n">c</span>
     <span class="n">shape_outline_color</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_shape_outline_color</span><span class="p">,</span> 
-        <span class="n">_set_shape_outline_color</span><span class="p">)</span>
+        <span class="n">_set_shape_outline_color</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The outline color of shapes.</span>
+<span class="s2">        </span>
+<span class="s2">        Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).</span>
+
+<span class="s2">        Example:</span>
+
+<span class="s2">        &gt;&gt;&gt; import pymunk</span>
+<span class="s2">        &gt;&gt;&gt; s = pymunk.Space()</span>
+<span class="s2">        &gt;&gt;&gt; c = pymunk.Circle(s.static_body, 10)</span>
+<span class="s2">        &gt;&gt;&gt; s.add(c)</span>
+<span class="s2">        &gt;&gt;&gt; options = pymunk.SpaceDebugDrawOptions()</span>
+<span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
+<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>
+<span class="s2">        &gt;&gt;&gt; options.shape_outline_color = (10,20,30,40)</span>
+<span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
+<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>
+
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_constraint_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">constraintColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_constraint_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">constraintColor</span> <span class="o">=</span> <span class="n">c</span>
     <span class="n">constraint_color</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_constraint_color</span><span class="p">,</span> 
-        <span class="n">_set_constraint_color</span><span class="p">)</span>
+        <span class="n">_set_constraint_color</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The color of constraints.</span>
+
+<span class="s2">        Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).</span>
+<span class="s2">        </span>
+<span class="s2">        Example:</span>
+
+<span class="s2">        &gt;&gt;&gt; import pymunk</span>
+<span class="s2">        &gt;&gt;&gt; s = pymunk.Space()</span>
+<span class="s2">        &gt;&gt;&gt; j = pymunk.PivotJoint(s.static_body, s.static_body, (0,0))</span>
+<span class="s2">        &gt;&gt;&gt; s.add(j)</span>
+<span class="s2">        &gt;&gt;&gt; options = pymunk.SpaceDebugDrawOptions()</span>
+<span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
+<span class="s2">        (&#39;draw_dot&#39;, (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0)))</span>
+<span class="s2">        (&#39;draw_dot&#39;, (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0)))</span>
+<span class="s2">        &gt;&gt;&gt; options.constraint_color = (10,20,30,40)</span>
+<span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
+<span class="s2">        (&#39;draw_dot&#39;, (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0)))</span>
+<span class="s2">        (&#39;draw_dot&#39;, (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0)))</span>
+
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_collision_point_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">collisionPointColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_collision_point_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">collisionPointColor</span> <span class="o">=</span> <span class="n">c</span>
     <span class="n">collision_point_color</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_collision_point_color</span><span class="p">,</span> 
-        <span class="n">_set_collision_point_color</span><span class="p">)</span>
+        <span class="n">_set_collision_point_color</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The color of collisions.</span>
+
+<span class="s2">        Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).</span>
+<span class="s2">        </span>
+<span class="s2">        Example:</span>
+
+<span class="s2">        &gt;&gt;&gt; import pymunk</span>
+<span class="s2">        &gt;&gt;&gt; s = pymunk.Space()</span>
+<span class="s2">        &gt;&gt;&gt; b = pymunk.Body(1,10)</span>
+<span class="s2">        &gt;&gt;&gt; c1 = pymunk.Circle(b, 10)</span>
+<span class="s2">        &gt;&gt;&gt; c2 = pymunk.Circle(s.static_body, 10)</span>
+<span class="s2">        &gt;&gt;&gt; s.add(b, c1, c2)</span>
+<span class="s2">        &gt;&gt;&gt; s.step(1)</span>
+<span class="s2">        &gt;&gt;&gt; options = pymunk.SpaceDebugDrawOptions()</span>
+<span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
+<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))</span>
+<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>
+<span class="s2">        (&#39;draw_segment&#39;, (Vec2d(8.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=231.0, g=76.0, b=60.0, a=255.0)))</span>
+<span class="s2">        &gt;&gt;&gt; options.collision_point_color = (10,20,30,40)</span>
+<span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
+<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))</span>
+<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>
+<span class="s2">        (&#39;draw_segment&#39;, (Vec2d(8.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0)))</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -260,7 +322,7 @@
 		</a>
 	</p>
 </div>
-<h3><a href="../../index.html">Table Of Contents</a></h3>
+<h3><a href="../../index.html">Table of Contents</a></h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
@@ -307,7 +369,7 @@
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>

@@ -14,6 +14,11 @@ v5.x
 - can autosummary be used? (see stackoverflow answer)
 - update doctests to use python3 print instead of python2.
 - tests of py2exe/pyinstaller/cx_freeze?
+- make example where a container is used for a complex shape such as car: https://stackoverflow.com/questions/55146932/grouping-without-collision-adding-and-removing-multiple-bodies-and-polygons-i/55150431#55150431
+- make camera example.. could a offset be sent into the debug draw code.
+- Type annotations?
+- update example code to be less dependent on the flipy function for pygame. instead flip the gravity.
+- Update docs with collision chapter. ShapeFilter, collision callbacks and such
 
 v6+ (all potentially breaking changes)
 ---
@@ -29,3 +34,5 @@ v6+ (all potentially breaking changes)
   microbench). 
 - Make add_collision_handler(a,b) and add_collision_handler(b,a) return the 
   same handler. Fixes https://github.com/viblo/pymunk/issues/132 
+- make default of positive_y_is_up False
+- use sphinx_autodoc_typehints and type hints when python 2 support is dropped

@@ -13,6 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="shortcut icon" href="_static/pymunk_favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -52,11 +53,12 @@ position and rotation of the rigid body for drawing your sprite.</dd>
 attach many shapes to a single body to define a complex shape, or none if
 it doesn’t require a shape.</dd>
 <dt><strong>Constraints/Joints</strong> (<a class="reference internal" href="pymunk.constraint.html#pymunk.constraint.PinJoint" title="pymunk.constraint.PinJoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.PinJoint</span></code></a>, <a class="reference internal" href="pymunk.constraint.html#pymunk.constraint.SimpleMotor" title="pymunk.constraint.SimpleMotor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.SimpleMotor</span></code></a> and many others)</dt>
-<dd>You can attach joints between two bodies to constrain their behavior.</dd>
+<dd>You can attach constraints between two bodies to constrain their behavior,
+for example to keep a fixed distance between two bodies.</dd>
 <dt><strong>Spaces</strong> (<a class="reference internal" href="pymunk.html#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Space</span></code></a>)</dt>
 <dd>Spaces are the basic simulation unit in Pymunk. You add bodies, shapes
-and joints to a space, and then update the space as a whole. They control
-how all the rigid bodies, shapes, and constraints interact together.</dd>
+and constraints to a space, and then update the space as a whole. They
+control how all the rigid bodies, shapes, and constraints interact together.</dd>
 </dl>
 <p>The actual simulation is done by the Space. After adding the objects that
 should be simulated to the Space time is moved forward in small steps with the
@@ -193,7 +195,7 @@ a C-library.</p>
 		</a>
 	</p>
 </div>
-<h3><a href="index.html">Table Of Contents</a></h3>
+<h3><a href="index.html">Table of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="news.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -258,7 +260,7 @@ a C-library.</p>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
