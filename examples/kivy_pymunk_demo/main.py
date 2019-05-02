@@ -14,7 +14,6 @@ import random
 random.seed(5)
 
 import kivy
-kivy.require('1.9.1')
 
 from kivy.app import App
 from kivy.uix.widget import Widget
@@ -34,7 +33,6 @@ import cffi
 import pymunk
 import pymunk.autogeometry
 from pymunk.vec2d import Vec2d
-
 
 class PymunkDemo(RelativeLayout):
     
@@ -205,7 +203,6 @@ class PymunkDemo(RelativeLayout):
         
         r = 10
         
-        letter_group = 0
         lines = []
         for line in line_set:
             line = pymunk.autogeometry.simplify_curves(line, .7)
