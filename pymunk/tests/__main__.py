@@ -4,6 +4,14 @@ import sys
 import os
 
 def main():
+    
+    def list_of_tests_gen(s):
+        for test in s:
+            if unittest.suite._isnotsuite(test):
+                yield test
+            else:
+                for t in list_of_tests_gen(test):
+                    yield t
 
     from . import doctests
     
@@ -17,29 +25,27 @@ def main():
     filtered_suite = unittest.TestSuite()
 
     if len(sys.argv) > 1:
-        m = sys.argv[1]
-
-        def list_of_tests_gen(s):
-            for test in s:
-                if unittest.suite._isnotsuite(test):
-                    yield test
-                else:
-                    for t in list_of_tests_gen(test):
-                        yield t
-
+        test_filter = sys.argv[1]
         for test in list_of_tests_gen(suite):
             if isinstance(test, doctest.DocTestCase) \
-                and m.startswith("doctest") \
-                or m in str(test.id()):
+                and test_filter.startswith("doctest") \
+                or test_filter in str(test.id()):
                 filtered_suite.addTest(test)
-        suite = filtered_suite
+
+    elif sys.version_info.major < 3:
+        print("Skipping doctests"
+              " (Doctests uses on formatting that differ between Py2 and 3)")
+        for test in list_of_tests_gen(suite):
+            if not isinstance(test, doctest.DocTestCase):
+                filtered_suite.addTest(test)
+    else:
+        filtered_suite = suite
     
-    res = unittest.TextTestRunner(verbosity=2).run(suite)
+    res = unittest.TextTestRunner(verbosity=2).run(filtered_suite)
     wasSuccessful = res.wasSuccessful()
 
     sys.exit(not wasSuccessful)
     
-
 if __name__ == '__main__':
     import os
     import sys

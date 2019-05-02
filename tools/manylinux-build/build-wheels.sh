@@ -27,7 +27,7 @@ for PYVER in $SUPPORTED_PYTHONS; do
     ${PYBIN}/pip install cffi
     ${PYBIN}/pip install pymunk \
       --no-index -f /io/tools/manylinux-build/wheelhouse
-    (cd $HOME; ${PYBIN}/python -m pymunk.tests UnitTest)
+    (cd $HOME; ${PYBIN}/python -m pymunk.tests)
 done
 
 echo "Here are the binary wheels for linux:"
