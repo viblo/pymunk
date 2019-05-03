@@ -11,7 +11,7 @@ shutil.rmtree(os.path.join(pymunk_src_path, "include"), True)
 if len(sys.argv) > 1:
     chipmunk_git_path = sys.argv[1]
 else:
-    chipmunk_git_path = raw_input("Enter path to chipmunk source")
+    chipmunk_git_path = input("Enter path to chipmunk source")
 
 shutil.copytree(os.path.join(chipmunk_git_path,"src"), os.path.join(pymunk_src_path,"src"))    
 shutil.copytree(os.path.join(chipmunk_git_path,"include"), os.path.join(pymunk_src_path,"include"))    
