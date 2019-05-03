@@ -16,7 +16,7 @@ class UnitTestShape(unittest.TestCase):
         self.assertEqual(distance, -5)
         self.assertEqual(info.shape, c)
         
-        self.assertEqual(str(info.point), "Vec2d(nan, nan)")
+        self.assertEqual(info.point, (0, 0))
         self.assertEqual(info.distance, -5)
         self.assertEqual(info.gradient, (0,1))
 

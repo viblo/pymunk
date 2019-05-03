@@ -15,7 +15,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
 
@@ -25,14 +25,23 @@
 #include <stdlib.h>
 #include <math.h>
 
-#ifdef WIN32
-	// For alloca().
-	#include <malloc.h>
-    //Pymunk on windows support
-	//#define CP_EXPORT __declspec(dllexport)
-    #define CP_EXPORT 
+#ifndef alloca
+	#ifdef _WIN32
+		#include <malloc.h>
+	#elif defined(__FreeBSD__)
+		/* already included in <stdlib.h> */
+	#else
+		#include <alloca.h>
+	#endif
+#endif
+
+#ifdef _WIN32
+	#ifdef __MINGW32__
+		#define CP_EXPORT
+	#else
+		#define CP_EXPORT __declspec(dllexport)
+	#endif
 #else
-	#include <alloca.h>
 	#define CP_EXPORT
 #endif
 
@@ -120,10 +129,10 @@ typedef struct cpSpace cpSpace;
 
 #include "cpSpace.h"
 
-// Chipmunk 7.0.1
+// Chipmunk 7.0.2
 #define CP_VERSION_MAJOR 7
 #define CP_VERSION_MINOR 0
-#define CP_VERSION_RELEASE 1
+#define CP_VERSION_RELEASE 2
 
 /// Version string.
 CP_EXPORT extern const char *cpVersionString;
@@ -164,10 +173,6 @@ CP_EXPORT cpFloat cpMomentForBox2(cpFloat m, cpBB box);
 /// @c first is an optional pointer to an integer to store where the first vertex in the hull came from (i.e. verts[first] == result[0])
 /// @c tol is the allowed amount to shrink the hull when simplifying it. A tolerance of 0.0 creates an exact hull.
 CP_EXPORT int cpConvexHull(int count, const cpVect *verts, cpVect *result, int *first, cpFloat tol);
-
-#ifdef _MSC_VER
-#include "malloc.h"
-#endif
 
 /// Convenience macro to work with cpConvexHull.
 /// @c count and @c verts is the input array passed to cpConvexHull().

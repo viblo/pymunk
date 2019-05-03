@@ -16,6 +16,16 @@ else:
 shutil.copytree(os.path.join(chipmunk_git_path,"src"), os.path.join(pymunk_src_path,"src"))    
 shutil.copytree(os.path.join(chipmunk_git_path,"include"), os.path.join(pymunk_src_path,"include"))    
 
-subprocess.call("git rev-parse HEAD", shell=True)
+print("Git hash")
+subprocess.call(f"git -C {chipmunk_git_path} rev-parse HEAD", shell=True)
+print("Changes not commited (if changes, do not trust git hash!):")
+subprocess.call(f"git -C {chipmunk_git_path} status --porcelain", shell=True)
 
-print("Remember to update git version string of chipmunk!")
+print("""
+Remember to update git version string of chipmunk! At least these files:
+    chipmunk_src/README.txt
+    pymunk/__init__.py
+    README.rst
+    """)
+    
+

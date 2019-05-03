@@ -1,4 +1,5 @@
-Chipmunk 7.0.1 rev 6e6498521d28dd77505adc2907c3e6c43b1d0e52
+Chipmunk 7.0.2 rev aef346fb8bac3757c3c6faa019bbf97bafc296d1 
+cloned from from https://github.com/viblo/Chipmunk2D.git
                  
 see http://chipmunk-physics.net/
 

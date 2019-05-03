@@ -79,7 +79,8 @@ Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from git).
 """
 
-chipmunk_version = "%sR%s" % (ffi.string(cp.cpVersionString), 'd7603e392782079b691d7948405af2dd66648a7a')
+chipmunk_version = "%sR%s" % (ffi.string(cp.cpVersionString), 
+    'aef346fb8bac3757c3c6faa019bbf97bafc296d1')
 """The Chipmunk version compatible with this pymunk version.
 Other (newer) Chipmunk versions might also work if the new version does not
 contain any breaking API changes.
@@ -91,7 +92,7 @@ The string is in the following format:
 <cpVersionString>R<github commit of chipmunk>
 where cpVersionString is a version string set by Chipmunk and the git commit
 hash corresponds to the git hash of the chipmunk source from
-github.com/slembcke/Chipmunk2D included with Pymunk. If the Chipmunk version
+github.com/viblo/Chipmunk2D included with Pymunk. If the Chipmunk version
 is a release then the second part will be empty
 
 .. note::

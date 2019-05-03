@@ -137,7 +137,7 @@ cpShapeGetElasticity(const cpShape *shape)
 void
 cpShapeSetElasticity(cpShape *shape, cpFloat elasticity)
 {
-	cpAssertHard(elasticity >= 0.0f, "Elasticity must be positive and non-zero.");
+	cpAssertHard(elasticity >= 0.0f, "Elasticity must be positive.");
 	cpBodyActivate(shape->body);
 	shape->e = elasticity;
 }
@@ -151,7 +151,7 @@ cpShapeGetFriction(const cpShape *shape)
 void
 cpShapeSetFriction(cpShape *shape, cpFloat friction)
 {
-	cpAssertHard(friction >= 0.0f, "Friction must be postive and non-zero.");
+	cpAssertHard(friction >= 0.0f, "Friction must be postive.");
 	cpBodyActivate(shape->body);
 	shape->u = friction;
 }
@@ -303,7 +303,8 @@ cpCircleShapePointQuery(cpCircleShape *circle, cpVect p, cpPointQueryInfo *info)
 	cpFloat r = circle->r;
 	
 	info->shape = (cpShape *)circle;
-	info->point = cpvadd(circle->tc, cpvmult(delta, r/d)); // TODO: div/0
+	cpFloat r_over_d = d > 0.0f ? r/d : r;
+	info->point = cpvadd(circle->tc, cpvmult(delta, r_over_d)); // TODO: div/0
 	info->distance = d - r;
 	
 	// Use up for the gradient if the distance is very small.
