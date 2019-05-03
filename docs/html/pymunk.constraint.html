@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pymunk.constraint Module &#8212; pymunk 5.4.2 documentation</title>
+    <meta charset="utf-8" />
+    <title>pymunk.constraint Module &#8212; pymunk 5.5.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -69,7 +67,7 @@ instead use one of the specific constraints such as the PinJoint.</p>
 <dl class="method">
 <dt id="pymunk.constraint.Constraint.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>constraint=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#Constraint.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.Constraint.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -375,19 +373,15 @@ points, but make sure you have the bodies in the right place as the
 joint will fix itself as soon as you start simulating the space.</p>
 <p>That is, either create the joint with PivotJoint(a, b, pivot) or
 PivotJoint(a, b, anchor_a, anchor_b).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – The first of the two bodies</li>
-<li><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – The second of the two bodies</li>
-<li><strong>args</strong> (<em>(</em><em>float</em><em>,</em><em>float</em><em>) or </em><em>(</em><em>float</em><em>,</em><em>float</em><em>) </em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em>) – Either one pivot point, or two anchor points</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – The first of the two bodies</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – The second of the two bodies</p></li>
+<li><p><strong>args</strong> (<em>(</em><em>float</em><em>,</em><em>float</em><em>) or </em><em>(</em><em>float</em><em>,</em><em>float</em><em>) </em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em>) – Either one pivot point, or two anchor points</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -585,23 +579,19 @@ bodies.</p>
 <dt id="pymunk.constraint.DampedSpring.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>anchor_a</em>, <em>anchor_b</em>, <em>rest_length</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedSpring.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedSpring.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defined much like a slide joint.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – Body a</li>
-<li><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – Body b</li>
-<li><strong>anchor_a</strong> (<cite>(float,float)</cite>) – Anchor point a, relative to body a</li>
-<li><strong>anchor_b</strong> (<cite>(float,float)</cite>) – Anchor point b, relative to body b</li>
-<li><strong>rest_length</strong> (<em>float</em>) – The distance the spring wants to be.</li>
-<li><strong>stiffness</strong> (<em>float</em>) – The spring constant (Young’s modulus).</li>
-<li><strong>damping</strong> (<em>float</em>) – How soft to make the damping of the spring.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – Body a</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – Body b</p></li>
+<li><p><strong>anchor_a</strong> (<cite>(float,float)</cite>) – Anchor point a, relative to body a</p></li>
+<li><p><strong>anchor_b</strong> (<cite>(float,float)</cite>) – Anchor point b, relative to body b</p></li>
+<li><p><strong>rest_length</strong> (<em>float</em>) – The distance the spring wants to be.</p></li>
+<li><p><strong>stiffness</strong> (<em>float</em>) – The spring constant (Young’s modulus).</p></li>
+<li><p><strong>damping</strong> (<em>float</em>) – How soft to make the damping of the spring.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -714,22 +704,18 @@ bodies.</p>
 <dt id="pymunk.constraint.DampedRotarySpring.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>rest_angle</em>, <em>stiffness</em>, <em>damping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/constraint.html#DampedRotarySpring.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.constraint.DampedRotarySpring.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Like a damped spring, but works in an angular fashion.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – Body a</li>
-<li><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – Body b</li>
-<li><strong>rest_angle</strong> (<em>float</em>) – The relative angle in radians that the bodies 
-want to have</li>
-<li><strong>stiffness</strong> (<em>float</em>) – The spring constant (Young’s modulus).</li>
-<li><strong>damping</strong> (<em>float</em>) – How soft to make the damping of the spring.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – Body a</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><em>Body</em></a>) – Body b</p></li>
+<li><p><strong>rest_angle</strong> (<em>float</em>) – The relative angle in radians that the bodies 
+want to have</p></li>
+<li><p><strong>stiffness</strong> (<em>float</em>) – The spring constant (Young’s modulus).</p></li>
+<li><p><strong>damping</strong> (<em>float</em>) – How soft to make the damping of the spring.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -1238,14 +1224,14 @@ bodies.</p>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="pymunk.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pymunk.html#pymunk-package"><code class="docutils literal notranslate"><span class="pre">pymunk</span></code> Package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pymunk.autogeometry.html"><code class="docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">pymunk.constraint</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal notranslate"><span class="pre">pymunkoptions</span></code> Module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pymunk.html#pymunk-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk</span></code> Package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pymunk.autogeometry.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.constraint</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunkoptions</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
@@ -1265,8 +1251,8 @@ bodies.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="pymunk.html">API Reference</a><ul>
-      <li>Previous: <a href="pymunk.autogeometry.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
-      <li>Next: <a href="pymunk.vec2d.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
+      <li>Previous: <a href="pymunk.autogeometry.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
+      <li>Next: <a href="pymunk.vec2d.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -1284,8 +1270,6 @@ bodies.</p>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -1298,8 +1282,8 @@ bodies.</p>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/pymunk.constraint.rst.txt"

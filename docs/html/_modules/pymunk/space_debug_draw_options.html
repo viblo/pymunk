@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pymunk.space_debug_draw_options &#8212; pymunk 5.4.2 documentation</title>
+    <meta charset="utf-8" />
+    <title>pymunk.space_debug_draw_options &#8212; pymunk 5.5.0 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -160,10 +158,10 @@
 <span class="s2">        &gt;&gt;&gt; s.add(c)</span>
 <span class="s2">        &gt;&gt;&gt; options = pymunk.SpaceDebugDrawOptions()</span>
 <span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
-<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>
+<span class="s2">        draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))</span>
 <span class="s2">        &gt;&gt;&gt; options.shape_outline_color = (10,20,30,40)</span>
 <span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
-<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>
+<span class="s2">        draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))</span>
 
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
@@ -185,12 +183,12 @@
 <span class="s2">        &gt;&gt;&gt; s.add(j)</span>
 <span class="s2">        &gt;&gt;&gt; options = pymunk.SpaceDebugDrawOptions()</span>
 <span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
-<span class="s2">        (&#39;draw_dot&#39;, (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0)))</span>
-<span class="s2">        (&#39;draw_dot&#39;, (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0)))</span>
+<span class="s2">        draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0))</span>
+<span class="s2">        draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0))</span>
 <span class="s2">        &gt;&gt;&gt; options.constraint_color = (10,20,30,40)</span>
 <span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
-<span class="s2">        (&#39;draw_dot&#39;, (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0)))</span>
-<span class="s2">        (&#39;draw_dot&#39;, (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0)))</span>
+<span class="s2">        draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0))</span>
+<span class="s2">        draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0))</span>
 
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
@@ -215,14 +213,14 @@
 <span class="s2">        &gt;&gt;&gt; s.step(1)</span>
 <span class="s2">        &gt;&gt;&gt; options = pymunk.SpaceDebugDrawOptions()</span>
 <span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
-<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))</span>
-<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>
-<span class="s2">        (&#39;draw_segment&#39;, (Vec2d(8.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=231.0, g=76.0, b=60.0, a=255.0)))</span>
+<span class="s2">        draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0))</span>
+<span class="s2">        draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))</span>
+<span class="s2">        draw_segment (Vec2d(8.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=231.0, g=76.0, b=60.0, a=255.0))</span>
 <span class="s2">        &gt;&gt;&gt; options.collision_point_color = (10,20,30,40)</span>
 <span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
-<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))</span>
-<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>
-<span class="s2">        (&#39;draw_segment&#39;, (Vec2d(8.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0)))</span>
+<span class="s2">        draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0))</span>
+<span class="s2">        draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))</span>
+<span class="s2">        draw_segment (Vec2d(8.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0))</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -260,16 +258,16 @@
 <span class="s2">        &gt;&gt;&gt; # Only draw the shapes, nothing else:</span>
 <span class="s2">        &gt;&gt;&gt; options.flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES</span>
 <span class="s2">        &gt;&gt;&gt; s.debug_draw(options) </span>
-<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))</span>
-<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>
+<span class="s2">        draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0))</span>
+<span class="s2">        draw_circle (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))</span>
 
 <span class="s2">        &gt;&gt;&gt; # Draw the shapes and collision points:</span>
 <span class="s2">        &gt;&gt;&gt; options.flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES</span>
 <span class="s2">        &gt;&gt;&gt; options.flags |= pymunk.SpaceDebugDrawOptions.DRAW_COLLISION_POINTS</span>
 <span class="s2">        &gt;&gt;&gt; s.debug_draw(options)</span>
-<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))</span>
-<span class="s2">        (&#39;draw_circle&#39;, (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0)))</span>
-<span class="s2">        (&#39;draw_segment&#39;, (Vec2d(1.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=231.0, g=76.0, b=60.0, a=255.0)))</span>
+<span class="s2">        draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0))</span>
+<span class="s2">        draw_circle (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))</span>
+<span class="s2">        draw_segment (Vec2d(1.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=231.0, g=76.0, b=60.0, a=255.0))</span>
 <span class="s2">        </span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
@@ -355,8 +353,6 @@
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -369,8 +365,8 @@
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

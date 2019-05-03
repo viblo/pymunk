@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Slide and Pin Joint Demo Step by Step &#8212; pymunk 5.4.2 documentation</title>
+    <meta charset="utf-8" />
+    <title>Slide and Pin Joint Demo Step by Step &#8212; pymunk 5.5.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -47,9 +45,9 @@ miss something in the tutorial or something is unclear.</p>
 <h2>Before we start<a class="headerlink" href="#before-we-start" title="Permalink to this headline">¶</a></h2>
 <p>For this tutorial you will need:</p>
 <ul class="simple">
-<li>Python (of course)</li>
-<li>Pygame (found at www.pygame.org)</li>
-<li>Pymunk</li>
+<li><p>Python (of course)</p></li>
+<li><p>Pygame (found at www.pygame.org)</p></li>
+<li><p>Pymunk</p></li>
 </ul>
 <p>Pygame is required for this tutorial and some of the included demos, but it
 is not required to run just pymunk. Pymunk should work just fine with other
@@ -84,21 +82,21 @@ tracker: <a class="reference internal" href="../index.html#id1"><span class="std
 <p>Ok, lets start.
 Chipmunk (and therefore pymunk) has a couple of central concepts, which is
 explained pretty good in this citation from the Chipmunk docs:</p>
-<dl class="docutils">
-<dt>Rigid bodies</dt>
-<dd>A rigid body holds the physical properties of an object. (mass, position,
+<dl class="simple">
+<dt>Rigid bodies</dt><dd><p>A rigid body holds the physical properties of an object. (mass, position,
 rotation, velocity, etc.) It does not have a shape by itself. If you’ve
 done physics with particles before, rigid bodies differ mostly in that they
-are able to rotate.</dd>
-<dt>Collision shapes</dt>
-<dd>By attaching shapes to bodies, you can define the a body’s shape. You can
+are able to rotate.</p>
+</dd>
+<dt>Collision shapes</dt><dd><p>By attaching shapes to bodies, you can define the a body’s shape. You can
 attach many shapes to a single body to define a complex shape, or none if
-it doesn’t require a shape.</dd>
-<dt>Constraints/joints</dt>
-<dd>You can attach joints between two bodies to constrain their behavior.</dd>
-<dt>Spaces</dt>
-<dd>Spaces are the basic simulation unit in Chipmunk. You add bodies, shapes
-and joints to a space, and then update the space as a whole.</dd>
+it doesn’t require a shape.</p>
+</dd>
+<dt>Constraints/joints</dt><dd><p>You can attach joints between two bodies to constrain their behavior.</p>
+</dd>
+<dt>Spaces</dt><dd><p>Spaces are the basic simulation unit in Chipmunk. You add bodies, shapes
+and joints to a space, and then update the space as a whole.</p>
+</dd>
 </dl>
 <p>The documentation for Chipmunk can be found here:
 <a class="reference external" href="http://chipmunk-physics.net/release/ChipmunkLatest-Docs/">http://chipmunk-physics.net/release/ChipmunkLatest-Docs/</a>
@@ -141,17 +139,17 @@ as the concepts are the same, just that Pymunk is more pythonic to use.</p>
 <p>The code will display a blank window, and will run a physics simulation of an
 empty space.</p>
 <ol class="arabic simple">
-<li>We need to import pymunk in order to use it…</li>
-<li>We then create a space and set its gravity to something good. Remember
+<li><p>We need to import pymunk in order to use it…</p></li>
+<li><p>We then create a space and set its gravity to something good. Remember
 that what is important is what looks good on screen, not what the real
 world value is. -900 will make a good looking simulation, but feel free
-to experiment when you have the full code ready.</li>
-<li>In our game loop we call the step() function on our space. The step
-function steps the simulation one step forward in time.</li>
+to experiment when you have the full code ready.</p></li>
+<li><p>In our game loop we call the step() function on our space. The step
+function steps the simulation one step forward in time.</p></li>
 </ol>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">It is best to keep the step size constant and not adjust it depending on the
+<p class="admonition-title">Note</p>
+<p>It is best to keep the step size constant and not adjust it depending on the
 framerate. The physic simulation will work much better with a constant step
 size.</p>
 </div>
@@ -176,16 +174,16 @@ follow. First, a function to add a ball to a space:</p>
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li>All bodies must have their moment of inertia set. If our object is a normal
+<li><p>All bodies must have their moment of inertia set. If our object is a normal
 ball we can use the predefined function moment_for_circle to calculate it
 given its mass and radius. However, you could also select a value by
-experimenting with what looks good for your simulation.</li>
-<li>After we have the inertia we can create the body of the ball.</li>
-<li>And we set its position</li>
-<li>And in order for it to collide with things, it needs to have one (or many)
-collision shape(s).</li>
-<li>Finally we add the body and shape to the space to include it in our
-simulation.</li>
+experimenting with what looks good for your simulation.</p></li>
+<li><p>After we have the inertia we can create the body of the ball.</p></li>
+<li><p>And we set its position</p></li>
+<li><p>And in order for it to collide with things, it needs to have one (or many)
+collision shape(s).</p></li>
+<li><p>Finally we add the body and shape to the space to include it in our
+simulation.</p></li>
 </ol>
 <p>Now that we can create balls we want to display them. Either we can use the
 built in pymunk_util package do draw the whole space directly, or we can do it
@@ -283,11 +281,11 @@ with the balls we start with a function to add an L to the space:</p>
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li>We create a “static” body. The important step is to never add it to the
+<li><p>We create a “static” body. The important step is to never add it to the
 space like the dynamic ball bodies. Note how static bodies are created by
-setting the body_type of the body.</li>
-<li>A line shaped shape is created here.</li>
-<li>Again, we only add the segments, not the body to the space.</li>
+setting the body_type of the body.</p></li>
+<li><p>A line shaped shape is created here.</p></li>
+<li><p>Again, we only add the segments, not the body to the space.</p></li>
 </ol>
 <p>Since we use Space.debug_draw to draw the space we dont need to do any special
 draw code for the Segments, but I still include a possible draw function here
@@ -303,14 +301,14 @@ just to show what it could look like:</p>
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li>In order to get the position with the line rotation we use this calculation.
+<li><p>In order to get the position with the line rotation we use this calculation.
 line.a is the first endpoint of the line, line.b the second. At the moment
 the lines are static, and not rotated so we don’t really have to do this
-extra calculation, but we will soon make them move and rotate.</li>
-<li>This is a little function to convert coordinates from pymunk to pygame
+extra calculation, but we will soon make them move and rotate.</p></li>
+<li><p>This is a little function to convert coordinates from pymunk to pygame
 world. Now that we have it we can use it in the draw_ball() function as
 well. We want to flip the y coordinate (-p.y), and then offset it with the
-screen height (+600). It looks like this:</li>
+screen height (+600). It looks like this:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">to_pygame</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Small hack to convert pymunk to pygame coordinates&quot;&quot;&quot;</span>
@@ -392,15 +390,15 @@ the function to add_L().</p>
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li>This is the rotation center body. Its only purpose is to act as a static
+<li><p>This is the rotation center body. Its only purpose is to act as a static
 point in the joint so the line can rotate around it. As you see we never add
-any shapes to it.</li>
-<li>The L shape will now be moving in the world, and therefor it can no longer
+any shapes to it.</p></li>
+<li><p>The L shape will now be moving in the world, and therefor it can no longer
 be a static body. I have precalculated the inertia to 10000. (ok, I just
 took a number that worked, the important thing is that it looks good on
-screen!).</li>
-<li>A pin joint allow two objects to pivot about a single point. In our case one
-of the objects will be stuck to the world.</li>
+screen!).</p></li>
+<li><p>A pin joint allow two objects to pivot about a single point. In our case one
+of the objects will be stuck to the world.</p></li>
 </ol>
 </div>
 <div class="section" id="joints-2">
@@ -429,11 +427,11 @@ we modify the add_L() function:</p>
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li>We add a body..</li>
-<li>Create a slide joint. It behaves like pin joints but have a minimum and
+<li><p>We add a body..</p></li>
+<li><p>Create a slide joint. It behaves like pin joints but have a minimum and
 maximum distance. The two bodies can slide between the min and max, and in
 our case one of the bodies is static meaning only the body attached with the
-shapes will move.</li>
+shapes will move.</p></li>
 </ol>
 </div>
 <div class="section" id="ending">
@@ -453,11 +451,11 @@ the simulation when they are bellow the screen.</p>
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li>Loop the balls and check if the body.position is less than 0.</li>
-<li>If that is the case, we add it to our list of balls to remove.</li>
-<li>To remove an object from the space, we need to remove its shape and its
-body.</li>
-<li>And then we remove it from our list of balls.</li>
+<li><p>Loop the balls and check if the body.position is less than 0.</p></li>
+<li><p>If that is the case, we add it to our list of balls to remove.</p></li>
+<li><p>To remove an object from the space, we need to remove its shape and its
+body.</p></li>
+<li><p>And then we remove it from our list of balls.</p></li>
 </ol>
 <p>And now, done! You should have an inverted L shape in the middle of the screen
 being filled will balls, tipping over releasing them, tipping back and start
@@ -631,8 +629,6 @@ chipmunk forum)</p>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -645,8 +641,8 @@ chipmunk forum)</p>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="../_sources/tutorials/SlideAndPinJoint.rst.txt"

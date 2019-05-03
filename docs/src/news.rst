@@ -2,6 +2,31 @@
 News 
 ****
 
+Pymunk 5.5.0
+------------
+*Victor - 2019-05-03*
+
+**Updated Chipmunk version, FreeBSD, Android/Termux support and more!**
+
+This release contains a number of improvements. Chipmunk was updated to the 
+latest version, and then a number of unmerged PRs were merged in. (The 
+Chipmunk git repo is quite dead, so Pymunk will include unmerged PRs after 
+manual review). Another major improvement is that now Pymunk can run on 
+FreeBSD. It was also tested on Termux on Android, and several improvements to 
+the installation process has been included. A bunch of smaller fixes are also included.
+
+Changes:
+
+- Update Chipmunk to 7.0.2 + unmerged PRs 
+- Pymunk can be installed and run on FreeBSD
+- Pymunk can be installed and run on Termux on Android
+- Fix debug drawing of polygons with radius
+- Improved debug drawing of segments on pygame
+- Fix problem when installing without wheel package installed
+- New Constraints demo
+- Improved docs
+
+
 Conda install pymunk
 --------------------
 *Victor - 2019-03-09*

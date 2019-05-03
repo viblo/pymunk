@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pymunk.autogeometry Module &#8212; pymunk 5.4.2 documentation</title>
+    <meta charset="utf-8" />
+    <title>pymunk.autogeometry Module &#8212; pymunk 5.5.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -79,16 +77,14 @@ a Pymunk Poly or Segment:</p>
 <dt id="pymunk.autogeometry.is_closed">
 <code class="descclassname">pymunk.autogeometry.</code><code class="descname">is_closed</code><span class="sig-paren">(</span><em>polyline</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#is_closed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.is_closed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns true if the first vertex is equal to the last.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><cite>bool</cite></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><cite>bool</cite></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -98,21 +94,17 @@ a Pymunk Poly or Segment:</p>
 algorithm.</p>
 <p>This works very well on smooth or gently curved shapes, but not well on 
 straight edged or angular shapes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</li>
-<li><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</p></li>
+<li><p><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[(float,float)]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -121,42 +113,34 @@ straight edged or angular shapes.</p>
 <dd><p>Returns a copy of a polyline simplified by discarding “flat” vertexes.</p>
 <p>This works well on straight edged or angular shapes, not as well on smooth 
 shapes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</li>
-<li><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</p></li>
+<li><p><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[(float,float)]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pymunk.autogeometry.to_convex_hull">
 <code class="descclassname">pymunk.autogeometry.</code><code class="descname">to_convex_hull</code><span class="sig-paren">(</span><em>polyline</em>, <em>tolerance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#to_convex_hull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.to_convex_hull" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the convex hull of a polyline as a looped polyline.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</li>
-<li><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</p></li>
+<li><p><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[(float,float)]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -166,31 +150,27 @@ shapes.</p>
 <p>Returns a list of convex hulls that match the original shape to within 
 tolerance.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the input is a self intersecting polygon, the output might end up 
+<p class="admonition-title">Note</p>
+<p>If the input is a self intersecting polygon, the output might end up 
 overly simplified.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</li>
-<li><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>polyline</strong> (<em>[</em><em>(</em><em>float</em><em>,</em><em>float</em><em>)</em><em>]</em>) – Polyline to simplify.</p></li>
+<li><p><strong>tolerance</strong> (<em>float</em>) – A higher value means more error is tolerated.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float,float)]</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[(float,float)]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="pymunk.autogeometry.PolylineSet">
 <em class="property">class </em><code class="descclassname">pymunk.autogeometry.</code><code class="descname">PolylineSet</code><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_abcoll.Sequence</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Sequence</span></code></p>
 <p>A set of Polylines.</p>
 <p>Mainly intended to be used for its <a class="reference internal" href="#pymunk.autogeometry.PolylineSet.collect_segment" title="pymunk.autogeometry.PolylineSet.collect_segment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">collect_segment()</span></code></a> function 
 when generating geometry with the <a class="reference internal" href="#pymunk.autogeometry.march_soft" title="pymunk.autogeometry.march_soft"><code class="xref py py-func docutils literal notranslate"><span class="pre">march_soft()</span></code></a> and 
@@ -198,7 +178,7 @@ when generating geometry with the <a class="reference internal" href="#pymunk.au
 <dl class="method">
 <dt id="pymunk.autogeometry.PolylineSet.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymunk/autogeometry.html#PolylineSet.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymunk.autogeometry.PolylineSet.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
@@ -208,18 +188,14 @@ when generating geometry with the <a class="reference internal" href="#pymunk.au
 <p>A segment will either start a new polyline, join two others, or add to 
 or loop an existing polyline. This is mostly intended to be used as a 
 callback directly from <a class="reference internal" href="#pymunk.autogeometry.march_soft" title="pymunk.autogeometry.march_soft"><code class="xref py py-func docutils literal notranslate"><span class="pre">march_soft()</span></code></a> or <a class="reference internal" href="#pymunk.autogeometry.march_hard" title="pymunk.autogeometry.march_hard"><code class="xref py py-func docutils literal notranslate"><span class="pre">march_hard()</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>v0</strong> (<em>(</em><em>float</em><em>,</em><em>float</em><em>)</em>) – Start of segment</li>
-<li><strong>v1</strong> (<em>(</em><em>float</em><em>,</em><em>float</em><em>)</em>) – End of segment</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v0</strong> (<em>(</em><em>float</em><em>,</em><em>float</em><em>)</em>) – Start of segment</p></li>
+<li><p><strong>v1</strong> (<em>(</em><em>float</em><em>,</em><em>float</em><em>)</em>) – End of segment</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -229,8 +205,10 @@ callback directly from <a class="reference internal" href="#pymunk.autogeometry.
 
 <dl class="method">
 <dt id="pymunk.autogeometry.PolylineSet.index">
-<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer -- return first index of value.<a class="headerlink" href="#pymunk.autogeometry.PolylineSet.index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer -- return first index of value.<a class="headerlink" href="#pymunk.autogeometry.PolylineSet.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises ValueError if the value is not present.</p>
+<p>Supporting start and stop arguments is optional, but
+recommended.</p>
 </dd></dl>
 
 </dd></dl>
@@ -241,25 +219,21 @@ callback directly from <a class="reference internal" href="#pymunk.autogeometry.
 <dd><p>Trace an <em>anti-aliased</em> contour of an image along a particular threshold.</p>
 <p>The given number of samples will be taken and spread across the bounding 
 box area using the sampling function and context.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) – Bounding box of the area to sample within</li>
-<li><strong>x_samples</strong> (<em>int</em>) – Number of samples in x</li>
-<li><strong>y_samples</strong> (<em>int</em>) – Number of samples in y</li>
-<li><strong>threshold</strong> (<em>float</em>) – A higher value means more error is tolerated</li>
-<li><strong>segment_func</strong> (<code class="docutils literal notranslate"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) – The segment function will be called for each segment 
-detected that lies along the density contour for threshold.</li>
-<li><strong>sample_func</strong> (<code class="docutils literal notranslate"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) – The sample function will be called for 
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) – Bounding box of the area to sample within</p></li>
+<li><p><strong>x_samples</strong> (<em>int</em>) – Number of samples in x</p></li>
+<li><p><strong>y_samples</strong> (<em>int</em>) – Number of samples in y</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A higher value means more error is tolerated</p></li>
+<li><p><strong>segment_func</strong> (<code class="docutils literal notranslate"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) – The segment function will be called for each segment 
+detected that lies along the density contour for threshold.</p></li>
+<li><p><strong>sample_func</strong> (<code class="docutils literal notranslate"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) – The sample function will be called for 
 x_samples * y_samples spread across the bounding box area, and should 
-return a float.</li>
+return a float.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -268,25 +242,21 @@ return a float.</li>
 <dd><p>Trace an <em>aliased</em> curve of an image along a particular threshold.</p>
 <p>The given number of samples will be taken and spread across the bounding 
 box area using the sampling function and context.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) – Bounding box of the area to sample within</li>
-<li><strong>x_samples</strong> (<em>int</em>) – Number of samples in x</li>
-<li><strong>y_samples</strong> (<em>int</em>) – Number of samples in y</li>
-<li><strong>threshold</strong> (<em>float</em>) – A higher value means more error is tolerated</li>
-<li><strong>segment_func</strong> (<code class="docutils literal notranslate"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) – The segment function will be called for each segment 
-detected that lies along the density contour for threshold.</li>
-<li><strong>sample_func</strong> (<code class="docutils literal notranslate"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) – The sample function will be called for 
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bb</strong> (<a class="reference internal" href="pymunk.html#pymunk.BB" title="pymunk.BB"><em>BB</em></a>) – Bounding box of the area to sample within</p></li>
+<li><p><strong>x_samples</strong> (<em>int</em>) – Number of samples in x</p></li>
+<li><p><strong>y_samples</strong> (<em>int</em>) – Number of samples in y</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A higher value means more error is tolerated</p></li>
+<li><p><strong>segment_func</strong> (<code class="docutils literal notranslate"><span class="pre">func(v0</span> <span class="pre">:</span> <span class="pre">Vec2d,</span> <span class="pre">v1</span> <span class="pre">:</span> <span class="pre">Vec2d)</span></code>) – The segment function will be called for each segment 
+detected that lies along the density contour for threshold.</p></li>
+<li><p><strong>sample_func</strong> (<code class="docutils literal notranslate"><span class="pre">func(point:</span> <span class="pre">Vec2d)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>) – The sample function will be called for 
 x_samples * y_samples spread across the bounding box area, and should 
-return a float.</li>
+return a float.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -316,14 +286,14 @@ return a float.</li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="pymunk.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pymunk.html#pymunk-package"><code class="docutils literal notranslate"><span class="pre">pymunk</span></code> Package</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.constraint.html"><code class="docutils literal notranslate"><span class="pre">pymunk.constraint</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="docutils literal notranslate"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="docutils literal notranslate"><span class="pre">pymunkoptions</span></code> Module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pymunk.html#pymunk-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk</span></code> Package</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.autogeometry</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.constraint.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.constraint</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.vec2d.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.vec2d</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.matplotlib_util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.matplotlib_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pygame_util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.pygame_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunk.pyglet_util.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.pyglet_util</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymunkoptions.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunkoptions</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
@@ -344,7 +314,7 @@ return a float.</li>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="pymunk.html">API Reference</a><ul>
       <li>Previous: <a href="pymunk.html" title="previous chapter">API Reference</a></li>
-      <li>Next: <a href="pymunk.constraint.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">pymunk.constraint</span></code> Module</a></li>
+      <li>Next: <a href="pymunk.constraint.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymunk.constraint</span></code> Module</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -362,8 +332,6 @@ return a float.</li>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -376,8 +344,8 @@ return a float.</li>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/pymunk.autogeometry.rst.txt"

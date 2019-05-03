@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Advanced &#8212; pymunk 5.4.2 documentation</title>
+    <meta charset="utf-8" />
+    <title>Advanced &#8212; pymunk 5.5.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -50,19 +48,19 @@ pythonic layer to make it nice to use from Python code.</p>
 <p>CFFI have a number of advantages but also a downsides.</p>
 <p>Advantages (compared to ctypes):</p>
 <ul class="simple">
-<li>Its an active project. The developers and users are active, there are new
+<li><p>Its an active project. The developers and users are active, there are new
 releases being made and its possible to ask and get answers within a day on
-the CFFI mailing list.</li>
-<li>Its said to be the way forward for pypy, with promise of better performance
-compares to ctypes.</li>
-<li>A little easier than ctypes to wrap things since you can just copy-paste the
-c headers.</li>
+the CFFI mailing list.</p></li>
+<li><p>Its said to be the way forward for pypy, with promise of better performance
+compares to ctypes.</p></li>
+<li><p>A little easier than ctypes to wrap things since you can just copy-paste the
+c headers.</p></li>
 </ul>
 <p>Disadvatages (compared to ctypes):</p>
 <ul class="simple">
-<li>ctypes is part of the CPython standard library, CFFI is not. That means that
+<li><p>ctypes is part of the CPython standard library, CFFI is not. That means that
 it will be more difficult to install Pymunk if it uses CFFI, since a
-copy-paste install is no longer possible in an easy way.</li>
+copy-paste install is no longer possible in an easy way.</p></li>
 </ul>
 <p>For me I see the 1st advantage as the main point. I have had great difficulties
 with strange segfaults with 64bit pythons on windows, and also sometimes on
@@ -83,40 +81,40 @@ and nowadays with pip its very easy to do. So I hope that it will be ok.</p>
 <p>The reasons for ctypes instead of [your favorite wrapping solution] can be
 summarized as</p>
 <ul class="simple">
-<li>You only need to write pure python code when wrapping. This is good for
+<li><p>You only need to write pure python code when wrapping. This is good for
 several reasons. I can not really code in c. Sure, I can read it and write
 easy things, but Im not a good c coder. What I do know quite well is
 python. I imagine that the same is true for most people using pymunk,
 after all its a python library. :) Hopefully this means that users of
 pymunk can look at how stuff is actually done very easily, and for example
 add a missing chipmunk method/property on their own in their own code
-without much problem, and without being required to compile/build anything.</li>
-<li>ctypes is included in the standard library. Anyone with python has it
+without much problem, and without being required to compile/build anything.</p></li>
+<li><p>ctypes is included in the standard library. Anyone with python has it
 already, no dependencies on 3rd party libraries, and some guarantee that it
-will stick around for a long time.</li>
-<li>The only thing required to run pymunk is python and a c compiler (in those
+will stick around for a long time.</p></li>
+<li><p>The only thing required to run pymunk is python and a c compiler (in those
 cases a prebuilt version of chipmunk is not included). This should maximize
 the multiplatformness of pymunk, only thing that would even better would
 be a pure python library (which might be a bad idea for other reasons,
-mainly speed).</li>
-<li>Not much magic going on. Working with ctypes is quite straight forward.
+mainly speed).</p></li>
+<li><p>Not much magic going on. Working with ctypes is quite straight forward.
 Sure, pymunk uses a generator which is a bit of a pain, but at least its
 possible to sidestep it if required, which Ive done in some cases. Ive also
 got a share amount of problems when stuff didnt work as expected, but I
 imagine it would have been even worse with other solutions. At least its
-only the c library and python, and not some 3rd party in between.</li>
-<li>Non api-breaking fixes in chipmunk doesnt affect pymunk. If a bugfix, some
+only the c library and python, and not some 3rd party in between.</p></li>
+<li><p>Non api-breaking fixes in chipmunk doesnt affect pymunk. If a bugfix, some
 optimization or whatever is done in chipmunk that doesnt affect the API,
 then its enough with a recompile of chipmunk with the new code to benefit
-from the fix. Easy for everyone.</li>
-<li>Ctypes can run on other python implementations than cpython. Right now pypy
-feels the most promising and it is be able to run ctypes just fine.</li>
+from the fix. Easy for everyone.</p></li>
+<li><p>Ctypes can run on other python implementations than cpython. Right now pypy
+feels the most promising and it is be able to run ctypes just fine.</p></li>
 </ul>
 <p>As I see it, the main benefit another solution could give would be speed.
 However, there are a couple of arguments why I dont find this as important as
 the benefits of ctypes</p>
 <ul>
-<li><p class="first">You are writing your game in python in the first place, if you really
+<li><p>You are writing your game in python in the first place, if you really
 required top performance than maybe rewrite the whole thing in c would be
 better anyway? Or make a optimized binding to chipmunk.</p>
 <p>For example, if you really need excellent performance then one possible
@@ -124,15 +122,13 @@ optimization would be to write the drawing code in c as well, and have that
 interact with chipmunk directly. That way it can be made more performant
 than any generic wrapping solution as it would skip the whole layer.</p>
 </li>
-<li><p class="first">The bottleneck in a full game/application is somewhere else than in the
+<li><p>The bottleneck in a full game/application is somewhere else than in the
 physics wrapping in many cases. If your game has AI, logic and so on in
 python, then the wrapper overhead added by ctypes is not so bad in
-comparison.</p>
-</li>
-<li><p class="first">Pypy. ctypes on pypy has the potential to be very quick. However, right now
+comparison.</p></li>
+<li><p>Pypy. ctypes on pypy has the potential to be very quick. However, right now
 with pypy-1.9 the speed of pymunk is actually a bit slower on pypy than on
-cpython. Hopefully this will improve in the future.</p>
-</li>
+cpython. Hopefully this will improve in the future.</p></li>
 </ul>
 <p>Note that pymunk has been around since late 2007 which means not all
 wrapping options that exist today did exist or was not stable/complete
@@ -150,30 +146,30 @@ compilation of Chipmunk.</p>
 <p>The low level chipmunk bindings are located in the two files _chipmunk_cffi.py
 and _chipmunk_cffi_abi.py. In order to locate and load the compiled chipmunk
 library file pymunk uses a custom load_library function in _libload.py</p>
-<dl class="docutils">
-<dt>docs/src/ext/autoexample.py</dt>
-<dd>A Sphinx extension that scans a directory and extracts the toplevel
-docstring. Used to autogenerate the examples documentation.</dd>
-<dt>pymunk/_chipmunk_cffi.py</dt>
-<dd>This file only contains a call to _chipmunk_cffi_abi.py, and exists mostly
+<dl class="simple">
+<dt>docs/src/ext/autoexample.py</dt><dd><p>A Sphinx extension that scans a directory and extracts the toplevel
+docstring. Used to autogenerate the examples documentation.</p>
+</dd>
+<dt>pymunk/_chipmunk_cffi.py</dt><dd><p>This file only contains a call to _chipmunk_cffi_abi.py, and exists mostly
 as a wrapper to be able to switch between abi and api mode of Cffi. This
 is currently not in use in the relased code, but is used during
-experimentation.</dd>
-<dt>pymunk/_chipmkunk_cffi_abi.py</dt>
-<dd>This file contains the pure Cffi wrapping definitons. Bascially a giant
-string created by copy-paster from the relevant header files of Chipmunk.</dd>
-<dt>pymunk/_libload.py</dt>
-<dd>This file contains the custom Cffi library load function that is used
-by the rest of pymunk to load the Chipmunk library file.</dd>
-<dt>setup.py</dt>
-<dd>Except for the standard setup stuff this file also contain the custom
-build commands to build Chipmunk from source, using a build_ext extension.</dd>
-<dt>tests/*</dt>
-<dd>Collection of (unit) tests. Does not cover all cases, but most core
-things are there. The tests require a working chipmunk library file.</dd>
-<dt>tools/*</dt>
-<dd>Collection of helper scripts that can be used to various development tasks
-such as generating documentation.</dd>
+experimentation.</p>
+</dd>
+<dt>pymunk/_chipmkunk_cffi_abi.py</dt><dd><p>This file contains the pure Cffi wrapping definitons. Bascially a giant
+string created by copy-paster from the relevant header files of Chipmunk.</p>
+</dd>
+<dt>pymunk/_libload.py</dt><dd><p>This file contains the custom Cffi library load function that is used
+by the rest of pymunk to load the Chipmunk library file.</p>
+</dd>
+<dt>setup.py</dt><dd><p>Except for the standard setup stuff this file also contain the custom
+build commands to build Chipmunk from source, using a build_ext extension.</p>
+</dd>
+<dt>tests/*</dt><dd><p>Collection of (unit) tests. Does not cover all cases, but most core
+things are there. The tests require a working chipmunk library file.</p>
+</dd>
+<dt>tools/*</dt><dd><p>Collection of helper scripts that can be used to various development tasks
+such as generating documentation.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="tests">
@@ -203,7 +199,8 @@ cpBodyIsSleeping.</p>
 <p>First we need to check if its included in the cdef definition in
 _chipmunk_cffi.abi.py. If its not just add it.</p>
 <blockquote>
-<div><cite>cpBool cpBodyIsSleeping(const cpBody *body);</cite></div></blockquote>
+<div><p><cite>cpBool cpBodyIsSleeping(const cpBody *body);</cite></p>
+</div></blockquote>
 <p>Then to make it easy to use we want to create a python method that looks nice:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_sleeping</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">cpBodyIsSleeping</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">_body</span><span class="p">)</span>
@@ -294,8 +291,6 @@ reference is weak it is marked in the API documentation of the specific method.<
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -308,8 +303,8 @@ reference is weak it is marked in the API documentation of the specific method.<
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/advanced.rst.txt"

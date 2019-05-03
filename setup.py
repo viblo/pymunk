@@ -161,7 +161,7 @@ class build_chipmunk(build_ext, object):
             elif platform.system() == 'Darwin':
                 self.compiler.set_executable('linker_so', 
                 ['cc', '-dynamiclib', '-arch', 'i386', '-arch', 'x86_64'])
-                
+
             else: #Linux, FreeBSD and others
                 if platform.machine() == 'x86_64':
                     linker_preargs += ['-fPIC']
@@ -242,7 +242,7 @@ setup(
     url = 'http://www.pymunk.org',
     author = 'Victor Blomqvist',
     author_email = 'vb@viblo.se',
-    version = '5.4.2', # remember to change me for new versions!
+    version = '5.5.0', # remember to change me for new versions!
     description = 'Pymunk is a easy-to-use pythonic 2d physics library',
     long_description = long_description,
     packages = ['pymunk','pymunkoptions', 'pymunk.tests'],

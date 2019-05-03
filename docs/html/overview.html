@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Overview &#8212; pymunk 5.4.2 documentation</title>
+    <meta charset="utf-8" />
+    <title>Overview &#8212; pymunk 5.5.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -40,25 +38,25 @@
 <div class="section" id="basics">
 <h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h2>
 <p>There are 4 basic classes you will use in Pymunk.</p>
-<dl class="docutils">
-<dt><strong>Rigid Bodies</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Body</span></code></a>)</dt>
-<dd>A rigid body holds the physical properties of an object. (mass, position,
+<dl class="simple">
+<dt><strong>Rigid Bodies</strong> (<a class="reference internal" href="pymunk.html#pymunk.Body" title="pymunk.Body"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Body</span></code></a>)</dt><dd><p>A rigid body holds the physical properties of an object. (mass, position,
 rotation, velocity, etc.) It does not have a shape by itself. If you’ve
 done physics with particles before, rigid bodies differ mostly in that they
 are able to rotate. Rigid bodies generally tend to have a 1:1 correlation
 to sprites in a game. You should structure your game so that you use the
-position and rotation of the rigid body for drawing your sprite.</dd>
-<dt><strong>Collision Shapes</strong> (<a class="reference internal" href="pymunk.html#pymunk.Circle" title="pymunk.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Circle</span></code></a>, <a class="reference internal" href="pymunk.html#pymunk.Segment" title="pymunk.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Segment</span></code></a> and <a class="reference internal" href="pymunk.html#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Poly</span></code></a>)</dt>
-<dd>By attaching shapes to bodies, you can define the a body’s shape. You can
+position and rotation of the rigid body for drawing your sprite.</p>
+</dd>
+<dt><strong>Collision Shapes</strong> (<a class="reference internal" href="pymunk.html#pymunk.Circle" title="pymunk.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Circle</span></code></a>, <a class="reference internal" href="pymunk.html#pymunk.Segment" title="pymunk.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Segment</span></code></a> and <a class="reference internal" href="pymunk.html#pymunk.Poly" title="pymunk.Poly"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Poly</span></code></a>)</dt><dd><p>By attaching shapes to bodies, you can define the a body’s shape. You can
 attach many shapes to a single body to define a complex shape, or none if
-it doesn’t require a shape.</dd>
-<dt><strong>Constraints/Joints</strong> (<a class="reference internal" href="pymunk.constraint.html#pymunk.constraint.PinJoint" title="pymunk.constraint.PinJoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.PinJoint</span></code></a>, <a class="reference internal" href="pymunk.constraint.html#pymunk.constraint.SimpleMotor" title="pymunk.constraint.SimpleMotor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.SimpleMotor</span></code></a> and many others)</dt>
-<dd>You can attach constraints between two bodies to constrain their behavior,
-for example to keep a fixed distance between two bodies.</dd>
-<dt><strong>Spaces</strong> (<a class="reference internal" href="pymunk.html#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Space</span></code></a>)</dt>
-<dd>Spaces are the basic simulation unit in Pymunk. You add bodies, shapes
+it doesn’t require a shape.</p>
+</dd>
+<dt><strong>Constraints/Joints</strong> (<a class="reference internal" href="pymunk.constraint.html#pymunk.constraint.PinJoint" title="pymunk.constraint.PinJoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.PinJoint</span></code></a>, <a class="reference internal" href="pymunk.constraint.html#pymunk.constraint.SimpleMotor" title="pymunk.constraint.SimpleMotor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.constraint.SimpleMotor</span></code></a> and many others)</dt><dd><p>You can attach constraints between two bodies to constrain their behavior,
+for example to keep a fixed distance between two bodies.</p>
+</dd>
+<dt><strong>Spaces</strong> (<a class="reference internal" href="pymunk.html#pymunk.Space" title="pymunk.Space"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymunk.Space</span></code></a>)</dt><dd><p>Spaces are the basic simulation unit in Pymunk. You add bodies, shapes
 and constraints to a space, and then update the space as a whole. They
-control how all the rigid bodies, shapes, and constraints interact together.</dd>
+control how all the rigid bodies, shapes, and constraints interact together.</p>
+</dd>
 </dl>
 <p>The actual simulation is done by the Space. After adding the objects that
 should be simulated to the Space time is moved forward in small steps with the
@@ -76,19 +74,19 @@ what is drawn on screen.</p>
 <p>There are a number of reasons why its good to separate the collision shape and
 what is drawn.</p>
 <ul class="simple">
-<li>Using simpler collision shapes are faster. So if you have a very complicated
+<li><p>Using simpler collision shapes are faster. So if you have a very complicated
 object, for example a pine tree, maybe it can make sense to simplify its
-collision shape to a triangle for performance.</li>
-<li>Using a simpler collision shape make the simulation better. Lets say you have
+collision shape to a triangle for performance.</p></li>
+<li><p>Using a simpler collision shape make the simulation better. Lets say you have
 a floor made of stone with a small crack in the middle. If you drag a box
 over this floor it will get stuck on the crack. But if you simplify the floor
 to just a plane you avoid having to worry about stuff getting stuck in the
-crack.</li>
-<li>Making the collision shape smaller (or bigger) than the actual object makes
+crack.</p></li>
+<li><p>Making the collision shape smaller (or bigger) than the actual object makes
 gameplay better. Lets say you have a player controlled ship in a shoot-em-up
 type game. Many times it will feel more fun to play if you make the collision
 shape a little bit smaller compared to what it should be based on how it
-looks.</li>
+looks.</p></li>
 </ul>
 <p>You can see an example of this in the <a class="reference internal" href="examples.html#using-sprites-py"><span class="std std-ref">using_sprites.py</span></a> example included
 in Pymunk. There the physics shape is a triangle, but what is drawn is 3 boxes
@@ -132,9 +130,9 @@ simulation much more stable and reliable.</p>
 is best for a particular program depends on the requirements.</p>
 <p>Some good articles:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://gameprogrammingpatterns.com/game-loop.html">http://gameprogrammingpatterns.com/game-loop.html</a></li>
-<li><a class="reference external" href="http://gafferongames.com/game-physics/fix-your-timestep/">http://gafferongames.com/game-physics/fix-your-timestep/</a></li>
-<li><a class="reference external" href="http://www.koonsolo.com/news/dewitters-gameloop/">http://www.koonsolo.com/news/dewitters-gameloop/</a></li>
+<li><p><a class="reference external" href="http://gameprogrammingpatterns.com/game-loop.html">http://gameprogrammingpatterns.com/game-loop.html</a></p></li>
+<li><p><a class="reference external" href="http://gafferongames.com/game-physics/fix-your-timestep/">http://gafferongames.com/game-physics/fix-your-timestep/</a></p></li>
+<li><p><a class="reference external" href="http://www.koonsolo.com/news/dewitters-gameloop/">http://www.koonsolo.com/news/dewitters-gameloop/</a></p></li>
 </ul>
 </div>
 <div class="section" id="unstable-simulation">
@@ -143,16 +141,16 @@ is best for a particular program depends on the requirements.</p>
 “blow up” and parts move anywhere without logic.</p>
 <p>There a a number of things to try if this happens:</p>
 <ul class="simple">
-<li>Make all the bodies of similar mass. It is easier for the physics engine to
-handle bodies with similar weight.</li>
-<li>Dont let two objects with infinite mass touch each other.</li>
-<li>Make the center of gravity in the middle of shapes instead of at the edge.</li>
-<li>Very thin shapes can behave strange, try to make them a little wider.</li>
-<li>Have a fixed time step (see the other sections of this guide).</li>
-<li>Call the Space.step function several times with smaller dt instead of only
-one time but with a bigger dt. (See the docs of <cite>Space.step</cite>)</li>
-<li>If you use a Motor joint, make sure to set its max force. Otherwise its power
-will be near infinite.</li>
+<li><p>Make all the bodies of similar mass. It is easier for the physics engine to
+handle bodies with similar weight.</p></li>
+<li><p>Dont let two objects with infinite mass touch each other.</p></li>
+<li><p>Make the center of gravity in the middle of shapes instead of at the edge.</p></li>
+<li><p>Very thin shapes can behave strange, try to make them a little wider.</p></li>
+<li><p>Have a fixed time step (see the other sections of this guide).</p></li>
+<li><p>Call the Space.step function several times with smaller dt instead of only
+one time but with a bigger dt. (See the docs of <cite>Space.step</cite>)</p></li>
+<li><p>If you use a Motor joint, make sure to set its max force. Otherwise its power
+will be near infinite.</p></li>
 </ul>
 <p>(Most of these suggestions are the same for most physics engines, not just
 Pymunk.)</p>
@@ -246,8 +244,6 @@ a C-library.</p>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -260,8 +256,8 @@ a C-library.</p>
       &copy;2013, Victor Blomqvist.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/overview.rst.txt"
