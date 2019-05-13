@@ -135,6 +135,48 @@ is best for a particular program depends on the requirements.</p>
 <li><p><a class="reference external" href="http://www.koonsolo.com/news/dewitters-gameloop/">http://www.koonsolo.com/news/dewitters-gameloop/</a></p></li>
 </ul>
 </div>
+<div class="section" id="object-tunneling">
+<h2>Object tunneling<a class="headerlink" href="#object-tunneling" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes an object can pass through another object even though its not
+supposed to. Usually this happens because the object is moving so fast, that
+during a single call to space.step() the object moves from one side to the
+other.</p>
+<a class="reference internal image-reference" href="_images/aafig-e5bd167514754e94de9bcf68b93e2d7e338b37ee.svg"><img alt="_images/aafig-e5bd167514754e94de9bcf68b93e2d7e338b37ee.svg" height="118.0" src="_images/aafig-e5bd167514754e94de9bcf68b93e2d7e338b37ee.svg" width="552.0" /></a>
+<p>There are several ways to mitigate this problem. Sometimes it might be a good
+idea to do more than one of these.</p>
+<ul>
+<li><p>Make sure the velocity of objects never get too high. One way to do that is
+to use a custom velocity function with a limit built in on the bodies that
+have a tendency to move too fast:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">limit_velocity</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+    <span class="n">max_velocity</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">update_velocity</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">length</span>
+    <span class="k">if</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="n">max_velocity</span><span class="p">:</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">max_velocity</span> <span class="o">/</span> <span class="n">l</span>
+        <span class="n">body</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">velocity</span> <span class="o">*</span> <span class="n">scale</span>
+
+<span class="n">body_to_limit</span><span class="o">.</span><span class="n">velocity_func</span> <span class="o">=</span> <span class="n">limit_velocity</span>
+</pre></div>
+</div>
+<p>Depending on the requirements it might make more sense to clamp the velocity
+over multiple frames instead. Then the limit function could look like this
+instead:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">limit_velocity</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+    <span class="n">max_velocity</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">update_velocity</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">body</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="n">max_velocity</span><span class="p">:</span>
+        <span class="n">body</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">velocity</span> <span class="o">*</span> <span class="mf">0.99</span>
+</pre></div>
+</div>
+</li>
+<li><p>For objects such as bullets, use a space query such as
+space.segment_query or space.segment_first.</p></li>
+<li><p>Use a smaller value for dt in the call to space.step. A simple way is to call
+space.step multiple times each frame in your application. This will also help
+to make the overall simulation more stable.</p></li>
+</ul>
+</div>
 <div class="section" id="unstable-simulation">
 <h2>Unstable simulation?<a class="headerlink" href="#unstable-simulation" title="Permalink to this headline">¶</a></h2>
 <p>Sometimes the simulation might not behave as expected. In extreme cases it can
@@ -206,6 +248,7 @@ a C-library.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#game-loop-moving-time-forward">Game loop / moving time forward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#object-tunneling">Object tunneling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#unstable-simulation">Unstable simulation?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#copy-and-load-save-pymunk-objects">Copy and Load/Save Pymunk objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#additional-info">Additional info</a></li>

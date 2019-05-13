@@ -189,6 +189,12 @@
     <span class="n">is_removal</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_is_removal</span><span class="p">,</span> 
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Returns True during a separate() callback if the callback was </span>
 <span class="s2">        invoked due to an object removal.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Vec2d</span><span class="o">.</span><span class="n">_fromcffi</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">cpArbiterGetNormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arbiter</span><span class="p">))</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_normal</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Returns the normal of the collision.</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span></div>
 </pre></div>
 

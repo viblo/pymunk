@@ -869,7 +869,9 @@ live body wont prevent GC of the attached constraints</p>
 <dt id="pymunk.Body.force">
 <code class="descname">force</code><a class="headerlink" href="#pymunk.Body.force" title="Permalink to this definition">¶</a></dt>
 <dd><p>Force applied to the center of gravity of the body.</p>
-<p>This value is reset for every time step.</p>
+<p>This value is reset for every time step. Note that this is not the 
+total of forces acting on the body (such as from collisions), but the 
+force applied manually from the apply force functions.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1033,6 +1035,22 @@ used to set a body’s velocity.</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">func(body</span> <span class="pre">:</span> <span class="pre">Body,</span> <span class="pre">gravity,</span> <span class="pre">damping,</span> <span class="pre">dt)</span></code></p>
 </div></blockquote>
+<p>There are many cases when this can be useful. One example is individual 
+gravity for some bodies, and another is to limit the velocity which is 
+useful to prevent tunneling. This is an example of such a callback:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymunk</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">limit_velocity</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">max_velocity</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">... </span>    <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">update_velocity</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">l</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">length</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="n">max_velocity</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">scale</span> <span class="o">=</span> <span class="n">max_velocity</span> <span class="o">/</span> <span class="n">l</span>
+<span class="gp">... </span>        <span class="n">body</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">velocity</span> <span class="o">*</span> <span class="n">scale</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">body</span><span class="o">.</span><span class="n">velocity_func</span> <span class="o">=</span> <span class="n">limit_velocity</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -2566,6 +2584,12 @@ invoked due to an object removal.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pymunk.Arbiter.normal">
+<code class="descname">normal</code><a class="headerlink" href="#pymunk.Arbiter.normal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the normal of the collision.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pymunk.Arbiter.restitution">
 <code class="descname">restitution</code><a class="headerlink" href="#pymunk.Arbiter.restitution" title="Permalink to this definition">¶</a></dt>
 <dd><p>The calculated restitution (elasticity) for this collision 
@@ -2879,7 +2903,7 @@ default type of categories and mask in ShapeFilter is an unsigned int,
 with a resolution of 32 bits. That means that the you have 32 bits to use, 
 in binary notation that is <cite>0b00000000000000000000000000000000</cite> to 
 <cite>0b11111111111111111111111111111111</cite> which can be written in hex as 
-<cite>0x00000000</cite> to 0xFFFFFFFF`.</p>
+<cite>0x00000000</cite> to <cite>0xFFFFFFFF</cite>.</p>
 <p>Everything in this example collides with walls. Additionally, 
 the enemies collide with each other.</p>
 <p>By default, objects exist in every category and collide with every category.</p>

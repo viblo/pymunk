@@ -122,6 +122,62 @@ Some good articles:
 * http://www.koonsolo.com/news/dewitters-gameloop/
 
 
+Object tunneling
+================
+
+Sometimes an object can pass through another object even though its not 
+supposed to. Usually this happens because the object is moving so fast, that 
+during a single call to space.step() the object moves from one side to the 
+other.
+
+.. aafig::
+
+      step 1    |  step 2     |  step 3
+                |             |
+          ++    |    ++       |   ++ 
+          ||    |    ||       |   ||
+      XX  ||    |    ||  XX   |   ||      XX
+      XX  ||    |    ||  XX   |   ||      XX
+      v-> ||    |    ||  v->  |   ||      v->
+          ||    |    ||       |   ||
+
+
+There are several ways to mitigate this problem. Sometimes it might be a good 
+idea to do more than one of these.
+
+* Make sure the velocity of objects never get too high. One way to do that is 
+  to use a custom velocity function with a limit built in on the bodies that 
+  have a tendency to move too fast::
+
+    def limit_velocity(body, gravity, damping, dt):
+        max_velocity = 1000
+        pymunk.Body.update_velocity(body, gravity, damping, dt)
+        l = body.velocity.length
+        if l > max_velocity:
+            scale = max_velocity / l
+            body.velocity = body.velocity * scale
+
+    body_to_limit.velocity_func = limit_velocity
+
+  Depending on the requirements it might make more sense to clamp the velocity 
+  over multiple frames instead. Then the limit function could look like this 
+  instead::
+
+    def limit_velocity(body, gravity, damping, dt):
+        max_velocity = 1000
+        pymunk.Body.update_velocity(body, gravity, damping, dt)
+        if body.velocity.length > max_velocity:
+            body.velocity = body.velocity * 0.99
+
+
+* For objects such as bullets, use a space query such as 
+  space.segment_query or space.segment_first.
+
+* Use a smaller value for dt in the call to space.step. A simple way is to call 
+  space.step multiple times each frame in your application. This will also help 
+  to make the overall simulation more stable.
+
+
 Unstable simulation? 
 ====================
 

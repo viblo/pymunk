@@ -277,7 +277,9 @@
     <span class="n">force</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_force</span><span class="p">,</span> <span class="n">_set_force</span><span class="p">,</span>
         <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Force applied to the center of gravity of the body.</span>
 
-<span class="s2">        This value is reset for every time step.&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        This value is reset for every time step. Note that this is not the </span>
+<span class="s2">        total of forces acting on the body (such as from collisions), but the </span>
+<span class="s2">        force applied manually from the apply force functions.&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">cpBodySetAngle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_body</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
@@ -344,6 +346,22 @@
 <span class="s2">        used to set a body&#39;s velocity.</span>
 
 <span class="s2">            ``func(body : Body, gravity, damping, dt)``</span>
+
+<span class="s2">        There are many cases when this can be useful. One example is individual </span>
+<span class="s2">        gravity for some bodies, and another is to limit the velocity which is </span>
+<span class="s2">        useful to prevent tunneling. This is an example of such a callback:</span>
+
+<span class="s2">        &gt;&gt;&gt; import pymunk</span>
+<span class="s2">        &gt;&gt;&gt; body = pymunk.Body(1,2)</span>
+<span class="s2">        &gt;&gt;&gt; def limit_velocity(body, gravity, damping, dt):</span>
+<span class="s2">        ...     max_velocity = 1000</span>
+<span class="s2">        ...     pymunk.Body.update_velocity(body, gravity, damping, dt)</span>
+<span class="s2">        ...     l = body.velocity.length</span>
+<span class="s2">        ...     if l &gt; max_velocity:</span>
+<span class="s2">        ...         scale = max_velocity / l</span>
+<span class="s2">        ...         body.velocity = body.velocity * scale</span>
+<span class="s2">        ...</span>
+<span class="s2">        &gt;&gt;&gt; body.velocity_func = limit_velocity</span>
 
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
 
