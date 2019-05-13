@@ -233,6 +233,26 @@ class UnitTestArbiter(unittest.TestCase):
         s.add_collision_handler(1,2).pre_solve = pre_solve2
         
         s.step(0.1)
+
+    def testNormal(self):
+        s = p.Space()
+        s.gravity = 0,-100
+        
+        b1 = p.Body(1, 30)
+        b1.position = 5, 10
+        c1 = p.Circle(b1, 10)
+        c2 = p.Circle(s.static_body, 10)
+        
+        s.add(b1, c1, c2)
+        
+        def pre_solve1(arb, space, data):
+            self.assertAlmostEqual(arb.normal.x, 0.44721359)
+            self.assertAlmostEqual(arb.normal.y, 0.89442719)
+            return True
+        
+        s.add_default_collision_handler().pre_solve = pre_solve1
+        
+        s.step(0.1)
         
     def testIsRemoval(self):
         s = p.Space()

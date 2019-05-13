@@ -156,3 +156,9 @@ class Arbiter(object):
         doc="""Returns True during a separate() callback if the callback was 
         invoked due to an object removal.
         """)
+
+    def _get_normal(self):
+        return Vec2d._fromcffi(cp.cpArbiterGetNormal(self._arbiter))
+    normal = property(_get_normal,
+        doc="""Returns the normal of the collision.
+        """)
