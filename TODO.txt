@@ -1,6 +1,5 @@
 v5.x
 ----
-- use twine to upload to Pypi? https://pypi.python.org/pypi/twine
 - Think about experimental repr of Body
 - Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js  
 - add better example benchmark for threaded solver

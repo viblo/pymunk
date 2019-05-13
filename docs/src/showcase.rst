@@ -75,6 +75,18 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/carconf.png
+      - `Car Configuration with Differential Evolotion <https://youtu.be/7ok4ESgrKg0>`_
+
+        :subscript:`made by Nav. Retrieved 2019-05-05`
+
+        Among the simplest AI algorithms: Differential Evolution. Brought to 
+        life with Pymunk and Pygame. Each car has an objective of reaching the 
+        end of the track, but has only 15 seconds to do so. They explore the 
+        multidimensional search space of vehicle speed, chassis width, chassis 
+        height and wheel radius, to find a variety of configurations among 
+        which few are successful in helping the car cross the track. 
+
     * - .. image:: _static/virtuaplant.png
       - `VirtuaPlant <https://wroot.org/projects/virtuaplant/>`_
 

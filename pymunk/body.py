@@ -243,7 +243,9 @@ class Body(PickleMixin, object):
     force = property(_get_force, _set_force,
         doc="""Force applied to the center of gravity of the body.
 
-        This value is reset for every time step.""")
+        This value is reset for every time step. Note that this is not the 
+        total of forces acting on the body (such as from collisions), but the 
+        force applied manually from the apply force functions.""")
 
     def _set_angle(self, angle):
         cp.cpBodySetAngle(self._body, angle)
@@ -310,6 +312,22 @@ class Body(PickleMixin, object):
         used to set a body's velocity.
 
             ``func(body : Body, gravity, damping, dt)``
+
+        There are many cases when this can be useful. One example is individual 
+        gravity for some bodies, and another is to limit the velocity which is 
+        useful to prevent tunneling. This is an example of such a callback:
+
+        >>> import pymunk
+        >>> body = pymunk.Body(1,2)
+        >>> def limit_velocity(body, gravity, damping, dt):
+        ...     max_velocity = 1000
+        ...     pymunk.Body.update_velocity(body, gravity, damping, dt)
+        ...     l = body.velocity.length
+        ...     if l > max_velocity:
+        ...         scale = max_velocity / l
+        ...         body.velocity = body.velocity * scale
+        ...
+        >>> body.velocity_func = limit_velocity
 
         """)
 

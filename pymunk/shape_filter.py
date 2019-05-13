@@ -36,7 +36,7 @@ class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     with a resolution of 32 bits. That means that the you have 32 bits to use, 
     in binary notation that is `0b00000000000000000000000000000000` to 
     `0b11111111111111111111111111111111` which can be written in hex as 
-    `0x00000000` to 0xFFFFFFFF`.
+    `0x00000000` to `0xFFFFFFFF`.
 
     Everything in this example collides with walls. Additionally, 
     the enemies collide with each other.
