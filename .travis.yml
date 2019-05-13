@@ -56,6 +56,7 @@ matrix:
   - os: linux
     env: TOXENV=docs
     python: 3.7
+    dist: xenial
 # create linux binary manylinux builds, see tools/manylinux-build
   - sudo: required
     services:
