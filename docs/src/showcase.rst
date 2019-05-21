@@ -155,6 +155,10 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Du, Yilun, and Karthik Narasimhan. 
+  "Task-Agnostic Dynamics Priors for Deep Reinforcement Learning." 
+  arXiv preprint arXiv:1905.04819 (2019).
+
 * Caselles-Dupré, Hugo, Louis Annabi, Oksana Hagen, Michael Garcia-Ortiz, and David Filliat. 
   "Flatland: a Lightweight First-Person 2-D Environment for Reinforcement Learning." 
   arXiv preprint arXiv:1809.00510 (2018).
@@ -244,7 +248,7 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2018-09-09. If something is missing or wrong, please contact 
+List last updated 2019-05-21. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
