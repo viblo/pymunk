@@ -254,7 +254,7 @@ setup(
         'bdist_wheel': bdist_wheel_universal_extension
     },
     install_requires = ['cffi'],
-    extras_require = {'dev': ['pyglet','pygame','sphinx']},    
+    extras_require = {'dev': ['pyglet','pygame','sphinx', 'aafig']},    
     test_suite = "pymunk.tests",
     ext_modules = extensions,
 )

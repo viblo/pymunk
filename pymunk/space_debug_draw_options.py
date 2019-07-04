@@ -56,7 +56,10 @@ class SpaceDebugDrawOptions(object):
         self.shape_outline_color = (44,62,80,255)
         self.constraint_color = (142,68,173,255)
         self.collision_point_color = (231,76,60,255)  
-
+        
+        # Set to false to bypass chipmunk shape drawing code
+        self._use_chipmunk_debug_draw = True 
+        
         
         @ffi.callback("cpSpaceDebugDrawCircleImpl")
         def f1(pos, angle, radius, outline_color, fill_color, data):
@@ -251,6 +254,9 @@ class SpaceDebugDrawOptions(object):
 
     def draw_dot(self, *args):
         print("draw_dot", args)
+
+    def draw_shape(self, shape):
+        print("draw_shape", shape)
 
     def color_for_shape(self, shape):
         if hasattr(shape, "color"):

@@ -757,17 +757,21 @@ class Space(PickleMixin, object):
         :py:class:`SpaceDebugDrawOptions`.
 
         If you require any advanced or optimized drawing its probably best to 
-        not use this funtion for the drawing since its meant for debugging 
+        not use this function for the drawing since its meant for debugging 
         and quick scripting. 
 
         :type options: :py:class:`SpaceDebugDrawOptions`
         """
-        h = ffi.new_handle(self)
-        # we need to hold h until the end of cpSpaceDebugDraw to prevent GC
-        options._options.data = h
-        
-        with options:
-            cp.cpSpaceDebugDraw(self._space, options._options)
+        if options._use_chipmunk_debug_draw:
+            h = ffi.new_handle(self)
+            # we need to hold h until the end of cpSpaceDebugDraw to prevent GC
+            options._options.data = h
+            
+            with options:
+                cp.cpSpaceDebugDraw(self._space, options._options)
+        else:
+            for shape in self.shapes:
+                options.draw_shape(shape)
         
     def __getstate__(self):
         """Return the state of this object
