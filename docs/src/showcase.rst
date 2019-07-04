@@ -155,9 +155,12 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Mounsif, Mehdi, Sebastien Lengagne, Benoit Thuilot, and Lounis Adouane. 
+  "Universal Notice Network: Transferable Knowledge Among Agents."
+
 * Du, Yilun, and Karthik Narasimhan. 
   "Task-Agnostic Dynamics Priors for Deep Reinforcement Learning." 
-  arXiv preprint arXiv:1905.04819 (2019).
+  In International Conference on Machine Learning, pp. 1696-1705. 2019.
 
 * Caselles-Dupré, Hugo, Louis Annabi, Oksana Hagen, Michael Garcia-Ortiz, and David Filliat. 
   "Flatland: a Lightweight First-Person 2-D Environment for Reinforcement Learning." 
