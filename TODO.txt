@@ -17,6 +17,8 @@ v5.x
 - Type annotations?
 - update example code to be less dependent on the flipy function for pygame. instead flip the gravity.
 - Update docs with collision chapter. ShapeFilter, collision callbacks and such
+- do not commit the compiled docs?
+- use env variables for pymunkoptions, like pygame https://stackoverflow.com/questions/56258942/is-there-an-environment-variable-to-disable-pymunk-chipmunk-from-printing-loadi   
 
 v6+ (all potentially breaking changes)
 ---
