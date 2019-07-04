@@ -1,8 +1,6 @@
 language: python
-python: 2.7
 git:
   depth: 3
-sudo: false
 env:
   global:
   - PYTHON="python"
@@ -58,7 +56,6 @@ matrix:
     python: 3.7
     dist: xenial
 # create linux binary manylinux builds, see tools/manylinux-build
-  - sudo: required
     services:
       - docker
     env:
