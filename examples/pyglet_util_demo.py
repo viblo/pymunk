@@ -32,7 +32,7 @@ for caption in captions:
 batch = pyglet.graphics.Batch()
 
 # otherwise save screenshot wont work
-_ = pyglet.clock.ClockDisplay()
+_ = pyglet.window.FPSDisplay(window)
 
 @window.event
 def on_draw():

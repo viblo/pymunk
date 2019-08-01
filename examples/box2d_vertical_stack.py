@@ -19,7 +19,7 @@ class Main(pyglet.window.Window):
         self.set_caption('Vertical stack from box2d')
 
         pyglet.clock.schedule_interval(self.update, 1/60.0)
-        self.fps_display = pyglet.clock.ClockDisplay()
+        self.fps_display = pyglet.window.FPSDisplay(self)
         
         self.text = pyglet.text.Label('Press space to fire bullet',
                           font_size=10,

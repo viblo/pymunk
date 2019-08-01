@@ -140,7 +140,7 @@ def on_key_press(symbol, modifiers):
         pyglet.image.get_buffer_manager().get_color_buffer().save('spiderweb.png')
 
    
-fps_display = pyglet.clock.ClockDisplay()
+fps_display = pyglet.window.FPSDisplay(window)
 
 @window.event
 def on_draw():

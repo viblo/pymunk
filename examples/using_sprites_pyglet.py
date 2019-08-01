@@ -14,7 +14,7 @@ from pymunk import Vec2d
 
 window = pyglet.window.Window(width=600,height=600)
 
-fps_display = pyglet.clock.ClockDisplay()
+fps_display = pyglet.window.FPSDisplay(window)
 
 logo_img = pyglet.resource.image('pymunk_logo_googlecode.png')
 logo_img.anchor_x = logo_img.width/2
