@@ -1280,43 +1280,43 @@ h = """
     ///////////////////////////////////////////
 
     typedef cpBB (*cpBBNewForExtents)(const cpVect c, const cpFloat hw, const cpFloat hh);
-    cpBBNewForExtents _cpBBNewForExtents;
+    static cpBBNewForExtents _cpBBNewForExtents;
 
     typedef cpBB (*cpBBNewForCircle)(const cpVect p, const cpFloat r);
-    cpBBNewForCircle _cpBBNewForCircle;
+    static cpBBNewForCircle _cpBBNewForCircle;
 
     typedef cpBool (*cpBBIntersects)(const cpBB a, const cpBB b);
-    cpBBIntersects _cpBBIntersects;
+    static cpBBIntersects _cpBBIntersects;
 
     typedef cpBool (*cpBBContainsBB)(const cpBB bb, const cpBB other);
-    cpBBContainsBB _cpBBContainsBB;
+    static cpBBContainsBB _cpBBContainsBB;
 
     typedef cpBool (*cpBBContainsVect)(const cpBB bb, const cpVect v);
-    cpBBContainsVect _cpBBContainsVect;
+    static cpBBContainsVect _cpBBContainsVect;
 
     typedef cpBB (*cpBBMerge)(const cpBB a, const cpBB b);
-    cpBBMerge _cpBBMerge;
+    static cpBBMerge _cpBBMerge;
 
     typedef cpBB (*cpBBExpand)(const cpBB bb, const cpVect v);
-    cpBBExpand _cpBBExpand;
+    static cpBBExpand _cpBBExpand;
 
     typedef cpVect (*cpBBCenter)(cpBB bb);
-    cpBBCenter _cpBBCenter;
+    static cpBBCenter _cpBBCenter;
 
     typedef cpFloat (*cpBBArea)(cpBB bb);
-    cpBBArea _cpBBArea;
+    static cpBBArea _cpBBArea;
 
     typedef cpFloat (*cpBBMergedArea)(cpBB a, cpBB b);
-    cpBBMergedArea _cpBBMergedArea;
+    static cpBBMergedArea _cpBBMergedArea;
 
     typedef cpFloat (*cpBBSegmentQuery)(cpBB bb, cpVect a, cpVect b);
-    cpBBSegmentQuery _cpBBSegmentQuery;
+    static cpBBSegmentQuery _cpBBSegmentQuery;
 
     typedef cpBool (*cpBBIntersectsSegment)(cpBB bb, cpVect a, cpVect b);
-    cpBBIntersectsSegment _cpBBIntersectsSegment;
+    static cpBBIntersectsSegment _cpBBIntersectsSegment;
 
     typedef cpVect (*cpBBClampVect)(const cpBB bb, const cpVect v);
-    cpBBClampVect _cpBBClampVect;
+    static cpBBClampVect _cpBBClampVect;
 
     ///////////////////////////////////////////
     // chipmunk_unsafe.h
