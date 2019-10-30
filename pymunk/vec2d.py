@@ -314,7 +314,7 @@ class Vec2d(object):
     # vectory functions
     def get_length_sqrd(self): 
         """Get the squared length of the vector.
-        It is more efficent to use this method instead of first call 
+        It is more efficient to use this method instead of first call 
         get_length() or access .length and then do a sqrt().
         
         :return: The squared length
