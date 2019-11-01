@@ -24,7 +24,7 @@ export SDL_VIDEODRIVER=dummy
 # Install packages and test
 for PYVER in $SUPPORTED_PYTHONS; do
     PYBIN="/opt/python/${PYVER}/bin"
-    ${PYBIN}/pip install cffi
+    ${PYBIN}/pip install "cffi<=1.13"
     ${PYBIN}/pip install pymunk \
       --no-index -f /io/tools/manylinux-build/wheelhouse
     (cd $HOME; ${PYBIN}/python -m pymunk.tests)

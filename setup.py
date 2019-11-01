@@ -253,7 +253,7 @@ setup(
         'build_ext': build_chipmunk,
         'bdist_wheel': bdist_wheel_universal_extension
     },
-    install_requires = ['cffi'],
+    install_requires = ['cffi<=1.13'],
     extras_require = {'dev': ['pyglet','pygame','sphinx', 'aafig']},    
     test_suite = "pymunk.tests",
     ext_modules = extensions,
