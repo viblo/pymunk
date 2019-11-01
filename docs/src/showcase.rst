@@ -155,14 +155,29 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Wong, Eric C. 
+  "Example Based Hebbian Learning may be sufficient to support Human 
+  Intelligence." 
+  bioRxiv (2019): 758375.
+
+* Manoury, Alexandre, and Cédric Buche. 
+  "Hierarchical Affordance Discovery using Intrinsic Motivation." 2019.
+
 * Mounsif, Mehdi, Sebastien Lengagne, Benoit Thuilot, and Lounis Adouane. 
-  "Universal Notice Network: Transferable Knowledge Among Agents."
+  "Universal Notice Network: Transferable Knowledge Among Agents." 
+  In 2019 6th International Conference on Control, Decision and Information 
+  Technologies (CoDIT), pp. 563-568. IEEE, 2019.
 
 * Du, Yilun, and Karthik Narasimhan. 
   "Task-Agnostic Dynamics Priors for Deep Reinforcement Learning." 
   In International Conference on Machine Learning, pp. 1696-1705. 2019.
 
-* Caselles-Dupré, Hugo, Louis Annabi, Oksana Hagen, Michael Garcia-Ortiz, and David Filliat. 
+* Siegel, Max Harmon. 
+  "Compositional simulation in perception and cognition." 
+  PhD diss., Massachusetts Institute of Technology, 2018.
+
+* Caselles-Dupré, Hugo, Louis Annabi, Oksana Hagen, Michael Garcia-Ortiz, and 
+  David Filliat. 
   "Flatland: a Lightweight First-Person 2-D Environment for Reinforcement Learning." 
   arXiv preprint arXiv:1809.00510 (2018).
 
@@ -185,35 +200,42 @@ Pymunk has been used or referenced in a number of scientific papers
   (한국정보과학회 학술발표논문집 (2017): 784-786.)
 
 * Fraccaro, Marco, Simon Kamronn, Ulrich Paquet, and Ole Winther. 
-  "A Disentangled Recognition and Nonlinear Dynamics Model for Unsupervised Learning." 
+  "A Disentangled Recognition and Nonlinear Dynamics Model for Unsupervised 
+  Learning." 
   arXiv preprint arXiv:1710.05741 (2017).
 
 * Kister, Ulrike, Konstantin Klamka, Christian Tominski, and Raimund Dachselt. 
-  "GraSp: Combining Spatially‐aware Mobile Devices and a Display Wall for Graph Visualization and Interaction." 
+  "GraSp: Combining Spatially‐aware Mobile Devices and a Display Wall for Graph 
+  Visualization and Interaction." 
   In Computer Graphics Forum, vol. 36, no. 3, pp. 503-514. 2017.
 
-* Kim, Neil H., Gloria Lee, Nicholas A. Sherer, K. Michael Martini, Nigel Goldenfeld, and Thomas E. Kuhlman. 
+* Kim, Neil H., Gloria Lee, Nicholas A. Sherer, K. Michael Martini, Nigel 
+  Goldenfeld, and Thomas E. Kuhlman. 
   "Real-time transposable element activity in individual live cells." 
   Proceedings of the National Academy of Sciences 113, no. 26 (2016): 7278-7283.
 
 * Baheti, Ashutosh, and Arobinda Gupta. 
   "Non-linear barrier coverage using mobile wireless sensors." 
-  In Computers and Communications (ISCC), 2017 IEEE Symposium on, pp. 804-809. IEEE, 2017.
+  In Computers and Communications (ISCC), 2017 IEEE Symposium on, pp. 804-809. 
+  IEEE, 2017.
 
-* Espeso, David R., Esteban Martínez-García, Victor De Lorenzo, and Ángel Goñi-Moreno. 
+* Espeso, David R., Esteban Martínez-García, Victor De Lorenzo, and Ángel 
+  Goñi-Moreno. 
   "Physical forces shape group identity of swimming Pseudomonas putida cells." 
   Frontiers in Microbiology 7 (2016).
 
 * Goni-Moreno, Angel, and Martyn Amos. 
   "DiSCUS: A Simulation Platform for Conjugation Computing." 
-  In International Conference on Unconventional Computation and Natural Computation, pp. 181-191. Springer International Publishing, 2015.
+  In International Conference on Unconventional Computation and Natural 
+  Computation, pp. 181-191. Springer International Publishing, 2015.
 
 * Amos, Martyn, et al. 
   "Bacterial computing with engineered populations." 
   *Phil. Trans. R. Soc. A* 373.2046 (2015): 20140218.
 
 * Crane, Beth, and Stephen Sherratt. 
-  "rUNSWift 2D Simulator; Behavioural Simulation Integrated with the rUNSWift Architecture." 
+  "rUNSWift 2D Simulator; Behavioural Simulation Integrated with the rUNSWift 
+  Architecture." 
   *UNSW School of Computer Science and Engineering* (2013).
 
 * Miller, Chreston Allen. 
@@ -221,15 +243,19 @@ Pymunk has been used or referenced in a number of scientific papers
   Diss. Virginia Polytechnic Institute and State University, 2013.
 
 * Pumar García, César. 
-  "Simulación de evolución dirigida de bacteriófagos en poblaciones de bacterias en 2D." 
+  "Simulación de evolución dirigida de bacteriófagos en poblaciones de bacterias 
+  en 2D." 
   (2013).
 
 * Simoes, Manuel, and Caroline GL Cao. 
-  "Leonardo: a first step towards an interactive decision aid for port-placement in robotic surgery." 
-  *Systems, Man, and Cybernetics (SMC), 2013 IEEE International Conference on.* IEEE, 2013.
+  "Leonardo: a first step towards an interactive decision aid for port-placement 
+  in robotic surgery." 
+  *Systems, Man, and Cybernetics (SMC), 2013 IEEE International Conference on.* 
+  IEEE, 2013.
 
 * Goni-Moreno, Angel, and Martyn Amos. 
-  "Discrete modelling of bacterial conjugation dynamics." *arXiv preprint arXiv:1211.1146* (2012).
+  "Discrete modelling of bacterial conjugation dynamics." 
+  *arXiv preprint arXiv:1211.1146* (2012).
 
 * Matthews, Elizabeth A. 
   "ATLAS CHRONICLE: A STORY-DRIVEN SYSTEM TO CREATE STORY-DRIVEN MAPS."
@@ -241,7 +267,8 @@ Pymunk has been used or referenced in a number of scientific papers
 
 * Miller, Chreston, and Francis Quek. 
   "Toward multimodal situated analysis." 
-  *Proceedings of the 13th international conference on multimodal interfaces.* ACM, 2011.
+  *Proceedings of the 13th international conference on multimodal interfaces.* 
+  ACM, 2011.
 
 * Verdie, Yannick. 
   "Surface gesture & object tracking on tabletop devices."
@@ -251,7 +278,7 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2019-05-21. If something is missing or wrong, please contact 
+List last updated 2019-09-17. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
