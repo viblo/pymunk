@@ -3,7 +3,8 @@ include LICENSE.txt
 include README.rst
 include THANKS.txt
 #docs
-recursive-include docs *
+recursive-include docs/src *
+recursive-include docs/html *
 #examples
 include examples/*.py
 include examples/*.png

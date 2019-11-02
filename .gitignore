@@ -2,6 +2,8 @@
 build/
 chipmunk_src/**/*.o
 dist/
+docs/html/
+docs/doctrees/
 .tox/
 *.obj
 .vscode/

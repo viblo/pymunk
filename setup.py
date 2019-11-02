@@ -253,7 +253,15 @@ setup(
         'build_ext': build_chipmunk,
         'bdist_wheel': bdist_wheel_universal_extension
     },
-    install_requires = ['cffi<=1.13'],
+    command_options={
+        'build_sphinx': {
+            'build_dir': ('setup.py', 'docs'),
+            'source_dir': ('setup.py', 'docs/src')
+        }
+    },
+    # Limit to <=1.13 because of issue with 1.13.1 reported to cffi here: 
+    # https://bitbucket.org/cffi/cffi/issues/432/1131-breaks-pymunk-on-linux-in-a-subtle
+    install_requires = ['cffi<=1.13'], 
     extras_require = {'dev': ['pyglet','pygame','sphinx', 'aafig']},    
     test_suite = "pymunk.tests",
     ext_modules = extensions,

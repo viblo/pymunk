@@ -6,7 +6,8 @@ import shutil
 def main():
     os.chdir("..")
     shutil.rmtree("dist", True)
-    os.system("python setup.py sdist --formats=zip")
+    shutil.rmtree("docs/html", True)
+    os.system("python setup.py build_sphinx sdist --formats=zip")
     os.system("python2 setup.py bdist_wheel")
     
     print("""
