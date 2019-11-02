@@ -228,13 +228,15 @@ def main():
         
         if grounding['body'] != None:
             feet.friction = -PLAYER_GROUND_ACCEL/space.gravity.y
-            head.friciton = HEAD_FRICTION
+            head.friction = HEAD_FRICTION
         else:
             feet.friction,head.friction = 0,0
         
         # Air control
         if grounding['body'] == None:
-            body.velocity.x = cpflerpconst(body.velocity.x, target_vx + ground_velocity.x, PLAYER_AIR_ACCEL*dt)
+            body.velocity = Vec2d(
+                cpflerpconst(body.velocity.x, target_vx + ground_velocity.x, PLAYER_AIR_ACCEL*dt),
+                body.velocity.y)
         
         body.velocity.y = max(body.velocity.y, -FALL_VELOCITY) # clamp upwards as well?
         
