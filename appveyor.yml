@@ -42,6 +42,8 @@ install:
   - "python -m pip install tox"
   # We need wheel installed to build wheels
   - "python -m pip install --upgrade wheel"
+  # Needs sphinx to build docs
+  - "python -m pip install sphinx"
   
 build_script: 
   - python setup.py build_sphinx bdist_wheel
