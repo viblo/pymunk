@@ -74,7 +74,8 @@ before_install:
 install:
 - echo $PATH
 - which $PYTHON
-- "travis_retry $PYTHON -m $PIP_INSTALL virtualenv tox wheel sphinx"
+- "travis_retry $PYTHON -m $PIP_INSTALL virtualenv tox wheel"
+- "travis_retry $PYTHON -m $PIP_INSTALL -r docs/requirements.txt"
 
 script:
 - $PYTHON -m tox
