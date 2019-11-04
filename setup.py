@@ -259,9 +259,9 @@ setup(
             'source_dir': ('setup.py', 'docs/src')
         }
     },
-    # Limit to <=1.13 because of issue with 1.13.1 reported to cffi here: 
+    # Skip 1.13.1 becaus of issue reported to cffi here: 
     # https://bitbucket.org/cffi/cffi/issues/432/1131-breaks-pymunk-on-linux-in-a-subtle
-    install_requires = ['cffi<=1.13'], 
+    install_requires = ['cffi != 1.13.1'], 
     extras_require = {'dev': ['pyglet','pygame','sphinx', 'aafig']},    
     test_suite = "pymunk.tests",
     ext_modules = extensions,
