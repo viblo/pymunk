@@ -133,8 +133,9 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         r = _rndint(max(1, radius*2))
         pygame.draw.lines(self.surface, fill_color, False, [p1,p2], r)
         if r > 2:
-            delta = ( p2[0]-p1[0], p2[1]-p1[1] )
-            orthog = [ delta[1], -delta[0] ]
+            orthog = [ abs(p2[1]-p1[1]), abs(p2[0]-p1[0]) ]
+            if orthog[0] == 0 and orthog[1] == 0:
+                return
             scale = radius / (orthog[0]*orthog[0] + orthog[1]*orthog[1])**0.5
             orthog[0]*=scale; orthog[1]*=scale
             points = [
