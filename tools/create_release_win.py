@@ -17,7 +17,6 @@ def main():
     - validate test results of Travis and Appveyor
     - write news entry and put in news.rst
     - make sure all images are optimized (for example with tinypng.com)
-    - regenerate the api docs
     
     """)
     print("""

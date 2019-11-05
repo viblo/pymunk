@@ -2,6 +2,29 @@
 News 
 ****
 
+Pymunk 5.6.0
+------------
+*Victor - 2019-11-02*
+
+**Fix to avoid incompatible CFFI version**
+
+The main goal of this release is to ensure a compatible version of CFFI is 
+installed when installing Pymunk though pip. Unfortunately there is a problem on 
+Linux with CFFI 1.13.1. (Later and earlier versions will work fine)
+
+Changes:
+
+- Added a requirement on CFFI to not be 1.13.1 (since 1.13.1 doesnt work).
+- Update cffi definitions to prevent deprecation warning in latest cffi.
+- Added normal property to Arbiter object.
+- Remove compiled docs from committed code.
+- Removed build/test of CPython 3.4 from Travis and Appveyor configs since its 
+  not supported anymore.
+- Update pyglet examples to work with pyglet 1.4.
+- Fixed minor issue in platformer example.
+- Improved docs.
+
+
 Pymunk 5.5.0
 ------------
 *Victor - 2019-05-03*
@@ -13,7 +36,8 @@ latest version, and then a number of unmerged PRs were merged in. (The
 Chipmunk git repo is quite dead, so Pymunk will include unmerged PRs after 
 manual review). Another major improvement is that now Pymunk can run on 
 FreeBSD. It was also tested on Termux on Android, and several improvements to 
-the installation process has been included. A bunch of smaller fixes are also included.
+the installation process has been included. A bunch of smaller fixes are also 
+included.
 
 Changes:
 
