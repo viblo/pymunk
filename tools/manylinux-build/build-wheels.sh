@@ -10,8 +10,7 @@ for PYVER in $SUPPORTED_PYTHONS; do
     rm -rf /io/Setup /io/build/
     PYBIN="/opt/python/${PYVER}/bin"
     cd /io
-    ${PYBIN}/pip install -r "docs/requirements.txt"
-    ${PYBIN}/python setup.py build_sphinx bdist_wheel -d wheelhouse/
+    ${PYBIN}/python setup.py bdist_wheel -d wheelhouse/
 done
 
 # Bundle external shared libraries into the wheels

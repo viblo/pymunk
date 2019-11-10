@@ -40,6 +40,7 @@ matrix:
     env: 
     - TOXENV=py37
     - BUILD_CMD="python setup.py build_sphinx sdist --formats=zip"
+    - GITHUB_UPLOAD=yes
     python: 3.7
     dist: xenial
   - os: linux
@@ -102,7 +103,7 @@ deploy:
     file_glob: true
     file:
       - dist/*.whl
-      - dist/*.tar.gz
+      - dist/*.zip
       - tools/manylinux-build/wheelhouse/*.whl
     skip_cleanup: true
     draft: true
