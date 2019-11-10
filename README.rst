@@ -9,7 +9,7 @@ in your game, demo or other application! It is built on top of the very
 capable 2d physics library `Chipmunk <http://chipmunk-physics.net>`_.
 
 The first version was released in 2007 and Pymunk is still actively developed 
-and maintained today. 
+and maintained today, more than 10 years of active development!
 
 Pymunk has been used with success in many projects, big and small. For example: 
 3 Pyweek game competition winners, more than a dozen published scientific 
@@ -66,8 +66,9 @@ https://pypi.org/project/pymunk/#files
 Documentation
 -------------
 
-The source distribution of Pymunk ships with a number of demos in the examples
-directory, and it also contains the full documentation including API reference.
+The source distribution of Pymunk ships with a number of demos of different 
+simulations in the examples directory, and it also contains the full 
+documentation including API reference.
 
 You can also find the full documentation including examples and API reference 
 on the Pymunk homepage, http://www.pymunk.org
@@ -80,8 +81,8 @@ The Pymunk Vision
 
 It is (or is striving to be):
 
-* **Easy to use** - It should be easy to use, no complicated stuff should be 
-  needed to add physics to your game/program.
+* **Easy to use** - It should be easy to use, no complicated code should be 
+  needed to add physics to your game or program.
 * **"Pythonic"** - It should not be visible that a c-library (chipmunk) is in 
   the bottom, it should feel like a Python library (no strange naming, OO, 
   no memory handling and more)
@@ -132,7 +133,7 @@ possible, usually `pip install` will take care of everything for you.
 * Pyglet (optional, you need it to run the Pyglet based demos)
 * Matplotlib & Jupyter Notebook (optional, you need it to run the Matplotlib 
   based demos)
-* Sphinx (optional, you need it to build documentation)
+* Sphinx & aafigure (optional, you need it to build documentation)
 
 
 Python 2 & Python 3
