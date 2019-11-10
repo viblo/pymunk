@@ -17,7 +17,7 @@ matrix:
     - PYTHON="python3"
     - TOXENV=py3
     - PIP_INSTALL="pip install --user"
-    - BUILD_CMD="python3 setup.py build_sphinx sdist bdist_wheel"
+    - BUILD_CMD="python3 setup.py bdist_wheel"
     - GITHUB_UPLOAD=yes
   - os: osx
     osx_image: xcode9.1
@@ -26,7 +26,7 @@ matrix:
     - PYTHON="python2"
     - TOXENV=py27
     - PIP_INSTALL="pip install --user"
-    - BUILD_CMD="python2 setup.py build_sphinx bdist_wheel"
+    - BUILD_CMD="python2 setup.py bdist_wheel"
   - os: linux
     env: TOXENV=py27
     python: 2.7
@@ -37,7 +37,9 @@ matrix:
     env: TOXENV=py36
     python: 3.6
   - os: linux
-    env: TOXENV=py37
+    env: 
+    - TOXENV=py37
+    - BUILD_CMD="python setup.py build_sphinx sdist --formats=zip"
     python: 3.7
     dist: xenial
   - os: linux

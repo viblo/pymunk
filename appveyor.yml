@@ -42,7 +42,7 @@ install:
   - "python -m pip install -r docs/requirements.txt"
   
 build_script: 
-  - python setup.py build_sphinx bdist_wheel
+  - python setup.py bdist_wheel
 
 test_script:
   # get the wheel file and use it as input to tox
