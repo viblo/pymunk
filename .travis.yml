@@ -19,6 +19,11 @@ matrix:
     - PIP_INSTALL="pip install --user"
     - BUILD_CMD="python3 setup.py bdist_wheel"
     - GITHUB_UPLOAD=yes
+    addons:
+      homebrew:
+        packages:
+        - python
+        update: true
   - os: osx
     osx_image: xcode9.1
     language: generic
@@ -66,10 +71,6 @@ matrix:
     - GITHUB_UPLOAD=yes
   exclude:
   - env: TRAVIS_4681_WORKAROUND=1
-
-before_install:
-- chmod ugo+x .travis_before_install.sh
-- "./.travis_before_install.sh"
 
 install:
 - echo $PATH
