@@ -260,7 +260,7 @@ class SpaceDebugDrawOptions(object):
 
     def color_for_shape(self, shape):
         if hasattr(shape, "color"):
-            return shape.color
+            return SpaceDebugColor(*shape.color)
 
         color = self.shape_dynamic_color
         if shape.body != None:
