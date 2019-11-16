@@ -38,8 +38,6 @@ install:
   - "python -m pip install tox"
   # We need wheel installed to build wheels
   - "python -m pip install --upgrade wheel"
-  # Needs docs requirements to build docs
-  - "python -m pip install -r docs/requirements.txt"
   
 build_script: 
   - python setup.py bdist_wheel
