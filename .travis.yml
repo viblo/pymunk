@@ -44,8 +44,6 @@ matrix:
   - os: linux
     env: 
     - TOXENV=py37
-    - BUILD_CMD="python setup.py build_sphinx sdist --formats=zip"
-    - GITHUB_UPLOAD=yes
     python: 3.7
     dist: xenial
   - os: linux
@@ -61,13 +59,16 @@ matrix:
     env: TOXENV=pypy3
     python: pypy3
   - os: linux
-    env: TOXENV=docs
+    env: 
+    - TOXENV=docs
+    - BUILD_CMD="python setup.py sdist --formats=zip"
+    - GITHUB_UPLOAD=yes
     python: 3.7
     dist: xenial
 # create linux binary manylinux builds, see tools/manylinux-build
   - os: linux
     services:
-      - docker
+    - docker
     env:
     - TOXENV=manylinux
     - GITHUB_UPLOAD=yes
@@ -78,7 +79,6 @@ install:
 - echo $PATH
 - which $PYTHON
 - "travis_retry $PYTHON -m $PIP_INSTALL virtualenv tox wheel"
-- "travis_retry $PYTHON -m $PIP_INSTALL -r docs/requirements.txt"
 
 script:
 - $PYTHON -m tox
