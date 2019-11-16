@@ -51,6 +51,7 @@ matrix:
   - os: linux
     env: TOXENV=py38
     python: 3.8
+  
 # strange random hang error on pypy that is difficult to reproduce.
 # Disable test for now.
 #  - os: linux
@@ -64,6 +65,7 @@ matrix:
     python: 3.7
     dist: xenial
 # create linux binary manylinux builds, see tools/manylinux-build
+  - os: linux
     services:
       - docker
     env:
