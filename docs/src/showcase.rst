@@ -75,6 +75,28 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/ambient-chimes.png
+      - `Simulation of ambient chimes | Circle in a hexagon <https://youtu.be/7MRJS8ZV9VA>`_
+
+        :subscript:`made by Jan Abraham.Retrieved 2019-11-17`
+
+        An ambient piano chord produced by the simulation of a bouncing ball. 
+        The calculations were carried out using pymunk library.
+        Tuning: Kirnberger III
+
+    * - .. image:: _static/aimoveneat.png
+      - `I teach AI to move with using NEAT <https://youtu.be/ipWIH1g9DSw>`_
+
+        :subscript:`made by Cheesy AI. Retrieved 2019-11-17`
+
+        Recently I learned Pymunk 2d physics library.
+        It is very cool so with that I made 2d Humanoid for my AI.
+        Today I'm going to teach AI to move forward with NEAT.
+        NEAT is a genetic algorithm for the generation of evolving artificial 
+        neural networks.
+        Results are quite weird but it will be fun.
+        Have fun!
+
     * - .. image:: _static/carconf.png
       - `Car Configuration with Differential Evolotion <https://youtu.be/7ok4ESgrKg0>`_
 
