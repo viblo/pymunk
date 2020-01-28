@@ -315,7 +315,25 @@ class Body(PickleMixin, object):
 
         There are many cases when this can be useful. One example is individual 
         gravity for some bodies, and another is to limit the velocity which is 
-        useful to prevent tunneling. This is an example of such a callback:
+        useful to prevent tunneling. 
+        
+        Example of a callback that sets gravity to zero for a object.
+
+        >>> import pymunk
+        >>> space = pymunk.Space()
+        >>> space.gravity = 0, 10
+        >>> body = pymunk.Body(1,2)
+        >>> space.add(body)
+        >>> def zero_gravity(body, gravity, damping, dt):
+        ...     pymunk.Body.update_velocity(body, (0,0), damping, dt)
+        ... 
+        >>> body.velocity_func = zero_gravity
+        >>> space.step(1)
+        >>> space.step(1)
+        >>> print(body.position, body.velocity)
+        Vec2d(0.0, 0.0) Vec2d(0.0, 0.0)
+
+        Example of a callback that limits the velocity:
 
         >>> import pymunk
         >>> body = pymunk.Body(1,2)

@@ -147,7 +147,8 @@ class Space(PickleMixin, object):
         , doc="""Global gravity applied to the space.
 
         Defaults to (0,0). Can be overridden on a per body basis by writing
-        custom integration functions.
+        custom integration functions and set it on the body:
+        :py:meth:`pymunk.Body.velocity_func`.
         """)
 
     def _set_damping(self, damping):

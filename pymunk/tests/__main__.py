@@ -34,7 +34,8 @@ def main():
 
     elif sys.version_info.major < 3:
         print("Skipping doctests"
-              " (Doctests uses on formatting that differ between Py2 and 3)")
+              " (Doctests uses formatting that differ between Py2 and 3"
+              " and the Pymunk doctests target Python 3")
         for test in list_of_tests_gen(suite):
             if not isinstance(test, doctest.DocTestCase):
                 filtered_suite.addTest(test)
