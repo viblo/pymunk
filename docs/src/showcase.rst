@@ -177,6 +177,10 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Vos, Bastiaan. 
+  "The Sailing Tug: A feasibility study on the application of Wind-Assisted towing of the Thialf." 
+  (2019).
+
 * Wong, Eric C. 
   "Example Based Hebbian Learning may be sufficient to support Human 
   Intelligence." 
@@ -300,7 +304,7 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2019-09-17. If something is missing or wrong, please contact 
+List last updated 2020-01-24. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
