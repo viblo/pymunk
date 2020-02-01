@@ -14,16 +14,16 @@ matrix:
     osx_image: xcode10.1
     language: generic
     env:
-    - PYTHON="python3"
+    - PYTHON="python"
     - TOXENV=py3
     - PIP_INSTALL="pip install --user"
-    - BUILD_CMD="python3 setup.py bdist_wheel"
+    - BUILD_CMD="$PYTHON setup.py bdist_wheel"
     - GITHUB_UPLOAD=yes
     addons:
       homebrew:
         packages:
         - python
-        update: true
+        #update: true
   - os: osx
     osx_image: xcode10.1
     language: generic
@@ -31,7 +31,7 @@ matrix:
     - PYTHON="python2"
     - TOXENV=py27
     - PIP_INSTALL="pip install --user"
-    - BUILD_CMD="python2 setup.py bdist_wheel"
+    - BUILD_CMD="$PYTHON setup.py bdist_wheel"
   - os: linux
     env: TOXENV=py27
     python: 2.7
@@ -77,7 +77,7 @@ matrix:
 
 install:
 - echo $PATH
-- which $PYTHON
+- $PYTHON -V
 - "travis_retry $PYTHON -m $PIP_INSTALL virtualenv tox wheel"
 
 script:

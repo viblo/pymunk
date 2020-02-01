@@ -52,8 +52,11 @@ Quick code example::
     poly = pymunk.Poly.create_box(body) # Create a box shape and attach to body
     space.add(body, poly)       # Add both body and shape to the simulation
 
+    print_options = pymunk.SpaceDebugDrawOptions() # For easy printing
+
     while True:                 # Infinite loop simulation
         space.step(0.02)        # Step the simulation one step forward
+        space.debug_draw(print_options) # Print the state of the simulation
     
 For more detailed and advanced examples, take a look at the included demos 
 (in examples/).
