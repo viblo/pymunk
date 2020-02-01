@@ -10,8 +10,9 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
         #brew install python;
         ;;
     py3)
-        brew update;
-        brew upgrade python;
+        #brew update;
+        #brew upgrade python;
+        #brew link --overwrite python;
         ;;
     esac
     
