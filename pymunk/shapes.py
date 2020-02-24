@@ -82,7 +82,7 @@ class Shape(PickleMixin, object):
 
     def _get_center_of_gravity(self):
         """The calculated center of gravity of this shape."""
-        return cp.cpShapeGetCenterOfGravity(self._shape)
+        return Vec2d._fromcffi(cp.cpShapeGetCenterOfGravity(self._shape))
     center_of_gravity = property(_get_center_of_gravity, 
         doc=_get_center_of_gravity.__doc__)
 

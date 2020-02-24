@@ -78,8 +78,7 @@ class UnitTestShape(unittest.TestCase):
         
     def testCenterOfGravity(self):
         c = p.Circle(None, 5)
-        self.assertEqual(c.center_of_gravity.x, 0)
-        self.assertEqual(c.center_of_gravity.y, 0)
+        self.assertEqual(c.center_of_gravity, (0,0))
         c = p.Circle(None, 5, (10,5))
         self.assertEqual(c.center_of_gravity.x, 10)
         self.assertEqual(c.center_of_gravity.y, 5)
