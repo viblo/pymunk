@@ -177,6 +177,9 @@ idea to do more than one of these.
   space.step multiple times each frame in your application. This will also help 
   to make the overall simulation more stable.
 
+* Double check that the center of gravity is at a reasonable point for all 
+  objects.
+
 
 Unstable simulation? 
 ====================
@@ -202,6 +205,9 @@ There a a number of things to try if this happens:
 
 * If you use a Motor joint, make sure to set its max force. Otherwise its power
   will be near infinite.  
+
+* Double check that the center of gravity is at a reasonable point for all 
+  objects.
 
 (Most of these suggestions are the same for most physics engines, not just 
 Pymunk.)

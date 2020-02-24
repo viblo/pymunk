@@ -454,6 +454,32 @@ class Poly(Shape):
         shape is not attached to a body. However, you must attach it to a body
         before adding the shape to a space or used for a space shape query.
     
+        .. note::
+            Make sure to put the vertices around (0,0) or the shape might 
+            behave strange. 
+
+            Either directly place the vertices like the below example:
+            
+            >>> import pymunk
+            >>> w, h = 10, 20
+            >>> vs = [(-w/2,-h/2), (w/2,-h/2), (w/2,h/2), (-w/2,h/2)]
+            >>> poly_good = pymunk.Poly(None, vs)
+            >>> print(poly_good.center_of_gravity)
+            Vec2d(0.0, 0.0)
+
+            Or use a transform to move them:
+
+            >>> import pymunk
+            >>> width, height = 10, 20
+            >>> vs = [(0, 0), (width, 0), (width, height), (0, height)]
+            >>> poly_bad = pymunk.Poly(None, vs)
+            >>> print(poly_bad.center_of_gravity)
+            Vec2d(5.0, 10.0)
+            >>> t = pymunk.Transform(tx=-width/2, ty=-height/2)
+            >>> poly_good = pymunk.Poly(None, vs, transform=t)
+            >>> print(poly_good.center_of_gravity)
+            Vec2d(0.0, 0.0)
+
         :param Body body: The body to attach the poly to
         :param [(float,float)] vertices: Define a convex hull of the polygon 
             with a counterclockwise winding.
