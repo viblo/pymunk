@@ -314,8 +314,14 @@ class Vec2d(object):
     # vectory functions
     def get_length_sqrd(self): 
         """Get the squared length of the vector.
-        It is more efficient to use this method instead of first call 
-        get_length() or access .length and then do a sqrt().
+        If the squared length is enough it is more efficient to use this method 
+        instead of first calling get_length() or access .length and then do a 
+        x**2. 
+
+        >>> import pymunk
+        >>> v = pymunk.vec2d.Vec2d(3,4)
+        >>> v.get_length_sqrd() == v.length**2
+        True
         
         :return: The squared length
         """
