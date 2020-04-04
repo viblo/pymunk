@@ -463,11 +463,14 @@ class Vec2d(object):
         return (self.x - other[0])**2 + (self.y - other[1])**2
 
     def projection(self, other):
+        """Project this vector on top of other vector
+        """
         other_length_sqrd = other[0]*other[0] + other[1]*other[1]
         if other_length_sqrd == 0.0:
             return Vec2d(0,0)
         projected_length_times_other_length = self.dot(other)
-        return other*(projected_length_times_other_length/other_length_sqrd)
+        new_length = (projected_length_times_other_length/other_length_sqrd)
+        return Vec2d(other[0]*new_length, other[1]*new_length)
 
     def cross(self, other):
         """The cross product between the vector and other vector

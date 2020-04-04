@@ -56,6 +56,7 @@ class UnitTestVec2d(unittest.TestCase):
         v = Vec2d(111, 222)
         v = -v
         self.assertTrue(v == [-111, -222])
+        self.assertTrue(v == [-111, -222])
         v = abs(v)
         self.assertTrue(v == [111, 222])
 
@@ -112,8 +113,11 @@ class UnitTestVec2d(unittest.TestCase):
         v = Vec2d(10, 1)
         self.assertTrue(v.convert_to_basis(basis0, basis1) == [2, 2])
         self.assertTrue(v.projection(basis0) == (10, 0))
+        self.assertTrue(v.projection(list(basis0)) == (10, 0))
+        self.assertTrue(v.projection(Vec2d(0,0)) == (0, 0))
+        self.assertTrue(v.projection((0,0)) == (0, 0))
         self.assertTrue(basis0.dot(basis1) == 0)
-        
+
     def testCross(self):
         lhs = Vec2d(1, .5)
         rhs = Vec2d(4, 6)
