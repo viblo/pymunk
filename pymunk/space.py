@@ -365,6 +365,39 @@ class Space(PickleMixin, object):
         support the threaded solver.
         """)
 
+    def use_spatial_hash(self, dim, count):
+        """Switch the space to use a spatial hash instead of the bounding box 
+        tree.
+        
+        Pymunk supports two spatial indexes. The default is an axis-aligned 
+        bounding box tree inspired by the one used in the Bullet Physics 
+        library, but caching of overlapping leaves was added to give it very 
+        good temporal coherence. The tree requires no tuning, and most games 
+        will find that they get the best performance using from the tree. The 
+        other available spatial index type available is a spatial hash, which 
+        can be much faster when you have a very large number (1000s) of 
+        objects that are all the same size. For smaller numbers of objects, 
+        or objects that vary a lot in size, the spatial hash is usually much 
+        slower. It also requires tuning (usually through experimentation) to 
+        get the best possible performance.
+
+        The spatial hash data is fairly size sensitive. dim is the size of 
+        the hash cells. Setting dim to the average collision shape size is 
+        likely to give the best performance. Setting dim too small will cause 
+        the shape to be inserted into many cells, setting it too low will 
+        cause too many objects into the same hash slot.
+
+        count is the suggested minimum number of cells in the hash table. If 
+        there are too few cells, the spatial hash will return many false 
+        positives. Too many cells will be hard on the cache and waste memory. 
+        Setting count to ~10x the number of objects in the space is probably a
+         good starting point. Tune from there if necessary.
+
+        :param float dim: the size of the hash cells
+        :param int count: the suggested minimum number of cells in the hash table
+        """
+        cp.cpSpaceUseSpatialHash(self._space, dim, count)
+
 
     def step(self, dt):
         """Update the space for the given time step. 

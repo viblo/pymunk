@@ -87,6 +87,13 @@ class UnitTestSpace(unittest.TestCase):
             self.assertEqual(s.threads, 2)
         s.step(1)
 
+    def testSpatialHash(self):
+        s = p.Space()
+        s.use_spatial_hash(10, 100)
+        s.step(1)
+        s.add(p.Body(1,2))
+        s.step(1)
+
     def testAddRemove(self):
         s = p.Space()
 
