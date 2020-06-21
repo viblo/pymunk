@@ -89,7 +89,7 @@ def init():
         pivot = pymunk.PivotJoint(static_body, body, (0,0), (0,0))
         space.add(pivot)
         pivot.max_bias = 0 # disable joint correction
-        pivot.max_Force = 1000 # emulate linear friction
+        pivot.max_force = 1000 # emulate linear friction
         
         gear = pymunk.GearJoint(static_body, body, 0.0, 1.0)
         space.add(gear)
