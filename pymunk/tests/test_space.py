@@ -754,10 +754,12 @@ class UnitTestSpace(unittest.TestCase):
 
         b1 = p.Body(1,2)
         b2 = p.Body(3,4)
+        b3 = p.Body(5,6)
         c1 = p.Circle(b1, 7)
         c2 = p.Circle(b1, 8)
-        c3 = p.Circle(s.static_body, 9)
-        s.add(b1,b2, c1, c2, c3)
+        c3 = p.Circle(b2, 9)
+        c4 = p.Circle(s.static_body, 10)
+        s.add(b1, b2, b3, c1, c2, c3, c4)
 
         s.static_body.custom = "x"
 
@@ -779,6 +781,7 @@ class UnitTestSpace(unittest.TestCase):
 
         s2 = copy_func(s)
         
+        # Assert properties
         self.assertEqual(s.threaded, s2.threaded)
         self.assertEqual(s.iterations, s2.iterations)
         self.assertEqual(s.gravity, s2.gravity)
@@ -789,13 +792,14 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(s.collision_bias, s2.collision_bias)
         self.assertEqual(s.collision_persistence, s2.collision_persistence)
         self.assertEqual(s.threads, s2.threads)
-
-        self.assertEqual(sorted([c.radius for c in s2.shapes]), [7,8,9])
-        self.assertEqual(sorted([b.mass for b in s2.bodies]), [1,3])
+        # Assert shapes, bodies and constriants
+        self.assertEqual([c.radius for c in s2.shapes], [7,8,9, 10])
+        self.assertEqual([b.mass for b in s2.bodies], [1, 3, 5])
         self.assertEqual(s.static_body.custom, s2.static_body.custom)
         ja = [j.a for j in s2.constraints]
         self.assertIn(s2.static_body, ja)
 
+        # Assert collision handlers
         h2 = s2.add_default_collision_handler()
         self.assertIsNotNone(h2.begin)
         self.assertIsNone(h2.pre_solve)

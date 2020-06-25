@@ -71,9 +71,9 @@ class Space(PickleMixin, object):
         self._removed_shapes = {}
 
         self._shapes = {}
-        self._bodies = set()
+        self._bodies = {}
         self._static_body = None
-        self._constraints = set()
+        self._constraints = {}
         
         self._in_step = False
         self._add_later = set()
@@ -307,13 +307,13 @@ class Space(PickleMixin, object):
         """Adds a body to the space"""
         assert body not in self._bodies, "body already added to space"
         body._space = weakref.proxy(self)
-        self._bodies.add(body)
+        self._bodies[body] = None
         cp.cpSpaceAddBody(self._space, body._body)
 
     def _add_constraint(self, constraint):
         """Adds a constraint to the space"""
         assert constraint not in self._constraints, "constraint already added to space"
-        self._constraints.add(constraint)
+        self._constraints[constraint] = None
         cp.cpSpaceAddConstraint(self._space, constraint._constraint)
 
     def _remove_shape(self, shape):
@@ -324,11 +324,11 @@ class Space(PickleMixin, object):
     def _remove_body(self, body):
         """Removes a body from the space"""
         body._space = None
-        self._bodies.remove(body)
+        del self._bodies[body]
         cp.cpSpaceRemoveBody(self._space, body._body)
     def _remove_constraint(self, constraint):
         """Removes a constraint from the space"""
-        self._constraints.remove(constraint)
+        del self._constraints[constraint]
         cp.cpSpaceRemoveConstraint(self._space, constraint._constraint)
 
     def reindex_shape(self, shape):

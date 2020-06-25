@@ -17,7 +17,8 @@ v5.x
 - Type annotations?
 - update example code to be less dependent on the flipy function for pygame. instead flip the gravity.
 - Update docs with collision chapter. ShapeFilter, collision callbacks and such
-- use env variables for pymunkoptions, like pygame https://stackoverflow.com/questions/56258942/is-there-an-environment-variable-to-disable-pymunk-chipmunk-from-printing-loadi   
+- use env variables for pymunkoptions, like pygame https://stackoverflow.com/questions/56258942/is-there-an-environment-variable-to-disable-pymunk-chipmunk-from-printing-loadi
+- make running tests with python -m pymunk.tests, and examples with python -m pymunk.examples... somehow. See pybox2d for inspiration    
 
 v6+ (all potentially breaking changes)
 ---
@@ -35,3 +36,4 @@ v6+ (all potentially breaking changes)
   same handler. Fixes https://github.com/viblo/pymunk/issues/132 
 - make default of positive_y_is_up False
 - use sphinx_autodoc_typehints and type hints when python 2 support is dropped
+- drop support for python 2
