@@ -177,6 +177,10 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Li, Yunzhu, Antonio Torralba, Animashree Anandkumar, Dieter Fox, and Animesh Garg. 
+  "Causal Discovery in Physical Systems from Videos." 
+  arXiv preprint arXiv:2007.00631 (2020).
+
 * Suh, H. J., and Russ Tedrake. 
   "The Surprising Effectiveness of Linear Models for Visual Foresight in 
   Object Pile Manipulation." 
@@ -310,7 +314,7 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2020-02-27. If something is missing or wrong, please contact 
+List last updated 2020-07-09. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
