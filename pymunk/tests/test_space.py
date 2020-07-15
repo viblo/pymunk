@@ -625,6 +625,13 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertTrue(self.separated)
 
+    def testCollisionHandlerKeyOrder(self):
+        s = p.Space()
+        h1 = s.add_collision_handler(1,2)
+        h2 = s.add_collision_handler(2,1)
+
+        self.assertEqual(h1, h2)
+
     def testWildcardCollisionHandler(self):
         s = p.Space()
         b1 = p.Body(1, 1)

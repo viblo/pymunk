@@ -463,7 +463,7 @@ class Space(PickleMixin, object):
         :rtype: :py:class:`CollisionHandler`
         """
         
-        key = (collision_type_a, collision_type_b) 
+        key = min(collision_type_a, collision_type_b), max(collision_type_a, collision_type_b)
         if key in self._handlers:
             return self._handlers[key]
         
