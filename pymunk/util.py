@@ -36,20 +36,7 @@ from .vec2d import Vec2d
 
 X, Y = 0, 1
 
-try:
-    from functools import partial
-except ImportError:
-    # Python 2.4 support
-    def partial(func, *args, **keywords):
-        def newfunc(*fargs, **fkeywords):
-            newkeywords = keywords.copy()
-            newkeywords.update(fkeywords)
-            return func(*(args + fargs), **newkeywords)
-
-        newfunc.func = func
-        newfunc.args = args
-        newfunc.keywords = keywords
-        return newfunc
+from functools import partial
 
 def is_clockwise(points):
     """
