@@ -177,6 +177,10 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Ipe, Navin. 
+  "Context and event-based cognitive memory constructs for embodied intelligence machines." 
+  (2020).
+
 * Li, Yunzhu, Antonio Torralba, Animashree Anandkumar, Dieter Fox, and Animesh Garg. 
   "Causal Discovery in Physical Systems from Videos." 
   arXiv preprint arXiv:2007.00631 (2020).
@@ -314,7 +318,7 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2020-07-09. If something is missing or wrong, please contact 
+List last updated 2020-07-17. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
