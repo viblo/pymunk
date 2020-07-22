@@ -1,6 +1,7 @@
 __docformat__ = "reStructuredText"
 
 from collections import namedtuple
+import math
 
 from ._chipmunk_cffi import lib, ffi 
 
@@ -70,6 +71,12 @@ class SpaceDebugDrawOptions(object):
 
         @ffi.callback("cpSpaceDebugDrawSegmentImpl")
         def f2(a, b, color, data):
+            # sometimes a and/or b can be nan. For example if both endpoints 
+            # of a spring is at the same position. In those cases skip calling 
+            # the drawing method.
+            if math.isnan(a.x) or math.isnan(a.y) or \
+                math.isnan(b.x) or math.isnan(b.y):
+                return
             self.draw_segment(
                 Vec2d._fromcffi(a), Vec2d._fromcffi(b), self._c(color))
         _options.drawSegment = f2
