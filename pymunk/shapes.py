@@ -1,6 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import copy
+from typing import List
 
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
@@ -87,7 +88,7 @@ class Shape(PickleMixin, object):
         doc=_get_center_of_gravity.__doc__)
 
     def _get_sensor(self):
-        return cp.cpShapeGetSensor(self._shape)
+        return bool(cp.cpShapeGetSensor(self._shape))
     def _set_sensor(self, is_sensor):
         cp.cpShapeSetSensor(self._shape, is_sensor)
     sensor = property(_get_sensor, _set_sensor,
@@ -440,7 +441,7 @@ class Poly(Shape):
     Slowest, but most flexible collision shape.
     """
 
-    _pickle_attrs_init = []
+    _pickle_attrs_init:List[str] = []
 
     def __init__(self, body, vertices, transform=None, radius=0):
         """Create a polygon.
