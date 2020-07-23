@@ -742,6 +742,42 @@ class UnitTestSpace(unittest.TestCase):
             "SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0)))\n")
         self.assertEqual(msg, new_out.getvalue())
 
+    @unittest.skip("Different behavior on windows sometimes. Expect it to be fixed in next major python version")
+    def testDebugDrawZeroLengthSpring(self):
+        if sys.version_info < (3, 0):
+            return
+        s = p.Space()
+
+        b1 = p.Body(1,3)
+        c = p.DampedSpring(b1, s.static_body, (0,0), (0,0), 0, 10, 1)
+        s.add(b1, c)
+        
+        s.step(1)
+        o = p.SpaceDebugDrawOptions()
+        
+        new_out = io.StringIO()
+        sys.stdout = new_out
+        try:
+            s.debug_draw(o)
+        finally:
+            sys.stdout = sys.__stdout__
+
+        expected = (
+            "draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0))\n"
+            "draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0)) \n"
+            "draw_segment (Vec2d(0.0, 0.0), Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0))\n"
+            "draw_segment (Vec2d(0.0, 0.0), Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0))\n"
+            )
+    
+        actual = new_out.getvalue()
+        try:
+            self.assertEqual(expected, actual)
+        except:
+            print("\nExpected", expected)
+            print("\nActual", actual)
+            raise
+
+
     def testCopyMethods(self):
         self._testCopyMethod(lambda x: pickle.loads(pickle.dumps(x)))
         self._testCopyMethod(lambda x: copy.deepcopy(x))
