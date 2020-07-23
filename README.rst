@@ -16,10 +16,10 @@ Pymunk has been used with success in many projects, big and small. For example:
 papers and even in a self-driving car simulation! See the Showcases section on 
 the Pymunk webpage for some examples.
 
-2007 - 2019, Victor Blomqvist - vb@viblo.se, MIT License
+2007 - 2020, Victor Blomqvist - vb@viblo.se, MIT License
 
 This release is based on the latest Pymunk release (5.6.0), 
-using Chipmunk 7.0.2 rev aef346fb8b (source included)
+using Chipmunk 7.
 
 
 Installation
