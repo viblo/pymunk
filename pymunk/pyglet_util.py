@@ -37,7 +37,7 @@ __all__ = ["DrawOptions"]
 
 import math
 
-import pyglet
+import pyglet # type: ignore
 
 import pymunk
 from pymunk.vec2d import Vec2d

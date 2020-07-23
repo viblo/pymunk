@@ -30,13 +30,6 @@ Homepage: http://www.pymunk.org
 This is the main containing module of Pymunk. It contains among other things
 the very central Space, Body and Shape classes.
 
-When you import this module it will automatically load the chipmunk library
-file. As long as you haven't turned off the debug mode a print will show
-exactly which Chipmunk library file it loaded. For example::
-
-    >>> import pymunk
-
-    Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 """
 
 __docformat__ = "reStructuredText"
@@ -54,6 +47,7 @@ __all__ = ["inf", "version", "chipmunk_version"
 
 import warnings
 import sys
+from typing import Tuple
 
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
@@ -100,14 +94,6 @@ is a release then the second part will be empty
     chipmunk_src folder (normally included in the Pymunk source distribution).
 """
 
-chipmunk_path = _chipmunk_cffi.lib_path
-"""The path to the Chipmunk library loaded.
-
-Useful in case you are packaging a Pymunk program with for example Py2exe or 
-PyInstaller and need to know what library file to include. Please see the 
-Py2exe examples in the examples folder of Pymunk for example of this.
-"""
-
 inf = float('inf')
 """Infinity that can be passed as mass or inertia to a :py:class:`Body`.
 
@@ -121,15 +107,14 @@ moment.
     has changed. See :py:class:`Body` for details.
 """
 
-def moment_for_circle(mass, inner_radius, outer_radius, offset=(0, 0)):
+def moment_for_circle(mass:float, inner_radius:float, outer_radius:float, offset:Tuple[float, float]=(0, 0)) -> float:
     """Calculate the moment of inertia for a hollow circle
 
-    inner_radius and outer_radius are the inner and outer diameters.
-    (A solid circle has an inner diameter of 0)
+    (A solid circle has an inner radius of 0)
     """
     return cp.cpMomentForCircle(mass, inner_radius, outer_radius, tuple(offset))
 
-def moment_for_segment(mass, a, b, radius):
+def moment_for_segment(mass:float, a:float, b:float, radius:float) -> float:
     """ Calculate the moment of inertia for a line segment
 
     The endpoints a and b are relative to the body

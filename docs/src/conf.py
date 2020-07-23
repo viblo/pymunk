@@ -38,9 +38,9 @@ class Mock(object):
 
 MOCK_MODULES = [
                # 'pymunk._chipmunk_cffi', 
-                'pymunk._chipmunk_cffi_abi',
+                #'pymunk._chipmunk_cffi_abi',
                 #'_chipmunk_cffi', 
-                '_chipmunk_cffi_abi',
+                #'_chipmunk_cffi_abi',
                 #'._chipmunk_cffi','_chipmunk_cffi',
                 "matplotlib", "matplotlib.pyplot",
                 'pygame', 'pygame.locals', 'pygame.color',
@@ -88,6 +88,7 @@ import pymunk
 extensions = [#'sphinx.ext.autodoc', 
                 'sphinx.ext.viewcode', 
                 'sphinx.ext.autosummary',
+                'sphinx_autodoc_typehints',
                 'ext.autoexample',
                 'aafigure.sphinxext']
 
@@ -350,3 +351,7 @@ def skip(app, what, name, obj, skip, options):
 
 def setup(app):
     app.connect("autodoc-skip-member", skip)
+
+# -- Options for typehints -----------------------------------------------------
+
+always_document_param_types = True

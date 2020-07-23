@@ -36,7 +36,7 @@ __all__ = [
     "positive_y_is_up"
     ]
 
-import pygame
+import pygame # type: ignore
 
 import pymunk
 from pymunk.vec2d import Vec2d
