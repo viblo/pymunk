@@ -1,4 +1,10 @@
-h = """
+import os, os.path
+import platform
+from cffi import FFI # type: ignore
+
+ffibuilder = FFI()
+
+ffibuilder.cdef("""
 
     ///////////////////////////////////////////
     // chipmunk_types.h
@@ -16,6 +22,7 @@ h = """
 		cpFloat a, b, c, d, tx, ty;
 	} cpTransform;
 
+    
     ///////////////////////////////////////////
     // chipmunk.h
     ///////////////////////////////////////////
@@ -68,7 +75,7 @@ h = """
     // cpSpatialIndex.h
     ///////////////////////////////////////////
 
-    ///////////////////////////////////////////
+        ///////////////////////////////////////////
     // cpArbiter.h
     ///////////////////////////////////////////
 
@@ -1276,49 +1283,6 @@ h = """
     cpFloat cpMomentForBox2(cpFloat m, cpBB box);
 
     ///////////////////////////////////////////
-    // chipmunk_ffi.h
-    ///////////////////////////////////////////
-
-    typedef cpBB (*cpBBNewForExtents)(const cpVect c, const cpFloat hw, const cpFloat hh);
-    static cpBBNewForExtents _cpBBNewForExtents;
-
-    typedef cpBB (*cpBBNewForCircle)(const cpVect p, const cpFloat r);
-    static cpBBNewForCircle _cpBBNewForCircle;
-
-    typedef cpBool (*cpBBIntersects)(const cpBB a, const cpBB b);
-    static cpBBIntersects _cpBBIntersects;
-
-    typedef cpBool (*cpBBContainsBB)(const cpBB bb, const cpBB other);
-    static cpBBContainsBB _cpBBContainsBB;
-
-    typedef cpBool (*cpBBContainsVect)(const cpBB bb, const cpVect v);
-    static cpBBContainsVect _cpBBContainsVect;
-
-    typedef cpBB (*cpBBMerge)(const cpBB a, const cpBB b);
-    static cpBBMerge _cpBBMerge;
-
-    typedef cpBB (*cpBBExpand)(const cpBB bb, const cpVect v);
-    static cpBBExpand _cpBBExpand;
-
-    typedef cpVect (*cpBBCenter)(cpBB bb);
-    static cpBBCenter _cpBBCenter;
-
-    typedef cpFloat (*cpBBArea)(cpBB bb);
-    static cpBBArea _cpBBArea;
-
-    typedef cpFloat (*cpBBMergedArea)(cpBB a, cpBB b);
-    static cpBBMergedArea _cpBBMergedArea;
-
-    typedef cpFloat (*cpBBSegmentQuery)(cpBB bb, cpVect a, cpVect b);
-    static cpBBSegmentQuery _cpBBSegmentQuery;
-
-    typedef cpBool (*cpBBIntersectsSegment)(cpBB bb, cpVect a, cpVect b);
-    static cpBBIntersectsSegment _cpBBIntersectsSegment;
-
-    typedef cpVect (*cpBBClampVect)(const cpBB bb, const cpVect v);
-    static cpBBClampVect _cpBBClampVect;
-
-    ///////////////////////////////////////////
     // chipmunk_unsafe.h
     ///////////////////////////////////////////
 
@@ -1441,35 +1405,117 @@ h = """
     //#define cpPolylineConvexDecomposition_BETA cpPolylineConvexDecomposition
     //cpPolylineSet *cpPolylineConvexDecomposition_BETA(cpPolyline *line, cpFloat tol);
 
-    struct cpHastySpace;
-    typedef struct cpHastySpace cpHastySpace;
+    ///////////////////////////////////////////
+    // cpBB.h
+    ///////////////////////////////////////////
 
-    cpSpace *cpHastySpaceNew(void);
-    void cpHastySpaceFree(cpSpace *space);
+    static inline cpBB cpBBNew(const cpFloat l, const cpFloat b, const cpFloat r, const cpFloat t);
 
-    void cpHastySpaceSetThreads(cpSpace *space, unsigned long threads);
+    /// Constructs a cpBB centered on a point with the given extents (half sizes).
+    static inline cpBB cpBBNewForExtents(const cpVect c, const cpFloat hw, const cpFloat hh);
 
-    unsigned long cpHastySpaceGetThreads(cpSpace *space);
+    /// Constructs a cpBB for a circle with the given position and radius.
+    static inline cpBB cpBBNewForCircle(const cpVect p, const cpFloat r);
 
-    void cpHastySpaceStep(cpSpace *space, cpFloat dt);
-"""
+    /// Returns true if @c a and @c b intersect.
+    static inline cpBool cpBBIntersects(const cpBB a, const cpBB b);
 
-# for packaging tools to pick up lextab, and yacctab dependencies.
-# https://github.com/viblo/pymunk/issues/151
-try:
-    import pycparser.lextab
-    import pycparser.yacctab
-except:
-    pass
+    /// Returns true if @c other lies completely within @c bb.
+    static inline cpBool cpBBContainsBB(const cpBB bb, const cpBB other);
 
-from cffi import FFI
-ffi = FFI()
-ffi.cdef(h)
+    /// Returns true if @c bb contains @c v.
+    static inline cpBool cpBBContainsVect(const cpBB bb, const cpVect v);
 
-from ._libload import load_library
-try:
-    import pymunkoptions
-    _lib_debug = pymunkoptions.options["debug"]
-except:
-    _lib_debug = True #Set to True to print the Chipmunk path.
-lib, lib_path = load_library(ffi, "chipmunk", debug_lib=_lib_debug)
+    /// Returns a bounding box that holds both bounding boxes.
+    static inline cpBB cpBBMerge(const cpBB a, const cpBB b);
+
+    /// Returns a bounding box that holds both @c bb and @c v.
+    static inline cpBB cpBBExpand(const cpBB bb, const cpVect v);
+
+    /// Returns the center of a bounding box.
+    static inline cpVect cpBBCenter(cpBB bb);
+
+    /// Returns the area of the bounding box.
+    static inline cpFloat cpBBArea(cpBB bb);
+
+    /// Merges @c a and @c b and returns the area of the merged bounding box.
+    static inline cpFloat cpBBMergedArea(cpBB a, cpBB b);
+
+    /// Returns the fraction along the segment query the cpBB is hit. Returns INFINITY if it doesn't hit.
+    static inline cpFloat cpBBSegmentQuery(cpBB bb, cpVect a, cpVect b);
+
+    /// Return true if the bounding box intersects the line segment with ends @c a and @c b.
+    static inline cpBool cpBBIntersectsSegment(cpBB bb, cpVect a, cpVect b);
+
+    /// Clamp a vector to a bounding box.
+    static inline cpVect cpBBClampVect(const cpBB bb, const cpVect v);
+
+    static inline cpVect cpBBWrapVect(const cpBB bb, const cpVect v);
+
+    static inline cpBB cpBBOffset(const cpBB bb, const cpVect v);
+
+""")
+
+hasty_space_include = ""
+if platform.system() != 'Windows':
+    ffibuilder.cdef("""
+        ///////////////////////////////////////////
+        // cpHastySpace.h
+        ///////////////////////////////////////////
+
+        struct cpHastySpace;
+        typedef struct cpHastySpace cpHastySpace;
+
+        cpSpace *cpHastySpaceNew(void);
+        void cpHastySpaceFree(cpSpace *space);
+
+        void cpHastySpaceSetThreads(cpSpace *space, unsigned long threads);
+
+        unsigned long cpHastySpaceGetThreads(cpSpace *space);
+
+        void cpHastySpaceStep(cpSpace *space, cpFloat dt);
+    """)
+    hasty_space_include = """#include "chipmunk/cpHastySpace.h" """
+
+source_folders = [os.path.join('..','Chipmunk2d','src')]
+sources = []
+for folder in source_folders:
+    for fn in os.listdir(folder):
+        fn_path = os.path.join(folder, fn)
+        if fn[-1] == 'c':
+            # Ignore cpHastySpace since it depends on pthread which 
+            # creates a dependency on libwinpthread-1.dll when built 
+            # with  mingw-w64 gcc.
+            # Will prevent the code from being multithreaded, would be
+            # good if some tests could be made to verify the performance
+            # of this.
+            if platform.system() != 'Windows' or fn != "cpHastySpace.c":
+                sources.append(fn_path)
+            #sources.append(fn_path)
+        elif fn[-1] == 'o':
+            os.remove(fn_path)
+print(sources)
+
+libraries = []
+#if os == linux:
+#    libraries.append('m')
+
+ffibuilder.set_source("_chipmunk",  # name of the output C extension
+    f"""
+        //#include "chipmunk/chipmunk_types.h"
+        //#include "chipmunk/cpVect.h"
+        #include "chipmunk/chipmunk_ffi.h"
+        #include "chipmunk/chipmunk.h"
+        #include "chipmunk/chipmunk_unsafe.h"
+        #include "chipmunk/cpPolyline.h"
+        #include "chipmunk/cpMarch.h"
+        {hasty_space_include}
+    """,
+    #extra_compile_args=['/Od', '/DEBUG:FULL'], #, '/D_CHIPMUNK_FFI'],
+    #extra_link_args=['/DEBUG:FULL'],
+    include_dirs=[os.path.join('..','Chipmunk2d','include')],
+    sources=sources,
+    libraries=libraries)
+
+if __name__ == "__main__":
+    ffibuilder.compile(verbose=True, debug=False)

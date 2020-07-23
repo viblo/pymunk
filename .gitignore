@@ -12,3 +12,5 @@ pymunk.egg-info
 pymunk/*.dll
 pymunk/*.so
 pymunk/*.dylib
+pymunk/*.c
+pymunk/*.o

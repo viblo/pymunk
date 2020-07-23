@@ -11,7 +11,7 @@ __docformat__ = "reStructuredText"
 
 __all__ = ["DrawOptions"]
 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt # type: ignore
 
 import pymunk
 from pymunk.vec2d import Vec2d

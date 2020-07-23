@@ -37,7 +37,7 @@ class BB(PickleMixin, object):
         position p with radius r.
         """
         
-        bb_ = lib._cpBBNewForCircle(p, r)
+        bb_ = lib.cpBBNewForCircle(p, r)
         return BB(bb_)
 
     def __repr__(self):
@@ -57,57 +57,57 @@ class BB(PickleMixin, object):
 
     def intersects(self, other):
         """Returns true if the bounding boxes intersect"""
-        return bool(lib._cpBBIntersects(self._bb, other._bb))
+        return bool(lib.cpBBIntersects(self._bb, other._bb))
 
     def intersects_segment(self, a, b):
         """Returns true if the segment defined by endpoints a and b
         intersect this bb."""
-        return bool(lib._cpBBIntersectsSegment(self._bb, tuple(a), tuple(b)))
+        return bool(lib.cpBBIntersectsSegment(self._bb, tuple(a), tuple(b)))
 
     def contains(self, other):
         """Returns true if bb completley contains the other bb"""
-        return bool(lib._cpBBContainsBB(self._bb, other._bb))
+        return bool(lib.cpBBContainsBB(self._bb, other._bb))
 
     def contains_vect(self, v):
         """Returns true if this bb contains the vector v"""
-        return bool(lib._cpBBContainsVect(self._bb, tuple(v)))
+        return bool(lib.cpBBContainsVect(self._bb, tuple(v)))
 
     def merge(self, other):
         """Return the minimal bounding box that contains both this bb and the
         other bb
         """
-        return BB(lib._cpBBMerge(self._bb, other._bb))
+        return BB(lib.cpBBMerge(self._bb, other._bb))
 
     def expand(self, v):
         """Return the minimal bounding box that contans both this bounding box
         and the vector v
         """
-        return BB(lib._cpBBExpand(self._bb, tuple(v)))
+        return BB(lib.cpBBExpand(self._bb, tuple(v)))
 
     def center(self):
         """Return the center"""
-        return Vec2d._fromcffi(lib._cpBBCenter(self._bb))
+        return Vec2d._fromcffi(lib.cpBBCenter(self._bb))
 
     def area(self):
         """Return the area"""
-        return lib._cpBBArea(self._bb)
+        return lib.cpBBArea(self._bb)
 
     def merged_area(self, other):
         """Merges this and other then returns the area of the merged bounding
         box.
         """
-        return lib._cpBBMergedArea(self._bb, other._bb)
+        return lib.cpBBMergedArea(self._bb, other._bb)
 
     def segment_query(self, a, b):
         """Returns the fraction along the segment query the BB is hit.
 
         Returns infinity if it doesnt hit
         """
-        return lib._cpBBSegmentQuery(self._bb, tuple(a), tuple(b))
+        return lib.cpBBSegmentQuery(self._bb, tuple(a), tuple(b))
 
     def clamp_vect(self, v):
         """Returns a copy of the vector v clamped to the bounding box"""
-        return Vec2d._fromcffi(lib._cpBBClampVect(self._bb, tuple(v)))
+        return Vec2d._fromcffi(lib.cpBBClampVect(self._bb, tuple(v)))
 
     '''
     def wrap_vect(self, v):
