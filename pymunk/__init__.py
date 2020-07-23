@@ -67,17 +67,15 @@ from .space import Space
 from .space_debug_draw_options import SpaceDebugDrawOptions
 from pymunk.constraint import *
 
-version = "5.6.0"
+version = "6.0.0"
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from git).
 """
 
 chipmunk_version = "%sR%s" % (ffi.string(cp.cpVersionString), 
-    'aef346fb8bac3757c3c6faa019bbf97bafc296d1')
-"""The Chipmunk version compatible with this pymunk version.
-Other (newer) Chipmunk versions might also work if the new version does not
-contain any breaking API changes.
+    'fb5f404b3d79a2989cc57140e98ecd26fc55a369')
+"""The Chipmunk version used with this Pymunk version.
 
 This property does not show a valid value in the compiled documentation, only
 when you actually import pymunk and do pymunk.chipmunk_version
@@ -86,12 +84,7 @@ The string is in the following format:
 <cpVersionString>R<github commit of chipmunk>
 where cpVersionString is a version string set by Chipmunk and the git commit
 hash corresponds to the git hash of the chipmunk source from
-github.com/viblo/Chipmunk2D included with Pymunk. If the Chipmunk version
-is a release then the second part will be empty
-
-.. note::
-    This is also the version of the Chipmunk source files included in the
-    chipmunk_src folder (normally included in the Pymunk source distribution).
+github.com/viblo/Chipmunk2D included with Pymunk.
 """
 
 inf = float('inf')
