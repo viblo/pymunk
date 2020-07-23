@@ -754,13 +754,19 @@ class UnitTestSpace(unittest.TestCase):
         finally:
             sys.stdout = sys.__stdout__
 
-        msg = (
+        expected = (
             "draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0))\n"
-            "draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0))\n"
+            "draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0)) \n"
             "draw_segment (Vec2d(0.0, 0.0), Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0))\n"
-            "draw_segment (Vec2d(0.0, 0.0), Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0))\n")
+            "draw_segment (Vec2d(0.0, 0.0), Vec2d(0.0, 0.0), SpaceDebugColor(r=142.0, g=68.0, b=173.0, a=255.0))\n"
+            )
     
-        self.assertEqual(msg, new_out.getvalue())
+        actual = new_out.getvalue()
+        try:
+            self.assertEqual(expected, actual)
+        except:
+            print("\nExpected", expected)
+            print("\nActual", actual)
 
 
     def testCopyMethods(self):
