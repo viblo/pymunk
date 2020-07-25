@@ -1500,7 +1500,7 @@ libraries = []
 #if os == linux:
 #    libraries.append('m')
 
-ffibuilder.set_source("_chipmunk",  # name of the output C extension
+ffibuilder.set_source("pymunk._chipmunk",  # name of the output C extension
     f"""
         //#include "chipmunk/chipmunk_types.h"
         //#include "chipmunk/cpVect.h"
