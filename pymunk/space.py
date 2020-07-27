@@ -257,9 +257,16 @@ class Space(PickleMixin, object):
             self._add_later.update(objs)
             return
 
+        
+        # add bodies first, since the shapes require their bodies to be 
+        # already added. This allows code like space.add(shape, body).
         for o in objs:
             if isinstance(o, Body):
                 self._add_body(o)
+
+        for o in objs:
+            if isinstance(o, Body):
+                pass
             elif isinstance(o, Shape):
                 self._add_shape(o)
             elif isinstance(o, Constraint):
@@ -430,8 +437,7 @@ class Space(PickleMixin, object):
         self._removed_shapes = {}
         self._in_step = False
 
-        for objs in self._add_later:
-            self.add(objs)
+        self.add(*self._add_later)
         self._add_later.clear()
 
         for objs in self._remove_later:
@@ -815,11 +821,13 @@ class Space(PickleMixin, object):
         """
         d = super(Space, self).__getstate__()
 
-        d['special'].append(('shapes', self.shapes))
+        # bodies needs to be added to the state before their shapes.
         d['special'].append(('bodies', self.bodies))
-        d['special'].append(('constraints', self.constraints))
         if self._static_body != None:
             d['special'].append(('_static_body', self._static_body))
+        
+        d['special'].append(('shapes', self.shapes))
+        d['special'].append(('constraints', self.constraints))
         
         handlers = []
         for k,v in self._handlers.items():
@@ -847,15 +855,16 @@ class Space(PickleMixin, object):
         super(Space, self).__setstate__(state)
         
         for k,v in state['special']:
-            if k == 'shapes':
-                self.add(*v)
             if k == 'bodies':
+                self.add(*v)
+            if k == '_static_body':
+                b = cp.cpSpaceSetStaticBody(self._space, v._body)
+                self._static_body = v
+                self._static_body._space = self
+            if k == 'shapes':
                 self.add(*v)
             if k == 'constraints':
                 self.add(*v)
-            if k == '_static_body':
-                self._static_body = v
-                self._static_body._space = self
             if k == '_handlers':
                 for k, hd in v:
                     if k == None:

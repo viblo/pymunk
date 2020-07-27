@@ -1454,6 +1454,12 @@ ffibuilder.cdef("""
 
     static inline cpBB cpBBOffset(const cpBB bb, const cpVect v);
 
+
+    ///////////////////////////////////////////
+    // chipmunk_private.h
+    ///////////////////////////////////////////
+    void cpSpaceSetStaticBody(cpSpace *space, cpBody *body);
+
 """)
 
 hasty_space_include = ""
@@ -1509,7 +1515,12 @@ ffibuilder.set_source("pymunk._chipmunk",  # name of the output C extension
         #include "chipmunk/chipmunk_unsafe.h"
         #include "chipmunk/cpPolyline.h"
         #include "chipmunk/cpMarch.h"
+        
         {hasty_space_include}
+
+        // from chipmunk_private.h
+        // Ideally this should not come from here, but pickle needs it.
+        void cpSpaceSetStaticBody(cpSpace *space, cpBody *body);
     """,
     #extra_compile_args=['/Od', '/DEBUG:FULL'], #, '/D_CHIPMUNK_FFI'],
     #extra_link_args=['/DEBUG:FULL'],
