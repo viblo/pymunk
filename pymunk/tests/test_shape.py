@@ -154,7 +154,7 @@ class UnitTestShape(unittest.TestCase):
         c = p.Circle(b1,1)
         self.assertEqual(c.space, None)
         s = p.Space()
-        s.add(c)
+        s.add(b1,c)
         self.assertEqual(c.space, s)
         
     def testShapesCollide(self):
