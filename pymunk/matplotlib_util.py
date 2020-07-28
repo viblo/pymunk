@@ -23,17 +23,19 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         Typical usage::
         
         >>> import matplotlib as mpl
+        >>> import matplotlib.pyplot as plt
         >>> import pymunk
         >>> import pymunk.matplotlib_util
-        >>> my_space = pymunk.Space()
-        >>> fix, ax = mpl.subplot()
+        >>> space = pymunk.Space()
+        >>> ax = plt.subplot()
         >>> options = pymunk.matplotlib_util.DrawOptions(ax)
-        >>> my_space.debug_draw(options)
+        >>> space.debug_draw(options)
 
         You can control the color of a Shape by setting shape.color to the color 
         you want it drawn in.
 
-        >>> my_shape.color = (1, 0, 0, 1) # will draw my_shape in red
+        >>> shape = pymunk.Circle(space.static_body, 10)
+        >>> shape.color = (1, 0, 0, 1) # will draw shape in red
 
         See matplotlib_util.demo.py for a full example
 
