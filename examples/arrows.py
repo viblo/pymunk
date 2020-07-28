@@ -72,7 +72,7 @@ def main():
     for s in static:
         s.friction = 1.
         s.group = 1
-    space.add(static)
+    space.add(b2, static)
     
     # "Cannon" that can fire arrows
     cannon_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
@@ -80,10 +80,10 @@ def main():
     cannon_shape.sensor = True
     cannon_shape.color = (255,50,50)
     cannon_body.position = 100,100
-    space.add(cannon_shape)
+    space.add(cannon_body, cannon_shape)
     
     arrow_body,arrow_shape = create_arrow()
-    space.add(arrow_shape)
+    space.add(arrow_body, arrow_shape)
 
     flying_arrows = []    
     handler = space.add_collision_handler(0, 1)
