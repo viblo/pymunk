@@ -136,14 +136,15 @@ possible, usually `pip install` will take care of everything for you.
 * Pyglet (optional, you need it to run the Pyglet based demos)
 * Matplotlib & Jupyter Notebook (optional, you need it to run the Matplotlib 
   based demos)
-* Sphinx & aafigure (optional, you need it to build documentation)
+* Sphinx & aafigure & sphinx_autodoc_typehints (optional, you need it to build 
+  documentation)
 
 
 Python 2 Support
 ----------------
 
-For Python 2 support or Python 3.0 - 3.5 support, please use 
-Pymunk 5.x as Pymunk 6.0 and later requires a recent Python version to work.
+Support for Python 2 (and Python 3.0 - 3.5) has been dropped with Pymunk 6.0. 
+If you use these legacy versions of Python, please use Pymunk 5.x.
 
 
 Install from source / Chipmunk Compilation
