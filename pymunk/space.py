@@ -398,7 +398,7 @@ class Space(PickleMixin, object):
         there are too few cells, the spatial hash will return many false 
         positives. Too many cells will be hard on the cache and waste memory. 
         Setting count to ~10x the number of objects in the space is probably a
-         good starting point. Tune from there if necessary.
+        good starting point. Tune from there if necessary.
 
         :param float dim: the size of the hash cells
         :param int count: the suggested minimum number of cells in the hash table
