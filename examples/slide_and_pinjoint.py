@@ -11,6 +11,8 @@ from pygame.locals import *
 import pymunk
 import pymunk.pygame_util
 
+random.seed(1)
+
 def add_ball(space):
     """Add a ball to the given space at a random position"""
     mass = 1
@@ -20,6 +22,7 @@ def add_ball(space):
     x = random.randint(120,380)
     body.position = x, 550
     shape = pymunk.Circle(body, radius, (0,0))
+    shape.friction = 1
     space.add(body, shape)
     return shape
 
@@ -33,9 +36,10 @@ def add_L(space):
 
     body = pymunk.Body(10, 10000)
     body.position = (300,300)
-    l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 1)
-    l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, 50.0), 1)
-
+    l1 = pymunk.Segment(body, (-145, 0), (255.0, 0.0), 1)
+    l2 = pymunk.Segment(body, (-145, 0), (-145.0, 25.0), 1)
+    l1.friction = 1
+    l2.friction = 1
     rotation_center_joint = pymunk.PinJoint(body, rotation_center_body, (0,0), (0,0))
     joint_limit = 25
     rotation_limit_joint = pymunk.SlideJoint(body, rotation_limit_body, (-100,0), (0,0), 0, joint_limit)

@@ -92,11 +92,11 @@ def main():
             offset = Vec2d(rotated_logo_img.get_size()) / 2.
             p = p - offset
             
-            screen.blit(rotated_logo_img, p)
+            screen.blit(rotated_logo_img, (int(p.x), int(p.y)))
             
             # debug draw
             ps = [p.rotated(logo_shape.body.angle) + logo_shape.body.position for p in logo_shape.get_vertices()]
-            ps = [(p.x, flipy(p.y)) for p in ps]
+            ps = [(int(p.x), int(flipy(p.y))) for p in ps]
             ps += [ps[0]]
             pygame.draw.lines(screen, THECOLORS["red"], False, ps, 1)
            
@@ -106,8 +106,8 @@ def main():
             
             pv1 = body.position + line.a.rotated(body.angle)
             pv2 = body.position + line.b.rotated(body.angle)
-            p1 = pv1.x, flipy(pv1.y)
-            p2 = pv2.x, flipy(pv2.y)
+            p1 = int(pv1.x), int(flipy(pv1.y))
+            p2 = int(pv2.x), int(flipy(pv2.y))
             pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2], 2)
 
         ### Flip screen
