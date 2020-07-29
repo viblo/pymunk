@@ -53,6 +53,7 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
+from ._version import version, chipmunk_version
 from .vec2d import Vec2d
 from .shape_filter import ShapeFilter
 from .transform import Transform
@@ -67,14 +68,13 @@ from .space import Space
 from .space_debug_draw_options import SpaceDebugDrawOptions
 from pymunk.constraint import *
 
-version = "6.0.0"
+version = _version.version
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from git).
 """
 
-chipmunk_version = "%sR%s" % (ffi.string(cp.cpVersionString), 
-    'fb5f404b3d79a2989cc57140e98ecd26fc55a369')
+chipmunk_version = _version.chipmunk_version
 """The Chipmunk version used with this Pymunk version.
 
 This property does not show a valid value in the compiled documentation, only

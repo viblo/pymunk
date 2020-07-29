@@ -5,6 +5,7 @@ from weakref import WeakSet
 import platform
 import copy
 
+from . import _version
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi    
@@ -821,6 +822,7 @@ class Space(PickleMixin, object):
         """
         d = super(Space, self).__getstate__()
 
+        d['special'].append(('pymunk_version', _version.version))
         # bodies needs to be added to the state before their shapes.
         d['special'].append(('bodies', self.bodies))
         if self._static_body != None:
@@ -855,17 +857,19 @@ class Space(PickleMixin, object):
         super(Space, self).__setstate__(state)
         
         for k,v in state['special']:
-            if k == 'bodies':
+            if k == 'pymunk_version':
+                assert _version.version == v, f"Pymunk version {v} of pickled object does not match current Pymunk version {_version.version}"
+            elif k == 'bodies':
                 self.add(*v)
-            if k == '_static_body':
+            elif k == '_static_body':
                 b = cp.cpSpaceSetStaticBody(self._space, v._body)
                 self._static_body = v
                 self._static_body._space = self
-            if k == 'shapes':
+            elif k == 'shapes':
                 self.add(*v)
-            if k == 'constraints':
+            elif k == 'constraints':
                 self.add(*v)
-            if k == '_handlers':
+            elif k == '_handlers':
                 for k, hd in v:
                     if k == None:
                         h = self.add_default_collision_handler()
