@@ -76,7 +76,7 @@ for p in [(240,500), (360,500)]:
     body.position = p
     shape = pymunk.Circle(body, 10)
     shape.elasticity = 1.5
-    space.add(shape)
+    space.add(body, shape)
 
 while running:
     for event in pygame.event.get():

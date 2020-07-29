@@ -36,9 +36,8 @@ def main():
     balls = []
        
     ### walls
-    static_body = pm.Body(body_type = pm.Body.STATIC)
-    static_lines = [pm.Segment(static_body, (111.0, 320.0), (407.0, 354.0), 0.0)
-                    ,pm.Segment(static_body, (407.0, 354.0), (407.0, 257.0), 0.0)
+    static_lines = [pm.Segment(space.static_body, (111.0, 320.0), (407.0, 354.0), 0.0)
+                    ,pm.Segment(space.static_body, (407.0, 354.0), (407.0, 257.0), 0.0)
                     ]    
     space.add(static_lines)
     
@@ -86,8 +85,8 @@ def main():
 
         for line in static_lines:
             body = line.body
-            p1 = body.position + line.a.rotated(body.angle)
-            p2 = body.position + line.b.rotated(body.angle)
+            p1 = tuple(map(int, body.position + line.a.rotated(body.angle)))
+            p2 = tuple(map(int, body.position + line.b.rotated(body.angle)))
             pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1,p2])
             
         ### Update physics

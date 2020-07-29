@@ -112,7 +112,7 @@ def main():
     s.friction = 1.
     s.group = 1
     s.color = pygame.color.THECOLORS["blue"]
-    space.add(s)
+    space.add(platform_body, s)
     
     # pass through platform
     passthrough = pymunk.Segment(space.static_body, (270, 100), (320, 100), 5)

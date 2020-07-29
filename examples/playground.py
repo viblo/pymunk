@@ -120,7 +120,7 @@ class PhysicsDemo:
             wall_shape = pm.Segment(wall_body, v1, v2, .0)
             wall_shape.friction = 1.0
             wall_shape.collision_type = COLLTYPE_DEFAULT
-            self.space.add(wall_shape)
+            self.space.add(wall_body, wall_shape)
             self.walls.append(wall_shape)
         
     def run(self):

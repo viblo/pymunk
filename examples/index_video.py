@@ -93,7 +93,7 @@ for line in line_set:
         for i in range(len(line)-1):
             shape = pymunk.Segment(space.static_body, line[i], line[i+1], 1)
             shape.friction = 0.5
-            shape.color = (255,255,255)
+            shape.color = (255,255,255,255)
             space.add(shape)
     
 
@@ -109,7 +109,7 @@ def big_ball(space):
     b = pymunk.Body(mass, moment)
     c = pymunk.Circle(b, radius)
     c.friction = 1
-    c.color = 255,0,0
+    c.color = 255,0,0,255
     b.position = 800, 100
     b.apply_impulse_at_local_point((-10000,0),(0,-1000))
 
@@ -124,7 +124,7 @@ def boxfloor(space):
     b = pymunk.Body(mass, moment)
     s = pymunk.Poly(b, vs)
     s.friction = 1
-    s.color = 0,0,0
+    s.color = 0,0,0,255
     b.position = 600,50
 
     space.add(b,s)
@@ -145,8 +145,8 @@ def box(space):
 def car(space):
     pos = Vec2d(100,200)
 
-    wheel_color = 52,219,119
-    shovel_color = 219,119,52
+    wheel_color = 52,219,119,255
+    shovel_color = 219,119,52,255
     mass = 100
     radius = 25
     moment = pymunk.moment_for_circle(mass, 20, radius)
@@ -201,7 +201,7 @@ def cannon(space):
     moment = pymunk.moment_for_circle(mass, 0, radius)
     b = pymunk.Body(mass, moment)
     s = pymunk.Circle(b, radius)
-    s.color = 219,52,152
+    s.color = 219,52,152,255
     b.position = 700, -50
     space.add(b,s)
     impulse = Vec2d(-200000,75000)

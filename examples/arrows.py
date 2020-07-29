@@ -13,13 +13,14 @@ import pymunk.pygame_util
 
 def create_arrow():
     vs = [(-30,0), (0,3), (10,0), (0,-3)]
-    mass = 1
-    moment = pymunk.moment_for_poly(mass, vs)
-    arrow_body = pymunk.Body(mass, moment)
+    #mass = 1
+    #moment = pymunk.moment_for_poly(mass, vs)
+    arrow_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
 
     arrow_shape = pymunk.Poly(arrow_body, vs)
     arrow_shape.friction = .5
     arrow_shape.collision_type = 1
+    arrow_shape.density = .1
     return arrow_body, arrow_shape
     
 def stick_arrow_to_target(space, arrow_body, target_body, position, flying_arrows):
@@ -78,7 +79,7 @@ def main():
     cannon_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
     cannon_shape = pymunk.Circle(cannon_body, 25)
     cannon_shape.sensor = True
-    cannon_shape.color = (255,50,50)
+    cannon_shape.color = (255,50,50, 255)
     cannon_body.position = 100,100
     space.add(cannon_body, cannon_shape)
     
@@ -105,17 +106,17 @@ def main():
                 end_time = pygame.time.get_ticks()
                 
                 diff = end_time - start_time
-                power = max(min(diff, 1000), 10) * 1.5
+                power = max(min(diff, 1000), 10) * 13.5
                 impulse = power * Vec2d(1,0)
                 impulse.rotate(arrow_body.angle)
-                
+                arrow_body.body_type = pymunk.Body.DYNAMIC
                 arrow_body.apply_impulse_at_world_point(impulse, arrow_body.position)
                 
-                space.add(arrow_body)
+                #space.add(arrow_body)
                 flying_arrows.append(arrow_body)
                 
                 arrow_body, arrow_shape = create_arrow()
-                space.add(arrow_shape)
+                space.add(arrow_body, arrow_shape)
             
         keys = pygame.key.get_pressed()
         
@@ -164,7 +165,7 @@ def main():
             current_time = pygame.time.get_ticks()
             diff = current_time - start_time
             power = max(min(diff, 1000), 10)
-            h = power / 2
+            h = power // 2
             pygame.draw.line(screen, pygame.color.THECOLORS["red"], (30,550), (30,550-h), 10)
                 
         # Info and flip screen
