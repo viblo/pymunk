@@ -1,7 +1,11 @@
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-import sys
+from typing import Callable, TYPE_CHECKING, Any, Optional
+
+if TYPE_CHECKING:
+    from .space import Space
+
 import warnings
 
 from . import _chipmunk_cffi
@@ -9,6 +13,10 @@ cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi   
 
 from .arbiter import Arbiter
+
+_CollisionCallbackBool = Callable[[Arbiter, 'Space', Any], bool]
+_CollisionCallbackNoReturn = Callable[[Arbiter, 'Space', Any], None]
+
 
 class CollisionHandler(object):
     """A collision handler is a set of 4 function callbacks for the different
@@ -26,7 +34,7 @@ class CollisionHandler(object):
     runs. If an object falls asleep, its post_solve() callback won't be
     called until it's re-awoken.
     """
-    def __init__(self, _handler, space, *args, **kwargs):
+    def __init__(self, _handler: Any, space: 'Space') -> None:
         """Initialize a CollisionHandler object from the Chipmunk equivalent
         struct and the Space.
 
@@ -36,44 +44,39 @@ class CollisionHandler(object):
         self._handler = _handler
         self._space = space
         self._begin = None
-        self._begin_base = None # For pickle
+        self._begin_base: Optional[_CollisionCallbackBool] = None # For pickle
         self._pre_solve = None
-        self._pre_solve_base = None # For pickle
+        self._pre_solve_base: Optional[_CollisionCallbackBool] = None # For pickle
         self._post_solve = None
-        self._post_solve_base = None # For pickle
+        self._post_solve_base: Optional[_CollisionCallbackNoReturn] = None # For pickle
         self._separate = None
-        self._separate_base = None # For pickle
+        self._separate_base: Optional[_CollisionCallbackNoReturn] = None # For pickle
 
-        self._data = {}
+        self._data: dict = {}
         
+    @property    
+    def data(self) -> dict:
+        """Data property that get passed on into the
+        callbacks.
+
+        data is a dictionary and you can not replace it, only fill it with data.
         
-    def _get_data(self):
+        Usefull if the callback needs some extra data to perform its function. 
+        """
         return self._data
-    data = property(_get_data, doc="""Data property that get passed on into the
-    callbacks.
-
-    data is a dictionary and you can not replace it, only fill it with data.
     
-    Usefull if the callback needs some extra data to perform its function. 
-    """)    
-
-    def _set_begin(self, func):
+    def _set_begin(self, func: Callable[[Arbiter, 'Space', Any], bool]) -> None:
         
         @ffi.callback("cpCollisionBeginFunc")
         def cf(_arb, _space, _):
             x = func(Arbiter(_arb, self._space), self._space, self._data)
-            if isinstance(x,int):
+            if isinstance(x, bool):
                 return x
             
-            if sys.version_info[0] >= 3:
-                func_name = func.__code__.co_name
-                filename = func.__code__.co_filename
-                lineno = func.__code__.co_firstlineno
-            else:
-                func_name = func.func_name
-                filename = func.func_code.co_filename
-                lineno = func.func_code.co_firstlineno
-
+            func_name = func.__code__.co_name
+            filename = func.__code__.co_filename
+            lineno = func.__code__.co_firstlineno
+        
             warnings.warn_explicit(
                 "Function '" + func_name + "' should return a bool to"
                 " indicate if the collision should be processed or not when"
@@ -85,8 +88,8 @@ class CollisionHandler(object):
         self._begin_base = func
         self._handler.beginFunc = cf
 
-    def _get_begin(self):
-        return self._begin
+    def _get_begin(self) -> Optional[_CollisionCallbackBool]:
+        return self._begin_base
 
     begin = property(_get_begin, _set_begin,
         doc="""Two shapes just started touching for the first time this step.
@@ -100,23 +103,18 @@ class CollisionHandler(object):
         overlapping.
         """)
 
-    def _set_pre_solve(self, func):
+    def _set_pre_solve(self, func: _CollisionCallbackBool) -> None:
         
         @ffi.callback("cpCollisionPreSolveFunc")
-        def cf(_arb, _space, _data):
+        def cf(_arb, _space, _):
             x = func(Arbiter(_arb, self._space), self._space, self._data)
             if isinstance(x,int):
                 return x
             
-            if sys.version_info[0] >= 3:
-                func_name = func.__code__.co_name
-                filename = func.__code__.co_filename
-                lineno = func.__code__.co_firstlineno
-            else:
-                func_name = func.func_name
-                filename = func.func_code.co_filename
-                lineno = func.func_code.co_firstlineno
-
+            func_name = func.__code__.co_name
+            filename = func.__code__.co_filename
+            lineno = func.__code__.co_firstlineno
+        
             warnings.warn_explicit(
                 "Function '" + func_name + "' should return a bool to"
                 " indicate if the collision should be processed or not when"
@@ -128,8 +126,8 @@ class CollisionHandler(object):
         self._pre_solve_base = func
         self._handler.preSolveFunc = cf 
         
-    def _get_pre_solve(self):
-        return self._pre_solve
+    def _get_pre_solve(self) -> Optional[Callable[[Arbiter, 'Space', Any], bool]]:
+        return self._pre_solve_base
 
     pre_solve = property(_get_pre_solve, _set_pre_solve,
         doc="""Two shapes are touching during this step.
@@ -143,18 +141,18 @@ class CollisionHandler(object):
         or surface velocity values. See Arbiter for more info.
         """)
 
-    def _set_post_solve(self, func):
+    def _set_post_solve(self, func: _CollisionCallbackNoReturn) -> None:
     
         @ffi.callback("cpCollisionPostSolveFunc")
-        def cf(_arb, _space, _data):
+        def cf(_arb, _space, _):
             func(Arbiter(_arb, self._space), self._space, self._data)
                 
         self._post_solve = cf
         self._post_solve_base = func
         self._handler.postSolveFunc = cf
 
-    def _get_post_solve(self):
-        return self._post_solve
+    def _get_post_solve(self) -> Optional[_CollisionCallbackNoReturn]:
+        return self._post_solve_base
 
     post_solve = property(_get_post_solve, _set_post_solve,
         doc="""Two shapes are touching and their collision response has been
@@ -167,18 +165,18 @@ class CollisionHandler(object):
         amounts. See Arbiter for more info.
         """)
 
-    def _set_separate(self, func):
+    def _set_separate(self, func: _CollisionCallbackNoReturn) -> None:
     
         @ffi.callback("cpCollisionSeparateFunc")
-        def cf(_arb, _space, _data):
+        def cf(_arb, _space, _):
             func(Arbiter(_arb, self._space), self._space, self._data)
                 
         self._separate = cf
         self._separate_base = func
         self._handler.separateFunc = cf
 
-    def _get_separate(self):
-        return self._separate
+    def _get_separate(self) -> Optional[_CollisionCallbackNoReturn]:
+        return self._separate_base
 
     separate = property(_get_separate, _set_separate,
         doc="""Two shapes have just stopped touching for the first time this

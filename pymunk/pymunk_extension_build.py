@@ -1,5 +1,8 @@
 import os, os.path
 import platform
+
+from typing import List
+
 from cffi import FFI # type: ignore
 
 ffibuilder = FFI()
@@ -1500,9 +1503,8 @@ for folder in source_folders:
             #sources.append(fn_path)
         elif fn[-1] == 'o':
             os.remove(fn_path)
-print(sources)
 
-libraries = []
+libraries:List[str] = []
 #if os == linux:
 #    libraries.append('m')
 

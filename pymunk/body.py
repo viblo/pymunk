@@ -1,5 +1,10 @@
 __docformat__ = "reStructuredText"
 
+from typing import Optional, TYPE_CHECKING, Literal
+if TYPE_CHECKING:
+    from .space import Space
+    
+
 from weakref import WeakSet
 import copy
     
@@ -9,6 +14,8 @@ ffi = _chipmunk_cffi.ffi
 from .vec2d import Vec2d
 from .arbiter import Arbiter
 from ._pickle import PickleMixin
+
+_BodyType = Literal['cp.CP_BODY_TYPE_DYNAMIC', 'cp.CP_BODY_TYPE_KINEMATIC', 'cp.CP_BODY_TYPE_STATIC']
 
 class Body(PickleMixin, object):
     """A rigid body
@@ -72,7 +79,7 @@ class Body(PickleMixin, object):
         'velocity',  'angular_velocity', 'torque']
     _pickle_attrs_skip = ['is_sleeping', '_velocity_func', '_position_func']
 
-    def __init__(self, mass=0, moment=0, body_type=DYNAMIC):
+    def __init__(self, mass: float = 0, moment: float = 0, body_type: _BodyType = DYNAMIC) -> None:
         """Create a new Body
 
         Mass and moment are ignored when body_type is KINEMATIC or STATIC.
@@ -166,7 +173,7 @@ class Body(PickleMixin, object):
         self._position_func_base = None # For pickle
         self._velocity_func_base = None # For pickle
 
-        self._space = None # Weak ref to the space holding this body (if any)
+        self._space: Optional['Space'] = None # Weak ref to the space holding this body (if any)
 
         self._constraints = WeakSet() # weak refs to any constraints attached
         self._shapes = WeakSet() # weak refs to any shapes attached
@@ -187,16 +194,16 @@ class Body(PickleMixin, object):
         b._init()
         return b
 
-    def _set_mass(self, mass):
+    def _set_mass(self, mass: float) -> None:
         cp.cpBodySetMass(self._body, mass)
-    def _get_mass(self):
+    def _get_mass(self) -> float:
         return cp.cpBodyGetMass(self._body)
     mass = property(_get_mass, _set_mass,
         doc="""Mass of the body.""")
 
-    def _set_moment(self, moment):
+    def _set_moment(self, moment: float) -> None:
         cp.cpBodySetMoment(self._body, moment)
-    def _get_moment(self):
+    def _get_moment(self) -> float:
         return cp.cpBodyGetMoment(self._body)
     moment = property(_get_moment, _set_moment,
         doc="""Moment of inertia (MoI or sometimes just moment) of the body.
@@ -206,7 +213,7 @@ class Body(PickleMixin, object):
 
     def _set_position(self, pos):
         cp.cpBodySetPosition(self._body, tuple(pos))
-    def _get_position(self):
+    def _get_position(self) -> Vec2d:
         p = cp.cpBodyGetPosition(self._body)
         return Vec2d._fromcffi(p)
     position = property(_get_position, _set_position,
@@ -219,7 +226,7 @@ class Body(PickleMixin, object):
 
     def _set_center_of_gravity(self, cog):
         cp.cpBodySetCenterOfGravity(self._body, tuple(cog))
-    def _get_center_of_gravity(self):
+    def _get_center_of_gravity(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpBodyGetCenterOfGravity(self._body))
     center_of_gravity = property(_get_center_of_gravity,
         _set_center_of_gravity,
@@ -231,14 +238,14 @@ class Body(PickleMixin, object):
 
     def _set_velocity(self, vel):
         cp.cpBodySetVelocity(self._body, tuple(vel))
-    def _get_velocity(self):
+    def _get_velocity(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpBodyGetVelocity(self._body))
     velocity = property(_get_velocity, _set_velocity,
         doc="""Linear velocity of the center of gravity of the body.""")
 
     def _set_force(self, f):
         cp.cpBodySetForce(self._body, tuple(f))
-    def _get_force(self):
+    def _get_force(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpBodyGetForce(self._body))
     force = property(_get_force, _set_force,
         doc="""Force applied to the center of gravity of the body.
@@ -247,9 +254,9 @@ class Body(PickleMixin, object):
         total of forces acting on the body (such as from collisions), but the 
         force applied manually from the apply force functions.""")
 
-    def _set_angle(self, angle):
+    def _set_angle(self, angle: float) -> None:
         cp.cpBodySetAngle(self._body, angle)
-    def _get_angle(self):
+    def _get_angle(self) -> float:
         return cp.cpBodyGetAngle(self._body)
     angle = property(_get_angle, _set_angle,
         doc="""Rotation of the body in radians.
@@ -267,16 +274,16 @@ class Body(PickleMixin, object):
             set.""")
 
 
-    def _set_angular_velocity(self, w):
+    def _set_angular_velocity(self, w: float) -> None:
         cp.cpBodySetAngularVelocity(self._body, w)
-    def _get_angular_velocity(self):
+    def _get_angular_velocity(self) -> float:
         return cp.cpBodyGetAngularVelocity(self._body)
     angular_velocity = property(_get_angular_velocity, _set_angular_velocity,
         doc="""The angular velocity of the body in radians per second.""")
 
-    def _set_torque(self, t):
+    def _set_torque(self, t: float) -> None:
         cp.cpBodySetTorque(self._body, t)
-    def _get_torque(self):
+    def _get_torque(self) -> float:
         return cp.cpBodyGetTorque(self._body)
     torque = property(_get_torque, _set_torque,
         doc="""The torque applied to the body.
@@ -288,15 +295,15 @@ class Body(PickleMixin, object):
     rotation_vector = property(_get_rotation_vector,
         doc="""The rotation vector for the body.""")
 
-    def _get_space(self):
-        if self._space != None:
+    @property
+    def space(self) -> Optional['Space']:
+        """Get the :py:class:`Space` that the body has been added to (or 
+        None)."""
+        if self._space is not None:
             return self._space._get_self() #ugly hack because of weakref
         else:
             return None
-    space = property(_get_space,
-        doc="""Get the :py:class:`Space` that the body has been added to (or 
-        None).""")
-
+    
     def _set_velocity_func(self, func):
         @ffi.callback("cpBodyVelocityFunc")
         def _impl(_, gravity, damping, dt):
@@ -366,7 +373,9 @@ class Body(PickleMixin, object):
             ``func(body, dt) -> None``
         """)
 
-    def _get_kinetic_energy(self):
+    @property
+    def kinetic_energy(self):
+        """Get the kinetic energy of a body."""
         #todo: use ffi method
         #return cp._cpBodyKineticEnergy(self._body)
 
@@ -374,12 +383,8 @@ class Body(PickleMixin, object):
         wsq = self.angular_velocity * self.angular_velocity
         return (vsq*self.mass if vsq else 0.) + (wsq*self.moment if wsq else 0.)
 
-    kinetic_energy = property(_get_kinetic_energy,
-        doc="""Get the kinetic energy of a body.""")
-
-
     @staticmethod
-    def update_velocity(body, gravity, damping, dt):
+    def update_velocity(body: 'Body', gravity, damping, dt):
         """Default rigid body velocity integration function.
 
         Updates the velocity of the body using Euler integration.
@@ -387,7 +392,7 @@ class Body(PickleMixin, object):
         cp.cpBodyUpdateVelocity(body._body, tuple(gravity), damping, dt)
 
     @staticmethod
-    def update_position(body, dt):
+    def update_position(body: 'Body', dt: float) -> None:
         """Default rigid body position integration function.
 
         Updates the position of the body using Euler integration. Unlike the
@@ -429,14 +434,14 @@ class Body(PickleMixin, object):
         cp.cpBodyApplyImpulseAtLocalPoint(self._body, tuple(impulse), tuple(point))
 
 
-    def activate(self):
+    def activate(self) -> None:
         """Reset the idle timer on a body.
 
         If it was sleeping, wake it and any other bodies it was touching.
         """
         cp.cpBodyActivate(self._body)
 
-    def sleep(self):
+    def sleep(self) -> None:
         """Forces a body to fall asleep immediately even if it's in midair.
 
         Cannot be called from a callback.
@@ -445,7 +450,7 @@ class Body(PickleMixin, object):
             raise Exception("Body not added to space")
         cp.cpBodySleep(self._body)
 
-    def sleep_with_group(self, body):
+    def sleep_with_group(self, body: 'Body') -> None:
         """Force a body to fall asleep immediately along with other bodies
         in a group.
 
@@ -463,15 +468,14 @@ class Body(PickleMixin, object):
             raise Exception("Body not added to space")
         cp.cpBodySleepWithGroup(self._body, body._body)
 
-    def _is_sleeping(self):
+    @property
+    def is_sleeping(self) -> bool:
+        """Returns true if the body is sleeping."""
         return bool(cp.cpBodyIsSleeping(self._body))
-    is_sleeping = property(_is_sleeping,
-        doc="""Returns true if the body is sleeping.""")
-
-
-    def _set_type(self, body_type):
+    
+    def _set_type(self, body_type: _BodyType):
         cp.cpBodySetType(self._body, body_type)
-    def _get_type(self):
+    def _get_type(self) -> _BodyType:
         return cp.cpBodyGetType(self._body)
     body_type = property(_get_type
         , _set_type
@@ -504,6 +508,7 @@ class Body(PickleMixin, object):
         """
         @ffi.callback("cpBodyArbiterIteratorFunc")
         def cf(_body, _arbiter, _data):
+            assert self._space is not None
             arbiter = Arbiter(_arbiter, self._space)
             func(arbiter, *args, **kwargs)
             

@@ -39,15 +39,12 @@ a Pymunk Poly or Segment::
 """
 __docformat__ = "reStructuredText"
 
-__all__ = ["is_closed", "simplify_curves", "simplify_vertexes", 
-    "to_convex_hull", "convex_decomposition", "PolylineSet", "march_soft", 
-    "march_hard"]
+from typing import List
 
-import collections
+import collections.abc
 
 from ._chipmunk_cffi import lib, ffi
 from .vec2d import Vec2d
-from .bb import BB
 
 def _to_chipmunk(polyline):
     l = len(polyline)
@@ -57,7 +54,7 @@ def _to_chipmunk(polyline):
     _line.verts = list(map(tuple, polyline))
     return _line
 
-def _from_polyline_set(_set):
+def _from_polyline_set(_set: ffi.CData) -> List[List[Vec2d]]:
     lines = []
     for i in range(_set.count):
         line = []
@@ -66,7 +63,7 @@ def _from_polyline_set(_set):
         lines.append(line)
     return lines
     
-def is_closed(polyline):
+def is_closed(polyline) -> bool:
     """Returns true if the first vertex is equal to the last.
     
     :param polyline: Polyline to simplify.
@@ -75,7 +72,7 @@ def is_closed(polyline):
     """
     return bool(lib.cpPolylineIsClosed(_to_chipmunk(polyline)))
 
-def simplify_curves(polyline, tolerance):
+def simplify_curves(polyline, tolerance: float) -> List[Vec2d]:
     """Returns a copy of a polyline simplified by using the Douglas-Peucker 
     algorithm.
 
@@ -94,7 +91,7 @@ def simplify_curves(polyline, tolerance):
         simplified.append(Vec2d._fromcffi(_line.verts[i]))
     return simplified
 
-def simplify_vertexes(polyline, tolerance):
+def simplify_vertexes(polyline, tolerance) -> List[Vec2d]:
     """Returns a copy of a polyline simplified by discarding "flat" vertexes.
         
     This works well on straight edged or angular shapes, not as well on smooth 
@@ -111,7 +108,7 @@ def simplify_vertexes(polyline, tolerance):
         simplified.append(Vec2d._fromcffi(_line.verts[i]))
     return simplified
 
-def to_convex_hull(polyline, tolerance):
+def to_convex_hull(polyline, tolerance: float) -> List[Vec2d]:
     """Get the convex hull of a polyline as a looped polyline.
 
     :param polyline: Polyline to simplify.
@@ -125,7 +122,7 @@ def to_convex_hull(polyline, tolerance):
         hull.append(Vec2d._fromcffi(_line.verts[i]))
     return hull
 
-def convex_decomposition(polyline, tolerance):
+def convex_decomposition(polyline, tolerance: float) -> List[List[Vec2d]]:
     """Get an approximate convex decomposition from a polyline.
 
     Returns a list of convex hulls that match the original shape to within 
@@ -145,19 +142,19 @@ def convex_decomposition(polyline, tolerance):
     return _from_polyline_set(_set)
 
 
-class PolylineSet(collections.Sequence):
+class PolylineSet(collections.abc.Sequence):
     """A set of Polylines. 
     
     Mainly intended to be used for its :py:meth:`collect_segment` function 
     when generating geometry with the :py:func:`march_soft` and 
     :py:func:`march_hard` functions.    
     """
-    def __init__(self):
+    def __init__(self) -> None:
         def free(_set):
             lib.cpPolylineSetFree(_set, True)
         self._set = ffi.gc(lib.cpPolylineSetNew(), free)
 
-    def collect_segment(self, v0, v1):
+    def collect_segment(self, v0, v1) -> None:
         """Add a line segment to a polyline set.
         
         A segment will either start a new polyline, join two others, or add to 
@@ -171,10 +168,10 @@ class PolylineSet(collections.Sequence):
         """
         lib.cpPolylineSetCollectSegment(tuple(v0), tuple(v1), self._set)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self._set.count
 
-    def __getitem__(self, key):
+    def __getitem__(self, key) -> List[Vec2d]:
         if key >= self._set.count:
             raise IndexError
         line = []

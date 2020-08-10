@@ -211,7 +211,6 @@ class UnitTestShape(unittest.TestCase):
 
 class UnitTestCircle(unittest.TestCase):
     def testCircleBB(self):
-        s = p.Space()
         b = p.Body(10,10)
         c = p.Circle(b,5)
 
@@ -220,7 +219,6 @@ class UnitTestCircle(unittest.TestCase):
         self.assertEqual(c.bb, p.BB(-5.0, -5.0, 5.0, 5.0))
 
     def testCircleNoBody(self):
-        s = p.Space()
         c = p.Circle(None,5)
 
         bb = c.update(p.Transform(1, 2, 3, 4, 5, 6))

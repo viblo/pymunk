@@ -1,4 +1,4 @@
-class PickleMixin(object):
+class PickleMixin:
     """PickleMixin is used to provide base functionality for pickle/unpickle 
     and copy.
     """
@@ -18,7 +18,7 @@ class PickleMixin(object):
             if hasattr(t, '_pickle_attrs_general'):
                 attrs_general += t._pickle_attrs_general
             
-        d = {
+        d:dict = {
             'init':[], # arguments for init
             'general':[], # general attributes 
             'custom':[], # custom attributes set by user
@@ -43,7 +43,7 @@ class PickleMixin(object):
         modules with this class.
         """
         
-        init_attrs = []
+        init_attrs:list = []
 
         init_args = [v for k,v in state['init']]
         self.__init__(*init_args)

@@ -33,5 +33,5 @@ ffi = _chipmunk_cffi.ffi
 
 version = "6.0.0"
 
-chipmunk_version = "%sR%s" % (ffi.string(cp.cpVersionString), 
+chipmunk_version = "%s-%s" % (ffi.string(cp.cpVersionString).decode('utf-8'), 
     'fb5f404b3d79a2989cc57140e98ecd26fc55a369')

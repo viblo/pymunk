@@ -16,7 +16,7 @@ class BB(PickleMixin, object):
 
     _pickle_attrs_init = ['left', 'bottom', 'right', 'top']
 
-    def __init__(self, *args):
+    def __init__(self, *args) -> None:
         """Create a new instance of a bounding box. 
         
         Can be created with zero size with bb = BB() or with four args defining 
@@ -32,7 +32,7 @@ class BB(PickleMixin, object):
             self._bb = self._bbp[0]
 
     @staticmethod
-    def newForCircle(p, r):
+    def newForCircle(p, r: float) -> 'BB':
         """Convenience constructor for making a BB fitting a circle at
         position p with radius r.
         """
@@ -55,57 +55,57 @@ class BB(PickleMixin, object):
     right = property(lambda self: self._bb.r)
     top = property(lambda self: self._bb.t)
 
-    def intersects(self, other):
+    def intersects(self, other: 'BB') -> bool:
         """Returns true if the bounding boxes intersect"""
         return bool(lib.cpBBIntersects(self._bb, other._bb))
 
-    def intersects_segment(self, a, b):
+    def intersects_segment(self, a, b) -> bool:
         """Returns true if the segment defined by endpoints a and b
         intersect this bb."""
         return bool(lib.cpBBIntersectsSegment(self._bb, tuple(a), tuple(b)))
 
-    def contains(self, other):
+    def contains(self, other: 'BB') -> bool:
         """Returns true if bb completley contains the other bb"""
         return bool(lib.cpBBContainsBB(self._bb, other._bb))
 
-    def contains_vect(self, v):
+    def contains_vect(self, v) -> bool:
         """Returns true if this bb contains the vector v"""
         return bool(lib.cpBBContainsVect(self._bb, tuple(v)))
 
-    def merge(self, other):
+    def merge(self, other: 'BB') -> 'BB':
         """Return the minimal bounding box that contains both this bb and the
         other bb
         """
         return BB(lib.cpBBMerge(self._bb, other._bb))
 
-    def expand(self, v):
+    def expand(self, v) -> 'BB':
         """Return the minimal bounding box that contans both this bounding box
         and the vector v
         """
         return BB(lib.cpBBExpand(self._bb, tuple(v)))
 
-    def center(self):
+    def center(self) -> Vec2d:
         """Return the center"""
         return Vec2d._fromcffi(lib.cpBBCenter(self._bb))
 
-    def area(self):
+    def area(self) -> float:
         """Return the area"""
         return lib.cpBBArea(self._bb)
 
-    def merged_area(self, other):
+    def merged_area(self, other: 'BB') -> float:
         """Merges this and other then returns the area of the merged bounding
         box.
         """
         return lib.cpBBMergedArea(self._bb, other._bb)
 
-    def segment_query(self, a, b):
+    def segment_query(self, a, b) -> float:
         """Returns the fraction along the segment query the BB is hit.
 
         Returns infinity if it doesnt hit
         """
         return lib.cpBBSegmentQuery(self._bb, tuple(a), tuple(b))
 
-    def clamp_vect(self, v):
+    def clamp_vect(self, v) -> Vec2d:
         """Returns a copy of the vector v clamped to the bounding box"""
         return Vec2d._fromcffi(lib.cpBBClampVect(self._bb, tuple(v)))
 
@@ -118,6 +118,6 @@ class BB(PickleMixin, object):
         return lib._cpBBWrapVect(self._bb[0], v)
     '''
 
-    def copy(self):
+    def copy(self) -> 'BB':
         """Create a deep copy of this BB."""
         return copy.deepcopy(self)

@@ -14,8 +14,6 @@ classifiers = [
     , 'Topic :: Games/Entertainment'
     , 'Topic :: Software Development :: Libraries'   
     , 'Topic :: Software Development :: Libraries :: pygame'
-    , 'Programming Language :: Python :: 2'
-    , 'Programming Language :: Python :: 2.7'
     , 'Programming Language :: Python :: 3'
 ]
 
@@ -44,6 +42,6 @@ setup(
     # https://bitbucket.org/cffi/cffi/issues/432/1131-breaks-pymunk-on-linux-in-a-subtle
     install_requires = ['cffi != 1.13.1'], 
     cffi_modules=['pymunk/pymunk_extension_build.py:ffibuilder'],
-    extras_require = {'dev': ['pyglet','pygame','sphinx', 'aafigure', 'wheel', 'sphinx_autodoc_typehints', 'matplotlib']},    
+    extras_require = {'dev': ['pyglet','pygame','sphinx', 'aafigure', 'wheel', 'matplotlib']},    
     test_suite = "pymunk.tests",
 )

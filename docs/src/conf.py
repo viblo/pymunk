@@ -77,7 +77,7 @@ for m in MOCK_MODULES:
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../..'))
 #print("path", sys.path)
-import pymunk
+#import pymunk
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -88,7 +88,6 @@ import pymunk
 extensions = [#'sphinx.ext.autodoc', 
                 'sphinx.ext.viewcode', 
                 'sphinx.ext.autosummary',
-                'sphinx_autodoc_typehints',
                 'ext.autoexample',
                 'aafigure.sphinxext']
 
@@ -106,7 +105,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pymunk'
-copyright = u'2013-2019, Victor Blomqvist'
+copyright = u'2013-2020, Victor Blomqvist'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -344,14 +343,11 @@ texinfo_documents = [
 #texinfo_show_urls = 'footnote'
 
 # Code to make sphinx always include the __init__ method in autodocs
-def skip(app, what, name, obj, skip, options):
-    if name == "__init__":
-        return False
-    return skip
+#def skip(app, what, name, obj, skip, options):
+#    if name == "__init__":
+#        return False
+#    return skip
 
-def setup(app):
-    app.connect("autodoc-skip-member", skip)
+#def setup(app):
+#    app.connect("autodoc-skip-member", skip)
 
-# -- Options for typehints -----------------------------------------------------
-
-always_document_param_types = True

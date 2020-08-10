@@ -9,12 +9,15 @@ drawing, but there is probably room for optimizations still).
 
 __docformat__ = "reStructuredText"
 
-__all__ = ["DrawOptions"]
+from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt # type: ignore
-
 import pymunk
 from pymunk.vec2d import Vec2d
+
+if TYPE_CHECKING:
+    import matplotlib as mpl # type: ignore
+
 
 class DrawOptions(pymunk.SpaceDebugDrawOptions):
     def __init__(self, ax):

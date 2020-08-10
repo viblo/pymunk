@@ -1,6 +1,9 @@
 __docformat__ = "reStructuredText"
 
-from collections import namedtuple
+from typing import NamedTuple, Tuple, TYPE_CHECKING, List
+if TYPE_CHECKING:
+    from .shapes import Shape
+
 import math
 
 from ._chipmunk_cffi import lib, ffi 
@@ -8,15 +11,28 @@ from ._chipmunk_cffi import lib, ffi
 from .vec2d import Vec2d
 from .body import Body
 
-class SpaceDebugColor(namedtuple("SpaceDebugColor", ["r","g","b","a"])):
+class SpaceDebugColor(NamedTuple):
     """Color tuple used by the debug drawing API.
     """
-    __slots__ = ()    
+    r: float
+    g: float
+    b: float
+    a: float
 
-    def as_int(self):
-        return int(self[0]), int(self[1]), int(self[2]), int(self[3])
+    def as_int(self) -> Tuple[int, int, int, int]:
+        """Return the color as a tuple of ints, where each value is rounded.
+        
+        >>> SpaceDebugColor(0, 51.1, 101.9, 255).as_int()
+        (0, 51, 102, 255)
+        """
+        return round(self[0]), round(self[1]), round(self[2]), round(self[3])
 
-    def as_float(self):
+    def as_float(self) -> Tuple[float, float, float, float]:
+        """Return the color as a tuple of floats, each value divided by 255.
+
+        >>> SpaceDebugColor(0, 51, 102, 255).as_float()
+        (0.0, 0.2, 0.4, 1.0)
+        """
         return self[0]/255., self[1]/255., self[2]/255., self[3]/255.
 
 
@@ -63,14 +79,14 @@ class SpaceDebugDrawOptions(object):
         
         
         @ffi.callback("cpSpaceDebugDrawCircleImpl")
-        def f1(pos, angle, radius, outline_color, fill_color, data):
+        def f1(pos, angle, radius, outline_color, fill_color, _):
             self.draw_circle(
                 Vec2d._fromcffi(pos), angle, radius, 
                 self._c(outline_color), self._c(fill_color))
         _options.drawCircle = f1
 
         @ffi.callback("cpSpaceDebugDrawSegmentImpl")
-        def f2(a, b, color, data):
+        def f2(a, b, color, _):
             # sometimes a and/or b can be nan. For example if both endpoints 
             # of a spring is at the same position. In those cases skip calling 
             # the drawing method.
@@ -82,14 +98,14 @@ class SpaceDebugDrawOptions(object):
         _options.drawSegment = f2
 
         @ffi.callback("cpSpaceDebugDrawFatSegmentImpl")
-        def f3(a, b, radius, outline_color, fill_color, data):
+        def f3(a, b, radius, outline_color, fill_color, _):
             self.draw_fat_segment(
                 Vec2d._fromcffi(a), Vec2d._fromcffi(b), radius, 
                 self._c(outline_color), self._c(fill_color))
         _options.drawFatSegment = f3
 
         @ffi.callback("cpSpaceDebugDrawPolygonImpl")
-        def f4(count, verts, radius, outline_color, fill_color, data):
+        def f4(count, verts, radius, outline_color, fill_color, _):
             vs = []
             for i in range(count):
                 vs.append(Vec2d._fromcffi(verts[i]))
@@ -99,7 +115,7 @@ class SpaceDebugDrawOptions(object):
         _options.drawPolygon = f4
 
         @ffi.callback("cpSpaceDebugDrawDotImpl")
-        def f5(size, pos, color, data):
+        def f5(size, pos, color, _):
             self.draw_dot(size, Vec2d._fromcffi(pos), self._c(color))
         _options.drawDot = f5
 
@@ -116,9 +132,9 @@ class SpaceDebugDrawOptions(object):
 
         self._callbacks = [f1,f2,f3,f4,f5,f6]
 
-    def _get_shape_outline_color(self):
+    def _get_shape_outline_color(self) -> SpaceDebugColor:
         return self._c(self._options.shapeOutlineColor)
-    def _set_shape_outline_color(self, c):
+    def _set_shape_outline_color(self, c: SpaceDebugColor) -> None:
         self._options.shapeOutlineColor = c
     shape_outline_color = property(_get_shape_outline_color, 
         _set_shape_outline_color,
@@ -141,9 +157,9 @@ class SpaceDebugDrawOptions(object):
 
         """)
 
-    def _get_constraint_color(self):
+    def _get_constraint_color(self) -> SpaceDebugColor:
         return self._c(self._options.constraintColor)
-    def _set_constraint_color(self, c):
+    def _set_constraint_color(self, c: SpaceDebugColor) -> None:
         self._options.constraintColor = c
     constraint_color = property(_get_constraint_color, 
         _set_constraint_color,
@@ -168,9 +184,9 @@ class SpaceDebugDrawOptions(object):
 
         """)
 
-    def _get_collision_point_color(self):
+    def _get_collision_point_color(self) -> SpaceDebugColor:
         return self._c(self._options.collisionPointColor)
-    def _set_collision_point_color(self, c):
+    def _set_collision_point_color(self, c: SpaceDebugColor) -> None:
         self._options.collisionPointColor = c
     collision_point_color = property(_get_collision_point_color, 
         _set_collision_point_color,
@@ -204,7 +220,7 @@ class SpaceDebugDrawOptions(object):
     def __exit__(self, type, value, traceback):
         pass
 
-    def _c(self, color):
+    def _c(self, color) -> SpaceDebugColor:
         return SpaceDebugColor(color.r, color.g, color.b, color.a)
 
     def _get_flags(self):
@@ -247,27 +263,27 @@ class SpaceDebugDrawOptions(object):
         
         """)
 
-    def draw_circle(self, *args):
-        print("draw_circle", args)
+    def draw_circle(self, pos: Vec2d, angle: float, radius: float, outline_color: SpaceDebugColor, fill_color: SpaceDebugColor) -> None:
+        print("draw_circle", (pos, angle, radius, outline_color, fill_color))
 
-    def draw_segment(self, *args):
-        print("draw_segment", args)
+    def draw_segment(self, a: Vec2d, b: Vec2d, color: SpaceDebugColor) -> None:
+        print("draw_segment", (a, b, color))
 
-    def draw_fat_segment(self, *args):
-        print("draw_fat_segment", args)
+    def draw_fat_segment(self, a: Tuple[float, float], b: Tuple[float, float], radius: float, outline_color: SpaceDebugColor, fill_color: SpaceDebugColor) -> None:
+        print("draw_fat_segment", (a, b, radius, outline_color, fill_color))
 
-    def draw_polygon(self, *args):
-        print("draw_polygon", args)
+    def draw_polygon(self, verts: List[Tuple[float, float]], radius: float, outline_color: SpaceDebugColor, fill_color: SpaceDebugColor) -> None:
+        print("draw_polygon", (verts, radius, outline_color, fill_color))
 
-    def draw_dot(self, *args):
-        print("draw_dot", args)
+    def draw_dot(self, size: float, pos: Vec2d, color: SpaceDebugColor) -> None:
+        print("draw_dot", (size, pos, color))
 
-    def draw_shape(self, shape):
+    def draw_shape(self, shape) -> None:
         print("draw_shape", shape)
 
-    def color_for_shape(self, shape):
+    def color_for_shape(self, shape: 'Shape') -> SpaceDebugColor:
         if hasattr(shape, "color"):
-            return SpaceDebugColor(*shape.color)
+            return SpaceDebugColor(*shape.color) # type: ignore
 
         color = self.shape_dynamic_color
         if shape.body != None:

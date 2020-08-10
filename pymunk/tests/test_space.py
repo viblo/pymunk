@@ -173,7 +173,7 @@ class UnitTestSpace(unittest.TestCase):
         s = self.s
 
         def pre_solve(arbiter, space, data):
-            space.remove(arbiter.shapes)
+            space.remove(*arbiter.shapes)
             return True
 
         s.add_collision_handler(0, 0).pre_solve = pre_solve

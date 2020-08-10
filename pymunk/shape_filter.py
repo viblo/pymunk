@@ -1,6 +1,6 @@
-from collections import namedtuple
+from typing import NamedTuple, Literal
 
-class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
+class ShapeFilter(NamedTuple):
     """
     Pymunk has two primary means of ignoring collisions: groups and 
     category masks.
@@ -68,7 +68,7 @@ class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     >>> hit = s.point_query_nearest((0,0), 0, pymunk.ShapeFilter())
     >>> hit != None
     True
-    >>> filter = pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS ^ 0b1)
+    >>> filter = pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS() ^ 0b1)
     >>> hit = s.point_query_nearest((0,0), 0, filter)
     >>> hit == None
     True
@@ -80,12 +80,28 @@ class ShapeFilter(namedtuple("ShapeFilter", ['group', 'categories', 'mask'])):
     True
 
     """
-    __slots__ = ()    
+    group: int = 0
+    """Two objects with the same non-zero group value do not collide.
+	
+    This is generally used to group objects in a composite object together to disable self collisions.
+    """
+    
+    categories: int = 0xffffffff
+    """A bitmask of user definable categories that this object belongs to.
+	
+    The category/mask combinations of both objects in a collision must agree for a collision to occur.
+    """
 
-    ALL_CATEGORIES = 0xffffffff
+    mask: int = 0xffffffff
+    """A bitmask of user definable category types that this object object collides with.
+	
+    The category/mask combinations of both objects in a collision must agree for a collision to occur.
+	"""
 
-    ALL_MASKS = 0xffffffff
+    @staticmethod
+    def ALL_MASKS() -> Literal[0xffffffff]:    
+        return 0xffffffff
 
-    def __new__(cls, group = 0, categories = 0xffffffff, mask = 0xffffffff):
-        self = super(ShapeFilter, cls).__new__(cls, group, categories, mask)
-        return self
+    @staticmethod
+    def ALL_CATEGORIES() -> Literal[0xffffffff]:
+        return 0xffffffff

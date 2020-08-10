@@ -1,36 +1,39 @@
 __docformat__ = "reStructuredText"
 
-from collections import namedtuple
+from typing import NamedTuple, TYPE_CHECKING, Optional
 
-class PointQueryInfo(
-    namedtuple('PointQueryInfo', ['shape', 'point', 'distance', 'gradient'])):
+if TYPE_CHECKING:
+    from .shapes import Shape
+    from .vec2d import Vec2d
+    from .contact_point_set import ContactPointSet
+
+class PointQueryInfo(NamedTuple):
     """PointQueryInfo holds the result of a point query made on a Shape or
     Space.
-    
-    The properties are as follows
-    
-    shape 
-    The nearest shape, None if no shape was within range.
-    
-    point
-    The closest point on the shape's surface. (in world space
-    coordinates)
-    
-    distance
-    The distance to the point. The distance is negative if the
-    point is inside the shape.
-        
-    gradient
-    The gradient of the signed distance function.
-
-        The value should be similar to
-        PointQueryInfo.point/PointQueryInfo.distance, but accurate even for
-        very small values of info.distance.
     """
-    __slots__ = ()
 
-class SegmentQueryInfo(
-    namedtuple('SegmentQueryInfo', ['shape', 'point', 'normal', 'alpha'])):
+    shape: Optional['Shape']
+    """The nearest shape, None if no shape was within range."""
+
+    point: 'Vec2d'
+    """The closest point on the shape's surface. (in world space
+    coordinates)
+    """
+    
+    distance: float
+    """The distance to the point. The distance is negative if the
+    point is inside the shape.
+    """ 
+    
+    gradient: 'Vec2d'
+    """The gradient of the signed distance function.
+
+    The value should be similar to
+    PointQueryInfo.point/PointQueryInfo.distance, but accurate even for
+    very small values of info.distance.
+    """
+
+class SegmentQueryInfo(NamedTuple):
     """Segment queries return more information than just a simple yes or no,
     they also return where a shape was hit and it's surface normal at the hit
     point. This object hold that information.
@@ -44,26 +47,24 @@ class SegmentQueryInfo(
     about the performance as long as you aren't using extremely long segments
     for your queries.
 
-    The properties are as follows
-
-    shape
-    Shape that was hit, or None if no collision occured
-    
-    point 
-    The point of impact.
-
-    normal
-    The normal of the surface hit.
-    
-    alpha
-    The normalized distance along the query segment in the range [0, 1]
-
     """
-    __slots__ = ()
+    shape: Optional['Shape']
+    """Shape that was hit, or None if no collision occured"""
     
-class ShapeQueryInfo(
-    namedtuple('ShapeQueryInfo', ['shape', 'contact_point_set'])):
+    point: 'Vec2d'  
+    """The point of impact."""
+
+    normal: 'Vec2d'
+    """The normal of the surface hit."""
+
+    alpha: float
+    """The normalized distance along the query segment in the range [0, 1]"""
+    
+class ShapeQueryInfo(NamedTuple):
     """Shape queries return more information than just a simple yes or no,
     they also return where a shape was hit. This object hold that information.
     """
-    __slots__ = ()
+    shape: Optional['Shape']
+    """Shape that was hit, or None if no collision occured"""
+    
+    contact_point_set: 'ContactPointSet'

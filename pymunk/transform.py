@@ -1,6 +1,6 @@
-from collections import namedtuple
+from typing import NamedTuple
 
-class Transform(namedtuple('Transform', ['a','b','c','d','tx','ty'])):
+class Transform(NamedTuple):
     """Type used for 2x3 affine transforms.
     
     See wikipedia for details: 
@@ -26,13 +26,14 @@ class Transform(namedtuple('Transform', ['a','b','c','d','tx','ty'])):
     
         
     """
-    __slots__ = ()
-    
-    def __new__(cls, a=1, b=0, c=0, d=1, tx=0, ty=0):
-        self = super(Transform, cls).__new__(cls, a, b, c, d, tx, ty)
-        return self
+    a: float = 1
+    b: float = 0
+    c: float = 0
+    d: float = 1
+    tx: float = 0
+    ty: float = 0
     
     @staticmethod
-    def identity():
+    def identity() -> 'Transform':
         """The identity transform"""
         return Transform(1,0,0,1,0,0)

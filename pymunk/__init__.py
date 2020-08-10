@@ -45,15 +45,14 @@ __all__ = ["inf", "version", "chipmunk_version"
         , "Transform", "PointQueryInfo", "ShapeQueryInfo"
         , "SpaceDebugDrawOptions"]
 
-import warnings
-import sys
 from typing import Tuple
+from ._types import _Vec2dOrTuple
 
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-from ._version import version, chipmunk_version
+from . import _version
 from .vec2d import Vec2d
 from .shape_filter import ShapeFilter
 from .transform import Transform
@@ -68,13 +67,13 @@ from .space import Space
 from .space_debug_draw_options import SpaceDebugDrawOptions
 from pymunk.constraint import *
 
-version = _version.version
+version: str = _version.version
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from git).
 """
 
-chipmunk_version = _version.chipmunk_version
+chipmunk_version: str = _version.chipmunk_version
 """The Chipmunk version used with this Pymunk version.
 
 This property does not show a valid value in the compiled documentation, only
@@ -87,7 +86,7 @@ hash corresponds to the git hash of the chipmunk source from
 github.com/viblo/Chipmunk2D included with Pymunk.
 """
 
-inf = float('inf')
+inf: float = float('inf')
 """Infinity that can be passed as mass or inertia to a :py:class:`Body`.
 
 Useful when you for example want a body that cannot rotate, just set its
@@ -100,21 +99,21 @@ moment.
     has changed. See :py:class:`Body` for details.
 """
 
-def moment_for_circle(mass:float, inner_radius:float, outer_radius:float, offset:Tuple[float, float]=(0, 0)) -> float:
+def moment_for_circle(mass: float, inner_radius: float, outer_radius: float, offset: Tuple[float, float]=(0, 0)) -> float:
     """Calculate the moment of inertia for a hollow circle
 
     (A solid circle has an inner radius of 0)
     """
     return cp.cpMomentForCircle(mass, inner_radius, outer_radius, tuple(offset))
 
-def moment_for_segment(mass:float, a:float, b:float, radius:float) -> float:
+def moment_for_segment(mass: float, a: Tuple[float, float], b: Tuple[float, float], radius: float) -> float:
     """ Calculate the moment of inertia for a line segment
 
     The endpoints a and b are relative to the body
     """
     return cp.cpMomentForSegment(mass, tuple(a), tuple(b), radius)
 
-def moment_for_box(mass, size):
+def moment_for_box(mass: float, size: Tuple[float, float]) -> float:
     """Calculate the moment of inertia for a solid box centered on the body.
     
     size should be a tuple of (width, height)
@@ -130,18 +129,18 @@ def moment_for_poly(mass, vertices,  offset=(0, 0), radius=0):
     vs = list(map(tuple, vertices))
     return cp.cpMomentForPoly(mass, len(vertices), vs, tuple(offset), radius)
     
-def area_for_circle(inner_radius, outer_radius):
+def area_for_circle(inner_radius: float, outer_radius: float) -> float:
     """Area of a hollow circle."""
     return cp.cpAreaForCircle(inner_radius, outer_radius)
 
-def area_for_segment(a, b, radius):
+def area_for_segment(a: Tuple[float, float], b, radius: float) -> float:
     """Area of a beveled segment.
 
     (Will always be zero if radius is zero)
     """
     return cp.cpAreaForSegment(tuple(a), tuple(b), radius)
 
-def area_for_poly(vertices, radius=0):
+def area_for_poly(vertices, radius: float=0):
     """Signed area of a polygon shape.
 
     Returns a negative number for polygons with a clockwise winding.

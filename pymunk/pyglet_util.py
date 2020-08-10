@@ -32,9 +32,6 @@ drawing, but there is probably room for optimizations still).
 
 __docformat__ = "reStructuredText"
 
-__all__ = ["DrawOptions"]
-
-
 import math
 
 import pyglet # type: ignore
@@ -43,7 +40,7 @@ import pymunk
 from pymunk.vec2d import Vec2d
 
 class DrawOptions(pymunk.SpaceDebugDrawOptions):
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """Draw a pymunk.Space.
         
         Typical usage::
@@ -89,7 +86,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         super(DrawOptions, self).__init__()
 
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         if self.new_batch:
             self.batch = pyglet.graphics.Batch()
     def __exit__(self, type, value, traceback):
@@ -212,16 +209,16 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
     def draw_dot(self, size, pos, color):
         # todo: optimize this functions
-        self.batch.add(1, pyglet.gl.GL_POINTS, grPointSize(size), 
+        self.batch.add(1, pyglet.gl.GL_POINTS, _GrPointSize(size), 
                     ('v2f', pos),
                     ('c4B', color.as_int()*1))
 
-class grPointSize(pyglet.graphics.Group):
+class _GrPointSize(pyglet.graphics.Group):
     """
     This pyglet rendering group sets a specific point size.
     """
     def __init__(self, size=1.0):
-        super(grPointSize, self).__init__()
+        super(_GrPointSize, self).__init__()
         self.size = size
     def set_state(self):
         pyglet.gl.glPointSize(self.size)

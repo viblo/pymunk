@@ -15,12 +15,12 @@ class ContactPoint(object):
     
     __slots__ = ('point_a', 'point_b', 'distance')
     
-    def __init__(self, point_a, point_b, distance):
+    def __init__(self, point_a, point_b, distance: float) -> None:
         self.point_a = point_a
         self.point_b = point_b
         self.distance = distance
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'ContactPoint(point_a={}, point_b={}, distance={})'.format(
             self.point_a, self.point_b, self.distance)
     
@@ -35,11 +35,11 @@ class ContactPointSet(object):
     
     __slots__ = ('normal', 'points')
     
-    def __init__(self, normal, points):
+    def __init__(self, normal, points) -> None:
         self.normal = normal
         self.points = points
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'ContactPointSet(normal={}, points={})'.format(
             self.normal, self.points)
     
