@@ -1,7 +1,3 @@
-import os, os.path
-import platform
-import sys
-import subprocess
 from setuptools import setup
                         
 # todo: add/remove/think about this list

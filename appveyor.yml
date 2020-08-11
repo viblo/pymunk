@@ -1,13 +1,5 @@
 environment:
   matrix:
-    - PYTHON: "C:\\Python27"
-      MINGW: "mingw32"
-    - PYTHON: "C:\\Python27-x64"
-      MINGW: "mingw64"
-    - PYTHON: "C:\\Python35"
-      MINGW: "mingw32"
-    - PYTHON: "C:\\Python35-x64"
-      MINGW: "mingw64"
     - PYTHON: "C:\\Python36"
       MINGW: "mingw32"
     - PYTHON: "C:\\Python36-x64"
@@ -30,8 +22,6 @@ init:
   - ECHO %PYTHON%
 
 install:
-  # Use correct gcc compiler
-  - "SET PATH=C:\\msys64\\%MINGW%\\bin;%PATH%" 
   # tox for testing
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "python --version"

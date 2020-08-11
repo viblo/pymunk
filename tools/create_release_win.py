@@ -11,7 +11,7 @@ def main():
     print("""
     Remember (before running this script!): 
     - change version number in readme, setup.py and __init__ 
-    - test in at least CPython 2.7, 3.x and Pypy
+    - test in at least CPython 3.x and Pypy3
     - validate test results of Travis and Appveyor
     - write news entry and put in news.rst
     - make sure all images are optimized (for example with tinypng.com)
