@@ -2,6 +2,12 @@ language: python
 git:
   depth: 3
 
+env:
+  global:
+    - CIBW_BUILD=cp38-manylinux_x86_64 # FIXME: When build is working, define all tags
+    # - CIBW_BUILD=cp36-* cp37-* cp38-* pp36-* 
+    - CIBW_SKIP=*_ppc64le *_s390x
+    - CIBW_TEST_COMMAND=python -m pymunk.tests
 jobs:
   include:
     # perform a linux build
@@ -49,6 +55,6 @@ deploy:
       branches:
         only:
           - master
-          - cffiapi
+          #- cffiapi
       tag: true
       repo: viblo/pymunk
