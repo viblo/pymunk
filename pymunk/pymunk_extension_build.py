@@ -1486,7 +1486,8 @@ if platform.system() != 'Windows':
     """)
     hasty_space_include = """#include "chipmunk/cpHastySpace.h" """
 
-source_folders = [os.path.join('..','Chipmunk2d','src')]
+
+source_folders = [os.path.join('Chipmunk2D','src')]
 sources = []
 for folder in source_folders:
     for fn in os.listdir(folder):
