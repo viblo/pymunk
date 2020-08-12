@@ -36,6 +36,7 @@ setup(
     },
     # Skip 1.13.1 becaus of issue reported to cffi here: 
     # https://bitbucket.org/cffi/cffi/issues/432/1131-breaks-pymunk-on-linux-in-a-subtle
+    setup_requires = ['cffi != 1.13.1'], 
     install_requires = ['cffi != 1.13.1'], 
     cffi_modules=['pymunk/pymunk_extension_build.py:ffibuilder'],
     extras_require = {'dev': ['pyglet','pygame','sphinx', 'aafigure', 'wheel', 'matplotlib']},    
