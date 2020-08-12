@@ -1527,7 +1527,7 @@ ffibuilder.set_source("pymunk._chipmunk",  # name of the output C extension
     """,
     #extra_compile_args=['/Od', '/DEBUG:FULL'], #, '/D_CHIPMUNK_FFI'],
     #extra_link_args=['/DEBUG:FULL'],
-    include_dirs=[os.path.join('..','Chipmunk2d','include')],
+    include_dirs=[os.path.join('Chipmunk2D','include')],
     sources=sources,
     libraries=libraries)
 
