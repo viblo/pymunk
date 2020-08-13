@@ -31,14 +31,6 @@ def main():
                 and test_filter.startswith("doctest") \
                 or test_filter in str(test.id()):
                 filtered_suite.addTest(test)
-
-    elif sys.version_info.major < 3:
-        print("Skipping doctests"
-              " (Doctests uses formatting that differ between Py2 and 3"
-              " and the Pymunk doctests target Python 3")
-        for test in list_of_tests_gen(suite):
-            if not isinstance(test, doctest.DocTestCase):
-                filtered_suite.addTest(test)
     else:
         filtered_suite = suite
     

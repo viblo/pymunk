@@ -1,4 +1,4 @@
-from typing import NamedTuple, Literal
+from typing import NamedTuple
 
 class ShapeFilter(NamedTuple):
     """
@@ -99,9 +99,9 @@ class ShapeFilter(NamedTuple):
 	"""
 
     @staticmethod
-    def ALL_MASKS() -> Literal[0xffffffff]:    
+    def ALL_MASKS() -> int:    
         return 0xffffffff
 
     @staticmethod
-    def ALL_CATEGORIES() -> Literal[0xffffffff]:
+    def ALL_CATEGORIES() -> int:
         return 0xffffffff

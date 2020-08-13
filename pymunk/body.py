@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import Optional, TYPE_CHECKING, Literal
+from typing import Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from .space import Space
     
@@ -15,7 +15,7 @@ from .vec2d import Vec2d
 from .arbiter import Arbiter
 from ._pickle import PickleMixin
 
-_BodyType = Literal['cp.CP_BODY_TYPE_DYNAMIC', 'cp.CP_BODY_TYPE_KINEMATIC', 'cp.CP_BODY_TYPE_STATIC']
+_BodyType = int #Literal['cp.CP_BODY_TYPE_DYNAMIC', 'cp.CP_BODY_TYPE_KINEMATIC', 'cp.CP_BODY_TYPE_STATIC']
 
 class Body(PickleMixin, object):
     """A rigid body
