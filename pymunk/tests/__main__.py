@@ -42,5 +42,11 @@ def main():
 if __name__ == '__main__':
     import os
     import sys
+    import platform
+    print("RUNNING pymunk.tests ##################")
+    print("Python / platform:")
+    print(sys.version)
+    print(f"on {platform.system()} {platform.machine()}")
+    print("")
     #sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     main()
