@@ -274,11 +274,10 @@ class UnitTestBody(unittest.TestCase):
         
         b.position_func = pf
         b.velocity_func = vf
-        print(1)
+        
         s = pickle.dumps(b)
-        print(2)
         b2 = pickle.loads(s)
-        print(3)
+        
         self.assertEqual(b.mass, b2.mass)
         self.assertEqual(b.moment, b2.moment)
         self.assertEqual(b.body_type, b2.body_type)
@@ -293,15 +292,12 @@ class UnitTestBody(unittest.TestCase):
         
         space = p.Space()
         space.add(b2)
-        print(4)
         space.step(0.1)
         
         self.assertTrue(b2.pf)
         self.assertTrue(b2.vf)
-        print(5)
         b2 = b.copy()
-        print(6)
-
+        
 # Needs to be here for the lowest pickle protocol to work    
 def pf(body, dt):
     body.pf = True

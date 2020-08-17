@@ -158,12 +158,15 @@ class Body(PickleMixin, object):
         mass=75 moment=3921
 
         """
+
         if body_type == Body.DYNAMIC:
-            self._body = ffi.gc(cp.cpBodyNew(mass, moment), cp.cpBodyFree)
+            self._body = cp.cpBodyNew(mass, moment)
         elif body_type == Body.KINEMATIC:
-            self._body = ffi.gc(cp.cpBodyNewKinematic(), cp.cpBodyFree)
+            self._body = cp.cpBodyNewKinematic()
         elif body_type == Body.STATIC:
-            self._body = ffi.gc(cp.cpBodyNewStatic(), cp.cpBodyFree)
+            self._body = cp.cpBodyNewStatic()
+        
+        self._should_free_body = True
 
         self._init()
 
@@ -177,6 +180,10 @@ class Body(PickleMixin, object):
 
         self._constraints = WeakSet() # weak refs to any constraints attached
         self._shapes = WeakSet() # weak refs to any shapes attached
+
+    def __del__(self):
+        if self._should_free_body:
+            cp.cpBodyFree(self._body)
             
     def __repr__(self):
         if self.body_type == Body.DYNAMIC:
@@ -191,6 +198,7 @@ class Body(PickleMixin, object):
         """Only used internally in pymunk."""
         b = cls.__new__(cls)
         b._body = _body
+        b._should_free_body = False
         b._init()
         return b
 

@@ -65,12 +65,13 @@ class Space(PickleMixin, object):
         threaded=True has no effect on that platform.
         """
         
-        self.threaded = threaded and platform.system() != 'Windows' 
-        if self.threaded:        
-            self._space = ffi.gc(cp.cpHastySpaceNew(), cp.cpHastySpaceFree)
-        else:
-            self._space = ffi.gc(cp.cpSpaceNew(), cp.cpSpaceFree)
 
+        self.threaded = threaded and platform.system() != 'Windows' 
+        if self.threaded:    
+            self._space = cp.cpHastySpaceNew()    
+        else:
+            self._space = cp.cpSpaceNew()
+            
         self._handlers: dict = {} # To prevent the gc to collect the callbacks.
 
         self._post_step_callbacks: dict = {}
@@ -85,6 +86,17 @@ class Space(PickleMixin, object):
         self._add_later: set = set()
         self._remove_later: set = set()
 
+    def __del__(self) -> None:
+        """Remove all references to shapes, constraints and bodies before the 
+        cpSpace can been free'd.
+        """
+        self.remove(*self.shapes)
+        self.remove(*self.constraints)
+        self.remove(*self.bodies) 
+        if self.threaded:
+            cp.cpHastySpaceFree(self._space)
+        else:
+            cp.cpSpaceFree(self._space)
 
     def _get_self(self) -> 'Space':
         return self
@@ -118,6 +130,7 @@ class Space(PickleMixin, object):
             b = cp.cpSpaceGetStaticBody(self._space)
             self._static_body = Body._init_with_body(b)
             self._static_body._space = self
+            assert self._static_body is not None
         return self._static_body
     
     def _set_iterations(self, value: int) -> None:
@@ -331,11 +344,13 @@ class Space(PickleMixin, object):
         self._removed_shapes[shape._get_shapeid()] = shape
         del self._shapes[shape._get_shapeid()]
         cp.cpSpaceRemoveShape(self._space, shape._shape)
+        
     def _remove_body(self, body):
         """Removes a body from the space"""
         body._space = None
-        del self._bodies[body]
         cp.cpSpaceRemoveBody(self._space, body._body)
+        del self._bodies[body]
+
     def _remove_constraint(self, constraint):
         """Removes a constraint from the space"""
         del self._constraints[constraint]

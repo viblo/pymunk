@@ -841,13 +841,10 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(s.collision_bias, s2.collision_bias)
         self.assertEqual(s.collision_persistence, s2.collision_persistence)
         self.assertEqual(s.threads, s2.threads)
+        
         # Assert shapes, bodies and constriants
-        if sys.version_info >= (3, 6): # Before this python dics where not ordered.
-            self.assertEqual([c.radius for c in s2.shapes], [7,8,9, 10])
-            self.assertEqual([b.mass for b in s2.bodies], [1, 3, 5])
-        else:
-            self.assertEqual(sorted([c.radius for c in s2.shapes]), [7,8,9, 10])
-            self.assertEqual(sorted([b.mass for b in s2.bodies]), [1, 3, 5])
+        self.assertEqual([c.radius for c in s2.shapes], [7,8,9, 10])
+        self.assertEqual([b.mass for b in s2.bodies], [1, 3, 5])
         self.assertEqual(s.static_body.custom, s2.static_body.custom)
         ja = [j.a for j in s2.constraints]
         self.assertIn(s2.static_body, ja)

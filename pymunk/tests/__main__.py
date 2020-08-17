@@ -1,7 +1,8 @@
 import unittest
 import doctest
-import sys
-import os
+#import sys
+#import os
+
 
 def main():
     
@@ -43,10 +44,11 @@ if __name__ == '__main__':
     import os
     import sys
     import platform
+    import cffi
     print("RUNNING pymunk.tests ##################")
     print("Python / platform:")
     print(sys.version)
-    print(f"on {platform.system()} {platform.machine()}")
+    print(f"on {platform.system()} {platform.machine()} using cffi {cffi.__version__}")
     print("")
     #sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     main()
