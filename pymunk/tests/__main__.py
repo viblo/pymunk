@@ -45,6 +45,8 @@ if __name__ == '__main__':
     import sys
     import platform
     import cffi
+    import faulthandler
+    faulthandler.enable()
     print("RUNNING pymunk.tests ##################")
     print("Python / platform:")
     print(sys.version)

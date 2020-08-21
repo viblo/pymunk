@@ -85,7 +85,11 @@ class Constraint(PickleMixin, object):
 
     def __init__(self, constraint=None):
         self._constraint = constraint
-        
+
+    def __del__(self) -> None:
+        #print("del", self._constraint)
+        cp.cpConstraintFree(self._constraint)
+
     def _get_max_force(self):
         return cp.cpConstraintGetMaxForce(self._constraint)
     def _set_max_force(self, f):
@@ -157,7 +161,8 @@ class Constraint(PickleMixin, object):
         self._a.activate()
         self._b.activate()
 
-    def _set_bodies(self, a, b):
+    def _set_bodies(self, a: 'Body', b: 'Body') -> None:
+        assert a is not b
         self._a = a
         self._b = b
         a._constraints.add(self)
@@ -186,11 +191,10 @@ class PinJoint(Constraint):
         function to override it.
         """
 
-        self._constraint = ffi.gc(
-            cp.cpPinJointNew(
+        self._constraint = cp.cpPinJointNew(
                 a._body, b._body, 
-                tuple(anchor_a), tuple(anchor_b)), 
-            cp.cpConstraintFree)
+                tuple(anchor_a), tuple(anchor_b))
+            
         self._set_bodies(a,b)
 
     def _get_anchor_a(self) -> Vec2d:
@@ -225,10 +229,8 @@ class SlideJoint(Constraint):
         anchor points on those bodies, and min and max define the allowed
         distances of the anchor points.
         """
-        self._constraint = ffi.gc(
-            cp.cpSlideJointNew(a._body, b._body, 
-                tuple(anchor_a), tuple(anchor_b), min, max), 
-            cp.cpConstraintFree)
+        self._constraint = cp.cpSlideJointNew(a._body, b._body, 
+                tuple(anchor_a), tuple(anchor_b), min, max)
         self._set_bodies(a,b)
 
     def _get_anchor_a(self) -> Vec2d:
@@ -282,14 +284,10 @@ class PivotJoint(Constraint):
         :type args: (float,float) or (float,float) (float,float)
         """
         if len(args) == 1:
-            self._constraint = ffi.gc(
-                cp.cpPivotJointNew(a._body, b._body, tuple(args[0])), 
-                cp.cpConstraintFree)
+            self._constraint = cp.cpPivotJointNew(a._body, b._body, tuple(args[0]))
         elif len(args) == 2:
-            self._constraint = ffi.gc(
-                cp.cpPivotJointNew2(
-                    a._body, b._body, tuple(args[0]), tuple(args[1])), 
-                cp.cpConstraintFree)
+            self._constraint = cp.cpPivotJointNew2(
+                    a._body, b._body, tuple(args[0]), tuple(args[1]))
         else:
             raise Exception("You must specify either one pivot point"
                 " or two anchor points")
@@ -322,12 +320,10 @@ class GrooveJoint(Constraint):
 
         All coordinates are body local.
         """
-        self._constraint = ffi.gc(
-            cp.cpGrooveJointNew(
+        self._constraint = cp.cpGrooveJointNew(
                 a._body, b._body, 
                 tuple(groove_a), tuple(groove_b), 
-                tuple(anchor_b)), 
-            cp.cpConstraintFree)
+                tuple(anchor_b))
         self._set_bodies(a,b)
 
     def _get_anchor_b(self) -> Vec2d:
@@ -374,7 +370,7 @@ class DampedSpring(Constraint):
             a._body, b._body,
             tuple(anchor_a), tuple(anchor_b), 
             rest_length, stiffness, damping)
-        self._constraint = ffi.gc(c, cp.cpConstraintFree)
+        self._constraint = c
         self._set_bodies(a,b)
 
     def _get_anchor_a(self) -> Vec2d:
@@ -428,7 +424,7 @@ class DampedRotarySpring(Constraint):
         """
         c = cp.cpDampedRotarySpringNew(a._body, b._body, 
             rest_angle, stiffness, damping)
-        self._constraint = ffi.gc(c, cp.cpConstraintFree)
+        self._constraint = c
         self._set_bodies(a,b)
 
     def _get_rest_angle(self) -> float:
@@ -465,9 +461,7 @@ class RotaryLimitJoint(Constraint):
         that it's possible to for the range to be greater than a full
         revolution.
         """
-        self._constraint = ffi.gc(
-            cp.cpRotaryLimitJointNew(a._body, b._body, min, max), 
-            cp.cpConstraintFree)
+        self._constraint = cp.cpRotaryLimitJointNew(a._body, b._body, min, max)
         self._set_bodies(a,b)
 
     def _get_min(self) -> float:
@@ -493,9 +487,7 @@ class RatchetJoint(Constraint):
         ratchet is the distance between "clicks", phase is the initial offset
         to use when deciding where the ratchet angles are.
         """
-        self._constraint = ffi.gc(
-            cp.cpRatchetJointNew(a._body, b._body, phase, ratchet), 
-            cp.cpConstraintFree)
+        self._constraint = cp.cpRatchetJointNew(a._body, b._body, phase, ratchet)
         self._set_bodies(a,b)
 
     def _get_angle(self) -> float:
@@ -529,9 +521,7 @@ class GearJoint(Constraint):
         possible to set the ratio in relation to a third body's angular
         velocity. phase is the initial angular offset of the two bodies.
         """
-        self._constraint = ffi.gc(
-            cp.cpGearJointNew(a._body, b._body, phase, ratio), 
-            cp.cpConstraintFree)
+        self._constraint = cp.cpGearJointNew(a._body, b._body, phase, ratio)
         self._set_bodies(a,b)
 
     def _get_phase(self) -> float:
@@ -560,9 +550,7 @@ class SimpleMotor(Constraint):
         to set an force (torque) maximum for motors as otherwise they will be
         able to apply a nearly infinite torque to keep the bodies moving.
         """
-        self._constraint = ffi.gc(
-            cp.cpSimpleMotorNew(a._body, b._body, rate), 
-            cp.cpConstraintFree)
+        self._constraint = cp.cpSimpleMotorNew(a._body, b._body, rate)
         self._set_bodies(a,b)
 
     def _get_rate(self) -> float:

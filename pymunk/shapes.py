@@ -43,6 +43,10 @@ class Shape(PickleMixin, object):
         self._shape = shape
         self._body = shape.body
 
+    def __del__(self):
+        # print("del shape", self._shape)
+        cp.cpShapeFree(self._shape)
+
     def _get_shapeid(self) -> int:
         return cp.cpShapeGetUserData(self._shape)
     def _set_shapeid(self) -> None:
@@ -322,9 +326,7 @@ class Circle(Shape):
         if body != None:
             body._shapes.add(self)
 
-        self._shape = ffi.gc(
-            cp.cpCircleShapeNew(body_body, radius, tuple(offset)), 
-            cp.cpShapeFree)
+        self._shape = cp.cpCircleShapeNew(body_body, radius, tuple(offset))
         self._set_shapeid()
 
     def unsafe_set_radius(self, r: float) -> None:
@@ -387,9 +389,7 @@ class Segment(Shape):
         if body != None:
             body._shapes.add(self)
             
-        self._shape = ffi.gc(
-            cp.cpSegmentShapeNew(body_body, tuple(a), tuple(b), radius), 
-            cp.cpShapeFree)
+        self._shape = cp.cpSegmentShapeNew(body_body, tuple(a), tuple(b), radius)
         self._set_shapeid()
 
     def _get_a(self):
@@ -506,8 +506,7 @@ class Poly(Shape):
             transform = Transform.identity()
 
         vs = list(map(tuple, vertices))
-        s = cp.cpPolyShapeNew(body_body, len(vertices), vs, transform, radius)
-        self._shape = ffi.gc(s, cp.cpShapeFree)
+        self._shape = cp.cpPolyShapeNew(body_body, len(vertices), vs, transform, radius)
         self._set_shapeid()
 
     def unsafe_set_radius(self, radius: float) -> None:
@@ -554,9 +553,7 @@ class Poly(Shape):
         if body != None:
             body._shapes.add(self)
 
-        self._shape = ffi.gc(
-            cp.cpBoxShapeNew(body_body, size[0], size[1], radius),
-            cp.cpShapeFree)
+        self._shape = cp.cpBoxShapeNew(body_body, size[0], size[1], radius)
 
         self._set_shapeid()
         return self
@@ -585,9 +582,7 @@ class Poly(Shape):
         if body != None:
             body._shapes.add(self)
 
-        self._shape = ffi.gc(
-            cp.cpBoxShapeNew2(body_body, bb._bb, radius),
-            cp.cpShapeFree)
+        self._shape = cp.cpBoxShapeNew2(body_body, bb._bb, radius)
         
         self._set_shapeid()
         return self

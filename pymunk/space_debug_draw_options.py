@@ -171,7 +171,8 @@ class SpaceDebugDrawOptions(object):
 
         >>> import pymunk
         >>> s = pymunk.Space()
-        >>> j = pymunk.PivotJoint(s.static_body, s.static_body, (0,0))
+        >>> b = pymunk.Body(1, 10)
+        >>> j = pymunk.PivotJoint(s.static_body, b, (0,0))
         >>> s.add(j)
         >>> options = pymunk.SpaceDebugDrawOptions()
         >>> s.debug_draw(options)

@@ -625,6 +625,24 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertTrue(self.separated)
 
+    
+    def testCollisionHandlerRemoveSeparateAdd(self):
+        s = p.Space()
+        b1 = p.Body(1,10)
+        c1 = p.Circle(b1, 10)
+        c2 = p.Circle(s.static_body, 5)
+
+        s.add(b1, c1, c2)
+
+        def separate(*_):
+            s.add(p.Circle(s.static_body, 2))
+            s.remove(c1)
+
+        s.add_default_collision_handler().separate = separate
+        
+        s.step(1)
+        s.remove(c1)
+
     def testCollisionHandlerKeyOrder(self):
         s = p.Space()
         h1 = s.add_collision_handler(1,2)

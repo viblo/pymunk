@@ -68,21 +68,20 @@ class UnitTestBugs(unittest.TestCase):
         b3.position = -9,0
 
         space.add(b1,c1,b2,c2,b3,c3)
-
+        
         def remove_first(arbiter, space, data):
             first_shape = arbiter.shapes[0]
-            #print "REMOVE FIRST", first_shape.name
             if c1 in space.shapes:
                 space.remove(c1)
             #space.add_post_step_callback(space.remove, first_shape, first_shape.body)
+            space.remove(c1)
 
         space.add_collision_handler(2, 0).separate = remove_first
 
         space.step(1./60)
         b2.position = 22,0
         space.step(1./60)
-
-
+        
 
 
 

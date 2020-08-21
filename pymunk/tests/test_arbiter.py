@@ -30,7 +30,7 @@ class UnitTestArbiter(unittest.TestCase):
         for x in range(10):
             s.step(0.1)
             
-        self.assertAlmostEqual(b1.position.y, 22.42170317)
+        self.assertAlmostEqual(b1.position.y, 22.42170317, 6)
         
     def testFriction(self):
         s = p.Space()

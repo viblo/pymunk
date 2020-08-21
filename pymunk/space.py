@@ -1,5 +1,6 @@
 __docformat__ = "reStructuredText"
 
+from weakref import finalize
 from pymunk.space_debug_draw_options import SpaceDebugDrawOptions
 from pymunk.shape_filter import ShapeFilter
 from typing import Callable, Tuple, Union, Optional, Any, List, Hashable, TYPE_CHECKING
@@ -7,6 +8,7 @@ from typing import Callable, Tuple, Union, Optional, Any, List, Hashable, TYPE_C
 import weakref
 import platform
 import copy
+import contextlib
 
 from . import _version
 from . import _chipmunk_cffi
@@ -53,6 +55,7 @@ class Space(PickleMixin, object):
         'idle_speed_threshold', 'sleep_time_threshold', 'collision_slop',
         'collision_bias', 'collision_persistence', 'threads']
 
+
     def __init__(self, threaded: bool=False) -> None:
         """Create a new instance of the Space. 
         
@@ -64,7 +67,6 @@ class Space(PickleMixin, object):
         Also note that threaded mode is not available on Windows, and setting 
         threaded=True has no effect on that platform.
         """
-        
 
         self.threaded = threaded and platform.system() != 'Windows' 
         if self.threaded:    
@@ -81,8 +83,9 @@ class Space(PickleMixin, object):
         self._bodies: dict = {}
         self._static_body: Optional[Body] = None
         self._constraints: dict = {}
+
+        self._locked = False
         
-        self._in_step = False
         self._add_later: set = set()
         self._remove_later: set = set()
 
@@ -90,9 +93,21 @@ class Space(PickleMixin, object):
         """Remove all references to shapes, constraints and bodies before the 
         cpSpace can been free'd.
         """
+        # print("del handlers", self._space)
+        for handler in self._handlers.values():
+            handler._reset()
+        # print("del space shapes", self._space, self.shapes)
         self.remove(*self.shapes)
+        # print("del space removed shapes", self._space)
+        self._removed_shapes.clear()
+        # print("del space constraints", self._space)
         self.remove(*self.constraints)
+        # print("del space bodies", self._space)
         self.remove(*self.bodies) 
+        # print("del space", self._space)
+        if self._static_body is not None:
+            cp.cpSpaceRemoveBody(self._space, self._static_body._body)
+        
         if self.threaded:
             cp.cpHastySpaceFree(self._space)
         else:
@@ -123,14 +138,20 @@ class Space(PickleMixin, object):
     def static_body(self) -> Body:
         """A dedicated static body for the space. 
         
-        You don't have to use it, but because its memory is managed 
-        automatically with the space its very convenient. 
+        You don't have to use it, but many times it can be convenient to have 
+        a static body together with the space. 
         """
         if self._static_body is None:
-            b = cp.cpSpaceGetStaticBody(self._space)
-            self._static_body = Body._init_with_body(b)
-            self._static_body._space = self
-            assert self._static_body is not None
+            self._static_body = Body(body_type = Body.STATIC)
+            self._static_body._space = weakref.proxy(self)
+            
+            cp.cpSpaceAddBody(self._space, self._static_body._body)
+            # self.add(self._static_body)
+
+            # b = cp.cpSpaceGetStaticBody(self._space)
+            # self._static_body = Body._init_with_body(b)
+            # self._static_body._space = self
+            # assert self._static_body is not None
         return self._static_body
     
     def _set_iterations(self, value: int) -> None:
@@ -271,7 +292,7 @@ class Space(PickleMixin, object):
         add will not be performed until the end of the step.
         """
 
-        if self._in_step:
+        if self._locked:
             self._add_later.update(objs)
             return
 
@@ -304,8 +325,7 @@ class Space(PickleMixin, object):
             other objects that reference it. For instance, when you remove a
             body, remove the joints and shapes attached to it.
         """
-
-        if self._in_step:
+        if self._locked:
             self._remove_later.update(objs)
             return
 
@@ -321,7 +341,9 @@ class Space(PickleMixin, object):
 
     def _add_shape(self, shape):
         """Adds a shape to the space"""
+        # print("addshape", self._space, shape)
         assert shape._get_shapeid() not in self._shapes, "shape already added to space"
+        
         shape._space = weakref.proxy(self)
         self._shapes[shape._get_shapeid()] = shape
         cp.cpSpaceAddShape(self._space, shape._shape)
@@ -341,21 +363,31 @@ class Space(PickleMixin, object):
 
     def _remove_shape(self, shape):
         """Removes a shape from the space"""
+        assert shape._get_shapeid() in self._shapes, "shape not in space, already remvoed?"
         self._removed_shapes[shape._get_shapeid()] = shape
+        # During GC at program exit sometimes the shape might already be removed. Then skip this step.
+        if cp.cpSpaceContainsShape(self._space, shape._shape):
+            cp.cpSpaceRemoveShape(self._space, shape._shape)
         del self._shapes[shape._get_shapeid()]
-        cp.cpSpaceRemoveShape(self._space, shape._shape)
         
     def _remove_body(self, body):
         """Removes a body from the space"""
+        assert body in self._bodies, "body not in space, already removed?"
         body._space = None
-        cp.cpSpaceRemoveBody(self._space, body._body)
+        # During GC at program exit sometimes the shape might already be removed. Then skip this step.
+        if cp.cpSpaceContainsBody(self._space, body._body):
+            cp.cpSpaceRemoveBody(self._space, body._body)
         del self._bodies[body]
 
     def _remove_constraint(self, constraint):
         """Removes a constraint from the space"""
+        assert constraint in self._constraints, "constraint not in space, already removed?"
+        #print("remove", constraint, constraint._constraint, self._constraints)
+        # During GC at program exit sometimes the constraint might already be removed. Then skip this steip.
+        if cp.cpSpaceContainsConstraint(self._space, constraint._constraint):
+            cp.cpSpaceRemoveConstraint(self._space, constraint._constraint)
         del self._constraints[constraint]
-        cp.cpSpaceRemoveConstraint(self._space, constraint._constraint)
-
+        
     def reindex_shape(self, shape: Shape) -> None:
         """Update the collision detection data for a specific shape in the
         space.
@@ -446,28 +478,27 @@ class Space(PickleMixin, object):
         
         :param dt: Time step length
         """
-
-        self._in_step = True
-        if self.threaded:
-            cp.cpHastySpaceStep(self._space, dt)
-        else:
-            cp.cpSpaceStep(self._space, dt)
-        self._removed_shapes = {}
-        self._in_step = False
-
+        try:
+            self._locked = True
+            if self.threaded:
+                cp.cpHastySpaceStep(self._space, dt)
+            else:
+                cp.cpSpaceStep(self._space, dt)
+            self._removed_shapes = {}
+        finally:
+            self._locked = False
+        
         self.add(*self._add_later)
         self._add_later.clear()
-
-        for objs in self._remove_later:
-            self.remove(objs)
+        for obj in self._remove_later:
+            self.remove(obj)
         self._remove_later.clear()
         
         for key in self._post_step_callbacks:
             self._post_step_callbacks[key](self)  
         
         self._post_step_callbacks = {}  
-
-
+        
     def add_collision_handler(self, collision_type_a: int, collision_type_b: int) -> CollisionHandler:
         """Return the :py:class:`CollisionHandler` for collisions between 
         objects of type collision_type_a and collision_type_b.
@@ -847,6 +878,7 @@ class Space(PickleMixin, object):
         # bodies needs to be added to the state before their shapes.
         d['special'].append(('bodies', self.bodies))
         if self._static_body != None:
+            #print("getstate", self._static_body)
             d['special'].append(('_static_body', self._static_body))
         
         d['special'].append(('shapes', self.shapes))
@@ -883,11 +915,17 @@ class Space(PickleMixin, object):
             elif k == 'bodies':
                 self.add(*v)
             elif k == '_static_body':
-                _ = cp.cpSpaceSetStaticBody(self._space, v._body)
-                v._space = self
+                #_ = cp.cpSpaceSetStaticBody(self._space, v._body)
+                #v._space = self
+                #self._static_body = v
+                #print("setstate", v, self._static_body)
                 self._static_body = v
+                self._static_body._space = weakref.proxy(self)
+                cp.cpSpaceAddBody(self._space, v._body)
+                #self.add(v)
                 
             elif k == 'shapes':
+                #print("setstate shapes", v)
                 self.add(*v)
             elif k == 'constraints':
                 self.add(*v)

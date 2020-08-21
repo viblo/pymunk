@@ -54,6 +54,16 @@ class CollisionHandler(object):
 
         self._data: dict = {}
         
+    def _reset(self):
+        def allways_collide(arb, space, data):
+            return True
+        def do_nothing(arb, space, data):
+            return
+        self.begin = allways_collide
+        self.pre_solve = allways_collide
+        self.post_solve = do_nothing
+        self.separate = do_nothing
+    
     @property    
     def data(self) -> dict:
         """Data property that get passed on into the
@@ -169,7 +179,14 @@ class CollisionHandler(object):
     
         @ffi.callback("cpCollisionSeparateFunc")
         def cf(_arb, _space, _):
-            func(Arbiter(_arb, self._space), self._space, self._data)
+            try: 
+                # this try is needed since a separate callback will be called 
+                # if a colliding object is removed, regardless if its in a 
+                # step or not.
+                self._space._locked = True
+                func(Arbiter(_arb, self._space), self._space, self._data)
+            finally:
+                self._space._locked = False
                 
         self._separate = cf
         self._separate_base = func
