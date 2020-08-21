@@ -75,6 +75,15 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/legged_robot.png
+      - `<https://www.youtube.com/watch?v=n-OCy6ToLsU&feature=youtu.be>`_
+
+        :subscript:`made by Nav. Retrieved 2020-08-20`
+
+        Legged robot first using Differential Evolution to navigate terrain 
+        and then learning to recognise the world via perception from its 
+        senses.
+
     * - .. image:: _static/ambient-chimes.png
       - `Simulation of ambient chimes | Circle in a hexagon <https://youtu.be/7MRJS8ZV9VA>`_
 
@@ -108,6 +117,8 @@ Non-Games
         multidimensional search space of vehicle speed, chassis width, chassis 
         height and wheel radius, to find a variety of configurations among 
         which few are successful in helping the car cross the track. 
+
+        Source code available at github at https://github.com/nav9/evolutionaryCarRace
 
     * - .. image:: _static/virtuaplant.png
       - `VirtuaPlant <https://wroot.org/projects/virtuaplant/>`_
