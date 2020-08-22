@@ -120,10 +120,19 @@ class SpaceDebugDrawOptions(object):
         _options.drawDot = f5
 
         @ffi.callback("cpSpaceDebugDrawColorForShapeImpl")
-        def f6(_shape, data):
+        def f6(_shape, data, color):
             space = ffi.from_handle(data)
             shape = space._get_shape(_shape)
-            return self.color_for_shape(shape)
+            c = self.color_for_shape(shape)
+            # Temp ugly hack since cffi 1.14.0 or earlier, and latest pypy v7.3.1 
+            # which is tied with cffi 1.14.0 cand handle a returned struct properly. 
+            # Should be reverted once a new Pypy version has been released.
+            # return c
+            color.r = c.r
+            color.g = c.g
+            color.b = c.b
+            color.a = c.a
+            
         _options.colorForShape = f6
 
         self.flags = SpaceDebugDrawOptions.DRAW_SHAPES | \

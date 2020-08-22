@@ -1202,7 +1202,7 @@ ffibuilder.cdef("""
     /// Callback type for a function that draws a dot.
     typedef void (*cpSpaceDebugDrawDotImpl)(cpFloat size, cpVect pos, cpSpaceDebugColor color, cpDataPointer data);
     /// Callback type for a function that returns a color for a given shape. This gives you an opportunity to color shapes based on how they are used in your engine.
-    typedef cpSpaceDebugColor (*cpSpaceDebugDrawColorForShapeImpl)(cpShape *shape, cpDataPointer data);
+    typedef void (*cpSpaceDebugDrawColorForShapeImpl)(cpShape *shape, cpDataPointer data, cpSpaceDebugColor *color);
 
     typedef enum cpSpaceDebugDrawFlags {
         CP_SPACE_DEBUG_DRAW_SHAPES = 1,
