@@ -1202,6 +1202,11 @@ ffibuilder.cdef("""
     /// Callback type for a function that draws a dot.
     typedef void (*cpSpaceDebugDrawDotImpl)(cpFloat size, cpVect pos, cpSpaceDebugColor color, cpDataPointer data);
     /// Callback type for a function that returns a color for a given shape. This gives you an opportunity to color shapes based on how they are used in your engine.
+    
+    // Temp ugly hack since cffi 1.14.0 or earlier, and latest pypy v7.3.1 
+	// which is tied with cffi 1.14.0 cand handle a returned struct properly. 
+	// Should be reverted once a new Pypy version has been released.
+    // typedef cpSpaceDebugColor (*cpSpaceDebugDrawColorForShapeImpl)(cpShape *shape, cpDataPointer data);
     typedef void (*cpSpaceDebugDrawColorForShapeImpl)(cpShape *shape, cpDataPointer data, cpSpaceDebugColor *color);
 
     typedef enum cpSpaceDebugDrawFlags {
@@ -1509,6 +1514,11 @@ libraries:List[str] = []
 #if os == linux:
 #    libraries.append('m')
 
+extra_compile_args = []
+if platform.system() != 'Windows':
+    extra_compile_args.append('-std=c99')
+
+
 ffibuilder.set_source("pymunk._chipmunk",  # name of the output C extension
     f"""
         //#include "chipmunk/chipmunk_types.h"
@@ -1524,8 +1534,11 @@ ffibuilder.set_source("pymunk._chipmunk",  # name of the output C extension
         // from chipmunk_private.h
         // Ideally this should not come from here, but pickle needs it.
         void cpSpaceSetStaticBody(cpSpace *space, cpBody *body);
+
+
     """,
     #extra_compile_args=['/Od', '/DEBUG:FULL'], #, '/D_CHIPMUNK_FFI'],
+    extra_compile_args=extra_compile_args,
     #extra_link_args=['/DEBUG:FULL'],
     include_dirs=[os.path.join('Chipmunk2D','include')],
     sources=sources,
