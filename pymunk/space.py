@@ -145,6 +145,13 @@ class Space(PickleMixin, object):
             self._static_body = Body(body_type = Body.STATIC)
             self._static_body._space = weakref.proxy(self)
             
+            ffi.gc(self._static_body._body, None)
+            def bodyFree(_body):
+                # print("bodyfree", _body)
+                cp.cpBodyFree(_body)
+                self._space
+            self.static_body._body = ffi.gc(self.static_body._body, bodyFree)
+        
             cp.cpSpaceAddBody(self._space, self._static_body._body)
             # self.add(self._static_body)
 

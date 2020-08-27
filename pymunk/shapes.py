@@ -215,7 +215,7 @@ class Shape(PickleMixin, object):
         if body != None:
             body._shapes.add(self)
             def shapefree(_shape):
-                print("bshapefree", _shape)
+                # print("bshapefree", _shape)
                 cp.cpShapeFree(_shape)
                 body._body
             self._shape = ffi.gc(self._shape, shapefree)
