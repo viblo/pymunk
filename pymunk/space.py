@@ -70,9 +70,9 @@ class Space(PickleMixin, object):
 
         self.threaded = threaded and platform.system() != 'Windows' 
         if self.threaded:    
-            self._space = cp.cpHastySpaceNew()    
+            self._space = ffi.gc(cp.cpHastySpaceNew(), cp.cpHastySpaceFree)
         else:
-            self._space = cp.cpSpaceNew()
+            self._space = ffi.gc(cp.cpSpaceNew(), cp.cpSpaceFree)
             
         self._handlers: dict = {} # To prevent the gc to collect the callbacks.
 
@@ -89,7 +89,7 @@ class Space(PickleMixin, object):
         self._add_later: set = set()
         self._remove_later: set = set()
 
-    def __del__(self) -> None:
+    def __xdel__(self) -> None:
         """Remove all references to shapes, constraints and bodies before the 
         cpSpace can been free'd.
         """
@@ -352,6 +352,12 @@ class Space(PickleMixin, object):
         """Adds a body to the space"""
         assert body not in self._bodies, "body already added to space"
         body._space = weakref.proxy(self)
+        ffi.gc(body._body, None)
+        def bodyFree(_body):
+            # print("bodyfree", _body)
+            cp.cpBodyFree(_body)
+            self._space
+        body._body = ffi.gc(body._body, bodyFree)
         self._bodies[body] = None
         cp.cpSpaceAddBody(self._space, body._body)
 
@@ -374,6 +380,8 @@ class Space(PickleMixin, object):
         """Removes a body from the space"""
         assert body in self._bodies, "body not in space, already removed?"
         body._space = None
+        ffi.gc(body._body, None)
+        body._body = ffi.gc(body._body, cp.cpBodyFree)
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
         if cp.cpSpaceContainsBody(self._space, body._body):
             cp.cpSpaceRemoveBody(self._space, body._body)

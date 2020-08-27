@@ -59,7 +59,7 @@ __all__ = [
     "GearJoint", "SimpleMotor"
     ]
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from .body import Body
 
@@ -86,7 +86,16 @@ class Constraint(PickleMixin, object):
     def __init__(self, constraint=None):
         self._constraint = constraint
 
-    def __del__(self) -> None:
+    def _init(self, a: 'Body', b: 'Body', _constraint: Any) -> None:
+        def constraintfree(_constraint):
+            # print("constraintfree", _constraint)
+            cp.cpConstraintFree(_constraint)
+            a._body
+            b._body
+        self._constraint = ffi.gc(_constraint, constraintfree)
+        self._set_bodies(a,b)
+
+    def __xdel__(self) -> None:
         #print("del", self._constraint)
         cp.cpConstraintFree(self._constraint)
 
@@ -191,11 +200,11 @@ class PinJoint(Constraint):
         function to override it.
         """
 
-        self._constraint = cp.cpPinJointNew(
+        _constraint = cp.cpPinJointNew(
                 a._body, b._body, 
                 tuple(anchor_a), tuple(anchor_b))
-            
-        self._set_bodies(a,b)
+        self._init(a, b, _constraint)            
+        
 
     def _get_anchor_a(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpPinJointGetAnchorA(self._constraint))
@@ -229,9 +238,10 @@ class SlideJoint(Constraint):
         anchor points on those bodies, and min and max define the allowed
         distances of the anchor points.
         """
-        self._constraint = cp.cpSlideJointNew(a._body, b._body, 
+
+        _constraint = cp.cpSlideJointNew(a._body, b._body, 
                 tuple(anchor_a), tuple(anchor_b), min, max)
-        self._set_bodies(a,b)
+        self._init(a,b, _constraint)
 
     def _get_anchor_a(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpSlideJointGetAnchorA(self._constraint))
@@ -284,15 +294,15 @@ class PivotJoint(Constraint):
         :type args: (float,float) or (float,float) (float,float)
         """
         if len(args) == 1:
-            self._constraint = cp.cpPivotJointNew(a._body, b._body, tuple(args[0]))
+            _constraint = cp.cpPivotJointNew(a._body, b._body, tuple(args[0]))
         elif len(args) == 2:
-            self._constraint = cp.cpPivotJointNew2(
+            _constraint = cp.cpPivotJointNew2(
                     a._body, b._body, tuple(args[0]), tuple(args[1]))
         else:
             raise Exception("You must specify either one pivot point"
                 " or two anchor points")
 
-        self._set_bodies(a,b)
+        self._init(a,b, _constraint)
 
     def _get_anchor_a(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpPivotJointGetAnchorA(self._constraint))
@@ -320,11 +330,11 @@ class GrooveJoint(Constraint):
 
         All coordinates are body local.
         """
-        self._constraint = cp.cpGrooveJointNew(
+        _constraint = cp.cpGrooveJointNew(
                 a._body, b._body, 
                 tuple(groove_a), tuple(groove_b), 
                 tuple(anchor_b))
-        self._set_bodies(a,b)
+        self._init(a,b, _constraint)
 
     def _get_anchor_b(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpGrooveJointGetAnchorB(self._constraint))
@@ -366,12 +376,12 @@ class DampedSpring(Constraint):
         :param float stiffness: The spring constant (Young's modulus).
         :param float damping: How soft to make the damping of the spring.
         """
-        c = cp.cpDampedSpringNew(
+        _constraint = cp.cpDampedSpringNew(
             a._body, b._body,
             tuple(anchor_a), tuple(anchor_b), 
             rest_length, stiffness, damping)
-        self._constraint = c
-        self._set_bodies(a,b)
+        
+        self._init(a,b, _constraint)
 
     def _get_anchor_a(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpDampedSpringGetAnchorA(self._constraint))
@@ -422,10 +432,9 @@ class DampedRotarySpring(Constraint):
         :param float stiffness: The spring constant (Young's modulus).
         :param float damping: How soft to make the damping of the spring.
         """
-        c = cp.cpDampedRotarySpringNew(a._body, b._body, 
+        _constraint = cp.cpDampedRotarySpringNew(a._body, b._body, 
             rest_angle, stiffness, damping)
-        self._constraint = c
-        self._set_bodies(a,b)
+        self._init(a,b, _constraint)
 
     def _get_rest_angle(self) -> float:
         return cp.cpDampedRotarySpringGetRestAngle(self._constraint)
@@ -461,8 +470,8 @@ class RotaryLimitJoint(Constraint):
         that it's possible to for the range to be greater than a full
         revolution.
         """
-        self._constraint = cp.cpRotaryLimitJointNew(a._body, b._body, min, max)
-        self._set_bodies(a,b)
+        _constraint = cp.cpRotaryLimitJointNew(a._body, b._body, min, max)
+        self._init(a,b, _constraint)
 
     def _get_min(self) -> float:
         return cp.cpRotaryLimitJointGetMin(self._constraint)
@@ -487,8 +496,8 @@ class RatchetJoint(Constraint):
         ratchet is the distance between "clicks", phase is the initial offset
         to use when deciding where the ratchet angles are.
         """
-        self._constraint = cp.cpRatchetJointNew(a._body, b._body, phase, ratchet)
-        self._set_bodies(a,b)
+        _constraint = cp.cpRatchetJointNew(a._body, b._body, phase, ratchet)
+        self._init(a,b, _constraint)
 
     def _get_angle(self) -> float:
         return cp.cpRatchetJointGetAngle(self._constraint)
@@ -521,8 +530,8 @@ class GearJoint(Constraint):
         possible to set the ratio in relation to a third body's angular
         velocity. phase is the initial angular offset of the two bodies.
         """
-        self._constraint = cp.cpGearJointNew(a._body, b._body, phase, ratio)
-        self._set_bodies(a,b)
+        _constraint = cp.cpGearJointNew(a._body, b._body, phase, ratio)
+        self._init(a,b, _constraint)
 
     def _get_phase(self) -> float:
         return cp.cpGearJointGetPhase(self._constraint)
@@ -550,8 +559,8 @@ class SimpleMotor(Constraint):
         to set an force (torque) maximum for motors as otherwise they will be
         able to apply a nearly infinite torque to keep the bodies moving.
         """
-        self._constraint = cp.cpSimpleMotorNew(a._body, b._body, rate)
-        self._set_bodies(a,b)
+        _constraint = cp.cpSimpleMotorNew(a._body, b._body, rate)
+        self._init(a,b, _constraint)
 
     def _get_rate(self) -> float:
         return cp.cpSimpleMotorGetRate(self._constraint)

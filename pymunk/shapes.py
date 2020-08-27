@@ -1,7 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import copy
-from typing import List, Optional, TYPE_CHECKING, Tuple
+from typing import List, Optional, TYPE_CHECKING, Tuple, Any
 
 if TYPE_CHECKING:
     from .body import Body
@@ -43,7 +43,24 @@ class Shape(PickleMixin, object):
         self._shape = shape
         self._body = shape.body
 
-    def __del__(self):
+    def _init(self, body: Optional['Body'], _shape: Any) -> None:
+        self._body = body
+        
+        if body != None:
+            body._shapes.add(self)
+        
+            def shapefree(_shape):
+                #print("shapefree", _shape)
+                cp.cpShapeFree(_shape)
+                body._body
+            
+            self._shape = ffi.gc(_shape, shapefree)
+        else:
+            self._shape = _shape
+
+        self._set_shapeid()
+
+    def __xdel__(self):
         # print("del shape", self._shape)
         cp.cpShapeFree(self._shape)
 
@@ -187,16 +204,24 @@ class Shape(PickleMixin, object):
         collision.
         """)
 
-    def _get_body(self) -> 'Body':
+    def _get_body(self) -> Optional['Body']:
         return self._body
-    def _set_body(self, body: 'Body') -> None:
+    def _set_body(self, body: Optional['Body']) -> None:
         if self._body != None:
             self._body._shapes.remove(self)
         body_body = ffi.NULL if body is None else body._body
         cp.cpShapeSetBody(self._shape, body_body)
+        ffi.gc(self._shape, None)
         if body != None:
             body._shapes.add(self)
-        
+            def shapefree(_shape):
+                print("bshapefree", _shape)
+                cp.cpShapeFree(_shape)
+                body._body
+            self._shape = ffi.gc(self._shape, shapefree)
+        else:
+            self._shape = ffi.gc(self._shape, cp.cpShapeFree)
+
         self._body = body
 
     body = property(_get_body, _set_body,
@@ -304,6 +329,8 @@ class Shape(PickleMixin, object):
         """Create a deep copy of this shape."""
         return copy.deepcopy(self)
 
+
+
 class Circle(Shape):
     """A circle shape defined by a radius
 
@@ -312,7 +339,7 @@ class Circle(Shape):
 
     _pickle_attrs_init = ['radius', 'offset']
 
-    def __init__(self, body: 'Body', radius: float, offset = (0, 0)) -> None:
+    def __init__(self, body: Optional['Body'], radius: float, offset = (0, 0)) -> None:
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates.
 
@@ -320,14 +347,10 @@ class Circle(Shape):
         shape is not attached to a body. However, you must attach it to a body
         before adding the shape to a space or used for a space shape query.
         """
-
-        self._body = body
         body_body = ffi.NULL if body is None else body._body
-        if body != None:
-            body._shapes.add(self)
-
-        self._shape = cp.cpCircleShapeNew(body_body, radius, tuple(offset))
-        self._set_shapeid()
+        _shape = cp.cpCircleShapeNew(body_body, radius, tuple(offset))
+        self._init(body, _shape)
+        
 
     def unsafe_set_radius(self, r: float) -> None:
         """Unsafe set the radius of the circle.
@@ -384,13 +407,10 @@ class Segment(Shape):
         :param b: The second endpoint of the segment
         :param float radius: The thickness of the segment
         """ 
-        self._body = body
+
         body_body = ffi.NULL if body is None else body._body
-        if body != None:
-            body._shapes.add(self)
-            
-        self._shape = cp.cpSegmentShapeNew(body_body, tuple(a), tuple(b), radius)
-        self._set_shapeid()
+        _shape = cp.cpSegmentShapeNew(body_body, tuple(a), tuple(b), radius)
+        self._init(body, _shape)
 
     def _get_a(self):
         return Vec2d._fromcffi(cp.cpSegmentShapeGetA(self._shape))
@@ -495,19 +515,14 @@ class Poly(Shape):
         :param float radius: Set the radius of the poly shape
                 
         """
-
-        self._body = body
-
-        body_body = ffi.NULL if body is None else body._body
-        if body != None:
-            body._shapes.add(self)
-
         if transform == None:
             transform = Transform.identity()
 
         vs = list(map(tuple, vertices))
-        self._shape = cp.cpPolyShapeNew(body_body, len(vertices), vs, transform, radius)
-        self._set_shapeid()
+        
+        body_body = ffi.NULL if body is None else body._body
+        _shape = cp.cpPolyShapeNew(body_body, len(vertices), vs, transform, radius)
+        self._init(body, _shape)
 
     def unsafe_set_radius(self, radius: float) -> None:
         """Unsafe set the radius of the poly.
@@ -529,7 +544,7 @@ class Poly(Shape):
         return cp.cpPolyShapeGetRadius(self._shape)
     
     @staticmethod
-    def create_box(body, size: Tuple[float, float]=(10,10), radius: float=0) -> 'Poly':
+    def create_box(body: Optional['Body'], size: Tuple[float, float]=(10,10), radius: float=0) -> 'Poly':
         """Convenience function to create a box given a width and height.
 
         The boxes will always be centered at the center of gravity of the
@@ -547,19 +562,14 @@ class Poly(Shape):
         """
 
         self = Poly.__new__(Poly)
-        self._body = body
-
         body_body = ffi.NULL if body is None else body._body
-        if body != None:
-            body._shapes.add(self)
+        _shape = cp.cpBoxShapeNew(body_body, size[0], size[1], radius)
+        self._init(body, _shape)
 
-        self._shape = cp.cpBoxShapeNew(body_body, size[0], size[1], radius)
-
-        self._set_shapeid()
         return self
 
     @staticmethod
-    def create_box_bb(body, bb: BB, radius: float=0) -> 'Poly':
+    def create_box_bb(body: Optional['Body'], bb: BB, radius: float=0) -> 'Poly':
         """Convenience function to create a box shape from a :py:class:`BB`.
         
         The boxes will always be centered at the center of gravity of the
@@ -576,15 +586,10 @@ class Poly(Shape):
         """
 
         self = Poly.__new__(Poly)
-        self._body = body
-
         body_body = ffi.NULL if body is None else body._body
-        if body != None:
-            body._shapes.add(self)
+        _shape = cp.cpBoxShapeNew2(body_body, bb._bb, radius)
+        self._init(body, _shape)
 
-        self._shape = cp.cpBoxShapeNew2(body_body, bb._bb, radius)
-        
-        self._set_shapeid()
         return self
 
     def get_vertices(self) -> List[Vec2d]:
