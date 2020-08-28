@@ -64,6 +64,7 @@ if TYPE_CHECKING:
     from .body import Body
 
 import copy
+import logging
 
 from .vec2d import Vec2d
 from ._pickle import PickleMixin
@@ -87,11 +88,14 @@ class Constraint(PickleMixin, object):
         self._constraint = constraint
 
     def _init(self, a: 'Body', b: 'Body', _constraint: Any) -> None:
-        def constraintfree(_constraint):
-            # print("constraintfree", _constraint)
-            cp.cpConstraintFree(_constraint)
-            a._body
-            b._body
+        def constraintfree(cp_constraint):
+            cp_space = cp.cpConstraintGetSpace(cp_constraint)
+            if cp_space != ffi.NULL:
+                cp.cpSpaceRemoveConstraint(cp_space, cp_constraint)
+
+            logging.debug("constraintfree %s", cp_constraint)
+            cp.cpConstraintFree(cp_constraint)
+            
         self._constraint = ffi.gc(_constraint, constraintfree)
         self._set_bodies(a,b)
 

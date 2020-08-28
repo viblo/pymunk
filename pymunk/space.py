@@ -8,7 +8,7 @@ from typing import Callable, Tuple, Union, Optional, Any, List, Hashable, TYPE_C
 import weakref
 import platform
 import copy
-import contextlib
+import logging
 
 from . import _version
 from . import _chipmunk_cffi
@@ -69,11 +69,57 @@ class Space(PickleMixin, object):
         """
 
         self.threaded = threaded and platform.system() != 'Windows' 
-        if self.threaded:    
-            self._space = ffi.gc(cp.cpHastySpaceNew(), cp.cpHastySpaceFree)
+
+
+
+        if self.threaded:   
+            cp_space = cp.cpHastySpaceNew()
+            freefunc = cp.cpHastySpaceFree
         else:
-            self._space = ffi.gc(cp.cpSpaceNew(), cp.cpSpaceFree)
+            cp_space = cp.cpSpaceNew()
+            freefunc = cp.cpSpaceFree
+
+        def spacefree(cp_space):
+            logging.debug("spacefree start %s", cp_space)
+            cp_shapes = []
+            @ffi.callback("cpSpaceShapeIteratorFunc")
+            def cf(cp_shape, data):
+                #print("spacefree shapecallback")
+                cp_shapes.append(cp_shape)
+                #cp_space = cp.cpShapeGetSpace(cp_shape)
+                #cp.cpSpaceRemoveShape(cp_space, cp_shape)
+            #print("spacefree shapes", cp_space)
+            cp.cpSpaceEachShape(cp_space, cf, ffi.NULL)
+            for cp_shape in cp_shapes:
+                logging.debug("spacefree remove shape %s %s", cp_space, cp_shape)
+                cp.cpSpaceRemoveShape(cp_space, cp_shape)
+                cp.cpShapeSetBody(cp_shape, ffi.NULL)
+
+            cp_constraints = []
+            @ffi.callback("cpSpaceConstraintIteratorFunc")
+            def cf(cp_constraint, data):
+                #print("spacefree shapecallback")
+                cp_constraints.append(cp_constraint)
+            cp.cpSpaceEachConstraint(cp_space, cf, ffi.NULL)
+            for cp_constraint in cp_constraints:
+                logging.debug("spacefree remove constraint %s %s", cp_space, cp_constraint)
+                cp.cpSpaceRemoveConstraint(cp_space, cp_constraint)
             
+            cp_bodies = []
+            @ffi.callback("cpSpaceBodyIteratorFunc")
+            def cf(cp_body, data):
+                #print("spacefree shapecallback")
+                cp_bodies.append(cp_body)
+            cp.cpSpaceEachBody(cp_space, cf, ffi.NULL)
+            for cp_body in cp_bodies:
+                logging.debug("spacefree remove body %s %s", cp_space, cp_body)
+                cp.cpSpaceRemoveBody(cp_space, cp_body)
+
+            logging.debug("spacefree free %s", cp_space)
+            freefunc(cp_space)
+
+        self._space = ffi.gc(cp_space, spacefree)
+
         self._handlers: dict = {} # To prevent the gc to collect the callbacks.
 
         self._post_step_callbacks: dict = {}
@@ -134,6 +180,11 @@ class Space(PickleMixin, object):
         """A list of the constraints added to this space"""
         return list(self._constraints)
     
+
+    def _setup_static_body(self, static_body):
+        static_body._space = weakref.proxy(self)  
+        cp.cpSpaceAddBody(self._space, static_body._body)
+
     @property
     def static_body(self) -> Body:
         """A dedicated static body for the space. 
@@ -143,16 +194,7 @@ class Space(PickleMixin, object):
         """
         if self._static_body is None:
             self._static_body = Body(body_type = Body.STATIC)
-            self._static_body._space = weakref.proxy(self)
-            
-            ffi.gc(self._static_body._body, None)
-            def bodyFree(_body):
-                # print("bodyfree", _body)
-                cp.cpBodyFree(_body)
-                self._space
-            self.static_body._body = ffi.gc(self.static_body._body, bodyFree)
-        
-            cp.cpSpaceAddBody(self._space, self._static_body._body)
+            self._setup_static_body(self._static_body)
             # self.add(self._static_body)
 
             # b = cp.cpSpaceGetStaticBody(self._space)
@@ -359,12 +401,6 @@ class Space(PickleMixin, object):
         """Adds a body to the space"""
         assert body not in self._bodies, "body already added to space"
         body._space = weakref.proxy(self)
-        ffi.gc(body._body, None)
-        def bodyFree(_body):
-            # print("bodyfree", _body)
-            cp.cpBodyFree(_body)
-            self._space
-        body._body = ffi.gc(body._body, bodyFree)
         self._bodies[body] = None
         cp.cpSpaceAddBody(self._space, body._body)
 
@@ -387,8 +423,6 @@ class Space(PickleMixin, object):
         """Removes a body from the space"""
         assert body in self._bodies, "body not in space, already removed?"
         body._space = None
-        ffi.gc(body._body, None)
-        body._body = ffi.gc(body._body, cp.cpBodyFree)
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
         if cp.cpSpaceContainsBody(self._space, body._body):
             cp.cpSpaceRemoveBody(self._space, body._body)
@@ -935,8 +969,9 @@ class Space(PickleMixin, object):
                 #self._static_body = v
                 #print("setstate", v, self._static_body)
                 self._static_body = v
-                self._static_body._space = weakref.proxy(self)
-                cp.cpSpaceAddBody(self._space, v._body)
+                self._setup_static_body(self._static_body)
+                # self._static_body._space = weakref.proxy(self)
+                # cp.cpSpaceAddBody(self._space, v._body)
                 #self.add(v)
                 
             elif k == 'shapes':

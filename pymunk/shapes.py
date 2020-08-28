@@ -1,6 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import copy
+import logging
 from typing import List, Optional, TYPE_CHECKING, Tuple, Any
 
 if TYPE_CHECKING:
@@ -49,15 +50,18 @@ class Shape(PickleMixin, object):
         if body != None:
             body._shapes.add(self)
         
-            def shapefree(_shape):
-                #print("shapefree", _shape)
-                cp.cpShapeFree(_shape)
-                body._body
+        def shapefree(cp_shape):
+            cp_space = cp.cpShapeGetSpace(cp_shape)
+            if cp_space != ffi.NULL:
+                logging.debug("shapefree remove from space %s %s", cp_space, cp_shape)
+                cp.cpSpaceRemoveShape(cp_space, cp_shape)
             
-            self._shape = ffi.gc(_shape, shapefree)
-        else:
-            self._shape = _shape
-
+            logging.debug("shapefree remove body %s", cp_shape)
+            cp.cpShapeSetBody(cp_shape, ffi.NULL)
+            logging.debug("shapefree free %s", cp_shape)
+            cp.cpShapeFree(cp_shape)
+            
+        self._shape = ffi.gc(_shape, shapefree)
         self._set_shapeid()
 
     def __xdel__(self):
@@ -211,17 +215,8 @@ class Shape(PickleMixin, object):
             self._body._shapes.remove(self)
         body_body = ffi.NULL if body is None else body._body
         cp.cpShapeSetBody(self._shape, body_body)
-        ffi.gc(self._shape, None)
         if body != None:
             body._shapes.add(self)
-            def shapefree(_shape):
-                # print("bshapefree", _shape)
-                cp.cpShapeFree(_shape)
-                body._body
-            self._shape = ffi.gc(self._shape, shapefree)
-        else:
-            self._shape = ffi.gc(self._shape, cp.cpShapeFree)
-
         self._body = body
 
     body = property(_get_body, _set_body,

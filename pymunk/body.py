@@ -7,7 +7,8 @@ if TYPE_CHECKING:
 
 from weakref import WeakSet
 import copy
-    
+import logging
+
 from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi    
@@ -158,13 +159,45 @@ class Body(PickleMixin, object):
         mass=75 moment=3921
 
         """
+        def freebody(cp_body):
+            logging.debug("bodyfree start %s", cp_body)
+            cp_shapes = []
+            @ffi.callback("cpBodyShapeIteratorFunc")
+            def cf1(cp_body, cp_shape, _):
+                cp_shapes.append(cp_shape)
+            cp.cpBodyEachShape(cp_body, cf1, ffi.NULL)
+
+            for cp_shape in cp_shapes:
+                logging.debug("bodyfree remove shape %s %s", cp_body, cp_shape)
+                cp_space = cp.cpShapeGetSpace(cp_shape)
+                if cp_space != ffi.NULL:
+                    cp.cpSpaceRemoveShape(cp_space, cp_shape)
+            
+            cp_constraints = []
+            @ffi.callback("cpBodyConstraintIteratorFunc")
+            def cf2(cp_body, cp_constraint, _):
+                cp_constraints.append(cp_constraint)
+            cp.cpBodyEachConstraint(cp_body, cf2, ffi.NULL)
+            for cp_constraint in cp_constraints:
+                logging.debug("bodyfree remove constraint %s %s", cp_body, cp_constraint)
+                cp_space = cp.cpConstraintGetSpace(cp_constraint)
+                if cp_space != ffi.NULL:
+                    cp.cpSpaceRemoveConstraint(cp_space, cp_constraint)
+            
+            cp_space = cp.cpBodyGetSpace(cp_body)
+            # print(cp_space, cp_space == ffi.NULL)
+            if cp_space != ffi.NULL:
+                cp.cpSpaceRemoveBody(cp_space, cp_body)
+            
+            logging.debug("bodyfree free %s", cp_body)
+            cp.cpBodyFree(cp_body)
 
         if body_type == Body.DYNAMIC:
-            self._body = ffi.gc(cp.cpBodyNew(mass, moment), cp.cpBodyFree)
+            self._body = ffi.gc(cp.cpBodyNew(mass, moment), freebody)
         elif body_type == Body.KINEMATIC:
-            self._body = ffi.gc(cp.cpBodyNewKinematic(), cp.cpBodyFree)
+            self._body = ffi.gc(cp.cpBodyNewKinematic(), freebody)
         elif body_type == Body.STATIC:
-            self._body = ffi.gc(cp.cpBodyNewStatic(), cp.cpBodyFree)
+            self._body = ffi.gc(cp.cpBodyNewStatic(), freebody)
         
         self._init()
 
