@@ -4,7 +4,7 @@ git:
 
 env:
   global:
-    - CIBW_BUILD="cp38-* pp36-*"
+    - CIBW_BUILD="cp36-* cp37-* cp38-* pp36-*"
     #- CIBW_BUILD="cp38-macosx_x86_64 cp38-manylinux_x86_64 cp38-manylinux_i686 cp38-win_amd64 pp36-manylinux_x86_64 cp38-win32 cp38-manylinux_aarch64" # FIXME: When build is working, define all tags
     #  cp37-* cp38-* pp36-* 
     - CIBW_SKIP="*_ppc64le *_s390x"
