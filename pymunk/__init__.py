@@ -53,7 +53,7 @@ cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
 import logging
-#logging.basicConfig(level=0)
+logging.basicConfig(level=0)
 
 
 from . import _version
