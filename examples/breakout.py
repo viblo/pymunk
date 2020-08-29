@@ -5,8 +5,6 @@ The code showcases several pymunk concepts such as elasitcity, impulses,
 constant object speed, joints, collision handlers and post step callbacks.
 """
 
-import math
-import os
 import random
 import sys
 
@@ -106,7 +104,7 @@ def main():
         line.color = THECOLORS["lightgray"]
         line.elasticity = 1.0
 
-    space.add(static_lines)
+    space.add(*static_lines)
 
     # bottom - a sensor that removes anything touching it
     bottom = pymunk.Segment(space.static_body, (50, 50), (550, 50), 2)

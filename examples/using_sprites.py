@@ -44,7 +44,7 @@ def main():
     ]
     for l in static_lines:
         l.friction = 0.5
-    space.add(static_lines)
+    space.add(*static_lines)
 
     ticks_to_next_spawn = 10
 

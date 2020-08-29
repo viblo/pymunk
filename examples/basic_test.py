@@ -12,7 +12,7 @@ from pymunk import Vec2d
 
 
 def main():
-
+    print(f"basic example of pymunk {pymunk.version}")
     space = pymunk.Space()
     space.gravity = (0.0, -900.0)
 

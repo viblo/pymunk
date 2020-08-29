@@ -41,7 +41,7 @@ class Main(pyglet.window.Window):
         ]
         for l in static_lines:
             l.friction = 0.3
-        self.space.add(static_lines)
+        self.space.add(*static_lines)
 
         for x in range(5):
             for y in range(10):

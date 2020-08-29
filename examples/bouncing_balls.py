@@ -86,7 +86,7 @@ class BouncyBalls(object):
         for line in static_lines:
             line.elasticity = 0.95
             line.friction = 0.9
-        self._space.add(static_lines)
+        self._space.add(*static_lines)
 
     def _process_events(self):
         """

@@ -80,7 +80,7 @@ def main():
     ]
     for s in static:
         s.collision_type = 1
-    space.add(static)
+    space.add(*static)
 
     def pre_solve(arb, space, data):
         s = arb.shapes[0]

@@ -45,7 +45,7 @@ def main():
         pm.Segment(space.static_body, (111.0, 320.0), (407.0, 354.0), 0.0),
         pm.Segment(space.static_body, (407.0, 354.0), (407.0, 257.0), 0.0),
     ]
-    space.add(static_lines)
+    space.add(*static_lines)
 
     ticks_to_next_ball = 10
 

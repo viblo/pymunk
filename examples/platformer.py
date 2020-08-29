@@ -108,7 +108,7 @@ def main():
     for s in static + platforms + rounded:
         s.friction = 1.0
         s.group = 1
-    space.add(static, platforms + rounded)
+    space.add(*static, *platforms, *rounded)
 
     # moving platform
     platform_path = [(650, 100), (600, 200), (650, 300)]
@@ -149,7 +149,7 @@ def main():
     feet.color = 0, 0, 0, 0
     head.color = 0, 0, 0, 0
     head2.color = 0, 0, 0, 0
-    mask = pymunk.ShapeFilter.ALL_MASKS ^ passthrough.filter.categories
+    mask = pymunk.ShapeFilter.ALL_MASKS() ^ passthrough.filter.categories
     sf = pymunk.ShapeFilter(mask=mask)
     head.filter = sf
     head2.filter = sf

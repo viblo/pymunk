@@ -37,7 +37,7 @@ static_lines = [
 for line in static_lines:
     line.elasticity = 0.7
     line.group = 1
-space.add(static_lines)
+space.add(*static_lines)
 
 fp = [(20, -20), (-120, 0), (20, 20)]
 mass = 100

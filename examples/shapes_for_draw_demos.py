@@ -18,7 +18,7 @@ def fill_space(space, custom_color=(255, 255, 0, 255)):
         pymunk.Segment(space.static_body, (30, 400), (30, 600), 3),
         pymunk.Segment(space.static_body, (50, 400), (50, 600), 5),
     ]
-    space.add(segments)
+    space.add(*segments)
 
     b = pymunk.Body(body_type=pymunk.Body.STATIC)
     b.position = (40, 630)
@@ -87,7 +87,7 @@ def fill_space(space, custom_color=(255, 255, 0, 255)):
         pymunk.Segment(b, (200, 400), (200, 600), 3),
         pymunk.Segment(b, (220, 400), (220, 600), 5),
     ]
-    space.add(b, segments)
+    space.add(b, *segments)
 
     b = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
     b.position = (210, 630)
@@ -155,7 +155,7 @@ def fill_space(space, custom_color=(255, 255, 0, 255)):
         pymunk.Segment(b, (370, 400), (370, 600), 3),
         pymunk.Segment(b, (390, 400), (390, 600), 5),
     ]
-    space.add(b, segments)
+    space.add(b, *segments)
 
     b = pymunk.Body(1, 1)
     b.position = (380, 630)

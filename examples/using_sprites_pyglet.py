@@ -34,7 +34,7 @@ static_lines = [
 ]
 for l in static_lines:
     l.friction = 0.5
-space.add(static_lines)
+space.add(*static_lines)
 
 
 @window.event

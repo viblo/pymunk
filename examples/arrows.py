@@ -85,7 +85,7 @@ def main():
     for s in static:
         s.friction = 1.0
         s.group = 1
-    space.add(b2, static)
+    space.add(b2, *static)
 
     # "Cannon" that can fire arrows
     cannon_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
@@ -174,7 +174,7 @@ def main():
             flying_arrow.angular_velocity *= 0.5
 
         ### Clear screen
-        screen.fill(pygame.color.THECOLORS["black"])
+        screen.fill(THECOLORS["black"])
 
         ### Draw stuff
         space.debug_draw(draw_options)
@@ -187,12 +187,15 @@ def main():
             power = max(min(diff, 1000), 10)
             h = power // 2
             pygame.draw.line(
-                screen, pygame.color.THECOLORS["red"], (30, 550), (30, 550 - h), 10
+                screen, THECOLORS["red"], (30, 550), (30, 550 - h), 10
             )
 
         # Info and flip screen
         screen.blit(
-            font.render("fps: " + str(clock.get_fps()), 1, THECOLORS["white"]), (0, 0)
+            font.render(
+                "fps: " + str(clock.get_fps()), 1, THECOLORS["white"]
+            ),
+            (0, 0),
         )
         screen.blit(
             font.render(
@@ -203,7 +206,9 @@ def main():
             (5, height - 35),
         )
         screen.blit(
-            font.render("Press ESC or Q to quit", 1, THECOLORS["darkgrey"]),
+            font.render(
+                "Press ESC or Q to quit", 1, THECOLORS["darkgrey"]
+            ),
             (5, height - 20),
         )
 
