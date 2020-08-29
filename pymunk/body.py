@@ -1,22 +1,23 @@
 __docformat__ = "reStructuredText"
 
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
+
 if TYPE_CHECKING:
     from .space import Space
-    
 
-from weakref import WeakSet
-import copy
 import logging
+from weakref import WeakSet
 
 from . import _chipmunk_cffi
-cp = _chipmunk_cffi.lib
-ffi = _chipmunk_cffi.ffi    
-from .vec2d import Vec2d
-from .arbiter import Arbiter
-from ._pickle import PickleMixin
 
-_BodyType = int #Literal['cp.CP_BODY_TYPE_DYNAMIC', 'cp.CP_BODY_TYPE_KINEMATIC', 'cp.CP_BODY_TYPE_STATIC']
+cp = _chipmunk_cffi.lib
+ffi = _chipmunk_cffi.ffi
+from ._pickle import PickleMixin
+from .arbiter import Arbiter
+from .vec2d import Vec2d
+
+_BodyType = int  # Literal['cp.CP_BODY_TYPE_DYNAMIC', 'cp.CP_BODY_TYPE_KINEMATIC', 'cp.CP_BODY_TYPE_STATIC']
+
 
 class Body(PickleMixin, object):
     """A rigid body
@@ -30,8 +31,8 @@ class Body(PickleMixin, object):
       you are doing. Otherwise you're likely to get the position/velocity badly
       out of sync.
 
-    A Body can be copied and pickled. Sleeping bodies that are copied will be 
-    awake in the fresh copy. When a Body is copied any spaces, shapes or 
+    A Body can be copied and pickled. Sleeping bodies that are copied will be
+    awake in the fresh copy. When a Body is copied any spaces, shapes or
     constraints attached to the body will not be copied.
     """
 
@@ -75,12 +76,29 @@ class Body(PickleMixin, object):
     static geometry to be initialized or moved separately.
     """
 
-    _pickle_attrs_init = ['mass', 'moment', 'body_type']
-    _pickle_attrs_general = ['force', 'angle', 'position', 'center_of_gravity', 
-        'velocity',  'angular_velocity', 'torque']
-    _pickle_attrs_skip = ['is_sleeping', '_velocity_func', '_position_func']
+    _pickle_attrs_init = PickleMixin._pickle_attrs_init + [
+        "mass",
+        "moment",
+        "body_type",
+    ]
+    _pickle_attrs_general = PickleMixin._pickle_attrs_general + [
+        "force",
+        "angle",
+        "position",
+        "center_of_gravity",
+        "velocity",
+        "angular_velocity",
+        "torque",
+    ]
+    _pickle_attrs_skip = PickleMixin._pickle_attrs_skip + [
+        "is_sleeping",
+        "_velocity_func",
+        "_position_func",
+    ]
 
-    def __init__(self, mass: float = 0, moment: float = 0, body_type: _BodyType = DYNAMIC) -> None:
+    def __init__(
+        self, mass: float = 0, moment: float = 0, body_type: _BodyType = DYNAMIC
+    ) -> None:
         """Create a new Body
 
         Mass and moment are ignored when body_type is KINEMATIC or STATIC.
@@ -93,8 +111,8 @@ class Body(PickleMixin, object):
         create a body with a mass and moment of 0, and set the mass or
         density of each collision shape added to the body. Chipmunk will
         automatically calculate the mass, moment of inertia, and center of
-        gravity for you. This is probably preferred in most cases. Note that 
-        these will only be correctly calculated after the body and shape are 
+        gravity for you. This is probably preferred in most cases. Note that
+        these will only be correctly calculated after the body and shape are
         added to a space.
 
         The other option is to set the mass of the body when it's created,
@@ -109,9 +127,9 @@ class Body(PickleMixin, object):
         >>> radius = 2
         >>> mass = 3
         >>> density = 3
-        >>> def print_mass_moment(b): 
+        >>> def print_mass_moment(b):
         ...    print("mass={:.0f} moment={:.0f}".format(b.mass, b.moment))
-        
+
         >>> # Using Shape.density
         >>> s = pymunk.Space()
         >>> b = pymunk.Body()
@@ -144,8 +162,8 @@ class Body(PickleMixin, object):
         >>> print_mass_moment(b)
         mass=3 moment=6
 
-        It becomes even more useful to use the mass or density properties of 
-        the shape when you attach multiple shapes to one body, like in this 
+        It becomes even more useful to use the mass or density properties of
+        the shape when you attach multiple shapes to one body, like in this
         example with density:
 
         >>> # Using multiple Shape.density
@@ -159,12 +177,15 @@ class Body(PickleMixin, object):
         mass=75 moment=3921
 
         """
+
         def freebody(cp_body):
             logging.debug("bodyfree start %s", cp_body)
             cp_shapes = []
+
             @ffi.callback("cpBodyShapeIteratorFunc")
             def cf1(cp_body, cp_shape, _):
                 cp_shapes.append(cp_shape)
+
             cp.cpBodyEachShape(cp_body, cf1, ffi.NULL)
 
             for cp_shape in cp_shapes:
@@ -172,23 +193,27 @@ class Body(PickleMixin, object):
                 cp_space = cp.cpShapeGetSpace(cp_shape)
                 if cp_space != ffi.NULL:
                     cp.cpSpaceRemoveShape(cp_space, cp_shape)
-            
+
             cp_constraints = []
+
             @ffi.callback("cpBodyConstraintIteratorFunc")
             def cf2(cp_body, cp_constraint, _):
                 cp_constraints.append(cp_constraint)
+
             cp.cpBodyEachConstraint(cp_body, cf2, ffi.NULL)
             for cp_constraint in cp_constraints:
-                logging.debug("bodyfree remove constraint %s %s", cp_body, cp_constraint)
+                logging.debug(
+                    "bodyfree remove constraint %s %s", cp_body, cp_constraint
+                )
                 cp_space = cp.cpConstraintGetSpace(cp_constraint)
                 if cp_space != ffi.NULL:
                     cp.cpSpaceRemoveConstraint(cp_space, cp_constraint)
-            
+
             cp_space = cp.cpBodyGetSpace(cp_body)
             # print(cp_space, cp_space == ffi.NULL)
             if cp_space != ffi.NULL:
                 cp.cpSpaceRemoveBody(cp_space, cp_body)
-            
+
             logging.debug("bodyfree free %s", cp_body)
             cp.cpBodyFree(cp_body)
 
@@ -198,31 +223,33 @@ class Body(PickleMixin, object):
             self._body = ffi.gc(cp.cpBodyNewKinematic(), freebody)
         elif body_type == Body.STATIC:
             self._body = ffi.gc(cp.cpBodyNewStatic(), freebody)
-        
+
         self._init()
 
     def _init(self):
-        self._position_func = None # To prevent the gc to collect the callbacks.
-        self._velocity_func = None # To prevent the gc to collect the callbacks.
-        self._position_func_base = None # For pickle
-        self._velocity_func_base = None # For pickle
+        self._position_func = None  # To prevent the gc to collect the callbacks.
+        self._velocity_func = None  # To prevent the gc to collect the callbacks.
+        self._position_func_base = None  # For pickle
+        self._velocity_func_base = None  # For pickle
 
-        self._space: Optional['Space'] = None # Weak ref to the space holding this body (if any)
+        self._space: Optional[
+            "Space"
+        ] = None  # Weak ref to the space holding this body (if any)
 
-        self._constraints = WeakSet() # weak refs to any constraints attached
-        self._shapes = WeakSet() # weak refs to any shapes attached
+        self._constraints = WeakSet()  # weak refs to any constraints attached
+        self._shapes = WeakSet()  # weak refs to any shapes attached
 
     def __xdel__(self):
-        #if self._should_free_body:
+        # if self._should_free_body:
         cp.cpBodyFree(self._body)
-            
+
     def __repr__(self):
         if self.body_type == Body.DYNAMIC:
-            return 'Body(%r, %r, Body.DYNAMIC)' % (self.mass, self.moment)
+            return "Body(%r, %r, Body.DYNAMIC)" % (self.mass, self.moment)
         elif self.body_type == Body.KINEMATIC:
-            return 'Body(Body.KINEMATIC)'
+            return "Body(Body.KINEMATIC)"
         elif self.body_type == Body.STATIC:
-            return 'Body(Body.STATIC)'
+            return "Body(Body.STATIC)"
 
     @classmethod
     def _init_with_body(cls, _body):
@@ -234,69 +261,98 @@ class Body(PickleMixin, object):
 
     def _set_mass(self, mass: float) -> None:
         cp.cpBodySetMass(self._body, mass)
+
     def _get_mass(self) -> float:
         return cp.cpBodyGetMass(self._body)
-    mass = property(_get_mass, _set_mass,
-        doc="""Mass of the body.""")
+
+    mass = property(_get_mass, _set_mass, doc="""Mass of the body.""")
 
     def _set_moment(self, moment: float) -> None:
         cp.cpBodySetMoment(self._body, moment)
+
     def _get_moment(self) -> float:
         return cp.cpBodyGetMoment(self._body)
-    moment = property(_get_moment, _set_moment,
+
+    moment = property(
+        _get_moment,
+        _set_moment,
         doc="""Moment of inertia (MoI or sometimes just moment) of the body.
 
         The moment is like the rotational mass of a body.
-        """)
+        """,
+    )
 
     def _set_position(self, pos):
         cp.cpBodySetPosition(self._body, tuple(pos))
+
     def _get_position(self) -> Vec2d:
         p = cp.cpBodyGetPosition(self._body)
         return Vec2d._fromcffi(p)
-    position = property(_get_position, _set_position,
+
+    position = property(
+        _get_position,
+        _set_position,
         doc="""Position of the body.
 
         When changing the position you may also want to call
         :py:func:`Space.reindex_shapes_for_body` to update the collision 
         detection information for the attached shapes if plan to make any 
-        queries against the space.""")
+        queries against the space.""",
+    )
 
     def _set_center_of_gravity(self, cog):
         cp.cpBodySetCenterOfGravity(self._body, tuple(cog))
+
     def _get_center_of_gravity(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpBodyGetCenterOfGravity(self._body))
-    center_of_gravity = property(_get_center_of_gravity,
+
+    center_of_gravity = property(
+        _get_center_of_gravity,
         _set_center_of_gravity,
         doc="""Location of the center of gravity in body local coordinates.
 
         The default value is (0, 0), meaning the center of gravity is the
         same as the position of the body.
-        """)
+        """,
+    )
 
     def _set_velocity(self, vel):
         cp.cpBodySetVelocity(self._body, tuple(vel))
+
     def _get_velocity(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpBodyGetVelocity(self._body))
-    velocity = property(_get_velocity, _set_velocity,
-        doc="""Linear velocity of the center of gravity of the body.""")
+
+    velocity = property(
+        _get_velocity,
+        _set_velocity,
+        doc="""Linear velocity of the center of gravity of the body.""",
+    )
 
     def _set_force(self, f):
         cp.cpBodySetForce(self._body, tuple(f))
+
     def _get_force(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpBodyGetForce(self._body))
-    force = property(_get_force, _set_force,
+
+    force = property(
+        _get_force,
+        _set_force,
         doc="""Force applied to the center of gravity of the body.
 
         This value is reset for every time step. Note that this is not the 
         total of forces acting on the body (such as from collisions), but the 
-        force applied manually from the apply force functions.""")
+        force applied manually from the apply force functions.""",
+    )
 
     def _set_angle(self, angle: float) -> None:
         cp.cpBodySetAngle(self._body, angle)
+
     def _get_angle(self) -> float:
         return cp.cpBodyGetAngle(self._body)
-    angle = property(_get_angle, _set_angle,
+
+    angle = property(
+        _get_angle,
+        _set_angle,
         doc="""Rotation of the body in radians.
 
         When changing the rotation you may also want to call
@@ -309,39 +365,51 @@ class Body(PickleMixin, object):
             If you get small/no changes to the angle when for example a
             ball is "rolling" down a slope it might be because the Circle shape
             attached to the body or the slope shape does not have any friction
-            set.""")
-
+            set.""",
+    )
 
     def _set_angular_velocity(self, w: float) -> None:
         cp.cpBodySetAngularVelocity(self._body, w)
+
     def _get_angular_velocity(self) -> float:
         return cp.cpBodyGetAngularVelocity(self._body)
-    angular_velocity = property(_get_angular_velocity, _set_angular_velocity,
-        doc="""The angular velocity of the body in radians per second.""")
+
+    angular_velocity = property(
+        _get_angular_velocity,
+        _set_angular_velocity,
+        doc="""The angular velocity of the body in radians per second.""",
+    )
 
     def _set_torque(self, t: float) -> None:
         cp.cpBodySetTorque(self._body, t)
+
     def _get_torque(self) -> float:
         return cp.cpBodyGetTorque(self._body)
-    torque = property(_get_torque, _set_torque,
+
+    torque = property(
+        _get_torque,
+        _set_torque,
         doc="""The torque applied to the body.
 
-        This value is reset for every time step.""")
+        This value is reset for every time step.""",
+    )
 
     def _get_rotation_vector(self):
         return Vec2d._fromcffi(cp.cpBodyGetRotation(self._body))
-    rotation_vector = property(_get_rotation_vector,
-        doc="""The rotation vector for the body.""")
+
+    rotation_vector = property(
+        _get_rotation_vector, doc="""The rotation vector for the body."""
+    )
 
     @property
-    def space(self) -> Optional['Space']:
-        """Get the :py:class:`Space` that the body has been added to (or 
+    def space(self) -> Optional["Space"]:
+        """Get the :py:class:`Space` that the body has been added to (or
         None)."""
         if self._space is not None:
-            return self._space._get_self() #ugly hack because of weakref
+            return self._space._get_self()  # ugly hack because of weakref
         else:
             return None
-    
+
     def _set_velocity_func(self, func):
         @ffi.callback("cpBodyVelocityFunc")
         def _impl(_, gravity, damping, dt):
@@ -350,7 +418,9 @@ class Body(PickleMixin, object):
         self._velocity_func_base = func
         self._velocity_func = _impl
         cp.cpBodySetVelocityUpdateFunc(self._body, _impl)
-    velocity_func = property(fset=_set_velocity_func,
+
+    velocity_func = property(
+        fset=_set_velocity_func,
         doc="""The velocity callback function. 
         
         The velocity callback function is called each time step, and can be 
@@ -392,37 +462,41 @@ class Body(PickleMixin, object):
         ...
         >>> body.velocity_func = limit_velocity
 
-        """)
+        """,
+    )
 
     def _set_position_func(self, func):
         @ffi.callback("cpBodyPositionFunc")
         def _impl(_, dt):
             return func(self, dt)
-        
-        self._position_func_base = func    
+
+        self._position_func_base = func
         self._position_func = _impl
         cp.cpBodySetPositionUpdateFunc(self._body, _impl)
-    position_func = property(fset=_set_position_func,
+
+    position_func = property(
+        fset=_set_position_func,
         doc="""The position callback function. 
         
         The position callback function is called each time step and can be 
         used to update the body's position.
 
             ``func(body, dt) -> None``
-        """)
+        """,
+    )
 
     @property
     def kinetic_energy(self):
         """Get the kinetic energy of a body."""
-        #todo: use ffi method
-        #return cp._cpBodyKineticEnergy(self._body)
+        # todo: use ffi method
+        # return cp._cpBodyKineticEnergy(self._body)
 
         vsq = self.velocity.dot(self.velocity)
         wsq = self.angular_velocity * self.angular_velocity
-        return (vsq*self.mass if vsq else 0.) + (wsq*self.moment if wsq else 0.)
+        return (vsq * self.mass if vsq else 0.0) + (wsq * self.moment if wsq else 0.0)
 
     @staticmethod
-    def update_velocity(body: 'Body', gravity, damping, dt):
+    def update_velocity(body: "Body", gravity, damping, dt):
         """Default rigid body velocity integration function.
 
         Updates the velocity of the body using Euler integration.
@@ -430,7 +504,7 @@ class Body(PickleMixin, object):
         cp.cpBodyUpdateVelocity(body._body, tuple(gravity), damping, dt)
 
     @staticmethod
-    def update_position(body: 'Body', dt: float) -> None:
+    def update_position(body: "Body", dt: float) -> None:
         """Default rigid body position integration function.
 
         Updates the position of the body using Euler integration. Unlike the
@@ -461,8 +535,7 @@ class Body(PickleMixin, object):
         cp.cpBodyApplyForceAtLocalPoint(self._body, tuple(force), tuple(point))
 
     def apply_impulse_at_world_point(self, impulse, point=(0, 0)):
-        """Add the impulse impulse to body as if applied from the world point.
-        """
+        """Add the impulse impulse to body as if applied from the world point."""
         cp.cpBodyApplyImpulseAtWorldPoint(self._body, tuple(impulse), tuple(point))
 
     def apply_impulse_at_local_point(self, impulse, point=(0, 0)):
@@ -470,7 +543,6 @@ class Body(PickleMixin, object):
         local point.
         """
         cp.cpBodyApplyImpulseAtLocalPoint(self._body, tuple(impulse), tuple(point))
-
 
     def activate(self) -> None:
         """Reset the idle timer on a body.
@@ -488,18 +560,18 @@ class Body(PickleMixin, object):
             raise Exception("Body not added to space")
         cp.cpBodySleep(self._body)
 
-    def sleep_with_group(self, body: 'Body') -> None:
+    def sleep_with_group(self, body: "Body") -> None:
         """Force a body to fall asleep immediately along with other bodies
         in a group.
 
         When objects in Pymunk sleep, they sleep as a group of all objects
         that are touching or jointed together. When an object is woken up,
-        all of the objects in its group are woken up. 
-        :py:func:`Body.sleep_with_group` allows you group sleeping objects 
-        together. It acts identically to :py:func:`Body.sleep` if you pass 
-        None as group by starting a new group. If you pass a sleeping body 
-        for group, body will be awoken when group is awoken. You can use this 
-        to initialize levels and start stacks of objects in a pre-sleeping 
+        all of the objects in its group are woken up.
+        :py:func:`Body.sleep_with_group` allows you group sleeping objects
+        together. It acts identically to :py:func:`Body.sleep` if you pass
+        None as group by starting a new group. If you pass a sleeping body
+        for group, body will be awoken when group is awoken. You can use this
+        to initialize levels and start stacks of objects in a pre-sleeping
         state.
         """
         if self._space == None:
@@ -510,22 +582,25 @@ class Body(PickleMixin, object):
     def is_sleeping(self) -> bool:
         """Returns true if the body is sleeping."""
         return bool(cp.cpBodyIsSleeping(self._body))
-    
+
     def _set_type(self, body_type: _BodyType):
         cp.cpBodySetType(self._body, body_type)
+
     def _get_type(self) -> _BodyType:
         return cp.cpBodyGetType(self._body)
-    body_type = property(_get_type
-        , _set_type
-        , doc="""The type of a body (:py:const:`Body.DYNAMIC`, 
+
+    body_type = property(
+        _get_type,
+        _set_type,
+        doc="""The type of a body (:py:const:`Body.DYNAMIC`, 
         :py:const:`Body.KINEMATIC` or :py:const:`Body.STATIC`).
 
         When changing an body to a dynamic body, the mass and moment of
         inertia are recalculated from the shapes added to the body. Custom
         calculated moments of inertia are not preserved when changing types.
         This function cannot be called directly in a collision callback.
-        """)
-
+        """,
+    )
 
     def each_arbiter(self, func, *args, **kwargs):
         """Run func on each of the arbiters on this body.
@@ -544,32 +619,37 @@ class Body(PickleMixin, object):
 
             Do not hold on to the Arbiter after the callback!
         """
+
         @ffi.callback("cpBodyArbiterIteratorFunc")
         def cf(_body, _arbiter, _data):
             assert self._space is not None
             arbiter = Arbiter(_arbiter, self._space)
             func(arbiter, *args, **kwargs)
-            
+
         data = ffi.new_handle(self)
         cp.cpBodyEachArbiter(self._body, cf, data)
 
     def _get_constraints(self):
         return set(self._constraints)
 
-    constraints = property(_get_constraints,
+    constraints = property(
+        _get_constraints,
         doc="""Get the constraints this body is attached to.
 
         The body only keeps a weak reference to the constraints and a
-        live body wont prevent GC of the attached constraints""")
+        live body wont prevent GC of the attached constraints""",
+    )
 
     def _get_shapes(self):
         return set(self._shapes)
 
-    shapes = property(_get_shapes,
+    shapes = property(
+        _get_shapes,
         doc="""Get the shapes attached to this body.
 
         The body only keeps a weak reference to the shapes and a live
-        body wont prevent GC of the attached shapes""")
+        body wont prevent GC of the attached shapes""",
+    )
 
     def local_to_world(self, v):
         """Convert body local coordinates to world space coordinates
@@ -598,26 +678,28 @@ class Body(PickleMixin, object):
         except the center of gravity.
         """
         return Vec2d._fromcffi(
-            cp.cpBodyGetVelocityAtWorldPoint(self._body, tuple(point)))
+            cp.cpBodyGetVelocityAtWorldPoint(self._body, tuple(point))
+        )
 
     def velocity_at_local_point(self, point):
-        """ Get the absolute velocity of the rigid body at the given body
+        """Get the absolute velocity of the rigid body at the given body
         local point
         """
         return Vec2d._fromcffi(
-            cp.cpBodyGetVelocityAtLocalPoint(self._body, tuple(point)))
+            cp.cpBodyGetVelocityAtLocalPoint(self._body, tuple(point))
+        )
 
     def __getstate__(self):
         """Return the state of this object
-        
+
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
         d = super(Body, self).__getstate__()
 
-        d['special'].append(('is_sleeping', self.is_sleeping))
-        d['special'].append(('_velocity_func', self._velocity_func_base))
-        d['special'].append(('_position_func', self._position_func_base))
+        d["special"].append(("is_sleeping", self.is_sleeping))
+        d["special"].append(("_velocity_func", self._velocity_func_base))
+        d["special"].append(("_position_func", self._position_func_base))
 
         return d
 
@@ -628,15 +710,11 @@ class Body(PickleMixin, object):
         modules with this class.
         """
         super(Body, self).__setstate__(state)
-        
-        for k,v in state['special']:
-            if k == 'is_sleeping' and v:
+
+        for k, v in state["special"]:
+            if k == "is_sleeping" and v:
                 pass
-            elif k == '_velocity_func' and v != None:
+            elif k == "_velocity_func" and v != None:
                 self.velocity_func = v
-            elif k == '_position_func' and v != None:
+            elif k == "_position_func" and v != None:
                 self.position_func = v
-    
-    def copy(self):
-        """Create a deep copy of this body."""
-        return copy.deepcopy(self)

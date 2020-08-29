@@ -1,14 +1,16 @@
-import sys, re
 import os
+import re
 import shutil
+import sys
 
 
 def main():
     os.chdir("..")
     shutil.rmtree("dist", True)
     shutil.rmtree("docs/html", True)
-    
-    print("""
+
+    print(
+        """
     Remember (before running this script!): 
     - change version number in readme, setup.py and __init__ 
     - test in at least CPython 3.x and Pypy3
@@ -16,8 +18,10 @@ def main():
     - write news entry and put in news.rst
     - make sure all images are optimized (for example with tinypng.com)
     
-    """)
-    print("""
+    """
+    )
+    print(
+        """
     Once the release is done, remember to:
     - tag code on github with version
     - Download dists from github release and appveyor
@@ -29,9 +33,10 @@ def main():
     - Possibly: make release announcement on the python announce list
     - Possibly: make release announcement on the kivy mailing list
     - Possibly: make PR to update pymunk in python-for-android (remember test!)
-    """)
+    """
+    )
     os.chdir("tools")
-    
+
 
 if __name__ == "__main__":
     sys.exit(main())

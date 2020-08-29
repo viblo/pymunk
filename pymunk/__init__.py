@@ -35,41 +35,60 @@ the very central Space, Body and Shape classes.
 __docformat__ = "reStructuredText"
 
 
-__all__ = ["inf", "version", "chipmunk_version"
-        , "Space", "Body", "Shape", "Circle", "Poly", "Segment"
-        , "moment_for_circle", "moment_for_poly", "moment_for_segment"
-        , "moment_for_box"
-        , "SegmentQueryInfo", "ContactPoint", "ContactPointSet", "Arbiter"
-        , "CollisionHandler" 
-        , "BB", "ShapeFilter"
-        , "Transform", "PointQueryInfo", "ShapeQueryInfo"
-        , "SpaceDebugDrawOptions"]
+__all__ = [
+    "inf",
+    "version",
+    "chipmunk_version",
+    "Space",
+    "Body",
+    "Shape",
+    "Circle",
+    "Poly",
+    "Segment",
+    "moment_for_circle",
+    "moment_for_poly",
+    "moment_for_segment",
+    "moment_for_box",
+    "SegmentQueryInfo",
+    "ContactPoint",
+    "ContactPointSet",
+    "Arbiter",
+    "CollisionHandler",
+    "BB",
+    "ShapeFilter",
+    "Transform",
+    "PointQueryInfo",
+    "ShapeQueryInfo",
+    "SpaceDebugDrawOptions",
+]
 
 from typing import Tuple
-from ._types import _Vec2dOrTuple
 
 from . import _chipmunk_cffi
+from ._types import _Vec2dOrTuple
+
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-import logging
-logging.basicConfig(level=0)
+# import logging
+# logging.basicConfig(level=0)
 
+
+from pymunk.constraint import *
 
 from . import _version
-from .vec2d import Vec2d
-from .shape_filter import ShapeFilter
-from .transform import Transform
-from .contact_point_set import ContactPoint, ContactPointSet
 from .arbiter import Arbiter
 from .bb import BB
 from .body import Body
 from .collision_handler import CollisionHandler
+from .contact_point_set import ContactPoint, ContactPointSet
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
-from .shapes import Shape, Circle, Poly, Segment
+from .shape_filter import ShapeFilter
+from .shapes import Circle, Poly, Segment, Shape
 from .space import Space
 from .space_debug_draw_options import SpaceDebugDrawOptions
-from pymunk.constraint import *
+from .transform import Transform
+from .vec2d import Vec2d
 
 version: str = _version.version
 """The release version of this pymunk installation.
@@ -90,7 +109,7 @@ hash corresponds to the git hash of the chipmunk source from
 github.com/viblo/Chipmunk2D included with Pymunk.
 """
 
-inf: float = float('inf')
+inf: float = float("inf")
 """Infinity that can be passed as mass or inertia to a :py:class:`Body`.
 
 Useful when you for example want a body that cannot rotate, just set its
@@ -103,28 +122,39 @@ moment.
     has changed. See :py:class:`Body` for details.
 """
 
-def moment_for_circle(mass: float, inner_radius: float, outer_radius: float, offset: Tuple[float, float]=(0, 0)) -> float:
+
+def moment_for_circle(
+    mass: float,
+    inner_radius: float,
+    outer_radius: float,
+    offset: Tuple[float, float] = (0, 0),
+) -> float:
     """Calculate the moment of inertia for a hollow circle
 
     (A solid circle has an inner radius of 0)
     """
     return cp.cpMomentForCircle(mass, inner_radius, outer_radius, tuple(offset))
 
-def moment_for_segment(mass: float, a: Tuple[float, float], b: Tuple[float, float], radius: float) -> float:
-    """ Calculate the moment of inertia for a line segment
+
+def moment_for_segment(
+    mass: float, a: Tuple[float, float], b: Tuple[float, float], radius: float
+) -> float:
+    """Calculate the moment of inertia for a line segment
 
     The endpoints a and b are relative to the body
     """
     return cp.cpMomentForSegment(mass, tuple(a), tuple(b), radius)
 
+
 def moment_for_box(mass: float, size: Tuple[float, float]) -> float:
     """Calculate the moment of inertia for a solid box centered on the body.
-    
+
     size should be a tuple of (width, height)
     """
     return cp.cpMomentForBox(mass, size[0], size[1])
 
-def moment_for_poly(mass, vertices,  offset=(0, 0), radius=0):
+
+def moment_for_poly(mass, vertices, offset=(0, 0), radius=0):
     """Calculate the moment of inertia for a solid polygon shape.
 
     Assumes the polygon center of gravity is at its centroid. The offset is
@@ -132,10 +162,12 @@ def moment_for_poly(mass, vertices,  offset=(0, 0), radius=0):
     """
     vs = list(map(tuple, vertices))
     return cp.cpMomentForPoly(mass, len(vertices), vs, tuple(offset), radius)
-    
+
+
 def area_for_circle(inner_radius: float, outer_radius: float) -> float:
     """Area of a hollow circle."""
     return cp.cpAreaForCircle(inner_radius, outer_radius)
+
 
 def area_for_segment(a: Tuple[float, float], b, radius: float) -> float:
     """Area of a beveled segment.
@@ -144,7 +176,8 @@ def area_for_segment(a: Tuple[float, float], b, radius: float) -> float:
     """
     return cp.cpAreaForSegment(tuple(a), tuple(b), radius)
 
-def area_for_poly(vertices, radius: float=0):
+
+def area_for_poly(vertices, radius: float = 0):
     """Signed area of a polygon shape.
 
     Returns a negative number for polygons with a clockwise winding.
@@ -153,4 +186,4 @@ def area_for_poly(vertices, radius: float=0):
     return cp.cpAreaForPoly(len(vertices), vs, radius)
 
 
-#del cp, ct, u
+# del cp, ct, u

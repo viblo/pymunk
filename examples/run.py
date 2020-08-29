@@ -9,16 +9,17 @@ For example, to run the breakout demo::
 """
 
 import sys
-sys.path.insert(1,'..')
+
+sys.path.insert(1, "..")
 # some extra things for pyglet
-sys.path.insert(1,'../../../pyglet')
-sys.path.insert(1,'../../../../pyglet')
+sys.path.insert(1, "../../../pyglet")
+sys.path.insert(1, "../../../../pyglet")
 
 if len(sys.argv) > 1:
     name = sys.argv[1]
     sys.argv = sys.argv[1:]
     del sys
-    
-    exec(compile(open(name, "rb").read(), name, 'exec'))
+
+    exec(compile(open(name, "rb").read(), name, "exec"))
 else:
     print(__doc__)

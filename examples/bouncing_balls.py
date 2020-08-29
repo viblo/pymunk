@@ -10,9 +10,9 @@ import random
 
 # Library imports
 import pygame
+from pygame.color import *
 from pygame.key import *
 from pygame.locals import *
-from pygame.color import *
 
 # pymunk imports
 import pymunk
@@ -24,6 +24,7 @@ class BouncyBalls(object):
     This class implements a simple scene in which there is a static platform (made up of a couple of lines)
     that don't move. Balls appear occasionally and drop onto the platform. They bounce around.
     """
+
     def __init__(self):
         # Space
         self._space = pymunk.Space()
@@ -78,8 +79,10 @@ class BouncyBalls(object):
         :return: None
         """
         static_body = self._space.static_body
-        static_lines = [pymunk.Segment(static_body, (111.0, 280.0), (407.0, 246.0), 0.0),
-                        pymunk.Segment(static_body, (407.0, 246.0), (407.0, 343.0), 0.0)]
+        static_lines = [
+            pymunk.Segment(static_body, (111.0, 280.0), (407.0, 246.0), 0.0),
+            pymunk.Segment(static_body, (407.0, 246.0), (407.0, 343.0), 0.0),
+        ]
         for line in static_lines:
             line.elasticity = 0.95
             line.friction = 0.9
@@ -145,6 +148,6 @@ class BouncyBalls(object):
         self._space.debug_draw(self._draw_options)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     game = BouncyBalls()
     game.run()

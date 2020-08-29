@@ -1,8 +1,9 @@
-from ctypes import *
 import sys
+from ctypes import *
+
 sys.path.insert(0,'..')
 
-import pymunk 
+import pymunk
 
 sendbody_lib = windll.LoadLibrary("sendbody.dll")
 

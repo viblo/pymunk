@@ -1,5 +1,3 @@
-
-   
 import timeit
 
 s = """

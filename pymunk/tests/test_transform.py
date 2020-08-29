@@ -1,12 +1,14 @@
+import pickle
+import unittest
+
 import pymunk as p
 from pymunk.vec2d import Vec2d
-import unittest
-import pickle
+
 
 class UnitTestTransform(unittest.TestCase):
     def testInit(self):
-        
-        t = p.Transform(1,2,3,4,5,6)
+
+        t = p.Transform(1, 2, 3, 4, 5, 6)
         self.assertEqual(t.a, 1)
         self.assertEqual(t.b, 2)
         self.assertEqual(t.c, 3)

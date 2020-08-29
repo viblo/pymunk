@@ -2,5 +2,6 @@
 """
 
 import pymunkoptions
+
 pymunkoptions.options["debug"] = False
 import pymunk

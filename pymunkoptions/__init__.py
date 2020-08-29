@@ -32,9 +32,7 @@ you will also need to compile chipmunk in release mode. See
 __version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
-options = {
-    "debug" : True
-}
+options = {"debug": True}
 """Global dict of pymunk options.
 To change make sure you import pymunk before any sub-packages and then set the 
 option you want. For example::

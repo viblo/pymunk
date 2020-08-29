@@ -98,10 +98,10 @@ print b.m, b.p.x
 b.p.x = 3.5
 print b.m, b.p.x
 
+import math
+import operator
 import timeit
 
-import operator
-import math
 
 class Vec2d(): # this would be very fast in pypy
     #class Vec2d(ctypes.Structure):
@@ -227,7 +227,8 @@ if __name__ == '__main__':
     if not doprof: 
         main()
     else:
-        import cProfile, pstats
+        import cProfile
+        import pstats
         
         prof = cProfile.run("run()", "profile.prof")
         stats = pstats.Stats("profile.prof")

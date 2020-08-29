@@ -1,8 +1,9 @@
 import doctest
-import unittest
-import pymunk
 import pkgutil
 import sys
+import unittest
+
+import pymunk
 
 
 def load_tests(loader, tests, ignore):
@@ -15,11 +16,9 @@ def load_tests(loader, tests, ignore):
     return tests
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("running doctests")
-    suite = unittest.TestSuite()  
+    suite = unittest.TestSuite()
     load_tests(None, suite, None)
     res = unittest.TextTestRunner().run(suite)
     sys.exit(not res.wasSuccessful())
-    
-    

@@ -3,10 +3,12 @@ __docformat__ = "reStructuredText"
 import copy
 
 from . import _chipmunk_cffi
+
 lib = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
-from .vec2d import Vec2d
 from ._pickle import PickleMixin
+from .vec2d import Vec2d
+
 
 class BB(PickleMixin, object):
     """Simple bounding box.
@@ -14,12 +16,17 @@ class BB(PickleMixin, object):
     Stored as left, bottom, right, top values.
     """
 
-    _pickle_attrs_init = ['left', 'bottom', 'right', 'top']
+    _pickle_attrs_init = PickleMixin._pickle_attrs_init + [
+        "left",
+        "bottom",
+        "right",
+        "top",
+    ]
 
     def __init__(self, *args) -> None:
-        """Create a new instance of a bounding box. 
-        
-        Can be created with zero size with bb = BB() or with four args defining 
+        """Create a new instance of a bounding box.
+
+        Can be created with zero size with bb = BB() or with four args defining
         left, bottom, right and top: bb = BB(left, bottom, right, top)
         """
         if len(args) == 0:
@@ -32,20 +39,24 @@ class BB(PickleMixin, object):
             self._bb = self._bbp[0]
 
     @staticmethod
-    def newForCircle(p, r: float) -> 'BB':
+    def newForCircle(p, r: float) -> "BB":
         """Convenience constructor for making a BB fitting a circle at
         position p with radius r.
         """
-        
+
         bb_ = lib.cpBBNewForCircle(p, r)
         return BB(bb_)
 
     def __repr__(self):
-        return 'BB(%s, %s, %s, %s)' % (self.left, self.bottom, self.right, self.top)
+        return "BB(%s, %s, %s, %s)" % (self.left, self.bottom, self.right, self.top)
 
     def __eq__(self, other):
-        return self.left == other.left and self.bottom == other.bottom and \
-            self.right == other.right and self.top == other.top
+        return (
+            self.left == other.left
+            and self.bottom == other.bottom
+            and self.right == other.right
+            and self.top == other.top
+        )
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -55,7 +66,7 @@ class BB(PickleMixin, object):
     right = property(lambda self: self._bb.r)
     top = property(lambda self: self._bb.t)
 
-    def intersects(self, other: 'BB') -> bool:
+    def intersects(self, other: "BB") -> bool:
         """Returns true if the bounding boxes intersect"""
         return bool(lib.cpBBIntersects(self._bb, other._bb))
 
@@ -64,7 +75,7 @@ class BB(PickleMixin, object):
         intersect this bb."""
         return bool(lib.cpBBIntersectsSegment(self._bb, tuple(a), tuple(b)))
 
-    def contains(self, other: 'BB') -> bool:
+    def contains(self, other: "BB") -> bool:
         """Returns true if bb completley contains the other bb"""
         return bool(lib.cpBBContainsBB(self._bb, other._bb))
 
@@ -72,13 +83,13 @@ class BB(PickleMixin, object):
         """Returns true if this bb contains the vector v"""
         return bool(lib.cpBBContainsVect(self._bb, tuple(v)))
 
-    def merge(self, other: 'BB') -> 'BB':
+    def merge(self, other: "BB") -> "BB":
         """Return the minimal bounding box that contains both this bb and the
         other bb
         """
         return BB(lib.cpBBMerge(self._bb, other._bb))
 
-    def expand(self, v) -> 'BB':
+    def expand(self, v) -> "BB":
         """Return the minimal bounding box that contans both this bounding box
         and the vector v
         """
@@ -92,7 +103,7 @@ class BB(PickleMixin, object):
         """Return the area"""
         return lib.cpBBArea(self._bb)
 
-    def merged_area(self, other: 'BB') -> float:
+    def merged_area(self, other: "BB") -> float:
         """Merges this and other then returns the area of the merged bounding
         box.
         """
@@ -117,7 +128,3 @@ class BB(PickleMixin, object):
         """
         return lib._cpBBWrapVect(self._bb[0], v)
     '''
-
-    def copy(self) -> 'BB':
-        """Create a deep copy of this BB."""
-        return copy.deepcopy(self)

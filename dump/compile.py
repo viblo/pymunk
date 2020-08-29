@@ -1,7 +1,6 @@
 
 import os
 
-
 src = """C:\code\gh\pymunk\chipmunk_src\src\*.c"""
 include = """C:\code\gh\pymunk\chipmunk_src\include"""
 

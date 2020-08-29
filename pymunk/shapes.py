@@ -1,66 +1,73 @@
 __docformat__ = "reStructuredText"
 
-import copy
 import logging
-from typing import List, Optional, TYPE_CHECKING, Tuple, Any
+from typing import TYPE_CHECKING, Any, List, Optional, Tuple
 
 if TYPE_CHECKING:
     from .body import Body
     from .space import Space
 
 from . import _chipmunk_cffi
+
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-from .transform import Transform
-from .shape_filter import ShapeFilter
-from .bb import BB 
-from .query_info import PointQueryInfo, SegmentQueryInfo
-from .contact_point_set import ContactPointSet
-from .vec2d import Vec2d
 from ._pickle import PickleMixin
+from .bb import BB
+from .contact_point_set import ContactPointSet
+from .query_info import PointQueryInfo, SegmentQueryInfo
+from .shape_filter import ShapeFilter
+from .transform import Transform
+from .vec2d import Vec2d
+
 
 class Shape(PickleMixin, object):
     """Base class for all the shapes.
 
     You usually dont want to create instances of this class directly but use
-    one of the specialized shapes instead (:py:class:`Circle`, 
+    one of the specialized shapes instead (:py:class:`Circle`,
     :py:class:`Poly` or :py:class:`Segment`).
 
-    All the shapes can be copied and pickled. If you copy/pickle a shape the 
+    All the shapes can be copied and pickled. If you copy/pickle a shape the
     body (if any) will also be copied.
     """
 
-    _pickle_attrs_init = ['body']
-    _pickle_attrs_general = ['sensor', 'collision_type', 
-        'filter', 'elasticity', 'friction', 'surface_velocity']
-    _pickle_attrs_skip = ['mass', 'density']
+    _pickle_attrs_init = PickleMixin._pickle_attrs_init + ["body"]
+    _pickle_attrs_general = PickleMixin._pickle_attrs_general + [
+        "sensor",
+        "collision_type",
+        "filter",
+        "elasticity",
+        "friction",
+        "surface_velocity",
+    ]
+    _pickle_attrs_skip = PickleMixin._pickle_attrs_skip + ["mass", "density"]
 
-    _space = None # Weak ref to the space holding this body (if any)
+    _space = None  # Weak ref to the space holding this body (if any)
 
     _shapeid_counter = 1
 
-    def __init__(self, shape: 'Shape') -> None:
+    def __init__(self, shape: "Shape") -> None:
         self._shape = shape
         self._body = shape.body
 
-    def _init(self, body: Optional['Body'], _shape: Any) -> None:
+    def _init(self, body: Optional["Body"], _shape: Any) -> None:
         self._body = body
-        
-        if body != None:
+
+        if body is not None:
             body._shapes.add(self)
-        
+
         def shapefree(cp_shape):
             cp_space = cp.cpShapeGetSpace(cp_shape)
             if cp_space != ffi.NULL:
                 logging.debug("shapefree remove from space %s %s", cp_space, cp_shape)
                 cp.cpSpaceRemoveShape(cp_space, cp_shape)
-            
+
             logging.debug("shapefree remove body %s", cp_shape)
             cp.cpShapeSetBody(cp_shape, ffi.NULL)
             logging.debug("shapefree free %s", cp_shape)
             cp.cpShapeFree(cp_shape)
-            
+
         self._shape = ffi.gc(_shape, shapefree)
         self._set_shapeid()
 
@@ -70,35 +77,46 @@ class Shape(PickleMixin, object):
 
     def _get_shapeid(self) -> int:
         return cp.cpShapeGetUserData(self._shape)
+
     def _set_shapeid(self) -> None:
         cp.cpShapeSetUserData(
-            self._shape, 
-            ffi.cast("cpDataPointer", Shape._shapeid_counter))
+            self._shape, ffi.cast("cpDataPointer", Shape._shapeid_counter)
+        )
         Shape._shapeid_counter += 1
 
     def _get_mass(self) -> float:
         return cp.cpShapeGetMass(self._shape)
+
     def _set_mass(self, mass: float) -> None:
         cp.cpShapeSetMass(self._shape, mass)
-    mass = property(_get_mass, _set_mass, 
+
+    mass = property(
+        _get_mass,
+        _set_mass,
         doc="""The mass of this shape.
 
         This is useful when you let Pymunk calculate the total mass and inertia 
         of a body from the shapes attached to it. (Instead of setting the body 
         mass and inertia directly)
-        """)
+        """,
+    )
 
     def _get_density(self) -> float:
         return cp.cpShapeGetDensity(self._shape)
+
     def _set_density(self, density: float) -> None:
         cp.cpShapeSetDensity(self._shape, density)
-    density = property(_get_density, _set_density, 
+
+    density = property(
+        _get_density,
+        _set_density,
         doc="""The density of this shape.
         
         This is useful when you let Pymunk calculate the total mass and inertia 
         of a body from the shapes attached to it. (Instead of setting the body 
         mass and inertia directly)
-        """)
+        """,
+    )
 
     @property
     def moment(self) -> float:
@@ -117,53 +135,76 @@ class Shape(PickleMixin, object):
 
     def _get_sensor(self) -> bool:
         return bool(cp.cpShapeGetSensor(self._shape))
+
     def _set_sensor(self, is_sensor: bool) -> None:
         cp.cpShapeSetSensor(self._shape, is_sensor)
-    sensor = property(_get_sensor, _set_sensor,
+
+    sensor = property(
+        _get_sensor,
+        _set_sensor,
         doc="""A boolean value if this shape is a sensor or not.
 
         Sensors only call collision callbacks, and never generate real
         collisions.
-        """)
+        """,
+    )
 
     def _get_collision_type(self) -> int:
         return cp.cpShapeGetCollisionType(self._shape)
+
     def _set_collision_type(self, t: int):
         cp.cpShapeSetCollisionType(self._shape, t)
-    collision_type = property(_get_collision_type, _set_collision_type,
+
+    collision_type = property(
+        _get_collision_type,
+        _set_collision_type,
         doc="""User defined collision type for the shape.
 
         See :py:meth:`Space.add_collision_handler` function for more 
         information on when to use this property.
-        """)
+        """,
+    )
 
     def _get_filter(self) -> ShapeFilter:
         f = cp.cpShapeGetFilter(self._shape)
         return ShapeFilter(f.group, f.categories, f.mask)
+
     def _set_filter(self, f: ShapeFilter) -> None:
         cp.cpShapeSetFilter(self._shape, f)
-    filter = property(_get_filter, _set_filter,
-        doc="""Set the collision :py:class:`ShapeFilter` for this shape.
-        """)
 
+    filter = property(
+        _get_filter,
+        _set_filter,
+        doc="""Set the collision :py:class:`ShapeFilter` for this shape.
+        """,
+    )
 
     def _get_elasticity(self) -> float:
         return cp.cpShapeGetElasticity(self._shape)
+
     def _set_elasticity(self, e: float) -> None:
         cp.cpShapeSetElasticity(self._shape, e)
-    elasticity = property(_get_elasticity, _set_elasticity,
+
+    elasticity = property(
+        _get_elasticity,
+        _set_elasticity,
         doc="""Elasticity of the shape.
 
         A value of 0.0 gives no bounce, while a value of 1.0 will give a
         'perfect' bounce. However due to inaccuracies in the simulation
         using 1.0 or greater is not recommended.
-        """)
+        """,
+    )
 
     def _get_friction(self) -> float:
         return cp.cpShapeGetFriction(self._shape)
+
     def _set_friction(self, u: float) -> None:
         cp.cpShapeSetFriction(self._shape, u)
-    friction = property(_get_friction, _set_friction,
+
+    friction = property(
+        _get_friction,
+        _set_friction,
         doc="""Friction coefficient.
 
         Pymunk uses the Coulomb friction model, a value of 0.0 is
@@ -194,34 +235,44 @@ class Shape(PickleMixin, object):
         Teflon (PTFE)   Teflon  0.04
         Wood            Wood    0.4
         ==============  ======  ========
-        """)
+        """,
+    )
 
     def _get_surface_velocity(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpShapeGetSurfaceVelocity(self._shape))
+
     def _set_surface_velocity(self, surface_v: Vec2d) -> None:
         cp.cpShapeSetSurfaceVelocity(self._shape, tuple(surface_v))
-    surface_velocity = property(_get_surface_velocity, _set_surface_velocity,
+
+    surface_velocity = property(
+        _get_surface_velocity,
+        _set_surface_velocity,
         doc="""The surface velocity of the object.
 
         Useful for creating conveyor belts or players that move around. This
         value is only used when calculating friction, not resolving the
         collision.
-        """)
+        """,
+    )
 
-    def _get_body(self) -> Optional['Body']:
+    def _get_body(self) -> Optional["Body"]:
         return self._body
-    def _set_body(self, body: Optional['Body']) -> None:
+
+    def _set_body(self, body: Optional["Body"]) -> None:
         if self._body != None:
             self._body._shapes.remove(self)
         body_body = ffi.NULL if body is None else body._body
         cp.cpShapeSetBody(self._shape, body_body)
-        if body != None:
+        if body is not None:
             body._shapes.add(self)
         self._body = body
 
-    body = property(_get_body, _set_body,
+    body = property(
+        _get_body,
+        _set_body,
         doc="""The body this shape is attached to. Can be set to None to
-        indicate that this shape doesnt belong to a body.""")
+        indicate that this shape doesnt belong to a body.""",
+    )
 
     def update(self, transform: Transform) -> BB:
         """Update, cache and return the bounding box of a shape with an
@@ -241,10 +292,10 @@ class Shape(PickleMixin, object):
     def bb(self) -> BB:
         """The bounding box :py:class:`BB` of the shape.
 
-        Only guaranteed to be valid after :py:meth:`Shape.cache_bb` or 
-        :py:meth:`Space.step` is called. Moving a body that a shape is 
-        connected to does not update it's bounding box. For shapes used for 
-        queries that aren't attached to bodies, you can also use 
+        Only guaranteed to be valid after :py:meth:`Shape.cache_bb` or
+        :py:meth:`Space.step` is called. Moving a body that a shape is
+        connected to does not update it's bounding box. For shapes used for
+        queries that aren't attached to bodies, you can also use
         :py:meth:`Shape.update`.
         """
         return BB(cp.cpShapeGetBB(self._shape))
@@ -254,21 +305,21 @@ class Shape(PickleMixin, object):
 
         A negative distance means the point is within the shape.
 
-        :return: Tuple of (distance, info) 
-        :rtype: (float, :py:class:`PointQueryInfo`) 
+        :return: Tuple of (distance, info)
+        :rtype: (float, :py:class:`PointQueryInfo`)
         """
         info = ffi.new("cpPointQueryInfo *")
         distance = cp.cpShapePointQuery(self._shape, tuple(p), info)
-        
+
         ud = cp.cpShapeGetUserData(info.shape)
         assert ud == self._get_shapeid()
         x = PointQueryInfo(
-            self, 
-            Vec2d._fromcffi(info.point), 
-            info.distance, 
-            Vec2d._fromcffi(info.gradient))
+            self,
+            Vec2d._fromcffi(info.point),
+            info.distance,
+            Vec2d._fromcffi(info.gradient),
+        )
         return distance, x
-
 
     def segment_query(self, start, end, radius=0):
         """Check if the line segment from start to end intersects the shape.
@@ -276,54 +327,56 @@ class Shape(PickleMixin, object):
         :rtype: :py:class:`SegmentQueryInfo`
         """
         info = ffi.new("cpSegmentQueryInfo *")
-        r = cp.cpShapeSegmentQuery(
-            self._shape, tuple(start), tuple(end), radius, info)
+        r = cp.cpShapeSegmentQuery(self._shape, tuple(start), tuple(end), radius, info)
         if r:
             ud = cp.cpShapeGetUserData(info.shape)
             assert ud == self._get_shapeid()
             return SegmentQueryInfo(
-                self, Vec2d._fromcffi(info.point), Vec2d._fromcffi(info.normal), info.alpha)
+                self,
+                Vec2d._fromcffi(info.point),
+                Vec2d._fromcffi(info.normal),
+                info.alpha,
+            )
         else:
             return SegmentQueryInfo(
-                None, Vec2d._fromcffi(info.point), Vec2d._fromcffi(info.normal), info.alpha)
+                None,
+                Vec2d._fromcffi(info.point),
+                Vec2d._fromcffi(info.normal),
+                info.alpha,
+            )
 
     def shapes_collide(self, b):
         """Get contact information about this shape and shape b.
-        
+
         :rtype: :py:class:`ContactPointSet`
         """
         _points = cp.cpShapesCollide(self._shape, b._shape)
         return ContactPointSet._from_cp(_points)
 
     @property
-    def space(self) -> Optional['Space']:
-        """Get the :py:class:`Space` that shape has been added to (or 
+    def space(self) -> Optional["Space"]:
+        """Get the :py:class:`Space` that shape has been added to (or
         None).
         """
         if self._space is not None:
-            return self._space._get_self() #ugly hack because of weakref
+            return self._space._get_self()  # ugly hack because of weakref
         else:
             return None
-    
+
     def __getstate__(self):
         """Return the state of this object
-        
+
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
         d = super(Shape, self).__getstate__()
 
         if self.mass > 0:
-            d['general'].append(('mass', self.mass))
+            d["general"].append(("mass", self.mass))
         if self.density > 0:
-            d['general'].append(('density', self.density))
+            d["general"].append(("density", self.density))
 
         return d
-
-    def copy(self):
-        """Create a deep copy of this shape."""
-        return copy.deepcopy(self)
-
 
 
 class Circle(Shape):
@@ -332,9 +385,9 @@ class Circle(Shape):
     This is the fastest and simplest collision shape
     """
 
-    _pickle_attrs_init = ['radius', 'offset']
+    _pickle_attrs_init = Shape._pickle_attrs_init + ["radius", "offset"]
 
-    def __init__(self, body: Optional['Body'], radius: float, offset = (0, 0)) -> None:
+    def __init__(self, body: Optional["Body"], radius: float, offset=(0, 0)) -> None:
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates.
 
@@ -345,7 +398,6 @@ class Circle(Shape):
         body_body = ffi.NULL if body is None else body._body
         _shape = cp.cpCircleShapeNew(body_body, radius, tuple(offset))
         self._init(body, _shape)
-        
 
     def unsafe_set_radius(self, r: float) -> None:
         """Unsafe set the radius of the circle.
@@ -362,7 +414,6 @@ class Circle(Shape):
     def radius(self) -> float:
         """The Radius of the circle"""
         return cp.cpCircleShapeGetRadius(self._shape)
-    
 
     def unsafe_set_offset(self, o) -> None:
         """Unsafe set the offset of the circle.
@@ -376,10 +427,10 @@ class Circle(Shape):
         cp.cpCircleShapeSetOffset(self._shape, tuple(o))
 
     @property
-    def offset (self) -> Vec2d:
+    def offset(self) -> Vec2d:
         """Offset. (body space coordinates)"""
         return Vec2d._fromcffi(cp.cpCircleShapeGetOffset(self._shape))
-    
+
 
 class Segment(Shape):
     """A line segment shape between two points
@@ -388,7 +439,7 @@ class Segment(Shape):
     thickness.
     """
 
-    _pickle_attrs_init = ['a', 'b', 'radius']
+    _pickle_attrs_init = Shape._pickle_attrs_init + ["a", "b", "radius"]
 
     def __init__(self, body, a, b, radius: float) -> None:
         """Create a Segment
@@ -396,12 +447,12 @@ class Segment(Shape):
         It is legal to send in None as body argument to indicate that this
         shape is not attached to a body. However, you must attach it to a body
         before adding the shape to a space or used for a space shape query.
-    
+
         :param Body body: The body to attach the segment to
         :param a: The first endpoint of the segment
         :param b: The second endpoint of the segment
         :param float radius: The thickness of the segment
-        """ 
+        """
 
         body_body = ffi.NULL if body is None else body._body
         _shape = cp.cpSegmentShapeNew(body_body, tuple(a), tuple(b), radius)
@@ -409,13 +460,13 @@ class Segment(Shape):
 
     def _get_a(self):
         return Vec2d._fromcffi(cp.cpSegmentShapeGetA(self._shape))
-    a = property(_get_a,
-        doc="""The first of the two endpoints for this segment""")
+
+    a = property(_get_a, doc="""The first of the two endpoints for this segment""")
 
     def _get_b(self):
         return Vec2d._fromcffi(cp.cpSegmentShapeGetB(self._shape))
-    b = property(_get_b,
-        doc="""The second of the two endpoints for this segment""")
+
+    b = property(_get_b, doc="""The second of the two endpoints for this segment""")
 
     def unsafe_set_endpoints(self, a, b):
         """Set the two endpoints for this segment
@@ -427,12 +478,12 @@ class Segment(Shape):
             what you are doing!
         """
         cp.cpSegmentShapeSetEndpoints(self._shape, tuple(a), tuple(b))
-        
+
     @property
     def normal(self) -> Vec2d:
         """The normal"""
         return Vec2d._fromcffi(cp.cpSegmentShapeGetNormal(self._shape))
-    
+
     def unsafe_set_radius(self, r: float) -> None:
         """Set the radius of the segment
 
@@ -443,12 +494,12 @@ class Segment(Shape):
             what you are doing!
         """
         cp.cpSegmentShapeSetRadius(self._shape, r)
-    
+
     @property
     def radius(self) -> float:
         """The radius/thickness of the segment"""
         return cp.cpSegmentShapeGetRadius(self._shape)
-    
+
     def set_neighbors(self, prev, next) -> None:
         """When you have a number of segment shapes that are all joined
         together, things can still collide with the "cracks" between the
@@ -457,32 +508,33 @@ class Segment(Shape):
         """
         cp.cpSegmentShapeSetNeighbors(self._shape, tuple(prev), tuple(next))
 
+
 class Poly(Shape):
     """A convex polygon shape
 
     Slowest, but most flexible collision shape.
     """
 
-    _pickle_attrs_init:List[str] = []
-
-    def __init__(self, body: 'Body', vertices, transform: Transform=None, radius: float=0) -> None:
+    def __init__(
+        self, body: "Body", vertices, transform: Transform = None, radius: float = 0
+    ) -> None:
         """Create a polygon.
 
         A convex hull will be calculated from the vertexes automatically.
 
-        Adding a small radius will bevel the corners and can significantly 
+        Adding a small radius will bevel the corners and can significantly
         reduce problems where the poly gets stuck on seams in your geometry.
 
         It is legal to send in None as body argument to indicate that this
         shape is not attached to a body. However, you must attach it to a body
         before adding the shape to a space or used for a space shape query.
-    
+
         .. note::
-            Make sure to put the vertices around (0,0) or the shape might 
-            behave strange. 
+            Make sure to put the vertices around (0,0) or the shape might
+            behave strange.
 
             Either directly place the vertices like the below example:
-            
+
             >>> import pymunk
             >>> w, h = 10, 20
             >>> vs = [(-w/2,-h/2), (w/2,-h/2), (w/2,h/2), (-w/2,h/2)]
@@ -504,17 +556,17 @@ class Poly(Shape):
             Vec2d(0.0, 0.0)
 
         :param Body body: The body to attach the poly to
-        :param [(float,float)] vertices: Define a convex hull of the polygon 
+        :param [(float,float)] vertices: Define a convex hull of the polygon
             with a counterclockwise winding.
         :param Transform transform: Transform will be applied to every vertex.
         :param float radius: Set the radius of the poly shape
-                
+
         """
         if transform == None:
             transform = Transform.identity()
 
         vs = list(map(tuple, vertices))
-        
+
         body_body = ffi.NULL if body is None else body._body
         _shape = cp.cpPolyShapeNew(body_body, len(vertices), vs, transform, radius)
         self._init(body, _shape)
@@ -532,21 +584,23 @@ class Poly(Shape):
 
     @property
     def radius(self) -> float:
-        """The radius of the poly shape. 
-        
+        """The radius of the poly shape.
+
         Extends the poly in all directions with the given radius.
         """
         return cp.cpPolyShapeGetRadius(self._shape)
-    
+
     @staticmethod
-    def create_box(body: Optional['Body'], size: Tuple[float, float]=(10,10), radius: float=0) -> 'Poly':
+    def create_box(
+        body: Optional["Body"], size: Tuple[float, float] = (10, 10), radius: float = 0
+    ) -> "Poly":
         """Convenience function to create a box given a width and height.
 
         The boxes will always be centered at the center of gravity of the
         body you are attaching them to.  If you want to create an off-center
         box, you will need to use the normal constructor Poly(...).
 
-        Adding a small radius will bevel the corners and can significantly 
+        Adding a small radius will bevel the corners and can significantly
         reduce problems where the box gets stuck on seams in your geometry.
 
         :param Body body: The body to attach the poly to
@@ -564,14 +618,14 @@ class Poly(Shape):
         return self
 
     @staticmethod
-    def create_box_bb(body: Optional['Body'], bb: BB, radius: float=0) -> 'Poly':
+    def create_box_bb(body: Optional["Body"], bb: BB, radius: float = 0) -> "Poly":
         """Convenience function to create a box shape from a :py:class:`BB`.
-        
+
         The boxes will always be centered at the center of gravity of the
         body you are attaching them to.  If you want to create an off-center
         box, you will need to use the normal constructor Poly(..).
 
-        Adding a small radius will bevel the corners and can significantly 
+        Adding a small radius will bevel the corners and can significantly
         reduce problems where the box gets stuck on seams in your geometry.
 
         :param Body body: The body to attach the poly to
@@ -590,8 +644,8 @@ class Poly(Shape):
     def get_vertices(self) -> List[Vec2d]:
         """Get the vertices in local coordinates for the polygon
 
-        If you need the vertices in world coordinates then the vertices can be 
-        transformed by adding the body position and each vertex rotated by the 
+        If you need the vertices in world coordinates then the vertices can be
+        transformed by adding the body position and each vertex rotated by the
         body rotation in the following way::
 
             >>> import pymunk
@@ -615,7 +669,7 @@ class Poly(Shape):
             verts.append(Vec2d._fromcffi(cp.cpPolyShapeGetVert(self._shape, i)))
         return verts
 
-    def unsafe_set_vertices(self, vertices, transform: Transform=None) -> None:
+    def unsafe_set_vertices(self, vertices, transform: Transform = None) -> None:
         """Unsafe set the vertices of the poly.
 
         .. note::
@@ -628,18 +682,18 @@ class Poly(Shape):
         if transform == None:
             cp.cpPolyShapeSetVertsRaw(self._shape, len(vertices), vs)
             return
-            
+
         cp.cpPolyShapeSetVerts(self._shape, len(vertices), vs, transform)
 
     def __getstate__(self) -> dict:
         """Return the state of this object
-        
+
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
         d = super(Poly, self).__getstate__()
 
-        d['init'].append(('vertices', self.get_vertices()))
-        d['init'].append(('transform', None))
-        d['init'].append(('radius', self.radius))
+        d["init"].append(("vertices", self.get_vertices()))
+        d["init"].append(("transform", None))
+        d["init"].append(("radius", self.radius))
         return d

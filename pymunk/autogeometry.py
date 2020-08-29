@@ -39,12 +39,12 @@ a Pymunk Poly or Segment::
 """
 __docformat__ = "reStructuredText"
 
+import collections.abc
 from typing import List
 
-import collections.abc
-
-from ._chipmunk_cffi import lib, ffi
+from ._chipmunk_cffi import ffi, lib
 from .vec2d import Vec2d
+
 
 def _to_chipmunk(polyline):
     l = len(polyline)
@@ -54,6 +54,7 @@ def _to_chipmunk(polyline):
     _line.verts = list(map(tuple, polyline))
     return _line
 
+
 def _from_polyline_set(_set: ffi.CData) -> List[List[Vec2d]]:
     lines = []
     for i in range(_set.count):
@@ -62,21 +63,23 @@ def _from_polyline_set(_set: ffi.CData) -> List[List[Vec2d]]:
             line.append(Vec2d._fromcffi(_set.lines[i].verts[j]))
         lines.append(line)
     return lines
-    
+
+
 def is_closed(polyline) -> bool:
     """Returns true if the first vertex is equal to the last.
-    
+
     :param polyline: Polyline to simplify.
     :type polyline: [(float,float)]
     :rtype: `bool`
     """
     return bool(lib.cpPolylineIsClosed(_to_chipmunk(polyline)))
 
+
 def simplify_curves(polyline, tolerance: float) -> List[Vec2d]:
-    """Returns a copy of a polyline simplified by using the Douglas-Peucker 
+    """Returns a copy of a polyline simplified by using the Douglas-Peucker
     algorithm.
 
-    This works very well on smooth or gently curved shapes, but not well on 
+    This works very well on smooth or gently curved shapes, but not well on
     straight edged or angular shapes.
 
     :param polyline: Polyline to simplify.
@@ -91,11 +94,12 @@ def simplify_curves(polyline, tolerance: float) -> List[Vec2d]:
         simplified.append(Vec2d._fromcffi(_line.verts[i]))
     return simplified
 
+
 def simplify_vertexes(polyline, tolerance) -> List[Vec2d]:
     """Returns a copy of a polyline simplified by discarding "flat" vertexes.
-        
-    This works well on straight edged or angular shapes, not as well on smooth 
-    shapes.    
+
+    This works well on straight edged or angular shapes, not as well on smooth
+    shapes.
 
     :param polyline: Polyline to simplify.
     :type polyline: [(float,float)]
@@ -107,6 +111,7 @@ def simplify_vertexes(polyline, tolerance) -> List[Vec2d]:
     for i in range(_line.count):
         simplified.append(Vec2d._fromcffi(_line.verts[i]))
     return simplified
+
 
 def to_convex_hull(polyline, tolerance: float) -> List[Vec2d]:
     """Get the convex hull of a polyline as a looped polyline.
@@ -122,20 +127,21 @@ def to_convex_hull(polyline, tolerance: float) -> List[Vec2d]:
         hull.append(Vec2d._fromcffi(_line.verts[i]))
     return hull
 
+
 def convex_decomposition(polyline, tolerance: float) -> List[List[Vec2d]]:
     """Get an approximate convex decomposition from a polyline.
 
-    Returns a list of convex hulls that match the original shape to within 
+    Returns a list of convex hulls that match the original shape to within
     tolerance.
-    
-    .. note:: 
-        If the input is a self intersecting polygon, the output might end up 
+
+    .. note::
+        If the input is a self intersecting polygon, the output might end up
         overly simplified.
 
     :param polyline: Polyline to simplify.
     :type polyline: [(float,float)]
     :param float tolerance: A higher value means more error is tolerated.
-    :rtype: [(float,float)]    
+    :rtype: [(float,float)]
     """
     _line = _to_chipmunk(polyline)
     _set = lib.cpPolylineConvexDecomposition(_line, tolerance)
@@ -143,24 +149,26 @@ def convex_decomposition(polyline, tolerance: float) -> List[List[Vec2d]]:
 
 
 class PolylineSet(collections.abc.Sequence):
-    """A set of Polylines. 
-    
-    Mainly intended to be used for its :py:meth:`collect_segment` function 
-    when generating geometry with the :py:func:`march_soft` and 
-    :py:func:`march_hard` functions.    
+    """A set of Polylines.
+
+    Mainly intended to be used for its :py:meth:`collect_segment` function
+    when generating geometry with the :py:func:`march_soft` and
+    :py:func:`march_hard` functions.
     """
+
     def __init__(self) -> None:
         def free(_set):
             lib.cpPolylineSetFree(_set, True)
+
         self._set = ffi.gc(lib.cpPolylineSetNew(), free)
 
     def collect_segment(self, v0, v1) -> None:
         """Add a line segment to a polyline set.
-        
-        A segment will either start a new polyline, join two others, or add to 
-        or loop an existing polyline. This is mostly intended to be used as a 
+
+        A segment will either start a new polyline, join two others, or add to
+        or loop an existing polyline. This is mostly intended to be used as a
         callback directly from :py:func:`march_soft` or :py:func:`march_hard`.
-        
+
         :param v0: Start of segment
         :type v0: (float,float)
         :param v1: End of segment
@@ -179,62 +187,66 @@ class PolylineSet(collections.abc.Sequence):
             line.append(Vec2d._fromcffi(self._set.lines[key].verts[i]))
         return line
 
+
 def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
     """Trace an *anti-aliased* contour of an image along a particular threshold.
 
-    The given number of samples will be taken and spread across the bounding 
-    box area using the sampling function and context. 
+    The given number of samples will be taken and spread across the bounding
+    box area using the sampling function and context.
 
     :param BB bb: Bounding box of the area to sample within
     :param int x_samples: Number of samples in x
     :param int y_samples: Number of samples in y
     :param float threshold: A higher value means more error is tolerated
-    :param segment_func: The segment function will be called for each segment 
-        detected that lies along the density contour for threshold. 
+    :param segment_func: The segment function will be called for each segment
+        detected that lies along the density contour for threshold.
     :type segment_func: ``func(v0 : Vec2d, v1 : Vec2d)``
-    :param sample_func: The sample function will be called for 
-        x_samples * y_samples spread across the bounding box area, and should 
-        return a float. 
+    :param sample_func: The sample function will be called for
+        x_samples * y_samples spread across the bounding box area, and should
+        return a float.
     :type sample_func: ``func(point: Vec2d) -> float``
     """
-    
+
     @ffi.callback("cpMarchSegmentFunc")
     def _seg_f(v0, v1, _data):
         segment_func(Vec2d._fromcffi(v0), Vec2d._fromcffi(v1))
-        
+
     @ffi.callback("cpMarchSampleFunc")
     def _sam_f(point, _data):
         return sample_func(Vec2d._fromcffi(point))
-    
-    lib.cpMarchSoft(bb._bb, x_samples, y_samples, threshold, 
-        _seg_f, ffi.NULL, _sam_f, ffi.NULL)
+
+    lib.cpMarchSoft(
+        bb._bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
+    )
+
 
 def march_hard(bb, x_samples, y_samples, threshold, segment_func, sample_func):
     """Trace an *aliased* curve of an image along a particular threshold.
 
-    The given number of samples will be taken and spread across the bounding 
-    box area using the sampling function and context. 
+    The given number of samples will be taken and spread across the bounding
+    box area using the sampling function and context.
 
     :param BB bb: Bounding box of the area to sample within
     :param int x_samples: Number of samples in x
     :param int y_samples: Number of samples in y
     :param float threshold: A higher value means more error is tolerated
-    :param segment_func: The segment function will be called for each segment 
-        detected that lies along the density contour for threshold. 
+    :param segment_func: The segment function will be called for each segment
+        detected that lies along the density contour for threshold.
     :type segment_func: ``func(v0 : Vec2d, v1 : Vec2d)``
-    :param sample_func: The sample function will be called for 
-        x_samples * y_samples spread across the bounding box area, and should 
-        return a float. 
+    :param sample_func: The sample function will be called for
+        x_samples * y_samples spread across the bounding box area, and should
+        return a float.
     :type sample_func: ``func(point: Vec2d) -> float``
     """
-    
+
     @ffi.callback("cpMarchSegmentFunc")
     def _seg_f(v0, v1, _data):
         segment_func(Vec2d._fromcffi(v0), Vec2d._fromcffi(v1))
-        
+
     @ffi.callback("cpMarchSampleFunc")
     def _sam_f(point, _data):
         return sample_func(Vec2d._fromcffi(point))
-    
-    lib.cpMarchHard(bb._bb, x_samples, y_samples, threshold, 
-        _seg_f, ffi.NULL, _sam_f, ffi.NULL)
+
+    lib.cpMarchHard(
+        bb._bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
+    )

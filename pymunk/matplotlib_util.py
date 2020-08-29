@@ -11,20 +11,21 @@ __docformat__ = "reStructuredText"
 
 from typing import TYPE_CHECKING
 
-import matplotlib.pyplot as plt # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
+
 import pymunk
 from pymunk.vec2d import Vec2d
 
 if TYPE_CHECKING:
-    import matplotlib as mpl # type: ignore
+    import matplotlib as mpl  # type: ignore
 
 
 class DrawOptions(pymunk.SpaceDebugDrawOptions):
     def __init__(self, ax):
-        """DrawOptions for space.debug_draw() to draw a space on a ax object. 
+        """DrawOptions for space.debug_draw() to draw a space on a ax object.
 
         Typical usage::
-        
+
         >>> import matplotlib as mpl
         >>> import matplotlib.pyplot as plt
         >>> import pymunk
@@ -34,7 +35,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         >>> options = pymunk.matplotlib_util.DrawOptions(ax)
         >>> space.debug_draw(options)
 
-        You can control the color of a Shape by setting shape.color to the color 
+        You can control the color of a Shape by setting shape.color to the color
         you want it drawn in.
 
         >>> shape = pymunk.Circle(space.static_body, 10)
@@ -57,15 +58,18 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         self.shape_outline_color = self.shape_outline_color.as_float()
         self.constraint_color = self.constraint_color.as_float()
         self.collision_point_color = self.collision_point_color.as_float()
-    
-    def draw_circle(self, pos, angle, radius, outline_color, fill_color):        
-        p = plt.Circle(pos, radius, 
-            facecolor=fill_color, edgecolor=outline_color)
+
+    def draw_circle(self, pos, angle, radius, outline_color, fill_color):
+        p = plt.Circle(pos, radius, facecolor=fill_color, edgecolor=outline_color)
         self.ax.add_patch(p)
-        
+
         circle_edge = pos + Vec2d(radius, 0).rotated(angle)
-        line = plt.Line2D([pos.x, circle_edge.x], [pos.y, circle_edge.y], 
-            linewidth=1, color=outline_color)
+        line = plt.Line2D(
+            [pos.x, circle_edge.x],
+            [pos.y, circle_edge.y],
+            linewidth=1,
+            color=outline_color,
+        )
         line.set_solid_capstyle("round")
         self.ax.add_line(line)
 
@@ -75,18 +79,22 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         self.ax.add_line(line)
 
     def draw_fat_segment(self, a, b, radius, outline_color, fill_color):
-        radius = max(1, 2*radius)
-        line = plt.Line2D([a.x, b.x], [a.y, b.y], 
-            linewidth=radius, color=fill_color)
+        radius = max(1, 2 * radius)
+        line = plt.Line2D([a.x, b.x], [a.y, b.y], linewidth=radius, color=fill_color)
         line.set_solid_capstyle("round")
         self.ax.add_line(line)
-        
+
     def draw_polygon(self, verts, radius, outline_color, fill_color):
-        radius = max(1, 2*radius)
-        p = plt.Polygon(verts, linewidth=radius, joinstyle="round", 
-            facecolor=fill_color, edgecolor=outline_color)
+        radius = max(1, 2 * radius)
+        p = plt.Polygon(
+            verts,
+            linewidth=radius,
+            joinstyle="round",
+            facecolor=fill_color,
+            edgecolor=outline_color,
+        )
         self.ax.add_patch(p)
-        
+
     def draw_dot(self, size, pos, color):
-        p = plt.Circle(pos, size, facecolor=color, edgecolor='None')
+        p = plt.Circle(pos, size, facecolor=color, edgecolor="None")
         self.ax.add_patch(p)
