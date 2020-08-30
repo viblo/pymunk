@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup  # type: ignore
 
 # todo: add/remove/think about this list
 classifiers = [

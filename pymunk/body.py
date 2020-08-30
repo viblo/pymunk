@@ -239,10 +239,6 @@ class Body(PickleMixin, object):
         self._constraints = WeakSet()  # weak refs to any constraints attached
         self._shapes = WeakSet()  # weak refs to any shapes attached
 
-    def __xdel__(self):
-        # if self._should_free_body:
-        cp.cpBodyFree(self._body)
-
     def __repr__(self):
         if self.body_type == Body.DYNAMIC:
             return "Body(%r, %r, Body.DYNAMIC)" % (self.mass, self.moment)

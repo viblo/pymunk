@@ -4,9 +4,7 @@ import copy
 import logging
 import platform
 import weakref
-from typing import (TYPE_CHECKING, Any, Callable, Hashable, List, Optional,
-                    Tuple, Union)
-from weakref import finalize
+from typing import TYPE_CHECKING, Any, Callable, Hashable, List, Optional, Tuple, Union
 
 from pymunk.shape_filter import ShapeFilter
 from pymunk.space_debug_draw_options import SpaceDebugDrawOptions
@@ -150,30 +148,6 @@ class Space(PickleMixin, object):
 
         self._add_later: set = set()
         self._remove_later: set = set()
-
-    def __xdel__(self) -> None:
-        """Remove all references to shapes, constraints and bodies before the
-        cpSpace can been free'd.
-        """
-        # print("del handlers", self._space)
-        for handler in self._handlers.values():
-            handler._reset()
-        # print("del space shapes", self._space, self.shapes)
-        self.remove(*self.shapes)
-        # print("del space removed shapes", self._space)
-        self._removed_shapes.clear()
-        # print("del space constraints", self._space)
-        self.remove(*self.constraints)
-        # print("del space bodies", self._space)
-        self.remove(*self.bodies)
-        # print("del space", self._space)
-        if self._static_body is not None:
-            cp.cpSpaceRemoveBody(self._space, self._static_body._body)
-
-        if self.threaded:
-            cp.cpHastySpaceFree(self._space)
-        else:
-            cp.cpSpaceFree(self._space)
 
     def _get_self(self) -> "Space":
         return self

@@ -168,6 +168,7 @@ class Vec2d(object):
 
     # Addition
     def __add__(self, other: _Vec2dOrFloat) -> "Vec2d":
+        """Add two vectors"""
         if isinstance(other, Vec2d) or isinstance(other, Sequence):
             return Vec2d(self.x + other[0], self.y + other[1])
         else:

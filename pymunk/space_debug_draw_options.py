@@ -68,7 +68,7 @@ class SpaceDebugDrawOptions(object):
     shape_kinematic_color = SpaceDebugColor(39, 174, 96, 255)
     shape_sleeping_color = SpaceDebugColor(114, 148, 168, 255)
 
-    def __init__(self):
+    def __init__(self) -> None:
         _options = ffi.new("cpSpaceDebugDrawOptions *")
         self._options = _options
         self.shape_outline_color = (44, 62, 80, 255)

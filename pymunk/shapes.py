@@ -71,10 +71,6 @@ class Shape(PickleMixin, object):
         self._shape = ffi.gc(_shape, shapefree)
         self._set_shapeid()
 
-    def __xdel__(self):
-        # print("del shape", self._shape)
-        cp.cpShapeFree(self._shape)
-
     def _get_shapeid(self) -> int:
         return cp.cpShapeGetUserData(self._shape)
 

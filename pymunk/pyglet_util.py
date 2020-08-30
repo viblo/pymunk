@@ -90,7 +90,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         if self.new_batch:
             self.batch = pyglet.graphics.Batch()
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type, value, traceback) -> None:
         if self.new_batch:
             self.batch.draw()
 
@@ -220,12 +220,12 @@ class _GrPointSize(pyglet.graphics.Group):
     This pyglet rendering group sets a specific point size.
     """
 
-    def __init__(self, size=1.0):
+    def __init__(self, size: float = 1.0) -> None:
         super(_GrPointSize, self).__init__()
         self.size = size
 
-    def set_state(self):
+    def set_state(self) -> None:
         pyglet.gl.glPointSize(self.size)
 
-    def unset_state(self):
+    def unset_state(self) -> None:
         pyglet.gl.glPointSize(1.0)
