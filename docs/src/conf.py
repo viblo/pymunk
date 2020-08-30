@@ -360,3 +360,12 @@ texinfo_documents = [
 
 # def setup(app):
 #    app.connect("autodoc-skip-member", skip)
+autodoc_default_options = {
+    "members": True,
+    "undoc-members": True,
+    "show-inheritance": True,
+    "inherited-members": True,
+    #'member-order': 'bysource',
+    "special-members": "__init__",    
+    #'exclude-members': '__weakref__'
+}

@@ -8,7 +8,4 @@
         <script type="text/javascript" src='_static/pymunk.js'></script>
 
 .. automodule:: pymunk.vec2d
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :inherited-members:
+    :special-members: __add__

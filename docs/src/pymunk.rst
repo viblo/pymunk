@@ -29,8 +29,5 @@ API Reference
 .. rubric:: Pymunk
 
 .. automodule:: pymunk
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :inherited-members:
+    
     

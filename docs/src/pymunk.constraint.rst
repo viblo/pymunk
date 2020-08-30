@@ -8,7 +8,3 @@
         <script type="text/javascript" src='_static/pymunk.js'></script>
 
 .. automodule:: pymunk.constraint
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :inherited-members:
