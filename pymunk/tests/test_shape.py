@@ -13,18 +13,15 @@ class UnitTestShape(unittest.TestCase):
         c = p.Circle(b, 5)
         c.cache_bb()
 
-        distance, info = c.point_query((0, 0))
+        info = c.point_query((0, 0))
 
-        self.assertEqual(distance, -5)
         self.assertEqual(info.shape, c)
-
         self.assertEqual(info.point, (0, 0))
         self.assertEqual(info.distance, -5)
         self.assertEqual(info.gradient, (0, 1))
 
-        distance, info = c.point_query((11, 0))
+        info = c.point_query((11, 0))
 
-        self.assertEqual(distance, 6)
         self.assertEqual(info.shape, c)
         self.assertEqual(info.point, (5, 0))
         self.assertEqual(info.distance, 6)

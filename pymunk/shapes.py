@@ -148,7 +148,7 @@ class Shape(PickleMixin, object):
     def _get_collision_type(self) -> int:
         return cp.cpShapeGetCollisionType(self._shape)
 
-    def _set_collision_type(self, t: int):
+    def _set_collision_type(self, t: int) -> None:
         cp.cpShapeSetCollisionType(self._shape, t)
 
     collision_type = property(
@@ -296,7 +296,7 @@ class Shape(PickleMixin, object):
         """
         return BB(cp.cpShapeGetBB(self._shape))
 
-    def point_query(self, p):
+    def point_query(self, p) -> PointQueryInfo:
         """Check if the given point lies within the shape.
 
         A negative distance means the point is within the shape.
@@ -305,19 +305,18 @@ class Shape(PickleMixin, object):
         :rtype: (float, :py:class:`PointQueryInfo`)
         """
         info = ffi.new("cpPointQueryInfo *")
-        distance = cp.cpShapePointQuery(self._shape, tuple(p), info)
+        _ = cp.cpShapePointQuery(self._shape, tuple(p), info)
 
         ud = cp.cpShapeGetUserData(info.shape)
         assert ud == self._get_shapeid()
-        x = PointQueryInfo(
+        return PointQueryInfo(
             self,
             Vec2d._fromcffi(info.point),
             info.distance,
             Vec2d._fromcffi(info.gradient),
         )
-        return distance, x
 
-    def segment_query(self, start, end, radius=0):
+    def segment_query(self, start, end, radius=0) -> SegmentQueryInfo:
         """Check if the line segment from start to end intersects the shape.
 
         :rtype: :py:class:`SegmentQueryInfo`
@@ -341,7 +340,7 @@ class Shape(PickleMixin, object):
                 info.alpha,
             )
 
-    def shapes_collide(self, b):
+    def shapes_collide(self, b: "Shape") -> ContactPointSet:
         """Get contact information about this shape and shape b.
 
         :rtype: :py:class:`ContactPointSet`

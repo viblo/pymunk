@@ -91,7 +91,7 @@ class Arbiter(object):
     def _get_restitution(self) -> float:
         return lib.cpArbiterGetRestitution(self._arbiter)
 
-    def _set_restitution(self, restitution: float):
+    def _set_restitution(self, restitution: float) -> None:
         lib.cpArbiterSetRestitution(self._arbiter, restitution)
 
     restitution = property(
@@ -126,7 +126,7 @@ class Arbiter(object):
     def _get_surface_velocity(self) -> Vec2d:
         return Vec2d._fromcffi(lib.cpArbiterGetSurfaceVelocity(self._arbiter))
 
-    def _set_surface_velocity(self, velocity: Vec2d):
+    def _set_surface_velocity(self, velocity: Vec2d) -> None:
         lib.cpArbiterSetSurfaceVelocity(self._arbiter, velocity)
 
     surface_velocity = property(
@@ -184,6 +184,6 @@ class Arbiter(object):
         return bool(lib.cpArbiterIsRemoval(self._arbiter))
 
     @property
-    def normal(self) -> "Vec2d":
+    def normal(self) -> Vec2d:
         """Returns the normal of the collision."""
         return Vec2d._fromcffi(lib.cpArbiterGetNormal(self._arbiter))
