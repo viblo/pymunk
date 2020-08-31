@@ -1,9 +1,11 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Set
 
 if TYPE_CHECKING:
     from .space import Space
+    from .constraint import Constraint
+    from .shapes import Shape
 
 import logging
 from weakref import WeakSet
@@ -226,7 +228,7 @@ class Body(PickleMixin, object):
 
         self._init()
 
-    def _init(self):
+    def _init(self) -> None:
         self._position_func = None  # To prevent the gc to collect the callbacks.
         self._velocity_func = None  # To prevent the gc to collect the callbacks.
         self._position_func_base = None  # For pickle
@@ -236,15 +238,17 @@ class Body(PickleMixin, object):
             "Space"
         ] = None  # Weak ref to the space holding this body (if any)
 
-        self._constraints = WeakSet()  # weak refs to any constraints attached
-        self._shapes = WeakSet()  # weak refs to any shapes attached
+        self._constraints: WeakSet[
+            "Constraint"
+        ] = WeakSet()  # weak refs to any constraints attached
+        self._shapes: WeakSet["Shape"] = WeakSet()  # weak refs to any shapes attached
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         if self.body_type == Body.DYNAMIC:
             return "Body(%r, %r, Body.DYNAMIC)" % (self.mass, self.moment)
         elif self.body_type == Body.KINEMATIC:
             return "Body(Body.KINEMATIC)"
-        elif self.body_type == Body.STATIC:
+        else:
             return "Body(Body.STATIC)"
 
     @classmethod
@@ -625,29 +629,23 @@ class Body(PickleMixin, object):
         data = ffi.new_handle(self)
         cp.cpBodyEachArbiter(self._body, cf, data)
 
-    def _get_constraints(self):
-        return set(self._constraints)
-
-    constraints = property(
-        _get_constraints,
-        doc="""Get the constraints this body is attached to.
+    @property
+    def constraints(self) -> Set["Constraint"]:
+        """Get the constraints this body is attached to.
 
         The body only keeps a weak reference to the constraints and a
-        live body wont prevent GC of the attached constraints""",
-    )
+        live body wont prevent GC of the attached constraints"""
+        return set(self._constraints)
 
-    def _get_shapes(self):
-        return set(self._shapes)
-
-    shapes = property(
-        _get_shapes,
-        doc="""Get the shapes attached to this body.
+    @property
+    def shapes(self) -> Set["Shape"]:
+        """Get the shapes attached to this body.
 
         The body only keeps a weak reference to the shapes and a live
-        body wont prevent GC of the attached shapes""",
-    )
+        body wont prevent GC of the attached shapes"""
+        return set(self._shapes)
 
-    def local_to_world(self, v):
+    def local_to_world(self, v) -> Vec2d:
         """Convert body local coordinates to world space coordinates
 
         Many things are defined in coordinates local to a body meaning that

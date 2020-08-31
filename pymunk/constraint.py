@@ -67,7 +67,7 @@ __all__ = [
     "SimpleMotor",
 ]
 
-from typing import TYPE_CHECKING, Any, Callable, Optional
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple
 
 if TYPE_CHECKING:
     from .body import Body
@@ -119,10 +119,10 @@ class Constraint(PickleMixin, object):
         self._constraint = ffi.gc(_constraint, constraintfree)
         self._set_bodies(a, b)
 
-    def _get_max_force(self):
+    def _get_max_force(self) -> float:
         return cp.cpConstraintGetMaxForce(self._constraint)
 
-    def _set_max_force(self, f):
+    def _set_max_force(self, f: float) -> None:
         cp.cpConstraintSetMaxForce(self._constraint, f)
 
     max_force = property(
@@ -172,10 +172,10 @@ class Constraint(PickleMixin, object):
         """,
     )
 
-    def _get_collide_bodies(self):
+    def _get_collide_bodies(self) -> bool:
         return cp.cpConstraintGetCollideBodies(self._constraint)
 
-    def _set_collide_bodies(self, collide_bodies):
+    def _set_collide_bodies(self, collide_bodies: bool) -> None:
         cp.cpConstraintSetCollideBodies(self._constraint, collide_bodies)
 
     collide_bodies = property(
@@ -243,6 +243,7 @@ class Constraint(PickleMixin, object):
 
             @ffi.callback("cpConstraintPreSolveFunc")
             def _impl(cp_constraint, cp_space):
+                assert self.a.space is not None
                 return func(self, self.a.space)
 
             self._cp_pre_solve_func = _impl
@@ -276,6 +277,7 @@ class Constraint(PickleMixin, object):
 
             @ffi.callback("cpConstraintPostSolveFunc")
             def _impl(cp_constraint, cp_space):
+                assert self.a.space is not None
                 return func(self, self.a.space)
 
             self._cp_post_solve_func = _impl
@@ -289,7 +291,7 @@ class Constraint(PickleMixin, object):
         a._constraints.add(self)
         b._constraints.add(self)
 
-    def __getstate__(self):
+    def __getstate__(self) -> Dict[str, List[Tuple[str, Any]]]:
         """Return the state of this object
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
@@ -302,7 +304,7 @@ class Constraint(PickleMixin, object):
 
         return d
 
-    def __setstate__(self, state):
+    def __setstate__(self, state: Dict[str, List[Tuple[str, Any]]]) -> None:
         """Unpack this object from a saved state.
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
