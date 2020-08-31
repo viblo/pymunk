@@ -2,6 +2,7 @@ import pickle
 import unittest
 
 import pymunk as p
+from pymunk import constraint
 from pymunk.vec2d import Vec2d
 
 
@@ -70,6 +71,77 @@ class UnitTestConstraint(unittest.TestCase):
         self.assertFalse(a.is_sleeping)
         self.assertFalse(b.is_sleeping)
 
+    def testPreSolve(self):
+        b = p.Body(1, 2)
+        s = p.Space()
+        j = p.PivotJoint(s.static_body, b, (0, 0))
+
+        s.add(b, j)
+        self.assertIsNone(j.pre_solve)
+        s.step(1)
+
+        actual_constraint = None
+        actual_space = None
+
+        def pre_solve(constraint, space):
+            nonlocal actual_constraint
+            nonlocal actual_space
+            actual_constraint = constraint
+            actual_space = space
+
+        j.pre_solve = pre_solve
+        s.step(1)
+
+        self.assertEqual(actual_constraint, j)
+        self.assertEqual(actual_space, s)
+
+    def testPostSolve(self):
+        b = p.Body(1, 2)
+        s = p.Space()
+        j = p.PivotJoint(s.static_body, b, (0, 0))
+
+        s.add(b, j)
+        self.assertIsNone(j.pre_solve)
+        s.step(1)
+
+        actual_constraint = None
+        actual_space = None
+
+        def post_solve(constraint, space):
+            nonlocal actual_constraint
+            nonlocal actual_space
+            actual_constraint = constraint
+            actual_space = space
+
+        j.post_solve = post_solve
+        s.step(1)
+
+        self.assertEqual(actual_constraint, j)
+        self.assertEqual(actual_space, s)
+
+    def testPrePostSolveOrder(self):
+        s = p.Space()
+        b = p.Body(1, 2)
+        j = p.PivotJoint(s.static_body, b, (0, 0))
+
+        s.add(b, j)
+
+        actual_order = []
+
+        def pre_solve(c, s):
+            nonlocal actual_order
+            actual_order.append(1)
+
+        def post_solve(c, s):
+            nonlocal actual_order
+            actual_order.append(2)
+
+        j.pre_solve = pre_solve
+        j.post_solve = post_solve
+        s.step(1)
+
+        self.assertEqual(actual_order, [1, 2])
+
     def testPickle(self):
         a, b = p.Body(4, 5), p.Body(10, 10)
         a.custom = "a"
@@ -81,6 +153,10 @@ class UnitTestConstraint(unittest.TestCase):
         j.max_bias = 4
         j.collide_bodies = False
 
+        j.pre_solve = pre_solve
+
+        j.post_solve = post_solve
+
         s = pickle.dumps(j)
         j2 = pickle.loads(s)
         self.assertEqual(j.custom, j2.custom)
@@ -90,6 +166,9 @@ class UnitTestConstraint(unittest.TestCase):
         self.assertEqual(j.collide_bodies, j2.collide_bodies)
         self.assertEqual(j.a.custom, j2.a.custom)
         self.assertEqual(j.b.custom, j2.b.custom)
+
+        self.assertEqual(j.pre_solve, j2.pre_solve)
+        self.assertEqual(j.post_solve, j2.post_solve)
 
         j2 = j.copy()
 
@@ -422,6 +501,15 @@ class UnitTestSimleMotor(unittest.TestCase):
         self.assertEqual(j.rate, j2.rate)
         self.assertEqual(j.a.mass, j2.a.mass)
         self.assertEqual(j.b.mass, j2.b.mass)
+
+
+# Needed to be able to pickle
+def pre_solve(c, s):
+    pass
+
+
+def post_solve(c, s):
+    pass
 
 
 ####################################################################

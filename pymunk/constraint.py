@@ -67,10 +67,11 @@ __all__ = [
     "SimpleMotor",
 ]
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Callable, Optional
 
 if TYPE_CHECKING:
     from .body import Body
+    from .space import Space
 
 import logging
 
@@ -96,6 +97,12 @@ class Constraint(PickleMixin, object):
         "max_bias",
         "collide_bodies",
     ]
+    _pickle_attrs_skip = PickleMixin._pickle_attrs_skip + ["pre_solve", "post_solve"]
+
+    _pre_solve_func: Optional[Callable[["Constraint", "Space"], None]] = None
+    _cp_pre_solve_func: Any = ffi.NULL
+    _post_solve_func: Optional[Callable[["Constraint", "Space"], None]] = None
+    _cp_post_solve_func: Any = ffi.NULL
 
     def __init__(self, constraint=None):
         self._constraint = constraint
@@ -111,10 +118,6 @@ class Constraint(PickleMixin, object):
 
         self._constraint = ffi.gc(_constraint, constraintfree)
         self._set_bodies(a, b)
-
-    def __xdel__(self) -> None:
-        # print("del", self._constraint)
-        cp.cpConstraintFree(self._constraint)
 
     def _get_max_force(self):
         return cp.cpConstraintGetMaxForce(self._constraint)
@@ -197,17 +200,87 @@ class Constraint(PickleMixin, object):
         """
         return cp.cpConstraintGetImpulse(self._constraint)
 
-    a = property(
-        lambda self: self._a, doc="""The first of the two bodies constrained"""
-    )
-    b = property(
-        lambda self: self._b, doc="""The second of the two bodies constrained"""
-    )
+    @property
+    def a(self) -> "Body":
+        """The first of the two bodies constrained"""
+        return self._a
+
+    @property
+    def b(self) -> "Body":
+        """The second of the two bodies constrained"""
+        return self._b
 
     def activate_bodies(self) -> None:
         """Activate the bodies this constraint is attached to"""
         self._a.activate()
         self._b.activate()
+
+    @property
+    def pre_solve(self) -> Optional[Callable[["Constraint", "Space"], None]]:
+        """The pre-solve function is called before the constraint solver runs.
+
+        Note that None can be used to reset it to default value.
+
+        >>> import pymunk
+        >>> j = pymunk.PinJoint(pymunk.Body(1,2), pymunk.Body(3,4), (0,0))
+        >>> def pre_solve_func(constraint, space):
+        ...     print("Hello from pre-solve")
+        >>> j.pre_solve = pre_solve_func
+        >>> j.pre_solve = None
+        """
+
+        return self._pre_solve_func
+
+    @pre_solve.setter
+    def pre_solve(
+        self, func: Optional[Callable[["Constraint", "Space"], None]]
+    ) -> None:
+        self._pre_solve_func = func
+
+        if func is None:
+            self._cp_pre_solve_func = ffi.NULL
+        else:
+
+            @ffi.callback("cpConstraintPreSolveFunc")
+            def _impl(cp_constraint, cp_space):
+                return func(self, self.a.space)
+
+            self._cp_pre_solve_func = _impl
+
+        cp.cpConstraintSetPreSolveFunc(self._constraint, self._cp_pre_solve_func)
+
+    @property
+    def post_solve(self) -> Optional[Callable[["Constraint", "Space"], None]]:
+        """The post-solve function is called after the constraint solver runs.
+
+        Note that None can be used to reset it to default value.
+
+        >>> import pymunk
+        >>> j = pymunk.PinJoint(pymunk.Body(1,2), pymunk.Body(3,4), (0,0))
+        >>> def post_solve_func(constraint, space):
+        ...     print("Hello from pre-solve")
+        >>> j.post_solve = post_solve_func
+        >>> j.post_solve = None
+        """
+        return self._post_solve_func
+
+    @post_solve.setter
+    def post_solve(
+        self, func: Optional[Callable[["Constraint", "Space"], None]]
+    ) -> None:
+        self._post_solve_func = func
+
+        if func is None:
+            self._cp_post_solve_func = ffi.NULL
+        else:
+
+            @ffi.callback("cpConstraintPostSolveFunc")
+            def _impl(cp_constraint, cp_space):
+                return func(self, self.a.space)
+
+            self._cp_post_solve_func = _impl
+
+        cp.cpConstraintSetPostSolveFunc(self._constraint, self._cp_post_solve_func)
 
     def _set_bodies(self, a: "Body", b: "Body") -> None:
         assert a is not b
@@ -215,6 +288,33 @@ class Constraint(PickleMixin, object):
         self._b = b
         a._constraints.add(self)
         b._constraints.add(self)
+
+    def __getstate__(self):
+        """Return the state of this object
+
+        This method allows the usage of the :mod:`copy` and :mod:`pickle`
+        modules with this class.
+        """
+        d = super(Constraint, self).__getstate__()
+
+        d["special"].append(("_pre_solve_func", self._pre_solve_func))
+        d["special"].append(("_post_solve_func", self._post_solve_func))
+
+        return d
+
+    def __setstate__(self, state):
+        """Unpack this object from a saved state.
+
+        This method allows the usage of the :mod:`copy` and :mod:`pickle`
+        modules with this class.
+        """
+        super(Constraint, self).__setstate__(state)
+
+        for k, v in state["special"]:
+            if k == "_pre_solve_func" and v != None:
+                self.pre_solve = v
+            elif k == "_post_solve_func" and v != None:
+                self.post_solve = v
 
 
 class PinJoint(Constraint):
