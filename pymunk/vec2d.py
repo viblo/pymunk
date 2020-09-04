@@ -73,7 +73,7 @@ class Vec2d(object):
         return v
 
     def __init__(self, x_or_pair=None, y = None):
-        if x_or_pair != None:
+        if x_or_pair is not None:
             if y == None:
                 if hasattr(x_or_pair, "x") and hasattr(x_or_pair, "y"):
                     self.x = x_or_pair.x
@@ -116,12 +116,16 @@ class Vec2d(object):
 
     # Comparison
     def __eq__(self, other):
+        if other is None:
+            return False
         if hasattr(other, "__getitem__") and len(other) == 2:
             return self.x == other[0] and self.y == other[1]
         else:
             return False
 
     def __ne__(self, other):
+        if other is None:
+            return True
         if hasattr(other, "__getitem__") and len(other) == 2:
             return self.x != other[0] or self.y != other[1]
         else:
