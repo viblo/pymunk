@@ -116,16 +116,12 @@ class Vec2d(object):
 
     # Comparison
     def __eq__(self, other):
-        if other is None:
-            return False
         if hasattr(other, "__getitem__") and len(other) == 2:
             return self.x == other[0] and self.y == other[1]
         else:
             return False
 
     def __ne__(self, other):
-        if other is None:
-            return True
         if hasattr(other, "__getitem__") and len(other) == 2:
             return self.x != other[0] or self.y != other[1]
         else:
