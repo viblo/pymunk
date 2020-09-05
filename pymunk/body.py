@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Optional, Set
+from typing import TYPE_CHECKING, Any, Optional, Set
 
 if TYPE_CHECKING:
     from .space import Space
@@ -11,6 +11,7 @@ import logging
 from weakref import WeakSet
 
 from . import _chipmunk_cffi
+from ._typing_attr import TypingAttrMixing
 
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
@@ -21,7 +22,7 @@ from .vec2d import Vec2d
 _BodyType = int  # Literal['cp.CP_BODY_TYPE_DYNAMIC', 'cp.CP_BODY_TYPE_KINEMATIC', 'cp.CP_BODY_TYPE_STATIC']
 
 
-class Body(PickleMixin, object):
+class Body(PickleMixin, TypingAttrMixing, object):
     """A rigid body
 
     * Use forces to modify the rigid bodies if possible. This is likely to be
@@ -282,7 +283,7 @@ class Body(PickleMixin, object):
         """,
     )
 
-    def _set_position(self, pos):
+    def _set_position(self, pos) -> None:
         cp.cpBodySetPosition(self._body, tuple(pos))
 
     def _get_position(self) -> Vec2d:
@@ -515,7 +516,7 @@ class Body(PickleMixin, object):
         """
         cp.cpBodyUpdatePosition(body._body, dt)
 
-    def apply_force_at_world_point(self, force, point):
+    def apply_force_at_world_point(self, force, point) -> None:
         """Add the force force to body as if applied from the world point.
 
         People are sometimes confused by the difference between a force and
@@ -528,17 +529,17 @@ class Body(PickleMixin, object):
         """
         cp.cpBodyApplyForceAtWorldPoint(self._body, tuple(force), tuple(point))
 
-    def apply_force_at_local_point(self, force, point):
+    def apply_force_at_local_point(self, force, point) -> None:
         """Add the local force force to body as if applied from the body
         local point.
         """
         cp.cpBodyApplyForceAtLocalPoint(self._body, tuple(force), tuple(point))
 
-    def apply_impulse_at_world_point(self, impulse, point=(0, 0)):
+    def apply_impulse_at_world_point(self, impulse, point=(0, 0)) -> None:
         """Add the impulse impulse to body as if applied from the world point."""
         cp.cpBodyApplyImpulseAtWorldPoint(self._body, tuple(impulse), tuple(point))
 
-    def apply_impulse_at_local_point(self, impulse, point=(0, 0)):
+    def apply_impulse_at_local_point(self, impulse, point=(0, 0)) -> None:
         """Add the local impulse impulse to body as if applied from the body
         local point.
         """
@@ -583,7 +584,7 @@ class Body(PickleMixin, object):
         """Returns true if the body is sleeping."""
         return bool(cp.cpBodyIsSleeping(self._body))
 
-    def _set_type(self, body_type: _BodyType):
+    def _set_type(self, body_type: _BodyType) -> None:
         cp.cpBodySetType(self._body, body_type)
 
     def _get_type(self) -> _BodyType:

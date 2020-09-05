@@ -13,6 +13,7 @@ cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
 from ._pickle import PickleMixin
+from ._typing_attr import TypingAttrMixing
 from .bb import BB
 from .contact_point_set import ContactPointSet
 from .query_info import PointQueryInfo, SegmentQueryInfo
@@ -21,7 +22,7 @@ from .transform import Transform
 from .vec2d import Vec2d
 
 
-class Shape(PickleMixin, object):
+class Shape(PickleMixin, TypingAttrMixing, object):
     """Base class for all the shapes.
 
     You usually dont want to create instances of this class directly but use
@@ -511,7 +512,11 @@ class Poly(Shape):
     """
 
     def __init__(
-        self, body: "Body", vertices, transform: Transform = None, radius: float = 0
+        self,
+        body: Optional["Body"],
+        vertices,
+        transform: Transform = None,
+        radius: float = 0,
     ) -> None:
         """Create a polygon.
 

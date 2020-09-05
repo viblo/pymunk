@@ -4,7 +4,17 @@ import copy
 import logging
 import platform
 import weakref
-from typing import TYPE_CHECKING, Any, Callable, Hashable, List, Optional, Tuple, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Hashable,
+    List,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 from pymunk.shape_filter import ShapeFilter
 from pymunk.space_debug_draw_options import SpaceDebugDrawOptions
@@ -413,7 +423,7 @@ class Space(PickleMixin, object):
             else:
                 raise Exception(f"Unsupported type  {type(o)} of {o}.")
 
-    def _add_shape(self, shape):
+    def _add_shape(self, shape: "Shape") -> None:
         """Adds a shape to the space"""
         # print("addshape", self._space, shape)
         assert shape._get_shapeid() not in self._shapes, "shape already added to space"
@@ -422,20 +432,20 @@ class Space(PickleMixin, object):
         self._shapes[shape._get_shapeid()] = shape
         cp.cpSpaceAddShape(self._space, shape._shape)
 
-    def _add_body(self, body):
+    def _add_body(self, body: "Body") -> None:
         """Adds a body to the space"""
         assert body not in self._bodies, "body already added to space"
         body._space = weakref.proxy(self)
         self._bodies[body] = None
         cp.cpSpaceAddBody(self._space, body._body)
 
-    def _add_constraint(self, constraint):
+    def _add_constraint(self, constraint: "Constraint") -> None:
         """Adds a constraint to the space"""
         assert constraint not in self._constraints, "constraint already added to space"
         self._constraints[constraint] = None
         cp.cpSpaceAddConstraint(self._space, constraint._constraint)
 
-    def _remove_shape(self, shape):
+    def _remove_shape(self, shape: "Shape") -> None:
         """Removes a shape from the space"""
         assert (
             shape._get_shapeid() in self._shapes
@@ -446,7 +456,7 @@ class Space(PickleMixin, object):
             cp.cpSpaceRemoveShape(self._space, shape._shape)
         del self._shapes[shape._get_shapeid()]
 
-    def _remove_body(self, body):
+    def _remove_body(self, body: "Body") -> None:
         """Removes a body from the space"""
         assert body in self._bodies, "body not in space, already removed?"
         body._space = None
@@ -455,7 +465,7 @@ class Space(PickleMixin, object):
             cp.cpSpaceRemoveBody(self._space, body._body)
         del self._bodies[body]
 
-    def _remove_constraint(self, constraint):
+    def _remove_constraint(self, constraint: "Constraint") -> None:
         """Removes a constraint from the space"""
         assert (
             constraint in self._constraints

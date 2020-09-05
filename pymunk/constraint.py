@@ -77,13 +77,14 @@ import logging
 
 from . import _chipmunk_cffi
 from ._pickle import PickleMixin
+from ._typing_attr import TypingAttrMixing
 from .vec2d import Vec2d
 
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
 
-class Constraint(PickleMixin, object):
+class Constraint(PickleMixin, TypingAttrMixing, object):
     """Base class of all constraints.
 
     You usually don't want to create instances of this class directly, but
