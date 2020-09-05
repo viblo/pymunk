@@ -2,6 +2,40 @@
 News 
 ****
 
+Pymunk 6.0.0
+------------
+
+Changes:
+
+- Removed pymunk.chipmunk_path
+- change Shape.sensor type to bool (from int)
+- Type hints added
+- Python 3.5+ required
+- add_collision_handler(a,b) and add_collision_handler(b,a) will return the same handler.
+- bodies used by shapes must be added to the space before (or at the same time) the shape is added.
+- Check that pickled object uses same Pymunk version as the loader.
+- Slight change of format of pymunk.chipmunk_version
+- Note: a tuple of 4 numbers are required when specifying a color (or use the 
+  SpaceDebugColor class directly). During testing it was found that some demos 
+  used a tuple of 3 instead which does not work in Pymunk 6.0 (or earlier 
+  version).
+- Small change to make the collision handler functions (begin, pre_step...) return the function assigned, not the wrapped function.
+- Space.add and Space.remove now does not accept lists of things, only the things directly. MAke sure to unpack if needed.
+    space.add(list_of_stuff) -> space.add(*list_of_stuff)
+- Removed extra `*args` and `**kwargs` arguments to CollisionHandler __init__ method
+- Format code with black & isort
+- ShapeFilter.ALL_MASKS and CATEGORIES changes to staticmethods
+    ShapeFilter.ALL_MASKS -> ShapeFilter.ALL_MASKS()  
+- New callbacks on Constraint object, pre_solve and post_solve, which can be used to run a function just before or after the solver on the constraint.
+- Return only a PointQueryInfo object from Shape.point_query, not (distance, PointQueryInfo). 
+
+Pymunk 5.7.0
+------------
+
+Changes:
+
+- Deprecated pymunk.chipmunk_path
+
 Pymunk 5.6.0
 ------------
 *Victor - 2019-11-02*

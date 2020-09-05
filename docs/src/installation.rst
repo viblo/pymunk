@@ -46,6 +46,14 @@ available from PyPI at https://pypi.org/project/pymunk/#files (Named
 pymunk-x.y.z.zip)
 
 
+Troubleshooting?????
+====================
+
+Check that no files are named pymunk.py
+
+Check that conda install works_
+https://stackoverflow.com/questions/39811929/package-installed-by-conda-python-cannot-find-it
+
 Advanced - Android Install
 ==========================
 
