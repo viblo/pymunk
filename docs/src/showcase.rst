@@ -177,6 +177,10 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Ipe, Navin. 
+  "An In-Memory Physics Environment as a World Model for Robot Motion Planning." 
+  (2020).
+
 * Li, Yunzhu, Antonio Torralba, Animashree Anandkumar, Dieter Fox, and Animesh Garg. 
   "Causal Discovery in Physical Systems from Videos." 
   arXiv preprint arXiv:2007.00631 (2020).
