@@ -1,11 +1,12 @@
-import os, os.path
-import platform
-import sys
-import subprocess
-from distutils.command.build_ext import build_ext
 import distutils.ccompiler as cc
-from setuptools import Extension
-from setuptools import setup
+import os
+import os.path
+import platform
+import subprocess
+import sys
+from distutils.command.build_ext import build_ext
+
+from setuptools import Extension, setup
 
 try:
     from wheel.bdist_wheel import bdist_wheel
@@ -242,7 +243,7 @@ setup(
     url = 'http://www.pymunk.org',
     author = 'Victor Blomqvist',
     author_email = 'vb@viblo.se',
-    version = '5.6.0', # remember to change me for new versions!
+    version = '5.7.0', # remember to change me for new versions!
     description = 'Pymunk is a easy-to-use pythonic 2d physics library',
     long_description = long_description,
     packages = ['pymunk','pymunkoptions', 'pymunk.tests'],
