@@ -28,7 +28,7 @@ Changes:
     ShapeFilter.ALL_MASKS -> ShapeFilter.ALL_MASKS()  
 - New callbacks on Constraint object, pre_solve and post_solve, which can be used to run a function just before or after the solver on the constraint.
 - Return only a PointQueryInfo object from Shape.point_query, not (distance, PointQueryInfo). 
-
+- Ve2d no longer accept objects that have .x and .y properties, but do not support __getitem__ for [0] & [1] in the constructor. If you have such an obects, rewrite Vec2d(myobj) to Vec2d(myobj.x, myobj.y). Dont expect anyone to be affected.
 
 Pymunk 5.7.0
 ------------

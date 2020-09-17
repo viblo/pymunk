@@ -58,8 +58,9 @@ import operator
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, List, Optional, Tuple, Union, cast
 
-from ._types import _Vec2dOrFloat, _Vec2dOrTuple
-
+# from ._types import _Vec2dOrFloat, _Vec2dOrTuple
+_Vec2dOrFloat = Any
+_Vec2dOrTuple = Any
 __all__ = ["Vec2d"]
 
 
@@ -83,8 +84,8 @@ class Vec2d(object):
 
     def __init__(self, x_or_pair=None, y=None):
         if x_or_pair is not None:
-            if y == None:
-                if hasattr(x_or_pair, "x") and hasattr(x_or_pair, "y"):
+            if y is None:
+                if isinstance(x_or_pair, Vec2d):
                     self.x = x_or_pair.x
                     self.y = x_or_pair.y
                 else:
@@ -435,7 +436,7 @@ class Vec2d(object):
         length = self.length
         if length != 0:
             return self / length
-        return Vec2d(self)
+        return Vec2d(0, 0)
 
     def normalize_return_length(self) -> float:
         """Normalize the vector and return its length before the normalization
@@ -457,7 +458,7 @@ class Vec2d(object):
             return Vec2d(-self.y / length, self.x / length)
         return Vec2d(self)
 
-    def dot(self, other: _Vec2dOrTuple):
+    def dot(self, other: _Vec2dOrTuple) -> float:
         """The dot product between the vector and other vector
             v1.dot(v2) -> v1.x*v2.x + v1.y*v2.y
 
@@ -465,14 +466,14 @@ class Vec2d(object):
         """
         return float(self.x * other[0] + self.y * other[1])
 
-    def get_distance(self, other: _Vec2dOrTuple):
+    def get_distance(self, other: _Vec2dOrTuple) -> float:
         """The distance between the vector and other vector
 
         :return: The distance
         """
         return math.sqrt((self.x - other[0]) ** 2 + (self.y - other[1]) ** 2)
 
-    def get_dist_sqrd(self, other: _Vec2dOrTuple):
+    def get_dist_sqrd(self, other: _Vec2dOrTuple) -> float:
         """The squared distance between the vector and other vector
         It is more efficent to use this method than to call get_distance()
         first and then do a sqrt() on the result.
