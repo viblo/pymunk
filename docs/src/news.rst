@@ -29,12 +29,36 @@ Changes:
 - New callbacks on Constraint object, pre_solve and post_solve, which can be used to run a function just before or after the solver on the constraint.
 - Return only a PointQueryInfo object from Shape.point_query, not (distance, PointQueryInfo). 
 
+
 Pymunk 5.7.0
 ------------
+*Victor - 2020-09-16*
+
+**Fix release**
+
+This release contains a bunch of smaller fixes and improvements. 
 
 Changes:
 
-- Deprecated pymunk.chipmunk_path
+- Fixed issue with PyInstaller onefile.
+- Improved performance of Vec2d creation. Thanks Mikhail Simin!
+- Handle debug drawing of springs with 0 length.
+- Made bodies and constraints ordered when accessed from the space.
+- Added Space.use_spatial_hash function to enable use of Spatial hash as its 
+  spatial index which can improve performance when there's lots of similarly 
+  sized objects.
+- Fixed case when Vec2d.projection get a tuple as other paramter.
+- Fixed ZeroDivisionError for Vec2d.projection. Thanks Mohamed Saad Ibn Seddik!
+- Fixed return type of Shape.center_of_gravity property (now returns Vec2d 
+  instead of cdata).
+- Fixed issue when installing dev dependencies.
+- Added chipmunk tank example (available in examples folder).
+- Improved docs.
+
+Heads up! A major update to Pymunk is on the way that will be released as 
+Pymunk 6.0. It will contain big changes, some of them very API breaking, and 
+it will also drop support for Python 2.
+
 
 Pymunk 5.6.0
 ------------

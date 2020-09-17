@@ -192,7 +192,10 @@ Pymunk has been used or referenced in a number of scientific papers
   "ATLAS CHRONICLE: DEVELOPMENT AND VERIFICATION OF A SYSTEM FOR PROCEDURAL GENERATION OF STORY-DRIVEN GAMES."
 
 * Ipe, Navin. 
-  "Context and event-based cognitive memory constructs for embodied intelligence machines." 
+  "Context and event-based cognitive memory constructs for embodied intelligence machines."
+   
+* Ipe, Navin. 
+  "An In-Memory Physics Environment as a World Model for Robot Motion Planning." 
   (2020).
 
 * Li, Yunzhu, Antonio Torralba, Animashree Anandkumar, Dieter Fox, and Animesh Garg. 

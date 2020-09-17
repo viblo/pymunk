@@ -27,6 +27,7 @@ def main():
     - Download dists from github release and appveyor
     - Upload files on pypi (> python -m twine upload dist/*)
     - Update Pymunk entry on pygame.org
+    - Update Pymunk on conda-forge
     - Possibly: Make release announcement at the chipmunk forum
     - Possibly: make release announcement on the pyglet list
     - Possibly: make release announcement on the pygame list
