@@ -46,7 +46,7 @@ class ContactPointSet(object):
 
     @classmethod
     def _from_cp(cls, _points):
-        normal = Vec2d(_points.normal)
+        normal = Vec2d._fromcffi(_points.normal)
 
         points = []
         for i in range(_points.count):
