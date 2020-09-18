@@ -29,6 +29,17 @@ Changes:
 - New callbacks on Constraint object, pre_solve and post_solve, which can be used to run a function just before or after the solver on the constraint.
 - Return only a PointQueryInfo object from Shape.point_query, not (distance, PointQueryInfo). 
 - Ve2d no longer accept objects that have .x and .y properties, but do not support __getitem__ for [0] & [1] in the constructor. If you have such an obects, rewrite Vec2d(myobj) to Vec2d(myobj.x, myobj.y). Dont expect anyone to be affected.
+- Vec2d is now Immutable:
+  - removed __setitem__ (you can not do Vec2d(1,2)[1] = 3 now)
+  - not possible to set the length property (Vec2d(1,2).length = 10)
+  - removed Vec2d.get_length method (use the length property instead)
+  - removed Vec2d.rotate() method. use Vec2d.rotated instead
+  - removed Vec2d.rotate_degrees() method. use Vec2d.rotated_degrees instead
+  - not possible to set the angle property (Vec2d(1,2).angle = 3.14)
+  - removed Vec2d.get_angle method (use the angle property instead)
+  - not possible to set the angle_degrees property (Vec2d(1,2).angle_degrees = 180)
+  - removed Vec2d.get_angle_degrees method (use the angle_degrees property instead)
+
 
 Pymunk 5.7.0
 ------------

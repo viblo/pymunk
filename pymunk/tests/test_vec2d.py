@@ -23,8 +23,8 @@ class UnitTestVec2d(unittest.TestCase):
         v = Vec2d(111, 222)
         self.assertTrue(v.x == 111 and v.y == 222)
         v.x = 333
-        v[1] = 444
-        self.assertTrue(v[0] == 333 and v[1] == 444)
+        with self.assertRaises(TypeError):
+            v[1] = 444  # type: ignore
 
         v = Vec2d(3, 5)
         self.assertEqual(len(v), 2)
@@ -63,51 +63,55 @@ class UnitTestVec2d(unittest.TestCase):
         v = Vec2d(3, 4)
         self.assertTrue(v.length == 5)
         self.assertTrue(v.get_length_sqrd() == 25)
-        self.assertTrue(v.normalize_return_length() == 5)
-        self.assertAlmostEqual(v.length, 1)
-        v.length = 5
-        self.assertTrue(v == Vec2d(3, 4))
+        normalized, length = v.normalized_and_length()
+        self.assertEqual(normalized, Vec2d(0.6, 0.8))
+        self.assertEqual(length, 5)
+        normalized, length = Vec2d(0, 0).normalized_and_length()
+        self.assertEqual(normalized, Vec2d(0, 0))
+        self.assertEqual(length, 0)
+        with self.assertRaises(AttributeError):
+            v.length = 5  # type: ignore
         v2 = Vec2d(10, -2)
-        self.assertTrue(v.get_distance(v2) == (v - v2).get_length())
+        self.assertEqual(v.get_distance(v2), (v - v2).length)
 
     def testAnglesDegrees(self):
         v = Vec2d(0, 3)
         self.assertEqual(v.angle_degrees, 90)
         v2 = Vec2d(v)
-        v.rotate_degrees(-90)
+        v = v.rotated_degrees(-90)
         self.assertEqual(v.get_angle_degrees_between(v2), 90)
-        v2.angle_degrees -= 90
+        v2 = v2.rotated_degrees(-90)
         self.assertEqual(v.length, v2.length)
-        self.assertEqual(v2.angle_degrees, 0)
-        self.assertEqual(v2, [3, 0])
+        self.assertAlmostEqual(v2.angle_degrees, 0, 10)
+        self.assertAlmostEqual(v2.x, 3)
+        self.assertAlmostEqual(v2.y, 0)
         self.assertTrue((v - v2).length < 0.00001)
         self.assertEqual(v.length, v2.length)
-        v2.rotate_degrees(300)
+        v2 = v2.rotated_degrees(300)
         self.assertAlmostEqual(
             v.get_angle_degrees_between(v2), -60
         )  # Allow a little more error than usual (floats..)
-        v2.rotate_degrees(v2.get_angle_degrees_between(v))
-        angle = v.get_angle_degrees_between(v2)
+        v2 = v2.rotated_degrees(v2.get_angle_degrees_between(v))
         self.assertAlmostEqual(v.get_angle_degrees_between(v2), 0)
 
     def testAnglesRadians(self):
         v = Vec2d(0, 3)
         self.assertEqual(v.angle, math.pi / 2.0)
         v2 = Vec2d(v)
-        v.rotate(-math.pi / 2.0)
+        v = v.rotated(-math.pi / 2.0)
         self.assertEqual(v.get_angle_between(v2), math.pi / 2.0)
-        v2.angle -= math.pi / 2.0
+        v2 = v2.rotated(-math.pi / 2.0)
         self.assertEqual(v.length, v2.length)
-        self.assertEqual(v2.angle, 0)
-        self.assertEqual(v2, [3, 0])
+        self.assertAlmostEqual(v2.angle, 0)
+        self.assertEqual(v2.x, 3)
+        self.assertAlmostEqual(v2.y, 0)
         self.assertTrue((v - v2).length < 0.00001)
         self.assertEqual(v.length, v2.length)
-        v2.rotate(math.pi / 3.0 * 5.0)
+        v2 = v2.rotated(math.pi / 3.0 * 5.0)
         self.assertAlmostEqual(
             v.get_angle_between(v2), -math.pi / 3.0
         )  # Allow a little more error than usual (floats..)
-        v2.rotate(v2.get_angle_between(v))
-        angle = v.get_angle_between(v2)
+        v2 = v2.rotated(v2.get_angle_between(v))
         self.assertAlmostEqual(v.get_angle_between(v2), 0)
 
     def testHighLevel(self):
@@ -139,17 +143,16 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertTrue(int_vec != 5)
         self.assertTrue(int_vec != [3, -2, -5])
 
-    def testInplace(self):
+    def testImmuatable(self):
         inplace_vec = Vec2d(5, 13)
         inplace_ref = inplace_vec
-        inplace_src = Vec2d(inplace_vec)
         inplace_vec *= 0.5
         inplace_vec += 0.5
-        inplace_vec /= (3, 6)
+        inplace_vec -= 3.5
+        inplace_vec /= (0.1, 0.5)
         inplace_vec += Vec2d(-1, -1)
-        alternate = (inplace_src * 0.5 + 0.5) / Vec2d(3, 6) + [-1, -1]
-        self.assertEqual(inplace_vec, inplace_ref)
-        self.assertEqual(inplace_vec, alternate)
+        self.assertEqual(inplace_ref, Vec2d(5, 13))
+        self.assertEqual(inplace_vec, Vec2d(-6, 6))
 
     def testPickle(self):
         testvec = Vec2d(5, 0.3)
