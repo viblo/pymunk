@@ -21,7 +21,7 @@ class PickleMixin:
         modules with this class.
         """
 
-        d: dict = {
+        d: Dict[str, List[Any]] = {
             "init": [],  # arguments for init
             "general": [],  # general attributes
             "custom": [],  # custom attributes set by user
@@ -46,7 +46,7 @@ class PickleMixin:
         modules with this class.
         """
 
-        init_attrs: list = []
+        # init_attrs: List = []
 
         init_args = [v for k, v in state["init"]]
         self.__init__(*init_args)  # type: ignore

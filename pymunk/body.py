@@ -200,7 +200,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
             cp_constraints = []
 
             @ffi.callback("cpBodyConstraintIteratorFunc")
-            def cf2(cp_body, cp_constraint, _):
+            def cf2(cp_body, cp_constraint, _: None) -> None:
                 cp_constraints.append(cp_constraint)
 
             cp.cpBodyEachConstraint(cp_body, cf2, ffi.NULL)

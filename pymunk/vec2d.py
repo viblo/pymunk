@@ -55,17 +55,20 @@ __docformat__ = "reStructuredText"
 
 import math
 import operator
-from collections.abc import Sequence
 from typing import (
     TYPE_CHECKING,
     Any,
+    Callable,
     Generator,
     List,
     Optional,
     Sequence,
     Tuple,
+    Type,
+    TypeVar,
     Union,
     cast,
+    overload,
 )
 
 # from ._types import _Vec2dOrFloat, _Vec2dOrTuple
@@ -73,8 +76,10 @@ _Vec2dOrFloat = Any
 _Vec2dOrTuple = Any
 __all__ = ["Vec2d"]
 
+# _T_co = TypeVar('T', Sequence[float], covariant=True)
 
-class Vec2d(object):
+
+class Vec2d(Sequence[float]):
     """2d vector class, supports vector and scalar operators, and also
     provides some high level functions.
     """
@@ -85,37 +90,67 @@ class Vec2d(object):
     y: float
 
     @staticmethod
-    def _fromcffi(p) -> "Vec2d":
+    def _fromcffi(p: Any) -> "Vec2d":
         """Used as a speedy way to create Vec2ds internally in pymunk."""
         v = Vec2d.__new__(Vec2d)
         v.x = p.x
         v.y = p.y
         return v
 
-    def __init__(self, x_or_pair=None, y=None):
+    @overload
+    def __init__(self) -> None:
+        ...
+
+    @overload
+    def __init__(self, x_or_pair: Sequence[float]) -> None:
+        ...
+
+    @overload
+    def __init__(self, x_or_pair: float, y: float) -> None:
+        ...
+
+    def __init__(
+        self,
+        x_or_pair: Union[Sequence[float], float, None] = None,
+        y: Optional[float] = None,
+    ) -> None:
         if x_or_pair is not None:
             if y is None:
                 if isinstance(x_or_pair, Vec2d):
                     self.x = x_or_pair.x
                     self.y = x_or_pair.y
-                else:
+                elif isinstance(x_or_pair, Sequence):
                     self.x = x_or_pair[0]
                     self.y = x_or_pair[1]
+                else:
+                    raise TypeError
             else:
+                assert isinstance(x_or_pair, float)
                 self.x = x_or_pair
                 self.y = y
         else:
             self.x = 0
             self.y = 0
 
-    def __getitem__(self, i):
+    @overload
+    def __getitem__(self, s: int) -> float:
+        ...
+
+    @overload
+    def __getitem__(self, s: slice) -> Sequence[float]:
+        ...
+
+    def __getitem__(self, i: Union[int, slice]) -> Union[float, Sequence[float]]:
         if i == 0:
             return self.x
         elif i == 1:
             return self.y
-        raise IndexError()
+        if isinstance(i, int):
+            raise IndexError()
+        else:
+            raise TypeError()
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[float, None, None]:
         yield self.x
         yield self.y
 
@@ -127,13 +162,13 @@ class Vec2d(object):
         return "Vec2d(%s, %s)" % (self.x, self.y)
 
     # Comparison
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         if hasattr(other, "__getitem__") and len(other) == 2:
             return self.x == other[0] and self.y == other[1]
         else:
             return False
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self, other: Any) -> bool:
         if hasattr(other, "__getitem__") and len(other) == 2:
             return self.x != other[0] or self.y != other[1]
         else:
@@ -143,18 +178,24 @@ class Vec2d(object):
         return self.x != 0.0 or self.y != 0.0
 
     # Generic operator handlers
-    def _o2(self, other, f):
+    def _o2(
+        self,
+        other: Union["Vec2d", Sequence[float], float],
+        f: Callable[[float, float], float],
+    ) -> "Vec2d":
         "Any two-operator operation where the left operand is a Vec2d"
         if isinstance(other, Vec2d):
             return Vec2d(f(self.x, other.x), f(self.y, other.y))
-        elif hasattr(other, "__getitem__"):
+        elif isinstance(other, Sequence):
             return Vec2d(f(self.x, other[0]), f(self.y, other[1]))
         else:
             return Vec2d(f(self.x, other), f(self.y, other))
 
-    def _r_o2(self, other, f):
+    def _r_o2(
+        self, other: Union[Sequence[float], float], f: Callable[[float, float], float]
+    ) -> "Vec2d":
         "Any two-operator operation where the right operand is a Vec2d"
-        if hasattr(other, "__getitem__"):
+        if isinstance(other, Sequence):
             return Vec2d(f(other[0], self.x), f(other[1], self.y))
         else:
             return Vec2d(f(other, self.x), f(other, self.y))
@@ -212,16 +253,53 @@ class Vec2d(object):
 
     # Modulo
     def __mod__(self, other: _Vec2dOrFloat) -> "Vec2d":
+        """Elementwise modulus %.
+
+        >>> Vec2d(20, 30) % 6
+        Vec2d(2, 0)
+        >>> Vec2d(20, 30) % (6, 27)
+        Vec2d(2, 3)
+        >>> Vec2d(20, 30) % Vec2d(6, 27)
+        Vec2d(2, 3)
+
+        """
         return self._o2(other, operator.mod)
 
     def __rmod__(self, other: _Vec2dOrFloat) -> "Vec2d":
+        """Elementwise modulus %, accepting a Vec2d as right operand
+
+        >>> (20, 30) % Vec2d(6, 27)
+        Vec2d(2, 3)
+        >>> 30 % Vec2d(27, 28)
+        Vec2d(3, 2)
+        """
         return self._r_o2(other, operator.mod)
 
-    def __divmod__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, divmod)
+    def __divmod__(
+        self, other: Union[Sequence[float], float]
+    ) -> Tuple["Vec2d", "Vec2d"]:
+        """Elementwise divmod
 
-    def __rdivmod__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._r_o2(other, divmod)
+        >>> divmod( Vec2d(20, 30), Vec2d(6, 27) )
+        (Vec2d(3, 2), Vec2d(1, 3))
+        >>> divmod( Vec2d(20, 30), (6, 27) )
+        (Vec2d(3, 2), Vec2d(1, 3))
+        >>> divmod( Vec2d(20, 30), 6)
+        (Vec2d(3, 2), Vec2d(5, 0))
+
+        """
+        if isinstance(other, Sequence):
+            return Vec2d(divmod(self.x, other[0])), Vec2d(divmod(self.y, other[1]))
+        return Vec2d(divmod(self.x, other)), Vec2d(divmod(self.y, other))
+
+    def __rdivmod__(self, other: Sequence[float]) -> Tuple["Vec2d", "Vec2d"]:
+        """Elementwise divmod (with Vec2d as right hand side argument)
+
+        >>> divmod( (20, 30), Vec2d(6, 27) )
+        (Vec2d(3, 2), Vec2d(1, 3))
+
+        """
+        return Vec2d(divmod(other[0], self.x)), Vec2d(divmod(other[1], self.y))
 
     # Exponentation
     def __pow__(self, other: _Vec2dOrFloat) -> "Vec2d":
@@ -299,7 +377,7 @@ class Vec2d(object):
         """
         return math.sqrt(self.x ** 2 + self.y ** 2)
 
-    def scale_to_length(self, length: float):
+    def scale_to_length(self, length: float) -> "Vec2d":
         """Return a copy of this vector scaled to the given length.
 
         >>> Vec2d(10, 20).scale_to_length(20)
@@ -386,7 +464,7 @@ class Vec2d(object):
             return Vec2d(-self.y / length, self.x / length)
         return Vec2d(self)
 
-    def dot(self, other: _Vec2dOrTuple) -> float:
+    def dot(self, other: Sequence[float]) -> float:
         """The dot product between the vector and other vector
             v1.dot(v2) -> v1.x*v2.x + v1.y*v2.y
 
@@ -394,14 +472,14 @@ class Vec2d(object):
         """
         return float(self.x * other[0] + self.y * other[1])
 
-    def get_distance(self, other: _Vec2dOrTuple) -> float:
+    def get_distance(self, other: Sequence[float]) -> float:
         """The distance between the vector and other vector
 
         :return: The distance
         """
         return math.sqrt((self.x - other[0]) ** 2 + (self.y - other[1]) ** 2)
 
-    def get_dist_sqrd(self, other: _Vec2dOrTuple) -> float:
+    def get_dist_sqrd(self, other: Sequence[float]) -> float:
         """The squared distance between the vector and other vector
         It is more efficent to use this method than to call get_distance()
         first and then do a sqrt() on the result.
@@ -410,7 +488,7 @@ class Vec2d(object):
         """
         return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
 
-    def projection(self, other: _Vec2dOrTuple):
+    def projection(self, other: Sequence[float]) -> "Vec2d":
         """Project this vector on top of other vector"""
         other_length_sqrd = other[0] * other[0] + other[1] * other[1]
         if other_length_sqrd == 0.0:
@@ -419,7 +497,7 @@ class Vec2d(object):
         new_length = projected_length_times_other_length / other_length_sqrd
         return Vec2d(other[0] * new_length, other[1] * new_length)
 
-    def cross(self, other: _Vec2dOrTuple):
+    def cross(self, other: Sequence[float]) -> float:
         """The cross product between the vector and other vector
             v1.cross(v2) -> v1.x*v2.y - v1.y*v2.x
 
@@ -488,7 +566,7 @@ class Vec2d(object):
         )
 
     # Pickle
-    def __reduce__(self):
+    def __reduce__(self) -> Tuple[Type["Vec2d"], Tuple[float, float]]:
         callable = Vec2d
         args = (self.x, self.y)
         return (callable, args)

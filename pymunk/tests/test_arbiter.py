@@ -5,13 +5,13 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestArbiter(unittest.TestCase):
-    def testRestitution(self):
+    def testRestitution(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
         b1 = p.Body(1, 1)
         c1 = p.Circle(b1, 10)
-        b1.position = 0, 25
+        b1.position = Vec2d(0, 25)
         c1.collision_type = 1
         c1.elasticity = 0.6
 

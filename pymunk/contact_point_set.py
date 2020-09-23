@@ -1,5 +1,7 @@
 __docformat__ = "reStructuredText"
 
+from typing import Any, List, Sequence, Type
+
 from .vec2d import Vec2d
 
 
@@ -16,7 +18,9 @@ class ContactPoint(object):
 
     __slots__ = ("point_a", "point_b", "distance")
 
-    def __init__(self, point_a, point_b, distance: float) -> None:
+    def __init__(
+        self, point_a: Sequence[float], point_b: Sequence[float], distance: float
+    ) -> None:
         self.point_a = point_a
         self.point_b = point_b
         self.distance = distance
@@ -37,7 +41,7 @@ class ContactPointSet(object):
 
     __slots__ = ("normal", "points")
 
-    def __init__(self, normal, points) -> None:
+    def __init__(self, normal: Sequence[float], points: List[ContactPoint]) -> None:
         self.normal = normal
         self.points = points
 
@@ -45,7 +49,7 @@ class ContactPointSet(object):
         return "ContactPointSet(normal={}, points={})".format(self.normal, self.points)
 
     @classmethod
-    def _from_cp(cls, _points):
+    def _from_cp(cls: Type, _points: Any) -> "ContactPointSet":
         normal = Vec2d._fromcffi(_points.normal)
 
         points = []

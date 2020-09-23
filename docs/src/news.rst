@@ -39,6 +39,8 @@ Changes:
   - removed Vec2d.get_angle method (use the angle property instead)
   - not possible to set the angle_degrees property (Vec2d(1,2).angle_degrees = 180)
   - removed Vec2d.get_angle_degrees method (use the angle_degrees property instead)
+  - removed Vec2d.normalize_return_length method (use Vec2d.length and Vec2d.normalized(), or the new Vec2d.normalized_and_length method)
+  - removed __iadd__, __isub__, __imul__, __ifloordiv__, __itruediv__)
 
 
 Pymunk 5.7.0

@@ -56,11 +56,11 @@ class CollisionHandler(object):
 
         self._data: dict = {}
 
-    def _reset(self):
-        def allways_collide(arb, space, data):
+    def _reset(self) -> None:
+        def allways_collide(arb: Arbiter, space: "Space", data: None) -> bool:
             return True
 
-        def do_nothing(arb, space, data):
+        def do_nothing(arb: Arbiter, space: "Space", data: None) -> None:
             return
 
         self.begin = allways_collide
@@ -81,7 +81,7 @@ class CollisionHandler(object):
 
     def _set_begin(self, func: Callable[[Arbiter, "Space", Any], bool]) -> None:
         @ffi.callback("cpCollisionBeginFunc")
-        def cf(_arb, _space, _):
+        def cf(_arb: Any, _space: Any, _: None) -> bool:
             x = func(Arbiter(_arb, self._space), self._space, self._data)
             if isinstance(x, bool):
                 return x
@@ -125,7 +125,7 @@ class CollisionHandler(object):
 
     def _set_pre_solve(self, func: _CollisionCallbackBool) -> None:
         @ffi.callback("cpCollisionPreSolveFunc")
-        def cf(_arb, _space, _):
+        def cf(_arb: Any, _space: Any, _: None) -> bool:
             x = func(Arbiter(_arb, self._space), self._space, self._data)
             if isinstance(x, int):
                 return x
@@ -169,7 +169,7 @@ class CollisionHandler(object):
 
     def _set_post_solve(self, func: _CollisionCallbackNoReturn) -> None:
         @ffi.callback("cpCollisionPostSolveFunc")
-        def cf(_arb, _space, _):
+        def cf(_arb: Any, _space: Any, _: None) -> None:
             func(Arbiter(_arb, self._space), self._space, self._data)
 
         self._post_solve = cf
@@ -195,7 +195,7 @@ class CollisionHandler(object):
 
     def _set_separate(self, func: _CollisionCallbackNoReturn) -> None:
         @ffi.callback("cpCollisionSeparateFunc")
-        def cf(_arb, _space, _):
+        def cf(_arb: Any, _space: Any, _: None) -> None:
             try:
                 # this try is needed since a separate callback will be called
                 # if a colliding object is removed, regardless if its in a

@@ -67,7 +67,7 @@ __all__ = [
     "SimpleMotor",
 ]
 
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 if TYPE_CHECKING:
     from .body import Body
@@ -105,11 +105,11 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
     _post_solve_func: Optional[Callable[["Constraint", "Space"], None]] = None
     _cp_post_solve_func: Any = ffi.NULL
 
-    def __init__(self, constraint=None):
+    def __init__(self, constraint=None) -> None:
         self._constraint = constraint
 
     def _init(self, a: "Body", b: "Body", _constraint: Any) -> None:
-        def constraintfree(cp_constraint):
+        def constraintfree(cp_constraint: Any) -> None:
             cp_space = cp.cpConstraintGetSpace(cp_constraint)
             if cp_space != ffi.NULL:
                 cp.cpSpaceRemoveConstraint(cp_space, cp_constraint)
@@ -245,7 +245,7 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
             @ffi.callback("cpConstraintPreSolveFunc")
             def _impl(cp_constraint, cp_space):
                 assert self.a.space is not None
-                return func(self, self.a.space)
+                func(self, self.a.space)
 
             self._cp_pre_solve_func = _impl
 
@@ -279,7 +279,8 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
             @ffi.callback("cpConstraintPostSolveFunc")
             def _impl(cp_constraint, cp_space):
                 assert self.a.space is not None
-                return func(self, self.a.space)
+
+                func(self, self.a.space)
 
             self._cp_post_solve_func = _impl
 
@@ -328,7 +329,13 @@ class PinJoint(Constraint):
 
     _pickle_attrs_init = Constraint._pickle_attrs_init + ["anchor_a", "anchor_b"]
 
-    def __init__(self, a: "Body", b: "Body", anchor_a=(0, 0), anchor_b=(0, 0)) -> None:
+    def __init__(
+        self,
+        a: "Body",
+        b: "Body",
+        anchor_a: Vec2d = Vec2d(0, 0),
+        anchor_b: Vec2d = Vec2d(0, 0),
+    ) -> None:
         """a and b are the two bodies to connect, and anchor_a and anchor_b are
         the anchor points on those bodies.
 
@@ -345,7 +352,7 @@ class PinJoint(Constraint):
     def _get_anchor_a(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpPinJointGetAnchorA(self._constraint))
 
-    def _set_anchor_a(self, anchor):
+    def _set_anchor_a(self, anchor: Vec2d) -> None:
         cp.cpPinJointSetAnchorA(self._constraint, tuple(anchor))
 
     anchor_a = property(_get_anchor_a, _set_anchor_a)
@@ -353,7 +360,7 @@ class PinJoint(Constraint):
     def _get_anchor_b(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpPinJointGetAnchorB(self._constraint))
 
-    def _set_anchor_b(self, anchor):
+    def _set_anchor_b(self, anchor: Vec2d) -> None:
         cp.cpPinJointSetAnchorB(self._constraint, tuple(anchor))
 
     anchor_b = property(_get_anchor_b, _set_anchor_b)
@@ -382,7 +389,13 @@ class SlideJoint(Constraint):
     ]
 
     def __init__(
-        self, a: "Body", b: "Body", anchor_a, anchor_b, min: float, max: float
+        self,
+        a: "Body",
+        b: "Body",
+        anchor_a: Vec2d,
+        anchor_b: Vec2d,
+        min: float,
+        max: float,
     ):
         """a and b are the two bodies to connect, anchor_a and anchor_b are the
         anchor points on those bodies, and min and max define the allowed
@@ -397,7 +410,7 @@ class SlideJoint(Constraint):
     def _get_anchor_a(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpSlideJointGetAnchorA(self._constraint))
 
-    def _set_anchor_a(self, anchor):
+    def _set_anchor_a(self, anchor: Vec2d) -> None:
         cp.cpSlideJointSetAnchorA(self._constraint, tuple(anchor))
 
     anchor_a = property(_get_anchor_a, _set_anchor_a)
@@ -405,7 +418,7 @@ class SlideJoint(Constraint):
     def _get_anchor_b(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpSlideJointGetAnchorB(self._constraint))
 
-    def _set_anchor_b(self, anchor):
+    def _set_anchor_b(self, anchor: Vec2d) -> None:
         cp.cpSlideJointSetAnchorB(self._constraint, tuple(anchor))
 
     anchor_b = property(_get_anchor_b, _set_anchor_b)

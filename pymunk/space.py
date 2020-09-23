@@ -8,10 +8,12 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
+    Dict,
     Hashable,
     List,
     Optional,
     Sequence,
+    Set,
     Tuple,
     Union,
 )
@@ -95,19 +97,19 @@ class Space(PickleMixin, object):
             cp_space = cp.cpSpaceNew()
             freefunc = cp.cpSpaceFree
 
-        def spacefree(cp_space):
+        def spacefree(cp_space: Any) -> None:
             logging.debug("spacefree start %s", cp_space)
             cp_shapes = []
 
             @ffi.callback("cpSpaceShapeIteratorFunc")
-            def cf(cp_shape, data):
+            def cf1(cp_shape: Any, data: None) -> None:
                 # print("spacefree shapecallback")
                 cp_shapes.append(cp_shape)
                 # cp_space = cp.cpShapeGetSpace(cp_shape)
                 # cp.cpSpaceRemoveShape(cp_space, cp_shape)
 
             # print("spacefree shapes", cp_space)
-            cp.cpSpaceEachShape(cp_space, cf, ffi.NULL)
+            cp.cpSpaceEachShape(cp_space, cf1, ffi.NULL)
             for cp_shape in cp_shapes:
                 logging.debug("spacefree remove shape %s %s", cp_space, cp_shape)
                 cp.cpSpaceRemoveShape(cp_space, cp_shape)
@@ -116,11 +118,11 @@ class Space(PickleMixin, object):
             cp_constraints = []
 
             @ffi.callback("cpSpaceConstraintIteratorFunc")
-            def cf(cp_constraint, data):
+            def cf2(cp_constraint: Any, data: None) -> None:
                 # print("spacefree shapecallback")
                 cp_constraints.append(cp_constraint)
 
-            cp.cpSpaceEachConstraint(cp_space, cf, ffi.NULL)
+            cp.cpSpaceEachConstraint(cp_space, cf2, ffi.NULL)
             for cp_constraint in cp_constraints:
                 logging.debug(
                     "spacefree remove constraint %s %s", cp_space, cp_constraint
@@ -130,11 +132,11 @@ class Space(PickleMixin, object):
             cp_bodies = []
 
             @ffi.callback("cpSpaceBodyIteratorFunc")
-            def cf(cp_body, data):
+            def cf3(cp_body: Any, data: None) -> None:
                 # print("spacefree shapecallback")
                 cp_bodies.append(cp_body)
 
-            cp.cpSpaceEachBody(cp_space, cf, ffi.NULL)
+            cp.cpSpaceEachBody(cp_space, cf3, ffi.NULL)
             for cp_body in cp_bodies:
                 logging.debug("spacefree remove body %s %s", cp_space, cp_body)
                 cp.cpSpaceRemoveBody(cp_space, cp_body)
@@ -144,20 +146,22 @@ class Space(PickleMixin, object):
 
         self._space = ffi.gc(cp_space, spacefree)
 
-        self._handlers: dict = {}  # To prevent the gc to collect the callbacks.
+        self._handlers: Dict[
+            Union[Tuple[int, int], int, None], CollisionHandler
+        ] = {}  # To prevent the gc to collect the callbacks.
 
-        self._post_step_callbacks: dict = {}
-        self._removed_shapes: dict = {}
+        self._post_step_callbacks: Dict[Hashable, Callable[[], None]] = {}
+        self._removed_shapes: Dict[int, Shape] = {}
 
-        self._shapes: dict = {}
-        self._bodies: dict = {}
+        self._shapes: Dict[int, Shape] = {}
+        self._bodies: Dict[Body, None] = {}
         self._static_body: Optional[Body] = None
-        self._constraints: dict = {}
+        self._constraints: Dict[Constraint, None] = {}
 
         self._locked = False
 
-        self._add_later: set = set()
-        self._remove_later: set = set()
+        self._add_later: Set[Union[Body, Shape, Constraint]] = set()
+        self._remove_later: Set[Union[Body, Shape, Constraint]] = set()
 
     def _get_self(self) -> "Space":
         return self
@@ -586,7 +590,7 @@ class Space(PickleMixin, object):
         self._remove_later.clear()
 
         for key in self._post_step_callbacks:
-            self._post_step_callbacks[key](self)
+            self._post_step_callbacks[key]()
 
         self._post_step_callbacks = {}
 
@@ -610,7 +614,6 @@ class Space(PickleMixin, object):
 
         :rtype: :py:class:`CollisionHandler`
         """
-
         key = min(collision_type_a, collision_type_b), max(
             collision_type_a, collision_type_b
         )
@@ -709,8 +712,8 @@ class Space(PickleMixin, object):
         if key in self._post_step_callbacks:
             return False
 
-        def f(x):
-            callback_function(self, key, *args, **kwargs)
+        def f() -> None:
+            callback_function(self, key, args, kwargs)
 
         self._post_step_callbacks[key] = f
         return True
@@ -759,19 +762,18 @@ class Space(PickleMixin, object):
         )
         return query_hits
 
-    def _get_shape(self, _shape: Any) -> Optional["Shape"]:
+    def _get_shape(self, _shape: Any) -> Optional[Shape]:
         if not bool(_shape):
             return None
 
         shapeid = cp.cpShapeGetUserData(_shape)
         # return self._shapes[hashid_private]
+
         if shapeid in self._shapes:
-            shape = self._shapes[shapeid]
+            return self._shapes[shapeid]
         elif shapeid in self._removed_shapes:
-            shape = self._removed_shapes[shapeid]
-        else:
-            shape = None
-        return shape
+            return self._removed_shapes[shapeid]
+        return None
 
     def point_query_nearest(
         self, point, max_distance: float, shape_filter: ShapeFilter
@@ -842,7 +844,7 @@ class Space(PickleMixin, object):
         query_hits: List[SegmentQueryInfo] = []
 
         @ffi.callback("cpSpaceSegmentQueryFunc")
-        def cf(_shape, point, normal, alpha, data):
+        def cf(_shape: Any, point: Any, normal: Any, alpha: float, data: None) -> None:
             shape = self._get_shape(_shape)
             p = SegmentQueryInfo(
                 shape, Vec2d._fromcffi(point), Vec2d._fromcffi(normal), alpha
@@ -907,8 +909,9 @@ class Space(PickleMixin, object):
         query_hits = []
 
         @ffi.callback("cpSpaceBBQueryFunc")
-        def cf(_shape, data):
+        def cf(_shape: Any, data: None) -> None:
             shape = self._get_shape(_shape)
+            assert shape is not None
             nonlocal query_hits
             query_hits.append(shape)
 
@@ -931,7 +934,7 @@ class Space(PickleMixin, object):
         query_hits = []
 
         @ffi.callback("cpSpaceShapeQueryFunc")
-        def cf(_shape, _points, _data):
+        def cf(_shape: Any, _points: Any, _data: None) -> None:
             found_shape = self._get_shape(_shape)
             point_set = ContactPointSet._from_cp(_points)
             info = ShapeQueryInfo(found_shape, point_set)
@@ -971,7 +974,7 @@ class Space(PickleMixin, object):
             for shape in self.shapes:
                 options.draw_shape(shape)
 
-    def __getstate__(self) -> dict:
+    def __getstate__(self) -> Dict[str, List[Tuple[str, Any]]]:
         """Return the state of this object
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
@@ -991,7 +994,7 @@ class Space(PickleMixin, object):
 
         handlers = []
         for k, v in self._handlers.items():
-            h = {}
+            h: Dict[str, Any] = {}
             if v._begin_base != None:
                 h["_begin_base"] = v._begin_base
             if v._pre_solve_base != None:
@@ -1006,7 +1009,7 @@ class Space(PickleMixin, object):
 
         return d
 
-    def __setstate__(self, state: dict) -> None:
+    def __setstate__(self, state: Dict[str, List[Tuple[str, Any]]]) -> None:
         """Unpack this object from a saved state.
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
@@ -1038,13 +1041,13 @@ class Space(PickleMixin, object):
             elif k == "constraints":
                 self.add(*v)
             elif k == "_handlers":
-                for k, hd in v:
-                    if k == None:
+                for k2, hd in v:
+                    if k2 == None:
                         h = self.add_default_collision_handler()
-                    elif isinstance(k, tuple):
-                        h = self.add_collision_handler(k[0], k[1])
+                    elif isinstance(k2, tuple):
+                        h = self.add_collision_handler(k2[0], k2[1])
                     else:
-                        h = self.add_wildcard_collision_handler(k)
+                        h = self.add_wildcard_collision_handler(k2)
                     if "_begin_base" in hd:
                         h.begin = hd["_begin_base"]
                     if "_pre_solve_base" in hd:

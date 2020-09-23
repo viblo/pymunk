@@ -1,14 +1,16 @@
 import doctest
 import unittest
+import unittest.suite
+from typing import Any, Iterator
 
 # import sys
 # import os
 
 
-def main():
-    def list_of_tests_gen(s):
+def main() -> None:
+    def list_of_tests_gen(s: Any) -> Iterator[Any]:
         for test in s:
-            if unittest.suite._isnotsuite(test):
+            if unittest.suite._isnotsuite(test):  # type: ignore
                 yield test
             else:
                 for t in list_of_tests_gen(test):
@@ -19,7 +21,7 @@ def main():
     path = os.path.dirname(os.path.abspath(__file__))
     suite = unittest.TestLoader().discover(path)
 
-    doctests.load_tests(None, suite, None)
+    doctests.load_tests(suite)
 
     wasSuccessful = True
 

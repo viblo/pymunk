@@ -62,7 +62,7 @@ __all__ = [
     "SpaceDebugDrawOptions",
 ]
 
-from typing import Tuple
+from typing import Sequence, Tuple, cast
 
 from . import _chipmunk_cffi
 from ._types import _Vec2dOrTuple
@@ -133,7 +133,9 @@ def moment_for_circle(
 
     (A solid circle has an inner radius of 0)
     """
-    return cp.cpMomentForCircle(mass, inner_radius, outer_radius, tuple(offset))
+    return cast(
+        float, cp.cpMomentForCircle(mass, inner_radius, outer_radius, tuple(offset))
+    )
 
 
 def moment_for_segment(
@@ -143,7 +145,7 @@ def moment_for_segment(
 
     The endpoints a and b are relative to the body
     """
-    return cp.cpMomentForSegment(mass, tuple(a), tuple(b), radius)
+    return cast(float, cp.cpMomentForSegment(mass, tuple(a), tuple(b), radius))
 
 
 def moment_for_box(mass: float, size: Tuple[float, float]) -> float:
@@ -151,39 +153,46 @@ def moment_for_box(mass: float, size: Tuple[float, float]) -> float:
 
     size should be a tuple of (width, height)
     """
-    return cp.cpMomentForBox(mass, size[0], size[1])
+    return cast(float, cp.cpMomentForBox(mass, size[0], size[1]))
 
 
-def moment_for_poly(mass, vertices, offset=(0, 0), radius=0):
+def moment_for_poly(
+    mass: float,
+    vertices: Sequence[Sequence[float]],
+    offset: Sequence[float] = (0, 0),
+    radius: float = 0,
+) -> float:
     """Calculate the moment of inertia for a solid polygon shape.
 
     Assumes the polygon center of gravity is at its centroid. The offset is
     added to each vertex.
     """
-    vs = list(map(tuple, vertices))
-    return cp.cpMomentForPoly(mass, len(vertices), vs, tuple(offset), radius)
+    vs = [tuple(v) for v in vertices]
+    return cast(
+        float, cp.cpMomentForPoly(mass, len(vertices), vs, tuple(offset), radius)
+    )
 
 
 def area_for_circle(inner_radius: float, outer_radius: float) -> float:
     """Area of a hollow circle."""
-    return cp.cpAreaForCircle(inner_radius, outer_radius)
+    return cast(float, cp.cpAreaForCircle(inner_radius, outer_radius))
 
 
-def area_for_segment(a: Tuple[float, float], b, radius: float) -> float:
+def area_for_segment(a: Sequence[float], b: Sequence[float], radius: float) -> float:
     """Area of a beveled segment.
 
     (Will always be zero if radius is zero)
     """
-    return cp.cpAreaForSegment(tuple(a), tuple(b), radius)
+    return cast(float, cp.cpAreaForSegment(tuple(a), tuple(b), radius))
 
 
-def area_for_poly(vertices, radius: float = 0):
+def area_for_poly(vertices: Sequence[Sequence[float]], radius: float = 0) -> float:
     """Signed area of a polygon shape.
 
     Returns a negative number for polygons with a clockwise winding.
     """
-    vs = list(map(tuple, vertices))
-    return cp.cpAreaForPoly(len(vertices), vs, radius)
+    vs = [tuple(v) for v in vertices]
+    return cast(float, cp.cpAreaForPoly(len(vertices), vs, radius))
 
 
 # del cp, ct, u
