@@ -54,6 +54,7 @@ More examples::
 __docformat__ = "reStructuredText"
 
 import math
+import numbers
 import operator
 from typing import (
     TYPE_CHECKING,
@@ -125,7 +126,7 @@ class Vec2d(Sequence[float]):
                 else:
                     raise TypeError
             else:
-                assert isinstance(x_or_pair, float)
+                assert isinstance(x_or_pair, numbers.Real)
                 self.x = x_or_pair
                 self.y = y
         else:

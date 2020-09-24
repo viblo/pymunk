@@ -51,7 +51,7 @@ Troubleshooting?????
 
 Check that no files are named pymunk.py
 
-Check that conda install works_
+Check that conda install works
 https://stackoverflow.com/questions/39811929/package-installed-by-conda-python-cannot-find-it
 
 Advanced - Android Install
