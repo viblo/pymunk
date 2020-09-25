@@ -2,10 +2,9 @@
 realistic looking way.
 """
 import sys
+from typing import List
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
@@ -71,7 +70,7 @@ def main():
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     # walls - the left-top-right walls
-    static = [
+    static: List[pymunk.Shape] = [
         pymunk.Segment(space.static_body, (50, 50), (50, 550), 5),
         pymunk.Segment(space.static_body, (50, 550), (650, 550), 5),
         pymunk.Segment(space.static_body, (650, 550), (650, 50), 5),
@@ -106,14 +105,14 @@ def main():
     while running:
         for event in pygame.event.get():
             if (
-                event.type == QUIT
-                or event.type == KEYDOWN
-                and (event.key in [K_ESCAPE, K_q])
+                event.type == pygame.QUIT
+                or event.type == pygame.KEYDOWN
+                and (event.key in [pygame.K_ESCAPE, pygame.K_q])
             ):
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 start_time = pygame.time.get_ticks()
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "arrows.png")
             elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 end_time = pygame.time.get_ticks()
@@ -121,7 +120,7 @@ def main():
                 diff = end_time - start_time
                 power = max(min(diff, 1000), 10) * 13.5
                 impulse = power * Vec2d(1, 0)
-                impulse.rotate(arrow_body.angle)
+                impulse = impulse.rotated(arrow_body.angle)
                 arrow_body.body_type = pymunk.Body.DYNAMIC
                 arrow_body.apply_impulse_at_world_point(impulse, arrow_body.position)
 
@@ -134,13 +133,13 @@ def main():
         keys = pygame.key.get_pressed()
 
         speed = 2.5
-        if keys[K_UP]:
+        if keys[pygame.K_UP]:
             cannon_body.position += Vec2d(0, 1) * speed
-        if keys[K_DOWN]:
+        if keys[pygame.K_DOWN]:
             cannon_body.position += Vec2d(0, -1) * speed
-        if keys[K_LEFT]:
+        if keys[pygame.K_LEFT]:
             cannon_body.position += Vec2d(-1, 0) * speed
-        if keys[K_RIGHT]:
+        if keys[pygame.K_RIGHT]:
             cannon_body.position += Vec2d(1, 0) * speed
 
         mouse_position = pymunk.pygame_util.from_pygame(
@@ -158,7 +157,7 @@ def main():
 
             pointing_direction = Vec2d(1, 0).rotated(flying_arrow.angle)
             flight_direction = Vec2d(flying_arrow.velocity)
-            flight_speed = flight_direction.normalize_return_length()
+            flight_direction, flight_speed = flight_direction.normalized_and_length()
             dot = flight_direction.dot(pointing_direction)
             # (1-abs(dot)) can be replaced with (1-dot) to make arrows turn
             # around even when fired straight up. Might not be as accurate, but
@@ -174,7 +173,7 @@ def main():
             flying_arrow.angular_velocity *= 0.5
 
         ### Clear screen
-        screen.fill(THECOLORS["black"])
+        screen.fill(pygame.Color("black"))
 
         ### Draw stuff
         space.debug_draw(draw_options)
@@ -186,29 +185,23 @@ def main():
             diff = current_time - start_time
             power = max(min(diff, 1000), 10)
             h = power // 2
-            pygame.draw.line(
-                screen, THECOLORS["red"], (30, 550), (30, 550 - h), 10
-            )
+            pygame.draw.line(screen, pygame.Color("red"), (30, 550), (30, 550 - h), 10)
 
         # Info and flip screen
         screen.blit(
-            font.render(
-                "fps: " + str(clock.get_fps()), 1, THECOLORS["white"]
-            ),
+            font.render("fps: " + str(clock.get_fps()), True, pygame.Color("white")),
             (0, 0),
         )
         screen.blit(
             font.render(
                 "Aim with mouse, hold LMB to powerup, release to fire",
-                1,
-                THECOLORS["darkgrey"],
+                True,
+                pygame.Color("darkgrey"),
             ),
             (5, height - 35),
         )
         screen.blit(
-            font.render(
-                "Press ESC or Q to quit", 1, THECOLORS["darkgrey"]
-            ),
+            font.render("Press ESC or Q to quit", True, pygame.Color("darkgrey")),
             (5, height - 20),
         )
 
