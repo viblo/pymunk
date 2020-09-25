@@ -66,20 +66,20 @@ def main():
 
     ### Physics stuff
     space = pymunk.Space()
-    space.gravity = 0, -1000
+    space.gravity = 0, 1000
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     # walls - the left-top-right walls
     static: List[pymunk.Shape] = [
-        pymunk.Segment(space.static_body, (50, 50), (50, 550), 5),
-        pymunk.Segment(space.static_body, (50, 550), (650, 550), 5),
-        pymunk.Segment(space.static_body, (650, 550), (650, 50), 5),
+        pymunk.Segment(space.static_body, (50, 550), (50, 50), 5),
         pymunk.Segment(space.static_body, (50, 50), (650, 50), 5),
+        pymunk.Segment(space.static_body, (650, 50), (650, 550), 5),
+        pymunk.Segment(space.static_body, (50, 550), (650, 550), 5),
     ]
 
     b2 = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
     static.append(pymunk.Circle(b2, 30))
-    b2.position = 300, 400
+    b2.position = 300, 200
 
     for s in static:
         s.friction = 1.0
@@ -91,13 +91,13 @@ def main():
     cannon_shape = pymunk.Circle(cannon_body, 25)
     cannon_shape.sensor = True
     cannon_shape.color = (255, 50, 50, 255)
-    cannon_body.position = 100, 100
+    cannon_body.position = 100, 500
     space.add(cannon_body, cannon_shape)
 
     arrow_body, arrow_shape = create_arrow()
     space.add(arrow_body, arrow_shape)
 
-    flying_arrows = []
+    flying_arrows: List[pymunk.Body] = []
     handler = space.add_collision_handler(0, 1)
     handler.data["flying_arrows"] = flying_arrows
     handler.post_solve = post_solve_arrow_hit
@@ -151,13 +151,16 @@ def main():
             cannon_shape.radius + 40, 0
         ).rotated(cannon_body.angle)
         arrow_body.angle = cannon_body.angle
+        # print(arrow_body.angle)
 
         for flying_arrow in flying_arrows:
             drag_constant = 0.0002
 
             pointing_direction = Vec2d(1, 0).rotated(flying_arrow.angle)
+            # print(pointing_direction.angle, flying_arrow.angle)
             flight_direction = Vec2d(flying_arrow.velocity)
             flight_direction, flight_speed = flight_direction.normalized_and_length()
+
             dot = flight_direction.dot(pointing_direction)
             # (1-abs(dot)) can be replaced with (1-dot) to make arrows turn
             # around even when fired straight up. Might not be as accurate, but
@@ -165,7 +168,9 @@ def main():
             drag_force_magnitude = (
                 (1 - abs(dot)) * flight_speed ** 2 * drag_constant * flying_arrow.mass
             )
-            arrow_tail_position = Vec2d(-50, 0).rotated(flying_arrow.angle)
+            arrow_tail_position = flying_arrow.position + Vec2d(-50, 0).rotated(
+                flying_arrow.angle
+            )
             flying_arrow.apply_impulse_at_world_point(
                 drag_force_magnitude * -flight_direction, arrow_tail_position
             )
