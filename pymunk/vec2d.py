@@ -126,7 +126,7 @@ class Vec2d(Sequence[float]):
                 else:
                     raise TypeError
             else:
-                assert isinstance(x_or_pair, numbers.Real)
+                x_or_pair = cast(float, x_or_pair)
                 self.x = x_or_pair
                 self.y = y
         else:

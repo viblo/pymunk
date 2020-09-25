@@ -675,7 +675,7 @@ class Space(PickleMixin, object):
 
     def add_post_step_callback(
         self,
-        callback_function: Callable[["Space", Hashable, Any, Any], None],
+        callback_function: Callable[..., None],
         key: Hashable,
         *args: Any,
         **kwargs: Any,
@@ -713,7 +713,7 @@ class Space(PickleMixin, object):
             return False
 
         def f() -> None:
-            callback_function(self, key, args, kwargs)
+            callback_function(self, key, *args, **kwargs)
 
         self._post_step_callbacks[key] = f
         return True

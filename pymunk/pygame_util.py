@@ -68,7 +68,7 @@ When False::
     |
     |      . (3, 3)
     v
-    
+    y
     
 """
 
@@ -80,7 +80,6 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         Typical usage::
 
         >>> import pymunk
-        >>> import pymunk.pygame_util
         >>> surface = pygame.Surface((10,10))
         >>> space = pymunk.Space()
         >>> options = pymunk.pygame_util.DrawOptions(surface)
@@ -90,7 +89,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         you want it drawn in::
 
         >>> c = pymunk.Circle(None, 10)
-        >>> c.color = pygame.color.THECOLORS["pink"]
+        >>> c.color = pygame.Color("pink")
 
         See pygame_util.demo.py for a full example
 
@@ -112,8 +111,8 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         :py:data:`positive_y_is_up` to True. Then the pygame drawing will flip
         the simulation upside down before drawing::
 
-        >>> pygame_util.positive_y_is_up = True
-        >>> body - pymunk.Body()
+        >>> positive_y_is_up = True
+        >>> body = pymunk.Body()
         >>> body.position = (0, 0)
         >>> # Body will be position in bottom left corner
 

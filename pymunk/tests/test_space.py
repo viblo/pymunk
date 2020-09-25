@@ -6,6 +6,7 @@ import pickle
 import sys
 import unittest
 import warnings
+from typing import List
 
 import pymunk as p
 from pymunk import *
@@ -727,12 +728,12 @@ class UnitTestSpace(unittest.TestCase):
 
         self.calls = 0
 
-        def callback(space, key, shapes, test_self):
+        def callback(space: Space, key, shapes: List[Shape], test_self) -> None:
             for shape in shapes:
                 s.remove(shape)
             test_self.calls += 1
 
-        def pre_solve(arb, space, data):
+        def pre_solve(arb: Arbiter, space: Space, data: None) -> bool:
             # note that we dont pass on the whole arbiters object, instead
             # we take only the shapes.
             space.add_post_step_callback(callback, 0, arb.shapes, test_self=self)
