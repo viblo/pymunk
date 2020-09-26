@@ -6,9 +6,6 @@ It is possible to grab one of the crossings with the mouse
 __version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
-import math
-import random
-
 import pyglet
 
 import pymunk
@@ -34,12 +31,11 @@ s.filter = pymunk.ShapeFilter(group=web_group)
 s.ignore_draw = True
 space.add(cb, s)
 
-
 # generate each crossing in the net
 for x in range(0, 101):
     b = pymunk.Body(1, 1)
-    v = Vec2d.unit()
-    v.angle_degrees = x * 18
+
+    v = Vec2d(1, 0).rotated_degrees(x * 18)
     scale = window.height / 2.0 / 6.0 * 0.5
 
     dist += 1 / 18.0
@@ -51,9 +47,7 @@ for x in range(0, 101):
 
     offset *= dist ** 2.8 / 100.0
 
-    # print "offset", offset
-
-    v.length = scale * (dist + offset)
+    v = v.scale_to_length(scale * (dist + offset))
 
     b.position = c + v
     s = pymunk.Circle(b, 15)
@@ -118,7 +112,7 @@ mouse_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
-    mouse_body.position = x, y
+    mouse_body.position = Vec2d(x, y)
     hit = space.point_query_nearest((x, y), 10, pymunk.ShapeFilter())
     if hit != None:
         global selected
