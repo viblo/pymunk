@@ -3,17 +3,16 @@ two segment shapes. Displays collsion strength and rotating balls thanks to
 friction. Not interactive.
 """
 
-import math
 import random
 import sys
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
 from pymunk import Vec2d
+
+pymunk.pygame_util.positive_y_is_up = True
 
 
 def draw_collision(arbiter, space, data):
@@ -22,13 +21,10 @@ def draw_collision(arbiter, space, data):
         r = int(r)
 
         p = pymunk.pygame_util.to_pygame(c.point_a, data["surface"])
-        pygame.draw.circle(data["surface"], THECOLORS["black"], p, r, 1)
+        pygame.draw.circle(data["surface"], pygame.Color("black"), p, r, 1)
 
 
 def main():
-
-    global contact
-    global shape_to_remove
 
     pygame.init()
     screen = pygame.display.set_mode((600, 600))
@@ -63,11 +59,11 @@ def main():
 
     while running:
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "contact_with_friction.png")
 
         ticks_to_next_ball -= 1
@@ -85,7 +81,7 @@ def main():
             balls.append(shape)
 
         ### Clear screen
-        screen.fill(THECOLORS["white"])
+        screen.fill(pygame.Color("white"))
 
         ### Draw stuff
         space.debug_draw(draw_options)

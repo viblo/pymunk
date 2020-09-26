@@ -30,14 +30,12 @@ if sys.argv[1] == "/p":  # preview mode
 
 ### We must set OS env before the pygame imports..
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 if sys.argv[1] == "/s":  # fullscreen screensaver mode
     display_size = (0, 0)
     is_interactive = False
     display_flags = (
-        display_flags | FULLSCREEN
+        display_flags | pygame.FULLSCREEN
     )  # FULLSCREEN) # | DOUBLEBUF | HWSURFACE     )
 elif sys.argv[1] == "/i":  # interactive
     display_size = (600, 600)
@@ -87,7 +85,9 @@ def reset_bodies(space):
         body.torque = 0
         body.velocity = 0, 0
         body.angular_velocity = 0
-    color = random.choice(list(THECOLORS.values()))
+    color = pygame.Color(
+        random.randint(1, 255), random.randint(1, 255), random.randint(1, 255)
+    )
     for shape in space.shapes:
         shape.color = color
 
@@ -136,16 +136,16 @@ def main():
     selected = None
 
     if not is_interactive:
-        pygame.time.set_timer(USEREVENT + 1, 70000)  # apply force
-        pygame.time.set_timer(USEREVENT + 2, 120000)  # reset
-        pygame.event.post(pygame.event.Event(USEREVENT + 1))
+        pygame.time.set_timer(pygame.USEREVENT + 1, 70000)  # apply force
+        pygame.time.set_timer(pygame.USEREVENT + 2, 120000)  # reset
+        pygame.event.post(pygame.event.Event(pygame.USEREVENT + 1))
         pygame.mouse.set_visible(False)
 
     while running:
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "newtons_cradle.png")
 
             if event.type == pygame.USEREVENT + 1:
@@ -155,14 +155,22 @@ def main():
             if event.type == pygame.USEREVENT + 2:
                 reset_bodies(space)
 
-            elif event.type == KEYDOWN and event.key == K_r and is_interactive:
+            elif (
+                event.type == pygame.KEYDOWN
+                and event.key == pygame.K_r
+                and is_interactive
+            ):
                 reset_bodies(space)
-            elif event.type == KEYDOWN and event.key == K_f and is_interactive:
+            elif (
+                event.type == pygame.KEYDOWN
+                and event.key == pygame.K_f
+                and is_interactive
+            ):
                 r = random.randint(1, 4)
                 for body in bodies[0:r]:
                     body.apply_impulse_at_local_point((-6000, 0))
 
-            elif event.type == MOUSEBUTTONDOWN and is_interactive:
+            elif event.type == pygame.MOUSEBUTTONDOWN and is_interactive:
                 if selected != None:
                     space.remove(selected)
                 p = from_pygame(Vec2d(event.pos))
@@ -176,14 +184,14 @@ def main():
                     space.add(ds)
                     selected = ds
 
-            elif event.type == MOUSEBUTTONUP and is_interactive:
+            elif event.type == pygame.MOUSEBUTTONUP and is_interactive:
                 if selected != None:
                     space.remove(selected)
                     selected = None
 
-            elif event.type == KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 running = False
-            elif event.type == MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 running = False
 
         mpos = pygame.mouse.get_pos()
@@ -191,7 +199,7 @@ def main():
         mouse_body.position = p
 
         ### Clear screen
-        screen.fill(THECOLORS["black"])
+        screen.fill(pygame.Color("black"))
 
         ### Draw stuff
         for c in space.constraints:
@@ -199,7 +207,9 @@ def main():
             pv2 = c.b.position + c.anchor_b
             p1 = to_pygame(pv1)
             p2 = to_pygame(pv2)
-            pygame.draw.aalines(screen, THECOLORS["lightgray"], False, [p1, p2])
+            pygame.draw.aalines(screen, pygame.Color("lightgray"), False, [p1, p2])
+            print([p1, p2], end=" ")
+        print()
 
         for ball in space.shapes:
             p = to_pygame(ball.body.position)
@@ -216,20 +226,24 @@ def main():
         ### Flip screen
         if is_interactive:
             screen.blit(
-                font.render("fps: " + str(clock.get_fps()), 1, THECOLORS["white"]),
+                font.render(
+                    "fps: " + str(clock.get_fps()), True, pygame.Color("white")
+                ),
                 (0, 0),
             )
             screen.blit(
                 font.render(
                     "Press left mouse button and drag to interact",
-                    1,
-                    THECOLORS["darkgrey"],
+                    True,
+                    pygame.Color("darkgrey"),
                 ),
                 (5, height - 35),
             )
             screen.blit(
                 font.render(
-                    "Press R to reset, any other key to quit", 1, THECOLORS["darkgrey"]
+                    "Press R to reset, any other key to quit",
+                    True,
+                    pygame.Color("darkgrey"),
                 ),
                 (5, height - 20),
             )

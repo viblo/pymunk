@@ -3,13 +3,10 @@ two segment shapes. For each collision it draws a red circle with size
 depending on collision strength. Not interactive.
 """
 
-import math
 import random
 import sys
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk as pm
 from pymunk import Vec2d
@@ -20,13 +17,10 @@ def draw_collision(arbiter, space, data):
         r = max(3, abs(c.distance * 5))
         r = int(r)
         p = tuple(map(int, c.point_a))
-        pygame.draw.circle(data["surface"], THECOLORS["red"], p, r, 0)
+        pygame.draw.circle(data["surface"], pygame.Color("red"), p, r, 0)
 
 
 def main():
-
-    global contact
-    global shape_to_remove
 
     pygame.init()
     screen = pygame.display.set_mode((600, 600))
@@ -55,11 +49,11 @@ def main():
 
     while running:
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "contact_and_no_flipy.png")
 
         ticks_to_next_ball -= 1
@@ -76,7 +70,7 @@ def main():
             balls.append(shape)
 
         ### Clear screen
-        screen.fill(THECOLORS["white"])
+        screen.fill(pygame.Color("white"))
 
         ### Draw stuff
         balls_to_remove = []
@@ -84,7 +78,7 @@ def main():
             if ball.body.position.y > 400:
                 balls_to_remove.append(ball)
             p = tuple(map(int, ball.body.position))
-            pygame.draw.circle(screen, THECOLORS["blue"], p, int(ball.radius), 2)
+            pygame.draw.circle(screen, pygame.Color("blue"), p, int(ball.radius), 2)
 
         for ball in balls_to_remove:
             space.remove(ball, ball.body)
@@ -94,7 +88,7 @@ def main():
             body = line.body
             p1 = tuple(map(int, body.position + line.a.rotated(body.angle)))
             p2 = tuple(map(int, body.position + line.b.rotated(body.angle)))
-            pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1, p2])
+            pygame.draw.lines(screen, pygame.Color("lightgray"), False, [p1, p2])
 
         ### Update physics
         dt = 1.0 / 60.0
