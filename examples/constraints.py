@@ -9,14 +9,10 @@ import inspect
 import math
 
 import pygame
-import pygame.color
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
 from pymunk.vec2d import Vec2d
-
-pymunk.pygame_util.positive_y_is_up = False
 
 pygame.init()
 screen = pygame.display.set_mode((1200, 600))
@@ -26,8 +22,8 @@ font = pygame.font.Font(None, 24)
 
 help_txt = font.render(
     "Pymunk constraints demo. Use mouse to drag/drop. Hover to see descr.",
-    1,
-    pygame.color.THECOLORS["darkgray"],
+    True,
+    pygame.Color("darkgray"),
 )
 
 space = pymunk.Space()
@@ -183,16 +179,16 @@ for k in txts:
     box_texts[k] = []
     # Only take the first 5 lines.
     for line in txts[k].splitlines()[:5]:
-        txt = font.render(line, 1, pygame.color.THECOLORS["black"])
+        txt = font.render(line, True, pygame.Color("black"))
         box_texts[k].append(txt)
 
 while True:
     for event in pygame.event.get():
-        if event.type == QUIT:
+        if event.type == pygame.QUIT:
             exit()
-        elif event.type == KEYDOWN and event.key == K_ESCAPE:
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             exit()
-        elif event.type == MOUSEBUTTONDOWN:
+        elif event.type == pygame.MOUSEBUTTONDOWN:
             if mouse_joint != None:
                 space.remove(mouse_joint)
                 mouse_joint = None
@@ -214,20 +210,21 @@ while True:
                 mouse_joint.error_bias = (1 - 0.15) ** 60
                 space.add(mouse_joint)
 
-        elif event.type == MOUSEBUTTONUP:
+        elif event.type == pygame.MOUSEBUTTONUP:
             if mouse_joint != None:
                 space.remove(mouse_joint)
                 mouse_joint = None
 
-    screen.fill(pygame.color.THECOLORS["white"])
+    screen.fill(pygame.Color("white"))
 
     screen.blit(help_txt, (5, screen.get_height() - 20))
 
     mouse_pos = pygame.mouse.get_pos()
 
     # Display help message
-    x = mouse_pos[0] / box_size * box_size
-    y = mouse_pos[1] / box_size * box_size
+    x = mouse_pos[0] // box_size * box_size
+    y = mouse_pos[1] // box_size * box_size
+
     if (x, y) in box_texts:
         txts = box_texts[(x, y)]
         i = 0
@@ -244,4 +241,4 @@ while True:
     pygame.display.flip()
 
     clock.tick(60)
-    pygame.display.set_caption("fps: " + str(clock.get_fps()))
+    pygame.display.set_caption(f"fps: {clock.get_fps()}")
