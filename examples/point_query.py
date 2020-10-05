@@ -30,12 +30,8 @@ def main():
 
     ### walls
     static_lines = [
-        pymunk.Segment(
-            space.static_body, Vec2d(111.0, 600 - 280.0), Vec2d(407.0, 600 - 246.0), 1.0
-        ),
-        pymunk.Segment(
-            space.static_body, Vec2d(407.0, 600 - 246.0), Vec2d(407.0, 600 - 343.0), 1.0
-        ),
+        pymunk.Segment(space.static_body, Vec2d(111, 320), Vec2d(407, 354), 1.0),
+        pymunk.Segment(space.static_body, Vec2d(407, 354), Vec2d(407, 257), 1.0),
     ]
     space.add(*static_lines)
 

@@ -188,6 +188,10 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Hook, Joosep, Seif El-Sedky, Varuna De Silva, and Ahmet Kondoz. 
+  "Learning Data-Driven Decision-Making Policies in Multi-Agent Environments for Autonomous Systems." 
+  Cognitive Systems Research (2020).
+
 * Matthews, Elizabeth A., and Juan E. Gilbert. 
   "ATLAS CHRONICLE: DEVELOPMENT AND VERIFICATION OF A SYSTEM FOR PROCEDURAL GENERATION OF STORY-DRIVEN GAMES."
 
@@ -335,7 +339,7 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2020-08-05. If something is missing or wrong, please contact 
+List last updated 2020-10-02. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)

@@ -5,8 +5,6 @@ drawing.
 __docformat__ = "reStructuredText"
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk as pm
 import pymunk.util as u
@@ -76,7 +74,7 @@ class PhysicsDemo:
         ]
         y = 5
         for line in text:
-            text = font.render(line, 1, THECOLORS["black"])
+            text = font.render(line, True, pygame.Color("black"))
             self.screen.blit(text, (5, y))
             y += 10
 
@@ -132,13 +130,13 @@ class PhysicsDemo:
         v = body.position + ball.offset.cpvrotate(body.rotation_vector)
         p = self.flipyv(v)
         r = ball.radius
-        pygame.draw.circle(self.screen, THECOLORS["blue"], p, int(r), 2)
+        pygame.draw.circle(self.screen, pygame.Color("blue"), p, int(r), 2)
 
     def draw_wall(self, wall):
         body = wall.body
         pv1 = self.flipyv(body.position + wall.a.cpvrotate(body.rotation_vector))
         pv2 = self.flipyv(body.position + wall.b.cpvrotate(body.rotation_vector))
-        pygame.draw.lines(self.screen, THECOLORS["lightgray"], False, [pv1, pv2])
+        pygame.draw.lines(self.screen, pygame.Color("lightgray"), False, [pv1, pv2])
 
     def draw_poly(self, poly):
         body = poly.body
@@ -146,15 +144,15 @@ class PhysicsDemo:
         ps.append(ps[0])
         ps = list(map(self.flipyv, ps))
         if u.is_clockwise(ps):
-            color = THECOLORS["green"]
+            color = pygame.Color("green")
         else:
-            color = THECOLORS["red"]
+            color = pygame.Color("red")
         pygame.draw.lines(self.screen, color, False, ps)
 
     def draw(self):
 
         ### Clear the screen
-        self.screen.fill(THECOLORS["white"])
+        self.screen.fill(pygame.Color("white"))
 
         ### Display some text
         self.draw_helptext()
@@ -174,32 +172,32 @@ class PhysicsDemo:
         ### Draw Uncompleted walls
         if len(self.wall_points) > 1:
             ps = [self.flipyv(Vec2d(p)) for p in self.wall_points]
-            pygame.draw.lines(self.screen, THECOLORS["gray"], False, ps, 2)
+            pygame.draw.lines(self.screen, pygame.Color("gray"), False, ps, 2)
 
         ### Uncompleted poly
         if len(self.poly_points) > 1:
             ps = [self.flipyv(Vec2d(p)) for p in self.poly_points]
-            pygame.draw.lines(self.screen, THECOLORS["red"], False, ps, 2)
+            pygame.draw.lines(self.screen, pygame.Color("red"), False, ps, 2)
 
         ### Mouse Contact
         if self.mouse_contact is not None:
             p = self.flipyv(self.mouse_contact)
-            pygame.draw.circle(self.screen, THECOLORS["red"], p, 3)
+            pygame.draw.circle(self.screen, pygame.Color("red"), p, 3)
 
         ### All done, lets flip the display
         pygame.display.flip()
 
     def loop(self):
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self.running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(self.screen, "playground.png")
 
-            elif event.type == MOUSEBUTTONDOWN and event.button == 1:  # LMB
-                if pygame.key.get_mods() & KMOD_SHIFT:
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # LMB
+                if pygame.key.get_mods() & pygame.KMOD_SHIFT:
                     p = self.flipyv(Vec2d(event.pos))
                     self.polys.append(self.create_box(pos=p))
                 else:
@@ -207,11 +205,11 @@ class PhysicsDemo:
                     p = self.flipyv(Vec2d(event.pos))
                     self.balls.append(self.create_ball(p))
 
-            elif event.type == MOUSEBUTTONDOWN and event.button == 3:  # RMB
-                if pygame.key.get_mods() & KMOD_SHIFT:
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:  # RMB
+                if pygame.key.get_mods() & pygame.KMOD_SHIFT:
                     pass
 
-                elif pygame.key.get_mods() & KMOD_CTRL:
+                elif pygame.key.get_mods() & pygame.KMOD_CTRL:
                     p = self.flipyv(Vec2d(event.pos))
                     self.wall_points.append(p)
                 elif self.shape_to_remove is not None:
@@ -227,11 +225,17 @@ class PhysicsDemo:
                     )
                     self.space.remove(self.shape_to_remove.body, self.shape_to_remove)
 
-            elif event.type == KEYUP and event.key in (K_RCTRL, K_LCTRL):
+            elif event.type == pygame.KEYUP and event.key in (
+                pygame.K_RCTRL,
+                pygame.K_LCTRL,
+            ):
                 ### Create Wall
                 self.create_wall_segments(self.wall_points)
                 self.wall_points = []
-            elif event.type == KEYUP and event.key in (K_RSHIFT, K_LSHIFT):
+            elif event.type == pygame.KEYUP and event.key in (
+                pygame.K_RSHIFT,
+                pygame.K_LSHIFT,
+            ):
                 ### Create Polygon
 
                 if len(self.poly_points) > 0:
@@ -245,32 +249,32 @@ class PhysicsDemo:
                     self.poly_points = u.poly_vectors_around_center(self.poly_points)
                     self.polys.append(self.create_poly(self.poly_points, pos=center))
                 self.poly_points = []
-            elif event.type == KEYDOWN and event.key == K_SPACE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self.run_physics = not self.run_physics
-            elif event.type == KEYDOWN and event.key == K_k:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_k:
                 for x in range(-100, 100, 25):
                     for y in range(-100, 100, 25):
                         p = pygame.mouse.get_pos()
                         p = Vec2d(self.flipyv(Vec2d(p))) + (x, y)
                         self.polys.append(self.create_box(pos=p))
-            elif event.type == KEYDOWN and event.key == K_b:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_b:
                 p = self.flipyv(Vec2d(pygame.mouse.get_pos()))
                 self.polys.append(self.create_box(p, size=10, mass=1))
-            elif event.type == KEYDOWN and event.key == K_f:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_f:
                 bp = Vec2d(100, 500)
                 p = self.flipyv(Vec2d(pygame.mouse.get_pos())) - bp
                 ball = self.create_ball(bp)
                 p = p.normalized()
                 ball.body.apply_impulse_at_local_point(p * 1000, (0, 0))
                 self.balls.append(ball)
-            elif event.type == KEYDOWN and event.key == K_g:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_g:
                 g = self.space.gravity
                 g.rotate(45)
                 self.space.gravity = g
 
         mpos = pygame.mouse.get_pos()
 
-        if pygame.key.get_mods() & KMOD_SHIFT and pygame.mouse.get_pressed()[2]:
+        if pygame.key.get_mods() & pygame.KMOD_SHIFT and pygame.mouse.get_pressed()[2]:
             p = self.flipyv(Vec2d(mpos))
             self.poly_points.append(p)
         hit = self.space.point_query_nearest(
