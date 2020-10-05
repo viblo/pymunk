@@ -118,7 +118,8 @@ class build_chipmunk(build_ext, object):
 
             else: # Linux, FreeBSD and others
                 compiler_preargs += ['-fPIC', '-O3']
-                if get_arch() == 64 and not platform.machine().startswith('arm'):
+                if get_arch() == 64 and not (platform.machine() == 'aarch64'
+                                             or platform.machine().startswith('arm')):
                     compiler_preargs += ['-m64']
                 elif get_arch() == 32 and not platform.machine().startswith('arm'):
                     compiler_preargs += ['-m32']
