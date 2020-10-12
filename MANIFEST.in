@@ -18,3 +18,5 @@ recursive-include Chipmunk2D/include/chipmunk *
 include Chipmunk2D/*.txt
 #tools
 recursive-include tools *.py
+#typing
+include pymunk/py.typed
