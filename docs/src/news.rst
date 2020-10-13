@@ -28,17 +28,32 @@ Changes:
     ShapeFilter.ALL_MASKS -> ShapeFilter.ALL_MASKS()  
 - New callbacks on Constraint object, pre_solve and post_solve, which can be used to run a function just before or after the solver on the constraint.
 - Return only a PointQueryInfo object from Shape.point_query, not (distance, PointQueryInfo). 
-- Ve2d no longer accept objects that have .x and .y properties, but do not support __getitem__ for [0] & [1] in the constructor. If you have such an obects, rewrite Vec2d(myobj) to Vec2d(myobj.x, myobj.y). Dont expect anyone to be affected.
-- Vec2d is now Immutable:
-  - removed __setitem__ (you can not do Vec2d(1,2)[1] = 3 now)
-  - not possible to set the length property (Vec2d(1,2).length = 10)
-  - removed Vec2d.get_length method (use the length property instead)
-  - removed Vec2d.rotate() method. use Vec2d.rotated instead
-  - removed Vec2d.rotate_degrees() method. use Vec2d.rotated_degrees instead
-  - not possible to set the angle property (Vec2d(1,2).angle = 3.14)
-  - removed Vec2d.get_angle method (use the angle property instead)
-  - not possible to set the angle_degrees property (Vec2d(1,2).angle_degrees = 180)
-  - removed Vec2d.get_angle_degrees method (use the angle_degrees property instead)
+- Vec2d changes:
+  - Vec2d no longer accept objects that have .x and .y properties, but do not support __getitem__ for [0] & [1] in the constructor. If you have such an obects, rewrite Vec2d(myobj) to Vec2d(myobj.x, myobj.y). Dont expect anyone to be affected.
+  - Vec2d is now Immutable:
+    - removed __setitem__ (you can not do Vec2d(1,2)[1] = 3 now)
+    - not possible to set the length property (Vec2d(1,2).length = 10)
+    - removed Vec2d.get_length method (use the length property instead)
+    - removed Vec2d.rotate() method. use Vec2d.rotated instead
+    - removed Vec2d.rotate_degrees() method. use Vec2d.rotated_degrees instead
+    - not possible to set the angle property (Vec2d(1,2).angle = 3.14)
+    - removed Vec2d.get_angle method (use the angle property instead)
+    - not possible to set the angle_degrees property (Vec2d(1,2).angle_degrees = 180)
+    - removed Vec2d.get_angle_degrees method (use the angle_degrees property instead)
+  - Removed __nonzero__ magic. This never worked in Python 3, and was not included in any tests
+  - Removed __pow__ and __rpow__ magic. Its no longer possible to do Vec2d(1,2)**2. 
+  - Removed __invert__ magic. Its no longer possible to do ~Vec2d(1,2)
+  - Removed __mod__ and __divmod__ magic. Its no longer possible to do Vec2d(1,2) % 2 or divmod(Vec2d(1,2), 2)
+  - Removed bit operations: right shift, left shift, or, and, xor. (<<, >>, |, &, ^)
+  - Changed abs(Vec2d(1,2)) to return the expected vector length instead of Vec2d(abs(x), abs(y)).
+  - Vec2d now only support addition with other Vec2ds or tuples (sequences) of length 2.
+  - Vec2d now only support subtraction with other Vec2ds or tuples (sequences) of length 2.
+  - Vec2d now only support multiplicaton with ints and floats.
+  - Vec2d now only support division by ints and floats. Note that reverse division is not supported, i.e. 1 / Vec2d(1,2)
+  - Vec2d now only support floor division (//) by ints and floats. Note that reverse division is not supported, i.e. 1 // Vec2d(1,2)
+  - Improved error checking in Vec2d when an opertor (magics like __add__) is used with incompatible types 
+  - Removed option to create a zero Vec2d with empty constructor. Vec2d() should be replaced with Vec2d.zero()
+
 
 
 Pymunk 5.7.0

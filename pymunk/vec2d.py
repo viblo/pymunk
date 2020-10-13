@@ -54,6 +54,7 @@ More examples::
 __docformat__ = "reStructuredText"
 
 import math
+import numbers
 import operator
 from collections.abc import Sequence
 from typing import (
@@ -92,21 +93,20 @@ class Vec2d(object):
         v.y = p.y
         return v
 
-    def __init__(self, x_or_pair=None, y=None):
-        if x_or_pair is not None:
-            if y is None:
-                if isinstance(x_or_pair, Vec2d):
-                    self.x = x_or_pair.x
-                    self.y = x_or_pair.y
-                else:
-                    self.x = x_or_pair[0]
-                    self.y = x_or_pair[1]
+    def __init__(self, x_or_pair, y=None):
+        if y is None:
+            if isinstance(x_or_pair, Vec2d):
+                self.x = x_or_pair.x
+                self.y = x_or_pair.y
             else:
-                self.x = x_or_pair
-                self.y = y
+                assert (
+                    len(x_or_pair) == 2
+                ), f"{x_or_pair} must be of length 2 when used alone"
+                self.x = x_or_pair[0]
+                self.y = x_or_pair[1]
         else:
-            self.x = 0
-            self.y = 0
+            self.x = x_or_pair
+            self.y = y
 
     def __getitem__(self, i):
         if i == 0:
@@ -139,124 +139,52 @@ class Vec2d(object):
         else:
             return True
 
-    def __nonzero__(self) -> bool:
-        return self.x != 0.0 or self.y != 0.0
-
-    # Generic operator handlers
-    def _o2(self, other, f):
-        "Any two-operator operation where the left operand is a Vec2d"
-        if isinstance(other, Vec2d):
-            return Vec2d(f(self.x, other.x), f(self.y, other.y))
-        elif hasattr(other, "__getitem__"):
-            return Vec2d(f(self.x, other[0]), f(self.y, other[1]))
-        else:
-            return Vec2d(f(self.x, other), f(self.y, other))
-
-    def _r_o2(self, other, f):
-        "Any two-operator operation where the right operand is a Vec2d"
-        if hasattr(other, "__getitem__"):
-            return Vec2d(f(other[0], self.x), f(other[1], self.y))
-        else:
-            return Vec2d(f(other, self.x), f(other, self.y))
-
     # Addition
-    def __add__(self, other: _Vec2dOrFloat) -> "Vec2d":
+    def __add__(self, other: _Vec2dOrTuple) -> "Vec2d":
         """Add two vectors"""
-        if isinstance(other, Vec2d) or isinstance(other, Sequence):
+        if isinstance(other, Vec2d) or isinstance(other, Sequence) and len(other) == 2:
             return Vec2d(self.x + other[0], self.y + other[1])
-        else:
-            return Vec2d(self.x + other, self.y + other)
+
+        raise TypeError(
+            f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+        )
 
     __radd__ = __add__
 
     # Subtraction
-    def __sub__(self, other: _Vec2dOrFloat) -> "Vec2d":
+    def __sub__(self, other: _Vec2dOrTuple) -> "Vec2d":
         if isinstance(other, Vec2d):
             return Vec2d(self.x - other.x, self.y - other.y)
         elif isinstance(other, Sequence):
             return Vec2d(self.x - other[0], self.y - other[1])
-        else:
-            return Vec2d(self.x - other, self.y - other)
+        raise TypeError(
+            f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+        )
 
     def __rsub__(self, other: _Vec2dOrFloat) -> "Vec2d":
         if isinstance(other, Vec2d):
             return Vec2d(other.x - self.x, other.y - self.y)
-        if isinstance(other, Sequence):
+        elif isinstance(other, Sequence):
             return Vec2d(other[0] - self.x, other[1] - self.y)
-        else:
-            return Vec2d(other - self.x, other - self.y)
+        raise TypeError(
+            f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+        )
 
     # Multiplication
-    def __mul__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        if isinstance(other, Vec2d):
-            return Vec2d(self.x * other.x, self.y * other.y)
-        if isinstance(other, Sequence):
-            return Vec2d(self.x * other[0], self.y * other[1])
-        else:
-            return Vec2d(self.x * other, self.y * other)
+    def __mul__(self, other: float) -> "Vec2d":
+        assert isinstance(other, numbers.Real)
+        return Vec2d(self.x * other, self.y * other)
 
     __rmul__ = __mul__
 
     # Division
     def __floordiv__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, operator.floordiv)
-
-    def __rfloordiv__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._r_o2(other, operator.floordiv)
+        assert isinstance(other, numbers.Real)
+        return Vec2d(self.x // other, self.y // other)
 
     def __truediv__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, operator.truediv)
-
-    def __rtruediv__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._r_o2(other, operator.truediv)
-
-    # Modulo
-    def __mod__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, operator.mod)
-
-    def __rmod__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._r_o2(other, operator.mod)
-
-    def __divmod__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, divmod)
-
-    def __rdivmod__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._r_o2(other, divmod)
-
-    # Exponentation
-    def __pow__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, operator.pow)
-
-    def __rpow__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._r_o2(other, operator.pow)
-
-    # Bitwise operators
-    def __lshift__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, operator.lshift)
-
-    def __rlshift__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._r_o2(other, operator.lshift)
-
-    def __rshift__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, operator.rshift)
-
-    def __rrshift__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._r_o2(other, operator.rshift)
-
-    def __and__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, operator.and_)
-
-    __rand__ = __and__
-
-    def __or__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, operator.or_)
-
-    __ror__ = __or__
-
-    def __xor__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        return self._o2(other, operator.xor)
-
-    __rxor__ = __xor__
+        assert isinstance(other, numbers.Real)
+        return Vec2d(self.x / other, self.y / other)
 
     # Unary operations
     def __neg__(self) -> "Vec2d":
@@ -265,11 +193,8 @@ class Vec2d(object):
     def __pos__(self) -> "Vec2d":
         return Vec2d(operator.pos(self.x), operator.pos(self.y))
 
-    def __abs__(self) -> "Vec2d":
-        return Vec2d(abs(self.x), abs(self.y))
-
-    def __invert__(self) -> "Vec2d":
-        return Vec2d(-self.x, -self.y)
+    def __abs__(self) -> float:
+        return self.length
 
     # vectory functions
     def get_length_sqrd(self) -> float:

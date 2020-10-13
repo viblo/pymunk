@@ -2,13 +2,13 @@ import math
 import pickle
 import unittest
 
-import pymunk as p
+import pymunk
 from pymunk.vec2d import Vec2d
 
 
 class UnitTestVec2d(unittest.TestCase):
     def testCreationAndAccess(self):
-        v = Vec2d()
+        v = Vec2d((0, 0))
         self.assertEqual(v.x, 0)
         self.assertEqual(v[0], 0)
         self.assertEqual(v.y, 0)
@@ -33,31 +33,25 @@ class UnitTestVec2d(unittest.TestCase):
 
     def testMath(self):
         v = Vec2d(111, 222)
-        self.assertEqual(v + 1, Vec2d(112, 223))
-        self.assertTrue(v - 2 == [109, 220])
-        self.assertTrue(v * 3 == (333, 666))
-        self.assertTrue(v / 2.0 == Vec2d(55.5, 111))
-        # self.assertTrue(v / 2 == (55, 111)) # Not supported since this is a c_float structure in the bottom
-        self.assertTrue(v ** Vec2d(2, 3) == [12321, 10941048])
-        self.assertTrue(v + [-11, 78] == Vec2d(100, 300))
-        # self.assertTrue(v / [11,2] == [10,111]) # Not supported since this is a c_float structure in the bottom
+        self.assertEqual(v + Vec2d(1, 2), Vec2d(112, 224))
+        self.assertEqual(v + (1, 2), Vec2d(112, 224))
+        self.assertEqual((1, 2) + v, Vec2d(112, 224))
 
-    def testReverseMath(self):
-        v = Vec2d(111, 222)
-        self.assertTrue(1 + v == Vec2d(112, 223))
-        self.assertTrue(2 - v == [-109, -220])
-        self.assertTrue(3 * v == (333, 666))
-        # self.assertTrue([222,999] / v == [2,4]) # Not supported since this is a c_float structure in the bottom
-        self.assertTrue([111, 222] ** Vec2d(2, 3) == [12321, 10941048])
-        self.assertTrue([-11, 78] + v == Vec2d(100, 300))
+        self.assertEqual(v - Vec2d(1, 2), Vec2d(110, 220))
+        self.assertEqual(v - (1, 2), Vec2d(110, 220))
+        self.assertEqual((1, 2) - v, Vec2d(-110, -220))
+
+        self.assertEqual(v * 3, Vec2d(333, 666))
+        self.assertEqual(3 * v, Vec2d(333, 666))
+
+        self.assertEqual(v / 2, Vec2d(55.5, 111))
+        self.assertEqual(v // 2, Vec2d(55, 111))
 
     def testUnary(self):
         v = Vec2d(111, 222)
-        v = -v
-        self.assertTrue(v == [-111, -222])
-        self.assertTrue(v == [-111, -222])
-        v = abs(v)
-        self.assertTrue(v == [111, 222])
+        self.assertEqual(+v, v)
+        self.assertEqual(-v, Vec2d(-111, -222))
+        self.assertAlmostEqual(abs(v), 248.20354550247666)
 
     def testLength(self):
         v = Vec2d(3, 4)
@@ -147,12 +141,11 @@ class UnitTestVec2d(unittest.TestCase):
         inplace_vec = Vec2d(5, 13)
         inplace_ref = inplace_vec
         inplace_vec *= 0.5
-        inplace_vec += 0.5
-        inplace_vec -= 3.5
-        inplace_vec /= (0.1, 0.5)
-        inplace_vec += Vec2d(-1, -1)
+        inplace_vec += Vec2d(0.5, 0.5)
+        inplace_vec -= Vec2d(3.5, 3.5)
+        inplace_vec /= 5
         self.assertEqual(inplace_ref, Vec2d(5, 13))
-        self.assertEqual(inplace_vec, Vec2d(-6, 6))
+        self.assertEqual(inplace_vec, Vec2d(-0.1, 0.7))
 
     def testPickle(self):
         testvec = Vec2d(5, 0.3)
@@ -162,5 +155,5 @@ class UnitTestVec2d(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    print("testing pymunk.vec2d version " + p.version)
+    print("testing pymunk.vec2d version " + pymunk.version)
     unittest.main()
