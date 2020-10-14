@@ -1,3 +1,4 @@
+import math
 from typing import NamedTuple
 
 
@@ -39,3 +40,18 @@ class Transform(NamedTuple):
     def identity() -> "Transform":
         """The identity transform"""
         return Transform(1, 0, 0, 1, 0, 0)
+
+    @staticmethod
+    def translation(x, y) -> "Transform":
+        return Transform(tx=x, ty=y)
+
+    # split into scale and scale_non-uniform
+    @staticmethod
+    def scaling(v) -> "Transform":
+        return Transform(a=v, d=v)
+
+    @staticmethod
+    def rotation(t) -> "Transform":
+        c = math.cos(t)
+        s = math.sin(t)
+        return Transform(a=c, b=s, c=-s, d=c)
