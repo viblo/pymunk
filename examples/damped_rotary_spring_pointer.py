@@ -75,7 +75,7 @@ def main():
                 print(rotary_spring.stiffness, rotary_spring.damping)
 
         ### Clear screen
-        screen.fill(THECOLORS["white"])
+        screen.fill(pygame.Color("white"))
 
         ### Draw stuff
         space.debug_draw(draw_options)

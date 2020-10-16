@@ -174,7 +174,7 @@ def main():
             flying_arrow.angular_velocity *= 0.5
 
         ### Clear screen
-        screen.fill(THECOLORS["black"])
+        screen.fill(pygame.Color("black"))
 
         ### Draw stuff
         space.debug_draw(draw_options)
@@ -186,29 +186,23 @@ def main():
             diff = current_time - start_time
             power = max(min(diff, 1000), 10)
             h = power // 2
-            pygame.draw.line(
-                screen, THECOLORS["red"], (30, 550), (30, 550 - h), 10
-            )
+            pygame.draw.line(screen, pygame.Color("red"), (30, 550), (30, 550 - h), 10)
 
         # Info and flip screen
         screen.blit(
-            font.render(
-                "fps: " + str(clock.get_fps()), 1, THECOLORS["white"]
-            ),
+            font.render("fps: " + str(clock.get_fps()), 1, pygame.Color("white")),
             (0, 0),
         )
         screen.blit(
             font.render(
                 "Aim with mouse, hold LMB to powerup, release to fire",
                 1,
-                THECOLORS["darkgrey"],
+                pygame.Color("darkgrey"),
             ),
             (5, height - 35),
         )
         screen.blit(
-            font.render(
-                "Press ESC or Q to quit", 1, THECOLORS["darkgrey"]
-            ),
+            font.render("Press ESC or Q to quit", 1, pygame.Color("darkgrey")),
             (5, height - 20),
         )
 

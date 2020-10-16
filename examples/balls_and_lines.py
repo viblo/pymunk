@@ -113,7 +113,7 @@ def main():
                 space.step(dt)
 
         ### Draw stuff
-        screen.fill(THECOLORS["white"])
+        screen.fill(pygame.Color("white"))
 
         # Display some text
         font = pygame.font.Font(None, 16)
@@ -123,7 +123,7 @@ RMB: Drag to create wall, release to finish
 Space: Pause physics simulation"""
         y = 5
         for line in text.splitlines():
-            text = font.render(line, 1, THECOLORS["black"])
+            text = font.render(line, 1, pygame.Color("black"))
             screen.blit(text, (5, y))
             y += 10
 
@@ -134,13 +134,13 @@ Space: Pause physics simulation"""
             p = int(v.x), int(flipy(v.y))
             p2 = p + Vec2d(rot.x, -rot.y) * r * 0.9
             p2 = int(p2.x), int(p2.y)
-            pygame.draw.circle(screen, THECOLORS["blue"], p, int(r), 2)
-            pygame.draw.line(screen, THECOLORS["red"], p, p2)
+            pygame.draw.circle(screen, pygame.Color("blue"), p, int(r), 2)
+            pygame.draw.line(screen, pygame.Color("red"), p, p2)
 
         if line_point1 is not None:
             p1 = int(line_point1.x), int(flipy(line_point1.y))
             p2 = mouse_pos.x, flipy(mouse_pos.y)
-            pygame.draw.lines(screen, THECOLORS["black"], False, [p1, p2])
+            pygame.draw.lines(screen, pygame.Color("black"), False, [p1, p2])
 
         for line in static_lines:
             body = line.body

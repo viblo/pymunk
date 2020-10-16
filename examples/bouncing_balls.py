@@ -138,7 +138,7 @@ class BouncyBalls(object):
         Clears the screen.
         :return: None
         """
-        self._screen.fill(THECOLORS["white"])
+        self._screen.fill(pygame.Color("white"))
 
     def _draw_objects(self):
         """

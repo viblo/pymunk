@@ -25,7 +25,7 @@ def draw_helptext(screen):
     ]
     y = 5
     for line in text:
-        text = font.render(line, 1, THECOLORS["black"])
+        text = font.render(line, 1, pygame.Color("black"))
         screen.blit(text, (5, y))
         y += 10
 
@@ -60,7 +60,7 @@ def generate_geometry(surface, space):
             p2 = line[i + 1]
             shape = pymunk.Segment(space.static_body, p1, p2, 1)
             shape.friction = 0.5
-            shape.color = pygame.color.THECOLORS["red"]
+            shape.color = pygame.color.pygame.Color("red")
             shape.generated = True
             space.add(shape)
 
@@ -90,7 +90,7 @@ def main():
     space.add_collision_handler(0, 1).pre_solve = pre_solve
 
     terrain_surface = pygame.Surface((600, 600))
-    terrain_surface.fill(pygame.color.THECOLORS["white"])
+    terrain_surface.fill(pygame.color.pygame.Color("white"))
 
     color = pygame.color.THECOLORS["pink"]
     pygame.draw.circle(terrain_surface, color, (450, 120), 100)
@@ -119,7 +119,7 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
                 pass
             elif event.type == KEYDOWN and event.key == K_r:
-                terrain_surface.fill(pygame.color.THECOLORS["white"])
+                terrain_surface.fill(pygame.color.pygame.Color("white"))
                 for s in space.shapes:
                     if hasattr(s, "generated") and s.generated:
                         space.remove(s)
@@ -146,7 +146,7 @@ def main():
 
         space.step(1.0 / fps)
 
-        screen.fill(pygame.color.THECOLORS["white"])
+        screen.fill(pygame.color.pygame.Color("white"))
         screen.blit(terrain_surface, (0, 0))
         space.debug_draw(draw_options)
         draw_helptext(screen)

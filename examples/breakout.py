@@ -32,7 +32,7 @@ def spawn_ball(space, position, direction):
     ball_body.position = position
 
     ball_shape = pymunk.Circle(ball_body, 5)
-    ball_shape.color = THECOLORS["green"]
+    ball_shape.color = pygame.Color("green")
     ball_shape.elasticity = 1.0
     ball_shape.collision_type = collision_types["ball"]
 
@@ -68,7 +68,7 @@ def setup_level(space, player_body):
             brick_body.position = x, y
             brick_shape = pymunk.Poly.create_box(brick_body, (20, 10))
             brick_shape.elasticity = 1.0
-            brick_shape.color = THECOLORS["blue"]
+            brick_shape.color = pygame.Color("blue")
             brick_shape.group = 1
             brick_shape.collision_type = collision_types["brick"]
             space.add(brick_body, brick_shape)
@@ -110,7 +110,7 @@ def main():
     bottom = pymunk.Segment(space.static_body, (50, 50), (550, 50), 2)
     bottom.sensor = True
     bottom.collision_type = collision_types["bottom"]
-    bottom.color = THECOLORS["red"]
+    bottom.color = pygame.Color("red")
 
     def remove_first(arbiter, space, data):
         ball_shape = arbiter.shapes[0]
@@ -126,7 +126,7 @@ def main():
     player_body.position = 300, 100
 
     player_shape = pymunk.Segment(player_body, (-50, 0), (50, 0), 8)
-    player_shape.color = THECOLORS["red"]
+    player_shape.color = pygame.Color("red")
     player_shape.elasticity = 1.0
     player_shape.collision_type = collision_types["player"]
 
@@ -186,7 +186,7 @@ def main():
                 )
 
         ### Clear screen
-        screen.fill(THECOLORS["black"])
+        screen.fill(pygame.Color("black"))
 
         ### Draw stuff
         space.debug_draw(draw_options)
@@ -203,18 +203,21 @@ def main():
 
         ### Info and flip screen
         screen.blit(
-            font.render("fps: " + str(clock.get_fps()), 1, THECOLORS["white"]), (0, 0)
+            font.render("fps: " + str(clock.get_fps()), 1, pygame.Color("white")),
+            (0, 0),
         )
         screen.blit(
             font.render(
                 "Move with left/right arrows, space to spawn a ball",
                 1,
-                THECOLORS["darkgrey"],
+                pygame.Color("darkgrey"),
             ),
             (5, height - 35),
         )
         screen.blit(
-            font.render("Press R to reset, ESC or Q to quit", 1, THECOLORS["darkgrey"]),
+            font.render(
+                "Press R to reset, ESC or Q to quit", 1, pygame.Color("darkgrey")
+            ),
             (5, height - 20),
         )
 

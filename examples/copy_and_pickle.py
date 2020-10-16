@@ -59,7 +59,7 @@ def main():
     ball = pymunk.Circle(b, 20)
     ball.mass = 20
     ball.friction = 1
-    ball.color = THECOLORS["red"]
+    ball.color = pygame.Color("red")
     space1.add(ball, b)
 
     # this is the same as space2 = copy.deepcopy(space1)
@@ -96,11 +96,11 @@ def main():
                 pygame.image.save(screen, "copy_and_pickle.png")
 
         ### Clear screen
-        screen.fill(THECOLORS["white"])
+        screen.fill(pygame.Color("white"))
 
         ### Draw stuff
-        surf1.fill(THECOLORS["white"])
-        surf2.fill(THECOLORS["white"])
+        surf1.fill(pygame.Color("white"))
+        surf2.fill(pygame.Color("white"))
 
         space1.debug_draw(draw_options1)
         space2.debug_draw(draw_options2)
@@ -116,7 +116,7 @@ def main():
 
         ### Info and flip screen
         def dt(txt, pos):
-            screen.blit(font.render(txt, 1, THECOLORS["black"]), pos)
+            screen.blit(font.render(txt, 1, pygame.Color("black")), pos)
 
         dt("space.sleep_time_threshold set to 0.5 seconds", (50, 80))
         dt("space.sleep_time_threshold set to inf (disabled)", (450, 80))

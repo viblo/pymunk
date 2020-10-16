@@ -81,9 +81,9 @@ def main():
         pymunk.Segment(space.static_body, (680, 370), (10, 370), 3),
         pymunk.Segment(space.static_body, (10, 370), (10, 50), 3),
     ]
-    static[1].color = pygame.color.THECOLORS["red"]
-    static[2].color = pygame.color.THECOLORS["green"]
-    static[3].color = pygame.color.THECOLORS["red"]
+    static[1].color = pygame.color.pygame.Color("red")
+    static[2].color = pygame.color.pygame.Color("green")
+    static[3].color = pygame.color.pygame.Color("red")
 
     # rounded shape
     rounded = [
@@ -118,7 +118,7 @@ def main():
     s = pymunk.Segment(platform_body, (-25, 0), (25, 0), 5)
     s.friction = 1.0
     s.group = 1
-    s.color = pygame.color.THECOLORS["blue"]
+    s.color = pygame.color.pygame.Color("blue")
     space.add(platform_body, s)
 
     # pass through platform
@@ -271,11 +271,11 @@ def main():
         platform_body.velocity = (new - current) / dt
 
         ### Clear screen
-        screen.fill(pygame.color.THECOLORS["black"])
+        screen.fill(pygame.color.pygame.Color("black"))
 
         ### Helper lines
         for y in [50, 100, 150, 200, 250, 300]:
-            color = pygame.color.THECOLORS["darkgrey"]
+            color = pygame.color.pygame.Color("green")
             pygame.draw.line(screen, color, (10, y), (680, y), 1)
 
         ### Draw stuff
@@ -306,18 +306,19 @@ def main():
 
         # Info and flip screen
         screen.blit(
-            font.render("fps: " + str(clock.get_fps()), 1, THECOLORS["white"]), (0, 0)
+            font.render("fps: " + str(clock.get_fps()), 1, pygame.Color("white")),
+            (0, 0),
         )
         screen.blit(
             font.render(
                 "Move with Left/Right, jump with Up, press again to double jump",
                 1,
-                THECOLORS["darkgrey"],
+                pygame.Color("darkgrey"),
             ),
             (5, height - 35),
         )
         screen.blit(
-            font.render("Press ESC or Q to quit", 1, THECOLORS["darkgrey"]),
+            font.render("Press ESC or Q to quit", 1, pygame.Color("darkgrey")),
             (5, height - 20),
         )
 

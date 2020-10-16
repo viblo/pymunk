@@ -132,7 +132,7 @@ draw_options = pymunk.pygame_util.DrawOptions(screen)
 
 font = pygame.font.Font(None, 24)
 text = "Use the mouse to drive the tank, it will follow the cursor."
-text = font.render(text, 1, pygame.color.THECOLORS["white"])
+text = font.render(text, 1, pygame.color.pygame.Color("white"))
 
 while True:
     for event in pygame.event.get():
@@ -143,7 +143,7 @@ while True:
         ):
             exit()
 
-    screen.fill(pygame.color.THECOLORS["black"])
+    screen.fill(pygame.color.pygame.Color("black"))
     space.debug_draw(draw_options)
     screen.blit(text, (15, 15))
     fps = 60.0

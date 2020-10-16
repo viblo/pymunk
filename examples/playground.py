@@ -76,7 +76,7 @@ class PhysicsDemo:
         ]
         y = 5
         for line in text:
-            text = font.render(line, 1, THECOLORS["black"])
+            text = font.render(line, 1, pygame.Color("black"))
             self.screen.blit(text, (5, y))
             y += 10
 
@@ -132,7 +132,7 @@ class PhysicsDemo:
         v = body.position + ball.offset.cpvrotate(body.rotation_vector)
         p = self.flipyv(v)
         r = ball.radius
-        pygame.draw.circle(self.screen, THECOLORS["blue"], p, int(r), 2)
+        pygame.draw.circle(self.screen, pygame.Color("blue"), p, int(r), 2)
 
     def draw_wall(self, wall):
         body = wall.body
@@ -146,15 +146,15 @@ class PhysicsDemo:
         ps.append(ps[0])
         ps = list(map(self.flipyv, ps))
         if u.is_clockwise(ps):
-            color = THECOLORS["green"]
+            color = pygame.Color("green")
         else:
-            color = THECOLORS["red"]
+            color = pygame.Color("red")
         pygame.draw.lines(self.screen, color, False, ps)
 
     def draw(self):
 
         ### Clear the screen
-        self.screen.fill(THECOLORS["white"])
+        self.screen.fill(pygame.Color("white"))
 
         ### Display some text
         self.draw_helptext()
@@ -179,12 +179,12 @@ class PhysicsDemo:
         ### Uncompleted poly
         if len(self.poly_points) > 1:
             ps = [self.flipyv(Vec2d(p)) for p in self.poly_points]
-            pygame.draw.lines(self.screen, THECOLORS["red"], False, ps, 2)
+            pygame.draw.lines(self.screen, pygame.Color("red"), False, ps, 2)
 
         ### Mouse Contact
         if self.mouse_contact is not None:
             p = self.flipyv(self.mouse_contact)
-            pygame.draw.circle(self.screen, THECOLORS["red"], p, 3)
+            pygame.draw.circle(self.screen, pygame.Color("red"), p, 3)
 
         ### All done, lets flip the display
         pygame.display.flip()

@@ -27,14 +27,14 @@ def main():
     captions = shapes_for_draw_demos.fill_space(space)
 
     ### Draw it
-    screen.fill(pygame.color.THECOLORS["white"])
+    screen.fill(pygame.color.pygame.Color("white"))
 
     options = pymunk.pygame_util.DrawOptions(screen)
     space.debug_draw(options)
     # pymunk.pygame_util.draw(screen, space)
 
     # Info
-    color = pygame.color.THECOLORS["black"]
+    color = pygame.color.pygame.Color("black")
     screen.blit(
         font.render("Demo example of pygame_util.DrawOptions()", 1, color), (205, 680)
     )

@@ -191,7 +191,7 @@ def main():
         mouse_body.position = p
 
         ### Clear screen
-        screen.fill(THECOLORS["black"])
+        screen.fill(pygame.Color("black"))
 
         ### Draw stuff
         for c in space.constraints:
@@ -216,20 +216,22 @@ def main():
         ### Flip screen
         if is_interactive:
             screen.blit(
-                font.render("fps: " + str(clock.get_fps()), 1, THECOLORS["white"]),
+                font.render("fps: " + str(clock.get_fps()), 1, pygame.Color("white")),
                 (0, 0),
             )
             screen.blit(
                 font.render(
                     "Press left mouse button and drag to interact",
                     1,
-                    THECOLORS["darkgrey"],
+                    pygame.Color("darkgrey"),
                 ),
                 (5, height - 35),
             )
             screen.blit(
                 font.render(
-                    "Press R to reset, any other key to quit", 1, THECOLORS["darkgrey"]
+                    "Press R to reset, any other key to quit",
+                    1,
+                    pygame.Color("darkgrey"),
                 ),
                 (5, height - 20),
             )

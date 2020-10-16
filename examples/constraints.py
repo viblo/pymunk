@@ -9,8 +9,6 @@ import inspect
 import math
 
 import pygame
-import pygame.color
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
@@ -27,7 +25,7 @@ font = pygame.font.Font(None, 24)
 help_txt = font.render(
     "Pymunk constraints demo. Use mouse to drag/drop. Hover to see descr.",
     1,
-    pygame.color.THECOLORS["darkgray"],
+    pygame.Color("darkgray"),
 )
 
 space = pymunk.Space()
@@ -85,7 +83,7 @@ txts = {}
 box_offset = 0, 0
 b1 = add_ball(space, (50, 60), box_offset)
 b2 = add_ball(space, (150, 60), box_offset)
-c = pymunk.PinJoint(b1, b2, (20, 0), (-20, 0))
+c: pymunk.Constraint = pymunk.PinJoint(b1, b2, (20, 0), (-20, 0))
 txts[box_offset] = inspect.getdoc(c)
 space.add(c)
 
@@ -183,23 +181,23 @@ for k in txts:
     box_texts[k] = []
     # Only take the first 5 lines.
     for line in txts[k].splitlines()[:5]:
-        txt = font.render(line, 1, pygame.color.THECOLORS["black"])
+        txt = font.render(line, 1, pygame.Color("black"))
         box_texts[k].append(txt)
 
 while True:
     for event in pygame.event.get():
-        if event.type == QUIT:
+        if event.type == pygame.QUIT:
             exit()
-        elif event.type == KEYDOWN and event.key == K_ESCAPE:
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             exit()
-        elif event.type == MOUSEBUTTONDOWN:
-            if mouse_joint != None:
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if mouse_joint is not None:
                 space.remove(mouse_joint)
                 mouse_joint = None
 
             p = Vec2d(event.pos)
             hit = space.point_query_nearest(p, 5, pymunk.ShapeFilter())
-            if hit != None and hit.shape.body.body_type == pymunk.Body.DYNAMIC:
+            if hit is not None and hit.shape.body.body_type == pymunk.Body.DYNAMIC:
                 shape = hit.shape
                 # Use the closest point on the surface if the click is outside
                 # of the shape.
@@ -214,12 +212,12 @@ while True:
                 mouse_joint.error_bias = (1 - 0.15) ** 60
                 space.add(mouse_joint)
 
-        elif event.type == MOUSEBUTTONUP:
-            if mouse_joint != None:
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if mouse_joint is not None:
                 space.remove(mouse_joint)
                 mouse_joint = None
 
-    screen.fill(pygame.color.THECOLORS["white"])
+    screen.fill(pygame.Color("white"))
 
     screen.blit(help_txt, (5, screen.get_height() - 20))
 

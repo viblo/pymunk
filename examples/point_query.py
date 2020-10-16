@@ -63,7 +63,7 @@ def main():
             balls.append(shape)
 
         ### Clear screen
-        screen.fill(THECOLORS["white"])
+        screen.fill(pygame.Color("white"))
 
         ### Draw stuff
         space.debug_draw(draw_options)
@@ -88,7 +88,7 @@ def main():
             else:
                 r = 10
             p = pymunk.pygame_util.to_pygame(shape.body.position, screen)
-            pygame.draw.circle(screen, THECOLORS["red"], p, int(r), 2)
+            pygame.draw.circle(screen, pygame.Color("red"), p, int(r), 2)
 
         ### Update physics
         dt = 1.0 / 60.0

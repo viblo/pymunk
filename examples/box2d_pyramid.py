@@ -81,7 +81,7 @@ class PyramidDemo:
 
     def draw(self):
         ### Clear the screen
-        self.screen.fill(THECOLORS["white"])
+        self.screen.fill(pygame.Color("white"))
 
         ### Draw space
         self.space.debug_draw(self.draw_options)

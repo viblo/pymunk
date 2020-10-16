@@ -20,7 +20,7 @@ def draw_collision(arbiter, space, data):
         r = max(3, abs(c.distance * 5))
         r = int(r)
         p = tuple(map(int, c.point_a))
-        pygame.draw.circle(data["surface"], THECOLORS["red"], p, r, 0)
+        pygame.draw.circle(data["surface"], pygame.Color("red"), p, r, 0)
 
 
 def main():
@@ -76,7 +76,7 @@ def main():
             balls.append(shape)
 
         ### Clear screen
-        screen.fill(THECOLORS["white"])
+        screen.fill(pygame.Color("white"))
 
         ### Draw stuff
         balls_to_remove = []
@@ -84,7 +84,7 @@ def main():
             if ball.body.position.y > 400:
                 balls_to_remove.append(ball)
             p = tuple(map(int, ball.body.position))
-            pygame.draw.circle(screen, THECOLORS["blue"], p, int(ball.radius), 2)
+            pygame.draw.circle(screen, pygame.Color("blue"), p, int(ball.radius), 2)
 
         for ball in balls_to_remove:
             space.remove(ball, ball.body)

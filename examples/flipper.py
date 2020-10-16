@@ -6,8 +6,6 @@ __docformat__ = "reStructuredText"
 import random
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
@@ -85,20 +83,20 @@ for p in [(240, 500), (360, 500)]:
 
 while running:
     for event in pygame.event.get():
-        if event.type == QUIT:
+        if event.type == pygame.QUIT:
             running = False
-        elif event.type == KEYDOWN and event.key == K_ESCAPE:
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             running = False
-        elif event.type == KEYDOWN and event.key == K_p:
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
             pygame.image.save(screen, "flipper.png")
 
-        elif event.type == KEYDOWN and event.key == K_j:
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_j:
             r_flipper_body.apply_impulse_at_local_point(Vec2d.unit() * 40000, (-100, 0))
-        elif event.type == KEYDOWN and event.key == K_f:
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_f:
             l_flipper_body.apply_impulse_at_local_point(
                 Vec2d.unit() * -40000, (-100, 0)
             )
-        elif event.type == KEYDOWN and event.key == K_b:
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_b:
 
             mass = 1
             radius = 25
@@ -112,7 +110,7 @@ while running:
             balls.append(shape)
 
     ### Clear screen
-    screen.fill(THECOLORS["white"])
+    screen.fill(pygame.Color("white"))
 
     ### Draw stuff
     space.debug_draw(draw_options)

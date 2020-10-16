@@ -263,7 +263,7 @@ while True:
 
     space.step(1.0 / fps)
 
-    screen.fill(pygame.color.THECOLORS["white"])
+    screen.fill(pygame.color.pygame.Color("white"))
 
     space.debug_draw(draw_options)
     screen.blit(logo_img, (0, 0))

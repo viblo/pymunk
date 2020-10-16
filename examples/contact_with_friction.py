@@ -22,7 +22,7 @@ def draw_collision(arbiter, space, data):
         r = int(r)
 
         p = pymunk.pygame_util.to_pygame(c.point_a, data["surface"])
-        pygame.draw.circle(data["surface"], THECOLORS["black"], p, r, 1)
+        pygame.draw.circle(data["surface"], pygame.Color("black"), p, r, 1)
 
 
 def main():
@@ -85,7 +85,7 @@ def main():
             balls.append(shape)
 
         ### Clear screen
-        screen.fill(THECOLORS["white"])
+        screen.fill(pygame.Color("white"))
 
         ### Draw stuff
         space.debug_draw(draw_options)
