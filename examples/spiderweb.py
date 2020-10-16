@@ -38,14 +38,13 @@ space.add(cb, s)
 # generate each crossing in the net
 for x in range(0, 101):
     b = pymunk.Body(1, 1)
-    v = Vec2d.unit()
-    v.angle_degrees = x * 18
+    v = Vec2d(1, 0).rotated_degrees(x * 18)
     scale = window.height / 2.0 / 6.0 * 0.5
 
     dist += 1 / 18.0
     dist = dist ** 1.005
 
-    offset = 0
+    offset = 0.0
     offset = [0.0, -0.80, -1.0, -0.80][((x * 18) % 360) // 18 % 4]
     offset = 0.8 + offset
 
@@ -53,7 +52,7 @@ for x in range(0, 101):
 
     # print "offset", offset
 
-    v.length = scale * (dist + offset)
+    v = v.scale_to_length(scale * (dist + offset))
 
     b.position = c + v
     s = pymunk.Circle(b, 15)
@@ -91,7 +90,7 @@ for b in bs[-17::4]:
     static_body.position = b.position
     static_bs.append(static_body)
 
-    j = pymunk.PivotJoint(static_body, b, static_body.position)
+    # j = pymunk.PivotJoint(static_body, b, static_body.position)
     j = pymunk.DampedSpring(static_body, b, (0, 0), (0, 0), 0, 0, 0)
     j.damping = 100
     j.stiffness = 20000

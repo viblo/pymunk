@@ -7,6 +7,7 @@ __docformat__ = "reStructuredText"
 
 import math
 import random
+from typing import List
 
 import pyglet
 
@@ -20,7 +21,7 @@ fps_display = pyglet.window.FPSDisplay(window)
 logo_img = pyglet.resource.image("pymunk_logo_googlecode.png")
 logo_img.anchor_x = logo_img.width / 2
 logo_img.anchor_y = logo_img.height / 2
-logos = []
+logos: List[pymunk.Shape] = []
 batch = pyglet.graphics.Batch()
 
 ### Physics stuff

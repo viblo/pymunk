@@ -8,10 +8,9 @@ __docformat__ = "reStructuredText"
 
 import math
 import random
+from typing import List
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
 from pymunk import Vec2d
@@ -35,7 +34,7 @@ def main():
 
     ## logo
     logo_img = pygame.image.load("pymunk_logo_googlecode.png")
-    logos = []
+    logos: List[pymunk.Shape] = []
 
     ### Static line
     static_lines = [
@@ -50,11 +49,11 @@ def main():
 
     while running:
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "using_sprites.png")
 
         ticks_to_next_spawn -= 1
@@ -81,7 +80,7 @@ def main():
             space.step(dt)
 
         ### Draw stuff
-        screen.fill(THECOLORS["black"])
+        screen.fill(pygame.Color("black"))
 
         for logo_shape in logos:
             # image draw
@@ -104,7 +103,7 @@ def main():
             ]
             ps = [(int(p.x), int(flipy(p.y))) for p in ps]
             ps += [ps[0]]
-            pygame.draw.lines(screen, THECOLORS["red"], False, ps, 1)
+            pygame.draw.lines(screen, pygame.Color("red"), False, ps, 1)
 
         for line in static_lines:
             body = line.body
@@ -113,7 +112,7 @@ def main():
             pv2 = body.position + line.b.rotated(body.angle)
             p1 = int(pv1.x), int(flipy(pv1.y))
             p2 = int(pv2.x), int(flipy(pv2.y))
-            pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1, p2], 2)
+            pygame.draw.lines(screen, pygame.Color("lightgray"), False, [p1, p2], 2)
 
         ### Flip screen
         pygame.display.flip()
