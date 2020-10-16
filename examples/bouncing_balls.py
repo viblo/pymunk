@@ -10,9 +10,6 @@ import random
 
 # Library imports
 import pygame
-from pygame.color import *
-from pygame.key import *
-from pygame.locals import *
 
 # pymunk imports
 import pymunk
@@ -94,11 +91,11 @@ class BouncyBalls(object):
         :return: None
         """
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 self._running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self._running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(self._screen, "bouncing_balls.png")
 
     def _update_balls(self):

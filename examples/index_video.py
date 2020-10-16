@@ -235,8 +235,8 @@ total_time = 0
 while True:
     for event in pygame.event.get():
         if (
-            event.type == QUIT
-            or event.type == KEYDOWN
+            event.type == pygame.QUIT
+            or event.type == pygame.KEYDOWN
             and (event.key in [K_ESCAPE, K_q])
         ):
             sys.exit(0)

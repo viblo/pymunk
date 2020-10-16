@@ -111,23 +111,23 @@ def main():
     while True:
         for event in pygame.event.get():
             if (
-                event.type == QUIT
-                or event.type == KEYDOWN
+                event.type == pygame.QUIT
+                or event.type == pygame.KEYDOWN
                 and (event.key in [K_ESCAPE, K_q])
             ):
                 sys.exit(0)
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
                 pass
-            elif event.type == KEYDOWN and event.key == K_r:
+            elif event.type == pygame.KEYDOWN and event.key == K_r:
                 terrain_surface.fill(pygame.color.pygame.Color("white"))
                 for s in space.shapes:
                     if hasattr(s, "generated") and s.generated:
                         space.remove(s)
 
-            elif event.type == KEYDOWN and event.key == K_g:
+            elif event.type == pygame.KEYDOWN and event.key == K_g:
                 generate_geometry(terrain_surface, space)
 
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "deformable.png")
 
         if pygame.mouse.get_pressed()[0]:

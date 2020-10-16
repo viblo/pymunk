@@ -47,11 +47,11 @@ def main():
 
     while running:
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "damped_rotary_sprint_pointer.png")
             elif event.type == pygame.MOUSEMOTION:
                 mouse_pos = pymunk.pygame_util.get_mouse_pos(screen)
@@ -61,16 +61,16 @@ def main():
             # to easily find good values for the damped rortary spring
             # as with most simulations done with pymunk, the imporant thing
             # is that it looks good, not the exact parameters
-            elif event.type == KEYDOWN and event.key == K_q:
+            elif event.type == pygame.KEYDOWN and event.key == K_q:
                 rotary_spring.stiffness *= 0.5
                 print(rotary_spring.stiffness, rotary_spring.damping)
-            elif event.type == KEYDOWN and event.key == K_w:
+            elif event.type == pygame.KEYDOWN and event.key == K_w:
                 rotary_spring.stiffness *= 2
                 print(rotary_spring.stiffness, rotary_spring.damping)
-            elif event.type == KEYDOWN and event.key == K_a:
+            elif event.type == pygame.KEYDOWN and event.key == K_a:
                 rotary_spring.damping *= 0.5
                 print(rotary_spring.stiffness, rotary_spring.damping)
-            elif event.type == KEYDOWN and event.key == K_s:
+            elif event.type == pygame.KEYDOWN and event.key == K_s:
                 rotary_spring.damping *= 2
                 print(rotary_spring.stiffness, rotary_spring.damping)
 

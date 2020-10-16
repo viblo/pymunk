@@ -63,11 +63,11 @@ def main():
 
     while running:
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "contact_with_friction.png")
 
         ticks_to_next_ball -= 1

@@ -191,11 +191,11 @@ class PhysicsDemo:
 
     def loop(self):
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self.running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(self.screen, "playground.png")
 
             elif event.type == MOUSEBUTTONDOWN and event.button == 1:  # LMB
@@ -245,25 +245,25 @@ class PhysicsDemo:
                     self.poly_points = u.poly_vectors_around_center(self.poly_points)
                     self.polys.append(self.create_poly(self.poly_points, pos=center))
                 self.poly_points = []
-            elif event.type == KEYDOWN and event.key == K_SPACE:
+            elif event.type == pygame.KEYDOWN and event.key == K_SPACE:
                 self.run_physics = not self.run_physics
-            elif event.type == KEYDOWN and event.key == K_k:
+            elif event.type == pygame.KEYDOWN and event.key == K_k:
                 for x in range(-100, 100, 25):
                     for y in range(-100, 100, 25):
                         p = pygame.mouse.get_pos()
                         p = Vec2d(self.flipyv(Vec2d(p))) + (x, y)
                         self.polys.append(self.create_box(pos=p))
-            elif event.type == KEYDOWN and event.key == K_b:
+            elif event.type == pygame.KEYDOWN and event.key == K_b:
                 p = self.flipyv(Vec2d(pygame.mouse.get_pos()))
                 self.polys.append(self.create_box(p, size=10, mass=1))
-            elif event.type == KEYDOWN and event.key == K_f:
+            elif event.type == pygame.KEYDOWN and event.key == K_f:
                 bp = Vec2d(100, 500)
                 p = self.flipyv(Vec2d(pygame.mouse.get_pos())) - bp
                 ball = self.create_ball(bp)
                 p = p.normalized()
                 ball.body.apply_impulse_at_local_point(p * 1000, (0, 0))
                 self.balls.append(ball)
-            elif event.type == KEYDOWN and event.key == K_g:
+            elif event.type == pygame.KEYDOWN and event.key == K_g:
                 g = self.space.gravity
                 g.rotate(45)
                 self.space.gravity = g

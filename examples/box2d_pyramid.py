@@ -60,13 +60,13 @@ class PyramidDemo:
 
     def loop(self):
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self.running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(self.screen, "box2d_pyramid.png")
-            elif event.type == KEYDOWN and event.key == K_d:
+            elif event.type == pygame.KEYDOWN and event.key == K_d:
                 self.drawing = not self.drawing
 
         fps = 30.0

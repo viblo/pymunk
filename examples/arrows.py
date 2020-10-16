@@ -106,14 +106,14 @@ def main():
     while running:
         for event in pygame.event.get():
             if (
-                event.type == QUIT
-                or event.type == KEYDOWN
+                event.type == pygame.QUIT
+                or event.type == pygame.KEYDOWN
                 and (event.key in [K_ESCAPE, K_q])
             ):
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 start_time = pygame.time.get_ticks()
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "arrows.png")
             elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 end_time = pygame.time.get_ticks()

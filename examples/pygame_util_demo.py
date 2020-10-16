@@ -47,12 +47,12 @@ def main():
     while True:
         for event in pygame.event.get():
             if (
-                event.type == QUIT
-                or event.type == KEYDOWN
+                event.type == pygame.QUIT
+                or event.type == pygame.KEYDOWN
                 and (event.key in [K_ESCAPE, K_q])
             ):
                 return
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "pygame_util_demo.png")
 
         clock.tick(10)

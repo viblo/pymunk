@@ -5,7 +5,6 @@ mouse, and hitting obstacles on the way.
 import random
 
 import pygame
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
@@ -132,18 +131,18 @@ draw_options = pymunk.pygame_util.DrawOptions(screen)
 
 font = pygame.font.Font(None, 24)
 text = "Use the mouse to drive the tank, it will follow the cursor."
-text = font.render(text, 1, pygame.color.pygame.Color("white"))
+text = font.render(text, 1, pygame.Color("white"))
 
 while True:
     for event in pygame.event.get():
         if (
-            event.type == QUIT
-            or event.type == KEYDOWN
-            and (event.key in [K_ESCAPE, K_q])
+            event.type == pygame.QUIT
+            or event.type == pygame.KEYDOWN
+            and (event.key in [pygame.K_ESCAPE, pygame.K_q])
         ):
             exit()
 
-    screen.fill(pygame.color.pygame.Color("black"))
+    screen.fill(pygame.Color("black"))
     space.debug_draw(draw_options)
     screen.blit(text, (15, 15))
     fps = 60.0

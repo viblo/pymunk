@@ -60,11 +60,11 @@ def main():
 
     while running:
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "balls_and_lines.png")
             elif event.type == MOUSEBUTTONDOWN and event.button == 1:
                 p = event.pos[X], flipy(event.pos[Y])
@@ -91,7 +91,7 @@ def main():
                     static_lines.append(shape)
                     line_point1 = None
 
-            elif event.type == KEYDOWN and event.key == K_SPACE:
+            elif event.type == pygame.KEYDOWN and event.key == K_SPACE:
                 run_physics = not run_physics
 
         p = pygame.mouse.get_pos()

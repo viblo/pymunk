@@ -71,28 +71,28 @@ def main():
 
     while True:
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 sys.exit()
-            elif event.type == KEYDOWN and (event.key in [K_ESCAPE, K_q]):
+            elif event.type == pygame.KEYDOWN and (event.key in [K_ESCAPE, K_q]):
                 sys.exit()
-            elif event.type == KEYDOWN and event.key == K_s:
+            elif event.type == pygame.KEYDOWN and event.key == K_s:
                 with open("copy_and_pickle.pickle", "wb") as f:
                     pickle.dump([space1, space2], f)
-            elif event.type == KEYDOWN and event.key == K_l:
+            elif event.type == pygame.KEYDOWN and event.key == K_l:
                 with open("copy_and_pickle.pickle", "rb") as f:
                     (space1, space2) = pickle.load(f)
 
-            elif event.type == KEYDOWN and event.key == K_r:
+            elif event.type == pygame.KEYDOWN and event.key == K_r:
                 space1 = backup1
                 space2 = backup2
                 backup1 = space1.copy()
                 backup2 = space2.copy()
-            elif event.type == KEYDOWN and event.key == K_SPACE:
+            elif event.type == pygame.KEYDOWN and event.key == K_SPACE:
                 # find all bodies with a circle shape in all spaces
                 for s in space1.shapes + space2.shapes:
                     if isinstance(s, pymunk.Circle) and s.body != None:
                         s.body.apply_impulse_at_local_point((20000, 0))
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "copy_and_pickle.png")
 
         ### Clear screen

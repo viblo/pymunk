@@ -159,26 +159,26 @@ def main():
 
     while running:
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 running = False
-            elif event.type == KEYDOWN and (event.key in [K_ESCAPE, K_q]):
+            elif event.type == pygame.KEYDOWN and (event.key in [K_ESCAPE, K_q]):
                 running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "breakout.png")
 
-            elif event.type == KEYDOWN and event.key == K_LEFT:
+            elif event.type == pygame.KEYDOWN and event.key == K_LEFT:
                 player_body.velocity = (-600, 0)
             elif event.type == KEYUP and event.key == K_LEFT:
                 player_body.velocity = 0, 0
 
-            elif event.type == KEYDOWN and event.key == K_RIGHT:
+            elif event.type == pygame.KEYDOWN and event.key == K_RIGHT:
                 player_body.velocity = (600, 0)
             elif event.type == KEYUP and event.key == K_RIGHT:
                 player_body.velocity = 0, 0
 
-            elif event.type == KEYDOWN and event.key == K_r:
+            elif event.type == pygame.KEYDOWN and event.key == K_r:
                 setup_level(space, player_body)
-            elif event.type == KEYDOWN and event.key == K_SPACE:
+            elif event.type == pygame.KEYDOWN and event.key == K_SPACE:
                 spawn_ball(
                     space,
                     player_body.position + (0, 40),
