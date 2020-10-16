@@ -8,10 +8,11 @@ import pymunk
 
 def load_tests(loader, tests, ignore):
     for importer, modname, ispkg in pkgutil.iter_modules(pymunk.__path__):
-        try:
-            tests.addTests(doctest.DocTestSuite("pymunk." + modname))
-        except:
-            print("Skipping " + modname)
+        # try:
+        tests.addTests(doctest.DocTestSuite("pymunk." + modname))
+
+        # except Exception as e:
+        #    print("Skipping " + modname, e)
     tests.addTests(doctest.DocTestSuite(pymunk))
     return tests
 

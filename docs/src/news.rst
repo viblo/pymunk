@@ -53,7 +53,8 @@ Changes:
   - Vec2d now only support floor division (//) by ints and floats. Note that reverse division is not supported, i.e. 1 // Vec2d(1,2)
   - Improved error checking in Vec2d when an opertor (magics like __add__) is used with incompatible types 
   - Removed option to create a zero Vec2d with empty constructor. Vec2d() should be replaced with Vec2d.zero()
-
+ - Transform changes:
+  - Added helper methods to easily create transforms to translate, scale and rotate.
 
 
 Pymunk 5.7.0
