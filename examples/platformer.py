@@ -13,8 +13,6 @@ import math
 import sys
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
@@ -67,7 +65,7 @@ def main():
 
     ### Physics stuff
     space = pymunk.Space()
-    space.gravity = 0, -1000
+    space.gravity = Vec2d(0, -1000)
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     # box walls
@@ -81,9 +79,9 @@ def main():
         pymunk.Segment(space.static_body, (680, 370), (10, 370), 3),
         pymunk.Segment(space.static_body, (10, 370), (10, 50), 3),
     ]
-    static[1].color = pygame.color.pygame.Color("red")
-    static[2].color = pygame.color.pygame.Color("green")
-    static[3].color = pygame.color.pygame.Color("red")
+    static[1].color = pygame.Color("red")
+    static[2].color = pygame.Color("green")
+    static[3].color = pygame.Color("red")
 
     # rounded shape
     rounded = [
@@ -118,12 +116,12 @@ def main():
     s = pymunk.Segment(platform_body, (-25, 0), (25, 0), 5)
     s.friction = 1.0
     s.group = 1
-    s.color = pygame.color.pygame.Color("blue")
+    s.color = pygame.Color("blue")
     space.add(platform_body, s)
 
     # pass through platform
     passthrough = pymunk.Segment(space.static_body, (270, 100), (320, 100), 5)
-    passthrough.color = pygame.color.THECOLORS["yellow"]
+    passthrough.color = pygame.Color("yellow")
     passthrough.friction = 1.0
     passthrough.collision_type = 2
     passthrough.filter = pymunk.ShapeFilter(categories=0b1000)
@@ -200,21 +198,21 @@ def main():
 
         for event in pygame.event.get():
             if (
-                event.type == QUIT
-                or event.type == KEYDOWN
-                and (event.key in [K_ESCAPE, K_q])
+                event.type == pygame.QUIT
+                or event.type == pygame.KEYDOWN
+                and (event.key in [pygame.K_ESCAPE, pygame.K_q])
             ):
                 running = False
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "platformer.png")
 
-            elif event.type == KEYDOWN and event.key == K_UP:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
                 if well_grounded or remaining_jumps > 0:
                     jump_v = math.sqrt(2.0 * JUMP_HEIGHT * abs(space.gravity.y))
                     impulse = (0, body.mass * (ground_velocity.y + jump_v))
                     body.apply_impulse_at_local_point(impulse)
                     remaining_jumps -= 1
-            elif event.type == KEYUP and event.key == K_UP:
+            elif event.type == pygame.KEYUP and event.key == pygame.K_UP:
                 body.velocity.y = min(body.velocity.y, JUMP_CUTOFF_VELOCITY)
 
         # Target horizontal velocity of player
@@ -226,13 +224,13 @@ def main():
             direction = -1
 
         keys = pygame.key.get_pressed()
-        if keys[K_LEFT]:
+        if keys[pygame.K_LEFT]:
             direction = -1
             target_vx -= PLAYER_VELOCITY
-        if keys[K_RIGHT]:
+        if keys[pygame.K_RIGHT]:
             direction = 1
             target_vx += PLAYER_VELOCITY
-        if keys[K_DOWN]:
+        if keys[pygame.K_DOWN]:
             direction = -3
 
         feet.surface_velocity = -target_vx, 0
@@ -271,11 +269,11 @@ def main():
         platform_body.velocity = (new - current) / dt
 
         ### Clear screen
-        screen.fill(pygame.color.pygame.Color("black"))
+        screen.fill(pygame.Color("black"))
 
         ### Helper lines
         for y in [50, 100, 150, 200, 250, 300]:
-            color = pygame.color.pygame.Color("green")
+            color = pygame.Color("green")
             pygame.draw.line(screen, color, (10, y), (680, y), 1)
 
         ### Draw stuff
@@ -301,7 +299,7 @@ def main():
             landed_previous = False
         if landing["n"] > 0:
             p = pymunk.pygame_util.to_pygame(landing["p"], screen)
-            pygame.draw.circle(screen, pygame.color.THECOLORS["yellow"], p, 5)
+            pygame.draw.circle(screen, pygame.Color("yellow"), p, 5)
             landing["n"] -= 1
 
         # Info and flip screen
