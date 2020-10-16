@@ -3,7 +3,7 @@ Showcase
 ********
 
 This page shows some uses of Pymunk. If you also have done something using 
-Pymunk please let me know and I can add it here!   
+Pymunk please let me know and I can add it here!
 
 Games
 =====
@@ -75,8 +75,17 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/PySimpleGUI.png
+      - `PySimpleGUI Desktop Demo <https://github.com/PySimpleGUI/PySimpleGUI>`_
+
+        :subscript:`made by PySimpleGUI/Mike. Retrieved 2020-10-13`
+
+        Demo of using PySimpleGUI together with Pymunk to create bouncing
+        balls directly on the desktop, thanks to a transparent container 
+        window.
+
     * - .. image:: _static/legged_robot.png
-      - `<https://www.youtube.com/watch?v=n-OCy6ToLsU&feature=youtu.be>`_
+      - `Legged robot using differential evolution and perception <https://www.youtube.com/watch?v=n-OCy6ToLsU&feature=youtu.be>`_
 
         :subscript:`made by Nav. Retrieved 2020-08-20`
 
