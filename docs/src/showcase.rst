@@ -197,6 +197,10 @@ Papers / Science
 
 Pymunk has been used or referenced in a number of scientific papers 
 
+* Petitgirard, Julien, Tony Piguet, Philippe Baucour, Didier Chamagne, Eric Fouillien, and Jean-Christophe Delmare. 
+  "Steady State and 2D Thermal Equivalence Circuit for Winding Heads—A New Modelling Approach." 
+  Mathematical and Computational Applications 25, no. 4 (2020): 70.
+  
 * Matthews, Elizabeth A., and Juan E. Gilbert. 
   "ATLAS CHRONICLE: DEVELOPMENT AND VERIFICATION OF A SYSTEM FOR PROCEDURAL GENERATION OF STORY-DRIVEN GAMES."
 
