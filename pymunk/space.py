@@ -230,8 +230,9 @@ class Space(PickleMixin, object):
         """,
     )
 
-    def _set_gravity(self, gravity_vector) -> None:
-        cp.cpSpaceSetGravity(self._space, tuple(gravity_vector))
+    def _set_gravity(self, gravity_vector: Union[Vec2d, Tuple[float, float]]) -> None:
+        assert len(gravity_vector) == 2
+        cp.cpSpaceSetGravity(self._space, gravity_vector)
 
     def _get_gravity(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpSpaceGetGravity(self._space))
@@ -740,7 +741,7 @@ class Space(PickleMixin, object):
 
         :rtype: [:py:class:`PointQueryInfo`]
         """
-
+        assert len(point) == 2
         query_hits: List[PointQueryInfo] = []
 
         @ffi.callback("cpSpacePointQueryFunc")
@@ -754,9 +755,7 @@ class Space(PickleMixin, object):
             query_hits.append(p)
 
         data = ffi.new_handle(self)
-        cp.cpSpacePointQuery(
-            self._space, tuple(point), max_distance, shape_filter, cf, data
-        )
+        cp.cpSpacePointQuery(self._space, point, max_distance, shape_filter, cf, data)
         return query_hits
 
     def _get_shape(self, _shape: Any) -> Optional["Shape"]:
@@ -799,9 +798,10 @@ class Space(PickleMixin, object):
 
         :rtype: :py:class:`PointQueryInfo` or None
         """
+        assert len(point) == 2
         info = ffi.new("cpPointQueryInfo *")
         _shape = cp.cpSpacePointQueryNearest(
-            self._space, tuple(point), max_distance, shape_filter, info
+            self._space, point, max_distance, shape_filter, info
         )
 
         shape = self._get_shape(_shape)
@@ -838,7 +838,8 @@ class Space(PickleMixin, object):
 
         :rtype: [:py:class:`SegmentQueryInfo`]
         """
-
+        assert len(start) == 2
+        assert len(end) == 2
         query_hits: List[SegmentQueryInfo] = []
 
         @ffi.callback("cpSpaceSegmentQueryFunc")
@@ -851,9 +852,7 @@ class Space(PickleMixin, object):
             query_hits.append(p)
 
         data = ffi.new_handle(self)
-        cp.cpSpaceSegmentQuery(
-            self._space, tuple(start), tuple(end), radius, shape_filter, cf, data
-        )
+        cp.cpSpaceSegmentQuery(self._space, start, end, radius, shape_filter, cf, data)
         return query_hits
 
     def segment_query_first(
@@ -874,9 +873,11 @@ class Space(PickleMixin, object):
 
         :rtype: :py:class:`SegmentQueryInfo` or None
         """
+        assert len(start) == 2
+        assert len(end) == 2
         info = ffi.new("cpSegmentQueryInfo *")
         _shape = cp.cpSpaceSegmentQueryFirst(
-            self._space, tuple(start), tuple(end), radius, shape_filter, info
+            self._space, start, end, radius, shape_filter, info
         )
 
         shape = self._get_shape(_shape)
@@ -970,6 +971,9 @@ class Space(PickleMixin, object):
         else:
             for shape in self.shapes:
                 options.draw_shape(shape)
+
+    def get_batched_body_positions(self, shape_filter):
+        pass
 
     def __getstate__(self) -> dict:
         """Return the state of this object

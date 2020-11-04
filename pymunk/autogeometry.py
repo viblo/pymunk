@@ -51,7 +51,7 @@ def _to_chipmunk(polyline):
     _line = ffi.new("cpPolyline *", {"verts": l})
     _line.count = l
     _line.capacity = l
-    _line.verts = list(map(tuple, polyline))
+    _line.verts = polyline
     return _line
 
 
@@ -174,7 +174,10 @@ class PolylineSet(collections.abc.Sequence):
         :param v1: End of segment
         :type v1: (float,float)
         """
-        lib.cpPolylineSetCollectSegment(tuple(v0), tuple(v1), self._set)
+        assert len(v0) == 2
+        assert len(v1) == 2
+
+        lib.cpPolylineSetCollectSegment(v0, v1, self._set)
 
     def __len__(self) -> int:
         return self._set.count

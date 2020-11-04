@@ -53,9 +53,17 @@ Changes:
   - Vec2d now only support floor division (//) by ints and floats. Note that reverse division is not supported, i.e. 1 // Vec2d(1,2)
   - Improved error checking in Vec2d when an opertor (magics like __add__) is used with incompatible types 
   - Removed option to create a zero Vec2d with empty constructor. Vec2d() should be replaced with Vec2d.zero()
+  - Made Vec2d a subclass of NamedTuple. 
+    - Vec2ds has to be constructed with a x and a y value as separate arguments.
+    - Vec2d((1,2)) can be changed to Vec2d(*(1,2))
+    - Vec2d(Vec2d(1,2)) can be changed to Vec2d(*Vec2d(1,2))
+    - Vec2d() can be changed to Vec2d(0,0) or Vec2d.zero() 
+    - Vec2d(1,2) is no longer equal to [1,2] since they are of different types. (but Vec2d(1,2) == (1,2) is still true)
+ - Require all arguments where a Vec2d like object is expected to either send in a Vec2d, tuple of length 2 or a list of length 2. Before any x that could be passed into tuple(x) worked. If you have code that stopped worked it should be enough to just wrap whatever value with tuple(..).  (Note: Due to no checks a list of length 2 will also work in most cases, however, this is not supported and can change any time. It is also not allowed according to the type hints).
  - Transform changes:
   - Added helper methods to easily create transforms to translate, scale and rotate.
-
+ - Added default value of argument point to apply_force_at_local_point
+ - Removed default value of argument point from apply_impulse_at_world_point. Just specify point = (0,0) to mimic the old default
 
 Pymunk 5.7.0
 ------------

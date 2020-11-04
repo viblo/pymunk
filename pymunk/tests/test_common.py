@@ -42,11 +42,17 @@ class UnitTestBugs(unittest.TestCase):
         for x in [1, 2]:
             for y in range(16):
                 size = 10
-                box_points = map(
-                    Vec2d, [(-size, -size), (-size, size), (size, size), (size, -size)]
-                )
+                box_points = [
+                    Vec2d(*p)
+                    for p in [
+                        (-size, -size),
+                        (-size, size),
+                        (size, size),
+                        (size, -size),
+                    ]
+                ]
                 body = p.Body(10, 20)
-                shape = p.Poly(body, list(box_points))
+                shape = p.Poly(body, box_points)
                 space.add(body, shape)
             space.step(1 / 50.0)
 

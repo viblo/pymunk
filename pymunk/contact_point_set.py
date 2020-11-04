@@ -17,6 +17,8 @@ class ContactPoint(object):
     __slots__ = ("point_a", "point_b", "distance")
 
     def __init__(self, point_a, point_b, distance: float) -> None:
+        assert len(point_a) == 2
+        assert len(point_b) == 2
         self.point_a = point_a
         self.point_b = point_b
         self.distance = distance
@@ -38,6 +40,7 @@ class ContactPointSet(object):
     __slots__ = ("normal", "points")
 
     def __init__(self, normal, points) -> None:
+        assert len(normal) == 2
         self.normal = normal
         self.points = points
 

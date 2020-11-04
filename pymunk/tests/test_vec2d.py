@@ -8,7 +8,7 @@ from pymunk.vec2d import Vec2d
 
 class UnitTestVec2d(unittest.TestCase):
     def testCreationAndAccess(self):
-        v = Vec2d((0, 0))
+        v = Vec2d(*(0, 0))
         self.assertEqual(v.x, 0)
         self.assertEqual(v[0], 0)
         self.assertEqual(v.y, 0)
@@ -22,7 +22,8 @@ class UnitTestVec2d(unittest.TestCase):
 
         v = Vec2d(111, 222)
         self.assertTrue(v.x == 111 and v.y == 222)
-        v.x = 333
+        with self.assertRaises(AttributeError):
+            v.x = 333
         with self.assertRaises(TypeError):
             v[1] = 444  # type: ignore
 
@@ -71,7 +72,7 @@ class UnitTestVec2d(unittest.TestCase):
     def testAnglesDegrees(self):
         v = Vec2d(0, 3)
         self.assertEqual(v.angle_degrees, 90)
-        v2 = Vec2d(v)
+        v2 = Vec2d(*v)
         v = v.rotated_degrees(-90)
         self.assertEqual(v.get_angle_degrees_between(v2), 90)
         v2 = v2.rotated_degrees(-90)
@@ -91,7 +92,7 @@ class UnitTestVec2d(unittest.TestCase):
     def testAnglesRadians(self):
         v = Vec2d(0, 3)
         self.assertEqual(v.angle, math.pi / 2.0)
-        v2 = Vec2d(v)
+        v2 = Vec2d(*v)
         v = v.rotated(-math.pi / 2.0)
         self.assertEqual(v.get_angle_between(v2), math.pi / 2.0)
         v2 = v2.rotated(-math.pi / 2.0)
@@ -112,17 +113,17 @@ class UnitTestVec2d(unittest.TestCase):
         basis0 = Vec2d(5.0, 0)
         basis1 = Vec2d(0, 0.5)
         v = Vec2d(10, 1)
-        self.assertTrue(v.convert_to_basis(basis0, basis1) == [2, 2])
-        self.assertTrue(v.projection(basis0) == (10, 0))
-        self.assertTrue(v.projection(list(basis0)) == (10, 0))
-        self.assertTrue(v.projection(Vec2d(0, 0)) == (0, 0))
-        self.assertTrue(v.projection((0, 0)) == (0, 0))
-        self.assertTrue(basis0.dot(basis1) == 0)
+        self.assertEqual(v.convert_to_basis(basis0, basis1), (2, 2))
+        self.assertEqual(v.projection(basis0), (10, 0))
+        self.assertEqual(v.projection(list(basis0)), (10, 0))
+        self.assertEqual(v.projection(Vec2d(0, 0)), (0, 0))
+        self.assertEqual(v.projection((0, 0)), (0, 0))
+        self.assertEqual(basis0.dot(basis1), 0)
 
     def testCross(self):
         lhs = Vec2d(1, 0.5)
         rhs = Vec2d(4, 6)
-        self.assertTrue(lhs.cross(rhs) == 4)
+        self.assertEqual(lhs.cross(rhs), 4)
 
     def testComparison(self):
         int_vec = Vec2d(3, -2)

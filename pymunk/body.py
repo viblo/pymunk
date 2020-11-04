@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Any, Optional, Set
+from typing import TYPE_CHECKING, Any, Optional, Set, Tuple, Union
 
 if TYPE_CHECKING:
     from .space import Space
@@ -283,8 +283,9 @@ class Body(PickleMixin, TypingAttrMixing, object):
         """,
     )
 
-    def _set_position(self, pos) -> None:
-        cp.cpBodySetPosition(self._body, tuple(pos))
+    def _set_position(self, pos: Union[Vec2d, Tuple[float, float]]) -> None:
+        assert len(pos) == 2
+        cp.cpBodySetPosition(self._body, pos)
 
     def _get_position(self) -> Vec2d:
         p = cp.cpBodyGetPosition(self._body)
@@ -302,7 +303,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
     )
 
     def _set_center_of_gravity(self, cog):
-        cp.cpBodySetCenterOfGravity(self._body, tuple(cog))
+        assert len(cog) == 2
+        cp.cpBodySetCenterOfGravity(self._body, cog)
 
     def _get_center_of_gravity(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpBodyGetCenterOfGravity(self._body))
@@ -318,7 +320,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
     )
 
     def _set_velocity(self, vel):
-        cp.cpBodySetVelocity(self._body, tuple(vel))
+        assert len(vel) == 2
+        cp.cpBodySetVelocity(self._body, vel)
 
     def _get_velocity(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpBodyGetVelocity(self._body))
@@ -330,7 +333,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
     )
 
     def _set_force(self, f):
-        cp.cpBodySetForce(self._body, tuple(f))
+        assert len(f) == 2
+        cp.cpBodySetForce(self._body, f)
 
     def _get_force(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpBodyGetForce(self._body))
@@ -502,7 +506,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
         Updates the velocity of the body using Euler integration.
         """
-        cp.cpBodyUpdateVelocity(body._body, tuple(gravity), damping, dt)
+        assert len(gravity) == 2
+        cp.cpBodyUpdateVelocity(body._body, gravity, damping, dt)
 
     @staticmethod
     def update_position(body: "Body", dt: float) -> None:
@@ -527,23 +532,31 @@ class Body(PickleMixin, TypingAttrMixing, object):
         Both impulses and forces are affected the mass of an object. Doubling
         the mass of the object will halve the effect.
         """
-        cp.cpBodyApplyForceAtWorldPoint(self._body, tuple(force), tuple(point))
+        assert len(force) == 2
+        assert len(point) == 2
+        cp.cpBodyApplyForceAtWorldPoint(self._body, force, point)
 
-    def apply_force_at_local_point(self, force, point) -> None:
+    def apply_force_at_local_point(self, force, point=(0, 0)) -> None:
         """Add the local force force to body as if applied from the body
         local point.
         """
-        cp.cpBodyApplyForceAtLocalPoint(self._body, tuple(force), tuple(point))
+        assert len(force) == 2
+        assert len(point) == 2
+        cp.cpBodyApplyForceAtLocalPoint(self._body, force, point)
 
-    def apply_impulse_at_world_point(self, impulse, point=(0, 0)) -> None:
+    def apply_impulse_at_world_point(self, impulse, point) -> None:
         """Add the impulse impulse to body as if applied from the world point."""
-        cp.cpBodyApplyImpulseAtWorldPoint(self._body, tuple(impulse), tuple(point))
+        assert len(impulse) == 2
+        assert len(point) == 2
+        cp.cpBodyApplyImpulseAtWorldPoint(self._body, impulse, point)
 
     def apply_impulse_at_local_point(self, impulse, point=(0, 0)) -> None:
         """Add the local impulse impulse to body as if applied from the body
         local point.
         """
-        cp.cpBodyApplyImpulseAtLocalPoint(self._body, tuple(impulse), tuple(point))
+        assert len(impulse) == 2
+        assert len(point) == 2
+        cp.cpBodyApplyImpulseAtLocalPoint(self._body, impulse, point)
 
     def activate(self) -> None:
         """Reset the idle timer on a body.
@@ -655,14 +668,16 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
         :param v: Vector in body local coordinates
         """
-        return Vec2d._fromcffi(cp.cpBodyLocalToWorld(self._body, tuple(v)))
+        assert len(v) == 2
+        return Vec2d._fromcffi(cp.cpBodyLocalToWorld(self._body, v))
 
     def world_to_local(self, v):
         """Convert world space coordinates to body local coordinates
 
         :param v: Vector in world space coordinates
         """
-        return Vec2d._fromcffi(cp.cpBodyWorldToLocal(self._body, tuple(v)))
+        assert len(v) == 2
+        return Vec2d._fromcffi(cp.cpBodyWorldToLocal(self._body, v))
 
     def velocity_at_world_point(self, point):
         """Get the absolute velocity of the rigid body at the given world
@@ -672,17 +687,15 @@ class Body(PickleMixin, TypingAttrMixing, object):
         surface of a body since the angular velocity affects everything
         except the center of gravity.
         """
-        return Vec2d._fromcffi(
-            cp.cpBodyGetVelocityAtWorldPoint(self._body, tuple(point))
-        )
+        assert len(point) == 2
+        return Vec2d._fromcffi(cp.cpBodyGetVelocityAtWorldPoint(self._body, point))
 
     def velocity_at_local_point(self, point):
         """Get the absolute velocity of the rigid body at the given body
         local point
         """
-        return Vec2d._fromcffi(
-            cp.cpBodyGetVelocityAtLocalPoint(self._body, tuple(point))
-        )
+        assert len(point) == 2
+        return Vec2d._fromcffi(cp.cpBodyGetVelocityAtLocalPoint(self._body, point))
 
     def __getstate__(self):
         """Return the state of this object

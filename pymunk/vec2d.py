@@ -45,9 +45,7 @@ More examples::
     >>> from pymunk.vec2d import Vec2d
     >>> Vec2d(7.3, 4.2)
     Vec2d(7.3, 4.2)
-    >>> Vec2d((7.3, 4.2))
-    Vec2d(7.3, 4.2)
-    >>> Vec2d(7.3, 4.2) + Vec2d((1,2))
+    >>> Vec2d(7.3, 4.2) + Vec2d(1, 2)
     Vec2d(8.3, 6.2)
 
 """
@@ -62,6 +60,7 @@ from typing import (
     Any,
     Generator,
     List,
+    NamedTuple,
     Optional,
     Sequence,
     Tuple,
@@ -75,12 +74,10 @@ _Vec2dOrTuple = Any
 __all__ = ["Vec2d"]
 
 
-class Vec2d(object):
+class Vec2d(NamedTuple):
     """2d vector class, supports vector and scalar operators, and also
     provides some high level functions.
     """
-
-    __slots__ = ("x", "y")
 
     x: float
     y: float
@@ -88,56 +85,24 @@ class Vec2d(object):
     @staticmethod
     def _fromcffi(p) -> "Vec2d":
         """Used as a speedy way to create Vec2ds internally in pymunk."""
-        v = Vec2d.__new__(Vec2d)
-        v.x = p.x
-        v.y = p.y
-        return v
-
-    def __init__(self, x_or_pair, y=None):
-        if y is None:
-            if isinstance(x_or_pair, Vec2d):
-                self.x = x_or_pair.x
-                self.y = x_or_pair.y
-            else:
-                assert (
-                    len(x_or_pair) == 2
-                ), f"{x_or_pair} must be of length 2 when used alone"
-                self.x = x_or_pair[0]
-                self.y = x_or_pair[1]
-        else:
-            self.x = x_or_pair
-            self.y = y
-
-    def __getitem__(self, i):
-        if i == 0:
-            return self.x
-        elif i == 1:
-            return self.y
-        raise IndexError()
-
-    def __iter__(self):
-        yield self.x
-        yield self.y
-
-    def __len__(self) -> int:
-        return 2
+        return Vec2d.__new__(Vec2d, p.x, p.y)
 
     # String representaion (for debugging)
     def __repr__(self) -> str:
         return "Vec2d(%s, %s)" % (self.x, self.y)
 
-    # Comparison
-    def __eq__(self, other) -> bool:
-        if hasattr(other, "__getitem__") and len(other) == 2:
-            return self.x == other[0] and self.y == other[1]
-        else:
-            return False
+    # # Comparison
+    # def __eq__(self, other) -> bool:
+    #     if hasattr(other, "__getitem__") and len(other) == 2:
+    #         return self.x == other[0] and self.y == other[1]
+    #     else:
+    #         return False
 
-    def __ne__(self, other) -> bool:
-        if hasattr(other, "__getitem__") and len(other) == 2:
-            return self.x != other[0] or self.y != other[1]
-        else:
-            return True
+    # def __ne__(self, other) -> bool:
+    #     if hasattr(other, "__getitem__") and len(other) == 2:
+    #         return self.x != other[0] or self.y != other[1]
+    #     else:
+    #         return True
 
     # Addition
     def __add__(self, other: _Vec2dOrTuple) -> "Vec2d":
@@ -411,9 +376,3 @@ class Vec2d(object):
         return Vec2d(
             self.x * other.x + self.y * other.y, self.y * other.x - self.x * other.y
         )
-
-    # Pickle
-    def __reduce__(self):
-        callable = Vec2d
-        args = (self.x, self.y)
-        return (callable, args)

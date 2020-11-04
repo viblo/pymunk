@@ -336,17 +336,17 @@ class PinJoint(Constraint):
         is created. If you want to set a specific distance, use the setter
         function to override it.
         """
-
-        _constraint = cp.cpPinJointNew(
-            a._body, b._body, tuple(anchor_a), tuple(anchor_b)
-        )
+        assert len(anchor_a) == 2
+        assert len(anchor_b) == 2
+        _constraint = cp.cpPinJointNew(a._body, b._body, anchor_a, anchor_b)
         self._init(a, b, _constraint)
 
     def _get_anchor_a(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpPinJointGetAnchorA(self._constraint))
 
     def _set_anchor_a(self, anchor):
-        cp.cpPinJointSetAnchorA(self._constraint, tuple(anchor))
+        assert len(anchor) == 2
+        cp.cpPinJointSetAnchorA(self._constraint, anchor)
 
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
@@ -354,7 +354,8 @@ class PinJoint(Constraint):
         return Vec2d._fromcffi(cp.cpPinJointGetAnchorB(self._constraint))
 
     def _set_anchor_b(self, anchor):
-        cp.cpPinJointSetAnchorB(self._constraint, tuple(anchor))
+        assert len(anchor) == 2
+        cp.cpPinJointSetAnchorB(self._constraint, anchor)
 
     anchor_b = property(_get_anchor_b, _set_anchor_b)
 
@@ -388,17 +389,17 @@ class SlideJoint(Constraint):
         anchor points on those bodies, and min and max define the allowed
         distances of the anchor points.
         """
-
-        _constraint = cp.cpSlideJointNew(
-            a._body, b._body, tuple(anchor_a), tuple(anchor_b), min, max
-        )
+        assert len(anchor_a) == 2
+        assert len(anchor_b) == 2
+        _constraint = cp.cpSlideJointNew(a._body, b._body, anchor_a, anchor_b, min, max)
         self._init(a, b, _constraint)
 
     def _get_anchor_a(self) -> Vec2d:
         return Vec2d._fromcffi(cp.cpSlideJointGetAnchorA(self._constraint))
 
     def _set_anchor_a(self, anchor):
-        cp.cpSlideJointSetAnchorA(self._constraint, tuple(anchor))
+        assert len(anchor) == 2
+        cp.cpSlideJointSetAnchorA(self._constraint, anchor)
 
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
@@ -406,7 +407,8 @@ class SlideJoint(Constraint):
         return Vec2d._fromcffi(cp.cpSlideJointGetAnchorB(self._constraint))
 
     def _set_anchor_b(self, anchor):
-        cp.cpSlideJointSetAnchorB(self._constraint, tuple(anchor))
+        assert len(anchor) == 2
+        cp.cpSlideJointSetAnchorB(self._constraint, anchor)
 
     anchor_b = property(_get_anchor_b, _set_anchor_b)
 
@@ -454,11 +456,12 @@ class PivotJoint(Constraint):
         :type args: (float,float) or (float,float) (float,float)
         """
         if len(args) == 1:
-            _constraint = cp.cpPivotJointNew(a._body, b._body, tuple(args[0]))
+            assert len(args[0]) == 2
+            _constraint = cp.cpPivotJointNew(a._body, b._body, args[0])
         elif len(args) == 2:
-            _constraint = cp.cpPivotJointNew2(
-                a._body, b._body, tuple(args[0]), tuple(args[1])
-            )
+            assert len(args[0]) == 2
+            assert len(args[1]) == 2
+            _constraint = cp.cpPivotJointNew2(a._body, b._body, args[0], args[1])
         else:
             raise Exception(
                 "You must specify either one pivot point" " or two anchor points"
@@ -470,7 +473,8 @@ class PivotJoint(Constraint):
         return Vec2d._fromcffi(cp.cpPivotJointGetAnchorA(self._constraint))
 
     def _set_anchor_a(self, anchor) -> None:
-        cp.cpPivotJointSetAnchorA(self._constraint, tuple(anchor))
+        assert len(anchor) == 2
+        cp.cpPivotJointSetAnchorA(self._constraint, anchor)
 
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
@@ -478,7 +482,8 @@ class PivotJoint(Constraint):
         return Vec2d._fromcffi(cp.cpPivotJointGetAnchorB(self._constraint))
 
     def _set_anchor_b(self, anchor) -> None:
-        cp.cpPivotJointSetAnchorB(self._constraint, tuple(anchor))
+        assert len(anchor) == 2
+        cp.cpPivotJointSetAnchorB(self._constraint, anchor)
 
     anchor_b = property(_get_anchor_b, _set_anchor_b)
 
@@ -501,8 +506,11 @@ class GrooveJoint(Constraint):
 
         All coordinates are body local.
         """
+        assert len(groove_a) == 2
+        assert len(groove_b) == 2
+        assert len(anchor_b) == 2
         _constraint = cp.cpGrooveJointNew(
-            a._body, b._body, tuple(groove_a), tuple(groove_b), tuple(anchor_b)
+            a._body, b._body, groove_a, groove_b, anchor_b
         )
         self._init(a, b, _constraint)
 
@@ -510,7 +518,8 @@ class GrooveJoint(Constraint):
         return Vec2d._fromcffi(cp.cpGrooveJointGetAnchorB(self._constraint))
 
     def _set_anchor_b(self, anchor) -> None:
-        cp.cpGrooveJointSetAnchorB(self._constraint, tuple(anchor))
+        assert len(anchor) == 2
+        cp.cpGrooveJointSetAnchorB(self._constraint, anchor)
 
     anchor_b = property(_get_anchor_b, _set_anchor_b)
 
@@ -518,7 +527,8 @@ class GrooveJoint(Constraint):
         return Vec2d._fromcffi(cp.cpGrooveJointGetGrooveA(self._constraint))
 
     def _set_groove_a(self, groove) -> None:
-        cp.cpGrooveJointSetGrooveA(self._constraint, tuple(groove))
+        assert len(groove) == 2
+        cp.cpGrooveJointSetGrooveA(self._constraint, groove)
 
     groove_a = property(_get_groove_a, _set_groove_a)
 
@@ -526,7 +536,8 @@ class GrooveJoint(Constraint):
         return Vec2d._fromcffi(cp.cpGrooveJointGetGrooveB(self._constraint))
 
     def _set_groove_b(self, groove) -> None:
-        cp.cpGrooveJointSetGrooveB(self._constraint, tuple(groove))
+        assert len(groove) == 2
+        cp.cpGrooveJointSetGrooveB(self._constraint, groove)
 
     groove_b = property(_get_groove_b, _set_groove_b)
 
@@ -567,11 +578,13 @@ class DampedSpring(Constraint):
         :param float stiffness: The spring constant (Young's modulus).
         :param float damping: How soft to make the damping of the spring.
         """
+        assert len(anchor_a) == 2
+        assert len(anchor_b) == 2
         _constraint = cp.cpDampedSpringNew(
             a._body,
             b._body,
-            tuple(anchor_a),
-            tuple(anchor_b),
+            anchor_a,
+            anchor_b,
             rest_length,
             stiffness,
             damping,
@@ -583,7 +596,8 @@ class DampedSpring(Constraint):
         return Vec2d._fromcffi(cp.cpDampedSpringGetAnchorA(self._constraint))
 
     def _set_anchor_a(self, anchor) -> None:
-        cp.cpDampedSpringSetAnchorA(self._constraint, tuple(anchor))
+        assert len(anchor) == 2
+        cp.cpDampedSpringSetAnchorA(self._constraint, anchor)
 
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
@@ -591,7 +605,8 @@ class DampedSpring(Constraint):
         return Vec2d._fromcffi(cp.cpDampedSpringGetAnchorB(self._constraint))
 
     def _set_anchor_b(self, anchor) -> None:
-        cp.cpDampedSpringSetAnchorB(self._constraint, tuple(anchor))
+        assert len(anchor) == 2
+        cp.cpDampedSpringSetAnchorB(self._constraint, anchor)
 
     anchor_b = property(_get_anchor_b, _set_anchor_b)
 

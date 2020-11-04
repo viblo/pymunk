@@ -239,7 +239,8 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         return Vec2d._fromcffi(cp.cpShapeGetSurfaceVelocity(self._shape))
 
     def _set_surface_velocity(self, surface_v: Vec2d) -> None:
-        cp.cpShapeSetSurfaceVelocity(self._shape, tuple(surface_v))
+        assert len(surface_v) == 2
+        cp.cpShapeSetSurfaceVelocity(self._shape, surface_v)
 
     surface_velocity = property(
         _get_surface_velocity,
@@ -305,8 +306,9 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         :return: Tuple of (distance, info)
         :rtype: (float, :py:class:`PointQueryInfo`)
         """
+        assert len(p) == 2
         info = ffi.new("cpPointQueryInfo *")
-        _ = cp.cpShapePointQuery(self._shape, tuple(p), info)
+        _ = cp.cpShapePointQuery(self._shape, p, info)
 
         ud = cp.cpShapeGetUserData(info.shape)
         assert ud == self._get_shapeid()
@@ -322,8 +324,10 @@ class Shape(PickleMixin, TypingAttrMixing, object):
 
         :rtype: :py:class:`SegmentQueryInfo`
         """
+        assert len(start) == 2
+        assert len(end) == 2
         info = ffi.new("cpSegmentQueryInfo *")
-        r = cp.cpShapeSegmentQuery(self._shape, tuple(start), tuple(end), radius, info)
+        r = cp.cpShapeSegmentQuery(self._shape, start, end, radius, info)
         if r:
             ud = cp.cpShapeGetUserData(info.shape)
             assert ud == self._get_shapeid()
@@ -391,8 +395,9 @@ class Circle(Shape):
         shape is not attached to a body. However, you must attach it to a body
         before adding the shape to a space or used for a space shape query.
         """
+        assert len(offset) == 2
         body_body = ffi.NULL if body is None else body._body
-        _shape = cp.cpCircleShapeNew(body_body, radius, tuple(offset))
+        _shape = cp.cpCircleShapeNew(body_body, radius, offset)
         self._init(body, _shape)
 
     def unsafe_set_radius(self, r: float) -> None:
@@ -420,7 +425,8 @@ class Circle(Shape):
             not result in realistic physical behavior. Only use if you know
             what you are doing!
         """
-        cp.cpCircleShapeSetOffset(self._shape, tuple(o))
+        assert len(o) == 2
+        cp.cpCircleShapeSetOffset(self._shape, o)
 
     @property
     def offset(self) -> Vec2d:
@@ -449,9 +455,11 @@ class Segment(Shape):
         :param b: The second endpoint of the segment
         :param float radius: The thickness of the segment
         """
+        assert len(a) == 2
+        assert len(b) == 2
 
         body_body = ffi.NULL if body is None else body._body
-        _shape = cp.cpSegmentShapeNew(body_body, tuple(a), tuple(b), radius)
+        _shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
         self._init(body, _shape)
 
     def _get_a(self):
@@ -473,7 +481,9 @@ class Segment(Shape):
             not result in realistic physical behavior. Only use if you know
             what you are doing!
         """
-        cp.cpSegmentShapeSetEndpoints(self._shape, tuple(a), tuple(b))
+        assert len(a) == 2
+        assert len(b) == 2
+        cp.cpSegmentShapeSetEndpoints(self._shape, a, b)
 
     @property
     def normal(self) -> Vec2d:
@@ -502,7 +512,9 @@ class Segment(Shape):
         segments. By setting the neighbor segment endpoints you can tell
         Chipmunk to avoid colliding with the inner parts of the crack.
         """
-        cp.cpSegmentShapeSetNeighbors(self._shape, tuple(prev), tuple(next))
+        assert len(prev) == 2
+        assert len(next) == 2
+        cp.cpSegmentShapeSetNeighbors(self._shape, prev, next)
 
 
 class Poly(Shape):
@@ -565,10 +577,10 @@ class Poly(Shape):
         if transform == None:
             transform = Transform.identity()
 
-        vs = list(map(tuple, vertices))
-
         body_body = ffi.NULL if body is None else body._body
-        _shape = cp.cpPolyShapeNew(body_body, len(vertices), vs, transform, radius)
+        _shape = cp.cpPolyShapeNew(
+            body_body, len(vertices), vertices, transform, radius
+        )
         self._init(body, _shape)
 
     def unsafe_set_radius(self, radius: float) -> None:
@@ -678,12 +690,11 @@ class Poly(Shape):
             not result in realistic physical behavior. Only use if you know
             what you are doing!
         """
-        vs = list(map(tuple, vertices))
         if transform == None:
-            cp.cpPolyShapeSetVertsRaw(self._shape, len(vertices), vs)
+            cp.cpPolyShapeSetVertsRaw(self._shape, len(vertices), vertices)
             return
 
-        cp.cpPolyShapeSetVerts(self._shape, len(vertices), vs, transform)
+        cp.cpPolyShapeSetVerts(self._shape, len(vertices), vertices, transform)
 
     def __getstate__(self) -> dict:
         """Return the state of this object

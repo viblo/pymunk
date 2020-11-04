@@ -47,14 +47,13 @@ class Arbiter(object):
         # according to whats passed in and the pass that back to chipmunk due
         # to the fact that ContactPointSet doesnt contain a reference to the
         # corresponding c struct.
-
         _set = lib.cpArbiterGetContactPointSet(self._arbiter)
-        _set.normal = tuple(point_set.normal)
+        _set.normal = point_set.normal
 
         if len(point_set.points) == _set.count:
             for i in range(_set.count):
-                _set.points[i].pointA = tuple(point_set.points[0].point_a)
-                _set.points[i].pointB = tuple(point_set.points[0].point_b)
+                _set.points[i].pointA = point_set.points[0].point_a
+                _set.points[i].pointB = point_set.points[0].point_b
                 _set.points[i].distance = point_set.points[0].distance
         else:
             msg = "Expected {} points, got {} points in point_set".format(

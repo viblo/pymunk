@@ -133,7 +133,9 @@ def moment_for_circle(
 
     (A solid circle has an inner radius of 0)
     """
-    return cp.cpMomentForCircle(mass, inner_radius, outer_radius, tuple(offset))
+    assert len(offset) == 2
+
+    return cp.cpMomentForCircle(mass, inner_radius, outer_radius, offset)
 
 
 def moment_for_segment(
@@ -143,7 +145,10 @@ def moment_for_segment(
 
     The endpoints a and b are relative to the body
     """
-    return cp.cpMomentForSegment(mass, tuple(a), tuple(b), radius)
+    assert len(a) == 2
+    assert len(b) == 2
+
+    return cp.cpMomentForSegment(mass, a, b, radius)
 
 
 def moment_for_box(mass: float, size: Tuple[float, float]) -> float:
@@ -151,6 +156,7 @@ def moment_for_box(mass: float, size: Tuple[float, float]) -> float:
 
     size should be a tuple of (width, height)
     """
+    assert len(size) == 2
     return cp.cpMomentForBox(mass, size[0], size[1])
 
 
@@ -160,8 +166,9 @@ def moment_for_poly(mass, vertices, offset=(0, 0), radius=0):
     Assumes the polygon center of gravity is at its centroid. The offset is
     added to each vertex.
     """
+    assert len(offset) == 2
     vs = list(map(tuple, vertices))
-    return cp.cpMomentForPoly(mass, len(vertices), vs, tuple(offset), radius)
+    return cp.cpMomentForPoly(mass, len(vertices), vs, offset, radius)
 
 
 def area_for_circle(inner_radius: float, outer_radius: float) -> float:
@@ -174,7 +181,10 @@ def area_for_segment(a: Tuple[float, float], b, radius: float) -> float:
 
     (Will always be zero if radius is zero)
     """
-    return cp.cpAreaForSegment(tuple(a), tuple(b), radius)
+    assert len(a) == 2
+    assert len(b) == 2
+
+    return cp.cpAreaForSegment(a, b, radius)
 
 
 def area_for_poly(vertices, radius: float = 0):
