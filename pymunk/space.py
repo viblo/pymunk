@@ -235,7 +235,8 @@ class Space(PickleMixin, object):
         cp.cpSpaceSetGravity(self._space, gravity_vector)
 
     def _get_gravity(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpSpaceGetGravity(self._space))
+        v = cp.cpSpaceGetGravity(self._space)
+        return Vec2d(v.x, v.y)
 
     gravity = property(
         _get_gravity,
@@ -749,7 +750,7 @@ class Space(PickleMixin, object):
             # space = ffi.from_handle(data)
             shape = self._get_shape(_shape)
             p = PointQueryInfo(
-                shape, Vec2d._fromcffi(point), distance, Vec2d._fromcffi(gradient)
+                shape, Vec2d(point.x, point.y), distance, Vec2d(gradient.x, gradient.y)
             )
             nonlocal query_hits
             query_hits.append(p)
@@ -809,9 +810,9 @@ class Space(PickleMixin, object):
         if shape != None:
             return PointQueryInfo(
                 shape,
-                Vec2d._fromcffi(info.point),
+                Vec2d(info.point.x, info.point.y),
                 info.distance,
-                Vec2d._fromcffi(info.gradient),
+                Vec2d(info.gradient.x, info.gradient.y),
             )
         return None
 
@@ -846,7 +847,7 @@ class Space(PickleMixin, object):
         def cf(_shape, point, normal, alpha, data):
             shape = self._get_shape(_shape)
             p = SegmentQueryInfo(
-                shape, Vec2d._fromcffi(point), Vec2d._fromcffi(normal), alpha
+                shape, Vec2d(point.x, point.y), Vec2d(normal.x, normal.y), alpha
             )
             nonlocal query_hits
             query_hits.append(p)
@@ -884,8 +885,8 @@ class Space(PickleMixin, object):
         if shape != None:
             return SegmentQueryInfo(
                 shape,
-                Vec2d._fromcffi(info.point),
-                Vec2d._fromcffi(info.normal),
+                Vec2d(info.point.x, info.point.y),
+                Vec2d(info.normal.x, info.normal.y),
                 info.alpha,
             )
         return None

@@ -97,7 +97,8 @@ class BB(PickleMixin, object):
 
     def center(self) -> Vec2d:
         """Return the center"""
-        return Vec2d._fromcffi(lib.cpBBCenter(self._bb))
+        v = lib.cpBBCenter(self._bb)
+        return Vec2d(v.x, v.y)
 
     def area(self) -> float:
         """Return the area"""
@@ -118,7 +119,8 @@ class BB(PickleMixin, object):
 
     def clamp_vect(self, v) -> Vec2d:
         """Returns a copy of the vector v clamped to the bounding box"""
-        return Vec2d._fromcffi(lib.cpBBClampVect(self._bb, tuple(v)))
+        v2 = lib.cpBBClampVect(self._bb, tuple(v))
+        return Vec2d(v2.x, v2.y)
 
     '''
     def wrap_vect(self, v):

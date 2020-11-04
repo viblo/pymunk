@@ -123,7 +123,8 @@ class Arbiter(object):
     )
 
     def _get_surface_velocity(self) -> Vec2d:
-        return Vec2d._fromcffi(lib.cpArbiterGetSurfaceVelocity(self._arbiter))
+        v = lib.cpArbiterGetSurfaceVelocity(self._arbiter)
+        return Vec2d(v.x, v.y)
 
     def _set_surface_velocity(self, velocity: Vec2d) -> None:
         lib.cpArbiterSetSurfaceVelocity(self._arbiter, velocity)
@@ -152,7 +153,8 @@ class Arbiter(object):
         This property should only be called from a post-solve or each_arbiter
         callback.
         """
-        return Vec2d._fromcffi(lib.cpArbiterTotalImpulse(self._arbiter))
+        v = lib.cpArbiterTotalImpulse(self._arbiter)
+        return Vec2d(v.x, v.y)
 
     @property
     def total_ke(self) -> float:
@@ -185,4 +187,5 @@ class Arbiter(object):
     @property
     def normal(self) -> Vec2d:
         """Returns the normal of the collision."""
-        return Vec2d._fromcffi(lib.cpArbiterGetNormal(self._arbiter))
+        v = lib.cpArbiterGetNormal(self._arbiter)
+        return Vec2d(v.x, v.y)

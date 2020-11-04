@@ -342,7 +342,8 @@ class PinJoint(Constraint):
         self._init(a, b, _constraint)
 
     def _get_anchor_a(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpPinJointGetAnchorA(self._constraint))
+        v = cp.cpPinJointGetAnchorA(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_anchor_a(self, anchor):
         assert len(anchor) == 2
@@ -351,7 +352,8 @@ class PinJoint(Constraint):
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
     def _get_anchor_b(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpPinJointGetAnchorB(self._constraint))
+        v = cp.cpPinJointGetAnchorB(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_anchor_b(self, anchor):
         assert len(anchor) == 2
@@ -395,7 +397,8 @@ class SlideJoint(Constraint):
         self._init(a, b, _constraint)
 
     def _get_anchor_a(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpSlideJointGetAnchorA(self._constraint))
+        v = cp.cpSlideJointGetAnchorA(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_anchor_a(self, anchor):
         assert len(anchor) == 2
@@ -404,7 +407,8 @@ class SlideJoint(Constraint):
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
     def _get_anchor_b(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpSlideJointGetAnchorB(self._constraint))
+        v = cp.cpSlideJointGetAnchorB(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_anchor_b(self, anchor):
         assert len(anchor) == 2
@@ -470,7 +474,8 @@ class PivotJoint(Constraint):
         self._init(a, b, _constraint)
 
     def _get_anchor_a(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpPivotJointGetAnchorA(self._constraint))
+        v = cp.cpPivotJointGetAnchorA(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_anchor_a(self, anchor) -> None:
         assert len(anchor) == 2
@@ -479,7 +484,8 @@ class PivotJoint(Constraint):
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
     def _get_anchor_b(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpPivotJointGetAnchorB(self._constraint))
+        v = cp.cpPivotJointGetAnchorB(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_anchor_b(self, anchor) -> None:
         assert len(anchor) == 2
@@ -515,7 +521,8 @@ class GrooveJoint(Constraint):
         self._init(a, b, _constraint)
 
     def _get_anchor_b(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpGrooveJointGetAnchorB(self._constraint))
+        v = cp.cpGrooveJointGetAnchorB(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_anchor_b(self, anchor) -> None:
         assert len(anchor) == 2
@@ -524,7 +531,8 @@ class GrooveJoint(Constraint):
     anchor_b = property(_get_anchor_b, _set_anchor_b)
 
     def _get_groove_a(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpGrooveJointGetGrooveA(self._constraint))
+        v = cp.cpGrooveJointGetGrooveA(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_groove_a(self, groove) -> None:
         assert len(groove) == 2
@@ -533,7 +541,8 @@ class GrooveJoint(Constraint):
     groove_a = property(_get_groove_a, _set_groove_a)
 
     def _get_groove_b(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpGrooveJointGetGrooveB(self._constraint))
+        v = cp.cpGrooveJointGetGrooveB(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_groove_b(self, groove) -> None:
         assert len(groove) == 2
@@ -593,7 +602,8 @@ class DampedSpring(Constraint):
         self._init(a, b, _constraint)
 
     def _get_anchor_a(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpDampedSpringGetAnchorA(self._constraint))
+        v = cp.cpDampedSpringGetAnchorA(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_anchor_a(self, anchor) -> None:
         assert len(anchor) == 2
@@ -602,7 +612,8 @@ class DampedSpring(Constraint):
     anchor_a = property(_get_anchor_a, _set_anchor_a)
 
     def _get_anchor_b(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpDampedSpringGetAnchorB(self._constraint))
+        v = cp.cpDampedSpringGetAnchorB(self._constraint)
+        return Vec2d(v.x, v.y)
 
     def _set_anchor_b(self, anchor) -> None:
         assert len(anchor) == 2

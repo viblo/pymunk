@@ -81,7 +81,7 @@ class SpaceDebugDrawOptions(object):
         @ffi.callback("cpSpaceDebugDrawCircleImpl")
         def f1(pos, angle, radius, outline_color, fill_color, _):
             self.draw_circle(
-                Vec2d._fromcffi(pos),
+                Vec2d(pos.x, pos.y),
                 angle,
                 radius,
                 self._c(outline_color),
@@ -97,15 +97,15 @@ class SpaceDebugDrawOptions(object):
             # the drawing method.
             if math.isnan(a.x) or math.isnan(a.y) or math.isnan(b.x) or math.isnan(b.y):
                 return
-            self.draw_segment(Vec2d._fromcffi(a), Vec2d._fromcffi(b), self._c(color))
+            self.draw_segment(Vec2d(a.x, a.y), Vec2d(b.x, b.y), self._c(color))
 
         _options.drawSegment = f2
 
         @ffi.callback("cpSpaceDebugDrawFatSegmentImpl")
         def f3(a, b, radius, outline_color, fill_color, _):
             self.draw_fat_segment(
-                Vec2d._fromcffi(a),
-                Vec2d._fromcffi(b),
+                Vec2d(a.x, a.y),
+                Vec2d(b.x, b.y),
                 radius,
                 self._c(outline_color),
                 self._c(fill_color),
@@ -117,14 +117,14 @@ class SpaceDebugDrawOptions(object):
         def f4(count, verts, radius, outline_color, fill_color, _):
             vs = []
             for i in range(count):
-                vs.append(Vec2d._fromcffi(verts[i]))
+                vs.append(Vec2d(verts[i].x, verts[i].y))
             self.draw_polygon(vs, radius, self._c(outline_color), self._c(fill_color))
 
         _options.drawPolygon = f4
 
         @ffi.callback("cpSpaceDebugDrawDotImpl")
         def f5(size, pos, color, _):
-            self.draw_dot(size, Vec2d._fromcffi(pos), self._c(color))
+            self.draw_dot(size, Vec2d(pos.x, pos.y), self._c(color))
 
         _options.drawDot = f5
 

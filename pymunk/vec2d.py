@@ -82,27 +82,9 @@ class Vec2d(NamedTuple):
     x: float
     y: float
 
-    @staticmethod
-    def _fromcffi(p) -> "Vec2d":
-        """Used as a speedy way to create Vec2ds internally in pymunk."""
-        return Vec2d.__new__(Vec2d, p.x, p.y)
-
     # String representaion (for debugging)
     def __repr__(self) -> str:
         return "Vec2d(%s, %s)" % (self.x, self.y)
-
-    # # Comparison
-    # def __eq__(self, other) -> bool:
-    #     if hasattr(other, "__getitem__") and len(other) == 2:
-    #         return self.x == other[0] and self.y == other[1]
-    #     else:
-    #         return False
-
-    # def __ne__(self, other) -> bool:
-    #     if hasattr(other, "__getitem__") and len(other) == 2:
-    #         return self.x != other[0] or self.y != other[1]
-    #     else:
-    #         return True
 
     # Addition
     def __add__(self, other: _Vec2dOrTuple) -> "Vec2d":

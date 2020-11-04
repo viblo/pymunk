@@ -288,8 +288,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
         cp.cpBodySetPosition(self._body, pos)
 
     def _get_position(self) -> Vec2d:
-        p = cp.cpBodyGetPosition(self._body)
-        return Vec2d._fromcffi(p)
+        v = cp.cpBodyGetPosition(self._body)
+        return Vec2d(v.x, v.y)
 
     position = property(
         _get_position,
@@ -307,7 +307,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
         cp.cpBodySetCenterOfGravity(self._body, cog)
 
     def _get_center_of_gravity(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpBodyGetCenterOfGravity(self._body))
+        v = cp.cpBodyGetCenterOfGravity(self._body)
+        return Vec2d(v.x, v.y)
 
     center_of_gravity = property(
         _get_center_of_gravity,
@@ -324,7 +325,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
         cp.cpBodySetVelocity(self._body, vel)
 
     def _get_velocity(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpBodyGetVelocity(self._body))
+        v = cp.cpBodyGetVelocity(self._body)
+        return Vec2d(v.x, v.y)
 
     velocity = property(
         _get_velocity,
@@ -337,7 +339,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
         cp.cpBodySetForce(self._body, f)
 
     def _get_force(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpBodyGetForce(self._body))
+        v = cp.cpBodyGetForce(self._body)
+        return Vec2d(v.x, v.y)
 
     force = property(
         _get_force,
@@ -400,7 +403,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
     )
 
     def _get_rotation_vector(self):
-        return Vec2d._fromcffi(cp.cpBodyGetRotation(self._body))
+        v = cp.cpBodyGetRotation(self._body)
+        return Vec2d(v.x, v.y)
 
     rotation_vector = property(
         _get_rotation_vector, doc="""The rotation vector for the body."""
@@ -418,7 +422,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     def _set_velocity_func(self, func):
         @ffi.callback("cpBodyVelocityFunc")
         def _impl(_, gravity, damping, dt):
-            return func(self, Vec2d._fromcffi(gravity), damping, dt)
+            return func(self, Vec2d(gravity.x, gravity.y), damping, dt)
 
         self._velocity_func_base = func
         self._velocity_func = _impl
@@ -669,7 +673,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
         :param v: Vector in body local coordinates
         """
         assert len(v) == 2
-        return Vec2d._fromcffi(cp.cpBodyLocalToWorld(self._body, v))
+        v2 = cp.cpBodyLocalToWorld(self._body, v)
+        return Vec2d(v2.x, v2.y)
 
     def world_to_local(self, v):
         """Convert world space coordinates to body local coordinates
@@ -677,7 +682,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
         :param v: Vector in world space coordinates
         """
         assert len(v) == 2
-        return Vec2d._fromcffi(cp.cpBodyWorldToLocal(self._body, v))
+        v2 = cp.cpBodyWorldToLocal(self._body, v)
+        return Vec2d(v2.x, v2.y)
 
     def velocity_at_world_point(self, point):
         """Get the absolute velocity of the rigid body at the given world
@@ -688,14 +694,16 @@ class Body(PickleMixin, TypingAttrMixing, object):
         except the center of gravity.
         """
         assert len(point) == 2
-        return Vec2d._fromcffi(cp.cpBodyGetVelocityAtWorldPoint(self._body, point))
+        v = cp.cpBodyGetVelocityAtWorldPoint(self._body, point)
+        return Vec2d(v.x, v.y)
 
     def velocity_at_local_point(self, point):
         """Get the absolute velocity of the rigid body at the given body
         local point
         """
         assert len(point) == 2
-        return Vec2d._fromcffi(cp.cpBodyGetVelocityAtLocalPoint(self._body, point))
+        v = cp.cpBodyGetVelocityAtLocalPoint(self._body, point)
+        return Vec2d(v.x, v.y)
 
     def __getstate__(self):
         """Return the state of this object

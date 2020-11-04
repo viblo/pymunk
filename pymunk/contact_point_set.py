@@ -49,13 +49,15 @@ class ContactPointSet(object):
 
     @classmethod
     def _from_cp(cls, _points):
-        normal = Vec2d._fromcffi(_points.normal)
+        normal = Vec2d(_points.normal.x, _points.normal.y)
 
         points = []
         for i in range(_points.count):
             _p = _points.points[i]
             p = ContactPoint(
-                Vec2d._fromcffi(_p.pointA), Vec2d._fromcffi(_p.pointB), _p.distance
+                Vec2d(_p.pointA.x, _p.pointA.y),
+                Vec2d(_p.pointB.x, _p.pointB.y),
+                _p.distance,
             )
             points.append(p)
 

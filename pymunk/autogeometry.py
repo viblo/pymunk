@@ -59,8 +59,9 @@ def _from_polyline_set(_set: ffi.CData) -> List[List[Vec2d]]:
     lines = []
     for i in range(_set.count):
         line = []
-        for j in range(_set.lines[i].count):
-            line.append(Vec2d._fromcffi(_set.lines[i].verts[j]))
+        l = _set.lines[i]
+        for j in range(l.count):
+            line.append(Vec2d(l.verts[j].x, l.verts[j].y))
         lines.append(line)
     return lines
 
@@ -91,7 +92,7 @@ def simplify_curves(polyline, tolerance: float) -> List[Vec2d]:
     _line = lib.cpPolylineSimplifyCurves(_to_chipmunk(polyline), tolerance)
     simplified = []
     for i in range(_line.count):
-        simplified.append(Vec2d._fromcffi(_line.verts[i]))
+        simplified.append(Vec2d(_line.verts[i].x, _line.verts[i].y))
     return simplified
 
 
@@ -109,7 +110,7 @@ def simplify_vertexes(polyline, tolerance) -> List[Vec2d]:
     _line = lib.cpPolylineSimplifyVertexes(_to_chipmunk(polyline), tolerance)
     simplified = []
     for i in range(_line.count):
-        simplified.append(Vec2d._fromcffi(_line.verts[i]))
+        simplified.append(Vec2d(_line.verts[i].x, _line.verts[i].y))
     return simplified
 
 
@@ -124,7 +125,7 @@ def to_convex_hull(polyline, tolerance: float) -> List[Vec2d]:
     _line = lib.cpPolylineToConvexHull(_to_chipmunk(polyline), tolerance)
     hull = []
     for i in range(_line.count):
-        hull.append(Vec2d._fromcffi(_line.verts[i]))
+        hull.append(Vec2d(_line.verts[i].x, _line.verts[i].y))
     return hull
 
 
@@ -186,8 +187,9 @@ class PolylineSet(collections.abc.Sequence):
         if key >= self._set.count:
             raise IndexError
         line = []
-        for i in range(self._set.lines[key].count):
-            line.append(Vec2d._fromcffi(self._set.lines[key].verts[i]))
+        l = self._set.lines[key]
+        for i in range(l.count):
+            line.append(Vec2d(l.verts[i].x, l.verts[i].y))
         return line
 
 
@@ -212,11 +214,11 @@ def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
 
     @ffi.callback("cpMarchSegmentFunc")
     def _seg_f(v0, v1, _data):
-        segment_func(Vec2d._fromcffi(v0), Vec2d._fromcffi(v1))
+        segment_func(Vec2d(v0.x, v0.y), Vec2d(v1.x, v1.y))
 
     @ffi.callback("cpMarchSampleFunc")
     def _sam_f(point, _data):
-        return sample_func(Vec2d._fromcffi(point))
+        return sample_func(Vec2d(point.x, point.y))
 
     lib.cpMarchSoft(
         bb._bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
@@ -244,11 +246,11 @@ def march_hard(bb, x_samples, y_samples, threshold, segment_func, sample_func):
 
     @ffi.callback("cpMarchSegmentFunc")
     def _seg_f(v0, v1, _data):
-        segment_func(Vec2d._fromcffi(v0), Vec2d._fromcffi(v1))
+        segment_func(Vec2d(v0.x, v0.y), Vec2d(v1.x, v1.y))
 
     @ffi.callback("cpMarchSampleFunc")
     def _sam_f(point, _data):
-        return sample_func(Vec2d._fromcffi(point))
+        return sample_func(Vec2d(point.x, point.y))
 
     lib.cpMarchHard(
         bb._bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL

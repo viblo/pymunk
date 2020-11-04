@@ -128,7 +128,8 @@ class Shape(PickleMixin, TypingAttrMixing, object):
     @property
     def center_of_gravity(self) -> Vec2d:
         """The calculated center of gravity of this shape."""
-        return Vec2d._fromcffi(cp.cpShapeGetCenterOfGravity(self._shape))
+        v = cp.cpShapeGetCenterOfGravity(self._shape)
+        return Vec2d(v.x, v.y)
 
     def _get_sensor(self) -> bool:
         return bool(cp.cpShapeGetSensor(self._shape))
@@ -236,7 +237,8 @@ class Shape(PickleMixin, TypingAttrMixing, object):
     )
 
     def _get_surface_velocity(self) -> Vec2d:
-        return Vec2d._fromcffi(cp.cpShapeGetSurfaceVelocity(self._shape))
+        v = cp.cpShapeGetSurfaceVelocity(self._shape)
+        return Vec2d(v.x, v.y)
 
     def _set_surface_velocity(self, surface_v: Vec2d) -> None:
         assert len(surface_v) == 2
@@ -314,9 +316,9 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         assert ud == self._get_shapeid()
         return PointQueryInfo(
             self,
-            Vec2d._fromcffi(info.point),
+            Vec2d(info.point.x, info.point.y),
             info.distance,
-            Vec2d._fromcffi(info.gradient),
+            Vec2d(info.gradient.x, info.gradient.y),
         )
 
     def segment_query(self, start, end, radius=0) -> SegmentQueryInfo:
@@ -333,15 +335,15 @@ class Shape(PickleMixin, TypingAttrMixing, object):
             assert ud == self._get_shapeid()
             return SegmentQueryInfo(
                 self,
-                Vec2d._fromcffi(info.point),
-                Vec2d._fromcffi(info.normal),
+                Vec2d(info.point.x, info.point.y),
+                Vec2d(info.normal.x, info.normal.y),
                 info.alpha,
             )
         else:
             return SegmentQueryInfo(
                 None,
-                Vec2d._fromcffi(info.point),
-                Vec2d._fromcffi(info.normal),
+                Vec2d(info.point.x, info.point.y),
+                Vec2d(info.normal.x, info.normal.y),
                 info.alpha,
             )
 
@@ -431,7 +433,8 @@ class Circle(Shape):
     @property
     def offset(self) -> Vec2d:
         """Offset. (body space coordinates)"""
-        return Vec2d._fromcffi(cp.cpCircleShapeGetOffset(self._shape))
+        v = cp.cpCircleShapeGetOffset(self._shape)
+        return Vec2d(v.x, v.y)
 
 
 class Segment(Shape):
@@ -463,12 +466,14 @@ class Segment(Shape):
         self._init(body, _shape)
 
     def _get_a(self):
-        return Vec2d._fromcffi(cp.cpSegmentShapeGetA(self._shape))
+        v = cp.cpSegmentShapeGetA(self._shape)
+        return Vec2d(v.x, v.y)
 
     a = property(_get_a, doc="""The first of the two endpoints for this segment""")
 
     def _get_b(self):
-        return Vec2d._fromcffi(cp.cpSegmentShapeGetB(self._shape))
+        v = cp.cpSegmentShapeGetB(self._shape)
+        return Vec2d(v.x, v.y)
 
     b = property(_get_b, doc="""The second of the two endpoints for this segment""")
 
@@ -488,7 +493,8 @@ class Segment(Shape):
     @property
     def normal(self) -> Vec2d:
         """The normal"""
-        return Vec2d._fromcffi(cp.cpSegmentShapeGetNormal(self._shape))
+        v = cp.cpSegmentShapeGetNormal(self._shape)
+        return Vec2d(v.x, v.y)
 
     def unsafe_set_radius(self, r: float) -> None:
         """Set the radius of the segment
@@ -678,7 +684,8 @@ class Poly(Shape):
         verts = []
         l = cp.cpPolyShapeGetCount(self._shape)
         for i in range(l):
-            verts.append(Vec2d._fromcffi(cp.cpPolyShapeGetVert(self._shape, i)))
+            v = cp.cpPolyShapeGetVert(self._shape, i)
+            verts.append(Vec2d(v.x, v.y))
         return verts
 
     def unsafe_set_vertices(self, vertices, transform: Transform = None) -> None:
