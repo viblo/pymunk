@@ -195,7 +195,13 @@ Non-Games
 Papers / Science
 ================
 
-Pymunk has been used or referenced in a number of scientific papers 
+Pymunk has been used or referenced in a number of scientific papers.
+
+List of papers which has used or mentioned Pymunk:
+
+* Jain, Ayush, Andrew Szot, and Joseph J. Lim. 
+  "Generalization to New Actions in Reinforcement Learning." 
+  arXiv preprint arXiv:2011.01928 (2020).
 
 * Petitgirard, Julien, Tony Piguet, Philippe Baucour, Didier Chamagne, Eric Fouillien, and Jean-Christophe Delmare. 
   "Steady State and 2D Thermal Equivalence Circuit for Winding Heads—A New Modelling Approach." 
@@ -348,7 +354,25 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2020-08-05. If something is missing or wrong, please contact 
+List last updated 2020-11-07. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
+
+Cite Pymunk
+-----------
+
+If you use Pymunk in a published work and want to cite it, below is a bibtex
+example (feel free to modify to fit your style, and make sure to modify the 
+version number/year):
+
+.. code-block:: bibtex
+
+  @misc{pymunk,
+    author = {Victor Blomqvist},
+    title = {Pymunk: A easy-to-use pythonic rigid body 2d physics library (version 5.7.0)},
+    year = {2020},
+    url = {https://www.pymunk.org},
+  }
+
+
