@@ -69,8 +69,9 @@ Changes:
   - BBs has to be constructed with left, bottom, right, top as separate arguments. 
   - Repr will return BB(left=1, bottom=5, right=20, top=10) instead of (1, 5, 20, 10)
   - BB is now immutable.
+ - Added many asserts to check that whenever a tuple of length 2 or Vec2d is expected the length of the tuple is 2.
+ - Removed conversions by calling tuple(argument) where a Vec2d or tuple of length 2 was expected. It is now expected the arguemnt already is a tuple like object.
 
-  
 Pymunk 5.7.0
 ------------
 *Victor - 2020-09-16*

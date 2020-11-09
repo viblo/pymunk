@@ -43,18 +43,23 @@ class BB(NamedTuple):
         """Returns true if the bounding boxes intersect"""
         return bool(lib.cpBBIntersects(self, other))
 
-    def intersects_segment(self, a, b) -> bool:
+    def intersects_segment(
+        self, a: Tuple[float, float], b: Tuple[float, float]
+    ) -> bool:
         """Returns true if the segment defined by endpoints a and b
         intersect this bb."""
-        return bool(lib.cpBBIntersectsSegment(self, tuple(a), tuple(b)))
+        assert len(a) == 2
+        assert len(b) == 2
+        return bool(lib.cpBBIntersectsSegment(self, a, b))
 
     def contains(self, other: "BB") -> bool:
         """Returns true if bb completley contains the other bb"""
         return bool(lib.cpBBContainsBB(self, other))
 
-    def contains_vect(self, v) -> bool:
+    def contains_vect(self, v: Tuple[float, float]) -> bool:
         """Returns true if this bb contains the vector v"""
-        return bool(lib.cpBBContainsVect(self, tuple(v)))
+        assert len(v) == 2
+        return bool(lib.cpBBContainsVect(self, v))
 
     def merge(self, other: "BB") -> "BB":
         """Return the minimal bounding box that contains both this bb and the
@@ -63,7 +68,7 @@ class BB(NamedTuple):
         _bb = lib.cpBBMerge(self, other)
         return BB(_bb.l, _bb.b, _bb.r, _bb.t)
 
-    def expand(self, v) -> "BB":
+    def expand(self, v: Tuple[float, float]) -> "BB":
         """Return the minimal bounding box that contans both this bounding box
         and the vector v
         """
@@ -85,16 +90,19 @@ class BB(NamedTuple):
         """
         return lib.cpBBMergedArea(self, other)
 
-    def segment_query(self, a, b) -> float:
+    def segment_query(self, a: Tuple[float, float], b: Tuple[float, float]) -> float:
         """Returns the fraction along the segment query the BB is hit.
 
         Returns infinity if it doesnt hit
         """
-        return lib.cpBBSegmentQuery(self, tuple(a), tuple(b))
+        assert len(a) == 2
+        assert len(b) == 2
+        return lib.cpBBSegmentQuery(self, a, b)
 
-    def clamp_vect(self, v) -> Vec2d:
+    def clamp_vect(self, v: Tuple[float, float]) -> Vec2d:
         """Returns a copy of the vector v clamped to the bounding box"""
-        v2 = lib.cpBBClampVect(self, tuple(v))
+        assert len(v) == 2
+        v2 = lib.cpBBClampVect(self, v)
         return Vec2d(v2.x, v2.y)
 
     '''

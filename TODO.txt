@@ -92,5 +92,10 @@ Typing a existing project - learnings
   - in implementation of Vector class: __add__ vs __radd__ https://github.com/python/mypy/issues/9388
   - in allowing both vec2d and tuple/list: setters cant have different type from getter https://github.com/python/mypy/issues/3004
 
+- problems with bugs / missing features in pyright
+
 - differences in what is allowed between mypy and pyright/pylance.
-  https://github.com/microsoft/pyright/issues/992
+  - https://github.com/microsoft/pyright/issues/992
+  - The Pyright maintainer is super quick to respond, fix and release fixes for bug reports!
+  - Mypy issues feels slower to actually act on issues (But issue tracker is also very fast to 
+    respond, and have GvR actively replying to many issues).
