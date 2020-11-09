@@ -82,4 +82,4 @@ class UnitTestBB(unittest.TestCase):
 
         self.assertEqual(x, actual)
 
-        x2 = x.copy()
+        self.assertEqual(p.BB(*x), x)

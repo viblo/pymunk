@@ -64,7 +64,13 @@ Changes:
   - Added helper methods to easily create transforms to translate, scale and rotate.
  - Added default value of argument point to apply_force_at_local_point
  - Removed default value of argument point from apply_impulse_at_world_point. Just specify point = (0,0) to mimic the old default
+ - moment_for_poly and area_for_poly now expects a Sequence (list like object) of tuples of length 2. 
+ - BB base class changed to NamedTuple
+  - BBs has to be constructed with left, bottom, right, top as separate arguments. 
+  - Repr will return BB(left=1, bottom=5, right=20, top=10) instead of (1, 5, 20, 10)
+  - BB is now immutable.
 
+  
 Pymunk 5.7.0
 ------------
 *Victor - 2020-09-16*

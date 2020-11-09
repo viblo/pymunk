@@ -281,12 +281,13 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         Useful if you have a shape without a body and want to use it for
         querying.
         """
-        bb = cp.cpShapeUpdate(self._shape, transform)
-        return BB(bb)
+        _bb = cp.cpShapeUpdate(self._shape, transform)
+        return BB(_bb.l, _bb.b, _bb.r, _bb.t)
 
     def cache_bb(self) -> BB:
         """Update and returns the bounding box of this shape"""
-        return BB(cp.cpShapeCacheBB(self._shape))
+        _bb = cp.cpShapeCacheBB(self._shape)
+        return BB(_bb.l, _bb.b, _bb.r, _bb.t)
 
     @property
     def bb(self) -> BB:
@@ -298,7 +299,8 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         queries that aren't attached to bodies, you can also use
         :py:meth:`Shape.update`.
         """
-        return BB(cp.cpShapeGetBB(self._shape))
+        _bb = cp.cpShapeGetBB(self._shape)
+        return BB(_bb.l, _bb.b, _bb.r, _bb.t)
 
     def point_query(self, p: Tuple[float, float]) -> PointQueryInfo:
         """Check if the given point lies within the shape.
@@ -671,7 +673,7 @@ class Poly(Shape):
 
         self = Poly.__new__(Poly)
         body_body = ffi.NULL if body is None else body._body
-        _shape = cp.cpBoxShapeNew2(body_body, bb._bb, radius)
+        _shape = cp.cpBoxShapeNew2(body_body, bb, radius)
         self._init(body, _shape)
 
         return self
