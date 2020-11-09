@@ -7,7 +7,9 @@ from typing import Any
 import pymunk
 
 
-def load_tests(loader: Any, tests: Any, ignore: Any) -> None:
+def load_tests(
+    loader: Any, tests: unittest.TestSuite, ignore: Any
+) -> unittest.TestSuite:
     for importer, modname, ispkg in pkgutil.iter_modules(pymunk.__path__):  # type: ignore  # mypy issue #1422
         # try:
         tests.addTests(doctest.DocTestSuite("pymunk." + modname))

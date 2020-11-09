@@ -33,11 +33,12 @@ drawing, but there is probably room for optimizations still).
 __docformat__ = "reStructuredText"
 
 import math
-from typing import TYPE_CHECKING, Any, Optional, Type
+from typing import TYPE_CHECKING, Any, Optional, Sequence, Tuple, Type
 
 import pyglet  # type: ignore
 
 import pymunk
+from pymunk.space_debug_draw_options import SpaceDebugColor
 from pymunk.vec2d import Vec2d
 
 if TYPE_CHECKING:
@@ -103,7 +104,14 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         if self.new_batch:
             self.batch.draw()
 
-    def draw_circle(self, pos, angle, radius, outline_color, fill_color):
+    def draw_circle(
+        self,
+        pos: Vec2d,
+        angle: float,
+        radius: float,
+        outline_color: SpaceDebugColor,
+        fill_color: SpaceDebugColor,
+    ) -> None:
         circle_center = pos
 
         # http://slabode.exofire.net/circle_draw.shtml
@@ -113,7 +121,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         s = math.sin(theta)
 
         x = radius  # we start at angle 0
-        y = 0
+        y: float = 0
 
         ps = []
 
@@ -133,8 +141,8 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         for p in [ps[0]] + ps + [ps[-1]]:
             vs += [p.x, p.y]
 
-        c = circle_center + Vec2d(radius, 0).rotated(angle)
-        cvs = [circle_center.x, circle_center.y, c.x, c.y]
+        cc = circle_center + Vec2d(radius, 0).rotated(angle)
+        cvs = [circle_center.x, circle_center.y, cc.x, cc.y]
 
         bg = pyglet.graphics.OrderedGroup(0)
         fg = pyglet.graphics.OrderedGroup(1)
@@ -148,7 +156,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
             2, pyglet.gl.GL_LINES, fg, ("v2f", cvs), ("c4B", outline_color.as_int() * 2)
         )
 
-    def draw_segment(self, a, b, color):
+    def draw_segment(self, a: Vec2d, b: Vec2d, color: SpaceDebugColor) -> None:
         pv1 = a
         pv2 = b
         line = (int(pv1.x), int(pv1.y), int(pv2.x), int(pv2.y))
@@ -157,7 +165,14 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
             2, pyglet.gl.GL_LINES, None, ("v2i", line), ("c4B", color.as_int() * 2)
         )
 
-    def draw_fat_segment(self, a, b, radius, outline_color, fill_color):
+    def draw_fat_segment(
+        self,
+        a: Vec2d,
+        b: Vec2d,
+        radius: float,
+        outline_color: SpaceDebugColor,
+        fill_color: SpaceDebugColor,
+    ) -> None:
         pv1 = a
         pv2 = b
         d = pv2 - pv1
@@ -185,7 +200,13 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         self.draw_circle(a, 0, radius, fill_color, fill_color)
         self.draw_circle(b, 0, radius, fill_color, fill_color)
 
-    def draw_polygon(self, verts, radius, outline_color, fill_color):
+    def draw_polygon(
+        self,
+        verts: Sequence[Vec2d],
+        radius: float,
+        outline_color: SpaceDebugColor,
+        fill_color: SpaceDebugColor,
+    ) -> None:
         mode = pyglet.gl.GL_TRIANGLE_STRIP
 
         l = len(verts)
@@ -213,7 +234,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
                 # print(a, b)
                 self.draw_fat_segment(a, b, radius, outline_color, outline_color)
 
-    def draw_dot(self, size, pos, color):
+    def draw_dot(self, size: float, pos: Vec2d, color: SpaceDebugColor) -> None:
         # todo: optimize this functions
         self.batch.add(
             1,

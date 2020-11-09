@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, List, NamedTuple, Optional, Tuple, Type
+from typing import TYPE_CHECKING, List, NamedTuple, Optional, Sequence, Tuple, Type
 
 if TYPE_CHECKING:
     from .shapes import Shape
@@ -325,8 +325,8 @@ class SpaceDebugDrawOptions(object):
 
     def draw_fat_segment(
         self,
-        a: Tuple[float, float],
-        b: Tuple[float, float],
+        a: Vec2d,
+        b: Vec2d,
         radius: float,
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
@@ -335,7 +335,7 @@ class SpaceDebugDrawOptions(object):
 
     def draw_polygon(
         self,
-        verts: List[Tuple[float, float]],
+        verts: Sequence[Vec2d],
         radius: float,
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,

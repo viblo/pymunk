@@ -216,7 +216,7 @@ def poly_vectors_around_center(pointlist, points_as_Vec2d=True):
         for p in pointlist:
             x = p[X] - cx
             y = p[Y] - cy
-            poly_points_center.append(Vec2d((x, y)))
+            poly_points_center.append(Vec2d(x, y))
 
     else:
         for p in pointlist:

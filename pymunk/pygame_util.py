@@ -39,7 +39,7 @@ __all__ = [
     "positive_y_is_up",
 ]
 
-from typing import List, Tuple
+from typing import List, Sequence, Tuple
 
 import pygame
 
@@ -182,7 +182,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
     def draw_polygon(
         self,
-        verts: List[Tuple[float, float]],
+        verts: Sequence[Tuple[float, float]],
         radius: float,
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
