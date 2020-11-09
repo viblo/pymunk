@@ -33,15 +33,19 @@ drawing, but there is probably room for optimizations still).
 __docformat__ = "reStructuredText"
 
 import math
+from typing import TYPE_CHECKING, Any, Optional, Type
 
 import pyglet  # type: ignore
 
 import pymunk
 from pymunk.vec2d import Vec2d
 
+if TYPE_CHECKING:
+    from types import TracebackType
+
 
 class DrawOptions(pymunk.SpaceDebugDrawOptions):
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         """Draw a pymunk.Space.
 
         Typical usage::
@@ -90,7 +94,12 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         if self.new_batch:
             self.batch = pyglet.graphics.Batch()
 
-    def __exit__(self, type, value, traceback) -> None:
+    def __exit__(
+        self,
+        type: Optional[Type[BaseException]],
+        value: Optional[BaseException],
+        traceback: Optional["TracebackType"],
+    ) -> None:
         if self.new_batch:
             self.batch.draw()
 

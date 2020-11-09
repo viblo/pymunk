@@ -70,7 +70,7 @@ from typing import (
 
 # from ._types import _Vec2dOrFloat, _Vec2dOrTuple
 _Vec2dOrFloat = Any
-_Vec2dOrTuple = Any
+_Vec2dOrTuple = Union["Vec2d", Tuple[float, float]]
 __all__ = ["Vec2d"]
 
 
@@ -87,42 +87,34 @@ class Vec2d(NamedTuple):
         return "Vec2d(%s, %s)" % (self.x, self.y)
 
     # Addition
-    def __add__(self, other: _Vec2dOrTuple) -> "Vec2d":
+    def __add__(self, other: _Vec2dOrTuple) -> "Vec2d":  # type: ignore
         """Add two vectors"""
-        if isinstance(other, Vec2d) or isinstance(other, Sequence) and len(other) == 2:
-            return Vec2d(self.x + other[0], self.y + other[1])
+        assert (
+            len(other) == 2
+        ), f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
 
-        raise TypeError(
-            f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
-        )
+        return Vec2d(self.x + other[0], self.y + other[1])
 
-    __radd__ = __add__
+    def __radd__(self, other: _Vec2dOrTuple) -> "Vec2d":
+        return self.__add__(other)
 
     # Subtraction
     def __sub__(self, other: _Vec2dOrTuple) -> "Vec2d":
-        if isinstance(other, Vec2d):
-            return Vec2d(self.x - other.x, self.y - other.y)
-        elif isinstance(other, Sequence):
-            return Vec2d(self.x - other[0], self.y - other[1])
-        raise TypeError(
-            f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
-        )
+        return Vec2d(self.x - other[0], self.y - other[1])
 
     def __rsub__(self, other: _Vec2dOrFloat) -> "Vec2d":
-        if isinstance(other, Vec2d):
-            return Vec2d(other.x - self.x, other.y - self.y)
-        elif isinstance(other, Sequence):
-            return Vec2d(other[0] - self.x, other[1] - self.y)
-        raise TypeError(
-            f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
-        )
+        assert (
+            len(other) == 2
+        ), f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+        return Vec2d(other[0] - self.x, other[1] - self.y)
 
     # Multiplication
     def __mul__(self, other: float) -> "Vec2d":
         assert isinstance(other, numbers.Real)
         return Vec2d(self.x * other, self.y * other)
 
-    __rmul__ = __mul__
+    def __rmul__(self, other: float) -> "Vec2d":
+        return self.__mul__(other)
 
     # Division
     def __floordiv__(self, other: _Vec2dOrFloat) -> "Vec2d":
@@ -171,7 +163,7 @@ class Vec2d(NamedTuple):
         """
         return math.sqrt(self.x ** 2 + self.y ** 2)
 
-    def scale_to_length(self, length: float):
+    def scale_to_length(self, length: float) -> "Vec2d":
         """Return a copy of this vector scaled to the given length.
 
         >>> Vec2d(10, 20).scale_to_length(20)
@@ -256,7 +248,7 @@ class Vec2d(NamedTuple):
         length = self.length
         if length != 0:
             return Vec2d(-self.y / length, self.x / length)
-        return Vec2d(self)
+        return Vec2d(self.x, self.y)
 
     def dot(self, other: _Vec2dOrTuple) -> float:
         """The dot product between the vector and other vector
@@ -282,7 +274,7 @@ class Vec2d(NamedTuple):
         """
         return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
 
-    def projection(self, other: _Vec2dOrTuple):
+    def projection(self, other: _Vec2dOrTuple) -> "Vec2d":
         """Project this vector on top of other vector"""
         other_length_sqrd = other[0] * other[0] + other[1] * other[1]
         if other_length_sqrd == 0.0:
@@ -291,7 +283,7 @@ class Vec2d(NamedTuple):
         new_length = projected_length_times_other_length / other_length_sqrd
         return Vec2d(other[0] * new_length, other[1] * new_length)
 
-    def cross(self, other: _Vec2dOrTuple):
+    def cross(self, other: _Vec2dOrTuple) -> float:
         """The cross product between the vector and other vector
             v1.cross(v2) -> v1.x*v2.y - v1.y*v2.x
 

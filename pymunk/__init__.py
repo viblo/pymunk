@@ -62,7 +62,7 @@ __all__ = [
     "SpaceDebugDrawOptions",
 ]
 
-from typing import Tuple
+from typing import Sequence, Tuple
 
 from . import _chipmunk_cffi
 from ._types import _Vec2dOrTuple
@@ -160,15 +160,20 @@ def moment_for_box(mass: float, size: Tuple[float, float]) -> float:
     return cp.cpMomentForBox(mass, size[0], size[1])
 
 
-def moment_for_poly(mass, vertices, offset=(0, 0), radius=0):
+def moment_for_poly(
+    mass: float,
+    vertices: Sequence[Tuple[float, float]],
+    offset: Tuple[float, float] = (0, 0),
+    radius: float = 0,
+) -> float:
     """Calculate the moment of inertia for a solid polygon shape.
 
     Assumes the polygon center of gravity is at its centroid. The offset is
     added to each vertex.
     """
     assert len(offset) == 2
-    vs = list(map(tuple, vertices))
-    return cp.cpMomentForPoly(mass, len(vertices), vs, offset, radius)
+    vs = list(vertices)
+    return cp.cpMomentForPoly(mass, len(vs), vs, offset, radius)
 
 
 def area_for_circle(inner_radius: float, outer_radius: float) -> float:
@@ -176,7 +181,9 @@ def area_for_circle(inner_radius: float, outer_radius: float) -> float:
     return cp.cpAreaForCircle(inner_radius, outer_radius)
 
 
-def area_for_segment(a: Tuple[float, float], b, radius: float) -> float:
+def area_for_segment(
+    a: Tuple[float, float], b: Tuple[float, float], radius: float
+) -> float:
     """Area of a beveled segment.
 
     (Will always be zero if radius is zero)
@@ -187,13 +194,13 @@ def area_for_segment(a: Tuple[float, float], b, radius: float) -> float:
     return cp.cpAreaForSegment(a, b, radius)
 
 
-def area_for_poly(vertices, radius: float = 0):
+def area_for_poly(vertices: Sequence[Tuple[float, float]], radius: float = 0) -> float:
     """Signed area of a polygon shape.
 
     Returns a negative number for polygons with a clockwise winding.
     """
-    vs = list(map(tuple, vertices))
-    return cp.cpAreaForPoly(len(vertices), vs, radius)
+    vs = list(vertices)
+    return cp.cpAreaForPoly(len(vs), vs, radius)
 
 
 # del cp, ct, u

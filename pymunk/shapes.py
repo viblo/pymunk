@@ -1,7 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import logging
-from typing import TYPE_CHECKING, Any, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Tuple
 
 if TYPE_CHECKING:
     from .body import Body
@@ -12,7 +12,7 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-from ._pickle import PickleMixin
+from ._pickle import PickleMixin, _State
 from ._typing_attr import TypingAttrMixing
 from .bb import BB
 from .contact_point_set import ContactPointSet
@@ -58,7 +58,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         if body is not None:
             body._shapes.add(self)
 
-        def shapefree(cp_shape):
+        def shapefree(cp_shape):  # type: ignore
             cp_space = cp.cpShapeGetSpace(cp_shape)
             if cp_space != ffi.NULL:
                 logging.debug("shapefree remove from space %s %s", cp_space, cp_shape)
@@ -300,7 +300,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         """
         return BB(cp.cpShapeGetBB(self._shape))
 
-    def point_query(self, p) -> PointQueryInfo:
+    def point_query(self, p: Tuple[float, float]) -> PointQueryInfo:
         """Check if the given point lies within the shape.
 
         A negative distance means the point is within the shape.
@@ -321,7 +321,9 @@ class Shape(PickleMixin, TypingAttrMixing, object):
             Vec2d(info.gradient.x, info.gradient.y),
         )
 
-    def segment_query(self, start, end, radius=0) -> SegmentQueryInfo:
+    def segment_query(
+        self, start: Tuple[float, float], end: Tuple[float, float], radius: float = 0
+    ) -> SegmentQueryInfo:
         """Check if the line segment from start to end intersects the shape.
 
         :rtype: :py:class:`SegmentQueryInfo`
@@ -365,7 +367,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         else:
             return None
 
-    def __getstate__(self):
+    def __getstate__(self) -> _State:
         """Return the state of this object
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
@@ -389,7 +391,12 @@ class Circle(Shape):
 
     _pickle_attrs_init = Shape._pickle_attrs_init + ["radius", "offset"]
 
-    def __init__(self, body: Optional["Body"], radius: float, offset=(0, 0)) -> None:
+    def __init__(
+        self,
+        body: Optional["Body"],
+        radius: float,
+        offset: Tuple[float, float] = (0, 0),
+    ) -> None:
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates.
 
@@ -418,7 +425,7 @@ class Circle(Shape):
         """The Radius of the circle"""
         return cp.cpCircleShapeGetRadius(self._shape)
 
-    def unsafe_set_offset(self, o) -> None:
+    def unsafe_set_offset(self, o: Tuple[float, float]) -> None:
         """Unsafe set the offset of the circle.
 
         .. note::
@@ -446,7 +453,13 @@ class Segment(Shape):
 
     _pickle_attrs_init = Shape._pickle_attrs_init + ["a", "b", "radius"]
 
-    def __init__(self, body, a, b, radius: float) -> None:
+    def __init__(
+        self,
+        body: "Body",
+        a: Tuple[float, float],
+        b: Tuple[float, float],
+        radius: float,
+    ) -> None:
         """Create a Segment
 
         It is legal to send in None as body argument to indicate that this
@@ -465,19 +478,21 @@ class Segment(Shape):
         _shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
         self._init(body, _shape)
 
-    def _get_a(self):
+    def _get_a(self) -> Vec2d:
         v = cp.cpSegmentShapeGetA(self._shape)
         return Vec2d(v.x, v.y)
 
     a = property(_get_a, doc="""The first of the two endpoints for this segment""")
 
-    def _get_b(self):
+    def _get_b(self) -> Vec2d:
         v = cp.cpSegmentShapeGetB(self._shape)
         return Vec2d(v.x, v.y)
 
     b = property(_get_b, doc="""The second of the two endpoints for this segment""")
 
-    def unsafe_set_endpoints(self, a, b):
+    def unsafe_set_endpoints(
+        self, a: Tuple[float, float], b: Tuple[float, float]
+    ) -> None:
         """Set the two endpoints for this segment
 
         .. note::
@@ -512,7 +527,9 @@ class Segment(Shape):
         """The radius/thickness of the segment"""
         return cp.cpSegmentShapeGetRadius(self._shape)
 
-    def set_neighbors(self, prev, next) -> None:
+    def set_neighbors(
+        self, prev: Tuple[float, float], next: Tuple[float, float]
+    ) -> None:
         """When you have a number of segment shapes that are all joined
         together, things can still collide with the "cracks" between the
         segments. By setting the neighbor segment endpoints you can tell
@@ -532,7 +549,7 @@ class Poly(Shape):
     def __init__(
         self,
         body: Optional["Body"],
-        vertices,
+        vertices: Sequence[Tuple[float, float]],
         transform: Transform = None,
         radius: float = 0,
     ) -> None:
@@ -688,7 +705,9 @@ class Poly(Shape):
             verts.append(Vec2d(v.x, v.y))
         return verts
 
-    def unsafe_set_vertices(self, vertices, transform: Transform = None) -> None:
+    def unsafe_set_vertices(
+        self, vertices: Sequence[Tuple[float, float]], transform: Transform = None
+    ) -> None:
         """Unsafe set the vertices of the poly.
 
         .. note::
@@ -703,7 +722,7 @@ class Poly(Shape):
 
         cp.cpPolyShapeSetVerts(self._shape, len(vertices), vertices, transform)
 
-    def __getstate__(self) -> dict:
+    def __getstate__(self) -> _State:
         """Return the state of this object
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`

@@ -15,7 +15,7 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestSpace(unittest.TestCase):
-    def _setUp(self):
+    def _setUp(self) -> None:
         self.s = p.Space()
 
         self.b1, self.b2 = p.Body(1, 3), p.Body(10, 100)
@@ -27,13 +27,13 @@ class UnitTestSpace(unittest.TestCase):
         self.s.add(self.s1, self.s2)
         pass
 
-    def _tearDown(self):
+    def _tearDown(self) -> None:
         del self.s
         del self.b1, self.b2
         del self.s1, self.s2
         pass
 
-    def testProperties(self):
+    def testProperties(self) -> None:
         s = p.Space()
 
         self.assertEqual(s.iterations, 10)
@@ -41,7 +41,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(s.iterations, 15)
 
         self.assertEqual(s.gravity, (0, 0))
-        s.gravity = 10, 2
+        s.gravity = Vec2d(10, 2)
         self.assertEqual(s.gravity, (10, 2))
         self.assertEqual(s.gravity.x, 10)
 
@@ -80,7 +80,7 @@ class UnitTestSpace(unittest.TestCase):
         s.threads = 2
         self.assertEqual(s.threads, 1)
 
-    def testThreaded(self):
+    def testThreaded(self) -> None:
         s = p.Space(threaded=True)
         s.step(1)
         s.threads = 2
@@ -92,14 +92,14 @@ class UnitTestSpace(unittest.TestCase):
             self.assertEqual(s.threads, 2)
         s.step(1)
 
-    def testSpatialHash(self):
+    def testSpatialHash(self) -> None:
         s = p.Space()
         s.use_spatial_hash(10, 100)
         s.step(1)
         s.add(p.Body(1, 2))
         s.step(1)
 
-    def testAddRemove(self):
+    def testAddRemove(self) -> None:
         s = p.Space()
 
         self.assertEqual(s.bodies, [])
@@ -133,7 +133,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(s.bodies, [b])
         self.assertEqual(s.shapes, [c2])
 
-    def testAddRemoveInStep(self):
+    def testAddRemoveInStep(self) -> None:
         s = p.Space()
 
         b1 = p.Body(1, 2)
@@ -175,7 +175,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertTrue(b not in s.bodies)
         self.assertTrue(c not in s.shapes)
 
-    def testRemoveInStep(self):
+    def testRemoveInStep(self) -> None:
         self._setUp()
         s = self.s
 
@@ -191,7 +191,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertTrue(self.s2 not in s.shapes)
         self._tearDown()
 
-    def testPointQueryNearestWithShapeFilter(self):
+    def testPointQueryNearestWithShapeFilter(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         s1 = p.Circle(b1, 10)
@@ -221,7 +221,7 @@ class UnitTestSpace(unittest.TestCase):
                 "Got {}!=None, expected {} for test: {}".format(hit, test["hit"], test),
             )
 
-    def testPointQuery(self):
+    def testPointQuery(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         b1.position = 19, 0
@@ -256,7 +256,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hits[1].distance, 1)
         self.assertEqual(hits[1].gradient, (1, 0))
 
-    def testPointQuerySensor(self):
+    def testPointQuerySensor(self) -> None:
         s = p.Space()
         c = p.Circle(s.static_body, 10)
         c.sensor = True
@@ -264,7 +264,7 @@ class UnitTestSpace(unittest.TestCase):
         hits = s.point_query((0, 0), 100, p.ShapeFilter())
         self.assertEqual(len(hits), 1)
 
-    def testPointQueryNearest(self):
+    def testPointQueryNearest(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         b1.position = 19, 0
@@ -272,6 +272,7 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, s1)
 
         hit = s.point_query_nearest((23, 0), 0, p.ShapeFilter())
+        assert hit is not None
         self.assertEqual(hit.shape, s1)
         self.assertEqual(hit.point, (29, 0))
         self.assertEqual(hit.distance, -6)
@@ -281,12 +282,13 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hit, None)
 
         hit = s.point_query_nearest((30, 0), 10, p.ShapeFilter())
+        assert hit is not None
         self.assertEqual(hit.shape, s1)
         self.assertEqual(hit.point, (29, 0))
         self.assertEqual(hit.distance, 1)
         self.assertEqual(hit.gradient, (1, 0))
 
-    def testPointQueryNearestSensor(self):
+    def testPointQueryNearestSensor(self) -> None:
         s = p.Space()
         c = p.Circle(s.static_body, 10)
         c.sensor = True
@@ -294,7 +296,7 @@ class UnitTestSpace(unittest.TestCase):
         hit = s.point_query_nearest((0, 0), 100, p.ShapeFilter())
         self.assertEqual(hit, None)
 
-    def testBBQuery(self):
+    def testBBQuery(self) -> None:
         s = p.Space()
 
         b1 = p.Body(1, 1)
@@ -313,7 +315,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertTrue(s2 in hits)
         self.assertTrue(s1 not in hits)
 
-    def testBBQuerySensor(self):
+    def testBBQuerySensor(self) -> None:
         s = p.Space()
         c = p.Circle(s.static_body, 10)
         c.sensor = True
@@ -321,7 +323,7 @@ class UnitTestSpace(unittest.TestCase):
         hits = s.bb_query(p.BB(0, 0, 10, 10), p.ShapeFilter())
         self.assertEqual(len(hits), 1)
 
-    def testShapeQuery(self):
+    def testShapeQuery(self) -> None:
         self._setUp()
         b = p.Body(body_type=p.Body.KINEMATIC)
         s = p.Circle(b, 2)
@@ -333,7 +335,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(self.s2, hits[0].shape)
         self._tearDown()
 
-    def testShapeQuerySensor(self):
+    def testShapeQuerySensor(self) -> None:
         s = p.Space()
         c = p.Circle(s.static_body, 10)
         c.sensor = True
@@ -341,7 +343,7 @@ class UnitTestSpace(unittest.TestCase):
         hits = s.shape_query(p.Circle(None, 200))
         self.assertEqual(len(hits), 1)
 
-    def testStaticPointQueries(self):
+    def testStaticPointQueries(self) -> None:
         self._setUp()
         b = p.Body(body_type=p.Body.KINEMATIC)
         c = p.Circle(b, 10)
@@ -350,13 +352,14 @@ class UnitTestSpace(unittest.TestCase):
         self.s.add(b, c)
 
         hit = self.s.point_query_nearest((-50, -55), 0, p.ShapeFilter())
+        assert hit is not None
         self.assertEqual(hit.shape, c)
 
         hits = self.s.point_query((-50, -55), 0, p.ShapeFilter())
         self.assertEqual(hits[0].shape, c)
         self._tearDown()
 
-    def testReindexShape(self):
+    def testReindexShape(self) -> None:
         s = p.Space()
 
         b = p.Body(body_type=p.Body.KINEMATIC)
@@ -369,9 +372,10 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hit, None)
         s.reindex_shape(c)
         hit = s.point_query_nearest((-50, -55), 0, p.ShapeFilter())
+        assert hit is not None
         self.assertEqual(hit.shape, c)
 
-    def testReindexShapesForBody(self):
+    def testReindexShapesForBody(self) -> None:
         s = p.Space()
         b = p.Body(body_type=p.Body.STATIC)
         c = p.Circle(b, 10)
@@ -384,9 +388,10 @@ class UnitTestSpace(unittest.TestCase):
         s.reindex_shapes_for_body(b)
 
         hit = s.point_query_nearest((-50, -55), 0, p.ShapeFilter())
+        assert hit is not None
         self.assertEqual(hit.shape, c)
 
-    def testReindexStatic(self):
+    def testReindexStatic(self) -> None:
         s = p.Space()
         b = p.Body(body_type=p.Body.STATIC)
         c = p.Circle(b, 10)
@@ -398,13 +403,14 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hit, None)
         s.reindex_static()
         hit = s.point_query_nearest((-50, -55), 0, p.ShapeFilter())
+        assert hit is not None
         self.assertEqual(hit.shape, c)
 
-    def testReindexStaticCollision(self):
+    def testReindexStaticCollision(self) -> None:
         s = p.Space()
         b1 = p.Body(10, 1000)
         c1 = p.Circle(b1, 10)
-        b1.position = 20, 20
+        b1.position = Vec2d(20, 20)
 
         b2 = p.Body(body_type=p.Body.STATIC)
         s2 = p.Segment(b2, (-10, 0), (10, 0), 1)
@@ -420,7 +426,7 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertTrue(b1.position.y < 0)
 
-        b1.position = 20, 20
+        b1.position = Vec2d(20, 20)
         b1.velocity = 0, 0
         s.reindex_static()
 
@@ -429,7 +435,7 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertTrue(b1.position.y > 10)
 
-    def testSegmentQuery(self):
+    def testSegmentQuery(self) -> None:
         s = p.Space()
 
         b1 = p.Body(1, 1)
@@ -458,7 +464,7 @@ class UnitTestSpace(unittest.TestCase):
         hits = s.segment_query((-13, 50), (131, 50), 0, p.ShapeFilter())
         self.assertEqual(len(hits), 0)
 
-    def testSegmentQuerySensor(self):
+    def testSegmentQuerySensor(self) -> None:
         s = p.Space()
         c = p.Circle(s.static_body, 10)
         c.sensor = True
@@ -466,7 +472,7 @@ class UnitTestSpace(unittest.TestCase):
         hits = s.segment_query((-20, 0), (20, 0), 1, p.ShapeFilter())
         self.assertEqual(len(hits), 1)
 
-    def testSegmentQueryFirst(self):
+    def testSegmentQueryFirst(self) -> None:
         s = p.Space()
 
         b1 = p.Body(1, 1)
@@ -481,6 +487,7 @@ class UnitTestSpace(unittest.TestCase):
 
         hit = s.segment_query_first((-13, 0), (131, 0), 0, p.ShapeFilter())
 
+        assert hit is not None
         self.assertEqual(hit.shape, s2)
         self.assertEqual(hit.point, (-10, 0))
         self.assertEqual(hit.normal, (-1, 0))
@@ -489,7 +496,7 @@ class UnitTestSpace(unittest.TestCase):
         hit = s.segment_query_first((-13, 50), (131, 50), 0, p.ShapeFilter())
         self.assertEqual(hit, None)
 
-    def testSegmentQueryFirstSensor(self):
+    def testSegmentQueryFirstSensor(self) -> None:
         s = p.Space()
         c = p.Circle(s.static_body, 10)
         c.sensor = True
@@ -497,7 +504,7 @@ class UnitTestSpace(unittest.TestCase):
         hit = s.segment_query_first((-20, 0), (20, 0), 1, p.ShapeFilter())
         self.assertIsNone(hit)
 
-    def testStaticSegmentQueries(self):
+    def testStaticSegmentQueries(self) -> None:
         self._setUp()
         b = p.Body(body_type=p.Body.KINEMATIC)
         c = p.Circle(b, 10)
@@ -506,12 +513,13 @@ class UnitTestSpace(unittest.TestCase):
         self.s.add(b, c)
 
         hit = self.s.segment_query_first((-70, -50), (-30, -50), 0, p.ShapeFilter())
+        assert hit is not None
         self.assertEqual(hit.shape, c)
         hits = self.s.segment_query((-70, -50), (-30, -50), 0, p.ShapeFilter())
         self.assertEqual(hits[0].shape, c)
         self._tearDown()
 
-    def testCollisionHandlerBegin(self):
+    def testCollisionHandlerBegin(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         c1 = p.Circle(b1, 10)
@@ -534,7 +542,7 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertEqual(self.hits, 1)
 
-    def testCollisionHandlerBeginNoReturn(self):
+    def testCollisionHandlerBeginNoReturn(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         c1 = p.Circle(b1, 10)
@@ -554,7 +562,7 @@ class UnitTestSpace(unittest.TestCase):
             self.assertEqual(len(w), 1)
             self.assertTrue(issubclass(w[-1].category, UserWarning))
 
-    def testCollisionHandlerPreSolve(self):
+    def testCollisionHandlerPreSolve(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         c1 = p.Circle(b1, 10)
@@ -580,7 +588,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(s, d["space"])
         self.assertEqual(1, d["test"])
 
-    def testCollisionHandlerPreSolveNoReturn(self):
+    def testCollisionHandlerPreSolveNoReturn(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         c1 = p.Circle(b1, 10)
@@ -597,11 +605,11 @@ class UnitTestSpace(unittest.TestCase):
             warnings.simplefilter("always")
 
             s.step(0.1)
-
+            assert w is not None
             self.assertEqual(len(w), 1)
             self.assertTrue(issubclass(w[-1].category, UserWarning))
 
-    def testCollisionHandlerPostSolve(self):
+    def testCollisionHandlerPostSolve(self) -> None:
         self._setUp()
         self.hit = 0
 
@@ -613,7 +621,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(self.hit, 1)
         self._tearDown()
 
-    def testCollisionHandlerSeparate(self):
+    def testCollisionHandlerSeparate(self) -> None:
         s = p.Space()
 
         b1 = p.Body(1, 1)
@@ -641,7 +649,7 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertTrue(self.separated)
 
-    def testCollisionHandlerRemoveSeparateAdd(self):
+    def testCollisionHandlerRemoveSeparateAdd(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 10)
         c1 = p.Circle(b1, 10)
@@ -658,14 +666,14 @@ class UnitTestSpace(unittest.TestCase):
         s.step(1)
         s.remove(c1)
 
-    def testCollisionHandlerKeyOrder(self):
+    def testCollisionHandlerKeyOrder(self) -> None:
         s = p.Space()
         h1 = s.add_collision_handler(1, 2)
         h2 = s.add_collision_handler(2, 1)
 
         self.assertEqual(h1, h2)
 
-    def testWildcardCollisionHandler(self):
+    def testWildcardCollisionHandler(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         c1 = p.Circle(b1, 10)
@@ -692,7 +700,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(c2, d["shapes"][1])
         self.assertEqual(s, d["space"])
 
-    def testDefaultCollisionHandler(self):
+    def testDefaultCollisionHandler(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         c1 = p.Circle(b1, 10)
@@ -716,7 +724,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(c2, d["shapes"][0])
         self.assertEqual(s, d["space"])
 
-    def testPostStepCallback(self):
+    def testPostStepCallback(self) -> None:
         s = p.Space()
         b1, b2 = p.Body(1, 3), p.Body(10, 100)
         s.add(b1, b2)

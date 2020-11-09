@@ -40,13 +40,19 @@ a Pymunk Poly or Segment::
 __docformat__ = "reStructuredText"
 
 import collections.abc
-from typing import List
+from typing import TYPE_CHECKING, Callable, List, Tuple, Union, overload
 
 from ._chipmunk_cffi import ffi, lib
 from .vec2d import Vec2d
 
+if TYPE_CHECKING:
+    from .bb import BB
 
-def _to_chipmunk(polyline):
+_SegmentFunc = Callable[[Vec2d, Vec2d], None]
+_SampleFunc = Callable[[Vec2d], float]
+
+
+def _to_chipmunk(polyline) -> ffi.CData:
     l = len(polyline)
     _line = ffi.new("cpPolyline *", {"verts": l})
     _line.count = l
@@ -158,12 +164,12 @@ class PolylineSet(collections.abc.Sequence):
     """
 
     def __init__(self) -> None:
-        def free(_set):
+        def free(_set: ffi.CData) -> None:
             lib.cpPolylineSetFree(_set, True)
 
         self._set = ffi.gc(lib.cpPolylineSetNew(), free)
 
-    def collect_segment(self, v0, v1) -> None:
+    def collect_segment(self, v0: Tuple[float, float], v1: Tuple[float, float]) -> None:
         """Add a line segment to a polyline set.
 
         A segment will either start a new polyline, join two others, or add to
@@ -183,7 +189,16 @@ class PolylineSet(collections.abc.Sequence):
     def __len__(self) -> int:
         return self._set.count
 
-    def __getitem__(self, key) -> List[Vec2d]:
+    @overload
+    def __getitem__(self, index: int) -> List[Vec2d]:
+        ...
+
+    @overload
+    def __getitem__(self, index: slice) -> "PolylineSet":
+        ...
+
+    def __getitem__(self, key: Union[int, slice]) -> Union[List[Vec2d], "PolylineSet"]:
+        assert not isinstance(key, slice), "Slice indexing not supported"
         if key >= self._set.count:
             raise IndexError
         line = []
@@ -193,7 +208,14 @@ class PolylineSet(collections.abc.Sequence):
         return line
 
 
-def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
+def march_soft(
+    bb: "BB",
+    x_samples: int,
+    y_samples: int,
+    threshold: float,
+    segment_func: _SegmentFunc,
+    sample_func: _SampleFunc,
+) -> None:
     """Trace an *anti-aliased* contour of an image along a particular threshold.
 
     The given number of samples will be taken and spread across the bounding
@@ -213,19 +235,26 @@ def march_soft(bb, x_samples, y_samples, threshold, segment_func, sample_func):
     """
 
     @ffi.callback("cpMarchSegmentFunc")
-    def _seg_f(v0, v1, _data):
+    def _seg_f(v0: ffi.CData, v1: ffi.CData, _data: ffi.CData) -> None:
         segment_func(Vec2d(v0.x, v0.y), Vec2d(v1.x, v1.y))
 
     @ffi.callback("cpMarchSampleFunc")
-    def _sam_f(point, _data):
+    def _sam_f(point: ffi.CData, _data: ffi.CData) -> float:
         return sample_func(Vec2d(point.x, point.y))
 
     lib.cpMarchSoft(
-        bb._bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
+        bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
     )
 
 
-def march_hard(bb, x_samples, y_samples, threshold, segment_func, sample_func):
+def march_hard(
+    bb: "BB",
+    x_samples: int,
+    y_samples: int,
+    threshold: float,
+    segment_func: _SegmentFunc,
+    sample_func: _SampleFunc,
+) -> None:
     """Trace an *aliased* curve of an image along a particular threshold.
 
     The given number of samples will be taken and spread across the bounding
@@ -245,13 +274,13 @@ def march_hard(bb, x_samples, y_samples, threshold, segment_func, sample_func):
     """
 
     @ffi.callback("cpMarchSegmentFunc")
-    def _seg_f(v0, v1, _data):
+    def _seg_f(v0: ffi.CData, v1: ffi.CData, _data: ffi.CData) -> None:
         segment_func(Vec2d(v0.x, v0.y), Vec2d(v1.x, v1.y))
 
     @ffi.callback("cpMarchSampleFunc")
-    def _sam_f(point, _data):
+    def _sam_f(point: ffi.CData, _data: ffi.CData) -> float:
         return sample_func(Vec2d(point.x, point.y))
 
     lib.cpMarchHard(
-        bb._bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
+        bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
     )

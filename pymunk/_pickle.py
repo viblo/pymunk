@@ -1,7 +1,7 @@
 from typing import Any, ClassVar, Dict, List, Tuple, TypeVar
 
 T = TypeVar("T", bound="PickleMixin")
-
+_State = Dict[str, List[Tuple[str, Any]]]
 import copy
 
 
@@ -14,7 +14,7 @@ class PickleMixin:
     _pickle_attrs_general: ClassVar[List[str]] = []
     _pickle_attrs_skip: ClassVar[List[str]] = []
 
-    def __getstate__(self) -> Dict[str, List[Tuple[str, Any]]]:
+    def __getstate__(self) -> _State:
         """Return the state of this object
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
@@ -39,7 +39,7 @@ class PickleMixin:
 
         return d
 
-    def __setstate__(self, state: Dict[str, List[Tuple[str, Any]]]) -> None:
+    def __setstate__(self, state: _State) -> None:
         """Unpack this object from a saved state.
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`

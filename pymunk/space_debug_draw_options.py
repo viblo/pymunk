@@ -1,15 +1,18 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, List, NamedTuple, Tuple
+from typing import TYPE_CHECKING, List, NamedTuple, Optional, Tuple, Type
 
 if TYPE_CHECKING:
     from .shapes import Shape
+    from types import TracebackType
 
 import math
 
 from ._chipmunk_cffi import ffi, lib
 from .body import Body
 from .vec2d import Vec2d
+
+_DrawFlags = int
 
 
 class SpaceDebugColor(NamedTuple):
@@ -79,7 +82,7 @@ class SpaceDebugDrawOptions(object):
         self._use_chipmunk_debug_draw = True
 
         @ffi.callback("cpSpaceDebugDrawCircleImpl")
-        def f1(pos, angle, radius, outline_color, fill_color, _):
+        def f1(pos, angle, radius, outline_color, fill_color, _):  # type: ignore
             self.draw_circle(
                 Vec2d(pos.x, pos.y),
                 angle,
@@ -91,7 +94,7 @@ class SpaceDebugDrawOptions(object):
         _options.drawCircle = f1
 
         @ffi.callback("cpSpaceDebugDrawSegmentImpl")
-        def f2(a, b, color, _):
+        def f2(a, b, color, _):  # type: ignore
             # sometimes a and/or b can be nan. For example if both endpoints
             # of a spring is at the same position. In those cases skip calling
             # the drawing method.
@@ -102,7 +105,7 @@ class SpaceDebugDrawOptions(object):
         _options.drawSegment = f2
 
         @ffi.callback("cpSpaceDebugDrawFatSegmentImpl")
-        def f3(a, b, radius, outline_color, fill_color, _):
+        def f3(a, b, radius, outline_color, fill_color, _):  # type: ignore
             self.draw_fat_segment(
                 Vec2d(a.x, a.y),
                 Vec2d(b.x, b.y),
@@ -114,7 +117,7 @@ class SpaceDebugDrawOptions(object):
         _options.drawFatSegment = f3
 
         @ffi.callback("cpSpaceDebugDrawPolygonImpl")
-        def f4(count, verts, radius, outline_color, fill_color, _):
+        def f4(count, verts, radius, outline_color, fill_color, _):  # type: ignore
             vs = []
             for i in range(count):
                 vs.append(Vec2d(verts[i].x, verts[i].y))
@@ -123,13 +126,13 @@ class SpaceDebugDrawOptions(object):
         _options.drawPolygon = f4
 
         @ffi.callback("cpSpaceDebugDrawDotImpl")
-        def f5(size, pos, color, _):
+        def f5(size, pos, color, _):  # type: ignore
             self.draw_dot(size, Vec2d(pos.x, pos.y), self._c(color))
 
         _options.drawDot = f5
 
         @ffi.callback("cpSpaceDebugDrawColorForShapeImpl")
-        def f6(_shape, data, color):
+        def f6(_shape, data, color):  # type: ignore
             space = ffi.from_handle(data)
             shape = space._get_shape(_shape)
             c = self.color_for_shape(shape)
@@ -248,19 +251,24 @@ class SpaceDebugDrawOptions(object):
         """,
     )
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         pass
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(
+        self,
+        type: Optional[Type[BaseException]],
+        value: Optional[BaseException],
+        traceback: Optional["TracebackType"],
+    ) -> None:
         pass
 
-    def _c(self, color) -> SpaceDebugColor:
+    def _c(self, color: ffi.CData) -> SpaceDebugColor:
         return SpaceDebugColor(color.r, color.g, color.b, color.a)
 
-    def _get_flags(self):
+    def _get_flags(self) -> _DrawFlags:
         return self._options.flags
 
-    def _set_flags(self, f):
+    def _set_flags(self, f: _DrawFlags) -> None:
         self._options.flags = f
 
     flags = property(
@@ -337,7 +345,7 @@ class SpaceDebugDrawOptions(object):
     def draw_dot(self, size: float, pos: Vec2d, color: SpaceDebugColor) -> None:
         print("draw_dot", (size, pos, color))
 
-    def draw_shape(self, shape) -> None:
+    def draw_shape(self, shape: "Shape") -> None:
         print("draw_shape", shape)
 
     def color_for_shape(self, shape: "Shape") -> SpaceDebugColor:

@@ -48,7 +48,7 @@ class ContactPointSet(object):
         return "ContactPointSet(normal={}, points={})".format(self.normal, self.points)
 
     @classmethod
-    def _from_cp(cls, _points):
+    def _from_cp(cls, _points) -> "ContactPointSet":
         normal = Vec2d(_points.normal.x, _points.normal.y)
 
         points = []
