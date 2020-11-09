@@ -1,14 +1,15 @@
 import doctest
 import unittest
+from typing import Any, Iterator
 
 # import sys
 # import os
 
 
-def main():
-    def list_of_tests_gen(s):
+def main() -> None:
+    def list_of_tests_gen(s: Any) -> Iterator[Any]:
         for test in s:
-            if unittest.suite._isnotsuite(test):
+            if unittest.suite._isnotsuite(test):  # type: ignore
                 yield test
             else:
                 for t in list_of_tests_gen(test):

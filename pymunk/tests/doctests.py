@@ -2,12 +2,13 @@ import doctest
 import pkgutil
 import sys
 import unittest
+from typing import Any
 
 import pymunk
 
 
-def load_tests(loader, tests, ignore):
-    for importer, modname, ispkg in pkgutil.iter_modules(pymunk.__path__):
+def load_tests(loader: Any, tests: Any, ignore: Any) -> None:
+    for importer, modname, ispkg in pkgutil.iter_modules(pymunk.__path__):  # type: ignore  # mypy issue #1422
         # try:
         tests.addTests(doctest.DocTestSuite("pymunk." + modname))
 

@@ -552,7 +552,7 @@ class Poly(Shape):
         self,
         body: Optional["Body"],
         vertices: Sequence[Tuple[float, float]],
-        transform: Transform = None,
+        transform: Optional[Transform] = None,
         radius: float = 0,
     ) -> None:
         """Create a polygon.
@@ -599,7 +599,7 @@ class Poly(Shape):
         :param float radius: Set the radius of the poly shape
 
         """
-        if transform == None:
+        if transform is None:
             transform = Transform.identity()
 
         body_body = ffi.NULL if body is None else body._body
@@ -708,7 +708,9 @@ class Poly(Shape):
         return verts
 
     def unsafe_set_vertices(
-        self, vertices: Sequence[Tuple[float, float]], transform: Transform = None
+        self,
+        vertices: Sequence[Tuple[float, float]],
+        transform: Optional[Transform] = None,
     ) -> None:
         """Unsafe set the vertices of the poly.
 
@@ -718,7 +720,7 @@ class Poly(Shape):
             not result in realistic physical behavior. Only use if you know
             what you are doing!
         """
-        if transform == None:
+        if transform is None:
             cp.cpPolyShapeSetVertsRaw(self._shape, len(vertices), vertices)
             return
 

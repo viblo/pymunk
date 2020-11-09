@@ -1,7 +1,7 @@
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Any, Callable, Optional
+from typing import TYPE_CHECKING, Any, Callable, Dict, Optional
 
 if TYPE_CHECKING:
     from .space import Space
@@ -50,7 +50,7 @@ class CollisionHandler(object):
         self._separate = None
         self._separate_base: Optional[_CollisionCallbackNoReturn] = None  # For pickle
 
-        self._data: dict = {}
+        self._data: Dict[Any, Any] = {}
 
     def _reset(self) -> None:
         def allways_collide(arb: Arbiter, space: "Space", data: Any) -> bool:
@@ -65,7 +65,7 @@ class CollisionHandler(object):
         self.separate = do_nothing
 
     @property
-    def data(self) -> dict:
+    def data(self) -> Dict[Any, Any]:
         """Data property that get passed on into the
         callbacks.
 

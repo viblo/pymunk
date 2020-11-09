@@ -39,8 +39,7 @@ a Pymunk Poly or Segment::
 """
 __docformat__ = "reStructuredText"
 
-import collections.abc
-from typing import TYPE_CHECKING, Callable, List, Tuple, Union, overload
+from typing import TYPE_CHECKING, Callable, List, Sequence, Tuple, Union, overload
 
 from ._chipmunk_cffi import ffi, lib
 from .vec2d import Vec2d
@@ -155,7 +154,7 @@ def convex_decomposition(polyline, tolerance: float) -> List[List[Vec2d]]:
     return _from_polyline_set(_set)
 
 
-class PolylineSet(collections.abc.Sequence):
+class PolylineSet(Sequence[List[Vec2d]]):
     """A set of Polylines.
 
     Mainly intended to be used for its :py:meth:`collect_segment` function

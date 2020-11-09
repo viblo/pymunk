@@ -21,7 +21,7 @@ class PickleMixin:
         modules with this class.
         """
 
-        d: dict = {
+        d: _State = {
             "init": [],  # arguments for init
             "general": [],  # general attributes
             "custom": [],  # custom attributes set by user
@@ -46,7 +46,7 @@ class PickleMixin:
         modules with this class.
         """
 
-        init_attrs: list = []
+        init_attrs: List[str] = []
 
         init_args = [v for k, v in state["init"]]
         self.__init__(*init_args)  # type: ignore
@@ -58,5 +58,5 @@ class PickleMixin:
             self.__setattr__(k, v)
 
     def copy(self: T) -> T:
-        """Create a deep copy of this body."""
+        """Create a deep copy of this object."""
         return copy.deepcopy(self)

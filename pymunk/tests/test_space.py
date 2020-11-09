@@ -187,7 +187,7 @@ class UnitTestSpace(unittest.TestCase):
 
         s.step(0.1)
 
-        self.assertTrue(self.s1 not in s.bodies)
+        self.assertTrue(self.s1 not in s.shapes)
         self.assertTrue(self.s2 not in s.shapes)
         self._tearDown()
 

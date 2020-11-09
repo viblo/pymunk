@@ -224,7 +224,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         )
 
 
-class _GrPointSize(pyglet.graphics.Group):
+class _GrPointSize(pyglet.graphics.Group):  # type: ignore
     """
     This pyglet rendering group sets a specific point size.
     """

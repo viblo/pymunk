@@ -65,15 +65,15 @@ class BB(NamedTuple):
         """Return the minimal bounding box that contains both this bb and the
         other bb
         """
-        _bb = lib.cpBBMerge(self, other)
-        return BB(_bb.l, _bb.b, _bb.r, _bb.t)
+        cp_bb = lib.cpBBMerge(self, other)
+        return BB(cp_bb.l, cp_bb.b, cp_bb.r, cp_bb.t)
 
     def expand(self, v: Tuple[float, float]) -> "BB":
         """Return the minimal bounding box that contans both this bounding box
         and the vector v
         """
-        _bb = lib.cpBBExpand(self, tuple(v))
-        return BB(_bb.l, _bb.b, _bb.r, _bb.t)
+        cp_bb = lib.cpBBExpand(self, tuple(v))
+        return BB(cp_bb.l, cp_bb.b, cp_bb.r, cp_bb.t)
 
     def center(self) -> Vec2d:
         """Return the center"""
@@ -111,5 +111,5 @@ class BB(NamedTuple):
 
         That is, BB(0,0,10,10).wrap_vect((5,5)) == Vec2d._fromcffi(10,10)
         """
-        return lib._cpBBWrapVect(self._bb[0], v)
+        return lib._cpBBWrapVect(self.cp_bb[0], v)
     '''

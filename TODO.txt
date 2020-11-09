@@ -91,6 +91,7 @@ Typing a existing project - learnings
 - problems with bugs / missing features in mypy
   - in implementation of Vector class: __add__ vs __radd__ https://github.com/python/mypy/issues/9388
   - in allowing both vec2d and tuple/list: setters cant have different type from getter https://github.com/python/mypy/issues/3004
+  - __path__ not supported in packages. https://github.com/python/mypy/issues/1422
 
 - problems with bugs / missing features in pyright
 

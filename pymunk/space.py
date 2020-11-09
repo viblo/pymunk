@@ -8,10 +8,12 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
+    Dict,
     Hashable,
     List,
     Optional,
     Sequence,
+    Set,
     Tuple,
     Union,
 )
@@ -36,6 +38,9 @@ from .vec2d import Vec2d
 
 if TYPE_CHECKING:
     from .bb import BB
+
+_PostStepCallback = Callable[["Space", Hashable, Any, Any], None]
+_AddableObjects = Union[Body, Shape, Constraint]
 
 
 class Space(PickleMixin, object):
@@ -144,20 +149,22 @@ class Space(PickleMixin, object):
 
         self._space = ffi.gc(cp_space, spacefree)
 
-        self._handlers: dict = {}  # To prevent the gc to collect the callbacks.
+        self._handlers: Dict[
+            Any, CollisionHandler
+        ] = {}  # To prevent the gc to collect the callbacks.
 
-        self._post_step_callbacks: dict = {}
-        self._removed_shapes: dict = {}
+        self._post_step_callbacks: Dict[Any, Callable[["Space"], None]] = {}
+        self._removed_shapes: Dict[int, Shape] = {}
 
-        self._shapes: dict = {}
-        self._bodies: dict = {}
+        self._shapes: Dict[int, Shape] = {}
+        self._bodies: Dict[Body, None] = {}
         self._static_body: Optional[Body] = None
-        self._constraints: dict = {}
+        self._constraints: Dict[Constraint, None] = {}
 
         self._locked = False
 
-        self._add_later: set = set()
-        self._remove_later: set = set()
+        self._add_later: Set[_AddableObjects] = set()
+        self._remove_later: Set[_AddableObjects] = set()
 
     def _get_self(self) -> "Space":
         return self
@@ -371,7 +378,7 @@ class Space(PickleMixin, object):
         """,
     )
 
-    def add(self, *objs: Union[Body, Shape, Constraint]) -> None:
+    def add(self, *objs: _AddableObjects) -> None:
         """Add one or many shapes, bodies or constraints (joints) to the space
 
         Unlike Chipmunk and earlier versions of pymunk its now allowed to add
@@ -399,7 +406,7 @@ class Space(PickleMixin, object):
             else:
                 raise Exception(f"Unsupported type  {type(o)} of {o}.")
 
-    def remove(self, *objs: Union[Body, Shape, Constraint]) -> None:
+    def remove(self, *objs: _AddableObjects) -> None:
         """Remove one or many shapes, bodies or constraints from the space
 
         Unlike Chipmunk and earlier versions of Pymunk its now allowed to
@@ -674,7 +681,7 @@ class Space(PickleMixin, object):
 
     def add_post_step_callback(
         self,
-        callback_function: Callable[["Space", Hashable, Any, Any], None],
+        callback_function: _PostStepCallback,
         key: Hashable,
         *args: Any,
         **kwargs: Any,
@@ -766,12 +773,11 @@ class Space(PickleMixin, object):
         shapeid = cp.cpShapeGetUserData(_shape)
         # return self._shapes[hashid_private]
         if shapeid in self._shapes:
-            shape = self._shapes[shapeid]
+            return self._shapes[shapeid]
         elif shapeid in self._removed_shapes:
-            shape = self._removed_shapes[shapeid]
+            return self._removed_shapes[shapeid]
         else:
-            shape = None
-        return shape
+            return None
 
     def point_query_nearest(
         self, point: Tuple[float, float], max_distance: float, shape_filter: ShapeFilter
@@ -1004,14 +1010,14 @@ class Space(PickleMixin, object):
 
         handlers = []
         for k, v in self._handlers.items():
-            h = {}
-            if v._begin_base != None:
+            h: Dict[str, Any] = {}
+            if v._begin_base is not None:
                 h["_begin_base"] = v._begin_base
-            if v._pre_solve_base != None:
+            if v._pre_solve_base is not None:
                 h["_pre_solve_base"] = v._pre_solve_base
-            if v._post_solve_base != None:
+            if v._post_solve_base is not None:
                 h["_post_solve_base"] = v._post_solve_base
-            if v._separate_base != None:
+            if v._separate_base is not None:
                 h["_separate_base"] = v._separate_base
             handlers.append((k, h))
 

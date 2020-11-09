@@ -1,5 +1,10 @@
 __docformat__ = "reStructuredText"
 
+from typing import TYPE_CHECKING, List, Tuple
+
+if TYPE_CHECKING:
+    from ._chipmunk_cffi import ffi
+
 from .vec2d import Vec2d
 
 
@@ -16,7 +21,12 @@ class ContactPoint(object):
 
     __slots__ = ("point_a", "point_b", "distance")
 
-    def __init__(self, point_a, point_b, distance: float) -> None:
+    def __init__(
+        self,
+        point_a: Tuple[float, float],
+        point_b: Tuple[float, float],
+        distance: float,
+    ) -> None:
         assert len(point_a) == 2
         assert len(point_b) == 2
         self.point_a = point_a
@@ -39,7 +49,7 @@ class ContactPointSet(object):
 
     __slots__ = ("normal", "points")
 
-    def __init__(self, normal, points) -> None:
+    def __init__(self, normal: Tuple[float, float], points: List[ContactPoint]) -> None:
         assert len(normal) == 2
         self.normal = normal
         self.points = points
@@ -48,7 +58,7 @@ class ContactPointSet(object):
         return "ContactPointSet(normal={}, points={})".format(self.normal, self.points)
 
     @classmethod
-    def _from_cp(cls, _points) -> "ContactPointSet":
+    def _from_cp(cls, _points: "ffi.CData") -> "ContactPointSet":
         normal = Vec2d(_points.normal.x, _points.normal.y)
 
         points = []

@@ -1,7 +1,7 @@
 print("__init__", __name__, __file__)
 
 
-def init():
+def init() -> None:
     print("init")
 
 
