@@ -67,13 +67,12 @@ __all__ = [
     "SimpleMotor",
 ]
 
+import logging
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Union
 
 if TYPE_CHECKING:
     from .body import Body
     from .space import Space
-
-import logging
 
 from ._chipmunk_cffi import ffi, lib
 from ._pickle import PickleMixin

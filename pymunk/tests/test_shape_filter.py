@@ -2,7 +2,6 @@ import pickle
 import unittest
 
 import pymunk as p
-from pymunk.vec2d import Vec2d
 
 
 class UnitTestShapeFilter(unittest.TestCase):

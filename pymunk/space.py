@@ -1,6 +1,5 @@
 __docformat__ = "reStructuredText"
 
-import copy
 import logging
 import platform
 import weakref

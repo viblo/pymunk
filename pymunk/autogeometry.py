@@ -41,11 +41,11 @@ __docformat__ = "reStructuredText"
 
 from typing import TYPE_CHECKING, Callable, List, Sequence, Tuple, Union, overload
 
-from ._chipmunk_cffi import ffi, lib
-from .vec2d import Vec2d
-
 if TYPE_CHECKING:
     from .bb import BB
+
+from ._chipmunk_cffi import ffi, lib
+from .vec2d import Vec2d
 
 _SegmentFunc = Callable[[Vec2d, Vec2d], None]
 _SampleFunc = Callable[[Vec2d], float]

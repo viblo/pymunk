@@ -1,12 +1,11 @@
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
+import warnings
 from typing import TYPE_CHECKING, Any, Callable, Dict, Optional
 
 if TYPE_CHECKING:
     from .space import Space
-
-import warnings
 
 from ._chipmunk_cffi import ffi
 from .arbiter import Arbiter

@@ -54,19 +54,7 @@ __docformat__ = "reStructuredText"
 import math
 import numbers
 import operator
-from collections.abc import Sequence
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Generator,
-    List,
-    NamedTuple,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-    cast,
-)
+from typing import Any, NamedTuple, Tuple, Union
 
 # from ._types import _Vec2dOrFloat, _Vec2dOrTuple
 _Vec2dOrFloat = Any

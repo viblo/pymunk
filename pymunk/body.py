@@ -1,14 +1,13 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Any, Callable, Dict, Optional, Set, Tuple, Union
+import logging
+from typing import TYPE_CHECKING, Any, Callable, Optional, Set, Tuple, Union
+from weakref import WeakSet
 
 if TYPE_CHECKING:
     from .space import Space
     from .constraint import Constraint
     from .shapes import Shape
-
-import logging
-from weakref import WeakSet
 
 from ._chipmunk_cffi import ffi, lib
 from ._pickle import PickleMixin, _State
