@@ -9,11 +9,12 @@ drawing, but there is probably room for optimizations still).
 
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Sequence
 
 import matplotlib.pyplot as plt  # type: ignore
 
 import pymunk
+from pymunk.space_debug_draw_options import SpaceDebugColor
 from pymunk.vec2d import Vec2d
 
 if TYPE_CHECKING:
@@ -21,7 +22,7 @@ if TYPE_CHECKING:
 
 
 class DrawOptions(pymunk.SpaceDebugDrawOptions):
-    def __init__(self, ax):
+    def __init__(self, ax: Any) -> None:
         """DrawOptions for space.debug_draw() to draw a space on a ax object.
 
         Typical usage::
@@ -51,50 +52,70 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         super(DrawOptions, self).__init__()
 
         self.ax = ax
-        self.shape_dynamic_color = self.shape_dynamic_color.as_float()
-        self.shape_static_color = self.shape_static_color.as_float()
-        self.shape_kinematic_color = self.shape_kinematic_color.as_float()
-        self.shape_sleeping_color = self.shape_sleeping_color.as_float()
-        self.shape_outline_color = self.shape_outline_color.as_float()
-        self.constraint_color = self.constraint_color.as_float()
-        self.collision_point_color = self.collision_point_color.as_float()
 
-    def draw_circle(self, pos, angle, radius, outline_color, fill_color):
-        p = plt.Circle(pos, radius, facecolor=fill_color, edgecolor=outline_color)
+    def draw_circle(
+        self,
+        pos: Vec2d,
+        angle: float,
+        radius: float,
+        outline_color: SpaceDebugColor,
+        fill_color: SpaceDebugColor,
+    ) -> None:
+        p = plt.Circle(  # type: ignore
+            pos,
+            radius,
+            facecolor=fill_color.as_float(),
+            edgecolor=outline_color.as_float(),
+        )
         self.ax.add_patch(p)
 
         circle_edge = pos + Vec2d(radius, 0).rotated(angle)
-        line = plt.Line2D(
+        line = plt.Line2D(  # type: ignore
             [pos.x, circle_edge.x],
             [pos.y, circle_edge.y],
             linewidth=1,
-            color=outline_color,
+            color=outline_color.as_float(),
         )
-        line.set_solid_capstyle("round")
+        line.set_solid_capstyle("round")  # type: ignore
         self.ax.add_line(line)
 
-    def draw_segment(self, a, b, color):
-        line = plt.Line2D([a.x, b.x], [a.y, b.y], linewidth=1, color=color)
-        line.set_solid_capstyle("round")
+    def draw_segment(self, a: Vec2d, b: Vec2d, color: SpaceDebugColor) -> None:
+        line = plt.Line2D([a.x, b.x], [a.y, b.y], linewidth=1, color=color.as_float())  # type: ignore
+        line.set_solid_capstyle("round")  # type: ignore
         self.ax.add_line(line)
 
-    def draw_fat_segment(self, a, b, radius, outline_color, fill_color):
+    def draw_fat_segment(
+        self,
+        a: Vec2d,
+        b: Vec2d,
+        radius: float,
+        outline_color: SpaceDebugColor,
+        fill_color: SpaceDebugColor,
+    ) -> None:
         radius = max(1, 2 * radius)
-        line = plt.Line2D([a.x, b.x], [a.y, b.y], linewidth=radius, color=fill_color)
-        line.set_solid_capstyle("round")
+        line = plt.Line2D(  # type: ignore
+            [a.x, b.x], [a.y, b.y], linewidth=radius, color=fill_color.as_float()
+        )
+        line.set_solid_capstyle("round")  # type: ignore
         self.ax.add_line(line)
 
-    def draw_polygon(self, verts, radius, outline_color, fill_color):
+    def draw_polygon(
+        self,
+        verts: Sequence[Vec2d],
+        radius: float,
+        outline_color: SpaceDebugColor,
+        fill_color: SpaceDebugColor,
+    ) -> None:
         radius = max(1, 2 * radius)
-        p = plt.Polygon(
+        p = plt.Polygon(  # type: ignore
             verts,
             linewidth=radius,
             joinstyle="round",
-            facecolor=fill_color,
-            edgecolor=outline_color,
+            facecolor=fill_color.as_float(),
+            edgecolor=outline_color.as_float(),
         )
         self.ax.add_patch(p)
 
-    def draw_dot(self, size, pos, color):
-        p = plt.Circle(pos, size, facecolor=color, edgecolor="None")
+    def draw_dot(self, size: float, pos: Vec2d, color: SpaceDebugColor) -> None:
+        p = plt.Circle(pos, size, facecolor=color.as_float(), edgecolor="None")  # type: ignore
         self.ax.add_patch(p)

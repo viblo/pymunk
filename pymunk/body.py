@@ -634,7 +634,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
     def each_arbiter(
         self,
-        func: Callable[[Arbiter, Tuple[Any, ...], Dict[str, Any]], None],
+        func: Callable[..., None],  # TODO: Fix me once PEP 612 is ready
         *args: Any,
         **kwargs: Any
     ) -> None:

@@ -1,14 +1,18 @@
 import pickle
 import unittest
+from typing import List, Tuple
 
 import pymunk as p
+from pymunk.arbiter import Arbiter
+from pymunk.constraint import *
+from pymunk.shapes import Shape
 from pymunk.vec2d import Vec2d
 
 ####################################################################
 
 
 class UnitTestBody(unittest.TestCase):
-    def testProperties(self):
+    def testProperties(self) -> None:
         b = p.Body(10, 100)
         self.assertEqual(b.mass, 10)
         b.mass = 11
@@ -56,7 +60,7 @@ class UnitTestBody(unittest.TestCase):
         s.add(b)
         self.assertEqual(b.space, s)
 
-    def testRepr(self):
+    def testRepr(self) -> None:
         b = p.Body(1, 2)
         self.assertEqual(str(b), "Body(1.0, 2.0, Body.DYNAMIC)")
         b = p.Body(body_type=p.Body.KINEMATIC)
@@ -64,7 +68,7 @@ class UnitTestBody(unittest.TestCase):
         b = p.Body(body_type=p.Body.STATIC)
         self.assertEqual(str(b), "Body(Body.STATIC)")
 
-    def testCoordinateConversion(self):
+    def testCoordinateConversion(self) -> None:
         b = p.Body(body_type=p.Body.KINEMATIC)
         v = 1, 2
         self.assertEqual(b.local_to_world(v), v)
@@ -73,7 +77,7 @@ class UnitTestBody(unittest.TestCase):
         self.assertEqual(b.local_to_world(v), (4, 6))
         self.assertEqual(b.world_to_local(v), (-2, -2))
 
-    def testVelocityConversion(self):
+    def testVelocityConversion(self) -> None:
         b = p.Body(1, 2)
         self.assertEqual(b.velocity_at_world_point((1, 1)), (0, 0))
         self.assertEqual(b.velocity_at_local_point((1, 1)), (0, 0))
@@ -82,7 +86,7 @@ class UnitTestBody(unittest.TestCase):
         self.assertEqual(b.velocity_at_world_point((1, 1)), (1.2, 0))
         self.assertEqual(b.velocity_at_local_point((1, 1)), (-1.2, 1.2))
 
-    def testForce(self):
+    def testForce(self) -> None:
         b = p.Body(1, 2)
         b.position = 3, 4
         b.apply_force_at_world_point((10, 0), (0, 10))
@@ -95,7 +99,7 @@ class UnitTestBody(unittest.TestCase):
         self.assertEqual(b.force, (10, 0))
         self.assertEqual(b.torque, -100)
 
-    def testImpulse(self):
+    def testImpulse(self) -> None:
         b = p.Body(1, 2)
         b.position = 3, 4
         b.apply_impulse_at_world_point((10, 0), (0, 10))
@@ -108,7 +112,7 @@ class UnitTestBody(unittest.TestCase):
         self.assertEqual(b.velocity, (10, 0))
         self.assertEqual(b.angular_velocity, -50)
 
-    def testSleep(self):
+    def testSleep(self) -> None:
         b = p.Body(1, 1)
         s = p.Space()
         s.sleep_time_threshold = 0.01
@@ -128,7 +132,7 @@ class UnitTestBody(unittest.TestCase):
         s.remove(b)
         b.activate()
 
-    def testSleepWithGroup(self):
+    def testSleepWithGroup(self) -> None:
         b1 = p.Body(1, 1)
         b2 = p.Body(2, 2)
         s = p.Space()
@@ -145,27 +149,27 @@ class UnitTestBody(unittest.TestCase):
         b2.activate()
         self.assertFalse(b1.is_sleeping)
 
-    def testKineticEnergy(self):
+    def testKineticEnergy(self) -> None:
         b = p.Body(1, 10)
         self.assertEqual(b.kinetic_energy, 0)
         b.apply_impulse_at_local_point((10, 0))
         self.assertEqual(b.kinetic_energy, 100)
 
-    def testDynamic(self):
+    def testDynamic(self) -> None:
         b1 = p.Body(1, 1)
         b2 = p.Body(1, 1, body_type=p.Body.DYNAMIC)
         self.assertEqual(b1.body_type, p.Body.DYNAMIC)
         self.assertEqual(b2.body_type, p.Body.DYNAMIC)
 
-    def testKinematic(self):
+    def testKinematic(self) -> None:
         b = p.Body(body_type=p.Body.KINEMATIC)
         self.assertEqual(b.body_type, p.Body.KINEMATIC)
 
-    def testStatic(self):
+    def testStatic(self) -> None:
         b = p.Body(body_type=p.Body.STATIC)
         self.assertEqual(b.body_type, p.Body.STATIC)
 
-    def testMassMomentFromShape(self):
+    def testMassMomentFromShape(self) -> None:
         s = p.Space()
 
         b = p.Body()
@@ -182,11 +186,11 @@ class UnitTestBody(unittest.TestCase):
         self.assertEqual(b.center_of_gravity.y, 3)
         self.assertEqual(b.moment, 200)
 
-    def testPositionFunction(self):
+    def testPositionFunction(self) -> None:
         s = p.Space()
         b = p.Body(1, 1)
 
-        def f(body, dt):
+        def f(body: p.Body, dt: float) -> None:
             body.position += 0, dt
 
         b.position_func = f
@@ -201,11 +205,11 @@ class UnitTestBody(unittest.TestCase):
         s.step(1)
         self.assertEqual(b.position.y, 12)
 
-    def testVelocityFunction(self):
+    def testVelocityFunction(self) -> None:
         s = p.Space()
         b = p.Body(1, 1)
 
-        def f(body, gravity, damping, dt):
+        def f(body: p.Body, gravity: Vec2d, damping: float, dt: float) -> None:
             body.velocity += 5 * gravity
 
         b.velocity_func = f
@@ -222,7 +226,7 @@ class UnitTestBody(unittest.TestCase):
         s.step(1)
         self.assertEqual(b.velocity.x, 16)
 
-    def testEachArbiters(self):
+    def testEachArbiters(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         b2 = p.Body(1, 1)
@@ -231,29 +235,29 @@ class UnitTestBody(unittest.TestCase):
         s.add(b1, b2, c1, c2)
         s.step(1)
 
-        shapes = []
+        shapes: List[Shape] = []
 
-        def f(arbiter, shapes):
+        def f(arbiter: Arbiter, shapes: List[Shape]) -> None:
             shapes += arbiter.shapes
 
-        arbs = b1.each_arbiter(f, shapes)
+        b1.each_arbiter(f, shapes)
         self.assertEqual(shapes[0], c1)
         self.assertEqual(shapes[1], c2)
 
-    def testGetConstraints(self):
+    def testGetConstraints(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         b2 = p.Body(1, 1)
         s.add(b1)
-        j1 = p.PivotJoint(b1, s.static_body, (0, 0))
-        j2 = p.PivotJoint(b2, s.static_body, (0, 0))
+        j1 = PivotJoint(b1, s.static_body, (0, 0))
+        j2 = PivotJoint(b2, s.static_body, (0, 0))
 
         self.assertTrue(j1 in b1.constraints)
         self.assertTrue(j1 not in b2.constraints)
         self.assertTrue(j1 in s.static_body.constraints)
         self.assertTrue(j2 in s.static_body.constraints)
 
-    def testGetShapes(self):
+    def testGetShapes(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
         s.add(b1)
@@ -264,7 +268,7 @@ class UnitTestBody(unittest.TestCase):
         self.assertTrue(s2 in b1.shapes)
         self.assertTrue(s1 not in s.static_body.shapes)
 
-    def testPickle(self):
+    def testPickle(self) -> None:
         b = p.Body(1, 2)
         b.custom = "test"
         b.position = 3, 4
@@ -303,11 +307,11 @@ class UnitTestBody(unittest.TestCase):
 
 
 # Needs to be here for the lowest pickle protocol to work
-def pf(body, dt):
+def pf(body: p.Body, dt: float) -> None:
     body.pf = True
 
 
-def vf(body, gravity, damping, dt):
+def vf(body: p.Body, gravity: Tuple[float, float], damping: float, dt: float) -> None:
     body.vf = True
 
 

@@ -6,9 +6,11 @@ import pickle
 import sys
 import unittest
 import warnings
+from typing import Any, Callable, Sequence, TypeVar
 
 import pymunk as p
 from pymunk import *
+from pymunk.constraint import *
 from pymunk.vec2d import Vec2d
 
 ####################################################################
@@ -147,14 +149,14 @@ class UnitTestSpace(unittest.TestCase):
         b = p.Body(1, 2)
         c = p.Circle(b, 2)
 
-        def pre_solve_add(arbiter, space, data):
+        def pre_solve_add(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
             space.add(b, c)
             space.add(c, b)
             self.assertTrue(b not in s.bodies)
             self.assertTrue(c not in s.shapes)
             return True
 
-        def pre_solve_remove(arbiter, space, data):
+        def pre_solve_remove(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
             space.remove(b, c)
             space.remove(c, b)
             self.assertTrue(b in s.bodies)
@@ -179,8 +181,8 @@ class UnitTestSpace(unittest.TestCase):
         self._setUp()
         s = self.s
 
-        def pre_solve(arbiter, space, data):
-            space.remove(*arbiter.shapes)
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+            space.remove(*arb.shapes)
             return True
 
         s.add_collision_handler(0, 0).pre_solve = pre_solve
@@ -529,7 +531,7 @@ class UnitTestSpace(unittest.TestCase):
 
         self.hits = 0
 
-        def begin(space, arb, data):
+        def begin(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
             self.hits += h.data["test"]
             return True
 
@@ -553,12 +555,13 @@ class UnitTestSpace(unittest.TestCase):
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
 
-            def begin(space, arb, data):
-                return
+            def begin(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+                return  # type: ignore
 
             s.add_collision_handler(0, 0).begin = begin
             s.step(0.1)
 
+            assert w is not None
             self.assertEqual(len(w), 1)
             self.assertTrue(issubclass(w[-1].category, UserWarning))
 
@@ -573,9 +576,9 @@ class UnitTestSpace(unittest.TestCase):
 
         d = {}
 
-        def pre_solve(arb, space, data):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
             d["shapes"] = arb.shapes
-            d["space"] = space
+            d["space"] = space  # type: ignore
             d["test"] = data["test"]
             return True
 
@@ -596,8 +599,8 @@ class UnitTestSpace(unittest.TestCase):
         c2 = p.Circle(b2, 10)
         s.add(b1, c1, b2, c2)
 
-        def pre_solve(arb, space, data):
-            return
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+            return  # type: ignore
 
         s.add_collision_handler(0, 0).pre_solve = pre_solve
 
@@ -613,7 +616,7 @@ class UnitTestSpace(unittest.TestCase):
         self._setUp()
         self.hit = 0
 
-        def post_solve(arb, space, data):
+        def post_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.hit += 1
 
         self.s.add_collision_handler(0, 0).post_solve = post_solve
@@ -637,7 +640,7 @@ class UnitTestSpace(unittest.TestCase):
 
         self.separated = False
 
-        def separate(arb, space, data):
+        def separate(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.separated = data["test"]
 
         h = s.add_collision_handler(0, 0)
@@ -657,7 +660,7 @@ class UnitTestSpace(unittest.TestCase):
 
         s.add(b1, c1, c2)
 
-        def separate(*_):
+        def separate(*_: Any) -> None:
             s.add(p.Circle(s.static_body, 2))
             s.remove(c1)
 
@@ -683,9 +686,9 @@ class UnitTestSpace(unittest.TestCase):
 
         d = {}
 
-        def pre_solve(arb, space, data):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
             d["shapes"] = arb.shapes
-            d["space"] = space
+            d["space"] = space  # type: ignore
             return True
 
         s.add_wildcard_collision_handler(1).pre_solve = pre_solve
@@ -712,9 +715,9 @@ class UnitTestSpace(unittest.TestCase):
 
         d = {}
 
-        def pre_solve(arb, space, data):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
             d["shapes"] = arb.shapes
-            d["space"] = space
+            d["space"] = space  # type: ignore
             return True
 
         s.add_default_collision_handler().pre_solve = pre_solve
@@ -735,12 +738,17 @@ class UnitTestSpace(unittest.TestCase):
 
         self.calls = 0
 
-        def callback(space, key, shapes, test_self):
+        def callback(
+            space: p.Space,
+            key: Any,
+            shapes: Sequence[Shape],
+            test_self: "UnitTestSpace",
+        ) -> None:
             for shape in shapes:
                 s.remove(shape)
             test_self.calls += 1
 
-        def pre_solve(arb, space, data):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
             # note that we dont pass on the whole arbiters object, instead
             # we take only the shapes.
             space.add_post_step_callback(callback, 0, arb.shapes, test_self=self)
@@ -756,7 +764,7 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertEqual(self.calls, 1)
 
-    def testDebugDraw(self):
+    def testDebugDraw(self) -> None:
         s = p.Space()
 
         b1 = p.Body(1, 3)
@@ -792,13 +800,13 @@ class UnitTestSpace(unittest.TestCase):
     @unittest.skip(
         "Different behavior on windows sometimes. Expect it to be fixed in next major python version"
     )
-    def testDebugDrawZeroLengthSpring(self):
+    def testDebugDrawZeroLengthSpring(self) -> None:
         if sys.version_info < (3, 0):
             return
         s = p.Space()
 
         b1 = p.Body(1, 3)
-        c = p.DampedSpring(b1, s.static_body, (0, 0), (0, 0), 0, 10, 1)
+        c = DampedSpring(b1, s.static_body, (0, 0), (0, 0), 0, 10, 1)
         s.add(b1, c)
 
         s.step(1)
@@ -826,7 +834,7 @@ class UnitTestSpace(unittest.TestCase):
             print("\nActual", actual)
             raise
 
-    def testPicklePymunkVersionCheck(self):
+    def testPicklePymunkVersionCheck(self) -> None:
         pickle_string = b"\x80\x04\x95\xc5\x01\x00\x00\x00\x00\x00\x00\x8c\x0cpymunk.space\x94\x8c\x05Space\x94\x93\x94)\x81\x94}\x94(\x8c\x04init\x94]\x94\x8c\x08threaded\x94\x89\x86\x94a\x8c\x07general\x94]\x94(\x8c\niterations\x94K\n\x86\x94\x8c\x07gravity\x94\x8c\x0cpymunk.vec2d\x94\x8c\x05Vec2d\x94\x93\x94G\x00\x00\x00\x00\x00\x00\x00\x00G\x00\x00\x00\x00\x00\x00\x00\x00\x86\x94R\x94\x86\x94\x8c\x07damping\x94G?\xf0\x00\x00\x00\x00\x00\x00\x86\x94\x8c\x14idle_speed_threshold\x94G\x00\x00\x00\x00\x00\x00\x00\x00\x86\x94\x8c\x14sleep_time_threshold\x94G\x7f\xf0\x00\x00\x00\x00\x00\x00\x86\x94\x8c\x0ecollision_slop\x94G?\xb9\x99\x99\xa0\x00\x00\x00\x86\x94\x8c\x0ecollision_bias\x94G?]q2\x0c\xdfCc\x86\x94\x8c\x15collision_persistence\x94K\x03\x86\x94\x8c\x07threads\x94K\x01\x86\x94e\x8c\x06custom\x94]\x94h\x07\x89\x86\x94a\x8c\x07special\x94]\x94(\x8c\x0epymunk_version\x94\x8c\x050.0.1\x94\x86\x94\x8c\x06bodies\x94]\x94\x86\x94\x8c\x06shapes\x94]\x94\x86\x94\x8c\x0bconstraints\x94]\x94\x86\x94\x8c\t_handlers\x94]\x94\x86\x94eub."
 
         with self.assertRaisesRegex(
@@ -835,12 +843,12 @@ class UnitTestSpace(unittest.TestCase):
         ):
             pickle.loads(pickle_string)
 
-    def testCopyMethods(self):
+    def testCopyMethods(self) -> None:
         self._testCopyMethod(lambda x: pickle.loads(pickle.dumps(x)))
         self._testCopyMethod(lambda x: copy.deepcopy(x))
         self._testCopyMethod(lambda x: x.copy())
 
-    def _testCopyMethod(self, copy_func):
+    def _testCopyMethod(self, copy_func: Callable[[Space], Space]) -> None:
         s = p.Space(threaded=True)
         s.iterations = 2
         s.gravity = 3, 4
@@ -862,8 +870,8 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, b2, b3, c1, c2, c3, c4)
         s.static_body.custom = "x"
 
-        j1 = p.PinJoint(b1, b2)
-        j2 = p.PinJoint(s.static_body, b2)
+        j1 = PinJoint(b1, b2)
+        j2 = PinJoint(s.static_body, b2)
         s.add(j1, j2)
 
         h = s.add_default_collision_handler()
@@ -925,7 +933,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertIsNotNone(h2.separate)
 
 
-def f1(*args, **kwargs):
+def f1(*args: Any, **kwargs: Any) -> None:
     pass
 
 

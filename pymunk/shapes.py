@@ -457,7 +457,7 @@ class Segment(Shape):
 
     def __init__(
         self,
-        body: "Body",
+        body: Optional["Body"],
         a: Tuple[float, float],
         b: Tuple[float, float],
         radius: float,

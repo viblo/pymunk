@@ -1,4 +1,5 @@
 import unittest
+from typing import List, Tuple
 
 import pymunk.autogeometry as a
 from pymunk.bb import BB
@@ -6,7 +7,7 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestPolylineSet(unittest.TestCase):
-    def test_collect_segment(self):
+    def test_collect_segment(self) -> None:
         pset = a.PolylineSet()
 
         pset.collect_segment((0, 0), (5, 5))
@@ -24,32 +25,41 @@ class UnitTestPolylineSet(unittest.TestCase):
 
 
 class UnitTestAutoGeometry(unittest.TestCase):
-    def test_is_closed(self):
+    def test_is_closed(self) -> None:
+        not_closed: List[Tuple[float, float]] = [(0, 0), (1, 1), (0, 1)]
+        closed: List[Tuple[float, float]] = [(0, 0), (1, 1), (0, 1), (0, 0)]
+        self.assertFalse(a.is_closed(not_closed))
+        self.assertTrue(a.is_closed(closed))
 
-        self.assertFalse(a.is_closed([(0, 0), (1, 1), (0, 1)]))
-        self.assertTrue(a.is_closed([(0, 0), (1, 1), (0, 1), (0, 0)]))
-
-    def test_simplify_curves(self):
-        p1 = [(0, 0), (0, 10), (5, 11), (10, 10), (0, 10)]
+    def test_simplify_curves(self) -> None:
+        p1: List[Tuple[float, float]] = [(0, 0), (0, 10), (5, 11), (10, 10), (0, 10)]
         expected = [(0, 0), (0, 10), (10, 10), (0, 10)]
         actual = a.simplify_curves(p1, 1)
         self.assertEqual(actual, expected)
 
-    def test_simplify_vertexes(self):
-        p1 = [(0, 0), (0, 10), (5, 11), (10, 10), (0, 10)]
+    def test_simplify_vertexes(self) -> None:
+        p1: List[Tuple[float, float]] = [(0, 0), (0, 10), (5, 11), (10, 10), (0, 10)]
         expected = [(0, 0), (0, 10), (10, 10), (0, 10)]
         actual = a.simplify_vertexes(p1, 1)
         self.assertEqual(actual, expected)
 
-    def test_to_convex_hull(self):
-        p1 = [(0, 0), (0, 10), (5, 5), (10, 10), (10, 0)]
+    def test_to_convex_hull(self) -> None:
+        p1: List[Tuple[float, float]] = [(0, 0), (0, 10), (5, 5), (10, 10), (10, 0)]
         expected = [(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]
         actual = a.to_convex_hull(p1, 1)
         self.assertEqual(actual, expected)
 
-    def test_convex_decomposition(self):
+    def test_convex_decomposition(self) -> None:
         # TODO: Use a more complicated polygon as test case
-        p1 = [(0, 0), (5, 0), (10, 10), (20, 20), (5, 5), (0, 10), (0, 0)]
+        p1: List[Tuple[float, float]] = [
+            (0, 0),
+            (5, 0),
+            (10, 10),
+            (20, 20),
+            (5, 5),
+            (0, 10),
+            (0, 0),
+        ]
         expected = [
             [(5.0, 5.0), (6.25, 2.5), (20.0, 20.0), (5.0, 5.0)],
             [(0.0, 0.0), (5.0, 0.0), (6.25, 2.5), (5.0, 5.0), (0.0, 10.0), (0.0, 0.0)],
@@ -62,7 +72,7 @@ class UnitTestAutoGeometry(unittest.TestCase):
         # environments, so we cant have this assert here.
         # self.assertEqual(actual, expected)
 
-    def test_march_soft(self):
+    def test_march_soft(self) -> None:
         img = [
             "  xx   ",
             "  xx   ",
@@ -75,10 +85,10 @@ class UnitTestAutoGeometry(unittest.TestCase):
 
         segments = []
 
-        def segment_func(v0, v1):
-            segments.append((tuple(v0), tuple(v1)))
+        def segment_func(v0: Vec2d, v1: Vec2d) -> None:
+            segments.append((v0, v1))
 
-        def sample_func(point):
+        def sample_func(point: Vec2d) -> float:
             x = int(point.x)
             y = int(point.y)
             if img[y][x] == "x":
@@ -104,7 +114,7 @@ class UnitTestAutoGeometry(unittest.TestCase):
         ]
         self.assertEqual(segments, expected)
 
-    def test_march_hard(self):
+    def test_march_hard(self) -> None:
         img = [
             "  xx   ",
             "  xx   ",
@@ -117,10 +127,10 @@ class UnitTestAutoGeometry(unittest.TestCase):
 
         segments = []
 
-        def segment_func(v0, v1):
-            segments.append((tuple(v0), tuple(v1)))
+        def segment_func(v0: Vec2d, v1: Vec2d) -> None:
+            segments.append((v0, v1))
 
-        def sample_func(point):
+        def sample_func(point: Vec2d) -> float:
             x = int(point.x)
             y = int(point.y)
             if img[y][x] == "x":

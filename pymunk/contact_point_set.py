@@ -19,12 +19,16 @@ class ContactPoint(object):
     Arbiter.contact_point_set.
     """
 
+    point_a: Vec2d
+    point_b: Vec2d
+    distance: float
+
     __slots__ = ("point_a", "point_b", "distance")
 
     def __init__(
         self,
-        point_a: Tuple[float, float],
-        point_b: Tuple[float, float],
+        point_a: Vec2d,
+        point_b: Vec2d,
         distance: float,
     ) -> None:
         assert len(point_a) == 2
@@ -47,9 +51,12 @@ class ContactPointSet(object):
     points is the array of contact points. Can be at most 2 points.
     """
 
+    normal: Vec2d
+    points: List[ContactPoint]
+
     __slots__ = ("normal", "points")
 
-    def __init__(self, normal: Tuple[float, float], points: List[ContactPoint]) -> None:
+    def __init__(self, normal: Vec2d, points: List[ContactPoint]) -> None:
         assert len(normal) == 2
         self.normal = normal
         self.points = points

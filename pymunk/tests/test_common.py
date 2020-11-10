@@ -1,4 +1,5 @@
 import unittest
+from typing import Any
 
 import pymunk as p
 from pymunk.vec2d import Vec2d
@@ -7,12 +8,12 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestGeneral(unittest.TestCase):
-    def testGeneral(self):
+    def testGeneral(self) -> None:
         p.version
         p.inf
         p.chipmunk_version
 
-    def testMomentHelpers(self):
+    def testMomentHelpers(self) -> None:
         m = p.moment_for_circle(1, 2, 3, (1, 2))
         self.assertAlmostEqual(m, 11.5)
 
@@ -25,7 +26,7 @@ class UnitTestGeneral(unittest.TestCase):
         m = p.moment_for_box(1, (2, 3))
         self.assertAlmostEqual(m, 1.08333333333)
 
-    def testAreaHelpers(self):
+    def testAreaHelpers(self) -> None:
         a = p.area_for_circle(1, 2)
         self.assertAlmostEqual(a, 9.4247779607)
 
@@ -37,7 +38,7 @@ class UnitTestGeneral(unittest.TestCase):
 
 
 class UnitTestBugs(unittest.TestCase):
-    def testManyBoxCrash(self):
+    def testManyBoxCrash(self) -> None:
         space = p.Space()
         for x in [1, 2]:
             for y in range(16):
@@ -56,7 +57,7 @@ class UnitTestBugs(unittest.TestCase):
                 space.add(body, shape)
             space.step(1 / 50.0)
 
-    def testNoStaticShape(self):
+    def testNoStaticShape(self) -> None:
         space = p.Space()
 
         b1 = p.Body(1, p.inf)
@@ -78,7 +79,7 @@ class UnitTestBugs(unittest.TestCase):
 
         space.add(b1, c1, b2, c2, b3, c3)
 
-        def remove_first(arbiter, space, data):
+        def remove_first(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
             first_shape = arbiter.shapes[0]
             if c1 in space.shapes:
                 space.remove(c1)

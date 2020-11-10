@@ -39,7 +39,7 @@ from .vec2d import Vec2d
 if TYPE_CHECKING:
     from .bb import BB
 
-_PostStepCallback = Callable[["Space", Hashable, Any, Any], None]
+# _PostStepCallback = Callable[["Space", Hashable, Any, Any], None]
 _AddableObjects = Union[Body, Shape, Constraint]
 
 
@@ -105,14 +105,14 @@ class Space(PickleMixin, object):
             cp_shapes = []
 
             @ffi.callback("cpSpaceShapeIteratorFunc")
-            def cf(cp_shape, data):  # type: ignore
+            def cf1(cp_shape, data):  # type: ignore
                 # print("spacefree shapecallback")
                 cp_shapes.append(cp_shape)
                 # cp_space = cp.cpShapeGetSpace(cp_shape)
                 # cp.cpSpaceRemoveShape(cp_space, cp_shape)
 
             # print("spacefree shapes", cp_space)
-            cp.cpSpaceEachShape(cp_space, cf, ffi.NULL)
+            cp.cpSpaceEachShape(cp_space, cf1, ffi.NULL)
             for cp_shape in cp_shapes:
                 logging.debug("spacefree remove shape %s %s", cp_space, cp_shape)
                 cp.cpSpaceRemoveShape(cp_space, cp_shape)
@@ -121,11 +121,11 @@ class Space(PickleMixin, object):
             cp_constraints = []
 
             @ffi.callback("cpSpaceConstraintIteratorFunc")
-            def cf(cp_constraint, data):  # type: ignore
+            def cf2(cp_constraint, data):  # type: ignore
                 # print("spacefree shapecallback")
                 cp_constraints.append(cp_constraint)
 
-            cp.cpSpaceEachConstraint(cp_space, cf, ffi.NULL)
+            cp.cpSpaceEachConstraint(cp_space, cf2, ffi.NULL)
             for cp_constraint in cp_constraints:
                 logging.debug(
                     "spacefree remove constraint %s %s", cp_space, cp_constraint
@@ -135,11 +135,11 @@ class Space(PickleMixin, object):
             cp_bodies = []
 
             @ffi.callback("cpSpaceBodyIteratorFunc")
-            def cf(cp_body, data):  # type:ignore
+            def cf3(cp_body, data):  # type:ignore
                 # print("spacefree shapecallback")
                 cp_bodies.append(cp_body)
 
-            cp.cpSpaceEachBody(cp_space, cf, ffi.NULL)
+            cp.cpSpaceEachBody(cp_space, cf3, ffi.NULL)
             for cp_body in cp_bodies:
                 logging.debug("spacefree remove body %s %s", cp_space, cp_body)
                 cp.cpSpaceRemoveBody(cp_space, cp_body)
@@ -681,7 +681,9 @@ class Space(PickleMixin, object):
 
     def add_post_step_callback(
         self,
-        callback_function: _PostStepCallback,
+        callback_function: Callable[
+            ..., None
+        ],  # TODO: Fix me once PEP-612 is implemented
         key: Hashable,
         *args: Any,
         **kwargs: Any,
@@ -925,6 +927,7 @@ class Space(PickleMixin, object):
         @ffi.callback("cpSpaceBBQueryFunc")
         def cf(_shape, data):  # type: ignore
             shape = self._get_shape(_shape)
+            assert shape is not None
             nonlocal query_hits
             query_hits.append(shape)
 

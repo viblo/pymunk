@@ -457,7 +457,7 @@ class PivotJoint(Constraint):
         a: "Body",
         b: "Body",
         *args: Union[
-            Tuple[Tuple[float, float]], Tuple[Tuple[float, float], Tuple[float, float]]
+            Tuple[float, float], Tuple[Tuple[float, float], Tuple[float, float]]
         ]
     ) -> None:
         """a and b are the two bodies to connect, and pivot is the point in

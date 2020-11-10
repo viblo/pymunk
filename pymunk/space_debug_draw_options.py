@@ -74,9 +74,9 @@ class SpaceDebugDrawOptions(object):
     def __init__(self) -> None:
         _options = ffi.new("cpSpaceDebugDrawOptions *")
         self._options = _options
-        self.shape_outline_color = (44, 62, 80, 255)
-        self.constraint_color = (142, 68, 173, 255)
-        self.collision_point_color = (231, 76, 60, 255)
+        self.shape_outline_color = SpaceDebugColor(44, 62, 80, 255)
+        self.constraint_color = SpaceDebugColor(142, 68, 173, 255)
+        self.collision_point_color = SpaceDebugColor(231, 76, 60, 255)
 
         # Set to false to bypass chipmunk shape drawing code
         self._use_chipmunk_debug_draw = True

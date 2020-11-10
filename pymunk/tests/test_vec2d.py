@@ -7,7 +7,7 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestVec2d(unittest.TestCase):
-    def testCreationAndAccess(self):
+    def testCreationAndAccess(self) -> None:
         v = Vec2d(*(0, 0))
         self.assertEqual(v.x, 0)
         self.assertEqual(v[0], 0)
@@ -23,7 +23,7 @@ class UnitTestVec2d(unittest.TestCase):
         v = Vec2d(111, 222)
         self.assertTrue(v.x == 111 and v.y == 222)
         with self.assertRaises(AttributeError):
-            v.x = 333
+            v.x = 333  # type: ignore
         with self.assertRaises(TypeError):
             v[1] = 444  # type: ignore
 
@@ -32,7 +32,7 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertEqual(list(v), [3, 5])
         self.assertEqual(tuple(v), (3, 5))
 
-    def testMath(self):
+    def testMath(self) -> None:
         v = Vec2d(111, 222)
         self.assertEqual(v + Vec2d(1, 2), Vec2d(112, 224))
         self.assertEqual(v + (1, 2), Vec2d(112, 224))
@@ -48,13 +48,13 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertEqual(v / 2, Vec2d(55.5, 111))
         self.assertEqual(v // 2, Vec2d(55, 111))
 
-    def testUnary(self):
+    def testUnary(self) -> None:
         v = Vec2d(111, 222)
         self.assertEqual(+v, v)
         self.assertEqual(-v, Vec2d(-111, -222))
         self.assertAlmostEqual(abs(v), 248.20354550247666)
 
-    def testLength(self):
+    def testLength(self) -> None:
         v = Vec2d(3, 4)
         self.assertTrue(v.length == 5)
         self.assertTrue(v.get_length_sqrd() == 25)
@@ -69,7 +69,7 @@ class UnitTestVec2d(unittest.TestCase):
         v2 = Vec2d(10, -2)
         self.assertEqual(v.get_distance(v2), (v - v2).length)
 
-    def testAnglesDegrees(self):
+    def testAnglesDegrees(self) -> None:
         v = Vec2d(0, 3)
         self.assertEqual(v.angle_degrees, 90)
         v2 = Vec2d(*v)
@@ -89,7 +89,7 @@ class UnitTestVec2d(unittest.TestCase):
         v2 = v2.rotated_degrees(v2.get_angle_degrees_between(v))
         self.assertAlmostEqual(v.get_angle_degrees_between(v2), 0)
 
-    def testAnglesRadians(self):
+    def testAnglesRadians(self) -> None:
         v = Vec2d(0, 3)
         self.assertEqual(v.angle, math.pi / 2.0)
         v2 = Vec2d(*v)
@@ -109,23 +109,22 @@ class UnitTestVec2d(unittest.TestCase):
         v2 = v2.rotated(v2.get_angle_between(v))
         self.assertAlmostEqual(v.get_angle_between(v2), 0)
 
-    def testHighLevel(self):
+    def testHighLevel(self) -> None:
         basis0 = Vec2d(5.0, 0)
         basis1 = Vec2d(0, 0.5)
         v = Vec2d(10, 1)
         self.assertEqual(v.convert_to_basis(basis0, basis1), (2, 2))
         self.assertEqual(v.projection(basis0), (10, 0))
-        self.assertEqual(v.projection(list(basis0)), (10, 0))
         self.assertEqual(v.projection(Vec2d(0, 0)), (0, 0))
         self.assertEqual(v.projection((0, 0)), (0, 0))
         self.assertEqual(basis0.dot(basis1), 0)
 
-    def testCross(self):
+    def testCross(self) -> None:
         lhs = Vec2d(1, 0.5)
         rhs = Vec2d(4, 6)
         self.assertEqual(lhs.cross(rhs), 4)
 
-    def testComparison(self):
+    def testComparison(self) -> None:
         int_vec = Vec2d(3, -2)
         flt_vec = Vec2d(3.0, -2.0)
         zero_vec = Vec2d(0, 0)
@@ -134,11 +133,11 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertTrue((flt_vec == zero_vec) == False)
         self.assertTrue((flt_vec != int_vec) == False)
         self.assertTrue(int_vec == (3, -2))
-        self.assertTrue(int_vec != [0, 0])
-        self.assertTrue(int_vec != 5)
-        self.assertTrue(int_vec != [3, -2, -5])
+        self.assertTrue(int_vec != (0, 0))
+        self.assertTrue(int_vec != 5)  # type: ignore
+        self.assertTrue(int_vec != (3, -2, -5))  # type: ignore
 
-    def testImmuatable(self):
+    def testImmuatable(self) -> None:
         inplace_vec = Vec2d(5, 13)
         inplace_ref = inplace_vec
         inplace_vec *= 0.5
@@ -148,7 +147,7 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertEqual(inplace_ref, Vec2d(5, 13))
         self.assertEqual(inplace_vec, Vec2d(-0.1, 0.7))
 
-    def testPickle(self):
+    def testPickle(self) -> None:
         testvec = Vec2d(5, 0.3)
         testvec_str = pickle.dumps(testvec)
         loaded_vec = pickle.loads(testvec_str)

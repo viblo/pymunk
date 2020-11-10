@@ -50,8 +50,12 @@ if TYPE_CHECKING:
 _SegmentFunc = Callable[[Vec2d, Vec2d], None]
 _SampleFunc = Callable[[Vec2d], float]
 
+_Polyline = Union[List[Tuple[float, float]], List[Vec2d]]
+# Union is needed since List is invariant
+# and Sequence cant be used since CFFI requires a List (or Tuple)
 
-def _to_chipmunk(polyline) -> ffi.CData:
+
+def _to_chipmunk(polyline: _Polyline) -> ffi.CData:
     l = len(polyline)
     _line = ffi.new("cpPolyline *", {"verts": l})
     _line.count = l
@@ -71,7 +75,7 @@ def _from_polyline_set(_set: ffi.CData) -> List[List[Vec2d]]:
     return lines
 
 
-def is_closed(polyline) -> bool:
+def is_closed(polyline: _Polyline) -> bool:
     """Returns true if the first vertex is equal to the last.
 
     :param polyline: Polyline to simplify.
@@ -81,7 +85,7 @@ def is_closed(polyline) -> bool:
     return bool(lib.cpPolylineIsClosed(_to_chipmunk(polyline)))
 
 
-def simplify_curves(polyline, tolerance: float) -> List[Vec2d]:
+def simplify_curves(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
     """Returns a copy of a polyline simplified by using the Douglas-Peucker
     algorithm.
 
@@ -101,7 +105,7 @@ def simplify_curves(polyline, tolerance: float) -> List[Vec2d]:
     return simplified
 
 
-def simplify_vertexes(polyline, tolerance) -> List[Vec2d]:
+def simplify_vertexes(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
     """Returns a copy of a polyline simplified by discarding "flat" vertexes.
 
     This works well on straight edged or angular shapes, not as well on smooth
@@ -119,7 +123,7 @@ def simplify_vertexes(polyline, tolerance) -> List[Vec2d]:
     return simplified
 
 
-def to_convex_hull(polyline, tolerance: float) -> List[Vec2d]:
+def to_convex_hull(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
     """Get the convex hull of a polyline as a looped polyline.
 
     :param polyline: Polyline to simplify.
@@ -134,7 +138,7 @@ def to_convex_hull(polyline, tolerance: float) -> List[Vec2d]:
     return hull
 
 
-def convex_decomposition(polyline, tolerance: float) -> List[List[Vec2d]]:
+def convex_decomposition(polyline: _Polyline, tolerance: float) -> List[List[Vec2d]]:
     """Get an approximate convex decomposition from a polyline.
 
     Returns a list of convex hulls that match the original shape to within
