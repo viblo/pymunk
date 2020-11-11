@@ -16,7 +16,7 @@ def update(space, dt, surface):
     global tank_control_body
 
     mpos = pygame.mouse.get_pos()
-    mouse_pos = pymunk.pygame_util.from_pygame(Vec2d(mpos), surface)
+    mouse_pos = pymunk.pygame_util.from_pygame(Vec2d(*mpos), surface)
 
     mouse_delta = mouse_pos - tank_body.position
     turn = tank_body.rotation_vector.cpvunrotate(mouse_delta).angle
@@ -131,7 +131,7 @@ draw_options = pymunk.pygame_util.DrawOptions(screen)
 
 font = pygame.font.Font(None, 24)
 text = "Use the mouse to drive the tank, it will follow the cursor."
-text = font.render(text, 1, pygame.Color("white"))
+text = font.render(text, True, pygame.Color("white"))
 
 while True:
     for event in pygame.event.get():
@@ -145,7 +145,7 @@ while True:
     screen.fill(pygame.Color("black"))
     space.debug_draw(draw_options)
     screen.blit(text, (15, 15))
-    fps = 60.0
+    fps = 60
     update(space, 1 / fps, screen)
     pygame.display.flip()
 

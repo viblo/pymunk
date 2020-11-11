@@ -9,10 +9,8 @@ import random
 import sys
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
-import pymunk as pm
+import pymunk
 import pymunk.pygame_util
 from pymunk import Vec2d
 
@@ -24,16 +22,16 @@ def main():
     running = True
 
     ### Physics stuff
-    space = pm.Space()
-    space.gravity = Vec2d(0.0, -900.0)
+    space = pymunk.Space()
+    space.gravity = Vec2d(0.0, 900.0)
     draw_options = pymunk.pygame_util.DrawOptions(screen)
     ## Balls
     balls = []
 
     ### walls
     static_lines = [
-        pm.Segment(space.static_body, Vec2d(111.0, 280.0), Vec2d(407.0, 246.0), 1.0),
-        pm.Segment(space.static_body, Vec2d(407.0, 246.0), Vec2d(407.0, 343.0), 1.0),
+        pymunk.Segment(space.static_body, Vec2d(111, 320), Vec2d(407, 354), 1.0),
+        pymunk.Segment(space.static_body, Vec2d(407, 354), Vec2d(407, 257), 1.0),
     ]
     space.add(*static_lines)
 
@@ -53,12 +51,12 @@ def main():
             ticks_to_next_ball = 100
             mass = 10
             radius = 25
-            inertia = pm.moment_for_circle(mass, 0, radius, Vec2d(0, 0))
-            body = pm.Body(mass, inertia)
+            inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
+            body = pymunk.Body(mass, inertia)
             x = random.randint(115, 350)
-            body.position = x, 400
-            shape = pm.Circle(body, radius, Vec2d(0, 0))
-            shape.color = THECOLORS["lightgrey"]
+            body.position = x, 200
+            shape = pymunk.Circle(body, radius, Vec2d(0, 0))
+            shape.color = pygame.Color("lightgrey")
             space.add(body, shape)
             balls.append(shape)
 
@@ -70,7 +68,7 @@ def main():
 
         balls_to_remove = []
         for ball in balls:
-            if ball.body.position.y < 200:
+            if ball.body.position.y > 400:
                 balls_to_remove.append(ball)
 
         for ball in balls_to_remove:
@@ -82,11 +80,8 @@ def main():
         shape = space.point_query_nearest(
             mouse_pos, pymunk.inf, pymunk.ShapeFilter()
         ).shape
-        if shape is not None:
-            if hasattr(shape, "radius"):
-                r = shape.radius + 4
-            else:
-                r = 10
+        if shape is not None and isinstance(shape, pymunk.Circle):
+            r = shape.radius + 4
             p = pymunk.pygame_util.to_pygame(shape.body.position, screen)
             pygame.draw.circle(screen, pygame.Color("red"), p, int(r), 2)
 

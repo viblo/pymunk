@@ -4,8 +4,6 @@
 __docformat__ = "reStructuredText"
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
 from pymunk import Vec2d
@@ -66,7 +64,7 @@ def main():
                 running = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "balls_and_lines.png")
-            elif event.type == MOUSEBUTTONDOWN and event.button == 1:
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 p = event.pos[X], flipy(event.pos[Y])
                 body = pymunk.Body(10, 100)
                 body.position = p
@@ -76,10 +74,10 @@ def main():
                 space.add(body, shape)
                 balls.append(shape)
 
-            elif event.type == MOUSEBUTTONDOWN and event.button == 3:
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
                 if line_point1 is None:
                     line_point1 = Vec2d(event.pos[X], flipy(event.pos[Y]))
-            elif event.type == MOUSEBUTTONUP and event.button == 3:
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == 3:
                 if line_point1 is not None:
 
                     line_point2 = Vec2d(event.pos[X], flipy(event.pos[Y]))
@@ -91,14 +89,14 @@ def main():
                     static_lines.append(shape)
                     line_point1 = None
 
-            elif event.type == pygame.KEYDOWN and event.key == K_SPACE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 run_physics = not run_physics
 
         p = pygame.mouse.get_pos()
         mouse_pos = Vec2d(p[X], flipy(p[Y]))
         mouse_body.position = mouse_pos
 
-        if pygame.key.get_mods() & KMOD_SHIFT and pygame.mouse.get_pressed()[0]:
+        if pygame.key.get_mods() & pygame.KMOD_SHIFT and pygame.mouse.get_pressed()[0]:
             body = pymunk.Body(10, 10)
             body.position = mouse_pos
             shape = pymunk.Circle(body, 10, (0, 0))
@@ -123,7 +121,7 @@ RMB: Drag to create wall, release to finish
 Space: Pause physics simulation"""
         y = 5
         for line in text.splitlines():
-            text = font.render(line, 1, pygame.Color("black"))
+            text = font.render(line, True, pygame.Color("black"))
             screen.blit(text, (5, y))
             y += 10
 
@@ -149,7 +147,7 @@ Space: Pause physics simulation"""
             pv2 = body.position + line.b.rotated(body.angle)
             p1 = int(pv1.x), int(flipy(pv1.y))
             p2 = int(pv2.x), int(flipy(pv2.y))
-            pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1, p2])
+            pygame.draw.lines(screen, pygame.Color("lightgray"), False, [p1, p2])
 
         ### Flip screen
         pygame.display.flip()

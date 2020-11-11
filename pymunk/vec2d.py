@@ -61,6 +61,8 @@ _Vec2dOrFloat = Any
 _Vec2dOrTuple = Union["Vec2d", Tuple[float, float]]
 __all__ = ["Vec2d"]
 
+# _T_co = TypeVar('T', Sequence[float], covariant=True)
+
 
 class Vec2d(NamedTuple):
     """2d vector class, supports vector and scalar operators, and also
@@ -238,7 +240,7 @@ class Vec2d(NamedTuple):
             return Vec2d(-self.y / length, self.x / length)
         return Vec2d(self.x, self.y)
 
-    def dot(self, other: _Vec2dOrTuple) -> float:
+    def dot(self, other: Tuple[float, float]) -> float:
         """The dot product between the vector and other vector
             v1.dot(v2) -> v1.x*v2.x + v1.y*v2.y
 
@@ -246,14 +248,14 @@ class Vec2d(NamedTuple):
         """
         return float(self.x * other[0] + self.y * other[1])
 
-    def get_distance(self, other: _Vec2dOrTuple) -> float:
+    def get_distance(self, other: Tuple[float, float]) -> float:
         """The distance between the vector and other vector
 
         :return: The distance
         """
         return math.sqrt((self.x - other[0]) ** 2 + (self.y - other[1]) ** 2)
 
-    def get_dist_sqrd(self, other: _Vec2dOrTuple) -> float:
+    def get_dist_sqrd(self, other: Tuple[float, float]) -> float:
         """The squared distance between the vector and other vector
         It is more efficent to use this method than to call get_distance()
         first and then do a sqrt() on the result.

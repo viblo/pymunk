@@ -9,7 +9,7 @@ v5.x
 - make example of good timestep handling
 - update most example code to use shape.density or shape.mass instead of 
   body.mass and moment.
-- maybe it would be good to use pip install pymunk[docs] or something to distribute docs and exmaples?
+- maybe it would be good to use pip install pymunk[docs] or something to distribute docs and examples?
 - can autosummary be used? (see stackoverflow answer)
 - tests of py2exe/pyinstaller/cx_freeze?
 - make example where a container is used for a complex shape such as car: https://stackoverflow.com/questions/55146932/grouping-without-collision-adding-and-removing-multiple-bodies-and-polygons-i/55150431#55150431
@@ -18,6 +18,7 @@ v5.x
 - Update docs with collision chapter. ShapeFilter, collision callbacks and such
 - use env variables for pymunkoptions, like pygame https://stackoverflow.com/questions/56258942/is-there-an-environment-variable-to-disable-pymunk-chipmunk-from-printing-loadi
 - make running examples with python -m pymunk.examples... somehow. See pybox2d for inspiration    
+- make running docs with python -m pymunk.docs... somehow. See pygame for inspiration    
 - Write in docs about troubleshooting more prominent, and that its good to consider the properties on constraints like max_force
 - Add Check that its not allowed to change body of shape added to space
 - Make sure there's a check to see that the bodies of a constraint are added to space before constraint is added
@@ -88,6 +89,7 @@ before release 6.0.0
 Typing a existing project - learnings
 -------------------------------------
 
+mypy
 - problems with bugs / missing features in mypy
   - in implementation of Vector class: __add__ vs __radd__ https://github.com/python/mypy/issues/9388
   - in allowing both vec2d and tuple/list: setters cant have different type from getter https://github.com/python/mypy/issues/3004
@@ -100,3 +102,7 @@ Typing a existing project - learnings
   - The Pyright maintainer is super quick to respond, fix and release fixes for bug reports!
   - Mypy issues feels slower to actually act on issues (But issue tracker is also very fast to 
     respond, and have GvR actively replying to many issues).
+
+pyright
+- Strange & unintuitive rules, such as type requirements for __add__ not the same as those of + (pyright) 
+  https://github.com/microsoft/pyright/issues/992 

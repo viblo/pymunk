@@ -618,7 +618,6 @@ class Space(PickleMixin, object):
 
         :rtype: :py:class:`CollisionHandler`
         """
-
         key = min(collision_type_a, collision_type_b), max(
             collision_type_a, collision_type_b
         )
@@ -767,12 +766,13 @@ class Space(PickleMixin, object):
         cp.cpSpacePointQuery(self._space, point, max_distance, shape_filter, cf, data)
         return query_hits
 
-    def _get_shape(self, _shape: Any) -> Optional["Shape"]:
+    def _get_shape(self, _shape: Any) -> Optional[Shape]:
         if not bool(_shape):
             return None
 
         shapeid = cp.cpShapeGetUserData(_shape)
         # return self._shapes[hashid_private]
+
         if shapeid in self._shapes:
             return self._shapes[shapeid]
         elif shapeid in self._removed_shapes:

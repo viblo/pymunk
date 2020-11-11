@@ -207,6 +207,10 @@ List of papers which has used or mentioned Pymunk:
   "Steady State and 2D Thermal Equivalence Circuit for Winding Heads—A New Modelling Approach." 
   Mathematical and Computational Applications 25, no. 4 (2020): 70.
   
+* Hook, Joosep, Seif El-Sedky, Varuna De Silva, and Ahmet Kondoz. 
+  "Learning Data-Driven Decision-Making Policies in Multi-Agent Environments for Autonomous Systems." 
+  Cognitive Systems Research (2020).
+
 * Matthews, Elizabeth A., and Juan E. Gilbert. 
   "ATLAS CHRONICLE: DEVELOPMENT AND VERIFICATION OF A SYSTEM FOR PROCEDURAL GENERATION OF STORY-DRIVEN GAMES."
 

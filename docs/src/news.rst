@@ -40,6 +40,8 @@ Changes:
     - removed Vec2d.get_angle method (use the angle property instead)
     - not possible to set the angle_degrees property (Vec2d(1,2).angle_degrees = 180)
     - removed Vec2d.get_angle_degrees method (use the angle_degrees property instead)
+    - removed Vec2d.normalize_return_length method (use Vec2d.length and Vec2d.normalized(), or the new Vec2d.normalized_and_length method)
+    - removed __iadd__, __isub__, __imul__, __ifloordiv__, __itruediv__)
   - Removed __nonzero__ magic. This never worked in Python 3, and was not included in any tests
   - Removed __pow__ and __rpow__ magic. Its no longer possible to do Vec2d(1,2)**2. 
   - Removed __invert__ magic. Its no longer possible to do ~Vec2d(1,2)
@@ -71,6 +73,10 @@ Changes:
   - BB is now immutable.
  - Added many asserts to check that whenever a tuple of length 2 or Vec2d is expected the length of the tuple is 2.
  - Removed conversions by calling tuple(argument) where a Vec2d or tuple of length 2 was expected. It is now expected the arguemnt already is a tuple like object.
+
+
+Likely biggest issues:
+ - Change Vec2d( variable_with_tuple ) to Vec2d( *variable_with_tuple )
 
 Pymunk 5.7.0
 ------------

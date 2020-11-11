@@ -6,7 +6,7 @@ import pickle
 import sys
 import unittest
 import warnings
-from typing import Any, Callable, Sequence, TypeVar
+from typing import Any, Callable, Sequence
 
 import pymunk as p
 from pymunk import *

@@ -80,12 +80,14 @@ def drawcircle(image, colour, origin, radius, width=0):
 
 def reset_bodies(space):
     for body in space.bodies:
-        body.position = Vec2d(body.start_position)
+        body.position = Vec2d(*body.start_position)
         body.force = 0, 0
         body.torque = 0
         body.velocity = 0, 0
         body.angular_velocity = 0
-    color = random.choice(list(pygame.colordict.THECOLORS.values()))
+    color = pygame.Color(
+        random.randint(1, 255), random.randint(1, 255), random.randint(1, 255)
+    )
     for shape in space.shapes:
         shape.color = color
 
@@ -122,7 +124,7 @@ def main():
         moment = pm.moment_for_circle(mass, 0, radius, (0, 0))
         body = pm.Body(mass, moment)
         body.position = (x, -125 + offset_y)
-        body.start_position = Vec2d(body.position)
+        body.start_position = Vec2d(*body.position)
         shape = pm.Circle(body, radius)
         shape.elasticity = 0.9999999
         space.add(body, shape)
@@ -171,7 +173,7 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN and is_interactive:
                 if selected != None:
                     space.remove(selected)
-                p = from_pygame(Vec2d(event.pos))
+                p = from_pygame(Vec2d(*event.pos))
                 hit = space.point_query_nearest(p, 0, pm.ShapeFilter())
                 if hit != None:
                     shape = hit.shape
@@ -193,7 +195,7 @@ def main():
                 running = False
 
         mpos = pygame.mouse.get_pos()
-        p = from_pygame(Vec2d(mpos))
+        p = from_pygame(Vec2d(*mpos))
         mouse_body.position = p
 
         ### Clear screen
@@ -222,13 +224,15 @@ def main():
         ### Flip screen
         if is_interactive:
             screen.blit(
-                font.render("fps: " + str(clock.get_fps()), 1, pygame.Color("white")),
+                font.render(
+                    "fps: " + str(clock.get_fps()), True, pygame.Color("white")
+                ),
                 (0, 0),
             )
             screen.blit(
                 font.render(
                     "Press left mouse button and drag to interact",
-                    1,
+                    True,
                     pygame.Color("darkgrey"),
                 ),
                 (5, height - 35),
@@ -236,7 +240,7 @@ def main():
             screen.blit(
                 font.render(
                     "Press R to reset, any other key to quit",
-                    1,
+                    True,
                     pygame.Color("darkgrey"),
                 ),
                 (5, height - 20),

@@ -9,7 +9,6 @@ import sys
 
 import pygame
 import shapes_for_draw_demos
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
@@ -22,26 +21,28 @@ def main():
     clock = pygame.time.Clock()
     font = pygame.font.SysFont("Arial", 16)
 
+    pymunk.pygame_util.positive_y_is_up = True
     space = pymunk.Space()
 
     captions = shapes_for_draw_demos.fill_space(space)
 
     ### Draw it
-    screen.fill(pygame.color.pygame.Color("white"))
+    screen.fill(pygame.Color("white"))
 
     options = pymunk.pygame_util.DrawOptions(screen)
     space.debug_draw(options)
     # pymunk.pygame_util.draw(screen, space)
 
     # Info
-    color = pygame.color.pygame.Color("black")
+    color = pygame.Color("black")
     screen.blit(
-        font.render("Demo example of pygame_util.DrawOptions()", 1, color), (205, 680)
+        font.render("Demo example of pygame_util.DrawOptions()", True, color),
+        (205, 680),
     )
     for caption in captions:
         x, y = caption[0]
         y = 700 - y
-        screen.blit(font.render(caption[1], 1, color), (x, y))
+        screen.blit(font.render(caption[1], True, color), (x, y))
     pygame.display.flip()
 
     while True:
@@ -49,7 +50,7 @@ def main():
             if (
                 event.type == pygame.QUIT
                 or event.type == pygame.KEYDOWN
-                and (event.key in [K_ESCAPE, K_q])
+                and (event.key in [pygame.K_ESCAPE, pygame.K_q])
             ):
                 return
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:

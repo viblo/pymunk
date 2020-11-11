@@ -12,19 +12,18 @@ import sys
 random.seed(5)  # try keep difference the random factor the same each run.
 
 import pygame
-from pygame.locals import *
 
 import pymunk
 import pymunk.autogeometry
 import pymunk.pygame_util
 from pymunk import Vec2d
 
-fps = 60.0
+fps = 60
 pygame.init()
 screen = pygame.display.set_mode((690, 300))
 clock = pygame.time.Clock()
 
-clock.tick(1 / 5.0)
+clock.tick(1)
 
 ### Physics stuff
 space = pymunk.Space()
@@ -237,7 +236,7 @@ while True:
         if (
             event.type == pygame.QUIT
             or event.type == pygame.KEYDOWN
-            and (event.key in [K_ESCAPE, K_q])
+            and (event.key in [pygame.K_ESCAPE, pygame.K_q])
         ):
             sys.exit(0)
         elif event.type == SMALLBALL:
@@ -263,7 +262,7 @@ while True:
 
     space.step(1.0 / fps)
 
-    screen.fill(pygame.color.pygame.Color("white"))
+    screen.fill(pygame.Color("white"))
 
     space.debug_draw(draw_options)
     screen.blit(logo_img, (0, 0))

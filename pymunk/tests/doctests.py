@@ -7,9 +7,7 @@ from typing import Any
 import pymunk
 
 
-def load_tests(
-    loader: Any, tests: unittest.TestSuite, ignore: Any
-) -> unittest.TestSuite:
+def load_tests(tests: unittest.TestSuite) -> unittest.TestSuite:
     for importer, modname, ispkg in pkgutil.iter_modules(pymunk.__path__):  # type: ignore  # mypy issue #1422
         # try:
         tests.addTests(doctest.DocTestSuite("pymunk." + modname))
@@ -23,6 +21,6 @@ def load_tests(
 if __name__ == "__main__":
     print("running doctests")
     suite = unittest.TestSuite()
-    load_tests(None, suite, None)
+    load_tests(suite)
     res = unittest.TextTestRunner().run(suite)
     sys.exit(not res.wasSuccessful())

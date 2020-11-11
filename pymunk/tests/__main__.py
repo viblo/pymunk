@@ -2,9 +2,6 @@ import doctest
 import unittest
 from typing import Any, Iterator
 
-# import sys
-# import os
-
 
 def main() -> None:
     def list_of_tests_gen(s: Any) -> Iterator[Any]:
@@ -20,7 +17,7 @@ def main() -> None:
     path = os.path.dirname(os.path.abspath(__file__))
     suite = unittest.TestLoader().discover(path)
 
-    doctests.load_tests(None, suite, None)
+    doctests.load_tests(suite)
 
     wasSuccessful = True
 

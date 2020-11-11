@@ -2,10 +2,9 @@
 realistic looking way.
 """
 import sys
+from typing import List
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
@@ -67,20 +66,20 @@ def main():
 
     ### Physics stuff
     space = pymunk.Space()
-    space.gravity = 0, -1000
+    space.gravity = 0, 1000
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     # walls - the left-top-right walls
-    static = [
-        pymunk.Segment(space.static_body, (50, 50), (50, 550), 5),
-        pymunk.Segment(space.static_body, (50, 550), (650, 550), 5),
-        pymunk.Segment(space.static_body, (650, 550), (650, 50), 5),
+    static: List[pymunk.Shape] = [
+        pymunk.Segment(space.static_body, (50, 550), (50, 50), 5),
         pymunk.Segment(space.static_body, (50, 50), (650, 50), 5),
+        pymunk.Segment(space.static_body, (650, 50), (650, 550), 5),
+        pymunk.Segment(space.static_body, (50, 550), (650, 550), 5),
     ]
 
     b2 = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
     static.append(pymunk.Circle(b2, 30))
-    b2.position = 300, 400
+    b2.position = 300, 200
 
     for s in static:
         s.friction = 1.0
@@ -92,13 +91,13 @@ def main():
     cannon_shape = pymunk.Circle(cannon_body, 25)
     cannon_shape.sensor = True
     cannon_shape.color = (255, 50, 50, 255)
-    cannon_body.position = 100, 100
+    cannon_body.position = 100, 500
     space.add(cannon_body, cannon_shape)
 
     arrow_body, arrow_shape = create_arrow()
     space.add(arrow_body, arrow_shape)
 
-    flying_arrows = []
+    flying_arrows: List[pymunk.Body] = []
     handler = space.add_collision_handler(0, 1)
     handler.data["flying_arrows"] = flying_arrows
     handler.post_solve = post_solve_arrow_hit
@@ -108,7 +107,7 @@ def main():
             if (
                 event.type == pygame.QUIT
                 or event.type == pygame.KEYDOWN
-                and (event.key in [K_ESCAPE, K_q])
+                and (event.key in [pygame.K_ESCAPE, pygame.K_q])
             ):
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -121,7 +120,7 @@ def main():
                 diff = end_time - start_time
                 power = max(min(diff, 1000), 10) * 13.5
                 impulse = power * Vec2d(1, 0)
-                impulse.rotate(arrow_body.angle)
+                impulse = impulse.rotated(arrow_body.angle)
                 arrow_body.body_type = pymunk.Body.DYNAMIC
                 arrow_body.apply_impulse_at_world_point(impulse, arrow_body.position)
 
@@ -134,17 +133,17 @@ def main():
         keys = pygame.key.get_pressed()
 
         speed = 2.5
-        if keys[K_UP]:
+        if keys[pygame.K_UP]:
             cannon_body.position += Vec2d(0, 1) * speed
-        if keys[K_DOWN]:
+        if keys[pygame.K_DOWN]:
             cannon_body.position += Vec2d(0, -1) * speed
-        if keys[K_LEFT]:
+        if keys[pygame.K_LEFT]:
             cannon_body.position += Vec2d(-1, 0) * speed
-        if keys[K_RIGHT]:
+        if keys[pygame.K_RIGHT]:
             cannon_body.position += Vec2d(1, 0) * speed
 
         mouse_position = pymunk.pygame_util.from_pygame(
-            Vec2d(pygame.mouse.get_pos()), screen
+            Vec2d(*pygame.mouse.get_pos()), screen
         )
         cannon_body.angle = (mouse_position - cannon_body.position).angle
         # move the unfired arrow together with the cannon
@@ -152,13 +151,16 @@ def main():
             cannon_shape.radius + 40, 0
         ).rotated(cannon_body.angle)
         arrow_body.angle = cannon_body.angle
+        # print(arrow_body.angle)
 
         for flying_arrow in flying_arrows:
             drag_constant = 0.0002
 
             pointing_direction = Vec2d(1, 0).rotated(flying_arrow.angle)
-            flight_direction = Vec2d(flying_arrow.velocity)
-            flight_speed = flight_direction.normalize_return_length()
+            # print(pointing_direction.angle, flying_arrow.angle)
+            flight_direction = Vec2d(*flying_arrow.velocity)
+            flight_direction, flight_speed = flight_direction.normalized_and_length()
+
             dot = flight_direction.dot(pointing_direction)
             # (1-abs(dot)) can be replaced with (1-dot) to make arrows turn
             # around even when fired straight up. Might not be as accurate, but
@@ -166,7 +168,9 @@ def main():
             drag_force_magnitude = (
                 (1 - abs(dot)) * flight_speed ** 2 * drag_constant * flying_arrow.mass
             )
-            arrow_tail_position = Vec2d(-50, 0).rotated(flying_arrow.angle)
+            arrow_tail_position = flying_arrow.position + Vec2d(-50, 0).rotated(
+                flying_arrow.angle
+            )
             flying_arrow.apply_impulse_at_world_point(
                 drag_force_magnitude * -flight_direction, arrow_tail_position
             )
@@ -190,19 +194,19 @@ def main():
 
         # Info and flip screen
         screen.blit(
-            font.render("fps: " + str(clock.get_fps()), 1, pygame.Color("white")),
+            font.render("fps: " + str(clock.get_fps()), True, pygame.Color("white")),
             (0, 0),
         )
         screen.blit(
             font.render(
                 "Aim with mouse, hold LMB to powerup, release to fire",
-                1,
+                True,
                 pygame.Color("darkgrey"),
             ),
             (5, height - 35),
         )
         screen.blit(
-            font.render("Press ESC or Q to quit", 1, pygame.Color("darkgrey")),
+            font.render("Press ESC or Q to quit", True, pygame.Color("darkgrey")),
             (5, height - 20),
         )
 

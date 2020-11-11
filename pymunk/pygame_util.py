@@ -47,31 +47,29 @@ import pymunk
 from pymunk.space_debug_draw_options import SpaceDebugColor
 from pymunk.vec2d import Vec2d
 
-positive_y_is_up: bool = True
+positive_y_is_up: bool = False
 """Make increasing values of y point upwards.
 
 When True::
 
-        y
-        ^
-        |   . (2, 2)
-        |
-    ----+------ > x
-        |
-        |     . (3, -2)
-        |
-
+    y
+    ^
+    |      . (3, 3)
+    |
+    |   . (2, 2)
+    |
+    +------ > x
+    
 When False::
 
-        y
-        ^
-        |   . (2, -2)
-        |
-    ----+------ > x
-        |
-        |      . (3, 2)
-        |
-
+    +------ > x
+    |
+    |   . (2, 2)
+    |
+    |      . (3, 3)
+    v
+    y
+    
 """
 
 
@@ -82,33 +80,41 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         Typical usage::
 
         >>> import pymunk
-        >>> import pymunk.pygame_util
         >>> surface = pygame.Surface((10,10))
-        >>> s = pymunk.Space()
+        >>> space = pymunk.Space()
         >>> options = pymunk.pygame_util.DrawOptions(surface)
-        >>> s.debug_draw(options)
-
-        Since pygame uses a coordinate system where y points down (compared to
-        most other cases where a positive y points upwards), we might want to
-        make adjustments for that with the :py:data:`positive_y_is_up` variable.
-
-        By default drawing is done with positive y pointing up, but that will
-        make conversion from pygame coordinate to pymunk coordinate necessary.
-        If you do a lot of those (for example, lots of mouse input) it might be
-        more convenient to set it to False::
-
-        >>> positive_y_is_up = False
-        >>> # Draw verything the pygame way, (0,0) in the top left corner
-        >>> positive_y_is_up = True
-        >>> # Draw everything the pymunk way, (0,0) in the bottom left corner
+        >>> space.debug_draw(options)
 
         You can control the color of a shape by setting shape.color to the color
-        you want it drawn in.
+        you want it drawn in::
 
         >>> c = pymunk.Circle(None, 10)
-        >>> c.color = pygame.color.THECOLORS["pink"]
+        >>> c.color = pygame.Color("pink")
 
         See pygame_util.demo.py for a full example
+
+        Since pygame uses a coordiante system where y points down (in contrast
+        to many other cases), you either have to make the physics simulation
+        with Pymunk also behave in that way, or flip everything when you draw.
+
+        The easiest is probably to just make the simulation behave the same
+        way as Pygame does. In that way all coordinates used are in the same
+        orientation and easy to reason about::
+
+        >>> space = pymunk.Space()
+        >>> space.gravity = (0, -1000)
+        >>> body = pymunk.Body()
+        >>> body.position = (0, 0) # will be positioned in the top left corner
+        >>> space.debug_draw(options)
+
+        To flip the drawing its possible to set the module property
+        :py:data:`positive_y_is_up` to True. Then the pygame drawing will flip
+        the simulation upside down before drawing::
+
+        >>> positive_y_is_up = True
+        >>> body = pymunk.Body()
+        >>> body.position = (0, 0)
+        >>> # Body will be position in bottom left corner
 
         :Parameters:
                 surface : pygame.Surface

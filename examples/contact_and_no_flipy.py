@@ -3,13 +3,10 @@ two segment shapes. For each collision it draws a red circle with size
 depending on collision strength. Not interactive.
 """
 
-import math
 import random
 import sys
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk as pm
 from pymunk import Vec2d
@@ -24,9 +21,6 @@ def draw_collision(arbiter, space, data):
 
 
 def main():
-
-    global contact
-    global shape_to_remove
 
     pygame.init()
     screen = pygame.display.set_mode((600, 600))
@@ -94,7 +88,7 @@ def main():
             body = line.body
             p1 = tuple(map(int, body.position + line.a.rotated(body.angle)))
             p2 = tuple(map(int, body.position + line.b.rotated(body.angle)))
-            pygame.draw.lines(screen, THECOLORS["lightgray"], False, [p1, p2])
+            pygame.draw.lines(screen, pygame.Color("lightgray"), False, [p1, p2])
 
         ### Update physics
         dt = 1.0 / 60.0

@@ -62,7 +62,7 @@ __all__ = [
     "SpaceDebugDrawOptions",
 ]
 
-from typing import Sequence, Tuple
+from typing import Sequence, Tuple, cast
 
 from . import _chipmunk_cffi
 
@@ -177,7 +177,7 @@ def moment_for_poly(
 
 def area_for_circle(inner_radius: float, outer_radius: float) -> float:
     """Area of a hollow circle."""
-    return cp.cpAreaForCircle(inner_radius, outer_radius)
+    return cast(float, cp.cpAreaForCircle(inner_radius, outer_radius))
 
 
 def area_for_segment(

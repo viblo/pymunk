@@ -3,17 +3,16 @@ two segment shapes. Displays collsion strength and rotating balls thanks to
 friction. Not interactive.
 """
 
-import math
 import random
 import sys
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
 from pymunk import Vec2d
+
+pymunk.pygame_util.positive_y_is_up = True
 
 
 def draw_collision(arbiter, space, data):
@@ -26,9 +25,6 @@ def draw_collision(arbiter, space, data):
 
 
 def main():
-
-    global contact
-    global shape_to_remove
 
     pygame.init()
     screen = pygame.display.set_mode((600, 600))

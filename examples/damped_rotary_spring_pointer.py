@@ -4,15 +4,12 @@
 __version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
-import math
-import random
 import sys
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
+import pymunk.constraint
 import pymunk.pygame_util
 from pymunk import Vec2d
 
@@ -32,7 +29,7 @@ def main():
     ps = [(80, 0), (0, 20), (0, -20)]
     moment = pymunk.moment_for_poly(1, ps)
     gun_body = pymunk.Body(1, moment)
-    gun_body.position = 300, 300
+    gun_body.position = Vec2d(300, 300)
     gun_shape = pymunk.Poly(gun_body, ps)
 
     rest_angle = 0
@@ -61,16 +58,16 @@ def main():
             # to easily find good values for the damped rortary spring
             # as with most simulations done with pymunk, the imporant thing
             # is that it looks good, not the exact parameters
-            elif event.type == pygame.KEYDOWN and event.key == K_q:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:
                 rotary_spring.stiffness *= 0.5
                 print(rotary_spring.stiffness, rotary_spring.damping)
-            elif event.type == pygame.KEYDOWN and event.key == K_w:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_w:
                 rotary_spring.stiffness *= 2
                 print(rotary_spring.stiffness, rotary_spring.damping)
-            elif event.type == pygame.KEYDOWN and event.key == K_a:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_a:
                 rotary_spring.damping *= 0.5
                 print(rotary_spring.stiffness, rotary_spring.damping)
-            elif event.type == pygame.KEYDOWN and event.key == K_s:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
                 rotary_spring.damping *= 2
                 print(rotary_spring.stiffness, rotary_spring.damping)
 
