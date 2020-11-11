@@ -65,7 +65,6 @@ __all__ = [
 from typing import Sequence, Tuple
 
 from . import _chipmunk_cffi
-from ._types import _Vec2dOrTuple
 
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi

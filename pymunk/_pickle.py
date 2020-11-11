@@ -1,8 +1,8 @@
+import copy
 from typing import Any, ClassVar, Dict, List, Tuple, TypeVar
 
 T = TypeVar("T", bound="PickleMixin")
 _State = Dict[str, List[Tuple[str, Any]]]
-import copy
 
 
 class PickleMixin:
