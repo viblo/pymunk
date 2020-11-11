@@ -2,14 +2,27 @@ import doctest
 import pkgutil
 import sys
 import unittest
-from typing import Any
+from typing import Any, List
 
 import pymunk
 
+ignores = ["pymunk_extension_build"]
+all_dependencies = ["pygame", "pyglet", "matplotlib"]
 
-def load_tests(tests: unittest.TestSuite) -> unittest.TestSuite:
+
+def load_tests(
+    tests: unittest.TestSuite, dependencies: List[str] = []
+) -> unittest.TestSuite:
     for importer, modname, ispkg in pkgutil.iter_modules(pymunk.__path__):  # type: ignore  # mypy issue #1422
         # try:
+        skip = False
+        if modname in ignores:
+            skip = True
+        for dep in all_dependencies:
+            if modname.startswith(dep) and dep not in dependencies:
+                skip = True
+        if skip:
+            continue
         tests.addTests(doctest.DocTestSuite("pymunk." + modname))
 
         # except Exception as e:
