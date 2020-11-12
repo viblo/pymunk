@@ -19,6 +19,8 @@ jobs:
       arch: arm64
     # and a mac build
     - os: osx
+      # PyPy 7.3.2 needs macOS >= 10.14
+      osx_image: xcode10.2
       language: shell
     # and a windows build
     - os: windows
@@ -30,7 +32,7 @@ jobs:
         - ln -s /c/Python38/python.exe /c/Python38/python3.exe
 
 install:
-  - python3 -m pip install cibuildwheel==1.5.5
+  - python3 -m pip install cibuildwheel==1.6.4
 
 script:
   # build the wheels, put them into './wheelhouse'
