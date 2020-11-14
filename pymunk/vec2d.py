@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2011 Victor Blomqvist
+# Copyright (c) 2007-2020 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -54,14 +54,9 @@ __docformat__ = "reStructuredText"
 import math
 import numbers
 import operator
-from typing import Any, NamedTuple, Tuple, Union
+from typing import NamedTuple, Tuple
 
-# from ._types import _Vec2dOrFloat, _Vec2dOrTuple
-_Vec2dOrFloat = Any
-_Vec2dOrTuple = Union["Vec2d", Tuple[float, float]]
 __all__ = ["Vec2d"]
-
-# _T_co = TypeVar('T', Sequence[float], covariant=True)
 
 
 class Vec2d(NamedTuple):
@@ -77,7 +72,7 @@ class Vec2d(NamedTuple):
         return "Vec2d(%s, %s)" % (self.x, self.y)
 
     # Addition
-    def __add__(self, other: _Vec2dOrTuple) -> "Vec2d":  # type: ignore
+    def __add__(self, other: Tuple[float, float]) -> "Vec2d":  # type: ignore
         """Add a Vec2d with another Vec2d or Tuple of size 2
 
         >>> Vec2d(3,4) + Vec2d(1,2)
@@ -91,7 +86,7 @@ class Vec2d(NamedTuple):
 
         return Vec2d(self.x + other[0], self.y + other[1])
 
-    def __radd__(self, other: _Vec2dOrTuple) -> "Vec2d":
+    def __radd__(self, other: Tuple[float, float]) -> "Vec2d":
         """Add a Tuple of size 2 with a Vec2d
 
         >>> (1,2) + Vec2d(3,4)
@@ -100,7 +95,7 @@ class Vec2d(NamedTuple):
         return self.__add__(other)
 
     # Subtraction
-    def __sub__(self, other: _Vec2dOrTuple) -> "Vec2d":
+    def __sub__(self, other: Tuple[float, float]) -> "Vec2d":
         """Subtract a Vec2d with another Vec2d or Tuple of size 2
 
         >>> Vec2d(3,4) - Vec2d(1,2)
@@ -110,7 +105,7 @@ class Vec2d(NamedTuple):
         """
         return Vec2d(self.x - other[0], self.y - other[1])
 
-    def __rsub__(self, other: _Vec2dOrFloat) -> "Vec2d":
+    def __rsub__(self, other: Tuple[float, float]) -> "Vec2d":
         """Subtract a Tuple of size 2 with a Vec2d
 
         >>> (1,2) - Vec2d(3,4)
@@ -322,7 +317,7 @@ class Vec2d(NamedTuple):
         """
         return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
 
-    def projection(self, other: _Vec2dOrTuple) -> "Vec2d":
+    def projection(self, other: Tuple[float, float]) -> "Vec2d":
         """Project this vector on top of other vector"""
         other_length_sqrd = other[0] * other[0] + other[1] * other[1]
         if other_length_sqrd == 0.0:
@@ -331,7 +326,7 @@ class Vec2d(NamedTuple):
         new_length = projected_length_times_other_length / other_length_sqrd
         return Vec2d(other[0] * new_length, other[1] * new_length)
 
-    def cross(self, other: _Vec2dOrTuple) -> float:
+    def cross(self, other: Tuple[float, float]) -> float:
         """The cross product between the vector and other vector
             v1.cross(v2) -> v1.x*v2.y - v1.y*v2.x
 
@@ -339,7 +334,7 @@ class Vec2d(NamedTuple):
         """
         return self.x * other[1] - self.y * other[0]
 
-    def interpolate_to(self, other: _Vec2dOrTuple, range: float) -> "Vec2d":
+    def interpolate_to(self, other: Tuple[float, float], range: float) -> "Vec2d":
         return Vec2d(
             self.x + (other[0] - self.x) * range, self.y + (other[1] - self.y) * range
         )

@@ -8,6 +8,6 @@ class Tuple1(NamedTuple):
     b: float
 
 
-t[Tuple[float, float]] = Tuple1(a=1, b=2)
+t: Tuple[float, float] = Tuple1(a=1, b=2)
 # Expression of type "Tuple1" cannot be assigned to declared type "Tuple[float, float]"
 #  Tuple size mismatch; expected 2 but received 2 Pylance (reportGeneralTypeIssues)
