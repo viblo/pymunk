@@ -382,14 +382,14 @@ class Vec2d(NamedTuple):
         return Vec2d(1, 1)
 
     # Extra functions, mainly for chipmunk
-    def cpvrotate(self, other: "Vec2d") -> "Vec2d":
+    def cpvrotate(self, other: Tuple[float, float]) -> "Vec2d":
         """Uses complex multiplication to rotate this vector by the other. """
         return Vec2d(
-            self.x * other.x - self.y * other.y, self.x * other.y + self.y * other.x
+            self.x * other[0] - self.y * other[1], self.x * other[1] + self.y * other[0]
         )
 
-    def cpvunrotate(self, other: "Vec2d") -> "Vec2d":
+    def cpvunrotate(self, other: Tuple[float, float]) -> "Vec2d":
         """The inverse of cpvrotate"""
         return Vec2d(
-            self.x * other.x + self.y * other.y, self.y * other.x - self.x * other.y
+            self.x * other[0] + self.y * other[1], self.y * other[0] - self.x * other[1]
         )

@@ -61,6 +61,7 @@ Changes:
     - Vec2d(Vec2d(1,2)) can be changed to Vec2d(*Vec2d(1,2))
     - Vec2d() can be changed to Vec2d(0,0) or Vec2d.zero() 
     - Vec2d(1,2) is no longer equal to [1,2] since they are of different types. (but Vec2d(1,2) == (1,2) is still true)
+  - Relaxed cpvrotate and cpunvrotate to accept tuples of size 2 as arguments just like most other methods on Vec2d
  - Require all arguments where a Vec2d like object is expected to either send in a Vec2d, tuple of length 2 or a list of length 2. Before any x that could be passed into tuple(x) worked. If you have code that stopped worked it should be enough to just wrap whatever value with tuple(..).  (Note: Due to no checks a list of length 2 will also work in most cases, however, this is not supported and can change any time. It is also not allowed according to the type hints).
  - Transform changes:
   - Added helper methods to easily create transforms to translate, scale and rotate.
