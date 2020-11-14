@@ -108,19 +108,6 @@ hash corresponds to the git hash of the chipmunk source from
 github.com/viblo/Chipmunk2D included with Pymunk.
 """
 
-inf: float = float("inf")
-"""Infinity that can be passed as mass or inertia to a :py:class:`Body`.
-
-Useful when you for example want a body that cannot rotate, just set its
-moment to inf. Just remember that if two objects with both infinite masses
-collides the world might explode. Similar effects can happen with infinite
-moment.
-
-.. note::
-    In previous versions of Pymunk you used inf to create static bodies. This
-    has changed. See :py:class:`Body` for details.
-"""
-
 
 def moment_for_circle(
     mass: float,

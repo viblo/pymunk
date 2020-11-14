@@ -67,7 +67,7 @@ class UnitTestBB(unittest.TestCase):
 
         self.assertEqual(bb1.merged_area(bb2), 400)
 
-        self.assertEqual(bb2.segment_query(v1, v2), p.inf)
+        self.assertEqual(bb2.segment_query(v1, v2), float("inf"))
         self.assertEqual(bb1.segment_query((-1, 1), (99, 1)), 0.01)
 
         self.assertEqual(bb1.clamp_vect(v2), Vec2d(10, 3))

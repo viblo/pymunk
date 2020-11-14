@@ -136,7 +136,7 @@ def main():
     space.add_collision_handler(1, 2).begin = passthrough_handler
 
     # player
-    body = pymunk.Body(5, pymunk.inf)
+    body = pymunk.Body(5, float('inf'))
     body.position = 100, 100
 
     head = pymunk.Circle(body, 10, (0, 5))

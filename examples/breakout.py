@@ -28,7 +28,7 @@ collision_types = {
 
 
 def spawn_ball(space, position, direction):
-    ball_body = pymunk.Body(1, pymunk.inf)
+    ball_body = pymunk.Body(1, float('inf'))
     ball_body.position = position
 
     ball_shape = pymunk.Circle(ball_body, 5)
@@ -122,7 +122,7 @@ def main():
     space.add(bottom)
 
     ### Player ship
-    player_body = pymunk.Body(500, pymunk.inf)
+    player_body = pymunk.Body(500, float('inf'))
     player_body.position = 300, 100
 
     player_shape = pymunk.Segment(player_body, (-50, 0), (50, 0), 8)

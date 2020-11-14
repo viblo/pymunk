@@ -8,7 +8,7 @@ Pymunk 6.0.0
 Changes:
 
 - Removed pymunk.chipmunk_path
-- change Shape.sensor type to bool (from int)
+- changed Shape.sensor type to bool (from int)
 - Type hints added
 - Python 3.5+ required
 - add_collision_handler(a,b) and add_collision_handler(b,a) will return the same handler.
@@ -73,7 +73,7 @@ Changes:
   - BB is now immutable.
  - Added many asserts to check that whenever a tuple of length 2 or Vec2d is expected the length of the tuple is 2.
  - Removed conversions by calling tuple(argument) where a Vec2d or tuple of length 2 was expected. It is now expected the arguemnt already is a tuple like object.
-
+- Removed pymunk.inf. Use float('inf') instead.
 
 Likely biggest issues:
  - Change Vec2d( variable_with_tuple ) to Vec2d( *variable_with_tuple )

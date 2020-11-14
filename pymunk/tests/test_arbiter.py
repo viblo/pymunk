@@ -39,7 +39,7 @@ class UnitTestArbiter(unittest.TestCase):
         s = p.Space()
         s.gravity = 0, -100
 
-        b1 = p.Body(1, p.inf)
+        b1 = p.Body(1, float('inf'))
         c1 = p.Circle(b1, 10)
         b1.position = Vec2d(10, 25)
         c1.collision_type = 1
@@ -68,7 +68,7 @@ class UnitTestArbiter(unittest.TestCase):
         s = p.Space()
         s.gravity = 0, -100
 
-        b1 = p.Body(1, p.inf)
+        b1 = p.Body(1, float('inf'))
         c1 = p.Circle(b1, 10)
         b1.position = 10, 25
         c1.collision_type = 1

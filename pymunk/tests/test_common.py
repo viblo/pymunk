@@ -10,7 +10,6 @@ from pymunk.vec2d import Vec2d
 class UnitTestGeneral(unittest.TestCase):
     def testGeneral(self) -> None:
         p.version
-        p.inf
         p.chipmunk_version
 
     def testMomentHelpers(self) -> None:
@@ -60,16 +59,16 @@ class UnitTestBugs(unittest.TestCase):
     def testNoStaticShape(self) -> None:
         space = p.Space()
 
-        b1 = p.Body(1, p.inf)
+        b1 = p.Body(1, float("inf"))
         c1 = p.Circle(b1, 10)
         c1.name = "c1"
         c1.collision_type = 2
 
-        b2 = p.Body(1, p.inf)
+        b2 = p.Body(1, float("inf"))
         c2 = p.Circle(b2, 10)
         c2.name = "c2"
 
-        b3 = p.Body(1, p.inf)
+        b3 = p.Body(1, float("inf"))
         c3 = p.Circle(b3, 10)
         c3.name = "c3"
 

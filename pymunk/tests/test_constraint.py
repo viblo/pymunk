@@ -21,7 +21,7 @@ class UnitTestConstraint(unittest.TestCase):
     def testMaxForce(self) -> None:
         a, b = p.Body(10, 10), p.Body(10, 10)
         j = PivotJoint(a, b, (0, 0))
-        self.assertEqual(j.max_force, p.inf)
+        self.assertEqual(j.max_force, float('inf'))
         j.max_force = 10
         self.assertEqual(j.max_force, 10)
 
@@ -35,7 +35,7 @@ class UnitTestConstraint(unittest.TestCase):
     def testMaxBias(self) -> None:
         a, b = p.Body(10, 10), p.Body(10, 10)
         j = PivotJoint(a, b, (0, 0))
-        self.assertEqual(j.max_bias, p.inf)
+        self.assertEqual(j.max_bias, float('inf'))
         j.max_bias = 10
         self.assertEqual(j.max_bias, 10)
 
