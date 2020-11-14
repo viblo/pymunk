@@ -9,7 +9,7 @@ import sys
 import pygame
 
 import pymunk
-import pymunk.constraint
+import pymunk.constraints
 import pymunk.pygame_util
 from pymunk import Vec2d
 

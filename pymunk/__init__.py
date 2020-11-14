@@ -59,6 +59,7 @@ __all__ = [
     "PointQueryInfo",
     "ShapeQueryInfo",
     "SpaceDebugDrawOptions",
+    "Vec2d",
 ]
 
 from typing import Sequence, Tuple, cast
@@ -71,14 +72,12 @@ ffi = _chipmunk_cffi.ffi
 # import logging
 # logging.basicConfig(level=0)
 
-
-from pymunk.constraint import *
-
 from . import _version
 from .arbiter import Arbiter
 from .bb import BB
 from .body import Body
 from .collision_handler import CollisionHandler
+from .constraints import *
 from .contact_point_set import ContactPoint, ContactPointSet
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shape_filter import ShapeFilter

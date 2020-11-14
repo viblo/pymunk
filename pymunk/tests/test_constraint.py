@@ -2,7 +2,7 @@ import pickle
 import unittest
 
 import pymunk as p
-from pymunk.constraint import *
+from pymunk.constraints import *
 from pymunk.vec2d import Vec2d
 
 

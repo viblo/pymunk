@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import pymunk as p
 from pymunk.arbiter import Arbiter
-from pymunk.constraint import *
+from pymunk.constraints import *
 from pymunk.shapes import Shape
 from pymunk.vec2d import Vec2d
 

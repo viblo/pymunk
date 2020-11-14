@@ -6,7 +6,7 @@ from weakref import WeakSet
 
 if TYPE_CHECKING:
     from .space import Space
-    from .constraint import Constraint
+    from .constraints import Constraint
     from .shapes import Shape
 
 from ._chipmunk_cffi import ffi, lib

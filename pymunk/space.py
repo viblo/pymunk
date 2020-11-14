@@ -25,7 +25,7 @@ from . import _chipmunk_cffi, _version
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-from pymunk.constraint import Constraint
+from pymunk.constraints import Constraint
 
 from ._pickle import PickleMixin, _State
 from .body import Body

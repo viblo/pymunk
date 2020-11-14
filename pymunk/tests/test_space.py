@@ -10,7 +10,7 @@ from typing import Any, Callable, Sequence
 
 import pymunk as p
 from pymunk import *
-from pymunk.constraint import *
+from pymunk.constraints import *
 from pymunk.vec2d import Vec2d
 
 ####################################################################

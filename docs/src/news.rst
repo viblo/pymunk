@@ -74,9 +74,12 @@ Changes:
  - Added many asserts to check that whenever a tuple of length 2 or Vec2d is expected the length of the tuple is 2.
  - Removed conversions by calling tuple(argument) where a Vec2d or tuple of length 2 was expected. It is now expected the arguemnt already is a tuple like object.
 - Removed pymunk.inf. Use float('inf') instead.
+- Changed pygame_util.positive_y_is_up default value to False. For existing code easiest fix is to just reset it to True.
+- Renamed package pymunk.constraint to pymunk.constraints
 
 Likely biggest issues:
  - Change Vec2d( variable_with_tuple ) to Vec2d( *variable_with_tuple )
+ - For Pygame users: pygame_util.positive_y_is_up defaults to False.
 
 Pymunk 5.7.0
 ------------
