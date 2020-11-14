@@ -247,11 +247,12 @@ class Vec2d(NamedTuple):
         """Gets the angle (in degrees) of a vector"""
         return math.degrees(self.angle)
 
-    def get_angle_between(self, other: "Vec2d") -> float:
+    def get_angle_between(self, other: Tuple[float, float]) -> float:
         """Get the angle between the vector and the other in radians
 
         :return: The angle
         """
+        assert len(other) == 2
         cross = self.x * other[1] - self.y * other[0]
         dot = self.x * other[0] + self.y * other[1]
         return math.atan2(cross, dot)
@@ -299,6 +300,7 @@ class Vec2d(NamedTuple):
 
         :return: The dot product
         """
+        assert len(other) == 2
         return float(self.x * other[0] + self.y * other[1])
 
     def get_distance(self, other: Tuple[float, float]) -> float:
@@ -306,6 +308,7 @@ class Vec2d(NamedTuple):
 
         :return: The distance
         """
+        assert len(other) == 2
         return math.sqrt((self.x - other[0]) ** 2 + (self.y - other[1]) ** 2)
 
     def get_dist_sqrd(self, other: Tuple[float, float]) -> float:
@@ -315,10 +318,12 @@ class Vec2d(NamedTuple):
 
         :return: The squared distance
         """
+        assert len(other) == 2
         return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
 
     def projection(self, other: Tuple[float, float]) -> "Vec2d":
         """Project this vector on top of other vector"""
+        assert len(other) == 2
         other_length_sqrd = other[0] * other[0] + other[1] * other[1]
         if other_length_sqrd == 0.0:
             return Vec2d(0, 0)
@@ -332,16 +337,22 @@ class Vec2d(NamedTuple):
 
         :return: The cross product
         """
+        assert len(other) == 2
         return self.x * other[1] - self.y * other[0]
 
     def interpolate_to(self, other: Tuple[float, float], range: float) -> "Vec2d":
+        assert len(other) == 2
         return Vec2d(
             self.x + (other[0] - self.x) * range, self.y + (other[1] - self.y) * range
         )
 
-    def convert_to_basis(self, x_vector: "Vec2d", y_vector: "Vec2d") -> "Vec2d":
-        x = self.dot(x_vector) / x_vector.get_length_sqrd()
-        y = self.dot(y_vector) / y_vector.get_length_sqrd()
+    def convert_to_basis(
+        self, x_vector: Tuple[float, float], y_vector: Tuple[float, float]
+    ) -> "Vec2d":
+        assert len(x_vector) == 2
+        assert len(y_vector) == 2
+        x = self.dot(x_vector) / Vec2d(*x_vector).get_length_sqrd()
+        y = self.dot(y_vector) / Vec2d(*y_vector).get_length_sqrd()
         return Vec2d(x, y)
 
     @property
@@ -384,12 +395,14 @@ class Vec2d(NamedTuple):
     # Extra functions, mainly for chipmunk
     def cpvrotate(self, other: Tuple[float, float]) -> "Vec2d":
         """Uses complex multiplication to rotate this vector by the other. """
+        assert len(other) == 2
         return Vec2d(
             self.x * other[0] - self.y * other[1], self.x * other[1] + self.y * other[0]
         )
 
     def cpvunrotate(self, other: Tuple[float, float]) -> "Vec2d":
         """The inverse of cpvrotate"""
+        assert len(other) == 2
         return Vec2d(
             self.x * other[0] + self.y * other[1], self.y * other[0] - self.x * other[1]
         )
