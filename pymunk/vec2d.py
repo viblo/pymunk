@@ -78,7 +78,13 @@ class Vec2d(NamedTuple):
 
     # Addition
     def __add__(self, other: _Vec2dOrTuple) -> "Vec2d":  # type: ignore
-        """Add two vectors"""
+        """Add a Vec2d with another Vec2d or Tuple of size 2
+
+        >>> Vec2d(3,4) + Vec2d(1,2)
+        Vec2d(4, 6)
+        >>> Vec2d(3,4) + (1,2)
+        Vec2d(4, 6)
+        """
         assert (
             len(other) == 2
         ), f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
@@ -86,13 +92,30 @@ class Vec2d(NamedTuple):
         return Vec2d(self.x + other[0], self.y + other[1])
 
     def __radd__(self, other: _Vec2dOrTuple) -> "Vec2d":
+        """Add a Tuple of size 2 with a Vec2d
+
+        >>> (1,2) + Vec2d(3,4)
+        Vec2d(4, 6)
+        """
         return self.__add__(other)
 
     # Subtraction
     def __sub__(self, other: _Vec2dOrTuple) -> "Vec2d":
+        """Subtract a Vec2d with another Vec2d or Tuple of size 2
+
+        >>> Vec2d(3,4) - Vec2d(1,2)
+        Vec2d(2, 2)
+        >>> Vec2d(3,4) - (1,2)
+        Vec2d(2, 2)
+        """
         return Vec2d(self.x - other[0], self.y - other[1])
 
     def __rsub__(self, other: _Vec2dOrFloat) -> "Vec2d":
+        """Subtract a Tuple of size 2 with a Vec2d
+
+        >>> (1,2) - Vec2d(3,4)
+        Vec2d(-2, -2)
+        """
         assert (
             len(other) == 2
         ), f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
@@ -100,29 +123,64 @@ class Vec2d(NamedTuple):
 
     # Multiplication
     def __mul__(self, other: float) -> "Vec2d":
+        """Multiply with a float
+
+        >>> Vec2d(3,6) * 2.5
+        Vec2d(7.5, 15.0)
+        """
         assert isinstance(other, numbers.Real)
         return Vec2d(self.x * other, self.y * other)
 
     def __rmul__(self, other: float) -> "Vec2d":
+        """Multiply a float with a Vec2d
+
+        >>> 2.5 * Vec2d(3,6)
+        Vec2d(7.5, 15.0)
+        """
         return self.__mul__(other)
 
     # Division
-    def __floordiv__(self, other: _Vec2dOrFloat) -> "Vec2d":
+    def __floordiv__(self, other: float) -> "Vec2d":
+        """Floor division by a float (also known as integer division)
+
+        >>> Vec2d(3,6) // 2.0
+        Vec2d(1.0, 3.0)
+        """
         assert isinstance(other, numbers.Real)
         return Vec2d(self.x // other, self.y // other)
 
-    def __truediv__(self, other: _Vec2dOrFloat) -> "Vec2d":
+    def __truediv__(self, other: float) -> "Vec2d":
+        """Division by a float
+
+        >>> Vec2d(3,6) / 2.0
+        Vec2d(1.5, 3.0)
+        """
         assert isinstance(other, numbers.Real)
         return Vec2d(self.x / other, self.y / other)
 
     # Unary operations
     def __neg__(self) -> "Vec2d":
+        """Return the negated version of the Vec2d
+
+        >>> -Vec2d(1,-2)
+        Vec2d(-1, 2)
+        """
         return Vec2d(operator.neg(self.x), operator.neg(self.y))
 
     def __pos__(self) -> "Vec2d":
+        """Return the unary pos of the Vec2d.
+
+        >>> +Vec2d(1,-2)
+        Vec2d(1, -2)
+        """
         return Vec2d(operator.pos(self.x), operator.pos(self.y))
 
     def __abs__(self) -> float:
+        """Return the length of the Vec2d
+
+        >>> abs(Vec2d(3,4))
+        5.0
+        """
         return self.length
 
     # vectory functions
