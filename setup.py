@@ -34,10 +34,10 @@ setup(
             "source_dir": ("setup.py", "docs/src"),
         }
     },
-    # Skip 1.13.1 becaus of issue reported to cffi here:
-    # https://bitbucket.org/cffi/cffi/issues/432/1131-breaks-pymunk-on-linux-in-a-subtle
-    setup_requires=["cffi != 1.13.1"],
-    install_requires=["cffi != 1.13.1"],
+    python_requires=">=3.5",
+    # Require >1.14.0 since that (and older) has problem with returing structs from functions.
+    setup_requires=["cffi > 1.14.0"],
+    install_requires=["cffi > 1.14.0"],
     cffi_modules=["pymunk/pymunk_extension_build.py:ffibuilder"],
     extras_require={
         "dev": ["pyglet", "pygame", "sphinx", "aafigure", "wheel", "matplotlib"]
