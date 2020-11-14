@@ -36,7 +36,6 @@ __docformat__ = "reStructuredText"
 
 
 __all__ = [
-    "inf",
     "version",
     "chipmunk_version",
     "Space",
