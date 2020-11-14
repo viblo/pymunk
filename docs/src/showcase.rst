@@ -199,6 +199,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+* Chen, Ricky TQ, Brandon Amos, and Maximilian Nickel. 
+  "Learning Neural Event Functions for Ordinary Differential Equations." 
+  arXiv preprint arXiv:2011.03902 (2020).
+
 * Jain, Ayush, Andrew Szot, and Joseph J. Lim. 
   "Generalization to New Actions in Reinforcement Learning." 
   arXiv preprint arXiv:2011.01928 (2020).
@@ -367,15 +371,15 @@ Cite Pymunk
 -----------
 
 If you use Pymunk in a published work and want to cite it, below is a bibtex
-example (feel free to modify to fit your style, and make sure to modify the 
-version number/year):
+example. Feel free to modify to fit your style. (Make sure to modify the 
+version number if included.):
 
 .. code-block:: bibtex
 
   @misc{pymunk,
     author = {Victor Blomqvist},
     title = {Pymunk: A easy-to-use pythonic rigid body 2d physics library (version 5.7.0)},
-    year = {2020},
+    year = {2011},
     url = {https://www.pymunk.org},
   }
 
