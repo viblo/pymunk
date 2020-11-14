@@ -167,6 +167,8 @@ class PolylineSet(Sequence[List[Vec2d]]):
     """
 
     def __init__(self) -> None:
+        """Initalize a new PolylineSet"""
+
         def free(_set: ffi.CData) -> None:
             lib.cpPolylineSetFree(_set, True)
 

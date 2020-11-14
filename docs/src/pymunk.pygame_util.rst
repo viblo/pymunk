@@ -8,3 +8,4 @@
         <script type="text/javascript" src='_static/pymunk.js'></script>
     
 .. automodule:: pymunk.pygame_util
+    :special-members: __init__

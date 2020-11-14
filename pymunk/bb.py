@@ -1,13 +1,11 @@
 __docformat__ = "reStructuredText"
 
-import copy
 from typing import NamedTuple, Tuple
 
 from . import _chipmunk_cffi
 
 lib = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
-from ._pickle import PickleMixin
 from .vec2d import Vec2d
 
 

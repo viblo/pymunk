@@ -23,7 +23,7 @@ x update example code to be less dependent on the flipy function for pygame. ins
 - Add Check that its not allowed to change body of shape added to space
 - Make sure there's a check to see that the bodies of a constraint are added to space before constraint is added
 x Add code for cpConstraintSetPreSolveFunc/post solver
-
+- Add TKInter util module
 
 v6
 --
@@ -32,7 +32,7 @@ x Make add_collision_handler(a,b) and add_collision_handler(b,a) return the
   same handler. Fixes https://github.com/viblo/pymunk/issues/132 
 x make pickle space check pymunk version 
 x use black to autoformat code
-- fix doc of __init__
+x fix doc of __init__
 x drop support for python 2
 x Type annotations
 
@@ -50,7 +50,7 @@ x do we still need pymunk.inf? Yes, for body with normal mass but infinite
 x make default of positive_y_is_up False
 
 before release 6.0.0
-- doc of Vec2d specials like __add__
+x doc of Vec2d specials like __add__
 x decide if shapes or constraint is correct, and rename the other
 
 
