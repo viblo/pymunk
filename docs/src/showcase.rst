@@ -199,6 +199,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+* Jiang, Lincheng. 
+  "A Computational Method to Generate One-story Floor Plans for Nursing Homes Based on Daylight Hour Potential and Shortest Path of Circulations." 
+  (2020).
+
 * Chen, Ricky TQ, Brandon Amos, and Maximilian Nickel. 
   "Learning Neural Event Functions for Ordinary Differential Equations." 
   arXiv preprint arXiv:2011.03902 (2020).
@@ -362,7 +366,7 @@ List of papers which has used or mentioned Pymunk:
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2020-11-07. If something is missing or wrong, please contact 
+List last updated 2020-11-17. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
