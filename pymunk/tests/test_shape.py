@@ -9,6 +9,10 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestShape(unittest.TestCase):
+    def testId(self) -> None:
+        c = p.Circle(None, 4)
+        self.assertGreater(c._id, 0)
+
     def testPointQuery(self) -> None:
         b = p.Body(10, 10)
         c = p.Circle(b, 5)

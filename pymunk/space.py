@@ -38,7 +38,6 @@ from .vec2d import Vec2d
 if TYPE_CHECKING:
     from .bb import BB
 
-# _PostStepCallback = Callable[["Space", Hashable, Any, Any], None]
 _AddableObjects = Union[Body, Shape, Constraint]
 
 
@@ -434,10 +433,10 @@ class Space(PickleMixin, object):
     def _add_shape(self, shape: "Shape") -> None:
         """Adds a shape to the space"""
         # print("addshape", self._space, shape)
-        assert shape._get_shapeid() not in self._shapes, "shape already added to space"
+        assert shape._id not in self._shapes, "shape already added to space"
 
         shape._space = weakref.proxy(self)
-        self._shapes[shape._get_shapeid()] = shape
+        self._shapes[shape._id] = shape
         cp.cpSpaceAddShape(self._space, shape._shape)
 
     def _add_body(self, body: "Body") -> None:
@@ -455,14 +454,12 @@ class Space(PickleMixin, object):
 
     def _remove_shape(self, shape: "Shape") -> None:
         """Removes a shape from the space"""
-        assert (
-            shape._get_shapeid() in self._shapes
-        ), "shape not in space, already remvoed?"
-        self._removed_shapes[shape._get_shapeid()] = shape
+        assert shape._id in self._shapes, "shape not in space, already removed?"
+        self._removed_shapes[shape._id] = shape
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
         if cp.cpSpaceContainsShape(self._space, shape._shape):
             cp.cpSpaceRemoveShape(self._space, shape._shape)
-        del self._shapes[shape._get_shapeid()]
+        del self._shapes[shape._id]
 
     def _remove_body(self, body: "Body") -> None:
         """Removes a body from the space"""
@@ -770,7 +767,7 @@ class Space(PickleMixin, object):
         if not bool(_shape):
             return None
 
-        shapeid = cp.cpShapeGetUserData(_shape)
+        shapeid = int(ffi.cast("int", cp.cpShapeGetUserData(_shape)))
         # return self._shapes[hashid_private]
 
         if shapeid in self._shapes:
@@ -989,8 +986,14 @@ class Space(PickleMixin, object):
             for shape in self.shapes:
                 options.draw_shape(shape)
 
-    # def get_batched_body_positions(self, shape_filter):
-    #     pass
+    def get_batched_bodies(self, shape_filter):
+        """Return a memoryview for use when the non-batch api is not performant enough.
+
+        .. note::
+            Experimental API. Likely to change in future major, minor orpoint
+            releases.
+        """
+        pass
 
     def __getstate__(self) -> _State:
         """Return the state of this object

@@ -100,6 +100,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
     _position_func_base: Optional[_PositionFunc] = None  # For pickle
     _velocity_func_base: Optional[_VelocityFunc] = None  # For pickle
 
+    _id_counter = 1
+
     def __init__(
         self, mass: float = 0, moment: float = 0, body_type: _BodyType = DYNAMIC
     ) -> None:
@@ -228,9 +230,6 @@ class Body(PickleMixin, TypingAttrMixing, object):
         elif body_type == Body.STATIC:
             self._body = ffi.gc(lib.cpBodyNewStatic(), freebody)
 
-        self._init()
-
-    def _init(self) -> None:
         self._position_func = None  # To prevent the gc to collect the callbacks.
         self._velocity_func = None  # To prevent the gc to collect the callbacks.
         self._position_func_base = None  # For pickle
@@ -245,6 +244,22 @@ class Body(PickleMixin, TypingAttrMixing, object):
         ] = WeakSet()  # weak refs to any constraints attached
         self._shapes: WeakSet["Shape"] = WeakSet()  # weak refs to any shapes attached
 
+        self._set_id()
+
+    @property
+    def _id(self) -> int:
+        """Unique id of the Body
+
+        .. note::
+            Experimental API. Likely to change in future major, minor orpoint
+            releases.
+        """
+        return int(ffi.cast("int", lib.cpBodyGetUserData(self._body)))
+
+    def _set_id(self) -> None:
+        lib.cpBodySetUserData(self._body, ffi.cast("cpDataPointer", Body._id_counter))
+        Body._id_counter += 1
+
     def __repr__(self) -> str:
         if self.body_type == Body.DYNAMIC:
             return "Body(%r, %r, Body.DYNAMIC)" % (self.mass, self.moment)
@@ -252,14 +267,6 @@ class Body(PickleMixin, TypingAttrMixing, object):
             return "Body(Body.KINEMATIC)"
         else:
             return "Body(Body.STATIC)"
-
-    @classmethod
-    def _init_with_body(cls, _body: ffi.CData) -> "Body":
-        """Only used internally in pymunk."""
-        b = cls.__new__(cls)
-        b._body = _body
-        b._init()
-        return b
 
     def _set_mass(self, mass: float) -> None:
         lib.cpBodySetMass(self._body, mass)

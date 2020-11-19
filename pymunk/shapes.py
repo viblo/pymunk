@@ -7,11 +7,8 @@ if TYPE_CHECKING:
     from .body import Body
     from .space import Space
 
-from . import _chipmunk_cffi
-
-cp = _chipmunk_cffi.lib
-ffi = _chipmunk_cffi.ffi
-
+from ._chipmunk_cffi import ffi
+from ._chipmunk_cffi import lib as cp
 from ._pickle import PickleMixin, _State
 from ._typing_attr import TypingAttrMixing
 from .bb import BB
@@ -46,13 +43,13 @@ class Shape(PickleMixin, TypingAttrMixing, object):
 
     _space = None  # Weak ref to the space holding this body (if any)
 
-    _shapeid_counter = 1
+    _id_counter = 1
 
     def __init__(self, shape: "Shape") -> None:
         self._shape = shape
         self._body = shape.body
 
-    def _init(self, body: Optional["Body"], _shape: Any) -> None:
+    def _init(self, body: Optional["Body"], _shape: ffi.CData) -> None:
         self._body = body
 
         if body is not None:
@@ -70,16 +67,21 @@ class Shape(PickleMixin, TypingAttrMixing, object):
             cp.cpShapeFree(cp_shape)
 
         self._shape = ffi.gc(_shape, shapefree)
-        self._set_shapeid()
+        self._set_id()
 
-    def _get_shapeid(self) -> int:
-        return cp.cpShapeGetUserData(self._shape)
+    @property
+    def _id(self) -> int:
+        """Unique id of the Shape
 
-    def _set_shapeid(self) -> None:
-        cp.cpShapeSetUserData(
-            self._shape, ffi.cast("cpDataPointer", Shape._shapeid_counter)
-        )
-        Shape._shapeid_counter += 1
+        .. note::
+            Experimental API. Likely to change in future major, minor orpoint
+            releases.
+        """
+        return int(ffi.cast("int", cp.cpShapeGetUserData(self._shape)))
+
+    def _set_id(self) -> None:
+        cp.cpShapeSetUserData(self._shape, ffi.cast("cpDataPointer", Shape._id_counter))
+        Shape._id_counter += 1
 
     def _get_mass(self) -> float:
         return cp.cpShapeGetMass(self._shape)
@@ -314,8 +316,8 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         info = ffi.new("cpPointQueryInfo *")
         _ = cp.cpShapePointQuery(self._shape, p, info)
 
-        ud = cp.cpShapeGetUserData(info.shape)
-        assert ud == self._get_shapeid()
+        ud = int(ffi.cast("int", cp.cpShapeGetUserData(info.shape)))
+        assert ud == self._id
         return PointQueryInfo(
             self,
             Vec2d(info.point.x, info.point.y),
@@ -335,8 +337,8 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         info = ffi.new("cpSegmentQueryInfo *")
         r = cp.cpShapeSegmentQuery(self._shape, start, end, radius, info)
         if r:
-            ud = cp.cpShapeGetUserData(info.shape)
-            assert ud == self._get_shapeid()
+            ud = int(ffi.cast("int", cp.cpShapeGetUserData(info.shape)))
+            assert ud == self._id
             return SegmentQueryInfo(
                 self,
                 Vec2d(info.point.x, info.point.y),
