@@ -28,8 +28,6 @@ creation.
 to be removed in the next Pymunk release. 
 
 """
-from __future__ import division
-
 __docformat__ = "reStructuredText"
 
 from math import sqrt

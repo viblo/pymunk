@@ -44,9 +44,11 @@ x do we still need pymunk.inf? Yes, for body with normal mass but infinite
   moment.
 x Think about overriding behavior of sensor shapes in segment and point_query 
   vs segment_first and point_query_nearest (one hits sensors the other does not)
-- Think about return tuple of doubles instead of Vec2d in autogeometry module.
+x Think about return tuple of doubles instead of Vec2d in autogeometry module.
   Skipping the Vec2d can potentially lead to big saving (2x speedup in one 
   microbench). 
+- Think about return a PolylineSet from march_* autogeometry methods instead 
+  of callbacks to improve perf.
 x make default of positive_y_is_up False
 
 before release 6.0.0
