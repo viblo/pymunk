@@ -171,13 +171,6 @@ place in the source folder::
     > python setup.py build_ext --inplace
 
 On Windows you will need to use Visual Studio matching your Python version. 
-  
-.. seealso:: 
-
-    Module :py:mod:`pymunkoptions` 
-        Options module that control runtime options of Pymunk such as debug 
-        settings. Use pymunkoptions together with release mode compilation to 
-        remove all debugs prints.
 
 
 CFFI Installation

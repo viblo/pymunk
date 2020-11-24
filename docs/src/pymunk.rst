@@ -18,7 +18,6 @@ API Reference
         pymunk.matplotlib_util    
         pymunk.pygame_util
         pymunk.pyglet_util
-        pymunkoptions
 
 .. container:: custom-index
 

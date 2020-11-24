@@ -137,7 +137,7 @@ General Changes:
   constraint.
 - Added helper methods on ``Transform`` to easily create transforms to 
   translate, scale and rotate.
-
+- Removed now unused pymunkoptions module.
 
 Minor changes unlikely to affect existing code:
 
