@@ -74,10 +74,11 @@ each other.
 Mass, weight and units
 ----------------------
 
-Sometimes users of Pymunk can be confused as to what unit everything is defined 
-in. For example, is the mass of a Body in grams or kilograms? Pymunk is 
-unit-less and does not care which unit you use. If you pass in seconds to a function expecting time, then your time unit is seconds. If you pass in pixels
-to functions that expect a distance, then your unit of distance is pixels. 
+Sometimes users of Pymunk can be confused as to what unit everything is 
+defined in. For example, is the mass of a Body in grams or kilograms? Pymunk 
+is unit-less and does not care which unit you use. If you pass in seconds to 
+a function expecting time, then your time unit is seconds. If you pass in 
+pixels to functions that expect a distance, then your unit of distance is pixels. 
 
 Then derived units are just a combination of the above. So in the case with 
 seconds and pixels the unit of velocity would be pixels / second.
@@ -213,6 +214,25 @@ There a a number of things to try if this happens:
 Pymunk.)
 
 
+Performance
+===========
+
+Various tips that can improve performance:
+
+* Run Python with optimizations on (will disable various useful but 
+  non-critical asserts). ``python -O mycode.py``
+* If possible use Pypy instead of CPython. See 
+  :ref:`Benchmarks <benchmark>` for some examples of the speed difference.
+* Tweak the ``Space.iterations`` property.
+* If possible let objects fall asleep with ``Space.sleep_time_threshold``.
+* Reduce usage of callback methods (like collision callbacks or custom update 
+  fuctions). These are much slower than the default built in code.
+
+Note that many times the actual simulation is quick enough, but reading out 
+the result after each step and manipulating the objects manually can have a 
+significant overhead and performance cost.
+
+
 Copy and Load/Save Pymunk objects
 =================================
 
@@ -224,6 +244,9 @@ use of the pickle infrastructure.
 
 See the :ref:`copy_and_pickle.py` example for an example on how to save, load 
 and copy Pymunk objects.
+
+Note that the version of Pymunk used must be the same for the code saving as 
+the verison used when loading the saved object.
 
 
 Additional info

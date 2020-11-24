@@ -25,7 +25,7 @@ using Chipmunk 7 rev 080c51480f018040b567e8f0440b121ae3acbae4 .
 Installation
 ------------
 
-In the normal case pymunk can be installed with pip::
+In the normal case pymunk can be installed from PyPI with pip::
 
     > pip install pymunk
 
@@ -86,7 +86,7 @@ It is (or is striving to be):
 
 * **Easy to use** - It should be easy to use, no complicated code should be 
   needed to add physics to your game or program.
-* **"Pythonic"** - It should not be visible that a c-library (chipmunk) is in 
+* **"Pythonic"** - It should not be visible that a c-library (Chipmunk) is in 
   the bottom, it should feel like a Python library (no strange naming, OO, 
   no memory handling and more)
 * **Simple to build & install** - You shouldn't need to have a zillion of 
@@ -116,8 +116,7 @@ Contact & Support
     https://github.com/viblo/pymunk/issues
     
 Regardless of the method you use I will try to answer your questions as soon 
-as I see them. (And if you ask on SO or the forum other people might help as 
-well!)
+as I see them. (And if you ask on SO other people might help as well!)
 
 
 Dependencies / Requirements
@@ -131,7 +130,8 @@ possible, usually `pip install` will take care of everything for you.
 - CFFI (will be installed automatically by Pip)
 - Setuptools (should be included with Pip)
 
-* GCC and friends (optional, you need it to compile Pymunk from source)
+* GCC and friends (optional, you need it to compile Pymunk from source. On 
+  windows Visual Studio is required to compile)
 * Pygame (optional, you need it to run the Pygame based demos)
 * Pyglet (optional, you need it to run the Pyglet based demos)
 * Matplotlib & Jupyter Notebook (optional, you need it to run the Matplotlib 

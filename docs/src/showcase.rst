@@ -382,8 +382,8 @@ version number if included.):
 
   @misc{pymunk,
     author = {Victor Blomqvist},
-    title = {Pymunk: A easy-to-use pythonic rigid body 2d physics library (version 5.7.0)},
-    year = {2011},
+    title = {Pymunk: A easy-to-use pythonic rigid body 2d physics library (version 6.0.0)},
+    year = {2007},
     url = {https://www.pymunk.org},
   }
 

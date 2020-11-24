@@ -22,7 +22,7 @@ Pymunk can also be installed with conda install, from the conda-forge channel::
 Once Pymunk is installed you can verify that the installation works by running 
 the tests::
 
-    > python -m pymunk.tests test
+    > python -m pymunk.tests -f test
 
 Sometimes on more uncommon platforms you will need to have a GCC-compatible 
 c-compiler installed. 
@@ -40,7 +40,7 @@ with::
 Examples & Documentation
 ========================
 
-Because of their size are the examples and documentation available in the 
+Because of their size the examples and the documentation are available in the 
 source distribution of Pymunk, but not the wheels. The source distribution is 
 available from PyPI at https://pypi.org/project/pymunk/#files (Named
 pymunk-x.y.z.zip)
@@ -147,10 +147,6 @@ the path::
     sys.path.insert(1, 'pymunk')
     import pymunk
 
-The same trick can be used to import pymunk for a script that is not in the 
-direct parent folder, see for example `run.py` in the examples which update 
-the path to simplify development.
-
 
 .. _compile-chipmunk:
 
@@ -174,9 +170,7 @@ place in the source folder::
 
     > python setup.py build_ext --inplace
 
-On Windows you will need to use a gcc-compatible compiler. The pre-built version
-distributed with pymunk were compiled with the MinGW-w64 GCC compiler at 
-https://www.msys2.org/
+On Windows you will need to use Visual Studio matching your Python version. 
   
 .. seealso:: 
 
