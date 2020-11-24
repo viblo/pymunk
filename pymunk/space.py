@@ -986,14 +986,14 @@ class Space(PickleMixin, object):
             for shape in self.shapes:
                 options.draw_shape(shape)
 
-    def get_batched_bodies(self, shape_filter):
-        """Return a memoryview for use when the non-batch api is not performant enough.
+    # def get_batched_bodies(self, shape_filter):
+    #     """Return a memoryview for use when the non-batch api is not performant enough.
 
-        .. note::
-            Experimental API. Likely to change in future major, minor orpoint
-            releases.
-        """
-        pass
+    #     .. note::
+    #         Experimental API. Likely to change in future major, minor orpoint
+    #         releases.
+    #     """
+    #     pass
 
     def __getstate__(self) -> _State:
         """Return the state of this object

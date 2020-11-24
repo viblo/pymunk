@@ -85,12 +85,12 @@ class UnitTestAutoGeometry(unittest.TestCase):
 
         segments = []
 
-        def segment_func(v0: Vec2d, v1: Vec2d) -> None:
+        def segment_func(v0: Tuple[float, float], v1: Tuple[float, float]) -> None:
             segments.append((v0, v1))
 
-        def sample_func(point: Vec2d) -> float:
-            x = int(point.x)
-            y = int(point.y)
+        def sample_func(point: Tuple[float, float]) -> float:
+            x = int(point[0])
+            y = int(point[1])
             if img[y][x] == "x":
                 return 1
             return 0
@@ -127,12 +127,12 @@ class UnitTestAutoGeometry(unittest.TestCase):
 
         segments = []
 
-        def segment_func(v0: Vec2d, v1: Vec2d) -> None:
+        def segment_func(v0: Tuple[float, float], v1: Tuple[float, float]) -> None:
             segments.append((v0, v1))
 
-        def sample_func(point: Vec2d) -> float:
-            x = int(point.x)
-            y = int(point.y)
+        def sample_func(point: Tuple[float, float]) -> float:
+            x = int(point[0])
+            y = int(point[1])
             if img[y][x] == "x":
                 return 1
             return 0

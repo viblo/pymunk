@@ -17,10 +17,10 @@ Example::
     >>> segments = []
 
     >>> def segment_func(v0, v1):
-    ...     segments.append((tuple(v0), tuple(v1)))
+    ...     segments.append((v0, v1))
     >>> def sample_func(point):
-    ...     x = int(point.x)
-    ...     y = int(point.y)
+    ...     x = int(point[0])
+    ...     y = int(point[1])
     ...     return 1 if img[y][x] == "x" else 0
 
     >>> march_soft(pymunk.BB(0,0,6,6), 7, 7, .5, segment_func, sample_func)
@@ -47,8 +47,8 @@ if TYPE_CHECKING:
 from ._chipmunk_cffi import ffi, lib
 from .vec2d import Vec2d
 
-_SegmentFunc = Callable[[Vec2d, Vec2d], None]
-_SampleFunc = Callable[[Vec2d], float]
+_SegmentFunc = Callable[[Tuple[float, float], Tuple[float, float]], None]
+_SampleFunc = Callable[[Tuple[float, float]], float]
 
 _Polyline = Union[List[Tuple[float, float]], List[Vec2d]]
 # Union is needed since List is invariant
@@ -232,20 +232,20 @@ def march_soft(
     :param float threshold: A higher value means more error is tolerated
     :param segment_func: The segment function will be called for each segment
         detected that lies along the density contour for threshold.
-    :type segment_func: ``func(v0 : Vec2d, v1 : Vec2d)``
+    :type segment_func: ``func(v0 : Tuple[float, float], v1 : Tuple[float, float])``
     :param sample_func: The sample function will be called for
         x_samples * y_samples spread across the bounding box area, and should
         return a float.
-    :type sample_func: ``func(point: Vec2d) -> float``
+    :type sample_func: ``func(point: Tuple[float, float]) -> float``
     """
 
     @ffi.callback("cpMarchSegmentFunc")
     def _seg_f(v0: ffi.CData, v1: ffi.CData, _data: ffi.CData) -> None:
-        segment_func(Vec2d(v0.x, v0.y), Vec2d(v1.x, v1.y))
+        segment_func((v0.x, v0.y), (v1.x, v1.y))
 
     @ffi.callback("cpMarchSampleFunc")
     def _sam_f(point: ffi.CData, _data: ffi.CData) -> float:
-        return sample_func(Vec2d(point.x, point.y))
+        return sample_func((point.x, point.y))
 
     lib.cpMarchSoft(
         bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
@@ -271,20 +271,20 @@ def march_hard(
     :param float threshold: A higher value means more error is tolerated
     :param segment_func: The segment function will be called for each segment
         detected that lies along the density contour for threshold.
-    :type segment_func: ``func(v0 : Vec2d, v1 : Vec2d)``
+    :type segment_func: ``func(v0 : Tuple[float, float], v1 : Tuple[float, float])``
     :param sample_func: The sample function will be called for
         x_samples * y_samples spread across the bounding box area, and should
         return a float.
-    :type sample_func: ``func(point: Vec2d) -> float``
+    :type sample_func: ``func(point: Tuple[float, float]) -> float``
     """
 
     @ffi.callback("cpMarchSegmentFunc")
     def _seg_f(v0: ffi.CData, v1: ffi.CData, _data: ffi.CData) -> None:
-        segment_func(Vec2d(v0.x, v0.y), Vec2d(v1.x, v1.y))
+        segment_func((v0.x, v0.y), (v1.x, v1.y))
 
     @ffi.callback("cpMarchSampleFunc")
     def _sam_f(point: ffi.CData, _data: ffi.CData) -> float:
-        return sample_func(Vec2d(point.x, point.y))
+        return sample_func((point.x, point.y))
 
     lib.cpMarchHard(
         bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL

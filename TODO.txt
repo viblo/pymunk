@@ -42,7 +42,7 @@ x Remake BB into namedtuple
 - Think about split between pymunk.util and pymunk modules
 x do we still need pymunk.inf? Yes, for body with normal mass but infinite 
   moment.
-- Think about overriding behavior of sensor shapes in segment and point_query 
+x Think about overriding behavior of sensor shapes in segment and point_query 
   vs segment_first and point_query_nearest (one hits sensors the other does not)
 - Think about return tuple of doubles instead of Vec2d in autogeometry module.
   Skipping the Vec2d can potentially lead to big saving (2x speedup in one 
