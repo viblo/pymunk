@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -x
 
-SUPPORTED_PYTHONS="cp37-cp37m"
+SUPPORTED_PYTHONS="cp36-cp36m cp37-cp37m cp38-cp38"
 
 ls -la /io
 
@@ -25,7 +25,7 @@ export SDL_VIDEODRIVER=dummy
 # Install packages and test
 for PYVER in $SUPPORTED_PYTHONS; do
     PYBIN="/opt/python/${PYVER}/bin"
-    ${PYBIN}/pip install "cffi<=1.13"
+    ${PYBIN}/pip install "cffi != 1.13.1"
     ${PYBIN}/pip install pymunk \
       --no-index -f /io/tools/manylinux-build/wheelhouse
     (cd $HOME; ${PYBIN}/python -m pymunk.tests)

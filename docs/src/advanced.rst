@@ -7,8 +7,8 @@ want a better understanding of Pymunk for example to extend it.
 
 First off, Pymunk is a pythonic wrapper around the C-library Chipmunk. 
 
-To wrap Chipmunk Pymunk uses CFFI. On top of the CFFI wrapping is a handmade 
-pythonic layer to make it nice to use from Python code.
+To wrap Chipmunk Pymunk uses CFFI in API mode. On top of the CFFI wrapping is
+a handmade pythonic layer to make it nice to use from Python code.
 
 Why CFFI?
 ---------
@@ -23,7 +23,7 @@ Advantages (compared to ctypes):
 * Its an active project. The developers and users are active, there are new 
   releases being made and its possible to ask and get answers within a day on 
   the CFFI mailing list.
-* Its said to be the way forward for pypy, with promise of better performance 
+* Its said to be the way forward for Pypy, with promise of better performance 
   compares to ctypes.
 * A little easier than ctypes to wrap things since you can just copy-paste the 
   c headers.
@@ -125,13 +125,11 @@ Code Layout
 Most of Pymunk should be quite straight forward.
 
 Except for the documented API Pymunk has a couple of interesting parts. Low 
-level bindings to Chipmunk, a custom library load function, a custom 
-documentation generation extension and a customized setup.py file to allow
-compilation of Chipmunk.
+level bindings to Chipmunk, a custom documentation generation extension and a
+customized setup.py file to allow compilation of Chipmunk.
 
-The low level chipmunk bindings are located in the two files _chipmunk_cffi.py 
-and _chipmunk_cffi_abi.py. In order to locate and load the compiled chipmunk 
-library file pymunk uses a custom load_library function in _libload.py
+The low level chipmunk bindings are located in the file 
+pymunk_extension_build.py. 
 
 docs/src/ext/autoexample.py
     A Sphinx extension that scans a directory and extracts the toplevel 
@@ -147,15 +145,11 @@ pymunk/_chipmkunk_cffi_abi.py
     This file contains the pure Cffi wrapping definitons. Bascially a giant 
     string created by copy-paster from the relevant header files of Chipmunk.  
 
-pymunk/_libload.py
-    This file contains the custom Cffi library load function that is used 
-    by the rest of pymunk to load the Chipmunk library file.
-
 setup.py
     Except for the standard setup stuff this file also contain the custom 
     build commands to build Chipmunk from source, using a build_ext extension.
 
-tests/*
+pymunk/tests/*
     Collection of (unit) tests. Does not cover all cases, but most core 
     things are there. The tests require a working chipmunk library file.
     
@@ -180,7 +174,14 @@ argument. The matching is as broad as possible, so `UnitTest` matches all the
 unit tests, `test_arbiter` all tests in `test_arbiter.py` and 
 `testResetitution` matches the exact `testRestitution` test case ::
 
-    > python -m pymunk.tests testRestitution
+    > python -m pymunk.tests -f testRestitution
+
+To see all options to the tests command use -h ::
+
+    > python -m pymunk.tests -h
+
+Since the tests cover even the optional parts, you either have to make sure 
+all the optional dependencies are installed, or filter out those tests.
     
     
 Working with non-wrapped parts of Chipmunk
@@ -194,7 +195,7 @@ wrapped by pymunk. The Chipmunk method to get this property is named
 cpBodyIsSleeping.
 
 First we need to check if its included in the cdef definition in 
-_chipmunk_cffi.abi.py. If its not just add it.
+pymunk_extension_build.py. If its not just add it.
     
     `cpBool cpBodyIsSleeping(const cpBody *body);`
     
@@ -206,20 +207,13 @@ Then to make it easy to use we want to create a python method that looks nice::
 Now we are ready with the mapping and ready to use our new method.
     
 
-Weak References and __del__ Methods
+Weak References and free Methods
 -----------------------------------
 
 Internally Pymunk allocates structs from Chipmunk (the c library). For example a 
 Body struct is created from inside the constructor method when a pymunk.Body is 
-created. Because of this several Pymunk objects uses a __del__() method that 
-cleans up the underlying c struct when the object is deleted. 
-
-Use of a __del__() method prevents the normal CPython GC (garbage collection) 
-from handling cyclic references since it wont know in which order to run the 
-__del__() methods. Some Pymunk objects naturally keeps cyclic references to each 
-other to make them easier to use. One such example is the body and shape object. 
-A shape is attached to a body, and a body has a set of all shapes that has been 
-attached. To make it easier for the user of the library these cyclic references 
-have been broken up so that the reference in one direction is weak and dont 
-affect GC. Usually the user do not need to worry about this, but in the cases a 
-reference is weak it is marked in the API documentation of the specific method.
+created. Because of this its important that the corresponding c side memory is 
+deallocated properly when not needed anymore, usually when the Python side 
+object is garbage collected. Most Pymunk objects use `ffi.gc` with a custom 
+free function to do this. Note that the order of freeing is very important to 
+avoid errors.

@@ -1,12 +1,14 @@
+import pickle
+import unittest
+
 import pymunk as p
 from pymunk.vec2d import Vec2d
-import unittest
-import pickle
+
 
 class UnitTestTransform(unittest.TestCase):
-    def testInit(self):
-        
-        t = p.Transform(1,2,3,4,5,6)
+    def testInit(self) -> None:
+
+        t = p.Transform(1, 2, 3, 4, 5, 6)
         self.assertEqual(t.a, 1)
         self.assertEqual(t.b, 2)
         self.assertEqual(t.c, 3)
@@ -23,7 +25,7 @@ class UnitTestTransform(unittest.TestCase):
         self.assertEqual(t.tx, 0)
         self.assertEqual(t.ty, 2)
 
-    def testIdentity(self):
+    def testIdentity(self) -> None:
         t = p.Transform.identity()
         self.assertEqual(t.a, 1)
         self.assertEqual(t.b, 0)
@@ -32,7 +34,7 @@ class UnitTestTransform(unittest.TestCase):
         self.assertEqual(t.tx, 0)
         self.assertEqual(t.ty, 0)
 
-    def testPickle(self):
+    def testPickle(self) -> None:
         x = p.Transform.identity()
         s = pickle.dumps(x, 2)
         actual = pickle.loads(s)

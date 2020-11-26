@@ -18,14 +18,14 @@ the Pymunk webpage for some examples.
 
 2007 - 2020, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest Pymunk release (5.7.0), 
-using Chipmunk 7.0.2 rev aef346fb8b (source included)
+This release is based on the latest Pymunk release (6.0.0.dev1), 
+using Chipmunk 7 rev 080c51480f018040b567e8f0440b121ae3acbae4 .
 
 
 Installation
 ------------
 
-In the normal case pymunk can be installed with pip::
+In the normal case pymunk can be installed from PyPI with pip::
 
     > pip install pymunk
 
@@ -86,7 +86,7 @@ It is (or is striving to be):
 
 * **Easy to use** - It should be easy to use, no complicated code should be 
   needed to add physics to your game or program.
-* **"Pythonic"** - It should not be visible that a c-library (chipmunk) is in 
+* **"Pythonic"** - It should not be visible that a c-library (Chipmunk) is in 
   the bottom, it should feel like a Python library (no strange naming, OO, 
   no memory handling and more)
 * **Simple to build & install** - You shouldn't need to have a zillion of 
@@ -116,8 +116,7 @@ Contact & Support
     https://github.com/viblo/pymunk/issues
     
 Regardless of the method you use I will try to answer your questions as soon 
-as I see them. (And if you ask on SO or the forum other people might help as 
-well!)
+as I see them. (And if you ask on SO other people might help as well!)
 
 
 Dependencies / Requirements
@@ -126,41 +125,38 @@ Dependencies / Requirements
 Basically Pymunk have been made to be as easy to install and distribute as 
 possible, usually `pip install` will take care of everything for you.
 
-- Python (Runs on CPython 2.7 and 3.X. Pypy and Pypy3)
+- Python (Runs on CPython 3.6 and later and Pypy3)
 - Chipmunk (Compiled library already included on common platforms)
 - CFFI (will be installed automatically by Pip)
 - Setuptools (should be included with Pip)
 
-* GCC and friends (optional, you need it to compile Chipmunk)
+* GCC and friends (optional, you need it to compile Pymunk from source. On 
+  windows Visual Studio is required to compile)
 * Pygame (optional, you need it to run the Pygame based demos)
 * Pyglet (optional, you need it to run the Pyglet based demos)
 * Matplotlib & Jupyter Notebook (optional, you need it to run the Matplotlib 
   based demos)
-* Sphinx & aafigure (optional, you need it to build documentation)
+* Sphinx & aafigure & sphinx_autodoc_typehints (optional, you need it to build 
+  documentation)
 
 
-Python 2 & Python 3
--------------------
+Python 2 Support
+----------------
 
-Pymunk has been tested and runs fine on both Python 2 and Python 3. It has 
-been tested on recent versions of CPython (2 and 3) and Pypy. For an exact 
-list of tested versions see the Travis and Appveyor test configs.
+Support for Python 2 (and Python 3.0 - 3.5) has been dropped with Pymunk 6.0. 
+If you use these legacy versions of Python, please use Pymunk 5.x.
 
 
-Chipmunk Compilation
---------------------
+Install from source / Chipmunk Compilation
+------------------------------------------
 
-This section is only required in case you dont install pymunk the normal way 
-(`pip install` or `setup.py install`). Otherwise its handled automatically by 
-the install command.
+This section is only required in case you do not install pymunk from the 
+prebuild binary wheels (normally if you do not use `pip install` or you are 
+on a uncommon platform).
 
 Pymunk is built on top of the c library Chipmunk. It uses CFFI to interface
 with the Chipmunk library file. Because of this Chipmunk has to be compiled
-before it can be used with Pymunk. Compilation has to be done with GCC or 
-another compiler that uses the same flags. 
-
-The source distribution does not include a pre-compiled Chipmunk library file, 
-instead you need to build it yourself. 
+together with Pymunk as an extension module. 
 
 There are basically two options, either building it automatically as part of 
 installation using for example Pip::
@@ -171,10 +167,3 @@ Or if you have the source unpacked / you got Pymunk by cloning its git repo,
 you can explicitly tell Pymunk to compile it inplace::    
 
     > python setup.py build_ext --inplace
-
-Note that chipmunk is actually not built as a python extension, but distutils /
-setuptools doesn't currently handle pure native libraries that needs to be built 
-in a good way if built with build_clib.
-
-The compiled file goes into the /pymunk folder (same as space.py, 
-body.py and others).

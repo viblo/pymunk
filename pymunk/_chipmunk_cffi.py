@@ -1,4 +1,6 @@
 from __future__ import absolute_import
 
-from pymunk._chipmunk_cffi_abi import ffi, lib, lib_path 
-    
+from ._chipmunk import ffi, lib  # type: ignore
+
+ffi = ffi
+lib = lib

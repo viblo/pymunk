@@ -6,7 +6,6 @@ Contents
 .. toctree::
     :maxdepth: 4
     
-    news
     installation
     overview
     pymunk
@@ -15,9 +14,10 @@ Contents
     tutorials
     benchmarks
     advanced
+    changelog
+    Downloads <https://pypi.python.org/pypi/pymunk/>
     Issue Tracker <https://github.com/viblo/pymunk/issues>
     Source Repository <https://github.com/viblo/pymunk>
-    Downloads <https://pypi.python.org/pypi/pymunk/>
     license
 
 Indices and tables

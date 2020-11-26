@@ -1,21 +1,9 @@
 environment:
   matrix:
-    - PYTHON: "C:\\Python27"
-      MINGW: "mingw32"
-    - PYTHON: "C:\\Python27-x64"
-      MINGW: "mingw64"
-    - PYTHON: "C:\\Python35"
-      MINGW: "mingw32"
-    - PYTHON: "C:\\Python35-x64"
-      MINGW: "mingw64"
     - PYTHON: "C:\\Python36"
-      MINGW: "mingw32"
     - PYTHON: "C:\\Python36-x64"
-      MINGW: "mingw64"
     - PYTHON: "C:\\Python37"
-      MINGW: "mingw32"
     - PYTHON: "C:\\Python37-x64"
-      MINGW: "mingw64"
 
 #platform:
 #  - x86
@@ -30,12 +18,9 @@ init:
   - ECHO %PYTHON%
 
 install:
-  # Use correct gcc compiler
-  - "SET PATH=C:\\msys64\\%MINGW%\\bin;%PATH%" 
   # tox for testing
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "python --version"
-  - "python -m pip install tox"
   # We need wheel installed to build wheels
   - "python -m pip install --upgrade wheel"
   
@@ -44,7 +29,7 @@ build_script:
 
 test_script:
   # get the wheel file and use it as input to tox
-  - python -c "import glob,tox;tox.cmdline(['-e', 'py', '-vv', '--installpkg', glob.glob('dist/*.whl')[0]])"
+  - python -m pymunk.tests"
 
 artifacts:
   - path: dist\*

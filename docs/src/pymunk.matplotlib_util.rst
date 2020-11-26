@@ -8,7 +8,4 @@
         <script type="text/javascript" src='_static/pymunk.js'></script>
     
 .. automodule:: pymunk.matplotlib_util
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :inherited-members:
+    :special-members: __init__

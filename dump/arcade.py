@@ -1,4 +1,5 @@
 import math
+
 import pyglet
 
 import pymunk
@@ -8,13 +9,13 @@ SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
 BOX_SIZE = 45
 
-class Main(pyglet.window.Window):
 
+class Main(pyglet.window.Window):
     def __init__(self, width, height):
         pyglet.window.Window.__init__(self, vsync=False)
-        
+
         self.draw_options = pymunk.pyglet_util.DrawOptions()
-        pyglet.clock.schedule_interval(self.update, 1/60.0)
+        pyglet.clock.schedule_interval(self.update, 1 / 60.0)
 
         # -- Pymunk space
         self.space = pymunk.Space()
@@ -43,7 +44,7 @@ class Main(pyglet.window.Window):
         size = BOX_SIZE
         mass = 5
         moment = pymunk.moment_for_box(mass, (size, size))
-        moment = pymunk.inf
+        moment = float("inf")
         body = pymunk.Body(mass, moment)
         body.position = pymunk.Vec2d(player_x, player_y + 49)
         self.box_shape = pymunk.Poly.create_box(body, (size, size))
@@ -51,15 +52,20 @@ class Main(pyglet.window.Window):
         self.space.add(body, self.box_shape)
 
         # Create a joint between them
-        constraint = pymunk.constraint.PinJoint(self.box_shape.body, self.circle_shape.body, (-20,0), (0,0))
+        constraint = pymunk.constraint.PinJoint(
+            self.box_shape.body, self.circle_shape.body, (-20, 0), (0, 0)
+        )
         self.space.add(constraint)
 
-        constraint = pymunk.constraint.PinJoint(self.box_shape.body, self.circle_shape.body, (20,0), (0,0))
+        constraint = pymunk.constraint.PinJoint(
+            self.box_shape.body, self.circle_shape.body, (20, 0), (0, 0)
+        )
         self.space.add(constraint)
-
 
         # Make the circle rotate
-        constraint = pymunk.constraint.SimpleMotor(self.circle_shape.body, self.box_shape.body, -3)
+        constraint = pymunk.constraint.SimpleMotor(
+            self.circle_shape.body, self.box_shape.body, -3
+        )
         self.space.add(constraint)
 
     def on_draw(self):
@@ -68,12 +74,12 @@ class Main(pyglet.window.Window):
         """
         self.clear()
         self.space.debug_draw(self.draw_options)
-        
 
     def update(self, delta_time):
 
         # Update physics
         self.space.step(1 / 80.0)
+
 
 m = Main(SCREEN_WIDTH, SCREEN_HEIGHT)
 pyglet.app.run()

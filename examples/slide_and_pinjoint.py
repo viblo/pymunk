@@ -5,43 +5,54 @@ This example is also used in the Get Started Tutorial.
 
 __docformat__ = "reStructuredText"
 
-import sys, random
+import random
+import sys
+
 import pygame
-from pygame.locals import *
+
 import pymunk
 import pymunk.pygame_util
+
+random.seed(1)
+
 
 def add_ball(space):
     """Add a ball to the given space at a random position"""
     mass = 1
     radius = 14
-    inertia = pymunk.moment_for_circle(mass, 0, radius, (0,0))
+    inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
     body = pymunk.Body(mass, inertia)
-    x = random.randint(120,380)
+    x = random.randint(120, 380)
     body.position = x, 550
-    shape = pymunk.Circle(body, radius, (0,0))
+    shape = pymunk.Circle(body, radius, (0, 0))
+    shape.friction = 1
     space.add(body, shape)
     return shape
 
+
 def add_L(space):
     """Add a inverted L shape with two joints"""
-    rotation_center_body = pymunk.Body(body_type = pymunk.Body.STATIC)
-    rotation_center_body.position = (300,300)
+    rotation_center_body = pymunk.Body(body_type=pymunk.Body.STATIC)
+    rotation_center_body.position = (300, 300)
 
-    rotation_limit_body = pymunk.Body(body_type = pymunk.Body.STATIC)
-    rotation_limit_body.position = (200,300)
+    rotation_limit_body = pymunk.Body(body_type=pymunk.Body.STATIC)
+    rotation_limit_body.position = (200, 300)
 
     body = pymunk.Body(10, 10000)
-    body.position = (300,300)
-    l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 1)
-    l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, 50.0), 1)
-
-    rotation_center_joint = pymunk.PinJoint(body, rotation_center_body, (0,0), (0,0))
+    body.position = (300, 300)
+    l1 = pymunk.Segment(body, (-145, 0), (255.0, 0.0), 1)
+    l2 = pymunk.Segment(body, (-145, 0), (-145.0, 25.0), 1)
+    l1.friction = 1
+    l2.friction = 1
+    rotation_center_joint = pymunk.PinJoint(body, rotation_center_body, (0, 0), (0, 0))
     joint_limit = 25
-    rotation_limit_joint = pymunk.SlideJoint(body, rotation_limit_body, (-100,0), (0,0), 0, joint_limit)
+    rotation_limit_joint = pymunk.SlideJoint(
+        body, rotation_limit_body, (-100, 0), (0, 0), 0, joint_limit
+    )
 
     space.add(l1, l2, body, rotation_center_joint, rotation_limit_joint)
-    return l1,l2
+    return l1, l2
+
 
 def main():
     pygame.init()
@@ -59,11 +70,11 @@ def main():
     ticks_to_next_ball = 10
     while True:
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 sys.exit(0)
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit(0)
-            elif event.type == KEYDOWN and event.key == K_p:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "slide_and_pinjoint.png")
 
         ticks_to_next_ball -= 1
@@ -81,13 +92,14 @@ def main():
             space.remove(ball, ball.body)
             balls.remove(ball)
 
-        space.step(1/50.0)
+        space.step(1 / 50.0)
 
-        screen.fill((255,255,255))
+        screen.fill((255, 255, 255))
         space.debug_draw(draw_options)
 
         pygame.display.flip()
         clock.tick(50)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

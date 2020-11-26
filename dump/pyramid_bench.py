@@ -89,7 +89,8 @@ if __name__ == '__main__':
         
         main()
     else:
-        import cProfile, pstats
+        import cProfile
+        import pstats
         
         prof = cProfile.run("main()", "profile.prof")
         stats = pstats.Stats("profile.prof")

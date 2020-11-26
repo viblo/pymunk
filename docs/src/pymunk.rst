@@ -13,12 +13,11 @@ API Reference
         :maxdepth: 6
 
         pymunk.autogeometry
-        pymunk.constraint
+        pymunk.constraints
         pymunk.vec2d
         pymunk.matplotlib_util    
         pymunk.pygame_util
         pymunk.pyglet_util
-        pymunkoptions
 
 .. container:: custom-index
 
@@ -26,11 +25,8 @@ API Reference
     
         <script type="text/javascript" src='_static/pymunk.js'></script>
    
-.. rubric:: pymunk
+.. rubric:: Pymunk
 
 .. automodule:: pymunk
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :inherited-members:
+    :special-members: __init__
     

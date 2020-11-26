@@ -6,11 +6,11 @@ pypy-1.9: 11.12 sec
 pypy-c-jit-53293-478bc4f20cb7-win32: 11.12 sec
 """
 
+import ctypes
+import math
+import operator
 import timeit
 
-import operator
-import math
-import ctypes 
 
 #class Vec2d(): # this would be very fast in pypy
 class Vec2d(ctypes.Structure):
@@ -127,7 +127,8 @@ if __name__ == '__main__':
     if not doprof: 
         main()
     else:
-        import cProfile, pstats
+        import cProfile
+        import pstats
         
         prof = cProfile.run("run()", "profile.prof")
         stats = pstats.Stats("profile.prof")

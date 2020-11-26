@@ -13,8 +13,10 @@ include examples/*.wav
 include examples/*.ipynb
 prune examples/.ipynb_checkpoints
 #chipmunk src
-recursive-include chipmunk_src *.c
-recursive-include chipmunk_src *.h
-recursive-include chipmunk_src *.txt
+recursive-include Chipmunk2D/src *
+recursive-include Chipmunk2D/include/chipmunk *
+include Chipmunk2D/*.txt
 #tools
 recursive-include tools *.py
+#typing
+include pymunk/py.typed

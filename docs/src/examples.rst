@@ -56,11 +56,6 @@ Given that pymunk is installed where your python will find it::
 
     >cd examples
     >python breakout.py
-
-To run directly without installing anything. From the pymunk source folder::
-
-    >cd examples
-    >python run.py breakout.py 
     
 Each example contains something unique. Not all of the examples use the same 
 style. For example, some use the pymunk.pygame_util module to draw stuff, 

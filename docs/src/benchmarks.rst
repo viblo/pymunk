@@ -1,5 +1,6 @@
 Benchmarks
 ==========
+.. _benchmark:
 
 To get a grip of the actual performance of Pymunk this page contains a number
 of benchmarks.  
@@ -111,7 +112,7 @@ callback test using the collision handler::
 
     s.step(0.01)
 
-(see `pymunk-collision-callback.py and  `cymunk-collision-callback.py`)
+(see `pymunk-collision-callback.py` and  `cymunk-collision-callback.py`)
 
 Results
 +++++++

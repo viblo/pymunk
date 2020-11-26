@@ -160,10 +160,10 @@ print b.contents.m, b.contents.p.x
 b.contents.p.x = 3.5
 print b.contents.m, b.contents.p.x
 
+import math
+import operator
 import timeit
 
-import operator
-import math
 
 def run():
     b = l.cpBodyNew(15,17)
@@ -188,7 +188,8 @@ if __name__ == '__main__':
     if not doprof: 
         main()
     else:
-        import cProfile, pstats
+        import cProfile
+        import pstats
         
         prof = cProfile.run("run()", "profile.prof")
         stats = pstats.Stats("profile.prof")

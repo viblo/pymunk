@@ -30,20 +30,12 @@ Homepage: http://www.pymunk.org
 This is the main containing module of Pymunk. It contains among other things
 the very central Space, Body and Shape classes.
 
-When you import this module it will automatically load the chipmunk library
-file. As long as you haven't turned off the debug mode a print will show
-exactly which Chipmunk library file it loaded. For example::
-
-    >>> import pymunk
-
-    Loading chipmunk for Windows (32bit) [C:\code\pymunk\chipmunk.dll]
 """
 
 __docformat__ = "reStructuredText"
 
 
 __all__ = [
-    "inf",
     "version",
     "chipmunk_version",
     "Space",
@@ -67,22 +59,25 @@ __all__ = [
     "PointQueryInfo",
     "ShapeQueryInfo",
     "SpaceDebugDrawOptions",
+    "Vec2d",
 ]
 
-import sys
-import warnings
+from typing import Sequence, Tuple, cast
 
 from . import _chipmunk_cffi
 
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-from pymunk.constraint import *
+# import logging
+# logging.basicConfig(level=0)
 
+from . import _version
 from .arbiter import Arbiter
 from .bb import BB
 from .body import Body
 from .collision_handler import CollisionHandler
+from .constraints import *
 from .contact_point_set import ContactPoint, ContactPointSet
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shape_filter import ShapeFilter
@@ -92,19 +87,14 @@ from .space_debug_draw_options import SpaceDebugDrawOptions
 from .transform import Transform
 from .vec2d import Vec2d
 
-version = "5.7.0"
+version: str = _version.version
 """The release version of this pymunk installation.
 Valid only if pymunk was installed from a source or binary
 distribution (i.e. not in a checked-out copy from git).
 """
 
-chipmunk_version = "%sR%s" % (
-    ffi.string(cp.cpVersionString),
-    "aef346fb8bac3757c3c6faa019bbf97bafc296d1",
-)
-"""The Chipmunk version compatible with this pymunk version.
-Other (newer) Chipmunk versions might also work if the new version does not
-contain any breaking API changes.
+chipmunk_version: str = _version.chipmunk_version
+"""The Chipmunk version used with this Pymunk version.
 
 This property does not show a valid value in the compiled documentation, only
 when you actually import pymunk and do pymunk.chipmunk_version
@@ -113,91 +103,88 @@ The string is in the following format:
 <cpVersionString>R<github commit of chipmunk>
 where cpVersionString is a version string set by Chipmunk and the git commit
 hash corresponds to the git hash of the chipmunk source from
-github.com/viblo/Chipmunk2D included with Pymunk. If the Chipmunk version
-is a release then the second part will be empty
-
-.. note::
-    This is also the version of the Chipmunk source files included in the
-    chipmunk_src folder (normally included in the Pymunk source distribution).
-"""
-
-chipmunk_path = _chipmunk_cffi.lib_path
-"""The path to the Chipmunk library loaded.
-
-Useful in case you are packaging a Pymunk program with for example Py2exe or 
-PyInstaller and need to know what library file to include. Please see the 
-Py2exe examples in the examples folder of Pymunk for example of this.
-"""
-
-inf = float("inf")
-"""Infinity that can be passed as mass or inertia to a :py:class:`Body`.
-
-Useful when you for example want a body that cannot rotate, just set its
-moment to inf. Just remember that if two objects with both infinite masses
-collides the world might explode. Similar effects can happen with infinite
-moment.
-
-.. note::
-    In previous versions of Pymunk you used inf to create static bodies. This
-    has changed. See :py:class:`Body` for details.
+github.com/viblo/Chipmunk2D included with Pymunk.
 """
 
 
-def moment_for_circle(mass, inner_radius, outer_radius, offset=(0, 0)):
+def moment_for_circle(
+    mass: float,
+    inner_radius: float,
+    outer_radius: float,
+    offset: Tuple[float, float] = (0, 0),
+) -> float:
     """Calculate the moment of inertia for a hollow circle
 
-    inner_radius and outer_radius are the inner and outer diameters.
-    (A solid circle has an inner diameter of 0)
+    (A solid circle has an inner radius of 0)
     """
-    return cp.cpMomentForCircle(mass, inner_radius, outer_radius, tuple(offset))
+    assert len(offset) == 2
+
+    return cp.cpMomentForCircle(mass, inner_radius, outer_radius, offset)
 
 
-def moment_for_segment(mass, a, b, radius):
+def moment_for_segment(
+    mass: float, a: Tuple[float, float], b: Tuple[float, float], radius: float
+) -> float:
     """Calculate the moment of inertia for a line segment
 
     The endpoints a and b are relative to the body
     """
-    return cp.cpMomentForSegment(mass, tuple(a), tuple(b), radius)
+    assert len(a) == 2
+    assert len(b) == 2
+
+    return cp.cpMomentForSegment(mass, a, b, radius)
 
 
-def moment_for_box(mass, size):
+def moment_for_box(mass: float, size: Tuple[float, float]) -> float:
     """Calculate the moment of inertia for a solid box centered on the body.
 
     size should be a tuple of (width, height)
     """
+    assert len(size) == 2
     return cp.cpMomentForBox(mass, size[0], size[1])
 
 
-def moment_for_poly(mass, vertices, offset=(0, 0), radius=0):
+def moment_for_poly(
+    mass: float,
+    vertices: Sequence[Tuple[float, float]],
+    offset: Tuple[float, float] = (0, 0),
+    radius: float = 0,
+) -> float:
     """Calculate the moment of inertia for a solid polygon shape.
 
     Assumes the polygon center of gravity is at its centroid. The offset is
     added to each vertex.
     """
-    vs = list(map(tuple, vertices))
-    return cp.cpMomentForPoly(mass, len(vertices), vs, tuple(offset), radius)
+    assert len(offset) == 2
+    vs = list(vertices)
+    return cp.cpMomentForPoly(mass, len(vs), vs, offset, radius)
 
 
-def area_for_circle(inner_radius, outer_radius):
+def area_for_circle(inner_radius: float, outer_radius: float) -> float:
     """Area of a hollow circle."""
-    return cp.cpAreaForCircle(inner_radius, outer_radius)
+    return cast(float, cp.cpAreaForCircle(inner_radius, outer_radius))
 
 
-def area_for_segment(a, b, radius):
+def area_for_segment(
+    a: Tuple[float, float], b: Tuple[float, float], radius: float
+) -> float:
     """Area of a beveled segment.
 
     (Will always be zero if radius is zero)
     """
-    return cp.cpAreaForSegment(tuple(a), tuple(b), radius)
+    assert len(a) == 2
+    assert len(b) == 2
+
+    return cp.cpAreaForSegment(a, b, radius)
 
 
-def area_for_poly(vertices, radius=0):
+def area_for_poly(vertices: Sequence[Tuple[float, float]], radius: float = 0) -> float:
     """Signed area of a polygon shape.
 
     Returns a negative number for polygons with a clockwise winding.
     """
-    vs = list(map(tuple, vertices))
-    return cp.cpAreaForPoly(len(vertices), vs, radius)
+    vs = list(vertices)
+    return cp.cpAreaForPoly(len(vs), vs, radius)
 
 
 # del cp, ct, u

@@ -36,13 +36,6 @@ make sure it works and can be imported::
 
     >>> import pymunk
 
-If you get an error message it might be because pymunk could not find the 
-chipmunk library that it depends on. If you install pymunk with pip or setup.py
-install everything should already be correct, but if you got the source and 
-want to use it as a stand alone folder you need to build it inplace::
-
-    > python setup.py build_ext --inplace
-
 More information on installation can be found here: 
 :ref:`Installation <installation>`
 
@@ -54,7 +47,7 @@ An empty simulation
 =======================
 
 Ok, lets start.
-Chipmunk (and therefore pymunk) has a couple of central concepts, which is 
+Chipmunk (and therefore Pymunk) has a couple of central concepts, which is 
 explained pretty good in this citation from the Chipmunk docs:
 
 Rigid bodies
@@ -64,12 +57,12 @@ Rigid bodies
     are able to rotate.
 
 Collision shapes
-    By attaching shapes to bodies, you can define the a body's shape. You can 
+    By attaching shapes to bodies, you can define the body's shape. You can 
     attach many shapes to a single body to define a complex shape, or none if 
     it doesn't require a shape.
 
 Constraints/joints
-    You can attach joints between two bodies to constrain their behavior.
+    You can attach joints between two bodies to constrain their behavior. 
 
 Spaces
     Spaces are the basic simulation unit in Chipmunk. You add bodies, shapes 
@@ -86,7 +79,6 @@ Anyway, we are now ready to write some code::
 
     import sys
     import pygame
-    from pygame.locals import *
     import pymunk #1
 
     def main():
@@ -96,13 +88,13 @@ Anyway, we are now ready to write some code::
         clock = pygame.time.Clock()
         
         space = pymunk.Space() #2
-        space.gravity = (0.0, -900.0)
+        space.gravity = (0.0, 900.0)
         
         while True:
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == pygame.QUIT:
                     sys.exit(0)
-                elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     sys.exit(0)
                             
             screen.fill((255,255,255))
@@ -122,11 +114,11 @@ empty space.
 
 2. We then create a space and set its gravity to something good. Remember 
    that what is important is what looks good on screen, not what the real 
-   world value is. -900 will make a good looking simulation, but feel free 
+   world value is. 900 will make a good looking simulation, but feel free 
    to experiment when you have the full code ready.
 
 3. In our game loop we call the step() function on our space. The step 
-   function steps the simulation one step forward in time. 
+   function steps the simulation one step forward in time each time called. 
 
 .. Note:: 
     It is best to keep the step size constant and not adjust it depending on the 
@@ -143,42 +135,46 @@ but I will extract some methods in this tutorial to make it more easy to
 follow. First, a function to add a ball to a space::
 
     def add_ball(space):
-        mass = 1
-        radius = 14
-        moment = pymunk.moment_for_circle(mass, 0, radius) # 1
-        body = pymunk.Body(mass, moment) # 2
-        x = random.randint(120, 380)
-        body.position = x, 550 # 3
-        shape = pymunk.Circle(body, radius) # 4
-        space.add(body, shape) # 5
+        mass = 3
+        radius = 25
+        body = pymunk.Body()  # 1
+        x = random.randint(120, 300)
+        body.position = x, 50  # 2
+        shape = pymunk.Circle(body, radius)  # 3
+        shape.mass = mass  # 4
+        space.add(body, shape)  # 5
         return shape
 
 
-1. All bodies must have their moment of inertia set. If our object is a normal 
-   ball we can use the predefined function moment_for_circle to calculate it 
-   given its mass and radius. However, you could also select a value by 
-   experimenting with what looks good for your simulation.
 
-2. After we have the inertia we can create the body of the ball.
+1. We first create the body of the ball.
 
-3. And we set its position
+2. And we set its position
 
-4. And in order for it to collide with things, it needs to have one (or many) 
+3. And in order for it to collide with things, it needs to have one (or many) 
    collision shape(s).  
 
+4. All bodies must have their moment of inertia set. In most cases its 
+   easiest to let Pymunk handle calculation from shapes. So we set the mass of 
+   each shape, and then when added to space the body will automatically get a 
+   proper mass and moment set. Another option is to set the density of each 
+   shape, or its also possible to set the values directly on the body (or 
+   even adjust them afterwards). 
+
 5. Finally we add the body and shape to the space to include it in our 
-   simulation.
+   simulation. Note that the body must always be added to the space before or 
+   at the same time as any shapes attached to it.
 
 Now that we can create balls we want to display them. Either we can use the 
 built in pymunk_util package do draw the whole space directly, or we can do it 
 manually. The debug drawing functions included with Pymunk are good for putting
-something together easy and quickly, while a polished game for example most 
+something together easy and quickly, while for example a polished game most 
 probably will want to make its own drawing code.
 
 If we want to draw manually, our draw function could look something like this::  
 
     def draw_ball(screen, ball):
-        p = int(ball.body.position.x), 600-int(ball.body.position.y)
+        p = int(ball.body.position.x), int(ball.body.position.y)
         pygame.draw.circle(screen, (0,0,255), p, int(ball.radius), 2)
 
 And then called in this way (given we collected all the ball shapes in a list 
@@ -188,10 +184,12 @@ called balls)::
         draw_ball(screen, ball)
 
 However, as we use pygame in this example we can instead use the debug_draw
-method already included in Pymunk to simplify a bit. In that case we  
-first have to create a DrawOptions object with the options (mainly what surface 
-to draw on)::
+method already included in Pymunk to simplify a bit. It first needs to be 
+imported, and next we have to create a DrawOptions object with the options 
+(what surface to draw on in the case of Pygame)::
 
+    import pymunk.pygame_util
+    ...
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
 And after that when we want to draw all our shapes we would just do it in this 
@@ -207,9 +205,10 @@ balls you should see a couple of balls falling. Yay!
 ::
 
     import sys, random
+    random.seed(1) # make the simulation the same each time, easier to debug
     import pygame
-    from pygame.locals import *
     import pymunk
+    import pymunk.pygame_util
 
     #def add_ball(space):
 
@@ -220,7 +219,7 @@ balls you should see a couple of balls falling. Yay!
         clock = pygame.time.Clock()
         
         space = pymunk.Space()
-        space.gravity = (0.0, -900.0)
+        space.gravity = (0.0, 900.0)
         
         balls = []
         draw_options = pymunk.pygame_util.DrawOptions(screen)
@@ -229,9 +228,9 @@ balls you should see a couple of balls falling. Yay!
         ticks_to_next_ball = 10
         while True:
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == pygame.QUIT:
                     sys.exit(0)
-                elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     sys.exit(0)
             
             ticks_to_next_ball -= 1
@@ -263,14 +262,16 @@ with the balls we start with a function to add an L to the space::
         body = pymunk.Body(body_type = pymunk.Body.STATIC) # 1
         body.position = (300, 300)    
         l1 = pymunk.Segment(body, (-150, 0), (255, 0), 5) # 2
-        l2 = pymunk.Segment(body, (-150, 0), (-150, 50), 5)
+        l2 = pymunk.Segment(body, (-150, 0), (-150, -50), 5)
                 
-        space.add(l1, l2) # 3
+        space.add(body, l1, l2) # 3
         return l1,l2
 
 1. We create a "static" body. The important step is to never add it to the 
    space like the dynamic ball bodies. Note how static bodies are created by 
-   setting the body_type of the body.
+   setting the body_type of the body. Many times its easier to use the 
+   already existing static body in the space (`space.static_body`), but we 
+   will make the L shape dynamic in just a little bit.
 2. A line shaped shape is created here.
 3. Again, we only add the segments, not the body to the space.
 
@@ -294,14 +295,13 @@ just to show what it could look like::
 
 2. This is a little function to convert coordinates from pymunk to pygame 
    world. Now that we have it we can use it in the draw_ball() function as 
-   well. We want to flip the y coordinate (-p.y), and then offset it with the 
-   screen height (+600). It looks like this:
+   well. 
 
 ::
 
     def to_pygame(p):
-        """Small hack to convert pymunk to pygame coordinates"""
-        return int(p.x), int(-p.y+600)
+        """Small helper to convert pymunk vec2d to pygame integers"""
+        return round(p.x), round(p.y)
 
 
 With the full code we should something like the below, and now we should see 
@@ -310,10 +310,10 @@ an inverted L shape in the middle will balls spawning and hitting the shape.
 ::
 
     import sys, random
+    random.seed(1) # make the simulation the same each time, easier to debug
     import pygame
-    from pygame.locals import *
     import pymunk
-    import math
+    import pymunk.pymunk_util
 
     #def to_pygame(p):
     #def add_ball(space):
@@ -326,7 +326,7 @@ an inverted L shape in the middle will balls spawning and hitting the shape.
         clock = pygame.time.Clock()
         
         space = pymunk.Space()
-        space.gravity = (0.0, -900.0)
+        space.gravity = (0.0, 900.0)
         
         lines = add_static_L(space)
         balls = []
@@ -335,9 +335,9 @@ an inverted L shape in the middle will balls spawning and hitting the shape.
         ticks_to_next_ball = 10
         while True:
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == pygame.QUIT:
                     sys.exit(0)
-                elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     sys.exit(0)
             
             ticks_to_next_ball -= 1
@@ -355,7 +355,7 @@ an inverted L shape in the middle will balls spawning and hitting the shape.
             clock.tick(50)
             
     if __name__ == '__main__':
-        (main()
+        main()
     
 
 Joints (1)
@@ -368,27 +368,30 @@ we constrain it. As our static L shape won't be static anymore we also rename
 the function to add_L(). ::
 
     def add_L(space):
-        rotation_center_body = pymunk.Body(body_type = pymunk.Body.STATIC) # 1
+        rotation_center_body = pymunk.Body(body_type=pymunk.Body.STATIC)  # 1
         rotation_center_body.position = (300, 300)
-        
-        body = pymunk.Body(10, 10000) # 2
-        body.position = (300, 300)    
+
+        body = pymunk.Body()
+        body.position = (300, 300)
         l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 5.0)
-        l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, 50.0), 5.0)
-        
-        rotation_center_joint = pymunk.PinJoint(body, rotation_center_body, (0,0), (0,0)) # 3    
+        l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, -50.0), 5.0)
+        l1.mass = 8  # 2
+        l2.mass = 1
+        rotation_center_joint = pymunk.PinJoint(
+            body, rotation_center_body, (0, 0), (0, 0)
+        )  # 3
 
         space.add(l1, l2, body, rotation_center_joint)
-        return l1,l2
+        return l1, l2
 
 1. This is the rotation center body. Its only purpose is to act as a static 
    point in the joint so the line can rotate around it. As you see we never add 
    any shapes to it.
 
 2. The L shape will now be moving in the world, and therefor it can no longer 
-   be a static body. I have precalculated the inertia to 10000. (ok, I just 
-   took a number that worked, the important thing is that it looks good on 
-   screen!).
+   be a static body. Here we see the benefit of setting the mass on the 
+   shapes instead of the body, no need to figure out how big the moment 
+   should be, and Pymunk will automatically calculate the center of gravity. 
 
 3. A pin joint allow two objects to pivot about a single point. In our case one 
    of the objects will be stuck to the world.
@@ -408,11 +411,13 @@ we modify the add_L() function::
         rotation_limit_body = pymunk.Body(body_type = pymunk.Body.STATIC) # 1
         rotation_limit_body.position = (200,300)
         
-        body = pymunk.Body(10, 10000)
+        body = pymunk.Body()
         body.position = (300,300)    
         l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 5.0)
-        l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, 50.0), 5.0)
-        
+        l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, -50.0), 5.0)
+        l1.mass = 8
+        l2.mass = 1
+
         rotation_center_joint = pymunk.PinJoint(body, rotation_center_body, (0,0), (0,0)) 
         joint_limit = 25
         rotation_limit_joint = pymunk.SlideJoint(body, rotation_limit_body, (-100,0), (0,0), 0, joint_limit) # 2
@@ -464,19 +469,19 @@ chipmunk forum)
 The full code for this tutorial is::
 
     import sys, random
+    random.seed(1) # make the simulation the same each time, easier to debug
     import pygame
-    from pygame.locals import *
     import pymunk
     import pymunk.pygame_util
 
     def add_ball(space):
         """Add a ball to the given space at a random position"""
-        mass = 1
-        radius = 14
+        mass = 3
+        radius = 25
         inertia = pymunk.moment_for_circle(mass, 0, radius, (0,0))
         body = pymunk.Body(mass, inertia)
-        x = random.randint(120,380)
-        body.position = x, 550
+        x = random.randint(120,300)
+        body.position = x, 50
         shape = pymunk.Circle(body, radius, (0,0))
         space.add(body, shape)
         return shape
@@ -492,8 +497,10 @@ The full code for this tutorial is::
         body = pymunk.Body(10, 10000)
         body.position = (300,300)    
         l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 5.0)
-        l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, 50.0), 5.0)
-        
+        l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, -50.0), 5.0)
+        l1.mass = 8
+        l2.mass = 1
+
         rotation_center_joint = pymunk.PinJoint(body, rotation_center_body, (0,0), (0,0)) 
         joint_limit = 25
         rotation_limit_joint = pymunk.SlideJoint(body, rotation_limit_body, (-100,0), (0,0), 0, joint_limit)
@@ -508,7 +515,7 @@ The full code for this tutorial is::
         clock = pygame.time.Clock()
         
         space = pymunk.Space()
-        space.gravity = (0.0, -900.0)
+        space.gravity = (0.0, 900.0)
         
         lines = add_L(space)
         balls = []
@@ -517,9 +524,9 @@ The full code for this tutorial is::
         ticks_to_next_ball = 10
         while True:
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == pygame.QUIT:
                     sys.exit(0)
-                elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     sys.exit(0)
             
             ticks_to_next_ball -= 1
@@ -532,7 +539,7 @@ The full code for this tutorial is::
             
             balls_to_remove = []
             for ball in balls:
-                if ball.body.position.y < 150:
+                if ball.body.position.y > 550:
                     balls_to_remove.append(ball)
             
             for ball in balls_to_remove:

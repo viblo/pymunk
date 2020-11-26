@@ -3,7 +3,7 @@ Showcase
 ********
 
 This page shows some uses of Pymunk. If you also have done something using 
-Pymunk please let me know and I can add it here!   
+Pymunk please let me know and I can add it here!
 
 Games
 =====
@@ -75,6 +75,24 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/PySimpleGUI.png
+      - `PySimpleGUI Desktop Demo <https://github.com/PySimpleGUI/PySimpleGUI>`_
+
+        :subscript:`made by PySimpleGUI/Mike. Retrieved 2020-10-13`
+
+        Demo of using PySimpleGUI together with Pymunk to create bouncing
+        balls directly on the desktop, thanks to a transparent container 
+        window.
+
+    * - .. image:: _static/legged_robot.png
+      - `Legged robot using differential evolution and perception <https://www.youtube.com/watch?v=n-OCy6ToLsU&feature=youtu.be>`_
+
+        :subscript:`made by Nav. Retrieved 2020-08-20`
+
+        Legged robot first using Differential Evolution to navigate terrain 
+        and then learning to recognise the world via perception from its 
+        senses.
+
     * - .. image:: _static/ambient-chimes.png
       - `Simulation of ambient chimes | Circle in a hexagon <https://youtu.be/7MRJS8ZV9VA>`_
 
@@ -108,6 +126,8 @@ Non-Games
         multidimensional search space of vehicle speed, chassis width, chassis 
         height and wheel radius, to find a variety of configurations among 
         which few are successful in helping the car cross the track. 
+
+        Source code available at github at https://github.com/nav9/evolutionaryCarRace
 
     * - .. image:: _static/virtuaplant.png
       - `VirtuaPlant <https://wroot.org/projects/virtuaplant/>`_
@@ -175,8 +195,36 @@ Non-Games
 Papers / Science
 ================
 
-Pymunk has been used or referenced in a number of scientific papers 
+Pymunk has been used or referenced in a number of scientific papers.
 
+List of papers which has used or mentioned Pymunk:
+
+* Jiang, Lincheng. 
+  "A Computational Method to Generate One-story Floor Plans for Nursing Homes Based on Daylight Hour Potential and Shortest Path of Circulations." 
+  (2020).
+
+* Chen, Ricky TQ, Brandon Amos, and Maximilian Nickel. 
+  "Learning Neural Event Functions for Ordinary Differential Equations." 
+  arXiv preprint arXiv:2011.03902 (2020).
+
+* Jain, Ayush, Andrew Szot, and Joseph J. Lim. 
+  "Generalization to New Actions in Reinforcement Learning." 
+  arXiv preprint arXiv:2011.01928 (2020).
+
+* Petitgirard, Julien, Tony Piguet, Philippe Baucour, Didier Chamagne, Eric Fouillien, and Jean-Christophe Delmare. 
+  "Steady State and 2D Thermal Equivalence Circuit for Winding Heads—A New Modelling Approach." 
+  Mathematical and Computational Applications 25, no. 4 (2020): 70.
+  
+* Hook, Joosep, Seif El-Sedky, Varuna De Silva, and Ahmet Kondoz. 
+  "Learning Data-Driven Decision-Making Policies in Multi-Agent Environments for Autonomous Systems." 
+  Cognitive Systems Research (2020).
+
+* Matthews, Elizabeth A., and Juan E. Gilbert. 
+  "ATLAS CHRONICLE: DEVELOPMENT AND VERIFICATION OF A SYSTEM FOR PROCEDURAL GENERATION OF STORY-DRIVEN GAMES."
+
+* Ipe, Navin. 
+  "Context and event-based cognitive memory constructs for embodied intelligence machines."
+   
 * Ipe, Navin. 
   "An In-Memory Physics Environment as a World Model for Robot Motion Planning." 
   (2020).
@@ -318,7 +366,25 @@ Pymunk has been used or referenced in a number of scientific papers
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2020-07-09. If something is missing or wrong, please contact 
+List last updated 2020-11-17. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
+
+Cite Pymunk
+-----------
+
+If you use Pymunk in a published work and want to cite it, below is a bibtex
+example. Feel free to modify to fit your style. (Make sure to modify the 
+version number if included.):
+
+.. code-block:: bibtex
+
+  @misc{pymunk,
+    author = {Victor Blomqvist},
+    title = {Pymunk: A easy-to-use pythonic rigid body 2d physics library (version 6.0.0)},
+    year = {2007},
+    url = {https://www.pymunk.org},
+  }
+
+

@@ -1,97 +1,41 @@
 language: python
 git:
   depth: 3
+
 env:
   global:
-  - PYTHON="python"
-  - PIP_INSTALL="pip install"
-  - BUILD_CMD=
-  matrix:
-  - TRAVIS_4681_WORKAROUND=1
-matrix:
+    - CIBW_BUILD="cp36-* cp37-* cp38-* cp39-* pp36-*"
+    - CIBW_SKIP="*_ppc64le *_s390x"
+    - CIBW_TEST_COMMAND="python -m pymunk.tests"
+    - CIBW_BUILD_VERBOSITY=3
+jobs:
   include:
-  - os: osx
-    osx_image: xcode10.1
-    language: generic
-    env:
-    - PYTHON="python"
-    - TOXENV=py3
-    - PIP_INSTALL="pip install --user"
-    - BUILD_CMD="$PYTHON setup.py bdist_wheel"
-    - GITHUB_UPLOAD=yes
-    addons:
-      homebrew:
-        packages:
-        - python
-        #update: true
-  - os: osx
-    osx_image: xcode10.1
-    language: generic
-    env:
-    - PYTHON="python2"
-    - TOXENV=py27
-    - PIP_INSTALL="pip install --user"
-    - BUILD_CMD="$PYTHON setup.py bdist_wheel"
-  - os: linux
-    env: TOXENV=py27
-    python: 2.7
-  - os: linux
-    env: TOXENV=py35
-    python: 3.5
-  - os: linux
-    env: TOXENV=py36
-    python: 3.6
-  - os: linux
-    env: 
-    - TOXENV=py37
-    python: 3.7
-    dist: xenial
-  - os: linux
-    env: TOXENV=py38
-    python: 3.8
-  
-# strange random hang error on pypy that is difficult to reproduce.
-# Disable test for now.
-#  - os: linux
-#    env: TOXENV=pypy
-#    python: pypy
-  - os: linux
-    env: TOXENV=pypy3
-    python: pypy3
-  - os: linux
-    env: 
-    - TOXENV=docs
-    - BUILD_CMD="python setup.py sdist --formats=zip"
-    - GITHUB_UPLOAD=yes
-    python: 3.7
-    dist: xenial
-# create linux binary manylinux builds, see tools/manylinux-build
-  - os: linux
-    services:
-    - docker
-    env:
-    - TOXENV=manylinux
-    - GITHUB_UPLOAD=yes
-  exclude:
-  - env: TRAVIS_4681_WORKAROUND=1
+    # perform a linux build
+    - services: docker
+    # perform a linux ARMv8 build
+    - services: docker
+      arch: arm64
+    # and a mac build
+    - os: osx
+      # PyPy 7.3.2 needs macOS >= 10.14
+      osx_image: xcode10.2
+      language: shell
+    # and a windows build
+    - os: windows
+      language: shell
+      before_install:
+        - choco install python --version 3.8.0
+        - export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
+        # make sure it's on PATH as 'python3'
+        - ln -s /c/Python38/python.exe /c/Python38/python3.exe
 
 install:
-- echo $PATH
-- $PYTHON -V
-- "travis_retry $PYTHON -m $PIP_INSTALL virtualenv tox wheel"
+  - python3 -m pip install cibuildwheel==1.6.4
 
 script:
-- $PYTHON -m tox
-- $BUILD_CMD
+  # build the wheels, put them into './wheelhouse'
+  - python3 -m cibuildwheel --output-dir wheelhouse
 
-deploy:
-  provider: bintray
-  file: "bintray.json"
-  user: "viblo"
-  key:
-    secure: A1i4M85KqB5/wp9MB/6U6JK2Np1x2hzY4lhIUXpgxlP6pqNUl35AGp3uakWV9YMubc00qeWMou+/+5yEuRK87ON0LKSJ6BqQoxIaNxiTxvqXn86Pw8ASl+7eU/SB4dDSDfA6Cc6eSZKo+dXMLHL+kSq06Ojumz1ok6tbpiCwrOQ=
-  dry-run: true
-  on: "bintray-osx"
 
 # To make a github token for the repo:
 #     https://github.com/settings/tokens
@@ -105,9 +49,7 @@ deploy:
       secure: D2Jug24KOSk9dLxX6cmWQBPyQ87leHUgtRuZTyNT0RDe7hbFRuse+QELy+5yDnVJh2bIgQL6JVmJuqr6XkR0WgJjB4CJHoOcnZKweE5jomjhSeed94tCEOkAOnvQVbO4seILgu+IdwVHC+0Uv5Wf093/AlLoANo0oMIfBXUVVEI=
     file_glob: true
     file:
-      - dist/*.whl
-      - dist/*.zip
-      - tools/manylinux-build/wheelhouse/*.whl
+      - wheelhouse/*.whl
     skip_cleanup: true
     draft: true
     on:
@@ -115,6 +57,6 @@ deploy:
       branches:
         only:
           - master
+          #- cffiapi
       tag: true
       repo: viblo/pymunk
-      condition: $GITHUB_UPLOAD = yes

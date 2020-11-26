@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2011 Victor Blomqvist
+# Copyright (c) 2007-2020 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -45,311 +45,177 @@ More examples::
     >>> from pymunk.vec2d import Vec2d
     >>> Vec2d(7.3, 4.2)
     Vec2d(7.3, 4.2)
-    >>> Vec2d((7.3, 4.2))
-    Vec2d(7.3, 4.2)
-    >>> Vec2d(7.3, 4.2) + Vec2d((1,2))
+    >>> Vec2d(7.3, 4.2) + Vec2d(1, 2)
     Vec2d(8.3, 6.2)
 
 """
 __docformat__ = "reStructuredText"
 
-import operator
 import math
+import numbers
+import operator
+from typing import NamedTuple, Tuple
 
 __all__ = ["Vec2d"]
 
-class Vec2d(object):
+
+class Vec2d(NamedTuple):
     """2d vector class, supports vector and scalar operators, and also
     provides some high level functions.
     """
-    __slots__ = ("x", "y")
 
-    @staticmethod
-    def _fromcffi(p):
-        """Used as a speedy way to create Vec2ds internally in pymunk."""
-        v = Vec2d.__new__(Vec2d)
-        v.x = p.x
-        v.y = p.y
-        return v
-
-    def __init__(self, x_or_pair=None, y = None):
-        if x_or_pair is not None:
-            if y == None:
-                if hasattr(x_or_pair, "x") and hasattr(x_or_pair, "y"):
-                    self.x = x_or_pair.x
-                    self.y = x_or_pair.y
-                else:
-                    self.x = x_or_pair[0]
-                    self.y = x_or_pair[1]
-            else:
-                self.x = x_or_pair
-                self.y = y
-        else:
-            self.x = 0
-            self.y = 0
-
-    def __getitem__(self, i):
-        if i == 0:
-            return self.x
-        elif i == 1:
-            return self.y
-        raise IndexError()
-
-    def __iter__(self):
-        yield self.x
-        yield self.y
-
-    def __len__(self):
-        return 2
-
-    def __setitem__(self, i, value):
-        if i == 0:
-            self.x = value
-        elif i == 1:
-            self.y = value
-        else:
-            raise IndexError()
+    x: float
+    y: float
 
     # String representaion (for debugging)
-    def __repr__(self):
-        return 'Vec2d(%s, %s)' % (self.x, self.y)
-
-    # Comparison
-    def __eq__(self, other):
-        if hasattr(other, "__getitem__") and len(other) == 2:
-            return self.x == other[0] and self.y == other[1]
-        else:
-            return False
-
-    def __ne__(self, other):
-        if hasattr(other, "__getitem__") and len(other) == 2:
-            return self.x != other[0] or self.y != other[1]
-        else:
-            return True
-
-    def __nonzero__(self):
-        return self.x != 0.0 or self.y != 0.0
-
-    # Generic operator handlers
-    def _o2(self, other, f):
-        "Any two-operator operation where the left operand is a Vec2d"
-        if isinstance(other, Vec2d):
-            return Vec2d(f(self.x, other.x),
-                         f(self.y, other.y))
-        elif (hasattr(other, "__getitem__")):
-            return Vec2d(f(self.x, other[0]),
-                         f(self.y, other[1]))
-        else:
-            return Vec2d(f(self.x, other),
-                         f(self.y, other))
-
-    def _r_o2(self, other, f):
-        "Any two-operator operation where the right operand is a Vec2d"
-        if (hasattr(other, "__getitem__")):
-            return Vec2d(f(other[0], self.x),
-                         f(other[1], self.y))
-        else:
-            return Vec2d(f(other, self.x),
-                         f(other, self.y))
-
-    def _io(self, other, f):
-        "inplace operator"
-        if (hasattr(other, "__getitem__")):
-            self.x = f(self.x, other[0])
-            self.y = f(self.y, other[1])
-        else:
-            self.x = f(self.x, other)
-            self.y = f(self.y, other)
-        return self
+    def __repr__(self) -> str:
+        return "Vec2d(%s, %s)" % (self.x, self.y)
 
     # Addition
-    def __add__(self, other):
-        if isinstance(other, Vec2d):
-            return Vec2d(self.x + other.x, self.y + other.y)
-        elif hasattr(other, "__getitem__"):
-            return Vec2d(self.x + other[0], self.y + other[1])
-        else:
-            return Vec2d(self.x + other, self.y + other)
-    __radd__ = __add__
+    def __add__(self, other: Tuple[float, float]) -> "Vec2d":  # type: ignore
+        """Add a Vec2d with another Vec2d or Tuple of size 2
 
-    def __iadd__(self, other):
-        if isinstance(other, Vec2d):
-            self.x += other.x
-            self.y += other.y
-        elif hasattr(other, "__getitem__"):
-            self.x += other[0]
-            self.y += other[1]
-        else:
-            self.x += other
-            self.y += other
-        return self
+        >>> Vec2d(3,4) + Vec2d(1,2)
+        Vec2d(4, 6)
+        >>> Vec2d(3,4) + (1,2)
+        Vec2d(4, 6)
+        """
+        assert (
+            len(other) == 2
+        ), f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+
+        return Vec2d(self.x + other[0], self.y + other[1])
+
+    def __radd__(self, other: Tuple[float, float]) -> "Vec2d":
+        """Add a Tuple of size 2 with a Vec2d
+
+        >>> (1,2) + Vec2d(3,4)
+        Vec2d(4, 6)
+        """
+        return self.__add__(other)
 
     # Subtraction
-    def __sub__(self, other):
-        if isinstance(other, Vec2d):
-            return Vec2d(self.x - other.x, self.y - other.y)
-        elif (hasattr(other, "__getitem__")):
-            return Vec2d(self.x - other[0], self.y - other[1])
-        else:
-            return Vec2d(self.x - other, self.y - other)
-    def __rsub__(self, other):
-        if isinstance(other, Vec2d):
-            return Vec2d(other.x - self.x, other.y - self.y)
-        if (hasattr(other, "__getitem__")):
-            return Vec2d(other[0] - self.x, other[1] - self.y)
-        else:
-            return Vec2d(other - self.x, other - self.y)
-    def __isub__(self, other):
-        if isinstance(other, Vec2d):
-            self.x -= other.x
-            self.y -= other.y
-        elif (hasattr(other, "__getitem__")):
-            self.x -= other[0]
-            self.y -= other[1]
-        else:
-            self.x -= other
-            self.y -= other
-        return self
+    def __sub__(self, other: Tuple[float, float]) -> "Vec2d":
+        """Subtract a Vec2d with another Vec2d or Tuple of size 2
+
+        >>> Vec2d(3,4) - Vec2d(1,2)
+        Vec2d(2, 2)
+        >>> Vec2d(3,4) - (1,2)
+        Vec2d(2, 2)
+        """
+        return Vec2d(self.x - other[0], self.y - other[1])
+
+    def __rsub__(self, other: Tuple[float, float]) -> "Vec2d":
+        """Subtract a Tuple of size 2 with a Vec2d
+
+        >>> (1,2) - Vec2d(3,4)
+        Vec2d(-2, -2)
+        """
+        assert (
+            len(other) == 2
+        ), f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+        return Vec2d(other[0] - self.x, other[1] - self.y)
 
     # Multiplication
-    def __mul__(self, other):
-        if isinstance(other, Vec2d):
-            return Vec2d(self.x*other.x, self.y*other.y)
-        if (hasattr(other, "__getitem__")):
-            return Vec2d(self.x*other[0], self.y*other[1])
-        else:
-            return Vec2d(self.x*other, self.y*other)
-    __rmul__ = __mul__
+    def __mul__(self, other: float) -> "Vec2d":
+        """Multiply with a float
 
-    def __imul__(self, other):
-        if isinstance(other, Vec2d):
-            self.x *= other.x
-            self.y *= other.y
-        elif (hasattr(other, "__getitem__")):
-            self.x *= other[0]
-            self.y *= other[1]
-        else:
-            self.x *= other
-            self.y *= other
-        return self
+        >>> Vec2d(3,6) * 2.5
+        Vec2d(7.5, 15.0)
+        """
+        assert isinstance(other, numbers.Real)
+        return Vec2d(self.x * other, self.y * other)
+
+    def __rmul__(self, other: float) -> "Vec2d":
+        """Multiply a float with a Vec2d
+
+        >>> 2.5 * Vec2d(3,6)
+        Vec2d(7.5, 15.0)
+        """
+        return self.__mul__(other)
 
     # Division
-    def __div__(self, other):
-        return self._o2(other, operator.div)
-    def __rdiv__(self, other):
-        return self._r_o2(other, operator.div)
-    def __idiv__(self, other):
-        return self._io(other, operator.div)
+    def __floordiv__(self, other: float) -> "Vec2d":
+        """Floor division by a float (also known as integer division)
 
-    def __floordiv__(self, other):
-        return self._o2(other, operator.floordiv)
-    def __rfloordiv__(self, other):
-        return self._r_o2(other, operator.floordiv)
-    def __ifloordiv__(self, other):
-        return self._io(other, operator.floordiv)
+        >>> Vec2d(3,6) // 2.0
+        Vec2d(1.0, 3.0)
+        """
+        assert isinstance(other, numbers.Real)
+        return Vec2d(self.x // other, self.y // other)
 
-    def __truediv__(self, other):
-        return self._o2(other, operator.truediv)
-    def __rtruediv__(self, other):
-        return self._r_o2(other, operator.truediv)
-    def __itruediv__(self, other):
-        return self._io(other, operator.truediv)
+    def __truediv__(self, other: float) -> "Vec2d":
+        """Division by a float
 
-    # Modulo
-    def __mod__(self, other):
-        return self._o2(other, operator.mod)
-    def __rmod__(self, other):
-        return self._r_o2(other, operator.mod)
-
-    def __divmod__(self, other):
-        return self._o2(other, divmod)
-    def __rdivmod__(self, other):
-        return self._r_o2(other, divmod)
-
-    # Exponentation
-    def __pow__(self, other):
-        return self._o2(other, operator.pow)
-    def __rpow__(self, other):
-        return self._r_o2(other, operator.pow)
-
-    # Bitwise operators
-    def __lshift__(self, other):
-        return self._o2(other, operator.lshift)
-    def __rlshift__(self, other):
-        return self._r_o2(other, operator.lshift)
-
-    def __rshift__(self, other):
-        return self._o2(other, operator.rshift)
-    def __rrshift__(self, other):
-        return self._r_o2(other, operator.rshift)
-
-    def __and__(self, other):
-        return self._o2(other, operator.and_)
-    __rand__ = __and__
-
-    def __or__(self, other):
-        return self._o2(other, operator.or_)
-    __ror__ = __or__
-
-    def __xor__(self, other):
-        return self._o2(other, operator.xor)
-    __rxor__ = __xor__
+        >>> Vec2d(3,6) / 2.0
+        Vec2d(1.5, 3.0)
+        """
+        assert isinstance(other, numbers.Real)
+        return Vec2d(self.x / other, self.y / other)
 
     # Unary operations
-    def __neg__(self):
+    def __neg__(self) -> "Vec2d":
+        """Return the negated version of the Vec2d
+
+        >>> -Vec2d(1,-2)
+        Vec2d(-1, 2)
+        """
         return Vec2d(operator.neg(self.x), operator.neg(self.y))
 
-    def __pos__(self):
+    def __pos__(self) -> "Vec2d":
+        """Return the unary pos of the Vec2d.
+
+        >>> +Vec2d(1,-2)
+        Vec2d(1, -2)
+        """
         return Vec2d(operator.pos(self.x), operator.pos(self.y))
 
-    def __abs__(self):
-        return Vec2d(abs(self.x), abs(self.y))
+    def __abs__(self) -> float:
+        """Return the length of the Vec2d
 
-    def __invert__(self):
-        return Vec2d(-self.x, -self.y)
-
-
-
+        >>> abs(Vec2d(3,4))
+        5.0
+        """
+        return self.length
 
     # vectory functions
-    def get_length_sqrd(self):
+    def get_length_sqrd(self) -> float:
         """Get the squared length of the vector.
         If the squared length is enough it is more efficient to use this method
         instead of first calling get_length() or access .length and then do a
         x**2.
 
-        >>> import pymunk
-        >>> v = pymunk.vec2d.Vec2d(3,4)
+        >>> v = Vec2d(3,4)
         >>> v.get_length_sqrd() == v.length**2
         True
 
         :return: The squared length
         """
-        return self.x**2 + self.y**2
+        return self.x ** 2 + self.y ** 2
 
-    def get_length(self):
+    @property
+    def length(self) -> float:
         """Get the length of the vector.
+
+        >>> Vec2d(10, 0).length
+        10.0
+        >>> Vec2d(10, 20).length
+        22.360679774997898
 
         :return: The length
         """
-        return math.sqrt(self.x**2 + self.y**2)
-    def __setlength(self, value):
-        length = self.get_length()
-        self.x *= value/length
-        self.y *= value/length
-    length = property(get_length, __setlength,
-        doc = """Gets or sets the magnitude of the vector""")
+        return math.sqrt(self.x ** 2 + self.y ** 2)
 
-    def rotate(self, angle_radians):
-        """Rotate the vector by angle_radians radians."""
-        cos = math.cos(angle_radians)
-        sin = math.sin(angle_radians)
-        x = self.x*cos - self.y*sin
-        y = self.x*sin + self.y*cos
-        self.x = x
-        self.y = y
+    def scale_to_length(self, length: float) -> "Vec2d":
+        """Return a copy of this vector scaled to the given length.
 
-    def rotated(self, angle_radians):
+        >>> Vec2d(10, 20).scale_to_length(20)
+        Vec2d(8.94427190999916, 17.88854381999832)
+        """
+        old_length = self.length
+        return Vec2d(self.x * length / old_length, self.y * length / old_length)
+
+    def rotated(self, angle_radians: float) -> "Vec2d":
         """Create and return a new vector by rotating this vector by
         angle_radians radians.
 
@@ -357,15 +223,11 @@ class Vec2d(object):
         """
         cos = math.cos(angle_radians)
         sin = math.sin(angle_radians)
-        x = self.x*cos - self.y*sin
-        y = self.x*sin + self.y*cos
+        x = self.x * cos - self.y * sin
+        y = self.x * sin + self.y * cos
         return Vec2d(x, y)
 
-    def rotate_degrees(self, angle_degrees):
-        """Rotate the vector by angle_degrees degrees."""
-        self.rotate(math.radians(angle_degrees))
-
-    def rotated_degrees(self, angle_degrees):
+    def rotated_degrees(self, angle_degrees: float) -> "Vec2d":
         """Create and return a new vector by rotating this vector by
         angle_degrees degrees.
 
@@ -373,41 +235,36 @@ class Vec2d(object):
         """
         return self.rotated(math.radians(angle_degrees))
 
-    def get_angle(self):
-        if (self.get_length_sqrd() == 0):
+    @property
+    def angle(self) -> float:
+        """The angle (in radians) of the vector"""
+        if self.get_length_sqrd() == 0:
             return 0
         return math.atan2(self.y, self.x)
-    def __setangle(self, angle):
-        self.x = self.length
-        self.y = 0
-        self.rotate(angle)
-    angle = property(get_angle, __setangle,
-        doc="""Gets or sets the angle (in radians) of a vector""")
 
-    def get_angle_degrees(self):
-        return math.degrees(self.get_angle())
-    def __set_angle_degrees(self, angle_degrees):
-        self.__setangle(math.radians(angle_degrees))
-    angle_degrees = property(get_angle_degrees, __set_angle_degrees,
-        doc="""Gets or sets the angle (in degrees) of a vector""")
+    @property
+    def angle_degrees(self) -> float:
+        """Gets the angle (in degrees) of a vector"""
+        return math.degrees(self.angle)
 
-    def get_angle_between(self, other):
+    def get_angle_between(self, other: Tuple[float, float]) -> float:
         """Get the angle between the vector and the other in radians
 
         :return: The angle
         """
-        cross = self.x*other[1] - self.y*other[0]
-        dot = self.x*other[0] + self.y*other[1]
+        assert len(other) == 2
+        cross = self.x * other[1] - self.y * other[0]
+        dot = self.x * other[0] + self.y * other[1]
         return math.atan2(cross, dot)
 
-    def get_angle_degrees_between(self, other):
+    def get_angle_degrees_between(self, other: "Vec2d") -> float:
         """Get the angle between the vector and the other in degrees
 
         :return: The angle (in degrees)
         """
         return math.degrees(self.get_angle_between(other))
 
-    def normalized(self):
+    def normalized(self) -> "Vec2d":
         """Get a normalized copy of the vector
         Note: This function will return 0 if the length of the vector is 0.
 
@@ -415,112 +272,137 @@ class Vec2d(object):
         """
         length = self.length
         if length != 0:
-            return self/length
-        return Vec2d(self)
+            return self / length
+        return Vec2d(0, 0)
 
-    def normalize_return_length(self):
+    def normalized_and_length(self) -> Tuple["Vec2d", float]:
         """Normalize the vector and return its length before the normalization
 
         :return: The length before the normalization
         """
         length = self.length
         if length != 0:
-            self.x /= length
-            self.y /= length
-        return length
+            return self / length, length
+        return Vec2d(0, 0), 0
 
-    def perpendicular(self):
+    def perpendicular(self) -> "Vec2d":
         return Vec2d(-self.y, self.x)
 
-    def perpendicular_normal(self):
+    def perpendicular_normal(self) -> "Vec2d":
         length = self.length
         if length != 0:
-            return Vec2d(-self.y/length, self.x/length)
-        return Vec2d(self)
+            return Vec2d(-self.y / length, self.x / length)
+        return Vec2d(self.x, self.y)
 
-    def dot(self, other):
+    def dot(self, other: Tuple[float, float]) -> float:
         """The dot product between the vector and other vector
             v1.dot(v2) -> v1.x*v2.x + v1.y*v2.y
 
         :return: The dot product
         """
-        return float(self.x*other[0] + self.y*other[1])
+        assert len(other) == 2
+        return float(self.x * other[0] + self.y * other[1])
 
-    def get_distance(self, other):
+    def get_distance(self, other: Tuple[float, float]) -> float:
         """The distance between the vector and other vector
 
         :return: The distance
         """
-        return math.sqrt((self.x - other[0])**2 + (self.y - other[1])**2)
+        assert len(other) == 2
+        return math.sqrt((self.x - other[0]) ** 2 + (self.y - other[1]) ** 2)
 
-    def get_dist_sqrd(self, other):
+    def get_dist_sqrd(self, other: Tuple[float, float]) -> float:
         """The squared distance between the vector and other vector
         It is more efficent to use this method than to call get_distance()
         first and then do a sqrt() on the result.
 
         :return: The squared distance
         """
-        return (self.x - other[0])**2 + (self.y - other[1])**2
+        assert len(other) == 2
+        return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
 
-    def projection(self, other):
-        """Project this vector on top of other vector
-        """
-        other_length_sqrd = other[0]*other[0] + other[1]*other[1]
+    def projection(self, other: Tuple[float, float]) -> "Vec2d":
+        """Project this vector on top of other vector"""
+        assert len(other) == 2
+        other_length_sqrd = other[0] * other[0] + other[1] * other[1]
         if other_length_sqrd == 0.0:
-            return Vec2d(0,0)
+            return Vec2d(0, 0)
         projected_length_times_other_length = self.dot(other)
-        new_length = (projected_length_times_other_length/other_length_sqrd)
-        return Vec2d(other[0]*new_length, other[1]*new_length)
+        new_length = projected_length_times_other_length / other_length_sqrd
+        return Vec2d(other[0] * new_length, other[1] * new_length)
 
-    def cross(self, other):
+    def cross(self, other: Tuple[float, float]) -> float:
         """The cross product between the vector and other vector
             v1.cross(v2) -> v1.x*v2.y - v1.y*v2.x
 
         :return: The cross product
         """
-        return self.x*other[1] - self.y*other[0]
+        assert len(other) == 2
+        return self.x * other[1] - self.y * other[0]
 
-    def interpolate_to(self, other, range):
-        return Vec2d(self.x + (other[0] - self.x)*range, self.y + (other[1] - self.y)*range)
+    def interpolate_to(self, other: Tuple[float, float], range: float) -> "Vec2d":
+        assert len(other) == 2
+        return Vec2d(
+            self.x + (other[0] - self.x) * range, self.y + (other[1] - self.y) * range
+        )
 
-    def convert_to_basis(self, x_vector, y_vector):
-        x = self.dot(x_vector)/x_vector.get_length_sqrd()
-        y = self.dot(y_vector)/y_vector.get_length_sqrd()
+    def convert_to_basis(
+        self, x_vector: Tuple[float, float], y_vector: Tuple[float, float]
+    ) -> "Vec2d":
+        assert len(x_vector) == 2
+        assert len(y_vector) == 2
+        x = self.dot(x_vector) / Vec2d(*x_vector).get_length_sqrd()
+        y = self.dot(y_vector) / Vec2d(*y_vector).get_length_sqrd()
         return Vec2d(x, y)
 
-    def __get_int_xy(self):
-        return int(self.x), int(self.y)
-    int_tuple = property(__get_int_xy,
-        doc="""Return the x and y values of this vector as ints""")
+    @property
+    def int_tuple(self) -> Tuple[int, int]:
+        """The x and y values of this vector as a tuple of ints.
+        Uses round() to round to closest int.
+
+        >>> Vec2d(0.9, 2.4).int_tuple
+        (1, 2)
+        """
+        return round(self.x), round(self.y)
 
     @staticmethod
-    def zero():
-        """A vector of zero length"""
+    def zero() -> "Vec2d":
+        """A vector of zero length.
+
+        >>> Vec2d.zero()
+        Vec2d(0, 0)
+        """
         return Vec2d(0, 0)
 
     @staticmethod
-    def unit():
-        """A unit vector pointing up"""
+    def unit() -> "Vec2d":
+        """A unit vector pointing up
+
+        >>> Vec2d.unit()
+        Vec2d(0, 1)
+        """
         return Vec2d(0, 1)
 
     @staticmethod
-    def ones():
-        """A vector where both x and y is 1"""
+    def ones() -> "Vec2d":
+        """A vector where both x and y is 1
+
+        >>> Vec2d.ones()
+        Vec2d(1, 1)
+        """
         return Vec2d(1, 1)
 
     # Extra functions, mainly for chipmunk
-    def cpvrotate(self, other):
+    def cpvrotate(self, other: Tuple[float, float]) -> "Vec2d":
         """Uses complex multiplication to rotate this vector by the other. """
-        return Vec2d(self.x*other.x - self.y*other.y, self.x*other.y + self.y*other.x)
-    def cpvunrotate(self, other):
+        assert len(other) == 2
+        return Vec2d(
+            self.x * other[0] - self.y * other[1], self.x * other[1] + self.y * other[0]
+        )
+
+    def cpvunrotate(self, other: Tuple[float, float]) -> "Vec2d":
         """The inverse of cpvrotate"""
-        return Vec2d(self.x*other.x + self.y*other.y, self.y*other.x - self.x*other.y)
-
-    # Pickle
-    def __reduce__(self):
-        callable = Vec2d
-        args = (self.x, self.y)
-        return (callable, args)
-
-
-
+        assert len(other) == 2
+        return Vec2d(
+            self.x * other[0] + self.y * other[1], self.y * other[0] - self.x * other[1]
+        )

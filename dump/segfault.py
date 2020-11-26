@@ -1,4 +1,4 @@
-from  _chipmunk_cffi import ffi, lib
+from _chipmunk_cffi import ffi, lib
 
 _space = lib.cpSpaceNew()
 _body = lib.cpBodyNew(1, 1)
