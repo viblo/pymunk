@@ -218,9 +218,8 @@ def march_soft(
     x_samples: int,
     y_samples: int,
     threshold: float,
-    segment_func: _SegmentFunc,
     sample_func: _SampleFunc,
-) -> None:
+) -> PolylineSet:
     """Trace an *anti-aliased* contour of an image along a particular threshold.
 
     The given number of samples will be taken and spread across the bounding
@@ -230,26 +229,27 @@ def march_soft(
     :param int x_samples: Number of samples in x
     :param int y_samples: Number of samples in y
     :param float threshold: A higher value means more error is tolerated
-    :param segment_func: The segment function will be called for each segment
-        detected that lies along the density contour for threshold.
-    :type segment_func: ``func(v0 : Tuple[float, float], v1 : Tuple[float, float])``
     :param sample_func: The sample function will be called for
         x_samples * y_samples spread across the bounding box area, and should
         return a float.
     :type sample_func: ``func(point: Tuple[float, float]) -> float``
+    :return: PolylineSet with the polylines found.
     """
+    pl_set = PolylineSet()
 
     @ffi.callback("cpMarchSegmentFunc")
     def _seg_f(v0: ffi.CData, v1: ffi.CData, _data: ffi.CData) -> None:
-        segment_func((v0.x, v0.y), (v1.x, v1.y))
+        pl_set.collect_segment((v0.x, v0.y), (v1.x, v1.y))
 
     @ffi.callback("cpMarchSampleFunc")
     def _sam_f(point: ffi.CData, _data: ffi.CData) -> float:
+        # print("SAMPLE", point.x, point.y)
         return sample_func((point.x, point.y))
 
     lib.cpMarchSoft(
         bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
     )
+    return pl_set
 
 
 def march_hard(
@@ -257,9 +257,8 @@ def march_hard(
     x_samples: int,
     y_samples: int,
     threshold: float,
-    segment_func: _SegmentFunc,
     sample_func: _SampleFunc,
-) -> None:
+) -> PolylineSet:
     """Trace an *aliased* curve of an image along a particular threshold.
 
     The given number of samples will be taken and spread across the bounding
@@ -269,18 +268,18 @@ def march_hard(
     :param int x_samples: Number of samples in x
     :param int y_samples: Number of samples in y
     :param float threshold: A higher value means more error is tolerated
-    :param segment_func: The segment function will be called for each segment
-        detected that lies along the density contour for threshold.
-    :type segment_func: ``func(v0 : Tuple[float, float], v1 : Tuple[float, float])``
     :param sample_func: The sample function will be called for
         x_samples * y_samples spread across the bounding box area, and should
         return a float.
     :type sample_func: ``func(point: Tuple[float, float]) -> float``
+    :return: PolylineSet with the polylines found.
     """
+
+    pl_set = PolylineSet()
 
     @ffi.callback("cpMarchSegmentFunc")
     def _seg_f(v0: ffi.CData, v1: ffi.CData, _data: ffi.CData) -> None:
-        segment_func((v0.x, v0.y), (v1.x, v1.y))
+        pl_set.collect_segment((v0.x, v0.y), (v1.x, v1.y))
 
     @ffi.callback("cpMarchSampleFunc")
     def _sam_f(point: ffi.CData, _data: ffi.CData) -> float:
@@ -289,3 +288,5 @@ def march_hard(
     lib.cpMarchHard(
         bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
     )
+
+    return pl_set

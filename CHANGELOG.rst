@@ -138,10 +138,11 @@ General Changes:
 - Added helper methods on ``Transform`` to easily create transforms to 
   translate, scale and rotate.
 - Removed now unused pymunkoptions module.
-- Changed type of autogeometry ``march*.sample_func`` to expect a tuple of 
-  length 2 instead of a Vec2d (to improve performance). 
-- Changed type of autogeometry ``march*.segment_func`` to expect tuples of 
-  length 2 instead of Vec2ds (to improve performance).  
+- Changed type of autogeometry ``march_*.sample_func`` to expect a tuple of 
+  length 2 instead of a Vec2d (to improve performance). Issue #126.
+- Removed ``march_*.segment_func`` argument, and instead return a 
+  ``PolylineSet`` with the result. This allows future optimizations, and is 
+  easier to use. Issue #126.
 
 Minor changes unlikely to affect existing code:
 

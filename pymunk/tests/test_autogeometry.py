@@ -83,11 +83,6 @@ class UnitTestAutoGeometry(unittest.TestCase):
             "  xxxxx",
         ]
 
-        segments = []
-
-        def segment_func(v0: Tuple[float, float], v1: Tuple[float, float]) -> None:
-            segments.append((v0, v1))
-
         def sample_func(point: Tuple[float, float]) -> float:
             x = int(point[0])
             y = int(point[1])
@@ -95,24 +90,30 @@ class UnitTestAutoGeometry(unittest.TestCase):
                 return 1
             return 0
 
-        a.march_soft(BB(0, 0, 6, 6), 7, 7, 0.5, segment_func, sample_func)
+        pl_set = a.march_soft(BB(0, 0, 6, 6), 7, 7, 0.5, sample_func)
 
         expected = [
-            ((1.5, 1.0), (1.5, 0.0)),
-            ((3.5, 0.0), (3.5, 1.0)),
-            ((1.5, 2.0), (1.5, 1.0)),
-            ((3.5, 1.0), (3.5, 2.0)),
-            ((1.5, 3.0), (1.5, 2.0)),
-            ((3.5, 2.0), (3.5, 3.0)),
-            ((1.5, 4.0), (1.5, 3.0)),
-            ((3.5, 3.0), (3.5, 4.0)),
-            ((1.5, 5.0), (1.5, 4.0)),
-            ((3.5, 4.0), (4.0, 4.5)),
-            ((4.0, 4.5), (5.0, 4.5)),
-            ((5.0, 4.5), (6.0, 4.5)),
-            ((1.5, 6.0), (1.5, 5.0)),
+            [
+                (1.5, 6.0),
+                (1.5, 5.0),
+                (1.5, 4.0),
+                (1.5, 3.0),
+                (1.5, 2.0),
+                (1.5, 1.0),
+                (1.5, 0.0),
+            ],
+            [
+                (3.5, 0.0),
+                (3.5, 1.0),
+                (3.5, 2.0),
+                (3.5, 3.0),
+                (3.5, 4.0),
+                (4.0, 4.5),
+                (5.0, 4.5),
+                (6.0, 4.5),
+            ],
         ]
-        self.assertEqual(segments, expected)
+        self.assertEqual(list(pl_set), expected)
 
     def test_march_hard(self) -> None:
         img = [
@@ -125,11 +126,6 @@ class UnitTestAutoGeometry(unittest.TestCase):
             "  xxxxx",
         ]
 
-        segments = []
-
-        def segment_func(v0: Tuple[float, float], v1: Tuple[float, float]) -> None:
-            segments.append((v0, v1))
-
         def sample_func(point: Tuple[float, float]) -> float:
             x = int(point[0])
             y = int(point[1])
@@ -137,22 +133,28 @@ class UnitTestAutoGeometry(unittest.TestCase):
                 return 1
             return 0
 
-        a.march_hard(BB(0, 0, 6, 6), 7, 7, 0.5, segment_func, sample_func)
+        actual = list(a.march_hard(BB(0, 0, 6, 6), 7, 7, 0.5, sample_func))
 
         expected = [
-            ((1.5, 1.0), (1.5, 0.0)),
-            ((3.5, 0.0), (3.5, 1.0)),
-            ((1.5, 2.0), (1.5, 1.0)),
-            ((3.5, 1.0), (3.5, 2.0)),
-            ((1.5, 3.0), (1.5, 2.0)),
-            ((3.5, 2.0), (3.5, 3.0)),
-            ((1.5, 4.0), (1.5, 3.0)),
-            ((3.5, 3.0), (3.5, 4.0)),
-            ((1.5, 5.0), (1.5, 4.0)),
-            ((3.5, 4.0), (3.5, 4.5)),
-            ((3.5, 4.5), (4.0, 4.5)),
-            ((4.0, 4.5), (5.0, 4.5)),
-            ((5.0, 4.5), (6.0, 4.5)),
-            ((1.5, 6.0), (1.5, 5.0)),
+            [
+                (1.5, 6.0),
+                (1.5, 5.0),
+                (1.5, 4.0),
+                (1.5, 3.0),
+                (1.5, 2.0),
+                (1.5, 1.0),
+                (1.5, 0.0),
+            ],
+            [
+                (3.5, 0.0),
+                (3.5, 1.0),
+                (3.5, 2.0),
+                (3.5, 3.0),
+                (3.5, 4.0),
+                (3.5, 4.5),
+                (4.0, 4.5),
+                (5.0, 4.5),
+                (6.0, 4.5),
+            ],
         ]
-        self.assertEqual(segments, expected)
+        self.assertEqual(actual, expected)
