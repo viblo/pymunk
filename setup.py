@@ -34,7 +34,7 @@ setup(
             "source_dir": ("setup.py", "docs/src"),
         }
     },
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     # Require >1.14.0 since that (and older) has problem with returing structs from functions.
     setup_requires=["cffi > 1.14.0"],
     install_requires=["cffi > 1.14.0"],

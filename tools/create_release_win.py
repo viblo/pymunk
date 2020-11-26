@@ -14,7 +14,7 @@ def main():
     - change version number in readme, setup.py, showcase.rst and __init__ 
     - test in at least CPython 3.x and Pypy3
     - validate test results of Travis and Appveyor
-    - write news entry and put in news.rst
+    - write changelog entry and put in changelog.rst
     - make sure all images are optimized (for example with tinypng.com)
     
     """
