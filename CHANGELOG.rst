@@ -18,14 +18,14 @@ Highlights - Major changes:
 - Python 3.6 or newer required. Support for older Pythons including 2.7 has 
   been dropped.
 - Type hints added. Type hints have been added for all public interfaces.
-- ``Vec2d`` (the vector class) has been completely overhauled. It is now a 
+- Vec2d (the vector class) has been completely overhauled. It is now a 
   immutable subclass of ``NamedTuple``, with a streamlined API interface. See
   below for details. 
 
 
 Vec2d changes:
 
-- ``Vec2d`` no longer accept objects that have ``.x`` and ``.y`` properties, 
+- Vec2d no longer accept objects that have ``.x`` and ``.y`` properties, 
   but do not support ``__getitem__`` for ``[0]`` & ``[1]`` in the 
   constructor. If you have such an objects, rewrite ``Vec2d(myobj)`` to 
   ``Vec2d(myobj.x, myobj.y)``.
@@ -117,8 +117,8 @@ General Changes:
   imported the previous name should be updated to import from the new name 
   instead.
 - Changed ``pygame_util.positive_y_is_up`` default value to ``False``. 
-  Existing code dependent on the old default should set the desired value (``
-  True``). For new code it might be better to instead make the Pymunk 
+  Existing code dependent on the old default should set the desired value 
+  (``True``). For new code it might be better to instead make the Pymunk 
   simulation behave like the native pygame coordinates. See examples in 
   examples folder for examples. 
 - It is now expected that places functions expecting a ``Vec2d`` or tuple of 

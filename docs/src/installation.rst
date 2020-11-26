@@ -46,8 +46,8 @@ available from PyPI at https://pypi.org/project/pymunk/#files (Named
 pymunk-x.y.z.zip)
 
 
-Troubleshooting?????
-====================
+Troubleshooting
+===============
 
 Check that no files are named pymunk.py
 
