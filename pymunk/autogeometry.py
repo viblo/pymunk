@@ -14,26 +14,25 @@ Example::
     ...     "  xxxxx",
     ...     "  xxxxx",
     ... ]
-    >>> segments = []
-
-    >>> def segment_func(v0, v1):
-    ...     segments.append((v0, v1))
     >>> def sample_func(point):
     ...     x = int(point[0])
     ...     y = int(point[1])
     ...     return 1 if img[y][x] == "x" else 0
 
-    >>> march_soft(pymunk.BB(0,0,6,6), 7, 7, .5, segment_func, sample_func)
-    >>> print(len(segments))
-    13
+    >>> pl_set = march_soft(pymunk.BB(0,0,6,6), 7, 7, .5, sample_func)
+    >>> print(len(pl_set))
+    2
 
 The information in segments can now be used to create geometry, for example as 
 a Pymunk Poly or Segment::
 
     >>> s = pymunk.Space()
-    >>> for (a,b) in segments:
-    ...     segment = pymunk.Segment(s.static_body, a, b, 5)  
-    ...     s.add(segment)
+    >>> for poly_line in pl_set:
+    ...     for i in range(len(poly_line) - 1):
+    ...         a = poly_line[i]
+    ...         b = poly_line[i + 1]
+    ...         segment = pymunk.Segment(s.static_body, a, b, 1)  
+    ...         s.add(segment)
 
 
 """
