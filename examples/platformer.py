@@ -66,6 +66,7 @@ def main():
     ### Physics stuff
     space = pymunk.Space()
     space.gravity = Vec2d(0, -1000)
+    pymunk.pygame_util.positive_y_is_up = True
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     # box walls
@@ -136,7 +137,7 @@ def main():
     space.add_collision_handler(1, 2).begin = passthrough_handler
 
     # player
-    body = pymunk.Body(5, float('inf'))
+    body = pymunk.Body(5, float("inf"))
     body.position = 100, 100
 
     head = pymunk.Circle(body, 10, (0, 5))
@@ -213,7 +214,9 @@ def main():
                     body.apply_impulse_at_local_point(impulse)
                     remaining_jumps -= 1
             elif event.type == pygame.KEYUP and event.key == pygame.K_UP:
-                body.velocity.y = min(body.velocity.y, JUMP_CUTOFF_VELOCITY)
+                body.velocity = body.velocity.x, min(
+                    body.velocity.y, JUMP_CUTOFF_VELOCITY
+                )
 
         # Target horizontal velocity of player
         target_vx = 0
@@ -252,11 +255,13 @@ def main():
                 body.velocity.y,
             )
 
-        body.velocity.y = max(body.velocity.y, -FALL_VELOCITY)  # clamp upwards as well?
+        body.velocity = body.velocity.x, max(
+            body.velocity.y, -FALL_VELOCITY
+        )  # clamp upwards as well?
 
         # Move the moving platform
         destination = platform_path[platform_path_index]
-        current = Vec2d(platform_body.position)
+        current = Vec2d(*platform_body.position)
         distance = current.get_distance(destination)
         if distance < PLATFORM_SPEED:
             platform_path_index += 1

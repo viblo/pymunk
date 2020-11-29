@@ -5,8 +5,8 @@ import sys
 
 def main():
     os.chdir("..")
-    shutil.rmtree("dist", True)
-    shutil.rmtree("docs/html", True)
+    # shutil.rmtree("dist", True)
+    # shutil.rmtree("docs/html", True)
 
     print(
         """

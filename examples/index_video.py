@@ -44,21 +44,14 @@ def sample_func(point):
         color = logo_img.get_at(p)
 
         return color.a
-        return color.hsla[2]
+        # return color.hsla[2]
     except:
         return 0
 
 
-line_set = pymunk.autogeometry.PolylineSet()
-
-
-def segment_func(v0, v1):
-    line_set.collect_segment(v0, v1)
-
-
 logo_img.lock()
-pymunk.autogeometry.march_soft(
-    logo_bb, logo_img.get_width(), logo_img.get_height(), 99, segment_func, sample_func
+line_set = pymunk.autogeometry.march_soft(
+    logo_bb, logo_img.get_width(), logo_img.get_height(), 99, sample_func
 )
 logo_img.unlock()
 

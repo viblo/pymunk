@@ -142,6 +142,7 @@ follow. First, a function to add a ball to a space::
         body.position = x, 50  # 2
         shape = pymunk.Circle(body, radius)  # 3
         shape.mass = mass  # 4
+        shape.friction = 1
         space.add(body, shape)  # 5
         return shape
 
@@ -161,7 +162,9 @@ follow. First, a function to add a ball to a space::
    shape, or its also possible to set the values directly on the body (or 
    even adjust them afterwards). 
 
-5. Finally we add the body and shape to the space to include it in our 
+5. To make the balls roll we set friction on the shape. (By default its 0). 
+
+6. Finally we add the body and shape to the space to include it in our 
    simulation. Note that the body must always be added to the space before or 
    at the same time as any shapes attached to it.
 
@@ -263,8 +266,10 @@ with the balls we start with a function to add an L to the space::
         body.position = (300, 300)    
         l1 = pymunk.Segment(body, (-150, 0), (255, 0), 5) # 2
         l2 = pymunk.Segment(body, (-150, 0), (-150, -50), 5)
-                
-        space.add(body, l1, l2) # 3
+        l1.friction = 1 # 3
+        l2.friction = 1        
+        
+        space.add(body, l1, l2) # 4
         return l1,l2
 
 1. We create a "static" body. The important step is to never add it to the 
@@ -273,7 +278,8 @@ with the balls we start with a function to add an L to the space::
    already existing static body in the space (`space.static_body`), but we 
    will make the L shape dynamic in just a little bit.
 2. A line shaped shape is created here.
-3. Again, we only add the segments, not the body to the space.
+3. Set the friction.
+4. Again, we only add the segments, not the body to the space.
 
 Since we use Space.debug_draw to draw the space we dont need to do any special 
 draw code for the Segments, but I still include a possible draw function here
@@ -375,6 +381,8 @@ the function to add_L(). ::
         body.position = (300, 300)
         l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 5.0)
         l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, -50.0), 5.0)
+        l1.friction = 1
+        l2.friction = 1
         l1.mass = 8  # 2
         l2.mass = 1
         rotation_center_joint = pymunk.PinJoint(
@@ -415,6 +423,8 @@ we modify the add_L() function::
         body.position = (300,300)    
         l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 5.0)
         l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, -50.0), 5.0)
+        l1.friction = 1
+        l2.friction = 1
         l1.mass = 8
         l2.mass = 1
 
@@ -483,6 +493,7 @@ The full code for this tutorial is::
         x = random.randint(120,300)
         body.position = x, 50
         shape = pymunk.Circle(body, radius, (0,0))
+        shape.friction = 1
         space.add(body, shape)
         return shape
 
@@ -498,6 +509,8 @@ The full code for this tutorial is::
         body.position = (300,300)    
         l1 = pymunk.Segment(body, (-150, 0), (255.0, 0.0), 5.0)
         l2 = pymunk.Segment(body, (-150.0, 0), (-150.0, -50.0), 5.0)
+        l1.friction = 1
+        l2.friction = 1
         l1.mass = 8
         l2.mass = 1
 

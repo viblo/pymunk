@@ -129,7 +129,7 @@ def main():
                 mass = 1
                 moment = pymunk.moment_for_circle(mass, 0, 10)
                 body = pymunk.Body(mass, moment)
-                body.position = event.pos
+                body.position = pygame.mouse.get_pos()
                 shape = pymunk.Circle(body, 10)
                 shape.friction = 0.5
                 space.add(body, shape)

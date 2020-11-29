@@ -23,7 +23,7 @@ def add_ball(space):
     inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
     body = pymunk.Body(mass, inertia)
     x = random.randint(120, 380)
-    body.position = x, 550
+    body.position = x, 50
     shape = pymunk.Circle(body, radius, (0, 0))
     shape.friction = 1
     space.add(body, shape)
@@ -41,7 +41,7 @@ def add_L(space):
     body = pymunk.Body(10, 10000)
     body.position = (300, 300)
     l1 = pymunk.Segment(body, (-145, 0), (255.0, 0.0), 1)
-    l2 = pymunk.Segment(body, (-145, 0), (-145.0, 25.0), 1)
+    l2 = pymunk.Segment(body, (-145, 0), (-145.0, -25.0), 1)
     l1.friction = 1
     l2.friction = 1
     rotation_center_joint = pymunk.PinJoint(body, rotation_center_body, (0, 0), (0, 0))
@@ -61,7 +61,7 @@ def main():
     clock = pygame.time.Clock()
 
     space = pymunk.Space()
-    space.gravity = (0.0, -900.0)
+    space.gravity = (0.0, 900.0)
 
     lines = add_L(space)
     balls = []
@@ -85,7 +85,7 @@ def main():
 
         balls_to_remove = []
         for ball in balls:
-            if ball.body.position.y < 150:
+            if ball.body.position.y > 450:
                 balls_to_remove.append(ball)
 
         for ball in balls_to_remove:

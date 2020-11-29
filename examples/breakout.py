@@ -9,8 +9,6 @@ import random
 import sys
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
@@ -28,7 +26,7 @@ collision_types = {
 
 
 def spawn_ball(space, position, direction):
-    ball_body = pymunk.Body(1, float('inf'))
+    ball_body = pymunk.Body(1, float("inf"))
     ball_body.position = position
 
     ball_shape = pymunk.Circle(ball_body, 5)
@@ -36,7 +34,7 @@ def spawn_ball(space, position, direction):
     ball_shape.elasticity = 1.0
     ball_shape.collision_type = collision_types["ball"]
 
-    ball_body.apply_impulse_at_local_point(Vec2d(direction))
+    ball_body.apply_impulse_at_local_point(Vec2d(*direction))
 
     # Keep ball velocity at a static value
     def constant_velocity(body, gravity, damping, dt):
@@ -91,6 +89,7 @@ def main():
     font = pygame.font.SysFont("Arial", 16)
     ### Physics stuff
     space = pymunk.Space()
+    pymunk.pygame_util.positive_y_is_up = True
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     ### Game area
@@ -101,7 +100,7 @@ def main():
         pymunk.Segment(space.static_body, (550, 550), (550, 50), 2),
     ]
     for line in static_lines:
-        line.color = THECOLORS["lightgray"]
+        line.color = pygame.Color("lightgray")
         line.elasticity = 1.0
 
     space.add(*static_lines)
@@ -122,7 +121,7 @@ def main():
     space.add(bottom)
 
     ### Player ship
-    player_body = pymunk.Body(500, float('inf'))
+    player_body = pymunk.Body(500, float("inf"))
     player_body.position = 300, 100
 
     player_shape = pymunk.Segment(player_body, (-50, 0), (50, 0), 8)
@@ -138,7 +137,7 @@ def main():
         if len(set_.points) > 0:
             player_shape = arbiter.shapes[0]
             width = (player_shape.b - player_shape.a).x
-            delta = (player_shape.body.position - set_.points[0].point_a.x).x
+            delta = (player_shape.body.position - set_.points[0].point_a).x
             normal = Vec2d(0, 1).rotated(delta / width / 2)
             set_.normal = normal
             set_.points[0].distance = 0
@@ -161,24 +160,26 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.KEYDOWN and (event.key in [K_ESCAPE, K_q]):
+            elif event.type == pygame.KEYDOWN and (
+                event.key in [pygame.K_ESCAPE, pygame.K_q]
+            ):
                 running = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "breakout.png")
 
-            elif event.type == pygame.KEYDOWN and event.key == K_LEFT:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
                 player_body.velocity = (-600, 0)
-            elif event.type == KEYUP and event.key == K_LEFT:
+            elif event.type == pygame.KEYUP and event.key == pygame.K_LEFT:
                 player_body.velocity = 0, 0
 
-            elif event.type == pygame.KEYDOWN and event.key == K_RIGHT:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
                 player_body.velocity = (600, 0)
-            elif event.type == KEYUP and event.key == K_RIGHT:
+            elif event.type == pygame.KEYUP and event.key == pygame.K_RIGHT:
                 player_body.velocity = 0, 0
 
-            elif event.type == pygame.KEYDOWN and event.key == K_r:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                 setup_level(space, player_body)
-            elif event.type == pygame.KEYDOWN and event.key == K_SPACE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 spawn_ball(
                     space,
                     player_body.position + (0, 40),

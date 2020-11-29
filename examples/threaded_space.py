@@ -27,7 +27,7 @@ class PyramidDemo:
         deltaY = Vec2d(1.125, 0.0) * 20
 
         for i in range(25):
-            y = Vec2d(x)
+            y = Vec2d(*x)
             for j in range(i, 25):
                 size = 10
                 points = [(-size, -size), (-size, size), (size, size), (size, -size)]

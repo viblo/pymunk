@@ -3,8 +3,6 @@ Remake of the pyramid demo from the box2d testbed.
 """
 
 import pygame
-from pygame.color import *
-from pygame.locals import *
 
 import pymunk
 import pymunk.pygame_util
@@ -35,7 +33,7 @@ class PyramidDemo:
         deltaY = Vec2d(1.125, 0.0) * 20
 
         for i in range(25):
-            y = Vec2d(x)
+            y = Vec2d(*x)
             for j in range(i, 25):
                 size = 10
                 points = [(-size, -size), (-size, size), (size, size), (size, -size)]
@@ -52,6 +50,7 @@ class PyramidDemo:
             x += deltaX
 
         ### draw options for drawing
+        pymunk.pygame_util.positive_y_is_up = True
         self.draw_options = pymunk.pygame_util.DrawOptions(self.screen)
 
     def run(self):
@@ -66,7 +65,7 @@ class PyramidDemo:
                 self.running = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(self.screen, "box2d_pyramid.png")
-            elif event.type == pygame.KEYDOWN and event.key == K_d:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_d:
                 self.drawing = not self.drawing
 
         fps = 30.0

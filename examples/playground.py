@@ -269,8 +269,8 @@ class PhysicsDemo:
                 self.balls.append(ball)
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_g:
                 g = self.space.gravity
-                g.rotate(45)
-                self.space.gravity = g
+
+                self.space.gravity = g.rotated_degrees(45)
 
         mpos = pygame.mouse.get_pos()
 
