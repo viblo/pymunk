@@ -1,6 +1,6 @@
 V6.0
 ----
-- Check py2exe and pyinstaller
+x Check py2exe and pyinstaller
 - check all examples
 
 v6.x

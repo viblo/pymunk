@@ -2,6 +2,7 @@
 include LICENSE.txt
 include README.rst
 include THANKS.txt
+include CHANGELOG.rst
 #docs
 recursive-include docs/src *
 recursive-include docs/html *

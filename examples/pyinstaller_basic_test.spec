@@ -1,12 +1,16 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+# No special settings should be required to make Pymunk work with PyInstaller,
+# running this spec file should produce the same output as if running
+# > python -m PyInstaller -F basic_test.py
+# in the examples folder.
+
 block_cipher = None
 
 import pymunk
 
 a = Analysis(['basic_test.py'],
              pathex=[],
-             binaries=[ ( pymunk.chipmunk_path, '.' )],
              datas=[],
              hiddenimports=[],
              hookspath=[],

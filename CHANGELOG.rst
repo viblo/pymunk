@@ -143,6 +143,8 @@ General Changes:
 - Removed ``march_*.segment_func`` argument, and instead return a 
   ``PolylineSet`` with the result. This allows future optimizations, and is 
   easier to use. Issue #126.
+- Added code to make Pymunk work without extra config in PyInstaller, py2exe 
+  and probably other bundlers as well. 
 
 Minor changes unlikely to affect existing code:
 

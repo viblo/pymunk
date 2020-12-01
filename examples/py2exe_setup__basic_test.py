@@ -10,4 +10,4 @@ import py2exe
 
 import pymunk
 
-setup(console=["basic_test.py"], data_files=[("", [pymunk.chipmunk_path])])
+setup(console=["basic_test.py"])
