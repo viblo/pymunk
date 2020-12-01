@@ -6,7 +6,7 @@ code was just converted to Kivy in the most basic way to show that its possible,
 its not supposed to show the best way to structure a Kivy application using 
 Pymunk.
 """
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 # python main.py -m screen:iphone4,portrait
 
@@ -182,18 +182,13 @@ class PymunkDemo(RelativeLayout):
 
         def sample_func(point):
             try:
-                color = logo_img.read_pixel(point.x, point.y)
+                color = logo_img.read_pixel(point[0], point[1])
                 return color[3] * 255
-            except:
+            except Exception:
                 return 0
 
-        line_set = pymunk.autogeometry.PolylineSet()
-
-        def segment_func(v0, v1):
-            line_set.collect_segment(v0, v1)
-
-        pymunk.autogeometry.march_soft(
-            logo_bb, logo_img.width, logo_img.height, 99, segment_func, sample_func
+        line_set = pymunk.autogeometry.march_soft(
+            logo_bb, logo_img.width, logo_img.height, 99, sample_func
         )
 
         r = 10
@@ -262,9 +257,6 @@ class PymunkDemo(RelativeLayout):
         with self.canvas:
             Color(0.2, 0.2, 0.2)
             floor.ky = Line(points=[-100, 0, 900, 62], width=5)
-
-        def wrap(f):
-            return lambda dt: f(space)
 
         # we use our own event scheduling to make sure a event happens exactly
         # after X amount of simulation steps
@@ -342,7 +334,7 @@ class PymunkDemo(RelativeLayout):
             s.color = 0.86, 0.2, 0.6
             b.position = d["start"]
             self.space.add(b, s)
-            impulse = 200 * (Vec2d(p) - Vec2d(d["start"]))
+            impulse = 200 * (Vec2d(*p) - d["start"])
             b.apply_impulse_at_local_point(impulse)
             with self.canvas:
                 Color(*s.color)
