@@ -8,6 +8,8 @@ of benchmarks.
 The full code of all benchmarks are available under the `benchmarks
 <https://github.com/viblo/pymunk/blob/master/benchmarks>`_ folder.
 
+Note that the the benchmarks are not yet updated for Pymunk 6.0, but tests 
+look promising.
 
 Micro benchmarks
 ----------------

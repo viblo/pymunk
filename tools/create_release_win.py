@@ -1,17 +1,14 @@
 import os
-import shutil
 import sys
 
 
 def main():
     os.chdir("..")
-    # shutil.rmtree("dist", True)
-    # shutil.rmtree("docs/html", True)
 
     print(
         """
     Remember (before running this script!): 
-    - change version number in readme, setup.py, showcase.rst and __init__ 
+    - change version number in README.rst, setup.py, showcase.rst and __init__.py
     - test in at least CPython 3.x and Pypy3
     - validate test results of Travis and Appveyor
     - write changelog entry and put in changelog.rst
