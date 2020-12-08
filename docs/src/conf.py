@@ -44,6 +44,8 @@ MOCK_MODULES = [
     #'_chipmunk_cffi',
     #'_chipmunk_cffi_abi',
     #'._chipmunk_cffi','_chipmunk_cffi',
+    "pymunk._chipmunk",
+    "_cffi_backend",
     "matplotlib",
     "matplotlib.pyplot",
     "pygame",
