@@ -2,8 +2,8 @@
 Changelog 
 =========
 
-Pymunk 6.0.0 (UNRELEASED)
--------------------------
+Pymunk 6.0.0
+------------
 
 **Typehints, dropped Python 2, and Vec2d rework and wrapping upgrade!** 
 

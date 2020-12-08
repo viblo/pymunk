@@ -13,6 +13,7 @@ def main():
     - validate test results of Travis and Appveyor
     - write changelog entry and put in changelog.rst
     - make sure all images are optimized (for example with tinypng.com)
+    - generate docs before running sdist
     
     """
     )
