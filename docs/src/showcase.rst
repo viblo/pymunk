@@ -199,6 +199,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+* Mori, Hiroki, Masayuki Masuda, and Tetsuya Ogata. 
+  "Tactile-based curiosity maximizes tactile-rich object-oriented actions even without any extrinsic rewards." 
+  In 2020 Joint IEEE 10th International Conference on Development and Learning and Epigenetic Robotics (ICDL-EpiRob), pp. 1-7. IEEE, 2020.
+
 * Jiang, Lincheng. 
   "A Computational Method to Generate One-story Floor Plans for Nursing Homes Based on Daylight Hour Potential and Shortest Path of Circulations." 
   (2020).
