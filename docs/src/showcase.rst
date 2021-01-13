@@ -199,6 +199,9 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+* Ji, Hao, and Yan Jin. 
+  "Designing Self-Assembly Systems with Deep Multiagent Reinforcement Learning."
+
 * Mori, Hiroki, Masayuki Masuda, and Tetsuya Ogata. 
   "Tactile-based curiosity maximizes tactile-rich object-oriented actions even without any extrinsic rewards." 
   In 2020 Joint IEEE 10th International Conference on Development and Learning and Epigenetic Robotics (ICDL-EpiRob), pp. 1-7. IEEE, 2020.
