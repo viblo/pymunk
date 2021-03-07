@@ -6,7 +6,8 @@ Pymunk has one tutorial that show a simple simulation from start to end.
 
 After reading it make sure to also check out the :ref:`Examples <examples>` as 
 most of them are easy to follow and showcase many of the things you can do with 
-pymunk.
+pymunk. Also take a look at the external tutorials. While they are not created 
+by the Pymunk creator they can still give a good start in how to use Pymunk.
 
 .. toctree:: 
     :maxdepth: 1
@@ -20,11 +21,24 @@ pymunk.
 External Tutorials
 ==================
 
-If you have made a tutorial that is using Pymunk in any way and want it 
-mentioned here please send me a link and I will happily add it. I also 
-accept full tutorials to include directly here if you prefer, as long as they
-are of reasonable quality and style. Check the source to see how the existing 
-ones are built.
+.. note::
+    If you have made a tutorial that is using Pymunk in any way and want it 
+    mentioned here please send me a link and I will happily add it.
+
+Several Youtube users have created tutorials covering Pymunk:
+
+
+Pymunk Basics
+-------------
+
+:subscript:`Created by Ear of Corn Programming. Retrieved 2021-03-07`
+
+Youtube user Ear of Corn Programming has a comprehensive introduction to 
+Pymunk together with Pygame over several videos.
+
+.. raw:: html
+    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PL_N_kL9gRTm8lh7GxFHh3ym1RXi6I6c50" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 Simulating physics in Python

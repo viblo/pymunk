@@ -199,6 +199,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+* Welle, Michael C., Anastasiia Varava, Jeffrey Mahler, Ken Goldberg, Danica Kragic, and Florian T. Pokorny. 
+  "Partial caging: a clearance-based definition, datasets, and deep learning." 
+  Autonomous Robots (2021): 1-18.
+
 * Ji, Hao, and Yan Jin. 
   "Designing Self-Assembly Systems with Deep Multiagent Reinforcement Learning."
 
@@ -223,8 +227,8 @@ List of papers which has used or mentioned Pymunk:
   Mathematical and Computational Applications 25, no. 4 (2020): 70.
   
 * Hook, Joosep, Seif El-Sedky, Varuna De Silva, and Ahmet Kondoz. 
-  "Learning Data-Driven Decision-Making Policies in Multi-Agent Environments for Autonomous Systems." 
-  Cognitive Systems Research (2020).
+  "Learning data-driven decision-making policies in multi-agent environments for autonomous systems." 
+  Cognitive Systems Research 65 (2021): 40-49.
 
 * Matthews, Elizabeth A., and Juan E. Gilbert. 
   "ATLAS CHRONICLE: DEVELOPMENT AND VERIFICATION OF A SYSTEM FOR PROCEDURAL GENERATION OF STORY-DRIVEN GAMES."
@@ -373,7 +377,7 @@ List of papers which has used or mentioned Pymunk:
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2020-11-17. If something is missing or wrong, please contact 
+List last updated 2021-02-09. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
