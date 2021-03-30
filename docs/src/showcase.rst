@@ -11,6 +11,16 @@ Games
 .. list-table:: 
     :widths: 40 60
 
+    * - .. image:: _static/guide-the-ball.png
+      - `Guide The Ball <https://github.com/francisA88/Guide-The-Ball-1>`_
+
+        :subscript:`made by Francis Ali. Retrieved 2020-03-30`
+
+        A game combining Pymunk with Kivy that runs on Android mobiles!
+
+        In Guide The Ball the task is to guide a ball through 19 
+        exciting and challenging levels!
+
     * - .. image:: _static/My_Sincerest_Apologies.png
       - `My Sincerest Apologies <https://pyweek.org/e/wasabi24/>`_
       
