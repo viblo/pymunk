@@ -209,6 +209,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+* Dhruv, Akshit J., Reema Patel, and Nishant Doshi. 
+  "Python: The Most Advanced Programming Language for Computer Science Applications." 
+  (2021).
+
 * Welle, Michael C., Anastasiia Varava, Jeffrey Mahler, Ken Goldberg, Danica Kragic, and Florian T. Pokorny. 
   "Partial caging: a clearance-based definition, datasets, and deep learning." 
   Autonomous Robots (2021): 1-18.
@@ -387,7 +391,7 @@ List of papers which has used or mentioned Pymunk:
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2021-02-09. If something is missing or wrong, please contact 
+List last updated 2021-04-06. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
