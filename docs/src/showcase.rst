@@ -209,6 +209,14 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+* Delucia, Marco, Anita Catapano, Marco Montemurro, and Jérôme Pailhès. 
+  "Pre-stress state in cork agglomerates: simulation of the compression moulding process." 
+  International Journal of Material Forming (2021): 1-14.
+
+* Semage, Buddhika Laknath, Thommen George Karimpanal, Santu Rana, and Svetha Venkatesh. 
+  "Intuitive Physics Guided Exploration for Sample Efficient Sim2real Transfer." 
+  arXiv preprint arXiv:2104.08795 (2021).
+
 * Dhruv, Akshit J., Reema Patel, and Nishant Doshi. 
   "Python: The Most Advanced Programming Language for Computer Science Applications." 
   (2021).
@@ -391,7 +399,7 @@ List of papers which has used or mentioned Pymunk:
   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2021-04-06. If something is missing or wrong, please contact 
+List last updated 2021-05-01. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
