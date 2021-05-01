@@ -1,0 +1,30 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-2019, macos-10.15]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build wheels
+        uses: joerick/cibuildwheel@v1.11.0
+        # to supply options, put them in 'env', like:
+        # env:
+        #   CIBW_SOME_OPTION: value
+        env:
+          - CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* pp36-*"
+          - CIBW_SKIP: "*_ppc64le *_s390x"
+          - CIBW_TEST_COMMAND: "python -m pymunk.tests"
+          - CIBW_BUILD_VERBOSITY: 3
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ./wheelhouse/*.whl
+          retention-days: 7
+          if: ${{ github.ref == 'refs/heads/master' }}
