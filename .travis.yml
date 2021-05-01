@@ -24,13 +24,13 @@ jobs:
     - os: windows
       language: shell
       before_install:
-        - choco install python --version 3.8.0
+        - choco upgrade python -y --version 3.8.6
         - export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
         # make sure it's on PATH as 'python3'
         - ln -s /c/Python38/python.exe /c/Python38/python3.exe
 
 install:
-  - python3 -m pip install cibuildwheel==1.6.4
+  - python3 -m pip install cibuildwheel==1.11.0
 
 script:
   # build the wheels, put them into './wheelhouse'
