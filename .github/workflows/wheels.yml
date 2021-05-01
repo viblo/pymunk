@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+        submodules: true
       - name: Build wheels
         uses: joerick/cibuildwheel@v1.11.0
         # to supply options, put them in 'env', like:
