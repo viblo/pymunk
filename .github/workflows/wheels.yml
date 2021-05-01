@@ -19,10 +19,10 @@ jobs:
         # env:
         #   CIBW_SOME_OPTION: value
         env:
-          - CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* pp36-*"
-          - CIBW_SKIP: "*_ppc64le *_s390x"
-          - CIBW_TEST_COMMAND: "python -m pymunk.tests"
-          - CIBW_BUILD_VERBOSITY: 3
+          CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* pp36-*"
+          CIBW_SKIP: "*_ppc64le *_s390x"
+          CIBW_TEST_COMMAND: "python -m pymunk.tests"
+          CIBW_BUILD_VERBOSITY: 3
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
