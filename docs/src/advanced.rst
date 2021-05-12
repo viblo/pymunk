@@ -5,10 +5,62 @@ In this section different "Advanced" topics are covered, things you normally
 dont need to worry about when you use Pymunk but might be of interest if you
 want a better understanding of Pymunk for example to extend it. 
 
-First off, Pymunk is a pythonic wrapper around the C-library Chipmunk. 
+First off, Pymunk is a pythonic library built around the C-library 
+Chipmunk2D, which provides almost all of the base functionality around the 
+physics simulation such as collision detection, impulse solving etc. 
+Bascially it runs the simulation, and Pymunk calls it with input, and 
+receives the result.
 
 To wrap Chipmunk Pymunk uses CFFI in API mode. On top of the CFFI wrapping is
 a handmade pythonic layer to make it nice to use from Python code.
+
+
+Impulse Solver Algorithm
+------------------------
+
+Pymunk in itself only performs a minimum amount of physics calculation, 
+instead those are handled by the underlying C-library Chipmunk 2D. Chipmunk2D 
+(and therefor Pymunk) uses standard Euler to perform the integration
+
+Scott/slembcke (the creator of Chipmunk2D), wrote this to describe the method 
+used on the 
+`Chipmunk2D Forum <https://chipmunk-physics.net/forum/viewtopic.php?f=1&t=1432&p=6652&hilit=euler#p6652>`_:
+
+  Chipmunk works like this:
+  
+  1. Integrate the positions of everything and finds colliding pairs.
+  2. Pre-calculate a number of properties of the contacts and joints. 
+     (mass properties, bounce velocities, etc)
+  3. Integrate the velocities of everything.
+  4. Run a number of solver iterations, to fix velocity constraints.
+
+  Case 1, a box sitting on the ground:
+
+  1. The box is at rest, it's velocity is (very near) zero, it's position 
+     doesn't change. Generate a contact with the ground.
+  2. Precalculate the contact properties, if elasticity is set, the 
+     "bounce" velocity is calculated now (as 0).
+  3. Integrate the velocity, gravity makes the object accelerate downwards.
+  4. Solve the contact. Velocity should converge back to 0. If elasticity 
+     was set, it will be handled correctly without resorting to threshold 
+     velocities.
+
+  #1 is really the most important part. If you were to update the 
+  velocity before the postition, it would cause the box to move itself 
+  into a position where it would intersect the ground. While Chipmunk has 
+  to solve these overlaps anyway, avoiding them seems desirable. Another 
+  very useful property is that when cpSpaceStep() returns, all of the 
+  collision detection data structures are up to date. No need to reindex 
+  them twice in a single frame if you want to make queries.
+
+
+Collision Detection Algorithm
+-----------------------------
+
+Just as the impulse solver, the collision detection is also handled by the underlying C-library Chipmunk2D.
+
+Chipmunk uses GJK/EPA to find collisions between the tricky cases (e.g. polygons, segment shapes). There is a blog post `here <http://howlingmoonsoftware.com/wordpress/enhanced-collision-algorithms-for-chipmunk-6-2/>`_ with more details.
+
 
 Why CFFI?
 ---------
@@ -119,6 +171,7 @@ enough for use by pymunk in the beginning. There are more options available
 today, and using ctypes is not set in stone. If a better alternative comes 
 around then pymunk might switch given the improvements are big enough.
   
+
 Code Layout
 -----------
 

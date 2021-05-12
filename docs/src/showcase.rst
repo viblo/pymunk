@@ -209,197 +209,205 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
-* Delucia, Marco, Anita Catapano, Marco Montemurro, and Jérôme Pailhès. 
-  "Pre-stress state in cork agglomerates: simulation of the compression moulding process." 
-  International Journal of Material Forming (2021): 1-14.
-
-* Semage, Buddhika Laknath, Thommen George Karimpanal, Santu Rana, and Svetha Venkatesh. 
-  "Intuitive Physics Guided Exploration for Sample Efficient Sim2real Transfer." 
-  arXiv preprint arXiv:2104.08795 (2021).
-
-* Dhruv, Akshit J., Reema Patel, and Nishant Doshi. 
-  "Python: The Most Advanced Programming Language for Computer Science Applications." 
-  (2021).
-
-* Welle, Michael C., Anastasiia Varava, Jeffrey Mahler, Ken Goldberg, Danica Kragic, and Florian T. Pokorny. 
-  "Partial caging: a clearance-based definition, datasets, and deep learning." 
-  Autonomous Robots (2021): 1-18.
-
-* Ji, Hao, and Yan Jin. 
-  "Designing Self-Assembly Systems with Deep Multiagent Reinforcement Learning."
-
-* Mori, Hiroki, Masayuki Masuda, and Tetsuya Ogata. 
-  "Tactile-based curiosity maximizes tactile-rich object-oriented actions even without any extrinsic rewards." 
-  In 2020 Joint IEEE 10th International Conference on Development and Learning and Epigenetic Robotics (ICDL-EpiRob), pp. 1-7. IEEE, 2020.
-
-* Jiang, Lincheng. 
-  "A Computational Method to Generate One-story Floor Plans for Nursing Homes Based on Daylight Hour Potential and Shortest Path of Circulations." 
-  (2020).
-
-* Chen, Ricky TQ, Brandon Amos, and Maximilian Nickel. 
-  "Learning Neural Event Functions for Ordinary Differential Equations." 
-  arXiv preprint arXiv:2011.03902 (2020).
-
-* Jain, Ayush, Andrew Szot, and Joseph J. Lim. 
-  "Generalization to New Actions in Reinforcement Learning." 
-  arXiv preprint arXiv:2011.01928 (2020).
-
-* Petitgirard, Julien, Tony Piguet, Philippe Baucour, Didier Chamagne, Eric Fouillien, and Jean-Christophe Delmare. 
-  "Steady State and 2D Thermal Equivalence Circuit for Winding Heads—A New Modelling Approach." 
-  Mathematical and Computational Applications 25, no. 4 (2020): 70.
-  
-* Hook, Joosep, Seif El-Sedky, Varuna De Silva, and Ahmet Kondoz. 
-  "Learning data-driven decision-making policies in multi-agent environments for autonomous systems." 
-  Cognitive Systems Research 65 (2021): 40-49.
-
-* Matthews, Elizabeth A., and Juan E. Gilbert. 
-  "ATLAS CHRONICLE: DEVELOPMENT AND VERIFICATION OF A SYSTEM FOR PROCEDURAL GENERATION OF STORY-DRIVEN GAMES."
-
-* Ipe, Navin. 
-  "Context and event-based cognitive memory constructs for embodied intelligence machines."
+#. Liu, Lucy, Gary Choi, and L. Mahadevan. 
+   "Quasicrystal kirigami." 
+   arXiv preprint arXiv:2104.13399 (2021).
+ 
+#. Delucia, Marco, Anita Catapano, Marco Montemurro, and Jérôme Pailhès. 
+   "Pre-stress state in cork agglomerates: simulation of the compression moulding process." 
+   International Journal of Material Forming (2021): 1-14.
+ 
+#. Semage, Buddhika Laknath, Thommen George Karimpanal, Santu Rana, and Svetha 
+   Venkatesh. 
+   "Intuitive Physics Guided Exploration for Sample Efficient Sim2real Transfer." 
+   arXiv preprint arXiv:2104.08795 (2021).
+ 
+#. Dhruv, Akshit J., Reema Patel, and Nishant Doshi. 
+   "Python: The Most Advanced Programming Language for Computer Science Applications." 
+   (2021).
+ 
+#. Welle, Michael C., Anastasiia Varava, Jeffrey Mahler, Ken Goldberg, Danica Kragic, and Florian T. Pokorny. 
+   "Partial caging: a clearance-based definition, datasets, and deep learning." 
+   Autonomous Robots (2021): 1-18.
+ 
+#. Ji, Hao, and Yan Jin. 
+   "Designing Self-Assembly Systems with Deep Multiagent Reinforcement Learning."
+ 
+#. Mori, Hiroki, Masayuki Masuda, and Tetsuya Ogata. 
+   "Tactile-based curiosity maximizes tactile-rich object-oriented actions even without any extrinsic rewards." 
+   In 2020 Joint IEEE 10th International Conference on Development and 
+   Learning and Epigenetic Robotics (ICDL-EpiRob), pp. 1-7. IEEE, 2020.
+ 
+#. Jiang, Lincheng. 
+   "A Computational Method to Generate One-story Floor Plans for Nursing Homes Based on Daylight Hour Potential and Shortest Path of Circulations." 
+   (2020).
+ 
+#. Chen, Ricky TQ, Brandon Amos, and Maximilian Nickel. 
+   "Learning Neural Event Functions for Ordinary Differential Equations." 
+   arXiv preprint arXiv:2011.03902 (2020).
+ 
+#. Jain, Ayush, Andrew Szot, and Joseph J. Lim. 
+   "Generalization to New Actions in Reinforcement Learning." 
+   arXiv preprint arXiv:2011.01928 (2020).
+ 
+#. Petitgirard, Julien, Tony Piguet, Philippe Baucour, Didier Chamagne, Eric 
+   Fouillien, and Jean-Christophe Delmare. 
+   "Steady State and 2D Thermal Equivalence Circuit for Winding Heads—A New Modelling Approach." 
+   Mathematical and Computational Applications 25, no. 4 (2020): 70.
    
-* Ipe, Navin. 
-  "An In-Memory Physics Environment as a World Model for Robot Motion Planning." 
-  (2020).
-
-* Li, Yunzhu, Antonio Torralba, Animashree Anandkumar, Dieter Fox, and Animesh Garg. 
-  "Causal Discovery in Physical Systems from Videos." 
-  arXiv preprint arXiv:2007.00631 (2020).
-
-* Suh, H. J., and Russ Tedrake. 
-  "The Surprising Effectiveness of Linear Models for Visual Foresight in 
-  Object Pile Manipulation." 
-  arXiv preprint arXiv:2002.09093 (2020).
-
-* Vos, Bastiaan. 
-  "The Sailing Tug: A feasibility study on the application of Wind-Assisted 
-  towing of the Thialf." 
-  (2019).
-
-* Wong, Eric C. 
-  "Example Based Hebbian Learning may be sufficient to support Human 
-  Intelligence." 
-  bioRxiv (2019): 758375.
-
-* Manoury, Alexandre, and Cédric Buche. 
-  "Hierarchical Affordance Discovery using Intrinsic Motivation." 2019.
-
-* Mounsif, Mehdi, Sebastien Lengagne, Benoit Thuilot, and Lounis Adouane. 
-  "Universal Notice Network: Transferable Knowledge Among Agents." 
-  In 2019 6th International Conference on Control, Decision and Information 
-  Technologies (CoDIT), pp. 563-568. IEEE, 2019.
-
-* Du, Yilun, and Karthik Narasimhan. 
-  "Task-Agnostic Dynamics Priors for Deep Reinforcement Learning." 
-  In International Conference on Machine Learning, pp. 1696-1705. 2019.
-
-* Siegel, Max Harmon. 
-  "Compositional simulation in perception and cognition." 
-  PhD diss., Massachusetts Institute of Technology, 2018.
-
-* Caselles-Dupré, Hugo, Louis Annabi, Oksana Hagen, Michael Garcia-Ortiz, and 
-  David Filliat. 
-  "Flatland: a Lightweight First-Person 2-D Environment for Reinforcement Learning." 
-  arXiv preprint arXiv:1809.00510 (2018).
-
-* Yingzhen, Li, and Stephan Mandt. 
-  "Disentangled Sequential Autoencoder." 
-  In International Conference on Machine Learning, pp. 5656-5665. 2018.
-
-* Melnik, Andrew. 
-  "Sensorimotor Processing in the Human Brain and in Cognitive Architectures." 
-  (2018).
-
-* Li, Yingzhen, and Stephan Mandt. 
-  "A Deep Generative Model for Disentangled Representations of Sequential Data." 
-  arXiv preprint arXiv:1803.02991 (2018).
-
-* Hongsuk Yi, Eunsoo Park and Seungil Kim (이홍석, 박은수, and 김승일.)
-  "Deep Reinforcement Learning for Autonomous Vehicle Driving" 
-  ("자율주행자동차 주행을 위한 심화강화학습.")
-  2017 Korea Software Engineering Conference 
-  (한국정보과학회 학술발표논문집 (2017): 784-786.)
-
-* Fraccaro, Marco, Simon Kamronn, Ulrich Paquet, and Ole Winther. 
-  "A Disentangled Recognition and Nonlinear Dynamics Model for Unsupervised 
-  Learning." 
-  arXiv preprint arXiv:1710.05741 (2017).
-
-* Kister, Ulrike, Konstantin Klamka, Christian Tominski, and Raimund Dachselt. 
-  "GraSp: Combining Spatially‐aware Mobile Devices and a Display Wall for Graph 
-  Visualization and Interaction." 
-  In Computer Graphics Forum, vol. 36, no. 3, pp. 503-514. 2017.
-
-* Kim, Neil H., Gloria Lee, Nicholas A. Sherer, K. Michael Martini, Nigel 
-  Goldenfeld, and Thomas E. Kuhlman. 
-  "Real-time transposable element activity in individual live cells." 
-  Proceedings of the National Academy of Sciences 113, no. 26 (2016): 7278-7283.
-
-* Baheti, Ashutosh, and Arobinda Gupta. 
-  "Non-linear barrier coverage using mobile wireless sensors." 
-  In Computers and Communications (ISCC), 2017 IEEE Symposium on, pp. 804-809. 
-  IEEE, 2017.
-
-* Espeso, David R., Esteban Martínez-García, Victor De Lorenzo, and Ángel 
-  Goñi-Moreno. 
-  "Physical forces shape group identity of swimming Pseudomonas putida cells." 
-  Frontiers in Microbiology 7 (2016).
-
-* Goni-Moreno, Angel, and Martyn Amos. 
-  "DiSCUS: A Simulation Platform for Conjugation Computing." 
-  In International Conference on Unconventional Computation and Natural 
-  Computation, pp. 181-191. Springer International Publishing, 2015.
-
-* Amos, Martyn, et al. 
-  "Bacterial computing with engineered populations." 
-  *Phil. Trans. R. Soc. A* 373.2046 (2015): 20140218.
-
-* Crane, Beth, and Stephen Sherratt. 
-  "rUNSWift 2D Simulator; Behavioural Simulation Integrated with the rUNSWift 
-  Architecture." 
-  *UNSW School of Computer Science and Engineering* (2013).
-
-* Miller, Chreston Allen. 
-  "Structural model discovery in temporal event data streams."
-  Diss. Virginia Polytechnic Institute and State University, 2013.
-
-* Pumar García, César. 
-  "Simulación de evolución dirigida de bacteriófagos en poblaciones de bacterias 
-  en 2D." 
-  (2013).
-
-* Simoes, Manuel, and Caroline GL Cao. 
-  "Leonardo: a first step towards an interactive decision aid for port-placement 
-  in robotic surgery." 
-  *Systems, Man, and Cybernetics (SMC), 2013 IEEE International Conference on.* 
-  IEEE, 2013.
-
-* Goni-Moreno, Angel, and Martyn Amos. 
-  "Discrete modelling of bacterial conjugation dynamics." 
-  *arXiv preprint arXiv:1211.1146* (2012).
-
-* Matthews, Elizabeth A. 
-  "ATLAS CHRONICLE: A STORY-DRIVEN SYSTEM TO CREATE STORY-DRIVEN MAPS."
-  Diss. Clemson University, 2012.
-
-* Matthews, Elizabeth, and Brian Malloy. 
-  "Procedural generation of story-driven maps." 
-  *Computer Games (CGAMES), 2011 16th International Conference on.* IEEE, 2011.
-
-* Miller, Chreston, and Francis Quek. 
-  "Toward multimodal situated analysis." 
-  *Proceedings of the 13th international conference on multimodal interfaces.* 
-  ACM, 2011.
-
-* Verdie, Yannick. 
-  "Surface gesture & object tracking on tabletop devices."
-  Diss. Virginia Polytechnic Institute and State University, 2010.
-
-* Agrawal, Vivek, and Ryan Kerwin. 
-  "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
+#. Hook, Joosep, Seif El-Sedky, Varuna De Silva, and Ahmet Kondoz. 
+   "Learning data-driven decision-making policies in multi-agent environments for autonomous systems." 
+   Cognitive Systems Research 65 (2021): 40-49.
+ 
+#. Matthews, Elizabeth A., and Juan E. Gilbert. 
+   "ATLAS CHRONICLE: DEVELOPMENT AND VERIFICATION OF A SYSTEM FOR PROCEDURAL GENERATION OF STORY-DRIVEN GAMES."
+ 
+#. Ipe, Navin. 
+   "Context and event-based cognitive memory constructs for embodied intelligence machines."
+    
+#. Ipe, Navin. 
+   "An In-Memory Physics Environment as a World Model for Robot Motion Planning." 
+   (2020).
+ 
+#. Li, Yunzhu, Antonio Torralba, Animashree Anandkumar, Dieter Fox, and 
+   Animesh Garg. 
+   "Causal Discovery in Physical Systems from Videos." 
+   arXiv preprint arXiv:2007.00631 (2020).
+ 
+#. Suh, H. J., and Russ Tedrake. 
+   "The Surprising Effectiveness of Linear Models for Visual Foresight in 
+   Object Pile Manipulation." 
+   arXiv preprint arXiv:2002.09093 (2020).
+ 
+#. Vos, Bastiaan. 
+   "The Sailing Tug: A feasibility study on the application of Wind-Assisted 
+   towing of the Thialf." 
+   (2019).
+ 
+#. Wong, Eric C. 
+   "Example Based Hebbian Learning may be sufficient to support Human 
+   Intelligence." 
+   bioRxiv (2019): 758375.
+ 
+#. Manoury, Alexandre, and Cédric Buche. 
+   "Hierarchical Affordance Discovery using Intrinsic Motivation." 2019.
+ 
+#. Mounsif, Mehdi, Sebastien Lengagne, Benoit Thuilot, and Lounis Adouane. 
+   "Universal Notice Network: Transferable Knowledge Among Agents." 
+   In 2019 6th International Conference on Control, Decision and Information 
+   Technologies (CoDIT), pp. 563-568. IEEE, 2019.
+ 
+#. Du, Yilun, and Karthik Narasimhan. 
+   "Task-Agnostic Dynamics Priors for Deep Reinforcement Learning." 
+   In International Conference on Machine Learning, pp. 1696-1705. 2019.
+ 
+#. Siegel, Max Harmon. 
+   "Compositional simulation in perception and cognition." 
+   PhD diss., Massachusetts Institute of Technology, 2018.
+ 
+#. Caselles-Dupré, Hugo, Louis Annabi, Oksana Hagen, Michael Garcia-Ortiz, and 
+   David Filliat. 
+   "Flatland: a Lightweight First-Person 2-D Environment for Reinforcement Learning." 
+   arXiv preprint arXiv:1809.00510 (2018).
+ 
+#. Yingzhen, Li, and Stephan Mandt. 
+   "Disentangled Sequential Autoencoder." 
+   In International Conference on Machine Learning, pp. 5656-5665. 2018.
+ 
+#. Melnik, Andrew. 
+   "Sensorimotor Processing in the Human Brain and in Cognitive Architectures." 
+   (2018).
+ 
+#. Li, Yingzhen, and Stephan Mandt. 
+   "A Deep Generative Model for Disentangled Representations of Sequential Data." 
+   arXiv preprint arXiv:1803.02991 (2018).
+ 
+#. Hongsuk Yi, Eunsoo Park and Seungil Kim (이홍석, 박은수, and 김승일.)
+   "Deep Reinforcement Learning for Autonomous Vehicle Driving" 
+   ("자율주행자동차 주행을 위한 심화강화학습.")
+   2017 Korea Software Engineering Conference 
+   (한국정보과학회 학술발표논문집 (2017): 784-786.)
+ 
+#. Fraccaro, Marco, Simon Kamronn, Ulrich Paquet, and Ole Winther. 
+   "A Disentangled Recognition and Nonlinear Dynamics Model for Unsupervised 
+   Learning." 
+   arXiv preprint arXiv:1710.05741 (2017).
+ 
+#. Kister, Ulrike, Konstantin Klamka, Christian Tominski, and Raimund Dachselt. 
+   "GraSp: Combining Spatially‐aware Mobile Devices and a Display Wall for Graph 
+   Visualization and Interaction." 
+   In Computer Graphics Forum, vol. 36, no. 3, pp. 503-514. 2017.
+ 
+#. Kim, Neil H., Gloria Lee, Nicholas A. Sherer, K. Michael Martini, Nigel 
+   Goldenfeld, and Thomas E. Kuhlman. 
+   "Real-time transposable element activity in individual live cells." 
+   Proceedings of the National Academy of Sciences 113, no. 26 (2016): 7278-7283.
+ 
+#. Baheti, Ashutosh, and Arobinda Gupta. 
+   "Non-linear barrier coverage using mobile wireless sensors." 
+   In Computers and Communications (ISCC), 2017 IEEE Symposium on, pp. 804-809. 
+   IEEE, 2017.
+ 
+#. Espeso, David R., Esteban Martínez-García, Victor De Lorenzo, and Ángel 
+   Goñi-Moreno. 
+   "Physical forces shape group identity of swimming Pseudomonas putida cells." 
+   Frontiers in Microbiology 7 (2016).
+ 
+#. Goni-Moreno, Angel, and Martyn Amos. 
+   "DiSCUS: A Simulation Platform for Conjugation Computing." 
+   In International Conference on Unconventional Computation and Natural 
+   Computation, pp. 181-191. Springer International Publishing, 2015.
+ 
+#. Amos, Martyn, et al. 
+   "Bacterial computing with engineered populations." 
+   Phil. Trans. R. Soc. A 373.2046 (2015): 20140218.
+ 
+#. Crane, Beth, and Stephen Sherratt. 
+   "rUNSWift 2D Simulator; Behavioural Simulation Integrated with the rUNSWift 
+   Architecture." 
+   UNSW School of Computer Science and Engineering (2013).
+ 
+#. Miller, Chreston Allen. 
+   "Structural model discovery in temporal event data streams."
+   Diss. Virginia Polytechnic Institute and State University, 2013.
+ 
+#. Pumar García, César. 
+   "Simulación de evolución dirigida de bacteriófagos en poblaciones de bacterias 
+   en 2D." 
+   (2013).
+ 
+#. Simoes, Manuel, and Caroline GL Cao. 
+   "Leonardo: a first step towards an interactive decision aid for port-placement 
+   in robotic surgery." 
+   Systems, Man, and Cybernetics (SMC), 2013 IEEE International Conference on. 
+   IEEE, 2013.
+ 
+#. Goni-Moreno, Angel, and Martyn Amos. 
+   "Discrete modelling of bacterial conjugation dynamics." 
+   arXiv preprint arXiv:1211.1146 (2012).
+ 
+#. Matthews, Elizabeth A. 
+   "ATLAS CHRONICLE: A STORY-DRIVEN SYSTEM TO CREATE STORY-DRIVEN MAPS."
+   Diss. Clemson University, 2012.
+ 
+#. Matthews, Elizabeth, and Brian Malloy. 
+   "Procedural generation of story-driven maps." 
+   Computer Games (CGAMES), 2011 16th International Conference on. IEEE, 2011.
+ 
+#. Miller, Chreston, and Francis Quek. 
+   "Toward multimodal situated analysis." 
+   Proceedings of the 13th international conference on multimodal interfaces. 
+   ACM, 2011.
+ 
+#. Verdie, Yannick. 
+   "Surface gesture & object tracking on tabletop devices."
+   Diss. Virginia Polytechnic Institute and State University, 2010.
+ 
+#. Agrawal, Vivek, and Ryan Kerwin. 
+   "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2021-05-01. If something is missing or wrong, please contact 
+List last updated 2021-05-04. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
