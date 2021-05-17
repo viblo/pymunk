@@ -85,6 +85,18 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/galtonBoard.png
+      - `Galton Board <https://github.com/nav9/GaltonBoard>`_
+
+        :subscript:`made by Nav. Retrieved 2021-05-17`
+
+        The quincunx (also known as a Galton board) created in Pymunk.
+        
+        This is a Galton Board simulation programmed to run in three modes, 
+        with medium sized balls, small balls and large balls. A bit of 
+        randomness had to be added to the ball elasticity and initialization 
+        positions, to aid with proper interaction with objects.
+        
     * - .. image:: _static/PySimpleGUI.png
       - `PySimpleGUI Desktop Demo <https://github.com/PySimpleGUI/PySimpleGUI>`_
 
