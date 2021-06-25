@@ -28,6 +28,7 @@ v6.x
 - Add a CITATION.cff file https://github.com/citation-file-format/citation-file-format http://citeas.org/cite/pymunk
 - Update demos to not use positive_y_is_up hack except in a single case.
 - Write something about the usage of logging.debug logs somewhere.
+- handle the case described here https://stackoverflow.com/questions/67668952/pygame-and-pymunk-programm-loads-a-bit-with-back-screen-and-then-closes
 
 v7+ (all potentially breaking changes)
 ---

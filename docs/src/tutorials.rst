@@ -25,7 +25,9 @@ External Tutorials
     If you have made a tutorial that is using Pymunk in any way and want it 
     mentioned here please send me a link and I will happily add it.
 
-Several Youtube users have created tutorials covering Pymunk:
+Several Youtube users have created tutorials covering Pymunk. In addition to 
+the list below, make sure to also directly search Youtube for Pymunk since 
+not everything available is listed here:
 
 
 Pymunk Basics

@@ -85,6 +85,19 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/ar-physics.jpg
+      - `Computer Vision and Phyiscs <https://amirabbasasadi.github.io/vision/python/2021/06/03/having-fun-with-computer-vision-and-physics.html>`_
+
+        :subscript:`made by Amirabbas Asadi. Retrieved 2021-06-25`
+
+        Just playing with OpenCV + a hand tracking model + a physics engine :)
+
+        A very cool blog post (and video) explaining how to combine computer 
+        vision and a little physics to create a simple environment for 
+        Augmented Reality. In the blog Amirabbas Asadi shows how OpenCV, 
+        Mediapipe and Pymunk can be combined to make a app where simulated 
+        balls bounce on the hand of the user.
+
     * - .. image:: _static/galtonBoard.png
       - `Galton Board <https://github.com/nav9/GaltonBoard>`_
 
@@ -220,6 +233,22 @@ Papers / Science
 Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
+
+#. Enander, Jonas MD, Gerald E. Loeb, Henrik Jorntell, Adam M. Jones, Matthieu Kirkland, and Jordan Hurless. 
+   "A Model for Self-Organization of Sensorimotor Function: The Spinal Monosynaptic Loop." 
+   bioRxiv (2021).
+
+#. Skalnik, Christopher J., Eran Agmon, Ryan K. Spangler, Lee Talman, Jerry H. Morrison, Shayn M. Peirce, and Markus W. Covert. 
+   "Whole-colony modeling of Escherichia coli." 
+   bioRxiv (2021).
+
+#. Zakka, Kevin, Andy Zeng, Pete Florence, Jonathan Tompson, Jeannette Bohg, and Debidatta Dwibedi. 
+   "XIRL: Cross-embodiment Inverse Reinforcement Learning." 
+   arXiv preprint arXiv:2106.03911 (2021).
+
+#. Gerstenberg, Tobias, Max Siegel, and Joshua Tenenbaum. 
+   "What happened? Reconstructing the past through vision and sound." 
+   (2021).
 
 #. Liu, Lucy, Gary Choi, and L. Mahadevan. 
    "Quasicrystal kirigami." 
@@ -419,7 +448,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2021-05-04. If something is missing or wrong, please contact 
+List last updated 2021-06-22. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
