@@ -433,7 +433,14 @@ class Space(PickleMixin, object):
     def _add_shape(self, shape: "Shape") -> None:
         """Adds a shape to the space"""
         # print("addshape", self._space, shape)
-        assert shape._id not in self._shapes, "shape already added to space"
+        assert shape._id not in self._shapes, "Shape already added to space."
+        assert (
+            shape.space == None
+        ), "Shape already added to another space. A shape can only be in one space at a time."
+        assert shape.body != None, "The shape's body is not set."
+        assert (
+            shape.body.space == self
+        ), "The shape's body must be added to the space before (or at the same time) as the shape."
 
         shape._space = weakref.proxy(self)
         self._shapes[shape._id] = shape
@@ -442,6 +449,7 @@ class Space(PickleMixin, object):
     def _add_body(self, body: "Body") -> None:
         """Adds a body to the space"""
         assert body not in self._bodies, "body already added to space"
+
         body._space = weakref.proxy(self)
         self._bodies[body] = None
         cp.cpSpaceAddBody(self._space, body._body)
@@ -456,6 +464,7 @@ class Space(PickleMixin, object):
         """Removes a shape from the space"""
         assert shape._id in self._shapes, "shape not in space, already removed?"
         self._removed_shapes[shape._id] = shape
+        shape._space = None
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
         if cp.cpSpaceContainsShape(self._space, shape._shape):
             cp.cpSpaceRemoveShape(self._space, shape._shape)
