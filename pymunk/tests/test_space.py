@@ -193,7 +193,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertTrue(self.s2 not in s.shapes)
         self._tearDown()
 
-    def testAddAsserts(self) -> None:
+    def testAddShapeAsserts(self) -> None:
         s1 = p.Space()
         s2 = p.Space()
         c1 = p.Circle(s1.static_body, 10)
@@ -210,6 +210,26 @@ class UnitTestSpace(unittest.TestCase):
         c3 = p.Circle(b, 10)
 
         self.assertRaises(AssertionError, s1.add, c3)
+
+    def testAddBodyAsserts(self) -> None:
+        s1 = p.Space()
+        s2 = p.Space()
+        c1 = p.Circle(s1.static_body, 10)
+
+        s1.add(c1)
+
+        self.assertRaises(AssertionError, s1.add, c1)
+        self.assertRaises(AssertionError, s2.add, c1)
+
+    def testAddConstraintAsserts(self) -> None:
+        s1 = p.Space()
+        b1 = p.Body(1, 2)
+        b2 = p.Body(1, 2)
+        c1 = p.PinJoint(b1, b2, (20, 0), (-20, 0))
+
+        s1.add(c1)
+
+        self.assertRaises(AssertionError, s1.add, c1)
 
     def testPointQueryNearestWithShapeFilter(self) -> None:
         s = p.Space()

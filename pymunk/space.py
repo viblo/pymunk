@@ -448,7 +448,8 @@ class Space(PickleMixin, object):
 
     def _add_body(self, body: "Body") -> None:
         """Adds a body to the space"""
-        assert body not in self._bodies, "body already added to space"
+        assert body not in self._bodies, "Body already added to this space."
+        assert body.space == None, "Body already added to another space."
 
         body._space = weakref.proxy(self)
         self._bodies[body] = None
@@ -456,7 +457,8 @@ class Space(PickleMixin, object):
 
     def _add_constraint(self, constraint: "Constraint") -> None:
         """Adds a constraint to the space"""
-        assert constraint not in self._constraints, "constraint already added to space"
+        assert constraint not in self._constraints, "Constraint already added to space."
+
         self._constraints[constraint] = None
         cp.cpSpaceAddConstraint(self._space, constraint._constraint)
 
