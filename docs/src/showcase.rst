@@ -85,6 +85,15 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/manim-physics.png
+      - `manim-physics <https://github.com/Matheart/manim-physics>`_
+
+        :subscript:`made by pdcxs, Matheart & Iced-Tea3. Retrieved 2021-07-05`
+
+        This is a 2D physics simulation plugin that allows you to generate 
+        complicated scenes in various branches of Physics such as rigid 
+        mechanics, electromagnetism, wave etc.
+
     * - .. image:: _static/ar-physics.jpg
       - `Computer Vision and Phyiscs <https://amirabbasasadi.github.io/vision/python/2021/06/03/having-fun-with-computer-vision-and-physics.html>`_
 
