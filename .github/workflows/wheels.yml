@@ -15,7 +15,7 @@ jobs:
         with:
           submodules: true
       - name: Build wheels
-        uses: joerick/cibuildwheel@v1.11.0
+        uses: joerick/cibuildwheel@v1.12.0
         # to supply options, put them in 'env', like:
         # env:
         #   CIBW_SOME_OPTION: value
@@ -25,7 +25,7 @@ jobs:
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
           CIBW_BUILD_VERBOSITY: 3
       - uses: actions/upload-artifact@v2
+        if: ${{ github.ref == 'refs/heads/master' }}
         with:
           path: ./wheelhouse/*.whl
           retention-days: 7
-          if: ${{ github.ref == 'refs/heads/master' }}
