@@ -1,6 +1,15 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, List, NamedTuple, Optional, Sequence, Tuple, Type
+from typing import (
+    TYPE_CHECKING,
+    ClassVar,
+    List,
+    NamedTuple,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+)
 
 if TYPE_CHECKING:
     from .shapes import Shape
@@ -10,6 +19,7 @@ import math
 
 from ._chipmunk_cffi import ffi, lib
 from .body import Body
+from .transform import Transform
 from .vec2d import Vec2d
 
 _DrawFlags = int
@@ -47,33 +57,36 @@ class SpaceDebugDrawOptions(object):
     directly: pymunk.pygame_util, pymunk.pyglet_util and pymunk.matplotlib_util.
     """
 
-    DRAW_SHAPES = lib.CP_SPACE_DEBUG_DRAW_SHAPES
+    DRAW_SHAPES: ClassVar[_DrawFlags] = lib.CP_SPACE_DEBUG_DRAW_SHAPES
     """Draw shapes.  
     
     Use on the flags property to control if shapes should be drawn or not.
     """
 
-    DRAW_CONSTRAINTS = lib.CP_SPACE_DEBUG_DRAW_CONSTRAINTS
+    DRAW_CONSTRAINTS: ClassVar[_DrawFlags] = lib.CP_SPACE_DEBUG_DRAW_CONSTRAINTS
     """Draw constraints. 
     
     Use on the flags property to control if constraints should be drawn or not.
     """
 
-    DRAW_COLLISION_POINTS = lib.CP_SPACE_DEBUG_DRAW_COLLISION_POINTS
+    DRAW_COLLISION_POINTS: ClassVar[
+        _DrawFlags
+    ] = lib.CP_SPACE_DEBUG_DRAW_COLLISION_POINTS
     """Draw collision points.
     
     Use on the flags property to control if collision points should be drawn or
     not.
     """
 
-    shape_dynamic_color = SpaceDebugColor(52, 152, 219, 255)
-    shape_static_color = SpaceDebugColor(149, 165, 166, 255)
-    shape_kinematic_color = SpaceDebugColor(39, 174, 96, 255)
-    shape_sleeping_color = SpaceDebugColor(114, 148, 168, 255)
+    shape_dynamic_color: SpaceDebugColor = SpaceDebugColor(52, 152, 219, 255)
+    shape_static_color: SpaceDebugColor = SpaceDebugColor(149, 165, 166, 255)
+    shape_kinematic_color: SpaceDebugColor = SpaceDebugColor(39, 174, 96, 255)
+    shape_sleeping_color: SpaceDebugColor = SpaceDebugColor(114, 148, 168, 255)
 
     def __init__(self) -> None:
         _options = ffi.new("cpSpaceDebugDrawOptions *")
         self._options = _options
+        self._transform: Transform = Transform.identity()
         self.shape_outline_color = SpaceDebugColor(44, 62, 80, 255)
         self.constraint_color = SpaceDebugColor(142, 68, 173, 255)
         self.collision_point_color = SpaceDebugColor(231, 76, 60, 255)
@@ -83,10 +96,15 @@ class SpaceDebugDrawOptions(object):
 
         @ffi.callback("cpSpaceDebugDrawCircleImpl")
         def f1(pos, angle, radius, outline_color, fill_color, _):  # type: ignore
+            # TODO: optimize code
+            t_pos = self._transform @ (pos.x, pos.y)
+            t = self._transform @ (pos.x + radius, pos.y)
+            t_radius = t_pos.get_distance(t)
+
             self.draw_circle(
-                Vec2d(pos.x, pos.y),
+                t_pos,
                 angle,
-                radius,
+                t_radius,
                 self._c(outline_color),
                 self._c(fill_color),
             )
@@ -100,16 +118,24 @@ class SpaceDebugDrawOptions(object):
             # the drawing method.
             if math.isnan(a.x) or math.isnan(a.y) or math.isnan(b.x) or math.isnan(b.y):
                 return
-            self.draw_segment(Vec2d(a.x, a.y), Vec2d(b.x, b.y), self._c(color))
+            self.draw_segment(
+                self._transform @ (a.x, a.y),
+                self._transform @ (b.x, b.y),
+                self._c(color),
+            )
 
         _options.drawSegment = f2
 
         @ffi.callback("cpSpaceDebugDrawFatSegmentImpl")
         def f3(a, b, radius, outline_color, fill_color, _):  # type: ignore
+            # TODO: optimize code
+            t_pos = self._transform @ (a.x, a.y)
+            t = self._transform @ (a.x + radius, a.y)
+            t_radius = t_pos.get_distance(t)
             self.draw_fat_segment(
-                Vec2d(a.x, a.y),
-                Vec2d(b.x, b.y),
-                radius,
+                t_pos,
+                self._transform @ (b.x, b.y),
+                t_radius,
                 self._c(outline_color),
                 self._c(fill_color),
             )
@@ -118,16 +144,24 @@ class SpaceDebugDrawOptions(object):
 
         @ffi.callback("cpSpaceDebugDrawPolygonImpl")
         def f4(count, verts, radius, outline_color, fill_color, _):  # type: ignore
+            # TODO: optimize code
+            t_pos = self._transform @ (verts[0].x, verts[0].y)
+            t = self._transform @ (verts[0].x + radius, verts[0].y)
+            t_radius = t_pos.get_distance(t)
             vs = []
             for i in range(count):
-                vs.append(Vec2d(verts[i].x, verts[i].y))
-            self.draw_polygon(vs, radius, self._c(outline_color), self._c(fill_color))
+                vs.append(self._transform @ (verts[i].x, verts[i].y))
+            self.draw_polygon(vs, t_radius, self._c(outline_color), self._c(fill_color))
 
         _options.drawPolygon = f4
 
         @ffi.callback("cpSpaceDebugDrawDotImpl")
         def f5(size, pos, color, _):  # type: ignore
-            self.draw_dot(size, Vec2d(pos.x, pos.y), self._c(color))
+            # TODO: optimize code
+            t_pos = self._transform @ (pos.x, pos.y)
+            t = self._transform @ (pos.x + size, pos.y)
+            t_size = t_pos.get_distance(t)
+            self.draw_dot(t_size, self._transform @ (pos.x, pos.y), self._c(color))
 
         _options.drawDot = f5
 
@@ -299,6 +333,41 @@ class SpaceDebugDrawOptions(object):
         draw_circle (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
         draw_segment (Vec2d(1.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=231.0, g=76.0, b=60.0, a=255.0))
         
+        """,
+    )
+
+    def _set_transform(self, t: Transform) -> None:
+        assert (
+            t.a == t.d and t.b == 0 and t.c == 0
+        ), "Only uniform scaling and translation Tranforms are supported"
+        self._transform = t
+
+    transform = property(
+        lambda self: self._transform,
+        _set_transform,
+        doc="""The transform is applied before drawing, e.g for scaling or 
+        translation.
+
+        Example: 
+
+        >>> import pymunk
+        >>> s = pymunk.Space()
+        >>> c = pymunk.Circle(s.static_body, 10)
+        >>> s.add(c)
+        >>> options = pymunk.SpaceDebugDrawOptions() 
+        >>> s.debug_draw(options) 
+        draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
+        >>> options.transform = pymunk.Transform.scaling(2)
+        >>> s.debug_draw(options)
+        draw_circle (Vec2d(0.0, 0.0), 0.0, 20.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
+        >>> options.transform = pymunk.Transform.translation(2,3)
+        >>> s.debug_draw(options)
+        draw_circle (Vec2d(2.0, 3.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
+        
+        .. Note::
+            Not all tranformations are supported by the debug drawing logic. 
+            Uniform scaling and translation are supported, but not rotation,
+            linear stretching or shearing. 
         """,
     )
 

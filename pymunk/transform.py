@@ -1,5 +1,7 @@
 import math
-from typing import NamedTuple
+from typing import NamedTuple, Tuple
+
+from .vec2d import Vec2d
 
 
 class Transform(NamedTuple):
@@ -29,6 +31,12 @@ class Transform(NamedTuple):
     Or using one of the static methods like identity or translation (see each
     method for details).
 
+    The Transform supports the matrix multiplicaiton operator (@) with a
+    Vec2d or tuple as second operand, which produces a transformed Vec2d:
+
+        >>> Transform.scaling(2) @ Vec2d(1, 2)
+        Vec2d(2, 4)
+
     """
 
     a: float = 1
@@ -37,6 +45,29 @@ class Transform(NamedTuple):
     d: float = 1
     tx: float = 0
     ty: float = 0
+
+    def __matmul__(self, other: Tuple[float, float]) -> Vec2d:
+        """Multiply this transform with a Vec2d or Tuple of size 2.
+
+        Examples:
+
+        >>> Transform.identity() @ Vec2d(1, 2)
+        Vec2d(1, 2)
+        >>> Transform.scaling(2) @ Vec2d(1, 2)
+        Vec2d(2, 4)
+        >>> Transform.translation(3,5) @ Vec2d(1, 2)
+        Vec2d(4, 7)
+        >>> Transform.rotation(1) @ Vec2d(1, 2) == Vec2d(1, 2).rotated(1)
+        True
+        """
+        assert (
+            len(other) == 2
+        ), f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+
+        x, y = other
+        return Vec2d(
+            self.a * x + self.c * y + self.tx, self.b * x + self.d * y + self.ty
+        )
 
     @staticmethod
     def identity() -> "Transform":
