@@ -199,8 +199,8 @@ class Vec2d(NamedTuple):
 
         >>> Vec2d(10, 0).length
         10.0
-        >>> Vec2d(10, 20).length
-        22.360679774997898
+        >>> '%.2f' % Vec2d(10, 20).length
+        '22.36'
 
         :return: The length
         """
@@ -209,8 +209,8 @@ class Vec2d(NamedTuple):
     def scale_to_length(self, length: float) -> "Vec2d":
         """Return a copy of this vector scaled to the given length.
 
-        >>> Vec2d(10, 20).scale_to_length(20)
-        Vec2d(8.94427190999916, 17.88854381999832)
+        >>> '%.2f, %.2f' % Vec2d(10, 20).scale_to_length(20)
+        '8.94, 17.89'
         """
         old_length = self.length
         return Vec2d(self.x * length / old_length, self.y * length / old_length)
