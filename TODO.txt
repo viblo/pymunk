@@ -18,7 +18,6 @@ v6.x
 - can autosummary be used? (see stackoverflow answer)
 - tests of py2exe/pyinstaller/cx_freeze?
 - make example where a container is used for a complex shape such as car: https://stackoverflow.com/questions/55146932/grouping-without-collision-adding-and-removing-multiple-bodies-and-polygons-i/55150431#55150431
-- make camera example.. could a offset be sent into the debug draw code.
 - Update docs with collision chapter. ShapeFilter, collision callbacks and such
 - use env variables for pymunkoptions, like pygame https://stackoverflow.com/questions/56258942/is-there-an-environment-variable-to-disable-pymunk-chipmunk-from-printing-loadi
 - Write in docs about troubleshooting more prominent, and that its good to consider the properties on constraints like max_force
@@ -28,6 +27,7 @@ v6.x
 - Add a CITATION.cff file https://github.com/citation-file-format/citation-file-format http://citeas.org/cite/pymunk
 - Update demos to not use positive_y_is_up hack except in a single case.
 - Write something about the usage of logging.debug logs somewhere.
+- Made docstrings appear in documentation for class & instance variables like Body.DYNAMIC
 
 v7+ (all potentially breaking changes)
 ---

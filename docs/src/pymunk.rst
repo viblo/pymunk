@@ -28,5 +28,5 @@ API Reference
 .. rubric:: Pymunk
 
 .. automodule:: pymunk
-    :special-members: __init__
+    :special-members: __init__, __matmul__
     

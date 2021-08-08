@@ -1,5 +1,5 @@
 import math
-from typing import NamedTuple, Tuple
+from typing import NamedTuple, Tuple, Union, cast, overload
 
 from .vec2d import Vec2d
 
@@ -32,8 +32,11 @@ class Transform(NamedTuple):
     method for details).
 
     The Transform supports the matrix multiplicaiton operator (@) with a
-    Vec2d or tuple as second operand, which produces a transformed Vec2d:
+    Transform, Vec2d or tuple as second operand, which produces a transformed
+    Transform or Vec2d as result:
 
+        >>> Transform.scaling(2) @ Transform.scaling(3)
+        Transform(a=6, b=0, c=0, d=6, tx=0, ty=0)
         >>> Transform.scaling(2) @ Vec2d(1, 2)
         Vec2d(2, 4)
 
@@ -46,10 +49,42 @@ class Transform(NamedTuple):
     tx: float = 0
     ty: float = 0
 
+    @overload
     def __matmul__(self, other: Tuple[float, float]) -> Vec2d:
-        """Multiply this transform with a Vec2d or Tuple of size 2.
+        ...
 
-        Examples:
+    @overload
+    def __matmul__(
+        self, other: Tuple[float, float, float, float, float, float]
+    ) -> "Transform":
+        ...
+
+    def __matmul__(
+        self,
+        other: Union[
+            Tuple[float, float], Tuple[float, float, float, float, float, float]
+        ],
+    ) -> Union[Vec2d, "Transform"]:
+
+        """Multiply this transform with a Transform, Vec2d or Tuple of size 2
+        or 6.
+
+
+        Examples (Transform @ Transform):
+
+        >>> Transform() @ Transform() == Transform.identity()
+        True
+        >>> Transform.translation(2,3) @ Transform.translation(4,5)
+        Transform(a=1, b=0, c=0, d=1, tx=6, ty=8)
+        >>> Transform.scaling(2) @ Transform.scaling(3)
+        Transform(a=6, b=0, c=0, d=6, tx=0, ty=0)
+        >>> Transform.scaling(2) @ Transform.translation(3,4)
+        Transform(a=2, b=0, c=0, d=2, tx=6, ty=8)
+        >>> Transform.translation(3,4) @ Transform.scaling(2)
+        Transform(a=2, b=0, c=0, d=2, tx=3, ty=4)
+
+
+        Examples (Transform @ Vec2d):
 
         >>> Transform.identity() @ Vec2d(1, 2)
         Vec2d(1, 2)
@@ -59,15 +94,28 @@ class Transform(NamedTuple):
         Vec2d(4, 7)
         >>> Transform.rotation(1) @ Vec2d(1, 2) == Vec2d(1, 2).rotated(1)
         True
+
         """
         assert (
-            len(other) == 2
-        ), f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+            len(other) == 2 or len(other) == 6
+        ), f"{other} not supported. Only Vec2d, Transform and Sequence of length 2 or 6 are supported."
 
-        x, y = other
-        return Vec2d(
-            self.a * x + self.c * y + self.tx, self.b * x + self.d * y + self.ty
-        )
+        if len(other) == 2:
+            assert len(other) == 2
+            x, y = cast(Tuple[float, float], other)
+            return Vec2d(
+                self.a * x + self.c * y + self.tx, self.b * x + self.d * y + self.ty
+            )
+        else:
+            a, b, c, d, tx, ty = cast(Tuple[float, float, float, float, float, float], other)
+            return Transform(
+                a=self.a * a + self.c * b + self.tx * 0,
+                b=self.b * a + self.d * b + self.ty * 0,
+                c=self.a * c + self.c * d + self.tx * 0,
+                d=self.b * c + self.d * d + self.ty * 0,
+                tx=self.a * tx + self.c * ty + self.tx * 1,
+                ty=self.b * tx + self.d * ty + self.ty * 1,
+            )
 
     @staticmethod
     def identity() -> "Transform":
@@ -88,6 +136,36 @@ class Transform(NamedTuple):
 
         """
         return Transform(1, 0, 0, 1, 0, 0)
+
+    def translated(self, x: float, y: float) -> "Transform":
+        """Translate this Transform and return the result.
+
+        Example:
+        >>> Transform.scaling(2).translated(3,4)
+        Transform(a=2, b=0, c=0, d=2, tx=6, ty=8)
+
+        """
+        return self @ Transform.translation(x, y)
+
+    def scaled(self, s: float) -> "Transform":
+        """Scale this Transform and return the result.
+
+        Example:
+
+        >>> Transform.translation(3,4).scaled(2)
+        Transform(a=2, b=0, c=0, d=2, tx=3, ty=4)
+        """
+        return self @ Transform.scaling(s)
+
+    def rotated(self, t: float) -> "Transform":
+        """Rotate this Transform and return the result.
+
+        >>> '%.2f, %.2f, %.2f, %.2f, %.2f, %.2f' % Transform.rotation(1).rotated(0.5)
+        '0.07, 1.00, -1.00, 0.07, 0.00, 0.00'
+        >>> '%.2f, %.2f, %.2f, %.2f, %.2f, %.2f' % Transform.rotation(1.5)
+        '0.07, 1.00, -1.00, 0.07, 0.00, 0.00'
+        """
+        return self @ Transform.rotation(t)
 
     @staticmethod
     def translation(x: float, y: float) -> "Transform":
@@ -136,8 +214,8 @@ class Transform(NamedTuple):
 
         Example to rotate by 1 rad:
 
-        >>> Transform.rotation(1)
-        Transform(a=0.5403023058681398, b=0.8414709848078965, c=-0.8414709848078965, d=0.5403023058681398, tx=0, ty=0)
+        >>> '%.2f, %.2f, %.2f, %.2f, %.2f, %.2f' % Transform.rotation(1)
+        '0.54, 0.84, -0.84, 0.54, 0.00, 0.00'
 
         Returns a Transform with this matrix:
 
