@@ -2,8 +2,29 @@
 Changelog 
 =========
 
-Pymunk 6.0.0
-------------
+Pymunk 6.1.0 (2021-08-09)
+-------------------------
+
+**Transforms for debug drawing!**
+
+The main improvement in this release is that its now possible to set a 
+Transform on the SpaceDebugDrawOptions object, which is applied before 
+anything is drawn. This works in all the debug draw implementation, e.g. for 
+pygame. In this way its possible to easily implement features such as camera 
+panning easily for debug draw code. See the new camera.py example for an 
+example of this. 
+
+Changes:
+
+- Added transform property to SpaceDebugDrawOptions.
+- Extended Transform to allow allow matrix multiplication using @, either 
+  with another Transform or with a Vec2d.
+- Improved error handling when adding objects to a space.
+- Improved docs.
+
+
+Pymunk 6.0.0 (2020-12-07)
+-------------------------
 
 **Typehints, dropped Python 2, and Vec2d rework and wrapping upgrade!** 
 
