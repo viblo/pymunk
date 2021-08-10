@@ -1,15 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import (
-    TYPE_CHECKING,
-    ClassVar,
-    List,
-    NamedTuple,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-)
+from typing import TYPE_CHECKING, ClassVar, NamedTuple, Optional, Sequence, Tuple, Type
 
 if TYPE_CHECKING:
     from .shapes import Shape
