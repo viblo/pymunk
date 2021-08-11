@@ -37,6 +37,10 @@ v7+ (all potentially breaking changes)
 Typing a existing project - learnings
 -------------------------------------
 
+General
+- Typing is recent addition, and many useful things are only available in very recent versions.
+  E.g. Literal is only in Python 3.8 and later.
+
 mypy
 - problems with bugs / missing features in mypy
   - in implementation of Vector class: __add__ vs __radd__ https://github.com/python/mypy/issues/9388
