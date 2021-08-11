@@ -21,3 +21,5 @@ include Chipmunk2D/*.txt
 recursive-include tools *.py
 #typing
 include pymunk/py.typed
+#general excludes
+prune **/__pycache__
