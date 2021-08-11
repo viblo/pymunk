@@ -2,7 +2,7 @@
 Changelog 
 =========
 
-Pymunk 6.1.0 (2021-08-09)
+Pymunk 6.1.0 (2021-08-11)
 -------------------------
 
 **Transforms for debug drawing!**
