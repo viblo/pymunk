@@ -1,10 +1,11 @@
 __docformat__ = "reStructuredText"
 
 import logging
-from typing import (  # ClassVar,; Literal,
+from typing import (  # Literal,
     TYPE_CHECKING,
     Any,
     Callable,
+    ClassVar,
     Optional,
     Set,
     Tuple,
@@ -23,6 +24,7 @@ from ._typing_attr import TypingAttrMixing
 from .arbiter import Arbiter
 from .vec2d import Vec2d
 
+_BodyType = int
 # Literal only available in Python 3.8 and above
 # _BodyType = Literal[
 #    "lib.CP_BODY_TYPE_DYNAMIC", "lib.CP_BODY_TYPE_KINEMATIC", "lib.CP_BODY_TYPE_STATIC"
@@ -48,7 +50,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     constraints attached to the body will not be copied.
     """
 
-    DYNAMIC = lib.CP_BODY_TYPE_DYNAMIC
+    DYNAMIC: ClassVar[int] = lib.CP_BODY_TYPE_DYNAMIC
     """Dynamic bodies are the default body type.
 
     They react to collisions,
@@ -58,7 +60,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     and can generate collision callbacks.
     """
 
-    KINEMATIC = lib.CP_BODY_TYPE_KINEMATIC
+    KINEMATIC: ClassVar[int] = lib.CP_BODY_TYPE_KINEMATIC
     """Kinematic bodies are bodies that are controlled from your code
     instead of inside the physics engine.
 
@@ -70,7 +72,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     body are never allowed to fall asleep.
     """
 
-    STATIC = lib.CP_BODY_TYPE_STATIC
+    STATIC: ClassVar[int] = lib.CP_BODY_TYPE_STATIC
     """Static bodies are bodies that never (or rarely) move.
 
     Using static bodies for things like terrain offers a big performance
