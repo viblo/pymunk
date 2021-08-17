@@ -56,16 +56,6 @@ class UnitTestBugs(unittest.TestCase):
                 space.add(body, shape)
             space.step(1 / 50.0)
 
-    def testWeakRefs(self) -> None:
-        """This is quite a corner case, but still.."""
-        shape = p.Circle(None, 30)
-        space = p.Space()
-        shape.body = space.static_body
-        space.add(shape)
-        space = p.Space()
-        shape.body = space.static_body
-        space.add(shape)
-
     def testNoStaticShape(self) -> None:
         space = p.Space()
 
