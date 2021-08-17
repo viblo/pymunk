@@ -77,7 +77,7 @@ class SpaceDebugDrawOptions(object):
     def __init__(self) -> None:
         _options = ffi.new("cpSpaceDebugDrawOptions *")
         self._options = _options
-        self._transform: Transform = Transform.identity()
+        self._options.transform = Transform.identity()
         self.shape_outline_color = SpaceDebugColor(44, 62, 80, 255)
         self.constraint_color = SpaceDebugColor(142, 68, 173, 255)
         self.collision_point_color = SpaceDebugColor(231, 76, 60, 255)
@@ -87,15 +87,10 @@ class SpaceDebugDrawOptions(object):
 
         @ffi.callback("cpSpaceDebugDrawCircleImpl")
         def f1(pos, angle, radius, outline_color, fill_color, _):  # type: ignore
-            # TODO: optimize code
-            t_pos = self._transform @ (pos.x, pos.y)
-            t = self._transform @ (pos.x + radius, pos.y)
-            t_radius = t_pos.get_distance(t)
-
             self.draw_circle(
-                t_pos,
+                Vec2d(pos.x, pos.y),
                 angle,
-                t_radius,
+                radius,
                 self._c(outline_color),
                 self._c(fill_color),
             )
@@ -110,8 +105,8 @@ class SpaceDebugDrawOptions(object):
             if math.isnan(a.x) or math.isnan(a.y) or math.isnan(b.x) or math.isnan(b.y):
                 return
             self.draw_segment(
-                self._transform @ (a.x, a.y),
-                self._transform @ (b.x, b.y),
+                Vec2d(a.x, a.y),
+                Vec2d(b.x, b.y),
                 self._c(color),
             )
 
@@ -119,14 +114,10 @@ class SpaceDebugDrawOptions(object):
 
         @ffi.callback("cpSpaceDebugDrawFatSegmentImpl")
         def f3(a, b, radius, outline_color, fill_color, _):  # type: ignore
-            # TODO: optimize code
-            t_pos = self._transform @ (a.x, a.y)
-            t = self._transform @ (a.x + radius, a.y)
-            t_radius = t_pos.get_distance(t)
             self.draw_fat_segment(
-                t_pos,
-                self._transform @ (b.x, b.y),
-                t_radius,
+                Vec2d(a.x, a.y),
+                Vec2d(b.x, b.y),
+                radius,
                 self._c(outline_color),
                 self._c(fill_color),
             )
@@ -135,24 +126,16 @@ class SpaceDebugDrawOptions(object):
 
         @ffi.callback("cpSpaceDebugDrawPolygonImpl")
         def f4(count, verts, radius, outline_color, fill_color, _):  # type: ignore
-            # TODO: optimize code
-            t_pos = self._transform @ (verts[0].x, verts[0].y)
-            t = self._transform @ (verts[0].x + radius, verts[0].y)
-            t_radius = t_pos.get_distance(t)
             vs = []
             for i in range(count):
-                vs.append(self._transform @ (verts[i].x, verts[i].y))
-            self.draw_polygon(vs, t_radius, self._c(outline_color), self._c(fill_color))
+                vs.append(Vec2d(verts[i].x, verts[i].y))
+            self.draw_polygon(vs, radius, self._c(outline_color), self._c(fill_color))
 
         _options.drawPolygon = f4
 
         @ffi.callback("cpSpaceDebugDrawDotImpl")
         def f5(size, pos, color, _):  # type: ignore
-            # TODO: optimize code
-            t_pos = self._transform @ (pos.x, pos.y)
-            t = self._transform @ (pos.x + size, pos.y)
-            t_size = t_pos.get_distance(t)
-            self.draw_dot(t_size, self._transform @ (pos.x, pos.y), self._c(color))
+            self.draw_dot(size, Vec2d(pos.x, pos.y), self._c(color))
 
         _options.drawDot = f5
 
@@ -327,14 +310,15 @@ class SpaceDebugDrawOptions(object):
         """,
     )
 
+    def _get_transform(self) -> Transform:
+        t = self._options.transform
+        return Transform(t.a, t.b, t.c, t.d, t.tx, t.ty)
+
     def _set_transform(self, t: Transform) -> None:
-        assert (
-            t.a == t.d and t.b == 0 and t.c == 0
-        ), "Only uniform scaling and translation Tranforms are supported"
-        self._transform = t
+        self._options.transform = t
 
     transform = property(
-        lambda self: self._transform,
+        _get_transform,
         _set_transform,
         doc="""The transform is applied before drawing, e.g for scaling or 
         translation.

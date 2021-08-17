@@ -1212,7 +1212,8 @@ ffibuilder.cdef(
     } cpSpaceDebugDrawFlags;
 
     /// Struct used with cpSpaceDebugDraw() containing drawing callbacks and other drawing settings.
-    typedef struct cpSpaceDebugDrawOptions {
+    typedef struct cpSpaceDebugDrawOptions
+    {
         /// Function that will be invoked to draw circles.
         cpSpaceDebugDrawCircleImpl drawCircle;
         /// Function that will be invoked to draw line segments.
@@ -1234,6 +1235,8 @@ ffibuilder.cdef(
         cpSpaceDebugColor constraintColor;
         /// Color passed to drawing functions for collision points.
         cpSpaceDebugColor collisionPointColor;
+        /// Transform used to transform the things to draw.
+        cpTransform transform;
 
         /// User defined context pointer passed to all of the callback functions as the 'data' argument.
         cpDataPointer data;
