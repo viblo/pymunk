@@ -367,7 +367,10 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         None).
         """
         if self._space is not None:
-            return self._space._get_self()  # ugly hack because of weakref
+            try:
+                return self._space._get_self()  # ugly hack because of weakref
+            except ReferenceError:
+                return None
         else:
             return None
 
