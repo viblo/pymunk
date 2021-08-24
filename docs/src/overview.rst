@@ -70,6 +70,60 @@ in a pyramid with a snake on top. Another example is in the
 gray. However the physics shape is just a couple of circle shapes on top of 
 each other.
 
+Center of gravity
+-----------------
+
+An important part of creating the shape of an object is to ensure its center 
+of gravity is where it should. In most cases you want it to be in the center 
+of the shape(s), but just like in real life it can create interesting objects
+if the center of gravity is not in the actual center.
+
+Below is a couple of examples how the center easily ends up in one corner of 
+the shape:
+
+.. aafig::
+
+  Poly(b, [(0,0),(5,0),(5,5),(0,5)])| Segment(b, (0,0), (6,6))
+                                    |
+      (0,5)      (5,5)              |        (6,6)
+        +--------+                  |        / 
+        |        |                  |       / 
+        |        |                  |      /
+        |        |                  |     / 
+        |        |                  |    / 
+   (0,0)|        |(5,0)             |   /
+        +--------+                  |  /(0,0)  
+        ^                           |  ^
+        |                           |  | 
+        Center of gravity           |  Center of gravity
+
+Note however that a Circle is created at the center automatically, and that 
+a box created by the helper :py:meth:`pymunk.Poly.create_box` will also have 
+its center of gravity in the middle.
+
+.. aafig::
+
+  "Poly.create_box(b, size=(6,6))"
+  
+  "(-3, 3)"
+    +---------+(3,3)
+    |         |
+    |         |
+    |    o<------ Center of gravity at (0,0)
+    |         |
+    |         |
+    +---------+"(-3,3)"
+  "(-3,-3)"
+    
+
+The center of gravity can be moved in a couple of different ways:
+
+- ``Segment(body, (0,0), (6,6))`` can be changed to 
+  ``Segment(body, (-3,-3), (-3,-3))``.
+- The center of gravity can be adjusted directly on the body: 
+  ``body.center_of_gravity = (3,3)``
+- Poly shapes can be transformed with a :class:`pymunk.Transform`. 
+  ``Poly(body, [...], pymunk.Transform.translation(3,3)``
 
 Mass, weight and units
 ----------------------
@@ -93,7 +147,7 @@ Looks before realism
 How heavy is a bird in angry birds? It doest matter, its a cartoon!
 
 Together with the units another key insight when setting up your simulation is 
-to remember that it is a simulation, and in many cases the look and feel is 
+to remember  that it is a simulation, and in many cases the look and feel is 
 much more important than actual realism. So for example, if you want to model 
 a flipper game, the real power of the flipper and launchers doesn't matter at 
 all, what is important is that the game feels "right" and is fun to use for 

@@ -57,9 +57,13 @@ used on the
 Collision Detection Algorithm
 -----------------------------
 
-Just as the impulse solver, the collision detection is also handled by the underlying C-library Chipmunk2D.
+Just as the impulse solver, the collision detection is also handled by the 
+underlying C-library Chipmunk2D.
 
-Chipmunk uses GJK/EPA to find collisions between the tricky cases (e.g. polygons, segment shapes). There is a blog post `here <http://howlingmoonsoftware.com/wordpress/enhanced-collision-algorithms-for-chipmunk-6-2/>`_ with more details.
+Chipmunk uses GJK/EPA to find collisions between the tricky cases (e.g. 
+polygons, segment shapes). There is a blog post 
+`here <http://howlingmoonsoftware.com/wordpress/enhanced-collision-algorithms-for-chipmunk-6-2/>`_ 
+with more details.
 
 
 Why CFFI?
