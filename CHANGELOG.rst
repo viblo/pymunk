@@ -2,6 +2,23 @@
 Changelog 
 =========
 
+Pymunk 6.2.0 (2021-08-25)
+-------------------------
+
+**Improved transforms for debug drawing!**
+
+This release contains enhancements to transform usage with debug drawing,
+and an update to latest git version of Chipmunk. It also contains a new 
+example of how gravity in the center could be implemented.
+
+Changes:
+
+- Updated Chipmunk to latest git version
+- Updated debug draw to support rotation, and fixed scaling of constraints
+- New example of "planet" gravity (ported from Chipmunk)
+- Fixed potential corner case bug in garbage collection logic  
+
+
 Pymunk 6.1.0 (2021-08-11)
 -------------------------
 
