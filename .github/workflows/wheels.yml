@@ -20,7 +20,7 @@ jobs:
         # env:
         #   CIBW_SOME_OPTION: value
         env:
-          CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* pp36-*"
+          CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* pp37-*"
           CIBW_ARCHS_MACOS: "x86_64 universal2 arm64"
           CIBW_SKIP: "*_ppc64le *_s390x"
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
