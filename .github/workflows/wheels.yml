@@ -15,7 +15,7 @@ jobs:
         with:
           submodules: true
       - name: Build wheels
-        uses: joerick/cibuildwheel@v1.12.0
+        uses: joerick/cibuildwheel@v2.1.1
         # to supply options, put them in 'env', like:
         # env:
         #   CIBW_SOME_OPTION: value
