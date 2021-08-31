@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-10.15]
+        os: [macos-10.15]
 
     steps:
       - uses: actions/checkout@v2
@@ -16,13 +16,9 @@ jobs:
           submodules: true
       - name: Build wheels
         uses: joerick/cibuildwheel@v2.1.1
-        # to supply options, put them in 'env', like:
-        # env:
-        #   CIBW_SOME_OPTION: value
         env:
-          CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* pp37-*"
-          #CIBW_ARCHS_MACOS: "x86_64 universal2 arm64"
-          CIBW_SKIP: "*_ppc64le *_s390x"
+          CIBW_BUILD: "cp39-*"
+          CIBW_ARCHS_MACOS: "x86_64 universal2 arm64"
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
           CIBW_BUILD_VERBOSITY: 3
       - uses: actions/upload-artifact@v2
