@@ -8,14 +8,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-10.15]
+        os: [macos-11]
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
       - name: Build wheels
-        uses: joerick/cibuildwheel@v2.1.1
+        uses: joerick/cibuildwheel@v2.1.2
         env:
           CIBW_BUILD: "cp39-*"
           CIBW_ARCHS_MACOS: "x86_64 universal2 arm64"
