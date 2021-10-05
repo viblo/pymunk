@@ -18,7 +18,7 @@ jobs:
         uses: joerick/cibuildwheel@v2.1.2
         env:
           CIBW_BUILD: "cp39-* cp310-*"
-          CIBW_ARCHS_MACOS: "x86_64 universal2"
+          CIBW_ARCHS_MACOS: "x86_64"
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
           CIBW_BUILD_VERBOSITY: 3
       - uses: actions/upload-artifact@v2
