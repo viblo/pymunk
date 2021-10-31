@@ -8,16 +8,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-11, macos-10.15]
+        os: [ubuntu-20.04, windows-2019, macos-11]
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
       - name: Build wheels
-        uses: joerick/cibuildwheel@v2.1.2
+        uses: joerick/cibuildwheel@v2.2.2
         env:
-          CIBW_BUILD: "cp39-* cp310-*"
+          CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* cp310-* pp37-*"
           CIBW_ARCHS_MACOS: "arm64 x86_64"
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
           CIBW_BUILD_VERBOSITY: 3
