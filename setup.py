@@ -36,8 +36,7 @@ setup(
     },
     python_requires=">=3.6",
     # Require >1.14.0 since that (and older) has problem with returing structs from functions.
-    setup_requires=["cffi > 1.14.0"],
-    install_requires=["cffi > 1.14.0"],
+    install_requires=["cffi >= 1.15.0"],
     cffi_modules=["pymunk/pymunk_extension_build.py:ffibuilder"],
     extras_require={
         "dev": ["pyglet", "pygame", "sphinx", "aafigure", "wheel", "matplotlib"]
