@@ -465,7 +465,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2021-06-22. If something is missing or wrong, please contact 
+List last updated 2021-10-31. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
@@ -481,7 +481,7 @@ version number if included.):
 
   @misc{pymunk,
     author = {Victor Blomqvist},
-    title = {Pymunk: A easy-to-use pythonic rigid body 2d physics library (version 6.2.0)},
+    title = {Pymunk: A easy-to-use pythonic rigid body 2d physics library (version 6.2.1)},
     year = {2007},
     url = {https://www.pymunk.org},
   }

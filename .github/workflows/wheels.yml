@@ -22,7 +22,7 @@ jobs:
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
           CIBW_BUILD_VERBOSITY: 3
       - uses: actions/upload-artifact@v2
-        if: ${{ github.ref == 'refs/heads/arm64' }}
+        if: ${{ github.ref == 'refs/heads/master' }}
         with:
           path: ./wheelhouse/*.whl
           retention-days: 7

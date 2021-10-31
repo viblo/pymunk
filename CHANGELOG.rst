@@ -2,6 +2,21 @@
 Changelog 
 =========
 
+Pymunk 6.2.1 (2021-10-31)
+-------------------------
+
+**Build wheel for CPython 3.10!**
+
+This is a minor update with changes to the build pipe to build wheels for more
+cases, notably the recently released CPython 3.10.
+
+Changes:
+
+- Use pyproject.toml 
+- Require CFFI 1.15 to make sure wheels are build ok on Apple ARM64/M1.
+- Doc improvements
+- Build wheels for more targets
+
 Pymunk 6.2.0 (2021-08-25)
 -------------------------
 
