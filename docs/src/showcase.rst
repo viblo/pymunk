@@ -243,6 +243,14 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Yuan, Jianya, Hongjian Wang, Honghan Zhang, Changjian Lin, Dan Yu, and Chengfeng Li. 
+   "AUV Obstacle Avoidance Planning Based on Deep Reinforcement Learning." 
+   Journal of Marine Science and Engineering 9, no. 11 (2021): 1166.
+
+#. Agmon, Eran, Ryan K. Spangler, Christopher J. Skalnik, William Poole, Shayn M. Peirce, Jerry H. Morrison, and Markus W. Covert. 
+   "Supplementary Materials for Vivarium: an interface and engine for integrative multiscale modeling in computational biology." 
+   (2021).
+
 #. Enander, Jonas MD, Gerald E. Loeb, Henrik Jorntell, Adam M. Jones, Matthieu Kirkland, and Jordan Hurless. 
    "A Model for Self-Organization of Sensorimotor Function: The Spinal Monosynaptic Loop." 
    bioRxiv (2021).
