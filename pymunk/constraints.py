@@ -81,6 +81,9 @@ from ._typing_attr import TypingAttrMixing
 from .vec2d import Vec2d
 
 
+_logger = logging.getLogger(__name__)
+
+
 class Constraint(PickleMixin, TypingAttrMixing, object):
     """Base class of all constraints.
 
@@ -111,7 +114,7 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
             if cp_space != ffi.NULL:
                 lib.cpSpaceRemoveConstraint(cp_space, cp_constraint)
 
-            logging.debug("constraintfree %s", cp_constraint)
+            _logger.debug("constraintfree %s", cp_constraint)
             lib.cpConstraintFree(cp_constraint)
 
         self._constraint = ffi.gc(_constraint, constraintfree)

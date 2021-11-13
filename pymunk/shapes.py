@@ -19,6 +19,9 @@ from .transform import Transform
 from .vec2d import Vec2d
 
 
+_logger = logging.getLogger(__name__)
+
+
 class Shape(PickleMixin, TypingAttrMixing, object):
     """Base class for all the shapes.
 
@@ -58,12 +61,12 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         def shapefree(cp_shape):  # type: ignore
             cp_space = cp.cpShapeGetSpace(cp_shape)
             if cp_space != ffi.NULL:
-                logging.debug("shapefree remove from space %s %s", cp_space, cp_shape)
+                _logger.debug("shapefree remove from space %s %s", cp_space, cp_shape)
                 cp.cpSpaceRemoveShape(cp_space, cp_shape)
 
-            logging.debug("shapefree remove body %s", cp_shape)
+            _logger.debug("shapefree remove body %s", cp_shape)
             cp.cpShapeSetBody(cp_shape, ffi.NULL)
-            logging.debug("shapefree free %s", cp_shape)
+            _logger.debug("shapefree free %s", cp_shape)
             cp.cpShapeFree(cp_shape)
 
         self._shape = ffi.gc(_shape, shapefree)
