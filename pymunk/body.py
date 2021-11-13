@@ -32,6 +32,8 @@ _BodyType = int
 _PositionFunc = Callable[["Body", float], None]
 _VelocityFunc = Callable[["Body", Vec2d, float, float], None]
 
+_logger = logging.getLogger(__name__)
+
 
 class Body(PickleMixin, TypingAttrMixing, object):
     """A rigid body
@@ -198,7 +200,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         """
 
         def freebody(cp_body):  # type: ignore
-            logging.debug("bodyfree start %s", cp_body)
+            _logger.debug("bodyfree start %s", cp_body)
             cp_shapes = []
 
             @ffi.callback("cpBodyShapeIteratorFunc")
@@ -208,7 +210,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
             lib.cpBodyEachShape(cp_body, cf1, ffi.NULL)
 
             for cp_shape in cp_shapes:
-                logging.debug("bodyfree remove shape %s %s", cp_body, cp_shape)
+                _logger.debug("bodyfree remove shape %s %s", cp_body, cp_shape)
                 cp_space = lib.cpShapeGetSpace(cp_shape)
                 if cp_space != ffi.NULL:
                     lib.cpSpaceRemoveShape(cp_space, cp_shape)
@@ -221,7 +223,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
             lib.cpBodyEachConstraint(cp_body, cf2, ffi.NULL)
             for cp_constraint in cp_constraints:
-                logging.debug(
+                _logger.debug(
                     "bodyfree remove constraint %s %s", cp_body, cp_constraint
                 )
                 cp_space = lib.cpConstraintGetSpace(cp_constraint)
@@ -233,7 +235,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
             if cp_space != ffi.NULL:
                 lib.cpSpaceRemoveBody(cp_space, cp_body)
 
-            logging.debug("bodyfree free %s", cp_body)
+            _logger.debug("bodyfree free %s", cp_body)
             lib.cpBodyFree(cp_body)
 
         if body_type == Body.DYNAMIC:

@@ -40,6 +40,8 @@ if TYPE_CHECKING:
 
 _AddableObjects = Union[Body, Shape, Constraint]
 
+_logger = logging.getLogger(__name__)
+
 
 class Space(PickleMixin, object):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes
@@ -99,7 +101,7 @@ class Space(PickleMixin, object):
             freefunc = cp.cpSpaceFree
 
         def spacefree(cp_space):  # type: ignore
-            logging.debug("spacefree start %s", cp_space)
+            _logger.debug("spacefree start %s", cp_space)
             cp_shapes = []
 
             @ffi.callback("cpSpaceShapeIteratorFunc")
@@ -112,7 +114,7 @@ class Space(PickleMixin, object):
             # print("spacefree shapes", cp_space)
             cp.cpSpaceEachShape(cp_space, cf1, ffi.NULL)
             for cp_shape in cp_shapes:
-                logging.debug("spacefree remove shape %s %s", cp_space, cp_shape)
+                _logger.debug("spacefree remove shape %s %s", cp_space, cp_shape)
                 cp.cpSpaceRemoveShape(cp_space, cp_shape)
                 cp.cpShapeSetBody(cp_shape, ffi.NULL)
 
@@ -125,7 +127,7 @@ class Space(PickleMixin, object):
 
             cp.cpSpaceEachConstraint(cp_space, cf2, ffi.NULL)
             for cp_constraint in cp_constraints:
-                logging.debug(
+                _logger.debug(
                     "spacefree remove constraint %s %s", cp_space, cp_constraint
                 )
                 cp.cpSpaceRemoveConstraint(cp_space, cp_constraint)
@@ -139,10 +141,10 @@ class Space(PickleMixin, object):
 
             cp.cpSpaceEachBody(cp_space, cf3, ffi.NULL)
             for cp_body in cp_bodies:
-                logging.debug("spacefree remove body %s %s", cp_space, cp_body)
+                _logger.debug("spacefree remove body %s %s", cp_space, cp_body)
                 cp.cpSpaceRemoveBody(cp_space, cp_body)
 
-            logging.debug("spacefree free %s", cp_space)
+            _logger.debug("spacefree free %s", cp_space)
             freefunc(cp_space)
 
         self._space = ffi.gc(cp_space, spacefree)
