@@ -28,6 +28,7 @@ v6.x
 - Update demos to not use positive_y_is_up hack except in a single case.
 - Write something about the usage of logging.debug logs somewhere.
 - Made docstrings appear in documentation for class & instance variables like Body.DYNAMIC
+- Update benchmark
 
 v7+ (all potentially breaking changes)
 ---
