@@ -69,7 +69,9 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-# import logging
+import logging
+
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 # logging.basicConfig(level=0)
 
 from . import _version

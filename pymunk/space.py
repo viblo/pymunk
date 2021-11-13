@@ -11,7 +11,6 @@ from typing import (
     Hashable,
     List,
     Optional,
-    Sequence,
     Set,
     Tuple,
     Union,
