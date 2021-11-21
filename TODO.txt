@@ -29,6 +29,7 @@ v6.x
 - Write something about the usage of logging.debug logs somewhere.
 - Made docstrings appear in documentation for class & instance variables like Body.DYNAMIC
 - Update benchmark
+- Update get_vertices doc to use body.local_to_world shorthand to conv.
 
 v7+ (all potentially breaking changes)
 ---

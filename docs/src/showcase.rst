@@ -243,6 +243,9 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Yang, Lujie, Kaiqing Zhang, Alexandre Amice, Yunzhu Li, and Russ Tedrake. 
+   "Discrete Approximate Information States in Partially Observable Environments."
+
 #. Yuan, Jianya, Hongjian Wang, Honghan Zhang, Changjian Lin, Dan Yu, and Chengfeng Li. 
    "AUV Obstacle Avoidance Planning Based on Deep Reinforcement Learning." 
    Journal of Marine Science and Engineering 9, no. 11 (2021): 1166.
@@ -465,7 +468,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2021-10-31. If something is missing or wrong, please contact 
+List last updated 2021-11-21. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
