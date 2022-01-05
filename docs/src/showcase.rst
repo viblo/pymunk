@@ -243,12 +243,38 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Ipe, Navin K., and Subarna Chatterjee. 
+   "An in-memory physics environment as a world model for robot motion planning." 
+   In Soft Computing: Theories and Applications, pp. 559-569. Springer, Singapore, 2022.
+
+#. Gessow, Samuel, Sunay Bhat, Yi-Chun Hung, and Vahe Gyuloglyan. 
+   "Parallel Double Cart Pole 239AS Project Report S2021."
+
+#. Sosa, Felix A., Tomer Ullman, Joshua B. Tenenbaum, Samuel J. Gershman, and Tobias Gerstenberg. 
+   "Moral dynamics: Grounding moral judgment in intuitive physics and intuitive psychology." 
+   Cognition 217 (2021): 104890.
+
+#. Hardo, Georgeos, Maximilian Noka, and Somenath Bakshi. 
+   "Accurate Segmentation of Bacterial Cells using Synthetic Training Data." 
+   bioRxiv (2021).
+
+#. Bass, Ilona, Kevin Smith, Elizabeth Bonawitz, and Tomer Ullman. 
+   "Efficient Partial Simulation Quantitatively Explains Deviations from Optimal Physical Predictions."
+
+#. Bass, Ilona, Kevin Smith, Elizabeth Bonawitz, and Tomer Ullman. 
+   "Partial Mental Simulation Explains Fallacies in Physical Reasoning." 
+   (2021).
+
 #. Yang, Lujie, Kaiqing Zhang, Alexandre Amice, Yunzhu Li, and Russ Tedrake. 
    "Discrete Approximate Information States in Partially Observable Environments."
 
 #. Yuan, Jianya, Hongjian Wang, Honghan Zhang, Changjian Lin, Dan Yu, and Chengfeng Li. 
    "AUV Obstacle Avoidance Planning Based on Deep Reinforcement Learning." 
    Journal of Marine Science and Engineering 9, no. 11 (2021): 1166.
+
+#. Agmon, Eran, Ryan K. Spangler, Christopher J. Skalnik, William Poole, Shayn M. Peirce, Jerry H. Morrison, and Markus W. Covert. 
+   "Vivarium: an interface and engine for integrative multiscale modeling in computational biology." 
+   (2021).
 
 #. Agmon, Eran, Ryan K. Spangler, Christopher J. Skalnik, William Poole, Shayn M. Peirce, Jerry H. Morrison, and Markus W. Covert. 
    "Supplementary Materials for Vivarium: an interface and engine for integrative multiscale modeling in computational biology." 
@@ -273,7 +299,7 @@ List of papers which has used or mentioned Pymunk:
 #. Liu, Lucy, Gary Choi, and L. Mahadevan. 
    "Quasicrystal kirigami." 
    arXiv preprint arXiv:2104.13399 (2021).
- 
+
 #. Delucia, Marco, Anita Catapano, Marco Montemurro, and Jérôme Pailhès. 
    "Pre-stress state in cork agglomerates: simulation of the compression moulding process." 
    International Journal of Material Forming (2021): 1-14.
@@ -468,7 +494,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2021-11-21. If something is missing or wrong, please contact 
+List last updated 2021-12-04. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
