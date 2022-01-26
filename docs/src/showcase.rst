@@ -517,8 +517,12 @@ Cite Pymunk
 -----------
 
 If you use Pymunk in a published work and want to cite it, below is a 
-citation.cff example. Feel free to modify to fit your style. (Make sure to 
-modify the version number if included.):
+citation.cff example. If you prefer you can also visit the Github repository
+of Pymunk and use the shorthand "cite this repository" feature: 
+https://github.com/viblo/pymunk
+
+Feel free to modify to fit your style. (Make sure to modify the version 
+number if included.):
 
 .. include:: ../../CITATION.cff
    :code: yaml
