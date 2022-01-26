@@ -116,7 +116,7 @@ master_doc = "index"
 
 # General information about the project.
 project = u"pymunk"
-copyright = u"2013-2020, Victor Blomqvist"
+copyright = u"2013-2022, Victor Blomqvist"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

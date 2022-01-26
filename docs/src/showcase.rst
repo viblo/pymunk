@@ -85,6 +85,20 @@ Non-Games
 .. list-table::
     :widths: 40 60 
 
+    * - .. image:: _static/bouncingballs-beatuifulpatterns.png
+      - `Bouncing Balls, Beautiful Patterns <https://youtu.be/nDhOGsBj1fA>`_
+
+        :subscript:`made by Alessandro Giusti. Retrieved 2022-01-25`
+
+        Satisfying simulations of bouncing balls obeying physical laws; for 
+        a fleeting moment during the simulation, the balls pass through a 
+        beautiful regular arrangement.
+
+        Each sequence is obtained by joining two simulations, both starting 
+        from the time in which the balls are arranged regularly. One 
+        simulates forward in time, one backwards.
+
+
     * - .. image:: _static/manim-physics.png
       - `manim-physics <https://github.com/Matheart/manim-physics>`_
 
@@ -502,17 +516,10 @@ me!
 Cite Pymunk
 -----------
 
-If you use Pymunk in a published work and want to cite it, below is a bibtex
-example. Feel free to modify to fit your style. (Make sure to modify the 
-version number if included.):
+If you use Pymunk in a published work and want to cite it, below is a 
+citation.cff example. Feel free to modify to fit your style. (Make sure to 
+modify the version number if included.):
 
-.. code-block:: bibtex
-
-  @misc{pymunk,
-    author = {Victor Blomqvist},
-    title = {Pymunk: A easy-to-use pythonic rigid body 2d physics library (version 6.2.1)},
-    year = {2007},
-    url = {https://www.pymunk.org},
-  }
-
+.. include:: ../../CITATION.cff
+   :code: yaml
 
