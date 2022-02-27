@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Semage, Buddhika Laknath, Thommen George Karimpanal, Santu Rana, and Svetha Venkatesh. 
+   "Fast Model-based Policy Search for Universal Policy Networks." 
+   arXiv preprint arXiv:2202.05843 (2022).
+
 #. Ipe, Navin K., and Subarna Chatterjee. 
    "An in-memory physics environment as a world model for robot motion planning." 
    In Soft Computing: Theories and Applications, pp. 559-569. Springer, Singapore, 2022.
