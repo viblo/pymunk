@@ -319,7 +319,7 @@ an inverted L shape in the middle will balls spawning and hitting the shape.
     random.seed(1) # make the simulation the same each time, easier to debug
     import pygame
     import pymunk
-    import pymunk.pymunk_util
+    import pymunk.pygame_util
 
     #def to_pygame(p):
     #def add_ball(space):
