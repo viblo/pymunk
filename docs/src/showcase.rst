@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Abi Hamid, Mustofa, Dimas Aditama, Endi Permata, Nur Kholifah, Muhammad Nurtanto, and Nuur Wachid Abdul Majid. 
+   "Simulating the COVID-19 epidemic event and its prevention measures using python programming." 
+   Indonesian Journal of Electrical Engineering and Computer Science 26, no. 1 (2022): 278-288.
+
 #. Semage, Buddhika Laknath, Thommen George Karimpanal, Santu Rana, and Svetha Venkatesh. 
    "Fast Model-based Policy Search for Universal Policy Networks." 
    arXiv preprint arXiv:2202.05843 (2022).
