@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Shen, Jeremy, Erdong Xiao, Yuchen Liu, and Chen Feng. 
+   "A Deep Reinforcement Learning Environment for Particle Robot Navigation and Object Manipulation." 
+   arXiv preprint arXiv:2203.06464 (2022).
+
 #. Abi Hamid, Mustofa, Dimas Aditama, Endi Permata, Nur Kholifah, Muhammad Nurtanto, and Nuur Wachid Abdul Majid. 
    "Simulating the COVID-19 epidemic event and its prevention measures using python programming." 
    Indonesian Journal of Electrical Engineering and Computer Science 26, no. 1 (2022): 278-288.
