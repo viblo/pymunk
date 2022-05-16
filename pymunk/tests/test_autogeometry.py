@@ -72,6 +72,14 @@ class UnitTestAutoGeometry(unittest.TestCase):
         # environments, so we cant have this assert here.
         # self.assertEqual(actual, expected)
 
+        open_poly: List[Tuple[float, float]] = [(0, 0), (10, 0), (10, 10)]
+        with self.assertRaises(Exception):
+            a.convex_decomposition(open_poly, 0.1)
+
+        wrong_winding: List[Tuple[float, float]] = [(0, 0), (10, 10), (10, 0), (0, 0)]
+        with self.assertRaises(Exception):
+            a.convex_decomposition(wrong_winding, 0.1)
+
     def test_march_soft(self) -> None:
         img = [
             "  xx   ",

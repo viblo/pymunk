@@ -43,6 +43,7 @@ from typing import TYPE_CHECKING, Callable, List, Sequence, Tuple, Union, overlo
 if TYPE_CHECKING:
     from .bb import BB
 
+from . import area_for_poly
 from ._chipmunk_cffi import ffi, lib
 from .vec2d import Vec2d
 
@@ -152,6 +153,12 @@ def convex_decomposition(polyline: _Polyline, tolerance: float) -> List[List[Vec
     :param float tolerance: A higher value means more error is tolerated.
     :rtype: [(float,float)]
     """
+
+    assert is_closed(polyline), "Cannot decompose an open polygon."
+    assert (
+        area_for_poly(polyline) >= 0
+    ), "Winding is backwards. Try to reverse the vertices. (Are you passing a hole?)"
+
     _line = _to_chipmunk(polyline)
     _set = lib.cpPolylineConvexDecomposition(_line, tolerance)
     return _from_polyline_set(_set)
