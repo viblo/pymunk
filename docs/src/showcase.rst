@@ -257,6 +257,14 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Gras, Benjamin James. 
+   "Side Channel Security Risks In Commodity Architectures"
+   VU Research Portal. (2022).
+
+#. Outa, Joseph, Xi Jia Zhou, Hyowon Gweon, and Tobias Gerstenberg. 
+   "Stop, children what’s that sound? Multi-modal inference through mental simulation." 
+   PsyArXiv. May 13 (2022).
+
 #. Enander, Jonas MD, Gerald E. Loeb, and Henrik Jorntell. 
    "A Model for Self-Organization of Sensorimotor Function: Spinal Interneuronal Integration." 
    Journal of Neurophysiology (2022)
@@ -524,7 +532,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2022-05-03. If something is missing or wrong, please contact 
+List last updated 2022-05-19. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
