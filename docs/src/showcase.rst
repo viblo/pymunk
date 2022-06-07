@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Link, Martin, Max Schwarz, and Sven Behnke. 
+   "Predicting Physical Object Properties from Video." 
+   arXiv preprint arXiv:2206.00930 (2022).
+
 #. Gras, Benjamin James. 
    "Side Channel Security Risks In Commodity Architectures"
    VU Research Portal. (2022).
@@ -532,7 +536,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2022-05-19. If something is missing or wrong, please contact 
+List last updated 2022-06-07. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
