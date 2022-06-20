@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Sadhukhan, Priyam, and Rastko R. Selmic. 
+   "Proximal policy optimization for formation navigation and obstacle avoidance." 
+   International Journal of Intelligent Robotics and Applications (2022): 1-14.
+
 #. Link, Martin, Max Schwarz, and Sven Behnke. 
    "Predicting Physical Object Properties from Video." 
    arXiv preprint arXiv:2206.00930 (2022).
@@ -536,7 +540,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2022-06-07. If something is missing or wrong, please contact 
+List last updated 2022-06-20. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
