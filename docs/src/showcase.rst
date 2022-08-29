@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Lopez, Esteban Fernando. 
+   "Data-Driven Methods for Soft Robot Control and Turbulent Flow Models." 
+   PhD diss., Illinois Institute of Technology, 2022.
+
 #. Sadhukhan, Priyam, and Rastko R. Selmic. 
    "Proximal policy optimization for formation navigation and obstacle avoidance." 
    International Journal of Intelligent Robotics and Applications (2022): 1-14.
