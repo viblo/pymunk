@@ -15,7 +15,7 @@ jobs:
         with:
           submodules: true
       - name: Build wheels
-        uses: joerick/cibuildwheel@v2.2.2
+        uses: joerick/cibuildwheel@v2.9.0
         env:
           CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* cp310-* pp37-*"
           CIBW_ARCHS_MACOS: "arm64 x86_64"
