@@ -84,12 +84,11 @@ for line in line_set:
     if r > 255:
         r = 0
 
-    if True:
-        for i in range(len(line) - 1):
-            shape = pymunk.Segment(space.static_body, line[i], line[i + 1], 1)
-            shape.friction = 0.5
-            shape.color = (255, 255, 255, 255)
-            space.add(shape)
+    for i in range(len(line) - 1):
+        shape = pymunk.Segment(space.static_body, line[i], line[i + 1], 1)
+        shape.friction = 0.5
+        shape.color = (255, 255, 255, 255)
+        space.add(shape)
 
 
 floor = pymunk.Segment(space.static_body, (-100, 300), (1000, 220), 5)
@@ -208,15 +207,9 @@ def cannon(space):
     b.apply_impulse_at_local_point((impulse))
 
 
-events = []
-events.append((0.1, big_ball))
-events.append((2, big_ball))
-events.append((3.5, boxfloor))
-for x in range(8):
-    events.append((4 + x * 0.2, box))
-events.append((6.5, car))
-events.append((8.5, cannon))
-
+events = [(0.1, big_ball), (2, big_ball), (3.5, boxfloor)]
+events.extend((4 + x * 0.2, box) for x in range(8))
+events.extend(((6.5, car), (8.5, cannon)))
 events.sort(key=lambda x: x[0])
 
 SMALLBALL = pygame.USEREVENT + 1
@@ -235,10 +228,10 @@ while True:
         elif event.type == SMALLBALL:
             if small_balls <= 0:
                 pygame.time.set_timer(SMALLBALL, 0)
+            mass = 3
+            radius = 8
             for x in range(10):
                 small_balls -= 1
-                mass = 3
-                radius = 8
                 moment = pymunk.moment_for_circle(mass, 0, radius)
                 b = pymunk.Body(mass, moment)
                 c = pymunk.Circle(b, radius)
@@ -248,7 +241,7 @@ while True:
 
                 space.add(b, c)
 
-    if len(events) > 0 and total_time > events[0][0]:
+    if events and total_time > events[0][0]:
         t, f = events.pop(0)
 
         f(space)

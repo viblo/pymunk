@@ -96,9 +96,11 @@ class Transform(NamedTuple):
         True
 
         """
-        assert (
-            len(other) == 2 or len(other) == 6
-        ), f"{other} not supported. Only Vec2d, Transform and Sequence of length 2 or 6 are supported."
+        assert len(other) in {
+            2,
+            6,
+        }, f"{other} not supported. Only Vec2d, Transform and Sequence of length 2 or 6 are supported."
+
 
         if len(other) == 2:
             assert len(other) == 2

@@ -37,9 +37,9 @@ from pymunk.vec2d import Vec2d
 
 class PymunkDemo(RelativeLayout):
     def small_ball(self, space):
+        mass = 3
+        radius = 8
         for x in range(10):
-            mass = 3
-            radius = 8
             moment = pymunk.moment_for_circle(mass, 0, radius)
             b = pymunk.Body(mass, moment)
             c = pymunk.Circle(b, radius)
@@ -260,16 +260,12 @@ class PymunkDemo(RelativeLayout):
 
         # we use our own event scheduling to make sure a event happens exactly
         # after X amount of simulation steps
-        self.events = []
-        self.events.append((10, self.big_ball))
-        for x in range(8):
-            self.events.append((1 + 10 * x, self.small_ball))
-
+        self.events = [(10, self.big_ball)]
+        self.events.extend((1 + 10 * x, self.small_ball) for x in range(8))
         self.events.append((200, self.big_ball))
         self.events.append((350, self.boxfloor))
         self.box_y = 150
-        for x in range(8):
-            self.events.append((400 + x * 10, self.box))
+        self.events.extend((400 + x * 10, self.box) for x in range(8))
         self.events.append((650, self.car))
         self.events.append((850, self.cannon))
         self.events.append((1200, self.reset))
@@ -284,7 +280,7 @@ class PymunkDemo(RelativeLayout):
 
     def update(self, dt):
         stepdelay = 25
-        for x in range(6):
+        for _ in range(6):
             self.space.step(1.0 / 60.0 / 2)
             self.space.step(1.0 / 60.0 / 2)
             self.space.steps += 1

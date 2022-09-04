@@ -130,8 +130,8 @@ class UnitTestVec2d(unittest.TestCase):
         zero_vec = Vec2d(0, 0)
         self.assertTrue(int_vec == flt_vec)
         self.assertTrue(int_vec != zero_vec)
-        self.assertTrue((flt_vec == zero_vec) == False)
-        self.assertTrue((flt_vec != int_vec) == False)
+        self.assertTrue(flt_vec != zero_vec)
+        self.assertTrue(flt_vec == int_vec)
         self.assertTrue(int_vec == (3, -2))
         self.assertTrue(int_vec != (0, 0))
         self.assertTrue(int_vec != 5)  # type: ignore
@@ -155,5 +155,5 @@ class UnitTestVec2d(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    print("testing pymunk.vec2d version " + pymunk.version)
+    print(f"testing pymunk.vec2d version {pymunk.version}")
     unittest.main()

@@ -11,7 +11,7 @@ class cpBody(Structure):
     pass
 class cpArbiter(Structure):
     pass
-    
+
 cpArbiter._fields_ = [('x1', c_double),('x2', c_double),('x3', c_double),('x4', c_double),('x5', c_double),('x6', c_double)]
 cpBody._fields_ = [('m1', c_double),('m2', c_double),('m3', c_double),('m4', c_double),('m5', c_double),('m6', c_double),]
 
@@ -47,9 +47,9 @@ class Arbiter(object):
     
 def test():
     b = Body()
-    for x in range(100):
+    for _ in range(100):
         arbs = b.get_arbiters()
-        print arbs[0]._arbitercontents.x3
+        arbs = b.get_arbiters()
     
     
 test()

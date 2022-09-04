@@ -67,10 +67,8 @@ def _to_chipmunk(polyline: _Polyline) -> ffi.CData:
 def _from_polyline_set(_set: ffi.CData) -> List[List[Vec2d]]:
     lines = []
     for i in range(_set.count):
-        line = []
         l = _set.lines[i]
-        for j in range(l.count):
-            line.append(Vec2d(l.verts[j].x, l.verts[j].y))
+        line = [Vec2d(l.verts[j].x, l.verts[j].y) for j in range(l.count)]
         lines.append(line)
     return lines
 
@@ -99,10 +97,7 @@ def simplify_curves(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
     """
 
     _line = lib.cpPolylineSimplifyCurves(_to_chipmunk(polyline), tolerance)
-    simplified = []
-    for i in range(_line.count):
-        simplified.append(Vec2d(_line.verts[i].x, _line.verts[i].y))
-    return simplified
+    return [Vec2d(_line.verts[i].x, _line.verts[i].y) for i in range(_line.count)]
 
 
 def simplify_vertexes(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
@@ -117,10 +112,7 @@ def simplify_vertexes(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
     :rtype: [(float,float)]
     """
     _line = lib.cpPolylineSimplifyVertexes(_to_chipmunk(polyline), tolerance)
-    simplified = []
-    for i in range(_line.count):
-        simplified.append(Vec2d(_line.verts[i].x, _line.verts[i].y))
-    return simplified
+    return [Vec2d(_line.verts[i].x, _line.verts[i].y) for i in range(_line.count)]
 
 
 def to_convex_hull(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
@@ -132,10 +124,7 @@ def to_convex_hull(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
     :rtype: [(float,float)]
     """
     _line = lib.cpPolylineToConvexHull(_to_chipmunk(polyline), tolerance)
-    hull = []
-    for i in range(_line.count):
-        hull.append(Vec2d(_line.verts[i].x, _line.verts[i].y))
-    return hull
+    return [Vec2d(_line.verts[i].x, _line.verts[i].y) for i in range(_line.count)]
 
 
 def convex_decomposition(polyline: _Polyline, tolerance: float) -> List[List[Vec2d]]:
@@ -212,11 +201,8 @@ class PolylineSet(Sequence[List[Vec2d]]):
         assert not isinstance(key, slice), "Slice indexing not supported"
         if key >= self._set.count:
             raise IndexError
-        line = []
         l = self._set.lines[key]
-        for i in range(l.count):
-            line.append(Vec2d(l.verts[i].x, l.verts[i].y))
-        return line
+        return [Vec2d(l.verts[i].x, l.verts[i].y) for i in range(l.count)]
 
 
 def march_soft(

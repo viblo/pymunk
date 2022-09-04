@@ -27,13 +27,11 @@ class UnitTestSpace(unittest.TestCase):
 
         self.s1, self.s2 = p.Circle(self.b1, 5), p.Circle(self.b2, 10)
         self.s.add(self.s1, self.s2)
-        pass
 
     def _tearDown(self) -> None:
         del self.s
         del self.b1, self.b2
         del self.s1, self.s2
-        pass
 
     def testProperties(self) -> None:
         s = p.Space()
@@ -167,15 +165,6 @@ class UnitTestSpace(unittest.TestCase):
 
         s.step(0.1)
         return
-        self.assertTrue(b in s.bodies)
-        self.assertTrue(c in s.shapes)
-
-        s.add_collision_handler(0, 0).pre_solve = pre_solve_remove
-
-        s.step(0.1)
-
-        self.assertTrue(b not in s.bodies)
-        self.assertTrue(c not in s.shapes)
 
     def testRemoveInStep(self) -> None:
         self._setUp()
@@ -258,7 +247,7 @@ class UnitTestSpace(unittest.TestCase):
             self.assertEqual(
                 hit != None,
                 test["hit"],
-                "Got {}!=None, expected {} for test: {}".format(hit, test["hit"], test),
+                f'Got {hit}!=None, expected {test["hit"]} for test: {test}',
             )
 
     def testPointQuery(self) -> None:
@@ -967,5 +956,5 @@ def f1(*args: Any, **kwargs: Any) -> None:
 
 ####################################################################
 if __name__ == "__main__":
-    print("testing pymunk version " + p.version)
+    print(f"testing pymunk version {p.version}")
     unittest.main()

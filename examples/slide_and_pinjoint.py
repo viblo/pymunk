@@ -83,11 +83,7 @@ def main():
             ball_shape = add_ball(space)
             balls.append(ball_shape)
 
-        balls_to_remove = []
-        for ball in balls:
-            if ball.body.position.y > 450:
-                balls_to_remove.append(ball)
-
+        balls_to_remove = [ball for ball in balls if ball.body.position.y > 450]
         for ball in balls_to_remove:
             space.remove(ball, ball.body)
             balls.remove(ball)

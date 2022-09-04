@@ -39,9 +39,9 @@ class UnitTestGeneral(unittest.TestCase):
 class UnitTestBugs(unittest.TestCase):
     def testManyBoxCrash(self) -> None:
         space = p.Space()
-        for x in [1, 2]:
-            for y in range(16):
-                size = 10
+        size = 10
+        for _ in [1, 2]:
+            for _ in range(16):
                 box_points = [
                     Vec2d(*p)
                     for p in [
@@ -94,5 +94,5 @@ class UnitTestBugs(unittest.TestCase):
 
 ####################################################################
 if __name__ == "__main__":
-    print("testing pymunk version " + p.version)
+    print(f"testing pymunk version {p.version}")
     unittest.main()

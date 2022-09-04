@@ -38,9 +38,7 @@ class ContactPoint(object):
         self.distance = distance
 
     def __repr__(self) -> str:
-        return "ContactPoint(point_a={}, point_b={}, distance={})".format(
-            self.point_a, self.point_b, self.distance
-        )
+        return f"ContactPoint(point_a={self.point_a}, point_b={self.point_b}, distance={self.distance})"
 
 
 class ContactPointSet(object):
@@ -62,7 +60,7 @@ class ContactPointSet(object):
         self.points = points
 
     def __repr__(self) -> str:
-        return "ContactPointSet(normal={}, points={})".format(self.normal, self.points)
+        return f"ContactPointSet(normal={self.normal}, points={self.points})"
 
     @classmethod
     def _from_cp(cls, _points: "ffi.CData") -> "ContactPointSet":

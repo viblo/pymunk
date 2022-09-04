@@ -1,5 +1,6 @@
 """A very basic flipper game.
 """
+
 __version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
@@ -120,10 +121,11 @@ while running:
     r_flipper_body.velocity = l_flipper_body.velocity = 0, 0
 
     ### Remove any balls outside
-    to_remove = []
-    for ball in balls:
-        if ball.body.position.get_distance((300, 300)) > 1000:
-            to_remove.append(ball)
+    to_remove = [
+        ball
+        for ball in balls
+        if ball.body.position.get_distance((300, 300)) > 1000
+    ]
 
     for ball in to_remove:
         space.remove(ball.body, ball)
@@ -131,10 +133,10 @@ while running:
 
     ### Update physics
     dt = 1.0 / 60.0 / 5.0
-    for x in range(5):
+    for _ in range(5):
         space.step(dt)
 
     ### Flip screen
     pygame.display.flip()
     clock.tick(50)
-    pygame.display.set_caption("fps: " + str(clock.get_fps()))
+    pygame.display.set_caption(f"fps: {str(clock.get_fps())}")

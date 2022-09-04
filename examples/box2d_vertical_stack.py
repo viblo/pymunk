@@ -43,10 +43,10 @@ class Main(pyglet.window.Window):
             l.friction = 0.3
         self.space.add(*static_lines)
 
+        size = 20
+        mass = 10.0
         for x in range(5):
             for y in range(10):
-                size = 20
-                mass = 10.0
                 moment = pymunk.moment_for_box(mass, (size, size))
                 body = pymunk.Body(mass, moment)
                 body.position = Vec2d(300 + x * 50, 105 + y * (size + 0.1))

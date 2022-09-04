@@ -86,23 +86,20 @@ def main():
         ### Draw stuff
         space.debug_draw(draw_options)
 
-        balls_to_remove = []
-        for ball in balls:
-            if ball.body.position.y < 200:
-                balls_to_remove.append(ball)
+        balls_to_remove = [ball for ball in balls if ball.body.position.y < 200]
         for ball in balls_to_remove:
             space.remove(ball, ball.body)
             balls.remove(ball)
 
         ### Update physics
         dt = 1.0 / 60.0
-        for x in range(1):
+        for _ in range(1):
             space.step(dt)
 
         ### Flip screen
         pygame.display.flip()
         clock.tick(50)
-        pygame.display.set_caption("fps: " + str(clock.get_fps()))
+        pygame.display.set_caption(f"fps: {str(clock.get_fps())}")
 
 
 if __name__ == "__main__":

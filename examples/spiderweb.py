@@ -3,6 +3,7 @@
 It is possible to grab one of the crossings with the mouse
 """
 
+
 __version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
@@ -32,7 +33,7 @@ s.ignore_draw = True
 space.add(cb, s)
 
 # generate each crossing in the net
-for x in range(0, 101):
+for x in range(101):
     b = pymunk.Body(1, 1)
     v = Vec2d(1, 0).rotated_degrees(x * 18)
     scale = window.height / 2.0 / 6.0 * 0.5
@@ -98,7 +99,7 @@ def update(dt):
     # simulation will behave much better if the step size doesnt change
     # between frames.
     r = 10
-    for x in range(r):
+    for _ in range(r):
         space.step(1.0 / 30.0 / r)
 
 
@@ -174,8 +175,6 @@ def on_draw():
     a = []
     for j in space.constraints:
         a += [j.a.position.x, j.a.position.y, j.b.position.x, j.b.position.y]
-        pass
-
     pyglet.graphics.draw(len(a) // 2, pyglet.gl.GL_LINES, ("v2f", a))
 
     # anything else

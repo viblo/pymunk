@@ -69,7 +69,7 @@ class Vec2d(NamedTuple):
 
     # String representaion (for debugging)
     def __repr__(self) -> str:
-        return "Vec2d(%s, %s)" % (self.x, self.y)
+        return f"Vec2d({self.x}, {self.y})"
 
     # Addition
     def __add__(self, other: Tuple[float, float]) -> "Vec2d":  # type: ignore
@@ -238,9 +238,7 @@ class Vec2d(NamedTuple):
     @property
     def angle(self) -> float:
         """The angle (in radians) of the vector"""
-        if self.get_length_sqrd() == 0:
-            return 0
-        return math.atan2(self.y, self.x)
+        return 0 if self.get_length_sqrd() == 0 else math.atan2(self.y, self.x)
 
     @property
     def angle_degrees(self) -> float:
@@ -271,9 +269,7 @@ class Vec2d(NamedTuple):
         :return: A normalized vector
         """
         length = self.length
-        if length != 0:
-            return self / length
-        return Vec2d(0, 0)
+        return self / length if length != 0 else Vec2d(0, 0)
 
     def normalized_and_length(self) -> Tuple["Vec2d", float]:
         """Normalize the vector and return its length before the normalization
@@ -281,9 +277,7 @@ class Vec2d(NamedTuple):
         :return: The length before the normalization
         """
         length = self.length
-        if length != 0:
-            return self / length, length
-        return Vec2d(0, 0), 0
+        return (self / length, length) if length != 0 else (Vec2d(0, 0), 0)
 
     def perpendicular(self) -> "Vec2d":
         return Vec2d(-self.y, self.x)

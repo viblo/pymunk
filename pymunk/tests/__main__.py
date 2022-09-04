@@ -11,7 +11,7 @@ if sys.argv[0].endswith("__main__.py"):
     # (it's just a hint anyway)
     # (if you have spaces in your executable you get what you deserve!)
     executable = os.path.basename(sys.executable)
-    sys.argv[0] = executable + " -m pymunk.tests"
+    sys.argv[0] = f"{executable} -m pymunk.tests"
 
 
 desc = """

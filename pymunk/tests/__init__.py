@@ -65,8 +65,7 @@ def run_tests(filter: str = "", with_dependencies: List[str] = []) -> bool:
             if unittest.suite._isnotsuite(test):  # type: ignore
                 yield test
             else:
-                for t in list_of_tests_gen(test):
-                    yield t
+                yield from list_of_tests_gen(test)
 
     path = os.path.dirname(os.path.abspath(__file__))
     suite = unittest.TestLoader().discover(path)

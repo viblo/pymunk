@@ -94,9 +94,7 @@ class UnitTestAutoGeometry(unittest.TestCase):
         def sample_func(point: Tuple[float, float]) -> float:
             x = int(point[0])
             y = int(point[1])
-            if img[y][x] == "x":
-                return 1
-            return 0
+            return 1 if img[y][x] == "x" else 0
 
         pl_set = a.march_soft(BB(0, 0, 6, 6), 7, 7, 0.5, sample_func)
 
@@ -137,9 +135,7 @@ class UnitTestAutoGeometry(unittest.TestCase):
         def sample_func(point: Tuple[float, float]) -> float:
             x = int(point[0])
             y = int(point[1])
-            if img[y][x] == "x":
-                return 1
-            return 0
+            return 1 if img[y][x] == "x" else 0
 
         actual = list(a.march_hard(BB(0, 0, 6, 6), 7, 7, 0.5, sample_func))
 

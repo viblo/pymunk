@@ -23,8 +23,7 @@ def non_batched():
     positions = []
     global s
     for b in s.bodies:
-        positions.append(b.position.x)
-        positions.append(b.position.y)
+        positions.extend((b.position.x, b.position.y))
 
 
 def batched():

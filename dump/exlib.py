@@ -28,7 +28,7 @@ class Vec2d(Structure):
   
     # String representaion (for debugging)
     def __repr__(self):
-        return 'Vec2d(%s, %s)' % (self.x, self.y)
+        return f'Vec2d({self.x}, {self.y})'
            
 Vec2d._fields_ = [
             ('x', float_type),
@@ -43,7 +43,7 @@ class cpBody(Structure):
 
 cpBodyVelocityFunc = function_pointer(None, POINTER(cpBody), cpVect, cpFloat, cpFloat)
 cpBodyPositionFunc = function_pointer(None, POINTER(cpBody), cpFloat)
-    
+
 #cpBody._pack_ = 4
 cpBody._fields_ = [
     ('velocity_func', cpBodyVelocityFunc),

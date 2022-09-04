@@ -219,14 +219,6 @@ class UnitTestBody(unittest.TestCase):
         s.add(b)
         s.step(10)
         return
-        self.assertEqual(b.velocity.x, 5)
-        s.step(0.1)
-        s.step(0.1)
-        self.assertEqual(b.velocity.x, 15)
-
-        b.velocity_func = b.update_velocity
-        s.step(1)
-        self.assertEqual(b.velocity.x, 16)
 
     def testEachArbiters(self) -> None:
         s = p.Space()
@@ -319,5 +311,5 @@ def vf(body: p.Body, gravity: Tuple[float, float], damping: float, dt: float) ->
 
 ####################################################################
 if __name__ == "__main__":
-    print("testing pymunk version " + p.version)
+    print(f"testing pymunk version {p.version}")
     unittest.main()
