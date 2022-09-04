@@ -56,9 +56,8 @@ class Arbiter(object):
                 _set.points[i].pointB = point_set.points[0].point_b
                 _set.points[i].distance = point_set.points[0].distance
         else:
-            msg = "Expected {} points, got {} points in point_set".format(
-                _set.count, len(point_set.points)
-            )
+            msg = f"Expected {_set.count} points, got {len(point_set.points)} points in point_set"
+
             raise Exception(msg)
 
         lib.cpArbiterSetContactPointSet(self._arbiter, ffi.addressof(_set))

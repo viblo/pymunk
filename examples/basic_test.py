@@ -34,21 +34,18 @@ def main():
             space.add(body, shape)
             balls.append(shape)
 
-        balls_to_remove = []
+        balls_to_remove = [ball for ball in balls if ball.body.position.y < 0]
 
-        for ball in balls:
-            if ball.body.position.y < 0:
-                balls_to_remove.append(ball)
         for ball in balls_to_remove:
             space.remove(ball, ball.body)
             balls.remove(ball)
 
-        if len(balls) >= 1:
+        if balls:
             v = balls[0].body.position
             print("(in on_draw): point = %.2f, %.2f" % (v.x, v.y))
 
         ### Update physics
-        for x in range(1):
+        for _ in range(1):
             space.step(1 / 50.0)
     print("done!")
 

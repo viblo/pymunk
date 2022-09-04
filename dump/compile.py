@@ -7,18 +7,18 @@ include = """C:\code\gh\pymunk\chipmunk_src\include"""
 options = [
     "/LD",
     "/TP",
-    "/DWIN32"
-    "/D_LIB",
+    "/DWIN32" "/D_LIB",
     "/D_CRT_SECURE_NO_WARNINGS",
     "/DCHIPMUNK_VERSION_MAJOR=7",
     "/DCHIPMUNK_VERSION_MINOR=0",
     "/DCHIPMUNK_VERSION_PATCH=0",
-    "/I "+ include,
+    f"/I {include}",
 ]
+
 
 cl = """C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\cl.exe"""
 cl = "cl.exe"
-s = cl + " " + " ".join(options) + " " + src
+s = f"{cl} " + " ".join(options) + " " + src
 
 os.system(s)
 

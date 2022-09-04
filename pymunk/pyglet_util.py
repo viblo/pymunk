@@ -125,7 +125,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
         ps = []
 
-        for i in range(num_segments):
+        for _ in range(num_segments):
             ps += [Vec2d(circle_center.x + x, circle_center.y + y)]
             t = x
             x = c * x - s * y
@@ -211,9 +211,6 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
         l = len(verts)
         mid = len(verts) // 2
-        if radius >= 3:
-            # print("POLY", verts)
-            pass
         vs = []
         for i in range(mid):
             vs += [verts[i].x, verts[i].y]

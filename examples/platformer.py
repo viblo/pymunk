@@ -129,10 +129,7 @@ def main():
     space.add(passthrough)
 
     def passthrough_handler(arbiter, space, data):
-        if arbiter.shapes[0].body.velocity.y < 0:
-            return True
-        else:
-            return False
+        return arbiter.shapes[0].body.velocity.y < 0
 
     space.add_collision_handler(1, 2).begin = passthrough_handler
 
@@ -245,7 +242,7 @@ def main():
             feet.friction, head.friction = 0, 0
 
         # Air control
-        if grounding["body"] == None:
+        if grounding["body"] is None:
             body.velocity = Vec2d(
                 cpflerpconst(
                     body.velocity.x,
@@ -265,7 +262,7 @@ def main():
         distance = current.get_distance(destination)
         if distance < PLATFORM_SPEED:
             platform_path_index += 1
-            platform_path_index = platform_path_index % len(platform_path)
+            platform_path_index %= len(platform_path)
             t = 1
         else:
             t = PLATFORM_SPEED / distance
@@ -309,9 +306,12 @@ def main():
 
         # Info and flip screen
         screen.blit(
-            font.render("fps: " + str(clock.get_fps()), 1, pygame.Color("white")),
+            font.render(
+                f"fps: {str(clock.get_fps())}", 1, pygame.Color("white")
+            ),
             (0, 0),
         )
+
         screen.blit(
             font.render(
                 "Move with Left/Right, jump with Up, press again to double jump",

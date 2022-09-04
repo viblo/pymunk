@@ -43,10 +43,10 @@ class PhysicsDemo:
         ### Polys
         self.polys = []
         h = 10
+        # for x in range(1, y):
+        x = 0
+        s = 10
         for y in range(1, h):
-            # for x in range(1, y):
-            x = 0
-            s = 10
             p = Vec2d(300, 40) + Vec2d(0, y * s * 2)
             self.polys.append(self.create_box(p, size=s, mass=1))
 
@@ -143,10 +143,7 @@ class PhysicsDemo:
         ps = [p.rotated(body.angle) + body.position for p in poly.get_vertices()]
         ps.append(ps[0])
         ps = list(map(self.flipyv, ps))
-        if u.is_clockwise(ps):
-            color = pygame.Color("green")
-        else:
-            color = pygame.Color("red")
+        color = pygame.Color("green") if u.is_clockwise(ps) else pygame.Color("red")
         pygame.draw.lines(self.screen, color, False, ps)
 
     def draw(self):
@@ -280,52 +277,44 @@ class PhysicsDemo:
         hit = self.space.point_query_nearest(
             self.flipyv(Vec2d(*mpos)), 0, pm.ShapeFilter()
         )
-        if hit != None:
-            self.shape_to_remove = hit.shape
-        else:
-            self.shape_to_remove = None
-
+        self.shape_to_remove = hit.shape if hit != None else None
         ### Update physics
         if self.run_physics:
             x = 1
             dt = 1.0 / 60.0 / x
-            for x in range(x):
+            for _ in range(x):
                 self.space.step(dt)
-                for ball in self.balls:
-                    # ball.body.reset_forces()
-                    pass
-                for poly in self.polys:
-                    # poly.body.reset_forces()
-                    pass
-
         ### Draw stuff
         self.draw()
 
         ### Check for objects outside of the screen, we can remove those
         # Balls
-        xs = []
-        for ball in self.balls:
+        xs = [
+            ball
+            for ball in self.balls
             if (
                 ball.body.position.x < -1000
                 or ball.body.position.x > 1000
                 or ball.body.position.y < -1000
                 or ball.body.position.y > 1000
-            ):
-                xs.append(ball)
+            )
+        ]
+
         for ball in xs:
             self.space.remove(ball, ball.body)
             self.balls.remove(ball)
 
         # Polys
-        xs = []
-        for poly in self.polys:
+        xs = [
+            poly
+            for poly in self.polys
             if (
                 poly.body.position.x < -1000
                 or poly.body.position.x > 1000
                 or poly.body.position.y < -1000
                 or poly.body.position.y > 1000
-            ):
-                xs.append(poly)
+            )
+        ]
 
         for poly in xs:
             self.space.remove(poly, poly.body)
@@ -333,7 +322,7 @@ class PhysicsDemo:
 
         ### Tick clock and update fps in title
         self.clock.tick(50)
-        pygame.display.set_caption("fps: " + str(self.clock.get_fps()))
+        pygame.display.set_caption(f"fps: {str(self.clock.get_fps())}")
 
 
 def main():

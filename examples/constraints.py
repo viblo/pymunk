@@ -76,13 +76,11 @@ def add_lever(space, pos, box_offset):
     return body
 
 
-txts = {}
-
 box_offset = 0, 0
 b1 = add_ball(space, (50, 60), box_offset)
 b2 = add_ball(space, (150, 60), box_offset)
 c: pymunk.Constraint = pymunk.PinJoint(b1, b2, (20, 0), (-20, 0))
-txts[box_offset] = inspect.getdoc(c)
+txts = {box_offset: inspect.getdoc(c)}
 space.add(c)
 
 box_offset = box_size, 0
@@ -174,11 +172,11 @@ mouse_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
 
 # Build rendered help texts
 box_texts = {}
-for k in txts:
-    l = 0
+l = 0
+for k, v in txts.items():
     box_texts[k] = []
     # Only take the first 5 lines.
-    for line in txts[k].splitlines()[:5]:
+    for line in v.splitlines()[:5]:
         txt = font.render(line, True, pygame.Color("black"))
         box_texts[k].append(txt)
 
@@ -199,10 +197,7 @@ while True:
                 shape = hit.shape
                 # Use the closest point on the surface if the click is outside
                 # of the shape.
-                if hit.distance > 0:
-                    nearest = hit.point
-                else:
-                    nearest = p
+                nearest = hit.point if hit.distance > 0 else p
                 mouse_joint = pymunk.PivotJoint(
                     mouse_body, shape.body, (0, 0), shape.body.world_to_local(nearest)
                 )
@@ -227,12 +222,9 @@ while True:
 
     if (x, y) in box_texts:
         txts = box_texts[(x, y)]
-        i = 0
-        for txt in txts:
+        for i, txt in enumerate(txts):
             pos = (5, box_size * 2 + 10 + i * 20)
             screen.blit(txt, pos)
-            i += 1
-
     mouse_body.position = mouse_pos
 
     space.step(1.0 / 60)

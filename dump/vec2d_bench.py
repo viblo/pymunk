@@ -26,7 +26,7 @@ class Vec2d(ctypes.Structure):
         
     def __init__(self, x_or_pair=None, y = None):
         if x_or_pair != None:
-            if y == None:
+            if y is None:
                 self.x = x_or_pair[0]
                 self.y = x_or_pair[1]
             else:
@@ -39,7 +39,7 @@ class Vec2d(ctypes.Structure):
         elif key == 1:
             return self.y
         else:
-            raise IndexError("Invalid subscript "+str(key)+" to Vec2d")
+            raise IndexError(f"Invalid subscript {str(key)} to Vec2d")
  
     def __setitem__(self, key, value):
         if key == 0:
@@ -47,7 +47,7 @@ class Vec2d(ctypes.Structure):
         elif key == 1:
             self.y = value
         else:
-            raise IndexError("Invalid subscript "+str(key)+" to Vec2d")
+            raise IndexError(f"Invalid subscript {str(key)} to Vec2d")
  
    
     # Addition
@@ -109,9 +109,9 @@ Vec2d._fields_ = [
         ]
 
 def run():
-    for x in range(100000):
+    for _ in range(100000):
         s = 0
-        for x in range(10):
+        for _ in range(10):
             v1 = Vec2d(1,3)
             v2 = Vec2d(1,3)
             v3 = v1+v2.cpvrotate(v1)
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     else:
         import cProfile
         import pstats
-        
+
         prof = cProfile.run("run()", "profile.prof")
         stats = pstats.Stats("profile.prof")
         stats.strip_dirs()

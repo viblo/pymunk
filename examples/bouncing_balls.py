@@ -59,7 +59,7 @@ class BouncyBalls(object):
         # Main loop
         while self._running:
             # Progress time forward
-            for x in range(self._physics_steps_per_frame):
+            for _ in range(self._physics_steps_per_frame):
                 self._space.step(self._dt)
 
             self._process_events()
@@ -69,7 +69,7 @@ class BouncyBalls(object):
             pygame.display.flip()
             # Delay fixed time between frames
             self._clock.tick(50)
-            pygame.display.set_caption("fps: " + str(self._clock.get_fps()))
+            pygame.display.set_caption(f"fps: {str(self._clock.get_fps())}")
 
     def _add_static_scenery(self) -> None:
         """

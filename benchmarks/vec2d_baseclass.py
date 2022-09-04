@@ -75,7 +75,7 @@ class Vec2dObject:
 
     # String representaion (for debugging)
     def __repr__(self) -> str:
-        return "Vec2dObject(%s, %s)" % (self.x, self.y)
+        return f"Vec2dObject({self.x}, {self.y})"
 
     # Comparison
     def __eq__(self, other) -> bool:
@@ -158,7 +158,7 @@ def run_bench(func):
 if __name__ == "__main__":
     import timeit
 
-    print(f"Benchmark: Compare ways to construct Vec2ds")
+    print("Benchmark: Compare ways to construct Vec2ds")
     setup()
     run_bench("bench_creation_constructor")
     run_bench("bench_creation_fromcffi")

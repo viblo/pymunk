@@ -27,6 +27,7 @@ from more places than __init__.
 
 """
 
+
 from . import _chipmunk_cffi
 
 cp = _chipmunk_cffi.lib
@@ -34,7 +35,4 @@ ffi = _chipmunk_cffi.ffi
 
 version = "6.2.1"
 
-chipmunk_version = "%s-%s" % (
-    ffi.string(cp.cpVersionString).decode("utf-8"),
-    "0593976ef47fcb3957166bd342f6b2bafe4d0e44 ",
-)
+chipmunk_version = f'{ffi.string(cp.cpVersionString).decode("utf-8")}-0593976ef47fcb3957166bd342f6b2bafe4d0e44 '

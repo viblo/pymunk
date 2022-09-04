@@ -32,10 +32,7 @@ def main():
 
     box = [(5, 5), (295, 5), (295, 295), (5, 295)]
     for i, p1 in enumerate(box):
-        if i + 1 >= len(box):
-            p2 = box[0]
-        else:
-            p2 = box[i + 1]
+        p2 = box[0] if i + 1 >= len(box) else box[i + 1]
         l = pymunk.Segment(space1.static_body, p1, p2, 5)
         l.elasticity = 0.5
         l.friction = 1
@@ -121,7 +118,7 @@ def main():
         bt("space.sleep_time_threshold set to 0.5 seconds", (50, 80))
         bt("space.sleep_time_threshold set to inf (disabled)", (450, 80))
 
-        bt("fps: " + str(clock.get_fps()), (0, 0))
+        bt(f"fps: {str(clock.get_fps())}", (0, 0))
         bt("Press SPACE to give an impulse to the ball.", (5, height - 50))
         bt(
             "Press S to save the current state to file, press L to load it.",

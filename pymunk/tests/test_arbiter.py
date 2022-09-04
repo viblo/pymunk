@@ -336,5 +336,5 @@ class UnitTestArbiter(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    print("testing pymunk version " + p.version)
+    print(f"testing pymunk version {p.version}")
     unittest.main()

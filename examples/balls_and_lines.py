@@ -107,7 +107,7 @@ def main():
         ### Update physics
         if run_physics:
             dt = 1.0 / 60.0
-            for x in range(1):
+            for _ in range(1):
                 space.step(dt)
 
         ### Draw stuff
@@ -152,7 +152,7 @@ Space: Pause physics simulation"""
         ### Flip screen
         pygame.display.flip()
         clock.tick(50)
-        pygame.display.set_caption("fps: " + str(clock.get_fps()))
+        pygame.display.set_caption(f"fps: {str(clock.get_fps())}")
 
 
 if __name__ == "__main__":

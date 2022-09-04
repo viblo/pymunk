@@ -28,39 +28,39 @@ class PyramidDemo:
         shape = pymunk.Segment(body, (50, 100), (550,100), .0)
         shape.friction = 1.0
         self.space.add(shape)
-        
+
         ### pyramid
         x=Vec2d(-100, 7.5) + (300,100)
-        y=Vec2d(0,0) 
+        y=Vec2d(0,0)
         deltaX=Vec2d(0.5625, 2.0)*10
         deltaY=Vec2d(1.125, 0.0)*10
 
+        size= 5
+        mass = 1.0
         for i in range(25):
             y = Vec2d(x)
-            for j in range(i, 25):
-                size= 5
+            for _ in range(i, 25):
                 points = [(-size, -size), (-size, size), (size,size), (size, -size)]
-                mass = 1.0
                 moment = pymunk.moment_for_poly(mass, points, (0,0))
                 body = pymunk.Body(mass, moment)
                 body.position = y
                 shape = pymunk.Poly(body, points, (0,0))
                 shape.friction = 1
                 self.space.add(body,shape)
-                
+
                 y += deltaY
 
             x += deltaX
         
     def run(self):
-        for x in range(10000):
+        for _ in range(10000):
             self.loop() 
             
     def loop(self):  
-        
+
         steps = 3
-        dt = 1.0/120.0/steps            
-        for x in range(steps):
+        dt = 1.0/120.0/steps
+        for _ in range(steps):
             self.space.step(dt)
         self.draw()
         
@@ -85,13 +85,13 @@ def main():
 if __name__ == '__main__':
     doprof = 0
     if not doprof: 
-    
-        
+
+
         main()
     else:
         import cProfile
         import pstats
-        
+
         prof = cProfile.run("main()", "profile.prof")
         stats = pstats.Stats("profile.prof")
         stats.strip_dirs()

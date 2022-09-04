@@ -106,10 +106,7 @@ def sign(x):
 
     :return -1 if x < 0, else return 1
     """
-    if x < 0:
-        return -1
-    else:
-        return 1
+    return -1 if x < 0 else 1
 
 
 def reduce_poly(points, tolerance=0.5):
@@ -165,15 +162,13 @@ def convex_hull(points):
         pt1 = hull[-1]
         pt2 = hull[-2]
         l = is_left(pt2, pt1, p)
-        if l > 0:
-            hull.append(p)
-        else:
+        if l <= 0:
             while l <= 0 and len(hull) > 2:
                 hull.pop()
                 pt1 = hull[-1]
                 pt2 = hull[-2]
                 l = is_left(pt2, pt1, p)
-            hull.append(p)
+        hull.append(p)
     return hull
 
 
@@ -191,13 +186,12 @@ def calc_center(points):
 
     p1 = points[0]
     cx = cy = 0
-    for p2 in points[1:] + [points[0]]:
+    for p2 in points[1:] + [p1]:
         tmp = p1[X] * p2[Y] - p2[X] * p1[Y]
         cx += (p1[X] + p2[X]) * tmp
         cy += (p1[Y] + p2[Y]) * tmp
         p1 = p2
-    c = 1 / (6.0 * area) * cx, 1 / (6.0 * area) * cy
-    return c
+    return 1 / (6.0 * area) * cx, 1 / (6.0 * area) * cy
 
 
 def poly_vectors_around_center(pointlist, points_as_Vec2d=True):
@@ -238,7 +232,7 @@ def calc_area(points):
 
     p1 = points[0]
     a = 0
-    for p2 in points[1:] + [points[0]]:
+    for p2 in points[1:] + [p1]:
         a += p1[X] * p2[Y] - p2[X] * p1[Y]
         p1 = p2
     a = 0.5 * a
@@ -257,7 +251,7 @@ def calc_perimeter(points):
 
     p1 = points[0]
     c = 0
-    for p2 in points[1:] + [points[0]]:
+    for p2 in points[1:] + [p1]:
         c += sqrt((p2[X] - p1[X]) ** 2 + (p2[Y] - p1[Y]) ** 2)
         p1 = p2
     return c
@@ -335,16 +329,13 @@ def _get_ear(poly):
             # are there any other points inside triangle abc?
             valid = True
             for j in range(count):
-                if not (j in (ia, ib, ic)):
+                if j not in (ia, ib, ic):
                     p = poly[j]
                     if _point_in_triangle(p, a, b, c):
                         valid = False
             # if no such point found, abc must be an "ear"
             if valid:
-                remaining = []
-                for j in range(count):
-                    if j != ib:
-                        remaining.append(poly[j])
+                remaining = [poly[j] for j in range(count) if j != ib]
                 # return the ear, and what's left of the polygon after the ear is clipped
                 return [a, b, c], remaining
 
@@ -382,9 +373,7 @@ def _reduce_hulls(hulls):
             if reduction != None:
                 # they can so return a new list of hulls and a True
                 newhulls = [reduction]
-                for j in range(count):
-                    if not (j in (ia, ib)):
-                        newhulls.append(hulls[j])
+                newhulls.extend(hulls[j] for j in range(count) if j not in (ia, ib))
                 return newhulls, True
 
     # nothing was reduced, send the original hull list back with a False

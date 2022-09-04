@@ -436,8 +436,9 @@ class Space(PickleMixin, object):
         # print("addshape", self._space, shape)
         assert shape._id not in self._shapes, "Shape already added to space."
         assert (
-            shape.space == None
+            shape.space is None
         ), "Shape already added to another space. A shape can only be in one space at a time."
+
         assert shape.body != None, "The shape's body is not set."
         assert (
             shape.body.space == self
@@ -450,7 +451,7 @@ class Space(PickleMixin, object):
     def _add_body(self, body: "Body") -> None:
         """Adds a body to the space"""
         assert body not in self._bodies, "Body already added to this space."
-        assert body.space == None, "Body already added to another space."
+        assert body.space is None, "Body already added to another space."
 
         body._space = weakref.proxy(self)
         self._bodies[body] = None
@@ -510,9 +511,7 @@ class Space(PickleMixin, object):
         cp.cpSpaceReindexStatic(self._space)
 
     def _get_threads(self) -> int:
-        if self.threaded:
-            return int(cp.cpHastySpaceGetThreads(self._space))
-        return 1
+        return int(cp.cpHastySpaceGetThreads(self._space)) if self.threaded else 1
 
     def _set_threads(self, n: int) -> None:
         if self.threaded:
@@ -1075,7 +1074,7 @@ class Space(PickleMixin, object):
                 self.add(*v)
             elif k == "_handlers":
                 for k2, hd in v:
-                    if k2 == None:
+                    if k2 is None:
                         h = self.add_default_collision_handler()
                     elif isinstance(k2, tuple):
                         h = self.add_collision_handler(k2[0], k2[1])

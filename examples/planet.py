@@ -64,7 +64,7 @@ clock = pygame.time.Clock()
 space = pymunk.Space()
 draw_options = pymunk.pygame_util.DrawOptions(screen)
 
-for x in range(30):
+for _ in range(30):
     add_box(space)
 
 while True:
@@ -89,4 +89,4 @@ while True:
 
     pygame.display.flip()
     clock.tick(60)
-    pygame.display.set_caption("fps: " + str(clock.get_fps()))
+    pygame.display.set_caption(f"fps: {str(clock.get_fps())}")

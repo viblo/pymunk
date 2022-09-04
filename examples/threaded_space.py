@@ -26,12 +26,12 @@ class PyramidDemo:
         deltaX = Vec2d(0.5625, 1.1) * 20
         deltaY = Vec2d(1.125, 0.0) * 20
 
+        size = 10
+        mass = 1.0
         for i in range(25):
             y = Vec2d(*x)
-            for j in range(i, 25):
-                size = 10
+            for _ in range(i, 25):
                 points = [(-size, -size), (-size, size), (size, size), (size, -size)]
-                mass = 1.0
                 moment = pymunk.moment_for_poly(mass, points, (0, 0))
                 body = pymunk.Body(mass, moment)
                 body.position = y
@@ -44,7 +44,7 @@ class PyramidDemo:
             x += deltaX
 
     def step(self, n=1):
-        for x in range(n):
+        for _ in range(n):
             dt = 1.0 / 150.0
             self.space.step(dt)
 
@@ -57,4 +57,4 @@ if __name__ == "__main__":
         start = time.time()
         demo.step(10000)
         end = time.time()
-        print("Threads {}, time {}".format(num_threads, end - start))
+        print(f"Threads {num_threads}, time {end - start}")

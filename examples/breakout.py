@@ -58,9 +58,9 @@ def setup_level(space, player_body):
     )
 
     # Spawn bricks
-    for x in range(0, 21):
+    for x in range(21):
         x = x * 20 + 100
-        for y in range(0, 5):
+        for y in range(5):
             y = y * 10 + 400
             brick_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
             brick_body.position = x, y
@@ -194,7 +194,7 @@ def main():
 
         state = []
         for x in space.shapes:
-            s = "%s %s %s" % (x, x.body.position, x.body.velocity)
+            s = f"{x} {x.body.position} {x.body.velocity}"
             state.append(s)
 
         ### Update physics
@@ -204,9 +204,12 @@ def main():
 
         ### Info and flip screen
         screen.blit(
-            font.render("fps: " + str(clock.get_fps()), 1, pygame.Color("white")),
+            font.render(
+                f"fps: {str(clock.get_fps())}", 1, pygame.Color("white")
+            ),
             (0, 0),
         )
+
         screen.blit(
             font.render(
                 "Move with left/right arrows, space to spawn a ball",

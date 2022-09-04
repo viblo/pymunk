@@ -56,26 +56,18 @@ def parse_example(basepath, filename, img_folder, img_folder_os, source_url):
         content = f.read().strip()
     n = ast.parse(content)
     docstring = ast.get_docstring(n)
-    if docstring == None:
+    if docstring is None:
         return []
 
-    s = []
+    s = [f".. _{filename}:", ""]
 
-    # Header
-    s.append(".. _" + filename + ":")
-    s.append("")
     header = filename
     s += [header, "".ljust(len(header), "-")]
 
     # Location
     folder = os.path.basename(basepath)
-    s.append("Source: `%s/%s <%s/%s>`_" % (folder, filename, source_url, filename))
-
-    # Docstring
-    s.append("")
-    s.append(docstring)
-    s.append("")
-
+    s.extend((f"Source: `{folder}/{filename} <{source_url}/{filename}>`_", ""))
+    s.extend((docstring, ""))
     # Screenshot
     img_name, _ = os.path.splitext(filename)
     img_name += ".png"
@@ -88,9 +80,7 @@ def parse_example(basepath, filename, img_folder, img_folder_os, source_url):
         img_path = img_path.replace("\\", "/")
         if os.path.isfile(img_path_os):
             s.append("")
-            s.append(".. image:: " + img_path)
-            s.append("")
-
+            s.extend((f".. image:: {img_path}", ""))
     s.append("")
     return s
 
@@ -103,26 +93,18 @@ def parse_folder_example(basepath, foldername, img_folder, img_folder_os, source
         content = f.read().strip()
     n = ast.parse(content)
     docstring = ast.get_docstring(n)
-    if docstring == None:
+    if docstring is None:
         return []
 
-    s = []
+    s = [f".. _{foldername}:", ""]
 
-    # Header
-    s.append(".. _" + foldername + ":")
-    s.append("")
     header = foldername
     s += [header, "".ljust(len(header), "-")]
 
     # Location
     folder = os.path.basename(basepath)
-    s.append("Source: `%s/%s <%s/%s>`_" % (folder, foldername, source_url, foldername))
-
-    # Docstring
-    s.append("")
-    s.append(docstring)
-    s.append("")
-
+    s.extend((f"Source: `{folder}/{foldername} <{source_url}/{foldername}>`_", ""))
+    s.extend((docstring, ""))
     # Screenshot
     img_name, _ = os.path.splitext(foldername)
     img_name += ".png"
@@ -134,16 +116,14 @@ def parse_folder_example(basepath, foldername, img_folder, img_folder_os, source
         img_path = img_path.replace("\\", "/")
         if os.path.isfile(img_path_os):
             s.append("")
-            s.append(".. image:: " + img_path)
-            s.append("")
-
+            s.extend((f".. image:: {img_path}", ""))
     s.append("")
     return s
 
 
 def parse_examples(path, img_folder, img_folder_os, source_url):
     lines = []
-    print("autoexample: documenting files in " + path)
+    print(f"autoexample: documenting files in {path}")
     # print os.getcwd()
 
     for name in sorted(os.listdir(path)):
@@ -152,10 +132,10 @@ def parse_examples(path, img_folder, img_folder_os, source_url):
             _, ext = os.path.splitext(fullpath)
             if ext != ".py":
                 continue
-            print("autoexample: documenting " + name)
+            print(f"autoexample: documenting {name}")
             lines += parse_example(path, name, img_folder, img_folder_os, source_url)
         elif os.path.isdir(fullpath):
-            print("autoexample: documenting folder " + name)
+            print(f"autoexample: documenting folder {name}")
             lines += parse_folder_example(
                 path, name, img_folder, img_folder_os, source_url
             )

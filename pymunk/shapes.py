@@ -338,8 +338,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         assert len(start) == 2
         assert len(end) == 2
         info = ffi.new("cpSegmentQueryInfo *")
-        r = cp.cpShapeSegmentQuery(self._shape, start, end, radius, info)
-        if r:
+        if r := cp.cpShapeSegmentQuery(self._shape, start, end, radius, info):
             ud = int(ffi.cast("int", cp.cpShapeGetUserData(info.shape)))
             assert ud == self._id
             return SegmentQueryInfo(
@@ -369,12 +368,11 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         """Get the :py:class:`Space` that shape has been added to (or
         None).
         """
-        if self._space is not None:
-            try:
-                return self._space._get_self()  # ugly hack because of weakref
-            except ReferenceError:
-                return None
-        else:
+        if self._space is None:
+            return None
+        try:
+            return self._space._get_self()  # ugly hack because of weakref
+        except ReferenceError:
             return None
 
     def __getstate__(self) -> _State:

@@ -102,6 +102,11 @@ def main():
     handler.data["flying_arrows"] = flying_arrows
     handler.post_solve = post_solve_arrow_hit
 
+    speed = 2.5
+    ### Update physics
+    fps = 60
+    drag_constant = 0.0002
+
     while running:
         for event in pygame.event.get():
             if (
@@ -132,7 +137,6 @@ def main():
 
         keys = pygame.key.get_pressed()
 
-        speed = 2.5
         if keys[pygame.K_UP]:
             cannon_body.position += Vec2d(0, 1) * speed
         if keys[pygame.K_DOWN]:
@@ -154,8 +158,6 @@ def main():
         # print(arrow_body.angle)
 
         for flying_arrow in flying_arrows:
-            drag_constant = 0.0002
-
             pointing_direction = Vec2d(1, 0).rotated(flying_arrow.angle)
             # print(pointing_direction.angle, flying_arrow.angle)
             flight_direction = Vec2d(*flying_arrow.velocity)
@@ -194,9 +196,12 @@ def main():
 
         # Info and flip screen
         screen.blit(
-            font.render("fps: " + str(clock.get_fps()), True, pygame.Color("white")),
+            font.render(
+                f"fps: {str(clock.get_fps())}", True, pygame.Color("white")
+            ),
             (0, 0),
         )
+
         screen.blit(
             font.render(
                 "Aim with mouse, hold LMB to powerup, release to fire",
@@ -212,8 +217,6 @@ def main():
 
         pygame.display.flip()
 
-        ### Update physics
-        fps = 60
         dt = 1.0 / fps
         space.step(dt)
 

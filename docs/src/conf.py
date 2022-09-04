@@ -59,16 +59,10 @@ class MockFinder(object):
     def find_module(self, fullname, path=None):
         # if "cffi" in fullname:
         #    print("CFFI!!!", fullname, path)
-        if fullname in MOCK_MODULES:
-            # print("fm: fullname", fullname, self)
-            return self
-        return None
+        return self if fullname in MOCK_MODULES else None
 
     def load_module(self, fullname):
-        if fullname in sys.modules:
-            return sys.modules[fullname]
-        # print("lm: fullname", fullname, self)
-        return Mock()
+        return sys.modules[fullname] if fullname in sys.modules else Mock()
 
 
 # sys.meta_path.insert(0, MockFinder())

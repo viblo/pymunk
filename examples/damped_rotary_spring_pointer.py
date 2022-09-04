@@ -79,7 +79,7 @@ def main():
 
         ### Update physics
         dt = 1.0 / 60.0
-        for x in range(1):
+        for _ in range(1):
             space.step(dt)
 
         ### Flip screen

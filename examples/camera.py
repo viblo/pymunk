@@ -88,6 +88,9 @@ def main():
     scaling = 1
     rotation = 0
 
+    translate_speed = 10
+    zoom_speed = 0.1
+    rotation_speed = 0.1
     while running:
         for event in pygame.event.get():
             if (
@@ -110,16 +113,13 @@ def main():
         rotate_left = int(keys[pygame.K_s])
         rotate_right = int(keys[pygame.K_x])
 
-        translate_speed = 10
         translation = translation.translated(
             translate_speed * left - translate_speed * right,
             translate_speed * up - translate_speed * down,
         )
 
-        zoom_speed = 0.1
         scaling *= 1 + (zoom_speed * zoom_in - zoom_speed * zoom_out)
 
-        rotation_speed = 0.1
         rotation += rotation_speed * rotate_left - rotation_speed * rotate_right
 
         # to zoom with center of screen as origin we need to offset with
@@ -157,11 +157,7 @@ def main():
         ### Draw stuff
         space.debug_draw(draw_options)
 
-        balls_to_remove = []
-        for ball in balls:
-            if ball.body.position.y > 500:
-                balls_to_remove.append(ball)
-
+        balls_to_remove = [ball for ball in balls if ball.body.position.y > 500]
         for ball in balls_to_remove:
             space.remove(ball, ball.body)
             balls.remove(ball)
@@ -175,7 +171,7 @@ def main():
         ### Flip screen
         pygame.display.flip()
         clock.tick(50)
-        pygame.display.set_caption("fps: " + str(clock.get_fps()))
+        pygame.display.set_caption(f"fps: {str(clock.get_fps())}")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 """A screensaver version of Newton's Cradle with an interactive mode. 
 """
+
 __docformat__ = "reStructuredText"
 
 import os
@@ -34,9 +35,7 @@ import pygame
 if sys.argv[1] == "/s":  # fullscreen screensaver mode
     display_size = (0, 0)
     is_interactive = False
-    display_flags = (
-        display_flags | pygame.FULLSCREEN
-    )  # FULLSCREEN) # | DOUBLEBUF | HWSURFACE     )
+    display_flags |= pygame.FULLSCREEN
 elif sys.argv[1] == "/i":  # interactive
     display_size = (600, 600)
     is_interactive = True
@@ -150,7 +149,7 @@ def main():
 
             if event.type == pygame.USEREVENT + 1:
                 r = random.randint(1, 4)
-                for body in bodies[0:r]:
+                for body in bodies[:r]:
                     body.apply_impulse_at_local_point((-6000, 0))
             if event.type == pygame.USEREVENT + 2:
                 reset_bodies(space)
@@ -167,7 +166,7 @@ def main():
                 and is_interactive
             ):
                 r = random.randint(1, 4)
-                for body in bodies[0:r]:
+                for body in bodies[:r]:
                     body.apply_impulse_at_local_point((-6000, 0))
 
             elif event.type == pygame.MOUSEBUTTONDOWN and is_interactive:
@@ -225,10 +224,11 @@ def main():
         if is_interactive:
             screen.blit(
                 font.render(
-                    "fps: " + str(clock.get_fps()), True, pygame.Color("white")
+                    f"fps: {str(clock.get_fps())}", True, pygame.Color("white")
                 ),
                 (0, 0),
             )
+
             screen.blit(
                 font.render(
                     "Press left mouse button and drag to interact",

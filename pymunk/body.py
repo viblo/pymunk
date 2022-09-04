@@ -437,10 +437,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     def space(self) -> Optional["Space"]:
         """Get the :py:class:`Space` that the body has been added to (or
         None)."""
-        if self._space is not None:
-            return self._space._get_self()  # ugly hack because of weakref
-        else:
-            return None
+        return self._space._get_self() if self._space is not None else None
 
     def _set_velocity_func(self, func: _VelocityFunc) -> None:
         @ffi.callback("cpBodyVelocityFunc")
@@ -607,7 +604,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
         Cannot be called from a callback.
         """
-        if self._space == None:
+        if self._space is None:
             raise Exception("Body not added to space")
         lib.cpBodySleep(self._body)
 
@@ -625,7 +622,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         to initialize levels and start stacks of objects in a pre-sleeping
         state.
         """
-        if self._space == None:
+        if self._space is None:
             raise Exception("Body not added to space")
         lib.cpBodySleepWithGroup(self._body, body._body)
 
