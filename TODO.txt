@@ -1,6 +1,3 @@
-V6.0
-----
-
 v6.x
 ----
 - Think about experimental repr of Body
@@ -30,6 +27,8 @@ v6.x
 - Made docstrings appear in documentation for class & instance variables like Body.DYNAMIC
 - Update benchmark
 - Update get_vertices doc to use body.local_to_world shorthand to conv.
+- Package pymunk for Pyodide
+- Add Canvas util module (after pyodide) 
 
 v7+ (all potentially breaking changes)
 ---
