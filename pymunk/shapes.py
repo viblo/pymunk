@@ -18,7 +18,6 @@ from .shape_filter import ShapeFilter
 from .transform import Transform
 from .vec2d import Vec2d
 
-
 _logger = logging.getLogger(__name__)
 
 
@@ -50,7 +49,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
 
     def __init__(self, shape: "Shape") -> None:
         self._shape = shape
-        self._body = shape.body
+        self._body: Optional["Body"] = shape.body
 
     def _init(self, body: Optional["Body"], _shape: ffi.CData) -> None:
         self._body = body
@@ -264,7 +263,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         return self._body
 
     def _set_body(self, body: Optional["Body"]) -> None:
-        if self._body != None:
+        if self._body is not None:
             self._body._shapes.remove(self)
         body_body = ffi.NULL if body is None else body._body
         cp.cpShapeSetBody(self._shape, body_body)

@@ -6,3 +6,5 @@ from ._chipmunk import ffi, lib  # type: ignore
 
 ffi = ffi
 lib = lib
+
+__all__ = ["ffi", "lib"]

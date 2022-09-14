@@ -187,7 +187,7 @@ class Space(PickleMixin, object):
         return list(self._constraints)
 
     def _setup_static_body(self, static_body: Body) -> None:
-        static_body._space = weakref.proxy(self)  # type: ignore
+        static_body._space = weakref.proxy(self)
         cp.cpSpaceAddBody(self._space, static_body._body)
 
     @property

@@ -6,6 +6,8 @@ import os
 import random
 import sys
 
+from pymunk.transform import Transform
+
 description = """
 ---- Newton's Cradle ----
 A screensaver version of Newton's Cradle with an interactive mode

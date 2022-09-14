@@ -39,7 +39,7 @@ class UnitTestArbiter(unittest.TestCase):
         s = p.Space()
         s.gravity = 0, -100
 
-        b1 = p.Body(1, float('inf'))
+        b1 = p.Body(1, float("inf"))
         c1 = p.Circle(b1, 10)
         b1.position = Vec2d(10, 25)
         c1.collision_type = 1
@@ -68,7 +68,7 @@ class UnitTestArbiter(unittest.TestCase):
         s = p.Space()
         s.gravity = 0, -100
 
-        b1 = p.Body(1, float('inf'))
+        b1 = p.Body(1, float("inf"))
         c1 = p.Circle(b1, 10)
         b1.position = 10, 25
         c1.collision_type = 1
@@ -133,8 +133,8 @@ class UnitTestArbiter(unittest.TestCase):
 
             self.assertEqual(ps2.normal, (1, 0))
             p1 = ps2.points[0]
-            self.assertAlmostEqual(p1.point_a, (9, 10))  # type: ignore
-            self.assertAlmostEqual(p1.point_b, (-2, -3))  # type: ignore
+            self.assertAlmostEqual(p1.point_a, (9, 10))
+            self.assertAlmostEqual(p1.point_b, (-2, -3))
             self.assertAlmostEqual(p1.distance, -11)
 
             # check for length of points

@@ -117,7 +117,7 @@ class Vec2d(NamedTuple):
         return Vec2d(other[0] - self.x, other[1] - self.y)
 
     # Multiplication
-    def __mul__(self, other: float) -> "Vec2d":
+    def __mul__(self, other: float) -> "Vec2d":  # type: ignore[override]
         """Multiply with a float
 
         >>> Vec2d(3,6) * 2.5
@@ -126,7 +126,7 @@ class Vec2d(NamedTuple):
         assert isinstance(other, numbers.Real)
         return Vec2d(self.x * other, self.y * other)
 
-    def __rmul__(self, other: float) -> "Vec2d":
+    def __rmul__(self, other: float) -> "Vec2d":  # type: ignore[override]
         """Multiply a float with a Vec2d
 
         >>> 2.5 * Vec2d(3,6)

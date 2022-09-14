@@ -18,7 +18,7 @@ from pymunk.space_debug_draw_options import SpaceDebugColor
 from pymunk.vec2d import Vec2d
 
 if TYPE_CHECKING:
-    import matplotlib as mpl  # type: ignore
+    import matplotlib as mpl
 
 
 class DrawOptions(pymunk.SpaceDebugDrawOptions):
@@ -61,7 +61,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
     ) -> None:
-        p = plt.Circle(  # type: ignore
+        p = plt.Circle(
             pos,
             radius,
             facecolor=fill_color.as_float(),
@@ -70,18 +70,18 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         self.ax.add_patch(p)
 
         circle_edge = pos + Vec2d(radius, 0).rotated(angle)
-        line = plt.Line2D(  # type: ignore
+        line = plt.Line2D(
             [pos.x, circle_edge.x],
             [pos.y, circle_edge.y],
             linewidth=1,
             color=outline_color.as_float(),
         )
-        line.set_solid_capstyle("round")  # type: ignore
+        line.set_solid_capstyle("round")
         self.ax.add_line(line)
 
     def draw_segment(self, a: Vec2d, b: Vec2d, color: SpaceDebugColor) -> None:
-        line = plt.Line2D([a.x, b.x], [a.y, b.y], linewidth=1, color=color.as_float())  # type: ignore
-        line.set_solid_capstyle("round")  # type: ignore
+        line = plt.Line2D([a.x, b.x], [a.y, b.y], linewidth=1, color=color.as_float())
+        line.set_solid_capstyle("round")
         self.ax.add_line(line)
 
     def draw_fat_segment(
@@ -93,10 +93,10 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         fill_color: SpaceDebugColor,
     ) -> None:
         radius = max(1, 2 * radius)
-        line = plt.Line2D(  # type: ignore
+        line = plt.Line2D(
             [a.x, b.x], [a.y, b.y], linewidth=radius, color=fill_color.as_float()
         )
-        line.set_solid_capstyle("round")  # type: ignore
+        line.set_solid_capstyle("round")
         self.ax.add_line(line)
 
     def draw_polygon(
@@ -107,7 +107,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         fill_color: SpaceDebugColor,
     ) -> None:
         radius = max(1, 2 * radius)
-        p = plt.Polygon(  # type: ignore
+        p = plt.Polygon(
             verts,
             linewidth=radius,
             joinstyle="round",
@@ -117,5 +117,5 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         self.ax.add_patch(p)
 
     def draw_dot(self, size: float, pos: Vec2d, color: SpaceDebugColor) -> None:
-        p = plt.Circle(pos, size, facecolor=color.as_float(), edgecolor="None")  # type: ignore
+        p = plt.Circle(pos, size, facecolor=color.as_float(), edgecolor="None")
         self.ax.add_patch(p)

@@ -6,7 +6,7 @@ import pickle
 import sys
 import unittest
 import warnings
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Sequence, cast
 
 import pymunk as p
 from pymunk import *
@@ -872,7 +872,7 @@ class UnitTestSpace(unittest.TestCase):
             pickle.loads(pickle_string)
 
     def testCopyMethods(self) -> None:
-        self._testCopyMethod(lambda x: pickle.loads(pickle.dumps(x)))
+        self._testCopyMethod(lambda x: cast(Space, pickle.loads(pickle.dumps(x))))
         self._testCopyMethod(lambda x: copy.deepcopy(x))
         self._testCopyMethod(lambda x: x.copy())
 

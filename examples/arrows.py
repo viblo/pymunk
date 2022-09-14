@@ -102,6 +102,7 @@ def main():
     handler.data["flying_arrows"] = flying_arrows
     handler.post_solve = post_solve_arrow_hit
 
+    start_time = 0
     while running:
         for event in pygame.event.get():
             if (

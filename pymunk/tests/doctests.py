@@ -13,7 +13,7 @@ all_dependencies = ["pygame", "pyglet", "matplotlib"]
 def load_tests(
     tests: unittest.TestSuite, dependencies: List[str] = []
 ) -> unittest.TestSuite:
-    for importer, modname, ispkg in pkgutil.iter_modules(pymunk.__path__):  # type: ignore  # mypy issue #1422
+    for importer, modname, ispkg in pkgutil.iter_modules(pymunk.__path__):
         # try:
         skip = False
         if modname in ignores:
