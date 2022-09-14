@@ -26,3 +26,23 @@ jobs:
         with:
           path: ./wheelhouse/*.whl
           retention-days: 7
+  build_wasm:
+    name: Build wheels for wasm / emscripten
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - uses: mymindstorm/setup-emsdk@v11
+        with:
+          version: 3.1.14
+      - run: pip install pyodide-build==0.21.0
+      - run: pyodide build
+      - uses: actions/upload-artifact@v2
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          path: ./dist/*.whl
+          retention-days: 7
