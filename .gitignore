@@ -4,6 +4,7 @@ chipmunk_src/**/*.o
 dist/
 docs/html/
 docs/doctrees/
+docs/src/_build/
 .tox/
 *.obj
 .vscode/

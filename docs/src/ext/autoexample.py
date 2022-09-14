@@ -40,23 +40,31 @@ __docformat__ = "reStructuredText"
 
 import ast
 import os
+from typing import Any, List, Optional
 
+import sphinx.application
 from docutils import nodes, statemachine, utils
 from docutils.nodes import fully_normalize_name
 from docutils.parsers.rst import Directive, directives
 
 
-def setup(app):
+def setup(app: sphinx.application.Sphinx) -> None:
     app.add_directive("autoexample", AutoExampleDirective)
 
 
-def parse_example(basepath, filename, img_folder, img_folder_os, source_url):
+def parse_example(
+    basepath: str,
+    filename: str,
+    img_folder: Optional[str],
+    img_folder_os: Optional[str],
+    source_url: str,
+) -> List[str]:
     path = os.path.join(basepath, filename)
     with open(path) as f:
         content = f.read().strip()
     n = ast.parse(content)
     docstring = ast.get_docstring(n)
-    if docstring == None:
+    if docstring is None:
         return []
 
     s = []
@@ -79,7 +87,7 @@ def parse_example(basepath, filename, img_folder, img_folder_os, source_url):
     # Screenshot
     img_name, _ = os.path.splitext(filename)
     img_name += ".png"
-    if img_folder != None:
+    if img_folder is not None and img_folder_os is not None:
         # print os.path.abspath(img_folder)
         # print os.path.abspath(img_folder_os)
         img_path = os.path.join(img_folder, img_name)
@@ -95,7 +103,13 @@ def parse_example(basepath, filename, img_folder, img_folder_os, source_url):
     return s
 
 
-def parse_folder_example(basepath, foldername, img_folder, img_folder_os, source_url):
+def parse_folder_example(
+    basepath: str,
+    foldername: str,
+    img_folder: Optional[str],
+    img_folder_os: Optional[str],
+    source_url: str,
+) -> List[str]:
     path = os.path.join(basepath, foldername, "main.py")
     if not os.path.isfile(path):
         return []
@@ -103,7 +117,7 @@ def parse_folder_example(basepath, foldername, img_folder, img_folder_os, source
         content = f.read().strip()
     n = ast.parse(content)
     docstring = ast.get_docstring(n)
-    if docstring == None:
+    if docstring is None:
         return []
 
     s = []
@@ -126,7 +140,7 @@ def parse_folder_example(basepath, foldername, img_folder, img_folder_os, source
     # Screenshot
     img_name, _ = os.path.splitext(foldername)
     img_name += ".png"
-    if img_folder != None:
+    if img_folder is not None and img_folder_os is not None:
         # print os.path.abspath(img_folder)
         # print os.path.abspath(img_folder_os)
         img_path = os.path.join(img_folder, img_name)
@@ -141,7 +155,9 @@ def parse_folder_example(basepath, foldername, img_folder, img_folder_os, source
     return s
 
 
-def parse_examples(path, img_folder, img_folder_os, source_url):
+def parse_examples(
+    path: str, img_folder: Optional[str], img_folder_os: Optional[str], source_url: str
+) -> str:
     lines = []
     print("autoexample: documenting files in " + path)
     # print os.getcwd()
@@ -171,7 +187,7 @@ class AutoExampleDirective(Directive):
         "source_url": str,
     }
 
-    def run(self):
+    def run(self) -> List[Any]:
         source = self.state_machine.input_lines.source(
             self.lineno - self.state_machine.input_offset - 1
         )
