@@ -15,9 +15,9 @@ jobs:
         with:
           submodules: true
       - name: Build wheels
-        uses: joerick/cibuildwheel@v2.9.0
+        uses: joerick/cibuildwheel@v2.11.2
         env:
-          CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* cp310-* pp37-*"
+          CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* cp310-* cp311-* pp39-*"
           CIBW_ARCHS_MACOS: "arm64 x86_64"
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
           CIBW_BUILD_VERBOSITY: 3
