@@ -1470,6 +1470,29 @@ ffibuilder.cdef(
 """
 )
 
+# Callbacks need extra extern Python
+ffibuilder.cdef(
+    """
+extern "Python" {
+    // cpSpace.h
+    void ext_cpSpacePointQueryFunc(cpShape *shape, cpVect point, cpFloat distance, cpVect gradient, void *data);
+    void ext_cpSpaceSegmentQueryFunc(cpShape *shape, cpVect point, cpVect normal, cpFloat alpha, void *data);
+    void ext_cpSpaceBBQueryFunc(cpShape *shape, void *data);
+    void ext_cpSpaceShapeQueryFunc(cpShape *shape, cpContactPointSet *points, void *data);
+
+    void ext_cpSpaceDebugDrawCircleImpl(cpVect pos, cpFloat angle, cpFloat radius, cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, cpDataPointer data);
+    void ext_cpSpaceDebugDrawSegmentImpl(cpVect a, cpVect b, cpSpaceDebugColor color, cpDataPointer data);
+    void ext_cpSpaceDebugDrawFatSegmentImpl(cpVect a, cpVect b, cpFloat radius, cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, cpDataPointer data);
+    void ext_cpSpaceDebugDrawPolygonImpl(int count, const cpVect *verts, cpFloat radius, cpSpaceDebugColor outlineColor, cpSpaceDebugColor fillColor, cpDataPointer data);
+    void ext_cpSpaceDebugDrawDotImpl(cpFloat size, cpVect pos, cpSpaceDebugColor color, cpDataPointer data);
+    cpSpaceDebugColor ext_cpSpaceDebugDrawColorForShapeImpl(cpShape *shape, cpDataPointer data);
+
+
+}
+
+"""
+)
+
 hasty_space_include = ""
 if platform.system() != "Windows":
     ffibuilder.cdef(

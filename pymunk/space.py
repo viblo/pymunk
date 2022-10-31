@@ -760,19 +760,16 @@ class Space(PickleMixin, object):
         """
         assert len(point) == 2
         query_hits: List[PointQueryInfo] = []
-
-        @ffi.callback("cpSpacePointQueryFunc")
-        def cf(_shape, point, distance, gradient, data):  # type: ignore
-            # space = ffi.from_handle(data)
-            shape = self._get_shape(_shape)
-            p = PointQueryInfo(
-                shape, Vec2d(point.x, point.y), distance, Vec2d(gradient.x, gradient.y)
-            )
-            nonlocal query_hits
-            query_hits.append(p)
-
-        data = ffi.new_handle(self)
-        cp.cpSpacePointQuery(self._space, point, max_distance, shape_filter, cf, data)
+        d = (self, query_hits)
+        data = ffi.new_handle(d)
+        cp.cpSpacePointQuery(
+            self._space,
+            point,
+            max_distance,
+            shape_filter,
+            cp.ext_cpSpacePointQueryFunc,
+            data,
+        )
         return query_hits
 
     def _get_shape(self, _shape: Any) -> Optional[Shape]:
@@ -863,17 +860,18 @@ class Space(PickleMixin, object):
         assert len(end) == 2
         query_hits: List[SegmentQueryInfo] = []
 
-        @ffi.callback("cpSpaceSegmentQueryFunc")
-        def cf(_shape, point, normal, alpha, data):  # type: ignore
-            shape = self._get_shape(_shape)
-            p = SegmentQueryInfo(
-                shape, Vec2d(point.x, point.y), Vec2d(normal.x, normal.y), alpha
-            )
-            nonlocal query_hits
-            query_hits.append(p)
+        d = (self, query_hits)
+        data = ffi.new_handle(d)
 
-        data = ffi.new_handle(self)
-        cp.cpSpaceSegmentQuery(self._space, start, end, radius, shape_filter, cf, data)
+        cp.cpSpaceSegmentQuery(
+            self._space,
+            start,
+            end,
+            radius,
+            shape_filter,
+            cp.ext_cpSpaceSegmentQueryFunc,
+            data,
+        )
         return query_hits
 
     def segment_query_first(
@@ -932,15 +930,12 @@ class Space(PickleMixin, object):
 
         query_hits = []
 
-        @ffi.callback("cpSpaceBBQueryFunc")
-        def cf(_shape, data):  # type: ignore
-            shape = self._get_shape(_shape)
-            assert shape is not None
-            nonlocal query_hits
-            query_hits.append(shape)
+        d = (self, query_hits)
+        data = ffi.new_handle(d)
 
-        data = ffi.new_handle(self)
-        cp.cpSpaceBBQuery(self._space, bb, shape_filter, cf, data)
+        cp.cpSpaceBBQuery(
+            self._space, bb, shape_filter, cp.ext_cpSpaceBBQueryFunc, data
+        )
         return query_hits
 
     def shape_query(self, shape: Shape) -> List[ShapeQueryInfo]:
@@ -956,17 +951,12 @@ class Space(PickleMixin, object):
         """
 
         query_hits = []
+        d = (self, query_hits)
+        data = ffi.new_handle(d)
 
-        @ffi.callback("cpSpaceShapeQueryFunc")
-        def cf(_shape, _points, _data):  # type: ignore
-            found_shape = self._get_shape(_shape)
-            point_set = ContactPointSet._from_cp(_points)
-            info = ShapeQueryInfo(found_shape, point_set)
-            nonlocal query_hits
-            query_hits.append(info)
-
-        data = ffi.new_handle(self)
-        cp.cpSpaceShapeQuery(self._space, shape._shape, cf, data)
+        cp.cpSpaceShapeQuery(
+            self._space, shape._shape, cp.ext_cpSpaceShapeQueryFunc, data
+        )
 
         return query_hits
 

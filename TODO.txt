@@ -21,7 +21,6 @@ v6.x
 - Add Check that its not allowed to change body of shape added to space
 - Make sure there's a check to see that the bodies of a constraint are added to space before constraint is added
 - Add TKInter util module
-- Add a CITATION.cff file https://github.com/citation-file-format/citation-file-format http://citeas.org/cite/pymunk
 - Update demos to not use positive_y_is_up hack except in a single case.
 - Write something about the usage of logging.debug logs somewhere.
 - Made docstrings appear in documentation for class & instance variables like Body.DYNAMIC
@@ -33,7 +32,7 @@ v6.x
 v7+ (all potentially breaking changes)
 ---
 - Think about split between pymunk.util and pymunk modules
-
+- Investigate the SPOOK solver, which could be much more stable than what is currently used. (but probably very difficult to switch to). https://github.com/viblo/pymunk/issues/216
 
 Typing a existing project - learnings
 -------------------------------------

@@ -86,7 +86,7 @@ class SpaceDebugDrawOptions(object):
         self._use_chipmunk_debug_draw = True
 
         @ffi.callback("cpSpaceDebugDrawCircleImpl")
-        def f1(pos, angle, radius, outline_color, fill_color, _):  # type: ignore
+        def f1(pos, angle, radius, outline_color, fill_color, data):  # type: ignore
             self.draw_circle(
                 Vec2d(pos.x, pos.y),
                 angle,
@@ -98,7 +98,7 @@ class SpaceDebugDrawOptions(object):
         _options.drawCircle = f1
 
         @ffi.callback("cpSpaceDebugDrawSegmentImpl")
-        def f2(a, b, color, _):  # type: ignore
+        def f2(a, b, color, data):  # type: ignore
             # sometimes a and/or b can be nan. For example if both endpoints
             # of a spring is at the same position. In those cases skip calling
             # the drawing method.
@@ -113,7 +113,7 @@ class SpaceDebugDrawOptions(object):
         _options.drawSegment = f2
 
         @ffi.callback("cpSpaceDebugDrawFatSegmentImpl")
-        def f3(a, b, radius, outline_color, fill_color, _):  # type: ignore
+        def f3(a, b, radius, outline_color, fill_color, data):  # type: ignore
             self.draw_fat_segment(
                 Vec2d(a.x, a.y),
                 Vec2d(b.x, b.y),
@@ -125,7 +125,7 @@ class SpaceDebugDrawOptions(object):
         _options.drawFatSegment = f3
 
         @ffi.callback("cpSpaceDebugDrawPolygonImpl")
-        def f4(count, verts, radius, outline_color, fill_color, _):  # type: ignore
+        def f4(count, verts, radius, outline_color, fill_color, data):  # type: ignore
             vs = []
             for i in range(count):
                 vs.append(Vec2d(verts[i].x, verts[i].y))
@@ -134,7 +134,7 @@ class SpaceDebugDrawOptions(object):
         _options.drawPolygon = f4
 
         @ffi.callback("cpSpaceDebugDrawDotImpl")
-        def f5(size, pos, color, _):  # type: ignore
+        def f5(size, pos, color, data):  # type: ignore
             self.draw_dot(size, Vec2d(pos.x, pos.y), self._c(color))
 
         _options.drawDot = f5
