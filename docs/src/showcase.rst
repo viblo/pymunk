@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Shen, Jeremy, Erdong Xiao, Yuchen Liu, and Chen Feng. 
+   "A Deep Reinforcement Learning Environment for Particle Robot Navigation and Object Manipulation." 
+   arXiv preprint arXiv:2203.06464 (2022).
+
 #. Lopez, Esteban Fernando. 
    "Data-Driven Methods for Soft Robot Control and Turbulent Flow Models." 
    PhD diss., Illinois Institute of Technology, 2022.
@@ -544,7 +548,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2022-06-20. If something is missing or wrong, please contact 
+List last updated 2022-10-03. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
