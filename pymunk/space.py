@@ -20,6 +20,7 @@ from pymunk.shape_filter import ShapeFilter
 from pymunk.space_debug_draw_options import SpaceDebugDrawOptions
 
 from . import _chipmunk_cffi, _version
+from ._callbacks import *
 
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
@@ -101,47 +102,37 @@ class Space(PickleMixin, object):
 
         def spacefree(cp_space):  # type: ignore
             _logger.debug("spacefree start %s", cp_space)
+
             cp_shapes = []
+            cp_shapes_h = ffi.new_handle(cp_shapes)
+            cp.cpSpaceEachShape(cp_space, lib.ext_cpSpaceShapeIteratorFunc, cp_shapes_h)
 
-            @ffi.callback("cpSpaceShapeIteratorFunc")
-            def cf1(cp_shape, data):  # type: ignore
-                # print("spacefree shapecallback")
-                cp_shapes.append(cp_shape)
-                # cp_space = cp.cpShapeGetSpace(cp_shape)
-                # cp.cpSpaceRemoveShape(cp_space, cp_shape)
-
-            # print("spacefree shapes", cp_space)
-            cp.cpSpaceEachShape(cp_space, cf1, ffi.NULL)
             for cp_shape in cp_shapes:
+                cp_space = lib.cpShapeGetSpace(cp_shape)
                 _logger.debug("spacefree remove shape %s %s", cp_space, cp_shape)
-                cp.cpSpaceRemoveShape(cp_space, cp_shape)
-                cp.cpShapeSetBody(cp_shape, ffi.NULL)
+
+                lib.cpSpaceRemoveShape(cp_space, cp_shape)
+                lib.cpShapeSetBody(cp_shape, ffi.NULL)
 
             cp_constraints = []
-
-            @ffi.callback("cpSpaceConstraintIteratorFunc")
-            def cf2(cp_constraint, data):  # type: ignore
-                # print("spacefree shapecallback")
-                cp_constraints.append(cp_constraint)
-
-            cp.cpSpaceEachConstraint(cp_space, cf2, ffi.NULL)
+            cp_constraints_h = ffi.new_handle(cp_constraints)
+            cp.cpSpaceEachConstraint(
+                cp_space, lib.ext_cpSpaceConstraintIteratorFunc, cp_constraints_h
+            )
             for cp_constraint in cp_constraints:
+                cp_space = lib.cpConstraintGetSpace(cp_constraint)
                 _logger.debug(
                     "spacefree remove constraint %s %s", cp_space, cp_constraint
                 )
-                cp.cpSpaceRemoveConstraint(cp_space, cp_constraint)
+                lib.cpSpaceRemoveConstraint(cp_space, cp_constraint)
 
-            cp_bodies = []
-
-            @ffi.callback("cpSpaceBodyIteratorFunc")
-            def cf3(cp_body, data):  # type:ignore
-                # print("spacefree shapecallback")
-                cp_bodies.append(cp_body)
-
-            cp.cpSpaceEachBody(cp_space, cf3, ffi.NULL)
-            for cp_body in cp_bodies:
+            cp_bodys = []
+            cp_bodys_h = ffi.new_handle(cp_bodys)
+            cp.cpSpaceEachBody(cp_space, lib.ext_cpSpaceBodyIteratorFunc, cp_bodys_h)
+            for cp_body in cp_bodys:
+                cp_space = lib.cpBodyGetSpace(cp_body)
                 _logger.debug("spacefree remove body %s %s", cp_space, cp_body)
-                cp.cpSpaceRemoveBody(cp_space, cp_body)
+                lib.cpSpaceRemoveBody(cp_space, cp_body)
 
             _logger.debug("spacefree free %s", cp_space)
             freefunc(cp_space)
@@ -595,7 +586,6 @@ class Space(PickleMixin, object):
             self._removed_shapes = {}
         finally:
             self._locked = False
-
         self.add(*self._add_later)
         self._add_later.clear()
         for obj in self._remove_later:
@@ -978,7 +968,8 @@ class Space(PickleMixin, object):
         :type options: :py:class:`SpaceDebugDrawOptions`
         """
         if options._use_chipmunk_debug_draw:
-            h = ffi.new_handle(self)
+            d = (options, self)
+            h = ffi.new_handle(d)
             # we need to hold h until the end of cpSpaceDebugDraw to prevent GC
             options._options.data = h
 
@@ -1018,14 +1009,14 @@ class Space(PickleMixin, object):
         handlers = []
         for k, v in self._handlers.items():
             h: Dict[str, Any] = {}
-            if v._begin_base is not None:
-                h["_begin_base"] = v._begin_base
-            if v._pre_solve_base is not None:
-                h["_pre_solve_base"] = v._pre_solve_base
-            if v._post_solve_base is not None:
-                h["_post_solve_base"] = v._post_solve_base
-            if v._separate_base is not None:
-                h["_separate_base"] = v._separate_base
+            if v._begin is not None:
+                h["_begin"] = v._begin
+            if v._pre_solve is not None:
+                h["_pre_solve"] = v._pre_solve
+            if v._post_solve is not None:
+                h["_post_solve"] = v._post_solve
+            if v._separate is not None:
+                h["_separate"] = v._separate
             handlers.append((k, h))
 
         d["special"].append(("_handlers", handlers))
@@ -1071,11 +1062,11 @@ class Space(PickleMixin, object):
                         h = self.add_collision_handler(k2[0], k2[1])
                     else:
                         h = self.add_wildcard_collision_handler(k2)
-                    if "_begin_base" in hd:
-                        h.begin = hd["_begin_base"]
-                    if "_pre_solve_base" in hd:
-                        h.pre_solve = hd["_pre_solve_base"]
-                    if "_post_solve_base" in hd:
-                        h.post_solve = hd["_post_solve_base"]
-                    if "_separate_base" in hd:
-                        h.separate = hd["_separate_base"]
+                    if "_begin" in hd:
+                        h.begin = hd["_begin"]
+                    if "_pre_solve" in hd:
+                        h.pre_solve = hd["_pre_solve"]
+                    if "_post_solve" in hd:
+                        h.post_solve = hd["_post_solve"]
+                    if "_separate" in hd:
+                        h.separate = hd["_separate"]

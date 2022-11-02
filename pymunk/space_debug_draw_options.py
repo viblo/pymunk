@@ -85,75 +85,18 @@ class SpaceDebugDrawOptions(object):
         # Set to false to bypass chipmunk shape drawing code
         self._use_chipmunk_debug_draw = True
 
-        @ffi.callback("cpSpaceDebugDrawCircleImpl")
-        def f1(pos, angle, radius, outline_color, fill_color, data):  # type: ignore
-            self.draw_circle(
-                Vec2d(pos.x, pos.y),
-                angle,
-                radius,
-                self._c(outline_color),
-                self._c(fill_color),
-            )
-
-        _options.drawCircle = f1
-
-        @ffi.callback("cpSpaceDebugDrawSegmentImpl")
-        def f2(a, b, color, data):  # type: ignore
-            # sometimes a and/or b can be nan. For example if both endpoints
-            # of a spring is at the same position. In those cases skip calling
-            # the drawing method.
-            if math.isnan(a.x) or math.isnan(a.y) or math.isnan(b.x) or math.isnan(b.y):
-                return
-            self.draw_segment(
-                Vec2d(a.x, a.y),
-                Vec2d(b.x, b.y),
-                self._c(color),
-            )
-
-        _options.drawSegment = f2
-
-        @ffi.callback("cpSpaceDebugDrawFatSegmentImpl")
-        def f3(a, b, radius, outline_color, fill_color, data):  # type: ignore
-            self.draw_fat_segment(
-                Vec2d(a.x, a.y),
-                Vec2d(b.x, b.y),
-                radius,
-                self._c(outline_color),
-                self._c(fill_color),
-            )
-
-        _options.drawFatSegment = f3
-
-        @ffi.callback("cpSpaceDebugDrawPolygonImpl")
-        def f4(count, verts, radius, outline_color, fill_color, data):  # type: ignore
-            vs = []
-            for i in range(count):
-                vs.append(Vec2d(verts[i].x, verts[i].y))
-            self.draw_polygon(vs, radius, self._c(outline_color), self._c(fill_color))
-
-        _options.drawPolygon = f4
-
-        @ffi.callback("cpSpaceDebugDrawDotImpl")
-        def f5(size, pos, color, data):  # type: ignore
-            self.draw_dot(size, Vec2d(pos.x, pos.y), self._c(color))
-
-        _options.drawDot = f5
-
-        @ffi.callback("cpSpaceDebugDrawColorForShapeImpl")
-        def f6(_shape, data):  # type: ignore
-            space = ffi.from_handle(data)
-            shape = space._get_shape(_shape)
-            return self.color_for_shape(shape)
-
-        _options.colorForShape = f6
+        _options.drawCircle = lib.ext_cpSpaceDebugDrawCircleImpl
+        _options.drawSegment = lib.ext_cpSpaceDebugDrawSegmentImpl
+        _options.drawFatSegment = lib.ext_cpSpaceDebugDrawFatSegmentImpl
+        _options.drawPolygon = lib.ext_cpSpaceDebugDrawPolygonImpl
+        _options.drawDot = lib.ext_cpSpaceDebugDrawDotImpl
+        _options.colorForShape = lib.ext_cpSpaceDebugDrawColorForShapeImpl
 
         self.flags = (
             SpaceDebugDrawOptions.DRAW_SHAPES
             | SpaceDebugDrawOptions.DRAW_CONSTRAINTS
             | SpaceDebugDrawOptions.DRAW_COLLISION_POINTS
         )
-
-        self._callbacks = [f1, f2, f3, f4, f5, f6]
 
     def _get_shape_outline_color(self) -> SpaceDebugColor:
         return self._c(self._options.shapeOutlineColor)

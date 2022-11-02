@@ -90,7 +90,6 @@ class UnitTestArbiter(unittest.TestCase):
             return True
 
         s.add_collision_handler(1, 2).pre_solve = pre_solve
-
         for x in range(5):
             s.step(0.1)
 

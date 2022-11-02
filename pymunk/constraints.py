@@ -80,7 +80,6 @@ from ._pickle import PickleMixin
 from ._typing_attr import TypingAttrMixing
 from .vec2d import Vec2d
 
-
 _logger = logging.getLogger(__name__)
 
 
@@ -101,9 +100,7 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
     _pickle_attrs_skip = PickleMixin._pickle_attrs_skip + ["pre_solve", "post_solve"]
 
     _pre_solve_func: Optional[Callable[["Constraint", "Space"], None]] = None
-    _cp_pre_solve_func: Any = ffi.NULL
     _post_solve_func: Optional[Callable[["Constraint", "Space"], None]] = None
-    _cp_post_solve_func: Any = ffi.NULL
 
     def __init__(self, constraint: ffi.CData) -> None:
         self._constraint = constraint
@@ -119,6 +116,10 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
 
         self._constraint = ffi.gc(_constraint, constraintfree)
         self._set_bodies(a, b)
+
+        d = ffi.new_handle(self)
+        self._data_handle = d  # to prevent gc to collect the handle
+        lib.cpConstraintSetUserData(self._constraint, d)
 
     def _get_max_force(self) -> float:
         return lib.cpConstraintGetMaxForce(self._constraint)
@@ -239,17 +240,11 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
         self._pre_solve_func = func
 
         if func is None:
-            self._cp_pre_solve_func = ffi.NULL
+            lib.cpConstraintSetPreSolveFunc(self._constraint, ffi.NULL)
         else:
-
-            @ffi.callback("cpConstraintPreSolveFunc")
-            def _impl(cp_constraint: ffi.CData, cp_space: ffi.CData) -> None:
-                assert self.a.space is not None
-                func(self, self.a.space)  # type: ignore
-
-            self._cp_pre_solve_func = _impl
-
-        lib.cpConstraintSetPreSolveFunc(self._constraint, self._cp_pre_solve_func)
+            lib.cpConstraintSetPreSolveFunc(
+                self._constraint, lib.ext_cpConstraintPreSolveFunc
+            )
 
     @property
     def post_solve(self) -> Optional[Callable[["Constraint", "Space"], None]]:
@@ -273,17 +268,11 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
         self._post_solve_func = func
 
         if func is None:
-            self._cp_post_solve_func = ffi.NULL
+            lib.cpConstraintSetPostSolveFunc(self._constraint, ffi.NULL)
         else:
-
-            @ffi.callback("cpConstraintPostSolveFunc")
-            def _impl(cp_constraint: ffi.CData, cp_space: ffi.CData) -> None:
-                assert self.a.space is not None
-                func(self, self.a.space)  # type: ignore
-
-            self._cp_post_solve_func = _impl
-
-        lib.cpConstraintSetPostSolveFunc(self._constraint, self._cp_post_solve_func)
+            lib.cpConstraintSetPostSolveFunc(
+                self._constraint, lib.ext_cpConstraintPostSolveFunc
+            )
 
     def _set_bodies(self, a: "Body", b: "Body") -> None:
         assert a is not b

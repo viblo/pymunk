@@ -21,7 +21,6 @@ if TYPE_CHECKING:
 from ._chipmunk_cffi import ffi, lib
 from ._pickle import PickleMixin, _State
 from ._typing_attr import TypingAttrMixing
-from .arbiter import Arbiter
 from .vec2d import Vec2d
 
 _BodyType = int
@@ -112,8 +111,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
         "_position_func",
     ]
 
-    _position_func_base: Optional[_PositionFunc] = None  # For pickle
-    _velocity_func_base: Optional[_VelocityFunc] = None  # For pickle
+    _position_func: Optional[_PositionFunc] = None
+    _velocity_func: Optional[_VelocityFunc] = None
 
     _id_counter = 1
 
@@ -201,38 +200,18 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
         def freebody(cp_body):  # type: ignore
             _logger.debug("bodyfree start %s", cp_body)
-            cp_shapes = []
 
-            @ffi.callback("cpBodyShapeIteratorFunc")
-            def cf1(cp_body, cp_shape, _):  # type: ignore
-                cp_shapes.append(cp_shape)
+            lib.cpBodyEachShape(cp_body, lib.ext_cpBodyShapeIteratorFunc, ffi.NULL)
 
-            lib.cpBodyEachShape(cp_body, cf1, ffi.NULL)
-
-            for cp_shape in cp_shapes:
-                _logger.debug("bodyfree remove shape %s %s", cp_body, cp_shape)
-                cp_space = lib.cpShapeGetSpace(cp_shape)
-                if cp_space != ffi.NULL:
-                    lib.cpSpaceRemoveShape(cp_space, cp_shape)
-
-            cp_constraints = []
-
-            @ffi.callback("cpBodyConstraintIteratorFunc")
-            def cf2(cp_body, cp_constraint, _):  # type: ignore
-                cp_constraints.append(cp_constraint)
-
-            lib.cpBodyEachConstraint(cp_body, cf2, ffi.NULL)
-            for cp_constraint in cp_constraints:
-                _logger.debug(
-                    "bodyfree remove constraint %s %s", cp_body, cp_constraint
-                )
-                cp_space = lib.cpConstraintGetSpace(cp_constraint)
-                if cp_space != ffi.NULL:
-                    lib.cpSpaceRemoveConstraint(cp_space, cp_constraint)
+            lib.cpBodyEachConstraint(
+                cp_body, lib.ext_cpBodyConstraintIteratorFunc, ffi.NULL
+            )
 
             cp_space = lib.cpBodyGetSpace(cp_body)
+            _logger.debug("bodyfree space %s", cp_space)
             # print(cp_space, cp_space == ffi.NULL)
             if cp_space != ffi.NULL:
+                _logger.debug("bodyfree space remove body %s %s", cp_space, cp_body)
                 lib.cpSpaceRemoveBody(cp_space, cp_body)
 
             _logger.debug("bodyfree free %s", cp_body)
@@ -245,10 +224,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
         elif body_type == Body.STATIC:
             self._body = ffi.gc(lib.cpBodyNewStatic(), freebody)
 
-        self._position_func = None  # To prevent the gc to collect the callbacks.
-        self._velocity_func = None  # To prevent the gc to collect the callbacks.
-        self._position_func_base = None  # For pickle
-        self._velocity_func_base = None  # For pickle
+        self._position_func = None
+        self._velocity_func = None
 
         self._space: Optional[
             "Space"
@@ -259,21 +236,25 @@ class Body(PickleMixin, TypingAttrMixing, object):
         ] = WeakSet()  # weak refs to any constraints attached
         self._shapes: WeakSet["Shape"] = WeakSet()  # weak refs to any shapes attached
 
-        self._set_id()
+        d = ffi.new_handle(self)
+        self._data_handle = d  # to prevent gc to collect the handle
+        lib.cpBodySetUserData(self._body, d)
 
-    @property
-    def _id(self) -> int:
-        """Unique id of the Body
+        # self._set_id()
 
-        .. note::
-            Experimental API. Likely to change in future major, minor orpoint
-            releases.
-        """
-        return int(ffi.cast("int", lib.cpBodyGetUserData(self._body)))
+    # @property
+    # def _id(self) -> int:
+    #     """Unique id of the Body
 
-    def _set_id(self) -> None:
-        lib.cpBodySetUserData(self._body, ffi.cast("cpDataPointer", Body._id_counter))
-        Body._id_counter += 1
+    #     .. note::
+    #         Experimental API. Likely to change in future major, minor or point
+    #         releases.
+    #     """
+    #     return int(ffi.cast("int", lib.cpBodyGetUserData(self._body)))
+
+    # def _set_id(self) -> None:
+
+    #     Body._id_counter += 1
 
     def __repr__(self) -> str:
         if self.body_type == Body.DYNAMIC:
@@ -443,13 +424,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
             return None
 
     def _set_velocity_func(self, func: _VelocityFunc) -> None:
-        @ffi.callback("cpBodyVelocityFunc")
-        def _impl(_: ffi.CData, gravity: ffi.CData, damping: float, dt: float) -> None:
-            func(self, Vec2d(gravity.x, gravity.y), damping, dt)
-
-        self._velocity_func_base = func
-        self._velocity_func = _impl
-        lib.cpBodySetVelocityUpdateFunc(self._body, _impl)
+        self._velocity_func = func
+        lib.cpBodySetVelocityUpdateFunc(self._body, lib.ext_cpBodyVelocityFunc)
 
     velocity_func = property(
         fset=_set_velocity_func,
@@ -498,13 +474,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
     )
 
     def _set_position_func(self, func: Callable[["Body", float], None]) -> None:
-        @ffi.callback("cpBodyPositionFunc")
-        def _impl(_: ffi.CData, dt: float) -> None:
-            return func(self, dt)
-
-        self._position_func_base = func
-        self._position_func = _impl
-        lib.cpBodySetPositionUpdateFunc(self._body, _impl)
+        self._position_func = func
+        lib.cpBodySetPositionUpdateFunc(self._body, lib.ext_cpBodyPositionFunc)
 
     position_func = property(
         fset=_set_position_func,
@@ -675,15 +646,9 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
             Do not hold on to the Arbiter after the callback!
         """
-
-        @ffi.callback("cpBodyArbiterIteratorFunc")
-        def cf(_body: ffi.CData, _arbiter: ffi.CData, _data: ffi.CData) -> None:
-            assert self._space is not None
-            arbiter = Arbiter(_arbiter, self._space)
-            func(arbiter, *args, **kwargs)
-
-        data = ffi.new_handle(self)
-        lib.cpBodyEachArbiter(self._body, cf, data)
+        d = self, func, args, kwargs
+        data = ffi.new_handle(d)
+        lib.cpBodyEachArbiter(self._body, lib.ext_cpBodyArbiterIteratorFunc, data)
 
     @property
     def constraints(self) -> Set["Constraint"]:
@@ -752,8 +717,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
         d = super(Body, self).__getstate__()
 
         d["special"].append(("is_sleeping", self.is_sleeping))
-        d["special"].append(("_velocity_func", self._velocity_func_base))
-        d["special"].append(("_position_func", self._position_func_base))
+        d["special"].append(("_velocity_func", self._velocity_func))
+        d["special"].append(("_position_func", self._position_func))
 
         return d
 

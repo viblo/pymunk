@@ -243,17 +243,18 @@ def march_soft(
     """
     pl_set = PolylineSet()
 
-    @ffi.callback("cpMarchSegmentFunc")
-    def _seg_f(v0: ffi.CData, v1: ffi.CData, _data: ffi.CData) -> None:
-        pl_set.collect_segment((v0.x, v0.y), (v1.x, v1.y))
-
-    @ffi.callback("cpMarchSampleFunc")
-    def _sam_f(point: ffi.CData, _data: ffi.CData) -> float:
-        # print("SAMPLE", point.x, point.y)
-        return sample_func((point.x, point.y))
+    segment_data = ffi.new_handle(pl_set)
+    sample_data = ffi.new_handle(sample_func)
 
     lib.cpMarchSoft(
-        bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
+        bb,
+        x_samples,
+        y_samples,
+        threshold,
+        lib.ext_cpMarchSegmentFunc,
+        segment_data,
+        lib.ext_cpMarchSampleFunc,
+        sample_data,
     )
     return pl_set
 
@@ -282,17 +283,18 @@ def march_hard(
     """
 
     pl_set = PolylineSet()
-
-    @ffi.callback("cpMarchSegmentFunc")
-    def _seg_f(v0: ffi.CData, v1: ffi.CData, _data: ffi.CData) -> None:
-        pl_set.collect_segment((v0.x, v0.y), (v1.x, v1.y))
-
-    @ffi.callback("cpMarchSampleFunc")
-    def _sam_f(point: ffi.CData, _data: ffi.CData) -> float:
-        return sample_func((point.x, point.y))
+    segment_data = ffi.new_handle(pl_set)
+    sample_data = ffi.new_handle(sample_func)
 
     lib.cpMarchHard(
-        bb, x_samples, y_samples, threshold, _seg_f, ffi.NULL, _sam_f, ffi.NULL
+        bb,
+        x_samples,
+        y_samples,
+        threshold,
+        lib.ext_cpMarchSegmentFunc,
+        segment_data,
+        lib.ext_cpMarchSampleFunc,
+        sample_data,
     )
 
     return pl_set

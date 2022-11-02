@@ -1,13 +1,12 @@
 __version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
-import warnings
 from typing import TYPE_CHECKING, Any, Callable, Dict, Optional
 
 if TYPE_CHECKING:
     from .space import Space
 
-from ._chipmunk_cffi import ffi
+from ._chipmunk_cffi import ffi, lib
 from .arbiter import Arbiter
 
 _CollisionCallbackBool = Callable[[Arbiter, "Space", Any], bool]
@@ -38,16 +37,16 @@ class CollisionHandler(object):
         .. note::
             You should never need to create an instance of this class directly.
         """
+        self._userData = ffi.new_handle(self)
+
         self._handler = _handler
+        self._handler.userData = self._userData
+
         self._space = space
-        self._begin = None
-        self._begin_base: Optional[_CollisionCallbackBool] = None  # For pickle
-        self._pre_solve = None
-        self._pre_solve_base: Optional[_CollisionCallbackBool] = None  # For pickle
-        self._post_solve = None
-        self._post_solve_base: Optional[_CollisionCallbackNoReturn] = None  # For pickle
-        self._separate = None
-        self._separate_base: Optional[_CollisionCallbackNoReturn] = None  # For pickle
+        self._begin: Optional[_CollisionCallbackBool] = None
+        self._pre_solve: Optional[_CollisionCallbackBool] = None
+        self._post_solve: Optional[_CollisionCallbackNoReturn] = None
+        self._separate: Optional[_CollisionCallbackNoReturn] = None
 
         self._data: Dict[Any, Any] = {}
 
@@ -75,33 +74,11 @@ class CollisionHandler(object):
         return self._data
 
     def _set_begin(self, func: Callable[[Arbiter, "Space", Any], bool]) -> None:
-        @ffi.callback("cpCollisionBeginFunc")
-        def cf(_arb: ffi.CData, _space: ffi.CData, _: ffi.CData) -> bool:
-            x = func(Arbiter(_arb, self._space), self._space, self._data)
-            if isinstance(x, bool):
-                return x
-
-            func_name = func.__code__.co_name
-            filename = func.__code__.co_filename
-            lineno = func.__code__.co_firstlineno
-
-            warnings.warn_explicit(
-                "Function '" + func_name + "' should return a bool to"
-                " indicate if the collision should be processed or not when"
-                " used as 'begin' or 'pre_solve' collision callback.",
-                UserWarning,
-                filename,
-                lineno,
-                func.__module__,
-            )
-            return True
-
-        self._begin = cf
-        self._begin_base = func
-        self._handler.beginFunc = cf
+        self._begin = func
+        self._handler.beginFunc = lib.ext_cpCollisionBeginFunc
 
     def _get_begin(self) -> Optional[_CollisionCallbackBool]:
-        return self._begin_base
+        return self._begin
 
     begin = property(
         _get_begin,
@@ -119,33 +96,11 @@ class CollisionHandler(object):
     )
 
     def _set_pre_solve(self, func: _CollisionCallbackBool) -> None:
-        @ffi.callback("cpCollisionPreSolveFunc")
-        def cf(_arb: ffi.CData, _space: ffi.CData, _: ffi.CData) -> bool:
-            x = func(Arbiter(_arb, self._space), self._space, self._data)
-            if isinstance(x, int):
-                return x
-
-            func_name = func.__code__.co_name
-            filename = func.__code__.co_filename
-            lineno = func.__code__.co_firstlineno
-
-            warnings.warn_explicit(
-                "Function '" + func_name + "' should return a bool to"
-                " indicate if the collision should be processed or not when"
-                " used as 'begin' or 'pre_solve' collision callback.",
-                UserWarning,
-                filename,
-                lineno,
-                func.__module__,
-            )
-            return True
-
-        self._pre_solve = cf
-        self._pre_solve_base = func
-        self._handler.preSolveFunc = cf
+        self._pre_solve = func
+        self._handler.preSolveFunc = lib.ext_cpCollisionPreSolveFunc
 
     def _get_pre_solve(self) -> Optional[Callable[[Arbiter, "Space", Any], bool]]:
-        return self._pre_solve_base
+        return self._pre_solve
 
     pre_solve = property(
         _get_pre_solve,
@@ -163,16 +118,12 @@ class CollisionHandler(object):
     )
 
     def _set_post_solve(self, func: _CollisionCallbackNoReturn) -> None:
-        @ffi.callback("cpCollisionPostSolveFunc")
-        def cf(_arb: ffi.CData, _space: ffi.CData, _: ffi.CData) -> None:
-            func(Arbiter(_arb, self._space), self._space, self._data)
 
-        self._post_solve = cf
-        self._post_solve_base = func
-        self._handler.postSolveFunc = cf
+        self._post_solve = func
+        self._handler.postSolveFunc = lib.ext_cpCollisionPostSolveFunc
 
     def _get_post_solve(self) -> Optional[_CollisionCallbackNoReturn]:
-        return self._post_solve_base
+        return self._post_solve
 
     post_solve = property(
         _get_post_solve,
@@ -189,23 +140,11 @@ class CollisionHandler(object):
     )
 
     def _set_separate(self, func: _CollisionCallbackNoReturn) -> None:
-        @ffi.callback("cpCollisionSeparateFunc")
-        def cf(_arb: ffi.CData, _space: ffi.CData, _: ffi.CData) -> None:
-            try:
-                # this try is needed since a separate callback will be called
-                # if a colliding object is removed, regardless if its in a
-                # step or not.
-                self._space._locked = True
-                func(Arbiter(_arb, self._space), self._space, self._data)
-            finally:
-                self._space._locked = False
-
-        self._separate = cf
-        self._separate_base = func
-        self._handler.separateFunc = cf
+        self._separate = func
+        self._handler.separateFunc = lib.ext_cpCollisionSeparateFunc
 
     def _get_separate(self) -> Optional[_CollisionCallbackNoReturn]:
-        return self._separate_base
+        return self._separate
 
     separate = property(
         _get_separate,
