@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Liu, Lucy, Gary Choi, and L. Mahadevan. 
+   "Quasicrystal kirigami." 
+   Physical Review Research, 4(3), 033114, 2022.
+
 #. Shen, Jeremy, Erdong Xiao, Yuchen Liu, and Chen Feng. 
    "A Deep Reinforcement Learning Environment for Particle Robot Navigation and Object Manipulation." 
    arXiv preprint arXiv:2203.06464 (2022).
@@ -349,10 +353,6 @@ List of papers which has used or mentioned Pymunk:
 #. Gerstenberg, Tobias, Max Siegel, and Joshua Tenenbaum. 
    "What happened? Reconstructing the past through vision and sound." 
    (2021).
-
-#. Liu, Lucy, Gary Choi, and L. Mahadevan. 
-   "Quasicrystal kirigami." 
-   arXiv preprint arXiv:2104.13399 (2021).
 
 #. Delucia, Marco, Anita Catapano, Marco Montemurro, and Jérôme Pailhès. 
    "Pre-stress state in cork agglomerates: simulation of the compression moulding process." 
