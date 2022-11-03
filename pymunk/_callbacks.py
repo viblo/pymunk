@@ -253,7 +253,9 @@ def ext_cpBodyArbiterIteratorFunc(
 
 
 @ffi.def_extern()
-def ext_cpBodyConstraintIteratorFunc(cp_body: ffi.CData, cp_constraint: ffi.CData, _):
+def ext_cpBodyConstraintIteratorFunc(
+    cp_body: ffi.CData, cp_constraint: ffi.CData, _: ffi.CData
+) -> None:
     _logger.debug("bodyfree remove constraint %s %s", cp_body, cp_constraint)
     cp_space = lib.cpConstraintGetSpace(cp_constraint)
     if cp_space != ffi.NULL:
@@ -261,7 +263,9 @@ def ext_cpBodyConstraintIteratorFunc(cp_body: ffi.CData, cp_constraint: ffi.CDat
 
 
 @ffi.def_extern()
-def ext_cpBodyShapeIteratorFunc(cp_body: ffi.CData, cp_shape: ffi.CData, _):
+def ext_cpBodyShapeIteratorFunc(
+    cp_body: ffi.CData, cp_shape: ffi.CData, _: ffi.CData
+) -> None:
     _logger.debug("bodyfree remove shape %s %s", cp_body, cp_shape)
     cp_space = lib.cpShapeGetSpace(cp_shape)
     if cp_space != ffi.NULL:

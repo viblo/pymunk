@@ -16,21 +16,19 @@ from typing import (
     Union,
 )
 
+from pymunk.constraints import Constraint
 from pymunk.shape_filter import ShapeFilter
 from pymunk.space_debug_draw_options import SpaceDebugDrawOptions
 
-from . import _chipmunk_cffi, _version
+from . import _version
 from ._callbacks import *
+from ._chipmunk_cffi import ffi, lib
 
-cp = _chipmunk_cffi.lib
-ffi = _chipmunk_cffi.ffi
-
-from pymunk.constraints import Constraint
+cp = lib
 
 from ._pickle import PickleMixin, _State
 from .body import Body
 from .collision_handler import CollisionHandler
-from .contact_point_set import ContactPointSet
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shapes import Shape
 from .vec2d import Vec2d
@@ -103,7 +101,7 @@ class Space(PickleMixin, object):
         def spacefree(cp_space):  # type: ignore
             _logger.debug("spacefree start %s", cp_space)
 
-            cp_shapes = []
+            cp_shapes: List[Shape] = []
             cp_shapes_h = ffi.new_handle(cp_shapes)
             cp.cpSpaceEachShape(cp_space, lib.ext_cpSpaceShapeIteratorFunc, cp_shapes_h)
 
@@ -114,7 +112,7 @@ class Space(PickleMixin, object):
                 lib.cpSpaceRemoveShape(cp_space, cp_shape)
                 lib.cpShapeSetBody(cp_shape, ffi.NULL)
 
-            cp_constraints = []
+            cp_constraints: List[Constraint] = []
             cp_constraints_h = ffi.new_handle(cp_constraints)
             cp.cpSpaceEachConstraint(
                 cp_space, lib.ext_cpSpaceConstraintIteratorFunc, cp_constraints_h
@@ -126,7 +124,7 @@ class Space(PickleMixin, object):
                 )
                 lib.cpSpaceRemoveConstraint(cp_space, cp_constraint)
 
-            cp_bodys = []
+            cp_bodys: List[Body] = []
             cp_bodys_h = ffi.new_handle(cp_bodys)
             cp.cpSpaceEachBody(cp_space, lib.ext_cpSpaceBodyIteratorFunc, cp_bodys_h)
             for cp_body in cp_bodys:
@@ -918,7 +916,7 @@ class Space(PickleMixin, object):
         :rtype: [:py:class:`Shape`]
         """
 
-        query_hits = []
+        query_hits: List[Shape] = []
 
         d = (self, query_hits)
         data = ffi.new_handle(d)
@@ -940,7 +938,7 @@ class Space(PickleMixin, object):
         :rtype: [:py:class:`ShapeQueryInfo`]
         """
 
-        query_hits = []
+        query_hits: List[ShapeQueryInfo] = []
         d = (self, query_hits)
         data = ffi.new_handle(d)
 
