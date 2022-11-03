@@ -1,7 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import logging
-from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Tuple
+from typing import TYPE_CHECKING, List, Optional, Sequence, Tuple
 
 if TYPE_CHECKING:
     from .body import Body
@@ -64,7 +64,9 @@ class Shape(PickleMixin, TypingAttrMixing, object):
                 cp.cpSpaceRemoveShape(cp_space, cp_shape)
 
             _logger.debug("shapefree remove body %s", cp_shape)
-            cp.cpShapeSetBody(cp_shape, ffi.NULL)
+            cp_body = cp.cpShapeGetBody(cp_shape)
+            if cp_body != ffi.NULL:
+                cp.cpShapeSetBody(cp_shape, ffi.NULL)
             _logger.debug("shapefree free %s", cp_shape)
             cp.cpShapeFree(cp_shape)
 
