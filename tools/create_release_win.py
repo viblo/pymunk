@@ -8,7 +8,7 @@ def main():
     print(
         """
     Remember (before running this script!): 
-    - change version number in README.rst, setup.py, showcase.rst and __init__.py
+    - change version number in README.rst, setup.py, CITATION.cff and __init__.py
     - test in at least CPython 3.x and Pypy3
     - validate test results of Github Actions
     - write changelog entry and put in changelog.rst

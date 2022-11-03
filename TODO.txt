@@ -16,7 +16,6 @@ v6.x
 - tests of py2exe/pyinstaller/cx_freeze?
 - make example where a container is used for a complex shape such as car: https://stackoverflow.com/questions/55146932/grouping-without-collision-adding-and-removing-multiple-bodies-and-polygons-i/55150431#55150431
 - Update docs with collision chapter. ShapeFilter, collision callbacks and such
-- use env variables for pymunkoptions, like pygame https://stackoverflow.com/questions/56258942/is-there-an-environment-variable-to-disable-pymunk-chipmunk-from-printing-loadi
 - Write in docs about troubleshooting more prominent, and that its good to consider the properties on constraints like max_force
 - Add Check that its not allowed to change body of shape added to space
 - Make sure there's a check to see that the bodies of a constraint are added to space before constraint is added

@@ -2,6 +2,23 @@
 Changelog 
 =========
 
+Pymunk 6.3.0 (2022-11-04)
+-------------------------
+
+**Build wheel for CPython 3.11!**
+
+This is a minor update with changes to be build pipe to build wheels for 
+CPython 3.11. Some internal parts have been rewritten as well.
+
+Changes:
+
+- Update callbacks implemention to the cffi recommended way
+- Improve Asserts to catch errors earlier
+- Improve type hints
+- Build wheels for more targets
+- Remove experimental body._id
+  
+
 Pymunk 6.2.1 (2021-10-31)
 -------------------------
 
