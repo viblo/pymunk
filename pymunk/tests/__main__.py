@@ -1,4 +1,5 @@
 import argparse
+import logging
 import os
 import os.path
 import sys
@@ -32,9 +33,14 @@ if __name__ == "__main__":
         default=[],
     )
     parser.add_argument("-f", "--filter", help="Only run tests matching the filter")
+    parser.add_argument(
+        "-v", "--verbose", help="Enable debug logging", action="store_true"
+    )
     args = parser.parse_args()
 
     print(args)
+    if args.verbose:
+        logging.basicConfig(level=0)
     # sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     wasSuccessful = run_tests(args.filter, args.dependencies)
     sys.exit(not wasSuccessful)

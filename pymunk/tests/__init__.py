@@ -38,6 +38,7 @@ testing Pymunk features.
 
 import doctest
 import faulthandler
+import logging
 import os
 import os.path
 import platform
@@ -52,6 +53,7 @@ from . import doctests
 
 def run_tests(filter: str = "", with_dependencies: List[str] = []) -> bool:
     """Run the Pymunk test suite."""
+
     faulthandler.enable()
     print("####################")
     print("RUNNING pymunk.tests")
