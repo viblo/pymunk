@@ -6,10 +6,6 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestBB(unittest.TestCase):
-    def setUp(self) -> None:
-        # print "testing pymunk version " + p.version
-        pass
-
     def testCreation(self) -> None:
         bb_empty = p.BB()
 

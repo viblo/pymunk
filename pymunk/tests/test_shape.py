@@ -3,9 +3,6 @@ import unittest
 from typing import Any
 
 import pymunk as p
-from pymunk.vec2d import Vec2d
-
-####################################################################
 
 
 class UnitTestShape(unittest.TestCase):
@@ -398,9 +395,3 @@ class UnitTestPoly(unittest.TestCase):
 
         self.assertEqual(c.get_vertices(), c2.get_vertices())
         self.assertEqual(c.radius, c2.radius)
-
-
-####################################################################
-if __name__ == "__main__":
-    print("testing pymunk version " + p.version)
-    unittest.main()

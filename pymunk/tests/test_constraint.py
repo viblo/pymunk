@@ -3,10 +3,8 @@ import unittest
 
 import pymunk as p
 from pymunk.constraints import *
-from pymunk.vec2d import Vec2d
 
 
-####################################################################
 class UnitTestConstraint(unittest.TestCase):
     def testA(self) -> None:
         a, b = p.Body(10, 10), p.Body(10, 10)
@@ -21,7 +19,7 @@ class UnitTestConstraint(unittest.TestCase):
     def testMaxForce(self) -> None:
         a, b = p.Body(10, 10), p.Body(10, 10)
         j = PivotJoint(a, b, (0, 0))
-        self.assertEqual(j.max_force, float('inf'))
+        self.assertEqual(j.max_force, float("inf"))
         j.max_force = 10
         self.assertEqual(j.max_force, 10)
 
@@ -35,7 +33,7 @@ class UnitTestConstraint(unittest.TestCase):
     def testMaxBias(self) -> None:
         a, b = p.Body(10, 10), p.Body(10, 10)
         j = PivotJoint(a, b, (0, 0))
-        self.assertEqual(j.max_bias, float('inf'))
+        self.assertEqual(j.max_bias, float("inf"))
         j.max_bias = 10
         self.assertEqual(j.max_bias, 10)
 
@@ -510,9 +508,3 @@ def pre_solve(c: Constraint, s: p.Space) -> None:
 
 def post_solve(c: Constraint, s: p.Space) -> None:
     pass
-
-
-####################################################################
-if __name__ == "__main__":
-    print("testing pymunk version " + p.version)
-    unittest.main()

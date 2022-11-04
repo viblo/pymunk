@@ -13,8 +13,6 @@ from pymunk import *
 from pymunk.constraints import *
 from pymunk.vec2d import Vec2d
 
-####################################################################
-
 
 class UnitTestSpace(unittest.TestCase):
     def _setUp(self) -> None:
@@ -963,9 +961,3 @@ class UnitTestSpace(unittest.TestCase):
 
 def f1(*args: Any, **kwargs: Any) -> None:
     pass
-
-
-####################################################################
-if __name__ == "__main__":
-    print("testing pymunk version " + p.version)
-    unittest.main()

@@ -152,8 +152,3 @@ class UnitTestVec2d(unittest.TestCase):
         testvec_str = pickle.dumps(testvec)
         loaded_vec = pickle.loads(testvec_str)
         self.assertEqual(testvec, loaded_vec)
-
-
-if __name__ == "__main__":
-    print("testing pymunk.vec2d version " + pymunk.version)
-    unittest.main()

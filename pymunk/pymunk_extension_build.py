@@ -1466,6 +1466,7 @@ ffibuilder.cdef(
     // chipmunk_private.h
     ///////////////////////////////////////////
     void cpSpaceSetStaticBody(cpSpace *space, cpBody *body);
+    //cpBool cpShapeActive2(cpShape *shape);
 
 """
 )

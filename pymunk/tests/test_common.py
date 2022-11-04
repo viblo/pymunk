@@ -4,8 +4,6 @@ from typing import Any
 import pymunk as p
 from pymunk.vec2d import Vec2d
 
-####################################################################
-
 
 class UnitTestGeneral(unittest.TestCase):
     def testGeneral(self) -> None:
@@ -37,6 +35,39 @@ class UnitTestGeneral(unittest.TestCase):
 
 
 class UnitTestBugs(unittest.TestCase):
+    def testGC(self) -> None:
+
+        import gc
+        import logging
+
+        _logger = logging.getLogger(__name__)
+
+        def make():
+            s = p.Space()
+            b1 = p.Body(1, 2)
+            c1 = p.Circle(b1, 2)
+            c2 = p.Circle(b1, 2)
+            b2 = p.Body(1, 2)
+            c3 = p.Circle(b2, 2)
+            s.add(b1, c1, c2, b2, c3)
+            s.step(1)
+            return [s, b1, c1, c2, b2, c3]
+
+        import itertools
+
+        for order in itertools.permutations(range(6)):
+            objs = make()
+            _logger.debug("Order: %s", order)
+            for i in order:
+                o = objs[i]
+                if o is p.Space:
+                    del o._space
+                if o is p.Circle:
+                    del o._shape
+                if o is p.Body:
+                    del o._body
+            gc.collect()
+
     def testManyBoxCrash(self) -> None:
         space = p.Space()
         for x in [1, 2]:
@@ -90,9 +121,3 @@ class UnitTestBugs(unittest.TestCase):
         space.step(1.0 / 60)
         b2.position = 22, 0
         space.step(1.0 / 60)
-
-
-####################################################################
-if __name__ == "__main__":
-    print("testing pymunk version " + p.version)
-    unittest.main()

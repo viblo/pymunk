@@ -1,4 +1,3 @@
-import math
 import unittest
 from io import StringIO
 from unittest.mock import patch

@@ -58,14 +58,17 @@ class Shape(PickleMixin, TypingAttrMixing, object):
             body._shapes.add(self)
 
         def shapefree(cp_shape):  # type: ignore
+            _logger.debug("shapefree start %s", cp_shape)
             cp_space = cp.cpShapeGetSpace(cp_shape)
             if cp_space != ffi.NULL:
                 _logger.debug("shapefree remove from space %s %s", cp_space, cp_shape)
                 cp.cpSpaceRemoveShape(cp_space, cp_shape)
 
-            _logger.debug("shapefree remove body %s", cp_shape)
+            _logger.debug("shapefree get body %s", cp_shape)
             cp_body = cp.cpShapeGetBody(cp_shape)
             if cp_body != ffi.NULL:
+                _logger.debug("shapefree set body %s", cp_shape)
+                #print(cp.cpShapeActive2(cp_shape))
                 cp.cpShapeSetBody(cp_shape, ffi.NULL)
             _logger.debug("shapefree free %s", cp_shape)
             cp.cpShapeFree(cp_shape)

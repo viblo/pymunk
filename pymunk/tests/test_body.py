@@ -315,9 +315,3 @@ def pf(body: p.Body, dt: float) -> None:
 
 def vf(body: p.Body, gravity: Tuple[float, float], damping: float, dt: float) -> None:
     body.vf = True
-
-
-####################################################################
-if __name__ == "__main__":
-    print("testing pymunk version " + p.version)
-    unittest.main()

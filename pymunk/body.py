@@ -200,9 +200,11 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
         def freebody(cp_body):  # type: ignore
             _logger.debug("bodyfree start %s", cp_body)
-
+            
+            # remove all shapes on this body from the space
             lib.cpBodyEachShape(cp_body, lib.ext_cpBodyShapeIteratorFunc, ffi.NULL)
 
+            # remove all constraints on this body from the space
             lib.cpBodyEachConstraint(
                 cp_body, lib.ext_cpBodyConstraintIteratorFunc, ffi.NULL
             )

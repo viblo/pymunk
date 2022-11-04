@@ -270,6 +270,7 @@ def ext_cpBodyShapeIteratorFunc(
     cp_space = lib.cpShapeGetSpace(cp_shape)
     if cp_space != ffi.NULL:
         lib.cpSpaceRemoveShape(cp_space, cp_shape)
+    lib.cpShapeSetBody(cp_shape, ffi.NULL)
 
 
 # constraint.py
