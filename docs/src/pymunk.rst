@@ -10,7 +10,7 @@ API Reference
     .. rubric:: Submodules
 
     .. toctree::
-        :maxdepth: 6
+        :maxdepth: 1
 
         pymunk.autogeometry
         pymunk.constraints
