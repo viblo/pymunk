@@ -6,6 +6,7 @@ include CHANGELOG.rst
 #docs
 recursive-include docs/src *
 recursive-include docs/html *
+prune docs/src/_build
 #examples
 recursive-include examples *.py
 recursive-include examples *.png
