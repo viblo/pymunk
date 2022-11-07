@@ -46,23 +46,26 @@ def on_key_press(symbol, modifiers):
         )
 
 
+batch2 = pyglet.graphics.Batch()
+
+
 @window.event
 def on_draw():
     window.clear()
 
     fps_display.draw()
-
+    shapes_to_draw = []
     for line in static_lines:
         body = line.body
 
         pv1 = body.position + line.a.rotated(body.angle)
         pv2 = body.position + line.b.rotated(body.angle)
-        pyglet.graphics.draw(
-            2,
-            pyglet.gl.GL_LINES,
-            ("v2f", (pv1.x, pv1.y, pv2.x, pv2.y)),
-            ("c3f", (0.8, 0.8, 0.8) * 2),
+        shapes_to_draw.append(
+            pyglet.shapes.Line(
+                pv1.x, pv1.y, pv2.x, pv2.y, color=(200, 200, 200), batch=batch2
+            )
         )
+
     batch.draw()
 
     # debug draw
@@ -70,12 +73,21 @@ def on_draw():
 
         ps = logo_sprite.shape.get_vertices()
         ps = [p.rotated(logo_sprite.body.angle) + logo_sprite.body.position for p in ps]
-        n = len(ps)
-        ps = [c for p in ps for c in p]
+        assert len(ps) == 3
+        # ps = [c for p in ps for c in p]
 
-        pyglet.graphics.draw(
-            n, pyglet.gl.GL_LINE_LOOP, ("v2f", ps), ("c3f", (1, 0, 0) * n)
-        )
+        shapes_to_draw += [
+            pyglet.shapes.Line(
+                ps[0].x, ps[0].y, ps[1].x, ps[1].y, color=(255, 100, 100), batch=batch2
+            ),
+            pyglet.shapes.Line(
+                ps[1].x, ps[1].y, ps[2].x, ps[2].y, color=(255, 100, 100), batch=batch2
+            ),
+            pyglet.shapes.Line(
+                ps[2].x, ps[2].y, ps[0].x, ps[0].y, color=(255, 100, 100), batch=batch2
+            ),
+        ]
+    batch2.draw()
 
 
 def update(dt):

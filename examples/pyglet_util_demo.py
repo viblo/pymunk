@@ -33,7 +33,6 @@ for caption in captions:
     y = y - 10
     pyglet.text.Label(caption[1], x=x, y=y, batch=textbatch, color=(50, 50, 50, 255))
 
-batch = pyglet.graphics.Batch()
 
 # otherwise save screenshot wont work
 _ = pyglet.window.FPSDisplay(window)
@@ -43,8 +42,9 @@ _ = pyglet.window.FPSDisplay(window)
 def on_draw():
     pyglet.gl.glClearColor(255, 255, 255, 255)
     window.clear()
-    space.debug_draw(draw_options)
+
     textbatch.draw()
+    space.debug_draw(draw_options)
 
 
 @window.event

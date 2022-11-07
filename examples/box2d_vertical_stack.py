@@ -2,11 +2,8 @@
 Remake of the veritcal stack demo from the box2d testbed.
 """
 
-import math
-
 import pyglet
-from pyglet.gl import *
-from pyglet.window import key, mouse
+from pyglet.window import key
 
 import pymunk
 import pymunk.pyglet_util

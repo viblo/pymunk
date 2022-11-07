@@ -11,8 +11,7 @@ import pyglet
 import pymunk
 from pymunk.vec2d import Vec2d
 
-config = pyglet.gl.Config(sample_buffers=1, samples=2, double_buffer=True)
-window = pyglet.window.Window(config=config, vsync=False)
+window = pyglet.window.Window()
 space = pymunk.Space()
 
 space.gravity = 0, -900
@@ -149,36 +148,41 @@ fps_display = pyglet.window.FPSDisplay(window)
 
 @window.event
 def on_draw():
-    pyglet.gl.glClearColor(240, 240, 240, 255)
     window.clear()
 
     fps_display.draw()
-
+    batch = pyglet.graphics.Batch()
     # static attach points
-    pyglet.gl.glColor3f(1, 0, 1)
-    pyglet.gl.glPointSize(6)
-    a = []
+    shapes_to_draw = []
     for b in static_bs:
-        a += [b.position.x, b.position.y]
-        pyglet.graphics.draw(len(a) // 2, pyglet.gl.GL_POINTS, ("v2f", a))
+        shapes_to_draw.append(
+            pyglet.shapes.Circle(
+                b.position.x, b.position.y, 6, color=(255, 0, 255), batch=batch
+            )
+        )
 
     # web crossings / bodies
-    pyglet.gl.glColor3f(0.8, 0.8, 0.8)
-    a = []
     for b in bs:
-        a += [b.position.x, b.position.y]
-    pyglet.gl.glPointSize(4)
-    pyglet.graphics.draw(len(a) // 2, pyglet.gl.GL_POINTS, ("v2f", a))
+        shapes_to_draw.append(
+            pyglet.shapes.Circle(
+                b.position.x, b.position.y, 4, color=(200, 200, 200), batch=batch
+            )
+        )
 
     # web net / constraints
-    a = []
     for j in space.constraints:
-        a += [j.a.position.x, j.a.position.y, j.b.position.x, j.b.position.y]
-        pass
+        shapes_to_draw.append(
+            pyglet.shapes.Line(
+                j.a.position.x,
+                j.a.position.y,
+                j.b.position.x,
+                j.b.position.y,
+                color=(200, 200, 200),
+                batch=batch,
+            )
+        )
 
-    pyglet.graphics.draw(len(a) // 2, pyglet.gl.GL_LINES, ("v2f", a))
-
-    # anything else
+    batch.draw()
 
 
 pyglet.app.run()
