@@ -12,7 +12,6 @@ import shapes_for_draw_demos
 
 import pymunk
 import pymunk.pygame_util
-from pymunk.vec2d import Vec2d
 
 
 def main():

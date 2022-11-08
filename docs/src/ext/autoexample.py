@@ -44,7 +44,6 @@ from typing import Any, List, Optional
 
 import sphinx.application
 from docutils import nodes, statemachine, utils
-from docutils.nodes import fully_normalize_name
 from docutils.parsers.rst import Directive, directives
 
 
@@ -161,17 +160,15 @@ def parse_examples(
     lines = []
     print("autoexample: documenting files in " + path)
     # print os.getcwd()
-    
+
     for name in sorted(os.listdir(path)):
-        if name.startswith('__'):
+        if name.startswith("__"):
             continue
         fullpath = os.path.join(path, name)
         if os.path.isfile(fullpath):
             _, ext = os.path.splitext(fullpath)
             if ext != ".py":
                 continue
-            #if name.startswith('__'):
-            #    continue
             print("autoexample: documenting " + name)
             lines += parse_example(path, name, img_folder, img_folder_os, source_url)
         elif os.path.isdir(fullpath):

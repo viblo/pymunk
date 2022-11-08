@@ -14,3 +14,5 @@ pygame, but some uses pyglet or other libraries for the specific task being
 shown.
 
 """
+
+__docformat__ = "reStructuredText"
