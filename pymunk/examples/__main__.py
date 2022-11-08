@@ -21,9 +21,9 @@ example, do
 """
 
 
-def list_examples():
+def list_examples() -> None:
     for f in pathlib.Path(__file__).parent.glob("*.py"):
-        if f.stem.startswith("__") or not f.is_file:
+        if f.stem.startswith("__") or not f.is_file():
             continue
         print(f"python -m pymunk.examples.{f.stem}")
 

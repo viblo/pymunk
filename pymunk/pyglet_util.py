@@ -33,7 +33,7 @@ drawing, but there is probably room for optimizations still).
 __docformat__ = "reStructuredText"
 
 import math
-from typing import TYPE_CHECKING, Any, Optional, Sequence, Type
+from typing import TYPE_CHECKING, Any, Optional, Sequence, Type, List
 
 import pyglet  # type: ignore
 
@@ -83,7 +83,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
         """
         self.new_batch = False
-        self.draw_shapes = []
+        self.draw_shapes: List[Any] = []
 
         if "batch" not in kwargs:
             self.new_batch = True

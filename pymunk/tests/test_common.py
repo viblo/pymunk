@@ -1,5 +1,5 @@
 import unittest
-from typing import Any
+from typing import Any, List
 
 import pymunk as p
 from pymunk.vec2d import Vec2d
@@ -42,7 +42,7 @@ class UnitTestBugs(unittest.TestCase):
 
         _logger = logging.getLogger(__name__)
 
-        def make():
+        def make() -> List[Any]:
             s = p.Space()
             b1 = p.Body(1, 2)
             c1 = p.Circle(b1, 2)
