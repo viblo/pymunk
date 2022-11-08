@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-# Copyright (c) 2007-2012 Victor Blomqvist
+# Copyright (c) 2007-2022 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -161,13 +161,17 @@ def parse_examples(
     lines = []
     print("autoexample: documenting files in " + path)
     # print os.getcwd()
-
+    
     for name in sorted(os.listdir(path)):
+        if name.startswith('__'):
+            continue
         fullpath = os.path.join(path, name)
         if os.path.isfile(fullpath):
             _, ext = os.path.splitext(fullpath)
             if ext != ".py":
                 continue
+            #if name.startswith('__'):
+            #    continue
             print("autoexample: documenting " + name)
             lines += parse_example(path, name, img_folder, img_folder_os, source_url)
         elif os.path.isdir(fullpath):

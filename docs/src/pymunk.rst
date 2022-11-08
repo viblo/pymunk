@@ -19,6 +19,7 @@ API Reference
         pymunk.pygame_util
         pymunk.pyglet_util
         pymunk.tests
+        pymunk.examples
 
 .. container:: custom-index
 

@@ -70,6 +70,6 @@ or in a showcase section of the site, feel free to contact me!
 .. contents:: Example files
     :local:
         
-.. autoexample:: ../../examples
+.. autoexample:: ../../pymunk/examples
     :image_folder: _static/examples
-    :source_url: https://github.com/viblo/pymunk/blob/master/examples
+    :source_url: https://github.com/viblo/pymunk/blob/master/pymunk/examples
