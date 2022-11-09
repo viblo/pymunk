@@ -146,6 +146,10 @@ class BouncyBalls(object):
         self._space.debug_draw(self._draw_options)
 
 
-if __name__ == "__main__":
+def main():
     game = BouncyBalls()
     game.run()
+
+
+if __name__ == "__main__":
+    main()

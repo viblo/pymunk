@@ -87,6 +87,10 @@ class Main(pyglet.window.Window):
         self.space.debug_draw(self.draw_options)
 
 
-if __name__ == "__main__":
+def main():
     main = Main()
     pyglet.app.run()
+
+
+if __name__ == "__main__":
+    main()

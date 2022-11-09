@@ -1,7 +1,9 @@
 import argparse
+import importlib
 import os.path
 import pathlib
 import sys
+from typing import Iterable
 
 if sys.argv[0].endswith("__main__.py"):
     # We change sys.argv[0] to make help message more useful
@@ -21,11 +23,25 @@ example, do
 """
 
 
-def list_examples() -> None:
+def find_examples() -> Iterable[str]:
     for f in pathlib.Path(__file__).parent.glob("*.py"):
         if f.stem.startswith("__") or not f.is_file():
             continue
-        print(f"python -m pymunk.examples.{f.stem}")
+        yield f.stem
+
+
+def list_examples() -> None:
+    for e in find_examples():
+        print(f"python -m pymunk.examples.{e}")
+
+
+def run_examples() -> None:
+    for e in find_examples():
+        try:
+            m = importlib.import_module("pymunk.examples." + e)
+            m.main()
+        except Exception as err:
+            print(err)
 
 
 if __name__ == "__main__":
@@ -39,8 +55,18 @@ if __name__ == "__main__":
         action="store_true",
     )
 
+    # commented out for now since many examples cant handle beeing run in this way.
+    # parser.add_argument(
+    #     "-a",
+    #     "--run-all",
+    #     help="run all examples, one by one (useful when testing)",
+    #     action="store_true",
+    # )
+
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     if args.list:
         list_examples()
+    # elif args.run_all:
+    #     run_examples()
     else:
         parser.print_usage()
