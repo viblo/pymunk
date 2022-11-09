@@ -24,7 +24,7 @@ setup(
     version="6.3.0",  # remember to change me for new versions!
     description="Pymunk is a easy-to-use pythonic 2d physics library",
     long_description=long_description,
-    packages=["pymunk", "pymunk.tests"],
+    packages=["pymunk", "pymunk.tests", "pymunk.examples"],
     include_package_data=True,
     license="MIT License",
     classifiers=classifiers,
