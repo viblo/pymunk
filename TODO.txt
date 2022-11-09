@@ -10,7 +10,6 @@ v6.x
 - update most example code to use shape.density or shape.mass instead of 
   body.mass and moment.
 - maybe it would be good to use pip install pymunk[docs] or something to distribute docs and examples?
-- make running examples with python -m pymunk.examples... somehow. See pybox2d for inspiration    
 - make running docs with python -m pymunk.docs... somehow. See pygame for inspiration    
 - can autosummary be used? (see stackoverflow answer)
 - tests of py2exe/pyinstaller/cx_freeze?
