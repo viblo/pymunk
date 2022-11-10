@@ -2,7 +2,6 @@
 as pygame or pyglet like the other examples. 
 """
 
-import math
 import random
 import sys
 

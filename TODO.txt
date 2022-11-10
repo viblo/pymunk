@@ -23,6 +23,7 @@ v6.x
 - Write something about the usage of logging.debug logs somewhere.
 - Made docstrings appear in documentation for class & instance variables like Body.DYNAMIC
 - Update benchmark
+- Make benchmark that compares different pymunk and python versions easily
 - Update get_vertices doc to use body.local_to_world shorthand to conv.
 - Package pymunk for Pyodide
 - Add Canvas util module (after pyodide) 

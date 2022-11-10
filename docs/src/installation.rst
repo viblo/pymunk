@@ -25,7 +25,7 @@ the tests::
     > python -m pymunk.tests -f test
 
 Sometimes on more uncommon platforms you will need to have a GCC-compatible 
-c-compiler installed. 
+c-compiler installed to install pymunk in case no prebuilt wheel exist. 
 
 On OSX you can install one with::
 
@@ -40,10 +40,14 @@ with::
 Examples & Documentation
 ========================
 
-Because of their size the examples and the documentation are available in the 
-source distribution of Pymunk, but not the wheels. The source distribution is 
-available from PyPI at https://pypi.org/project/pymunk/#files (Named
-pymunk-x.y.z.zip)
+The examples are included in the wheel. Note that some requires additional 
+libraries such as pygame or pyglet. To list the available examples run::
+
+    > python -m pymunk.examples -l
+
+Then to run an example, for example the breakout example run::
+
+    > python -m pymunk.examples.breakout
 
 
 Troubleshooting
@@ -53,6 +57,7 @@ Check that no files are named pymunk.py
 
 Check that conda install works
 https://stackoverflow.com/questions/39811929/package-installed-by-conda-python-cannot-find-it
+
 
 Advanced - Android Install
 ==========================

@@ -49,14 +49,17 @@ Source: `examples/newtons_cradle.ipynb
 Standalone Python 
 =================
 
-To run the examples yourself either install pymunk or run it using the 
-convenience run.py script.
+To run the examples yourself either install pymunk and run the mobule. 
+Alternatively you can run each file separately.
 
-Given that pymunk is installed where your python will find it::
-
-    >cd examples
-    >python breakout.py
+Given that pymunk is installed::
+  
+    $> python -m pymunk.examples.breakout
     
+To list all the examples, use the -l option::
+
+    $> python -m pymunk.examples -l
+
 Each example contains something unique. Not all of the examples use the same 
 style. For example, some use the pymunk.pygame_util module to draw stuff, 
 others contain the actual drawing code themselves. However, each example is 
@@ -73,3 +76,10 @@ or in a showcase section of the site, feel free to contact me!
 .. autoexample:: ../../pymunk/examples
     :image_folder: _static/examples
     :source_url: https://github.com/viblo/pymunk/blob/master/pymunk/examples
+
+Additional Examples
+===================
+
+.. autoexample:: ../../additional_examples
+    :image_folder: _static/examples
+    :source_url: https://github.com/viblo/pymunk/blob/master/additional_examples

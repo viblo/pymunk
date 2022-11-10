@@ -59,23 +59,23 @@ Quick code example::
         space.step(0.02)        # Step the simulation one step forward
         space.debug_draw(print_options) # Print the state of the simulation
     
-For more detailed and advanced examples, take a look at the included demos 
-(in examples/).
+For more detailed and advanced examples, take a look at the included demos. 
+They are included in the pymunk install, in the pymunk.examples subpackage. 
+They can be run directly. To list the examples::
 
-Examples are not included if you install with `pip install pymunk`. Instead you
-need to download the source archive (pymunk-x.y.z.zip). Download available from 
-https://pypi.org/project/pymunk/#files
+    > python -m pymunk.examples
+
+And to run one of them::
+
+    > python -m pymunk.examples.breakout
 
 
 Documentation
 -------------
 
-The source distribution of Pymunk ships with a number of demos of different 
-simulations in the examples directory, and it also contains the full 
-documentation including API reference.
-
-You can also find the full documentation including examples and API reference 
-on the Pymunk homepage, http://www.pymunk.org
+The full documentation including API reference, showcase of usages and 
+screenshots of examples is available on the Pymunk homepage, 
+http://www.pymunk.org
 
 
 The Pymunk Vision
@@ -113,7 +113,8 @@ Contact & Support
     You can email me directly at vb@viblo.se
 
 **Issue Tracker**
-    Please use the issue tracker at github to report any issues you find:
+    Please use the issue tracker at github to report any issues you find. This 
+    is also the place for feature requests:
     https://github.com/viblo/pymunk/issues
     
 Regardless of the method you use I will try to answer your questions as soon 
