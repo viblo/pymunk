@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Huang, Bingling, and Yan Jin. 
+   "Reward shaping in multiagent reinforcement learning for self-organizing systems in assembly tasks." 
+   Advanced Engineering Informatics 54 (2022): 101800.
+
 #. Liu, Lucy, Gary Choi, and L. Mahadevan. 
    "Quasicrystal kirigami." 
    Physical Review Research, 4(3), 033114, 2022.
@@ -548,7 +552,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2022-10-03. If something is missing or wrong, please contact 
+List last updated 2022-11-14. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
