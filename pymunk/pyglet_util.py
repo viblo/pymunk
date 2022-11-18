@@ -33,7 +33,7 @@ drawing, but there is probably room for optimizations still).
 __docformat__ = "reStructuredText"
 
 import math
-from typing import TYPE_CHECKING, Any, Optional, Sequence, Type, List
+from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Type
 
 import pyglet  # type: ignore
 
@@ -115,27 +115,24 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         fill_color: SpaceDebugColor,
     ) -> None:
 
-        bg = pyglet.graphics.OrderedGroup(0)
-        fg = pyglet.graphics.OrderedGroup(1)
+        bg = pyglet.graphics.Group(0)
+        fg = pyglet.graphics.Group(1)
 
         color = fill_color.as_int()
         c = pyglet.shapes.Circle(
-            pos.x, pos.y, radius, color=color[:3], batch=self.batch, group=bg
+            pos.x, pos.y, radius, color=color, batch=self.batch, group=bg
         )
-        c.opacity = color[3]
         self.draw_shapes.append(c)
         cc = pos + Vec2d(radius, 0).rotated(angle)
         c = outline_color.as_int()
         l = pyglet.shapes.Line(
-            pos.x, pos.y, cc.x, cc.y, width=1, color=c[:3], batch=self.batch, group=fg
+            pos.x, pos.y, cc.x, cc.y, width=1, color=c, batch=self.batch, group=fg
         )
         self.draw_shapes.append(l)
 
     def draw_segment(self, a: Vec2d, b: Vec2d, color: SpaceDebugColor) -> None:
         c = color.as_int()
-        l = pyglet.shapes.Line(
-            a.x, a.y, b.x, b.y, width=1, color=c[:3], batch=self.batch
-        )
+        l = pyglet.shapes.Line(a.x, a.y, b.x, b.y, width=1, color=c, batch=self.batch)
         self.draw_shapes.append(l)
 
     def draw_fat_segment(
@@ -161,7 +158,9 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         p3 = pv2 - Vec2d(dx, dy)
         p4 = pv2 + Vec2d(dx, dy)
 
-        s = pyglet.shapes.Polygon(p1, p2, p3, p4, color=c[:3], batch=self.batch)
+        s = pyglet.shapes.Polygon(
+            tuple(p1), tuple(p2), tuple(p3), tuple(p4), color=c, batch=self.batch
+        )
         self.draw_shapes.append(s)
 
         self.draw_circle(a, 0, radius, fill_color, fill_color)
@@ -175,8 +174,11 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         fill_color: SpaceDebugColor,
     ) -> None:
 
+        vs = [(v.x, v.y) for v in verts]
+
         c = fill_color.as_int()
-        s = pyglet.shapes.Polygon(*verts, color=c[:3], batch=self.batch)
+
+        s = pyglet.shapes.Polygon(*vs, color=c, batch=self.batch)
         self.draw_shapes.append(s)
 
         if radius > 0:
@@ -188,7 +190,14 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
     def draw_dot(self, size: float, pos: Vec2d, color: SpaceDebugColor) -> None:
         # todo: optimize this functions
         c = color.as_int()
-        s = pyglet.shapes.Circle(pos.x, pos.y, size, color=c[:3], batch=self.batch)
-        s.opacity = c[3]
+        s = pyglet.shapes.Circle(pos.x, pos.y, size, color=c, batch=self.batch)
         self.draw_shapes.append(s)
         return
+
+
+if type(pyglet).__name__ != "Mock" and pyglet.version[0] == "1":
+    # import the legacy pyglet 1.5 implementation only if we are not in sphinx
+    # doc generation (Mock), and the pyglet version stats with a 1.
+    from ._pyglet15_util import DrawOptions as DO
+
+    DrawOptions = DO  # type: ignore

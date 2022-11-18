@@ -8,10 +8,11 @@ __docformat__ = "reStructuredText"
 import sys
 
 import pygame
-import shapes_for_draw_demos
 
 import pymunk
 import pymunk.pygame_util
+
+from .shapes_for_draw_demos import fill_space
 
 
 def main():
@@ -23,7 +24,7 @@ def main():
     pymunk.pygame_util.positive_y_is_up = True
     space = pymunk.Space()
 
-    captions = shapes_for_draw_demos.fill_space(space)
+    captions = fill_space(space)
 
     ### Draw it
     screen.fill(pygame.Color("white"))

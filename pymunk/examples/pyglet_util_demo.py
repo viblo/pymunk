@@ -6,15 +6,16 @@ See pygame_util_demo.py for a comparison to pygame.
 __docformat__ = "reStructuredText"
 
 import pyglet
-import shapes_for_draw_demos
 
 import pymunk
 import pymunk.pyglet_util
 
+from .shapes_for_draw_demos import fill_space
+
 window = pyglet.window.Window(1000, 700, vsync=False)
 space = pymunk.Space()
 draw_options = pymunk.pyglet_util.DrawOptions()
-captions = shapes_for_draw_demos.fill_space(space)
+captions = fill_space(space)
 
 
 textbatch = pyglet.graphics.Batch()
