@@ -7,7 +7,7 @@ from typing import Any, List
 import pymunk
 
 ignores = ["pymunk_extension_build"]
-all_dependencies = ["pygame", "pyglet", "matplotlib"]
+all_dependencies = ["pygame", "pyglet", "matplotlib", "_pyglet"]
 
 
 def load_tests(
