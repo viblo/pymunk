@@ -98,7 +98,7 @@ def update(dt):
         # We need to rotate the image 180 degrees because we have y pointing
         # up in pymunk coords.
         sprite.rotation = math.degrees(-sprite.body.angle) + 180
-        sprite.position = sprite.body.position.x, sprite.body.position.y
+        sprite.position = sprite.body.position.x, sprite.body.position.y, 0
 
 
 def spawn_logo(dt):
