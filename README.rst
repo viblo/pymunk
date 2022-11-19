@@ -18,7 +18,7 @@ the Pymunk webpage for some examples.
 
 2007 - 2022, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest Pymunk release (6.3.0), 
+This release is based on the latest Pymunk release (6.4.0), 
 using Chipmunk 7 rev 0593976ef47fcb3957166bd342f6b2bafe4d0e44 .
 
 
@@ -63,7 +63,7 @@ For more detailed and advanced examples, take a look at the included demos.
 They are included in the pymunk install, in the pymunk.examples subpackage. 
 They can be run directly. To list the examples::
 
-    > python -m pymunk.examples
+    > python -m pymunk.examples -l
 
 And to run one of them::
 

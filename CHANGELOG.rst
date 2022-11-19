@@ -2,6 +2,25 @@
 Changelog 
 =========
 
+Pymunk 6.4.0 (2022-11-20)
+-------------------------
+
+**Support Pyglet 2 debug drawing!**
+
+This is a minor update, with the main change being support for the recently 
+released Pyglet 2. At the same time support for Pyglet 1.5.x has been 
+deprecated, and when using pyglet_util with pyglet 1.x a warning will be 
+logged about the deprecation. The other big change is that the examples
+have been moved into pymunk.examples subpackage, so they can easily be run 
+even when Pymunk is installed from a wheel.
+
+Changes:
+
+- Support for debug drawing using Pyglet 2.0
+- Using pyglet 1.5 is deprecated and will be removed in a future version. 
+- Moved examples into the distribution as the pyumnk.examples package. 
+- Improved type hints
+
 Pymunk 6.3.0 (2022-11-04)
 -------------------------
 
