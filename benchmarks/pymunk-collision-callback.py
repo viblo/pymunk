@@ -2,7 +2,7 @@ import timeit
 
 s = """
 import pymunk
-print("pymunk.version", pymunk.version)
+# print("pymunk.version", pymunk.version)
 s = pymunk.Space()
 s.add(pymunk.Circle(s.static_body, 5))
 b = pymunk.Body(1,10)
