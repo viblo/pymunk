@@ -958,6 +958,38 @@ class UnitTestSpace(unittest.TestCase):
         self.assertIsNone(h2.post_solve)
         self.assertIsNotNone(h2.separate)
 
+    def testReproducePickleStability(self) -> None:
+        self.skipTest("TODO: Waiting for proper implementation...")
+        s = p.Space()
+
+        b1 = p.Body()
+        b2 = p.Body()
+
+        c1 = p.Circle(b1, 10)
+        c2 = p.Circle(b2, 10)
+
+        c1.mass = 1
+        c2.mass = 1
+
+        b2.position = 1,2
+        s.add(c1,c2, b1, b2)
+        s.step(0.1)
+            
+        s_copy = s.copy()
+        
+        s.step(0.1)
+        s_copy.step(0.1)
+
+        print("")
+        print([b.position for b in s.bodies])
+        print("")
+        print([b.position for b in s_copy.bodies])
+
+
+        self.assertAlmostEqual(s.bodies[0].position.x, s_copy.bodies[0].position.x)
+        self.assertAlmostEqual(s.bodies[0].position.y, s_copy.bodies[0].position.y)
+
+
 
 def f1(*args: Any, **kwargs: Any) -> None:
     pass
