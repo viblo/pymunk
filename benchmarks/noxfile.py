@@ -39,7 +39,7 @@ for (pymunk, pythons) in pymunks:
 
 # docker run --rm -it -v $(pwd):/src thekevjames/nox:latest nox -f src/noxfile.py
 # docker run --rm -it -v $(pwd):/src viblo/pymunk-bench:2022.12.01 nox -f src/noxfile.py
-result_file = f'results-{time.strftime("%Y%m%d-%H%M%S")}.csv'
+result_file = f'results/results-{time.strftime("%Y%m%d-%H%M%S")}.csv'
 
 with open(result_file, 'w', newline='') as csvfile:
     w = csv.writer(csvfile, dialect='unix')
