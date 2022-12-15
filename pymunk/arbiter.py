@@ -189,3 +189,77 @@ class Arbiter(object):
         """Returns the normal of the collision."""
         v = lib.cpArbiterGetNormal(self._arbiter)
         return Vec2d(v.x, v.y)
+
+def _contacts_to_dicts(_contacts, count):
+    res = []
+    for i in range(count):
+        res.append(_contact_to_dict[_contacts[i]])
+    return res
+
+def _contact_to_dict(_contact):
+    d = {}
+    d['r1'] = _contact.r1.x, _contact.r1.y
+    d['r2'] = _contact.r2.x, _contact.r2.y
+    d['nMass'] = _contact.nMass
+    d['tMass'] = _contact.tMass
+    d['bounce'] = _contact.bounce
+    d['jnAcc'] = _contact.jnAcc
+    d['jtAcc'] = _contact.jtAcc
+    d['jBias'] = _contact.jBias
+    d['bias'] = _contact.bias
+    d['hash'] = _contact.hash
+    return d
+
+def _contact_from_dict(d):
+    pass
+
+def _arbiter_from_dict(d, space):
+    _arb = ffi.cpArbiterNew()
+    _arb.e = d['e']
+    _arb.u = d['u']
+    _arb.surface_vr = d['surface_vr']
+
+
+    _arb.count = d['count']
+    d['contacts'] = _contacts_to_dicts(_arbiter.contacts, _arbiter.count)
+    _arb.n = d['n']
+
+    _arb.swapped = d['swapped']
+    _arb.stamp = d['stamp']
+    _arb.state = d['state']
+    return _arb
+
+def _arbiter_to_dict(_arbiter, space):
+    d = {}
+    d['e'] = _arbiter.e
+    d['u'] = _arbiter.u
+    d['surface_vr'] = (_arbiter.surface_vr.x, _arbiter.surface_vr.y)
+    
+    cp_bodies = {}
+    cp_shapes = {}
+
+    for body in space.bodies:
+        cp_bodies[body._body] = body
+    for shape in space.shapes:
+        cp_shapes[shape._shape] = shape
+
+    # cpDataPointer data; 
+
+    d['a'] = cp_shapes[_arbiter.a]
+    d['b'] = cp_shapes[_arbiter.b]
+    d['body_a'] = cp_bodies[_arbiter.body_a]
+    d['body_b'] = cp_bodies[_arbiter.body_b]
+
+    # struct cpArbiterThread thread_a, thread_b;
+
+    d['count'] = _arbiter.count
+    d['contacts'] = _contacts_to_dicts(_arbiter.contacts, _arbiter.count)
+    d['n'] = _arbiter.n.x, _arbiter.n.y
+
+    # // Regular, wildcard A and wildcard B collision handlers.
+    # cpCollisionHandler *handler, *handlerA, *handlerB;
+
+    d['swapped'] = _arbiter.swapped
+    d['stamp'] = _arbiter.stamp
+    d['state'] = _arbiter.state
+    return d

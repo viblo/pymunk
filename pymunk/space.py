@@ -32,6 +32,7 @@ from .collision_handler import CollisionHandler
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shapes import Shape
 from .vec2d import Vec2d
+from .arbiter import _arbiter_from_dict, _arbiter_to_dict
 
 if TYPE_CHECKING:
     from .bb import BB
@@ -986,6 +987,12 @@ class Space(PickleMixin, object):
     #     """
     #     pass
 
+    def _get_arbiters(self):
+        _arbiters = []
+        data = ffi.new_handle(_arbiters)
+        cp.cpSpaceEachCachedArbiter(self._space, cp.ext_cpArbiterIteratorFunc, data)
+        return _arbiters
+
     def __getstate__(self) -> _State:
         """Return the state of this object
 
@@ -1019,6 +1026,10 @@ class Space(PickleMixin, object):
 
         d["special"].append(("_handlers", handlers))
 
+        d['special'].append(("stamp", cp.cpSpaceGetStamp(self._space)))
+
+        _arbs = self._get_arbiters()
+        d["special"].append(("arbiters", [_arbiter_to_dict(_arb) for _arb in _arbs]))
         return d
 
     def __setstate__(self, state: _State) -> None:
@@ -1068,3 +1079,5 @@ class Space(PickleMixin, object):
                         h.post_solve = hd["_post_solve"]
                     if "_separate" in hd:
                         h.separate = hd["_separate"]
+            elif k == "stamp":
+                cp.cpSpaceSetStamp(v)

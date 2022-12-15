@@ -985,6 +985,9 @@ class UnitTestSpace(unittest.TestCase):
         print("")
         print([b.position for b in s_copy.bodies])
 
+        # TODO: to assert that everything is working as it should all 
+        # properties on the cached the arbiters should be asserted.
+
 
         self.assertAlmostEqual(s.bodies[0].position.x, s_copy.bodies[0].position.x)
         self.assertAlmostEqual(s.bodies[0].position.y, s_copy.bodies[0].position.y)

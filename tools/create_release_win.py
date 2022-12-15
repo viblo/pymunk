@@ -14,7 +14,7 @@ def main():
     - write changelog entry and put in changelog.rst
     - make sure all images are optimized (for example with tinypng.com)
     - generate docs before running sdist
-    
+    - Make sure cffi extensions included in wheel and zip!!!!
     """
     )
     print(
