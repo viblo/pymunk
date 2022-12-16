@@ -69,11 +69,12 @@ void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb) {
     cpfree(contacts);
 }
 
-cpArbiter *cpArbiterNew(cpShape *a, cpShape *b){
+cpArbiter *cpArbiterNew(cpShape *a, cpShape *b) {
     cpArbiter *arb = (cpArbiter *)cpcalloc(1, sizeof(struct cpArbiter));
     return cpArbiterInit(arb, a, b);
 }
+typedef struct cpContact cpContact;
 
-// cpContact *cpContactArrAlloc(int count){
-//     return (cpContact *)cpcalloc(count, sizeof(struct cpContact));
-// }
+cpContact *cpContactArrAlloc(int count){
+    return (cpContact *)cpcalloc(count, sizeof(struct cpContact));
+}

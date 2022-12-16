@@ -24,5 +24,6 @@ extern "Python" {
 void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb);
 
 cpArbiter *cpArbiterNew(cpShape *a, cpShape *b);
+typedef struct cpContact cpContact;
 
-//cpContact *cpContactArrAlloc(int count);
+cpContact *cpContactArrAlloc(int count);

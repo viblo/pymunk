@@ -959,7 +959,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertIsNotNone(h2.separate)
 
     def testPickleCachedArbiters(self) -> None:
-        self.skipTest("TODO: Waiting for proper implementation...")
+        # self.skipTest("TODO: Waiting for proper implementation...")
         s = p.Space()
 
         b1 = p.Body()

@@ -1084,4 +1084,5 @@ class Space(PickleMixin, object):
             elif k == "arbiters":
                 for d in v:
                     _arbiter = _arbiter_from_dict(d, self)
-                    #cp.cpSpaceAddCachedArbiter(self._space, _arbiter)
+                    print(_arbiter)
+                    cp.cpSpaceAddCachedArbiter(self._space, _arbiter)

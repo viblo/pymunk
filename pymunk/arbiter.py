@@ -211,12 +211,24 @@ def _contact_to_dict(_contact):
     return d
 
 def _contacts_from_dicts(ds):
-    
-    pass
-
-def _contact_from_dict(d):
-
-    pass
+    print("_contacts_from_dicts len", len(ds))
+    _contacts = lib.cpContactArrAlloc(len(ds))
+    for i in range(len(ds)):
+        _contact = _contacts[i]
+        d = ds[i]
+        _contact.r1.x = d['r1'][0]
+        _contact.r1.y = d['r1'][1]
+        _contact.r2.y = d['r2'][0]
+        _contact.r2.y = d['r2'][1]
+        _contact.nMass = d['nMass'] 
+        _contact.tMass = d['tMass']
+        _contact.bounce = d['bounce'] 
+        _contact.jnAcc = d['jnAcc']
+        _contact.jtAcc = d['jtAcc']
+        _contact.jBias = d['jBias']
+        _contact.bias = d['bias']
+        _contact.hash = d['hash']
+    return _contacts
 
 def _arbiter_from_dict(d, space):
     _arb = lib.cpArbiterNew(d['a']._shape, d['b']._shape) # this will also set the bodies
@@ -227,7 +239,7 @@ def _arbiter_from_dict(d, space):
 
 
     _arb.count = d['count']
-    #d['contacts'] = _contacts_to_dicts(_arbiter.contacts, _arbiter.count)
+    _arb.contacts = _contacts_from_dicts(d['contacts'])
 
     _arb.n = d['n']
 
