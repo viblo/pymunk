@@ -982,7 +982,7 @@ class Space(PickleMixin, object):
     #     """Return a memoryview for use when the non-batch api is not performant enough.
 
     #     .. note::
-    #         Experimental API. Likely to change in future major, minor orpoint
+    #         Experimental API. Likely to change in future major, minor or point
     #         releases.
     #     """
     #     pass
@@ -1026,10 +1026,10 @@ class Space(PickleMixin, object):
 
         d["special"].append(("_handlers", handlers))
 
-        d['special'].append(("stamp", cp.cpSpaceGetStamp(self._space)))
+        d['special'].append(("stamp", cp.cpSpaceGetTimestamp(self._space)))
 
         _arbs = self._get_arbiters()
-        d["special"].append(("arbiters", [_arbiter_to_dict(_arb) for _arb in _arbs]))
+        d["special"].append(("arbiters", [_arbiter_to_dict(_arb, self) for _arb in _arbs]))
         return d
 
     def __setstate__(self, state: _State) -> None:
@@ -1080,4 +1080,8 @@ class Space(PickleMixin, object):
                     if "_separate" in hd:
                         h.separate = hd["_separate"]
             elif k == "stamp":
-                cp.cpSpaceSetStamp(v)
+                cp.cpSpaceSetTimestamp(self._space, v)
+            elif k == "arbiters":
+                for d in v:
+                    _arbiter = _arbiter_from_dict(d, self)
+                    #cp.cpSpaceAddCachedArbiter(self._space, _arbiter)

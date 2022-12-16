@@ -193,7 +193,7 @@ class Arbiter(object):
 def _contacts_to_dicts(_contacts, count):
     res = []
     for i in range(count):
-        res.append(_contact_to_dict[_contacts[i]])
+        res.append(_contact_to_dict(_contacts[i]))
     return res
 
 def _contact_to_dict(_contact):
@@ -210,18 +210,25 @@ def _contact_to_dict(_contact):
     d['hash'] = _contact.hash
     return d
 
+def _contacts_from_dicts(ds):
+    
+    pass
+
 def _contact_from_dict(d):
+
     pass
 
 def _arbiter_from_dict(d, space):
-    _arb = ffi.cpArbiterNew()
+    _arb = lib.cpArbiterNew(d['a']._shape, d['b']._shape) # this will also set the bodies
+
     _arb.e = d['e']
     _arb.u = d['u']
     _arb.surface_vr = d['surface_vr']
 
 
     _arb.count = d['count']
-    d['contacts'] = _contacts_to_dicts(_arbiter.contacts, _arbiter.count)
+    #d['contacts'] = _contacts_to_dicts(_arbiter.contacts, _arbiter.count)
+
     _arb.n = d['n']
 
     _arb.swapped = d['swapped']
@@ -247,8 +254,10 @@ def _arbiter_to_dict(_arbiter, space):
 
     d['a'] = cp_shapes[_arbiter.a]
     d['b'] = cp_shapes[_arbiter.b]
-    d['body_a'] = cp_bodies[_arbiter.body_a]
-    d['body_b'] = cp_bodies[_arbiter.body_b]
+
+    # these are not needed, since they can be fetched from the shapes
+    # d['body_a'] = cp_bodies[_arbiter.body_a]
+    # d['body_b'] = cp_bodies[_arbiter.body_b]
 
     # struct cpArbiterThread thread_a, thread_b;
 

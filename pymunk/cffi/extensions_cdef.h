@@ -1,3 +1,7 @@
+//
+// Functions to support efficient batch API
+//
+
 typedef struct cpVectArr cpVectArr;
 struct cpVectArr {
 	int num, max;
@@ -19,4 +23,6 @@ extern "Python" {
 }
 void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb);
 
-cpArbiter *cpArbiterNew(void);
+cpArbiter *cpArbiterNew(cpShape *a, cpShape *b);
+
+//cpContact *cpContactArrAlloc(int count);

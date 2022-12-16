@@ -958,7 +958,7 @@ class UnitTestSpace(unittest.TestCase):
         self.assertIsNone(h2.post_solve)
         self.assertIsNotNone(h2.separate)
 
-    def testReproducePickleStability(self) -> None:
+    def testPickleCachedArbiters(self) -> None:
         self.skipTest("TODO: Waiting for proper implementation...")
         s = p.Space()
 

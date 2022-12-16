@@ -1,5 +1,9 @@
 #include "chipmunk/chipmunk_private.h"
 
+//
+// Functions to support efficient batch API
+//
+
 typedef struct cpVectArr cpVectArr;
 
 
@@ -65,7 +69,11 @@ void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb) {
     cpfree(contacts);
 }
 
-cpArbiter *cpArbiterNew(void){
-    cpArbiter *arb = (cpArbiter *)cpcalloc(1, sizeof(cpArbiter));
-    return cpSpaceInit(arb);
+cpArbiter *cpArbiterNew(cpShape *a, cpShape *b){
+    cpArbiter *arb = (cpArbiter *)cpcalloc(1, sizeof(struct cpArbiter));
+    return cpArbiterInit(arb, a, b);
 }
+
+// cpContact *cpContactArrAlloc(int count){
+//     return (cpContact *)cpcalloc(count, sizeof(struct cpContact));
+// }
