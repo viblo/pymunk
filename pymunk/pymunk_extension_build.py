@@ -10,7 +10,7 @@ ffibuilder = FFI()
 with open("pymunk/cffi/chipmunk_cdef.h", "r") as f:
     ffibuilder.cdef(f.read())
 
-# Callbacks need extra extern Python
+# Callbacks need extra extern Python definitions
 with open("pymunk/cffi/callbacks_cdef.h", "r") as f:
     ffibuilder.cdef(f.read())
 
@@ -45,7 +45,9 @@ libraries: List[str] = []
 extra_compile_args = []
 if platform.system() != "Windows":
     extra_compile_args.append("-std=c99")
-
+# extra_compile_args.append('/Od')
+# extra_compile_args.append('/DEBUG:FULL')
+#, '/D_CHIPMUNK_FFI'],
 with open("pymunk/cffi/extensions_cdef.h", "r") as f:
     ffibuilder.cdef(f.read())
 
@@ -71,9 +73,9 @@ ffibuilder.set_source(
 
         {custom_functions}
     """,
-    # extra_compile_args=['/Od', '/DEBUG:FULL'], #, '/D_CHIPMUNK_FFI'],
+    
     extra_compile_args=extra_compile_args,
-    # extra_link_args=['/DEBUG:FULL'],
+    #extra_link_args=['/DEBUG:FULL'],
     include_dirs=[os.path.join("Chipmunk2D", "include")],
     sources=sources,
     libraries=libraries,

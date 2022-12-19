@@ -1027,6 +1027,7 @@ class Space(PickleMixin, object):
         d["special"].append(("_handlers", handlers))
 
         d['special'].append(("stamp", cp.cpSpaceGetTimestamp(self._space)))
+        d['special'].append(("currentTimeStep", cp.cpSpaceGetCurrentTimeStep(self._space)))
 
         _arbs = self._get_arbiters()
         d["special"].append(("arbiters", [_arbiter_to_dict(_arb, self) for _arb in _arbs]))
@@ -1081,8 +1082,10 @@ class Space(PickleMixin, object):
                         h.separate = hd["_separate"]
             elif k == "stamp":
                 cp.cpSpaceSetTimestamp(self._space, v)
+            elif k == "currentTimeStep":
+                cp.cpSpaceSetCurrentTimeStep(self._space, v)                
             elif k == "arbiters":
                 for d in v:
+                    #cp.cpSpaceTest(self._space)
                     _arbiter = _arbiter_from_dict(d, self)
-                    print(_arbiter)
                     cp.cpSpaceAddCachedArbiter(self._space, _arbiter)

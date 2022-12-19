@@ -208,6 +208,7 @@ def _contact_to_dict(_contact):
     d['jBias'] = _contact.jBias
     d['bias'] = _contact.bias
     d['hash'] = _contact.hash
+    # print("_contact_to_dict", d)
     return d
 
 def _contacts_from_dicts(ds):
@@ -218,7 +219,7 @@ def _contacts_from_dicts(ds):
         d = ds[i]
         _contact.r1.x = d['r1'][0]
         _contact.r1.y = d['r1'][1]
-        _contact.r2.y = d['r2'][0]
+        _contact.r2.x = d['r2'][0]
         _contact.r2.y = d['r2'][1]
         _contact.nMass = d['nMass'] 
         _contact.tMass = d['tMass']
@@ -236,7 +237,6 @@ def _arbiter_from_dict(d, space):
     _arb.e = d['e']
     _arb.u = d['u']
     _arb.surface_vr = d['surface_vr']
-
 
     _arb.count = d['count']
     _arb.contacts = _contacts_from_dicts(d['contacts'])

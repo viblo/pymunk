@@ -16,12 +16,15 @@ void cpSpaceGetBodyPositions(cpSpace *space, cpVectArr *arr);
 cpTimestamp cpSpaceGetTimestamp(cpSpace *space);
 void cpSpaceSetTimestamp(cpSpace *space, cpTimestamp stamp);
 
+void cpSpaceSetCurrentTimeStep(cpSpace *space, cpFloat curr_dt);
+
 typedef void (*cpArbiterIteratorFunc)(cpArbiter *arb, void *data);
 void cpSpaceEachCachedArbiter(cpSpace *space, cpArbiterIteratorFunc func, void *data);
 extern "Python" {
     void ext_cpArbiterIteratorFunc(cpArbiter *arb, void *data);
 }
 void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb);
+void cpSpaceTest(cpSpace *space );
 
 cpArbiter *cpArbiterNew(cpShape *a, cpShape *b);
 typedef struct cpContact cpContact;
