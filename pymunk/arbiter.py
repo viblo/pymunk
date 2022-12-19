@@ -208,11 +208,9 @@ def _contact_to_dict(_contact):
     d['jBias'] = _contact.jBias
     d['bias'] = _contact.bias
     d['hash'] = _contact.hash
-    # print("_contact_to_dict", d)
     return d
 
 def _contacts_from_dicts(ds):
-    print("_contacts_from_dicts len", len(ds))
     _contacts = lib.cpContactArrAlloc(len(ds))
     for i in range(len(ds)):
         _contact = _contacts[i]

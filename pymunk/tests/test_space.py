@@ -975,54 +975,50 @@ class UnitTestSpace(unittest.TestCase):
         s.add(c1,c2, b1, b2)
         
         s.step(0.1)
-        print("\nOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+        # print("\nOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
         s_copy = s.copy()
         
-        a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
-        a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
+        # a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
+        # a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
         
-        print("a1", a1)
-        print("a2", a2)
-        print("XXXX")
+        # print("a1", a1)
+        # print("a2", a2)
+        # print("XXXX")
         
-        print("s.bodies.position:")
-        print([b.position for b in s.bodies])
-        print("s_copy.bodies.position:")
-        print([b.position for b in s_copy.bodies])
+        # print("s.bodies.position:")
+        # print([b.position for b in s.bodies])
+        # print("s_copy.bodies.position:")
+        # print([b.position for b in s_copy.bodies])
 
 
         s.step(0.1)
         s_copy.step(0.1)
-        import pickle
-        print("---------")
-        #print(str(pickle.dumps(s, protocol=0)))
-        #print(str(pickle.dumps(s_copy, protocol=0)))
-        print("---------")
-        a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
-        a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
         
-        print("a1", a1)
-        print("a2", a2)
-        print("XXXX")
+        # a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
+        # a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
+        
+        # print("a1", a1)
+        # print("a2", a2)
+        # print("XXXX")
 
-        print("s.bodies.position:")
-        print([b.position for b in s.bodies])
-        print("s_copy.bodies.position:")
-        print([b.position for b in s_copy.bodies])
+        # print("s.bodies.position:")
+        # print([b.position for b in s.bodies])
+        # print("s_copy.bodies.position:")
+        # print([b.position for b in s_copy.bodies])
 
         s_copy.step(0.1)
 
-        a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
-        a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
+        # a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
+        # a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
         
-        print("a1", a1)
-        print("a2", a2)
-        print("XXXX")
+        # print("a1", a1)
+        # print("a2", a2)
+        # print("XXXX")
 
-        print("s.bodies.position:")
-        print([b.position for b in s.bodies])
-        print("s_copy.bodies.position:")
-        print([b.position for b in s_copy.bodies])
+        # print("s.bodies.position:")
+        # print([b.position for b in s.bodies])
+        # print("s_copy.bodies.position:")
+        # print([b.position for b in s_copy.bodies])
 
         # TODO: to assert that everything is working as it should all 
         # properties on the cached the arbiters should be asserted.
