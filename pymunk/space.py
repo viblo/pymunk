@@ -987,8 +987,8 @@ class Space(PickleMixin, object):
     #     """
     #     pass
 
-    def _get_arbiters(self):
-        _arbiters = []
+    def _get_arbiters(self) -> List[ffi.CData]:
+        _arbiters: List[ffi.CData] = []
         data = ffi.new_handle(_arbiters)
         cp.cpSpaceEachCachedArbiter(self._space, cp.ext_cpArbiterIteratorFunc, data)
         return _arbiters
@@ -1026,11 +1026,18 @@ class Space(PickleMixin, object):
 
         d["special"].append(("_handlers", handlers))
 
-        d['special'].append(("stamp", cp.cpSpaceGetTimestamp(self._space)))
-        d['special'].append(("currentTimeStep", cp.cpSpaceGetCurrentTimeStep(self._space)))
+        d["special"].append(
+            ("shapeIDCounter", cp.cpSpaceGetShapeIDCounter(self._space))
+        )
+        d["special"].append(("stamp", cp.cpSpaceGetTimestamp(self._space)))
+        d["special"].append(
+            ("currentTimeStep", cp.cpSpaceGetCurrentTimeStep(self._space))
+        )
 
         _arbs = self._get_arbiters()
-        d["special"].append(("arbiters", [_arbiter_to_dict(_arb, self) for _arb in _arbs]))
+        d["special"].append(
+            ("arbiters", [_arbiter_to_dict(_arb, self) for _arb in _arbs])
+        )
         return d
 
     def __setstate__(self, state: _State) -> None:
@@ -1082,10 +1089,12 @@ class Space(PickleMixin, object):
                         h.separate = hd["_separate"]
             elif k == "stamp":
                 cp.cpSpaceSetTimestamp(self._space, v)
+            elif k == "shapeIDCounter":
+                cp.cpSpaceSetShapeIDCounter(self._space, v)
             elif k == "currentTimeStep":
-                cp.cpSpaceSetCurrentTimeStep(self._space, v)                
+                cp.cpSpaceSetCurrentTimeStep(self._space, v)
             elif k == "arbiters":
                 for d in v:
-                    #cp.cpSpaceTest(self._space)
+                    # cp.cpSpaceTest(self._space)
                     _arbiter = _arbiter_from_dict(d, self)
                     cp.cpSpaceAddCachedArbiter(self._space, _arbiter)

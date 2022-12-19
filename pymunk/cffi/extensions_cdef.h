@@ -13,6 +13,12 @@ void cpSpaceGetBodyPositions(cpSpace *space, cpVectArr *arr);
 // Functions to support pickle of arbiters the space has cached
 //
 
+cpHashValue cpShapeGetHashID(cpShape *shape);
+void cpShapeSetHashID(cpShape *shape, cpHashValue id);
+
+cpHashValue cpSpaceGetShapeIDCounter(cpSpace *space);
+void cpSpaceSetShapeIDCounter(cpSpace *space, cpHashValue counter);
+
 cpTimestamp cpSpaceGetTimestamp(cpSpace *space);
 void cpSpaceSetTimestamp(cpSpace *space, cpTimestamp stamp);
 

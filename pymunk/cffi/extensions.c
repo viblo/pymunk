@@ -34,6 +34,21 @@ void cpSpaceGetBodyPositions(cpSpace *space, cpVectArr *arr) {
 //
 typedef struct cpContact cpContact;
 
+cpHashValue cpShapeGetHashID(cpShape *shape){
+    return shape->hashid;
+}
+void cpShapeSetHashID(cpShape *shape, cpHashValue id){
+    shape->hashid = id;
+}
+
+
+cpHashValue cpSpaceGetShapeIDCounter(cpSpace *space){
+    return space->shapeIDCounter;
+}
+void cpSpaceSetShapeIDCounter(cpSpace *space, cpHashValue counter){
+    space->shapeIDCounter = counter;
+}
+
 cpTimestamp cpSpaceGetTimestamp(cpSpace *space) {
     return space->stamp;
 }

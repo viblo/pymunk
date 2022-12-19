@@ -960,8 +960,7 @@ class UnitTestSpace(unittest.TestCase):
 
     def testPickleCachedArbiters(self) -> None:
         s = p.Space()
-        # p.cp.cpSpaceTest(s._space)
-        # return
+        
         b1 = p.Body()
         b2 = p.Body()
 
