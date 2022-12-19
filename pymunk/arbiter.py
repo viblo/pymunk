@@ -1,7 +1,7 @@
 __docformat__ = "reStructuredText"
 
 
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING, Tuple, Dict, List, Any, Iterable, Sequence
 
 if TYPE_CHECKING:
     from .space import Space
@@ -189,3 +189,105 @@ class Arbiter(object):
         """Returns the normal of the collision."""
         v = lib.cpArbiterGetNormal(self._arbiter)
         return Vec2d(v.x, v.y)
+
+
+def _contacts_to_dicts(
+    _contacts: Sequence[ffi.CData], count: int
+) -> List[Dict[str, Any]]:
+    res = []
+    for i in range(count):
+        res.append(_contact_to_dict(_contacts[i]))
+    return res
+
+
+def _contact_to_dict(_contact: ffi.CData) -> Dict[str, Any]:
+    d = {}
+    d["r1"] = _contact.r1.x, _contact.r1.y
+    d["r2"] = _contact.r2.x, _contact.r2.y
+    d["nMass"] = _contact.nMass
+    d["tMass"] = _contact.tMass
+    d["bounce"] = _contact.bounce
+    d["jnAcc"] = _contact.jnAcc
+    d["jtAcc"] = _contact.jtAcc
+    d["jBias"] = _contact.jBias
+    d["bias"] = _contact.bias
+    d["hash"] = _contact.hash
+    return d
+
+
+def _contacts_from_dicts(ds: Sequence[Dict[str, Any]]) -> List[ffi.CData]:
+    _contacts = lib.cpContactArrAlloc(len(ds))
+    for i in range(len(ds)):
+        _contact = _contacts[i]
+        d = ds[i]
+        _contact.r1.x = d["r1"][0]
+        _contact.r1.y = d["r1"][1]
+        _contact.r2.x = d["r2"][0]
+        _contact.r2.y = d["r2"][1]
+        _contact.nMass = d["nMass"]
+        _contact.tMass = d["tMass"]
+        _contact.bounce = d["bounce"]
+        _contact.jnAcc = d["jnAcc"]
+        _contact.jtAcc = d["jtAcc"]
+        _contact.jBias = d["jBias"]
+        _contact.bias = d["bias"]
+        _contact.hash = d["hash"]
+    return _contacts
+
+
+def _arbiter_from_dict(d: Dict[str, Any], space: "Space") -> ffi.CData:
+    _arb = lib.cpArbiterNew(
+        d["a"]._shape, d["b"]._shape
+    )  # this will also set the bodies
+
+    _arb.e = d["e"]
+    _arb.u = d["u"]
+    _arb.surface_vr = d["surface_vr"]
+
+    _arb.count = d["count"]
+    _arb.contacts = _contacts_from_dicts(d["contacts"])
+
+    _arb.n = d["n"]
+
+    _arb.swapped = d["swapped"]
+    _arb.stamp = d["stamp"]
+    _arb.state = d["state"]
+    return _arb
+
+
+def _arbiter_to_dict(_arbiter: ffi.CData, space: "Space") -> Dict[str, Any]:
+    d = {}
+    d["e"] = _arbiter.e
+    d["u"] = _arbiter.u
+    d["surface_vr"] = (_arbiter.surface_vr.x, _arbiter.surface_vr.y)
+
+    cp_bodies = {}
+    cp_shapes = {}
+
+    for body in space.bodies:
+        cp_bodies[body._body] = body
+    for shape in space.shapes:
+        cp_shapes[shape._shape] = shape
+
+    # cpDataPointer data;
+
+    d["a"] = cp_shapes[_arbiter.a]
+    d["b"] = cp_shapes[_arbiter.b]
+
+    # these are not needed, since they can be fetched from the shapes
+    # d['body_a'] = cp_bodies[_arbiter.body_a]
+    # d['body_b'] = cp_bodies[_arbiter.body_b]
+
+    # struct cpArbiterThread thread_a, thread_b;
+
+    d["count"] = _arbiter.count
+    d["contacts"] = _contacts_to_dicts(_arbiter.contacts, _arbiter.count)
+    d["n"] = _arbiter.n.x, _arbiter.n.y
+
+    # // Regular, wildcard A and wildcard B collision handlers.
+    # cpCollisionHandler *handler, *handlerA, *handlerB;
+
+    d["swapped"] = _arbiter.swapped
+    d["stamp"] = _arbiter.stamp
+    d["state"] = _arbiter.state
+    return d

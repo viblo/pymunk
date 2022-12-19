@@ -290,3 +290,11 @@ def ext_cpConstraintPostSolveFunc(
     constraint = ffi.from_handle(lib.cpConstraintGetUserData(cp_constraint))
     assert constraint.a.space is not None
     constraint._post_solve_func(constraint, constraint.a.space)
+
+
+
+# Pickle of Arbiters
+@ffi.def_extern()
+def ext_cpArbiterIteratorFunc(_arbiter, data):  # type: ignore
+    arbiters = ffi.from_handle(data)
+    arbiters.append(_arbiter)

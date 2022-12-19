@@ -195,7 +195,6 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
     ) -> None:
         ps = [to_pygame(v, self.surface) for v in verts]
         ps += [ps[0]]
-
         pygame.draw.polygon(self.surface, fill_color.as_int(), ps)
 
         if radius > 0:

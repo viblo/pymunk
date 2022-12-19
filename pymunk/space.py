@@ -32,6 +32,7 @@ from .collision_handler import CollisionHandler
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shapes import Shape
 from .vec2d import Vec2d
+from .arbiter import _arbiter_from_dict, _arbiter_to_dict
 
 if TYPE_CHECKING:
     from .bb import BB
@@ -981,10 +982,16 @@ class Space(PickleMixin, object):
     #     """Return a memoryview for use when the non-batch api is not performant enough.
 
     #     .. note::
-    #         Experimental API. Likely to change in future major, minor orpoint
+    #         Experimental API. Likely to change in future major, minor or point
     #         releases.
     #     """
     #     pass
+
+    def _get_arbiters(self) -> List[ffi.CData]:
+        _arbiters: List[ffi.CData] = []
+        data = ffi.new_handle(_arbiters)
+        cp.cpSpaceEachCachedArbiter(self._space, cp.ext_cpArbiterIteratorFunc, data)
+        return _arbiters
 
     def __getstate__(self) -> _State:
         """Return the state of this object
@@ -1019,6 +1026,18 @@ class Space(PickleMixin, object):
 
         d["special"].append(("_handlers", handlers))
 
+        d["special"].append(
+            ("shapeIDCounter", cp.cpSpaceGetShapeIDCounter(self._space))
+        )
+        d["special"].append(("stamp", cp.cpSpaceGetTimestamp(self._space)))
+        d["special"].append(
+            ("currentTimeStep", cp.cpSpaceGetCurrentTimeStep(self._space))
+        )
+
+        _arbs = self._get_arbiters()
+        d["special"].append(
+            ("arbiters", [_arbiter_to_dict(_arb, self) for _arb in _arbs])
+        )
         return d
 
     def __setstate__(self, state: _State) -> None:
@@ -1068,3 +1087,14 @@ class Space(PickleMixin, object):
                         h.post_solve = hd["_post_solve"]
                     if "_separate" in hd:
                         h.separate = hd["_separate"]
+            elif k == "stamp":
+                cp.cpSpaceSetTimestamp(self._space, v)
+            elif k == "shapeIDCounter":
+                cp.cpSpaceSetShapeIDCounter(self._space, v)
+            elif k == "currentTimeStep":
+                cp.cpSpaceSetCurrentTimeStep(self._space, v)
+            elif k == "arbiters":
+                for d in v:
+                    # cp.cpSpaceTest(self._space)
+                    _arbiter = _arbiter_from_dict(d, self)
+                    cp.cpSpaceAddCachedArbiter(self._space, _arbiter)

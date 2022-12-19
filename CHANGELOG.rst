@@ -2,6 +2,15 @@
 Changelog 
 =========
 
+..
+  Pymunk 6.5?
+
+  When pickling the internal collision state will now be pickled as well, 
+  meaning that the unpickled space will behave as the original even when
+  collisions where ongoing while pickling.
+
+  - Pickle of internal collision state
+
 Pymunk 6.4.0 (2022-11-20)
 -------------------------
 

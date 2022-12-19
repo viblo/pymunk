@@ -40,6 +40,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         "elasticity",
         "friction",
         "surface_velocity",
+        "_hashid",
     ]
     _pickle_attrs_skip = PickleMixin._pickle_attrs_skip + ["mass", "density"]
 
@@ -68,7 +69,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
             cp_body = cp.cpShapeGetBody(cp_shape)
             if cp_body != ffi.NULL:
                 _logger.debug("shapefree set body %s", cp_shape)
-                #print(cp.cpShapeActive2(cp_shape))
+                # print(cp.cpShapeActive2(cp_shape))
                 cp.cpShapeSetBody(cp_shape, ffi.NULL)
             _logger.debug("shapefree free %s", cp_shape)
             cp.cpShapeFree(cp_shape)
@@ -380,6 +381,14 @@ class Shape(PickleMixin, TypingAttrMixing, object):
                 return None
         else:
             return None
+
+    @property
+    def _hashid(self) -> int:
+        return cp.cpShapeGetHashID(self._shape)
+
+    @_hashid.setter
+    def _hashid(self, v: int) -> None:
+        cp.cpShapeSetHashID(self._shape, v)
 
     def __getstate__(self) -> _State:
         """Return the state of this object
