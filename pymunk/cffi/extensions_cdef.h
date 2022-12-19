@@ -30,7 +30,6 @@ extern "Python" {
     void ext_cpArbiterIteratorFunc(cpArbiter *arb, void *data);
 }
 void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb);
-void cpSpaceTest(cpSpace *space );
 
 cpArbiter *cpArbiterNew(cpShape *a, cpShape *b);
 typedef struct cpContact cpContact;

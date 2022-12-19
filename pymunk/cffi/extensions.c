@@ -67,10 +67,6 @@ void cpSpaceEachCachedArbiter(cpSpace *space, cpArbiterIteratorFunc func, void *
     cpHashSetEach(space->cachedArbiters, (cpHashSetIteratorFunc) func, data);
 }
 
-void cpSpaceTest(cpSpace *space) {
-    struct cpContact *contacts2 = cpContactBufferGetArray(space);
-    return;
-}
 static inline cpCollisionHandler *
 cpSpaceLookupHandler(cpSpace *space, cpCollisionType a, cpCollisionType b, cpCollisionHandler *defaultValue)
 {
