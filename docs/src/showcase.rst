@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Alex, Janey, Jason Stillerman, Noah Fritzhand, and Tucker Paron. 
+   "Agent-Based Model of Crowd Dynamics in Emergency Situations: A Focus on People With Disabilities." 
+   arXiv preprint arXiv:2212.08149 (2022).
+
 #. Schöttle, Marius, Tobias Lauster, Lukas J. Roemling, Nicolas Vogel, and Markus Retsch. 
    "A continuous gradient colloidal glass." 
    Advanced Materials (2022): 2208745.
@@ -556,7 +560,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2022-11-16. If something is missing or wrong, please contact 
+List last updated 2022-12-21. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
