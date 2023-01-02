@@ -9,14 +9,14 @@ in your game, demo or simulation! It is built on top of the very
 capable 2d physics library `Chipmunk <http://chipmunk-physics.net>`_.
 
 The first version was released in 2007 and Pymunk is still actively developed 
-and maintained today, more than 10 years of active development!
+and maintained today, more than 15 years of active development!
 
 Pymunk has been used with success in many projects, big and small. For example: 
-3 Pyweek game competition winners, more than a dozen published scientific 
+3 Pyweek game competition winners, dozens of published scientific 
 papers and even in a self-driving car simulation! See the Showcases section on 
 the Pymunk webpage for some examples.
 
-2007 - 2022, Victor Blomqvist - vb@viblo.se, MIT License
+2007 - 2023, Victor Blomqvist - vb@viblo.se, MIT License
 
 This release is based on the latest Pymunk release (6.4.0), 
 using Chipmunk 7 rev 0593976ef47fcb3957166bd342f6b2bafe4d0e44 .
@@ -35,6 +35,8 @@ Pymunk can also be installed with conda, from the conda-forge channel::
 
     > conda install -c conda-forge pymunk
 
+For more detailed installation instructions, please see the complete Pymunk 
+documentation.
 
 Example
 -------
@@ -71,6 +73,29 @@ And to run one of them::
     > python -m pymunk.examples.breakout
 
 
+Contact & Support
+-----------------
+.. _contact-support:
+
+**Homepage**
+    http://www.pymunk.org/
+
+**Stackoverflow**
+    You can ask questions/browse old ones at Stackoverflow, just look for 
+    the Pymunk tag. http://stackoverflow.com/questions/tagged/pymunk
+
+**E-Mail**
+    You can email me directly at vb@viblo.se
+
+**Issue Tracker**
+    Please use the issue tracker at github to report any issues you find. This 
+    is also the place for feature requests:
+    https://github.com/viblo/pymunk/issues
+    
+Regardless of the method you use I will try to answer your questions as soon 
+as I see them. (And if you ask on SO other people might help as well!)
+
+
 Documentation
 -------------
 
@@ -99,27 +124,7 @@ It is (or is striving to be):
   possible to use with other libraries like Pygame and Pyglet. 
 
   
-Contact & Support
------------------
-.. _contact-support:
 
-**Homepage**
-    http://www.pymunk.org/
-
-**Stackoverflow**
-    You can ask questions/browse old ones at Stackoverflow, just look for 
-    the Pymunk tag. http://stackoverflow.com/questions/tagged/pymunk
-
-**E-Mail**
-    You can email me directly at vb@viblo.se
-
-**Issue Tracker**
-    Please use the issue tracker at github to report any issues you find. This 
-    is also the place for feature requests:
-    https://github.com/viblo/pymunk/issues
-    
-Regardless of the method you use I will try to answer your questions as soon 
-as I see them. (And if you ask on SO other people might help as well!)
 
 
 Dependencies / Requirements
@@ -129,7 +134,7 @@ Basically Pymunk have been made to be as easy to install and distribute as
 possible, usually `pip install` will take care of everything for you.
 
 - Python (Runs on CPython 3.6 and later and Pypy3)
-- Chipmunk (Compiled library already included on common platforms)
+- Chipmunk (Prebuilt and included when using binary wheels)
 - CFFI (will be installed automatically by Pip)
 - Setuptools (should be included with Pip)
 
@@ -148,25 +153,3 @@ Python 2 Support
 
 Support for Python 2 (and Python 3.0 - 3.5) has been dropped with Pymunk 6.0. 
 If you use these legacy versions of Python, please use Pymunk 5.x.
-
-
-Install from source / Chipmunk Compilation
-------------------------------------------
-
-This section is only required in case you do not install pymunk from the 
-prebuild binary wheels (normally if you do not use `pip install` or you are 
-on a uncommon platform).
-
-Pymunk is built on top of the c library Chipmunk. It uses CFFI to interface
-with the Chipmunk library file. Because of this Chipmunk has to be compiled
-together with Pymunk as an extension module. 
-
-There are basically two options, either building it automatically as part of 
-installation using for example Pip::
-
-    > pip install pymunk-source-dist.zip
-
-Or if you have the source unpacked / you got Pymunk by cloning its git repo, 
-you can explicitly tell Pymunk to compile it inplace::    
-
-    > python setup.py build_ext --inplace

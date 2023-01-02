@@ -1,6 +1,7 @@
 ============
 Installation
 ============
+
 .. _installation:
 
 .. tip::
@@ -101,62 +102,31 @@ be installed.
     $ python -m pymunk.tests test
 
 
-Advanced - Install
-==================
+Advanced - Development
+======================
 
-Another option is to use the standard setup.py way, in case you have downloaded
-the source distribution::
+For development one convenient way is to install Pymunk in 
+editable / development mode. Get the source (i.e. git checkout from Github) 
+and then go to the source folder. Then install in pip editable mode::
 
-    > python setup.py install
+    > python -m pip install -e .
 
-Note that this require a GCC compiler, which can be a bit tricky on Windows. 
-If you are on Mac OS X or Linux you will probably need to run as a privileged 
-user; for example using sudo::
-    
-    > sudo python setup.py install
-    
+Note that this requires a suitable c compiler, e.g. Visual Studio on Windows. 
 Once installed you should be able to to import pymunk just as any other 
 installed library. pymunk should also work just fine with virtualenv in case 
 you want it installed in a contained environment.
- 
 
-Advanced - Running without installation
----------------------------------------
-
-If you do not want to install Pymunk, for example because you want to bundle it
-with your code, its also possible to run it directly inplace. Given that you 
-have the source code the first thing to do is to compile chipmunk with the 
-inplace option, as described in the :ref:`compile-chipmunk` section. 
-
-To actually import pymunk from its folder you need to do a small path hack, 
-since the pymunk root folder (where setup.py and the README are located) is not 
-part of the package. Instead you should add the path to the pymunk package 
-folder (where files such as space.py and body.py are located)::
-
-    mycodefolder/
-    |-- mycode.py
-    |-- ...
-    |-- pymunk/
-    |   |-- README.rst
-    |   |-- setup.py
-    |   |-- pymunk/
-    |   |   |-- space.py
-    |   |   |-- body.py
-    |   |   |-- ...
-    |   |-- ... 
-
-Then inside you code file (`mycode.py`) import sys and add the pymunk folder to
-the path::
-
-    import sys
-    sys.path.insert(1, 'pymunk')
-    import pymunk
-
+Remember that if you update Chipmunk (the c code), you will have to recompile 
+Chipmunk for the changes to apply. See 
 
 .. _compile-chipmunk:
 
 Compile Chipmunk
 ================
+
+Pymunk is built on top of the c library Chipmunk. It uses CFFI to interface
+with the Chipmunk library file. Because of this Chipmunk has to be compiled
+together with Pymunk as an extension module. 
 
 If a compiled binary library of Chipmunk that works on your platform is not 
 included in the release you will need to compile Chipmunk yourself. Another 
