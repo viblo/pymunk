@@ -7,6 +7,7 @@ __docformat__ = "reStructuredText"
 
 import math
 import random
+import os.path
 from typing import List
 
 import pyglet

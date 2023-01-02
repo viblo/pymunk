@@ -8,6 +8,7 @@ __docformat__ = "reStructuredText"
 
 import random
 import sys
+import os.path
 
 random.seed(5)  # try keep difference the random factor the same each run.
 
@@ -34,7 +35,9 @@ draw_options = pymunk.pygame_util.DrawOptions(screen)
 pymunk.pygame_util.positive_y_is_up = False
 
 ### Generate geometry from pymunk logo image
-logo_img = pygame.image.load("pymunk_logo_sphinx.png")
+logo_img = pygame.image.load(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "pymunk_logo_sphinx.png")
+)
 logo_bb = pymunk.BB(0, 0, logo_img.get_width(), logo_img.get_height())
 
 

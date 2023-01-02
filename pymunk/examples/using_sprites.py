@@ -9,6 +9,7 @@ __docformat__ = "reStructuredText"
 import math
 import random
 from typing import List
+import os.path
 
 import pygame
 
@@ -33,7 +34,11 @@ def main():
     space.gravity = Vec2d(0.0, -900.0)
 
     ## logo
-    logo_img = pygame.image.load("pymunk_logo_googlecode.png")
+    logo_img = pygame.image.load(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "pymunk_logo_googlecode.png"
+        )
+    )
     logos: List[pymunk.Shape] = []
 
     ### Static line
