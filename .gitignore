@@ -1,4 +1,5 @@
 *.pyc
+benchmarks/results
 build/
 chipmunk_src/**/*.o
 dist/

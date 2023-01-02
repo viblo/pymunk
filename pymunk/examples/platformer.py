@@ -11,6 +11,7 @@ __docformat__ = "reStructuredText"
 
 import math
 import sys
+import os.path
 
 import pygame
 
@@ -60,8 +61,12 @@ def main():
     clock = pygame.time.Clock()
     running = True
     font = pygame.font.SysFont("Arial", 16)
-    sound = pygame.mixer.Sound("sfx.wav")
-    img = pygame.image.load("xmasgirl1.png")
+    sound = pygame.mixer.Sound(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "sfx.wav")
+    )
+    img = pygame.image.load(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "xmasgirl1.png")
+    )
 
     ### Physics stuff
     space = pymunk.Space()

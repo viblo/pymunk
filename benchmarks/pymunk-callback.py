@@ -2,7 +2,7 @@ import timeit
 
 s = """
 import pymunk
-print("pymunk.version", pymunk.version)
+# print("pymunk.version", pymunk.version)
 s = pymunk.Space()
 b = pymunk.Body(1,10)
 def f(b,dt):

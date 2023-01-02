@@ -958,6 +958,75 @@ class UnitTestSpace(unittest.TestCase):
         self.assertIsNone(h2.post_solve)
         self.assertIsNotNone(h2.separate)
 
+    def testPickleCachedArbiters(self) -> None:
+        s = p.Space()
+        
+        b1 = p.Body()
+        b2 = p.Body()
+
+        c1 = p.Circle(b1, 10)
+        c2 = p.Circle(b2, 10)
+
+        c1.mass = 1
+        c2.mass = 1
+
+        b2.position = 1,2
+        s.add(c1,c2, b1, b2)
+        
+        s.step(0.1)
+        # print("\nOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+        s_copy = s.copy()
+        
+        # a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
+        # a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
+        
+        # print("a1", a1)
+        # print("a2", a2)
+        # print("XXXX")
+        
+        # print("s.bodies.position:")
+        # print([b.position for b in s.bodies])
+        # print("s_copy.bodies.position:")
+        # print([b.position for b in s_copy.bodies])
+
+
+        s.step(0.1)
+        s_copy.step(0.1)
+        
+        # a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
+        # a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
+        
+        # print("a1", a1)
+        # print("a2", a2)
+        # print("XXXX")
+
+        # print("s.bodies.position:")
+        # print([b.position for b in s.bodies])
+        # print("s_copy.bodies.position:")
+        # print([b.position for b in s_copy.bodies])
+
+        s_copy.step(0.1)
+
+        # a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
+        # a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
+        
+        # print("a1", a1)
+        # print("a2", a2)
+        # print("XXXX")
+
+        # print("s.bodies.position:")
+        # print([b.position for b in s.bodies])
+        # print("s_copy.bodies.position:")
+        # print([b.position for b in s_copy.bodies])
+
+        # TODO: to assert that everything is working as it should all 
+        # properties on the cached the arbiters should be asserted.
+
+
+        self.assertAlmostEqual(s.bodies[0].position.x, s_copy.bodies[0].position.x)
+        self.assertAlmostEqual(s.bodies[0].position.y, s_copy.bodies[0].position.y)
+
+
 
 def f1(*args: Any, **kwargs: Any) -> None:
     pass

@@ -55,11 +55,12 @@ Quick code example::
 
     print_options = pymunk.SpaceDebugDrawOptions() # For easy printing 
 
-    while True:                 # Infinite loop simulation
+    for _ in range(100):        # Run simulation 100 steps in total
         space.step(0.02)        # Step the simulation one step forward
         space.debug_draw(print_options) # Print the state of the simulation
-    
-For more detailed and advanced examples, take a look at the included demos. 
+
+This will print (to console) the state of the simulation. For more visual, 
+detailed and advanced examples, take a look at the included demos.  
 They are included in the pymunk install, in the pymunk.examples subpackage. 
 They can be run directly. To list the examples::
 

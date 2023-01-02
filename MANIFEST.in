@@ -16,6 +16,8 @@ recursive-include additional_examples *.ipynb
 prune additional_examples/.ipynb_checkpoints
 prune additional_examples/build
 prune additional_examples/dist
+recursive-include pymunk/examples *.png
+recursive-include pymunk/examples *.wav
 #chipmunk src
 recursive-include Chipmunk2D/src *
 recursive-include Chipmunk2D/include/chipmunk *
