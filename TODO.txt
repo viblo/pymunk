@@ -34,6 +34,8 @@ v7+ (all potentially breaking changes)
 ---
 - Think about split between pymunk.util and pymunk modules
 - Investigate the SPOOK solver, which could be much more stable than what is currently used. (but probably very difficult to switch to). https://github.com/viblo/pymunk/issues/216
+- Investigate "Affine Body Dynamics Fast, Stable & Intersection-free Simulation of Stiff Materials"
+
 
 Typing a existing project - learnings
 -------------------------------------

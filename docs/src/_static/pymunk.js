@@ -1,4 +1,4 @@
-$(function (){
+function pymunk() {
     var createList = function(selector){
 
         var ul = $('<ul>');
@@ -49,4 +49,5 @@ $(function (){
         customIndex.append(ul);
     });
     
-});
+};
+pymunk();
