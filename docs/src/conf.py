@@ -12,7 +12,6 @@ import sys
 project = "Pymunk"
 copyright = "2013-2022, Victor Blomqvist"
 author = "Victor Blomqvist"
-release = "2.3"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -49,7 +48,7 @@ MOCK_MODULES = [
     #'_chipmunk_cffi_abi',
     #'._chipmunk_cffi','_chipmunk_cffi',
     "pymunk._chipmunk",
-    # "_cffi_backend",
+    "_cffi_backend",
     "matplotlib",
     "matplotlib.pyplot",
     "pygame",
@@ -96,6 +95,11 @@ extensions = [  #'sphinx.ext.autodoc',
 templates_path = ["_templates"]
 exclude_patterns = []
 
+
+import pymunk
+
+release = pymunk.version
+print(f"Documentation for Pymunk {release}")
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
