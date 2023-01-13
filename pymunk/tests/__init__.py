@@ -46,8 +46,6 @@ import sys
 import unittest
 from typing import Any, Iterator, List
 
-import cffi  # type: ignore
-
 from . import doctests
 
 
@@ -59,7 +57,14 @@ def run_tests(filter: str = "", with_dependencies: List[str] = []) -> bool:
     print("RUNNING pymunk.tests")
     print("Python / platform:")
     print(sys.version)
-    print(f"on {platform.system()} {platform.machine()} using cffi {cffi.__version__}")
+    try:
+        import cffi  # type: ignore
+
+        print(
+            f"on {platform.system()} {platform.machine()} using cffi {cffi.__version__}"
+        )
+    except:
+        pass
     print("")
 
     def list_of_tests_gen(s: Any) -> Iterator[Any]:
