@@ -1,37 +1,41 @@
-function pymunk() {
+(function () {
     var createList = function(selector){
-
-        var ul = $('<ul>');
-        var selected = $(selector);
+        var selected = document.querySelectorAll(selector);
         
         if (selected.length === 0){
             return;
         }
         
-        selected.clone().each(function (i,e){
+        var ul = document.createElement('ul');
 
-            var p = $(e).children('.descclassname');
-            var n = $(e).children('.descname');
-            var l = $(e).children('.headerlink');
+        selected.forEach((el, i)=>{
+            let p = el.querySelector('.descclassname');
+            let n = el.querySelector('.descname');
+            let l = el.querySelector('.headerlink');
 
-            var a = $('<a>');
-            a.attr('href',l.attr('href')).attr('title', 'Link to this definition');
+            var a = document.createElement("a");
+            a.setAttribute('href', l.getAttribute('href'));
+            a.setAttribute('title', 'Link to this definition');
+            a.append(p.cloneNode(true));
+            a.append(n.cloneNode(true));
 
-            a.append(p).append(n);
+            var li = document.createElement('li');
+            li.append(a);
 
-            var entry = $('<li>').append(a);
-            ul.append(entry);
+            ul.append(li);
         });
         return ul;
     }
 
+    var c = document.createElement('div');
+    c.style.float = 'left';
+    c.style.minWidth = '300px';
+    
+    var ul0 = c.cloneNode(true);
+    ul0.append(document.querySelector('.submodule-index'));
 
-    var c = $('<div style="float:left; min-width: 300px;">');
-
-    var ul0 = c.clone().append($('.submodule-index'))
-
-    customIndex = $('.custom-index');
-    customIndex.empty();
+    customIndex = document.querySelector('.custom-index');
+    customIndex.replaceChildren();
     customIndex.append(ul0);
     
     var x = [];
@@ -41,13 +45,16 @@ function pymunk() {
     
     x.forEach(function (e){
         var l = createList(e[1]);
-        if (l) {        
-            var ul = c.clone()
-                .append('<p class="rubric">'+e[0]+'</p>')
-                .append(l);
+        if (l) {
+            var x = c.cloneNode(true);
+            var p = document.createElement('p');
+            p.classList.add('rubric');
+            p.textContent = e[0];
+            x.append(p);
+            x.append(l);
+            customIndex.append(x);
         }
-        customIndex.append(ul);
+        
     });
     
-};
-pymunk();
+})();

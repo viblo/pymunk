@@ -22,13 +22,14 @@ API Reference
         pymunk.examples
 
 .. container:: custom-index
+ 
+    ..comment
 
-    .. raw:: html
-    
-        <script type="text/javascript" src='_static/pymunk.js'></script>
-   
 .. rubric:: Pymunk
 
 .. automodule:: pymunk
     :special-members: __init__, __matmul__
     
+.. raw:: html
+
+    <script type="text/javascript" src='_static/pymunk.js'></script>
