@@ -3,23 +3,23 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import sys
 import os
-
+import sys
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Pymunk'
-copyright = '2013-2022, Victor Blomqvist'
-author = 'Victor Blomqvist'
-release = '2.3'
+project = "Pymunk"
+copyright = "2013-2022, Victor Blomqvist"
+author = "Victor Blomqvist"
+release = "2.3"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 
 # To allow readthedocs.org build documentation without the chipmunk library file
+
 
 class Mock(object):
     # __package__ = 'pymunk._chipmunk_cffi_abi'
@@ -49,7 +49,7 @@ MOCK_MODULES = [
     #'_chipmunk_cffi_abi',
     #'._chipmunk_cffi','_chipmunk_cffi',
     "pymunk._chipmunk",
-    #"_cffi_backend",
+    # "_cffi_backend",
     "matplotlib",
     "matplotlib.pyplot",
     "pygame",
@@ -83,6 +83,7 @@ for m in MOCK_MODULES:
     sys.modules[m] = Mock()
 
 sys.path.append(os.path.abspath("."))
+sys.path.append(os.path.abspath("../.."))
 
 extensions = [  #'sphinx.ext.autodoc',
     "sphinx.ext.viewcode",
@@ -92,16 +93,15 @@ extensions = [  #'sphinx.ext.autodoc',
 ]
 
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 exclude_patterns = []
-
 
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
-html_static_path = ['_static']
+html_theme = "alabaster"
+html_static_path = ["_static"]
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
