@@ -1,6 +1,5 @@
 """A very basic flipper game.
 """
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import random
