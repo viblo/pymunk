@@ -1,23 +1,23 @@
 (function () {
     var createList = function(selector){
-
-        var ul = document.createElement('ul');
         var selected = document.querySelectorAll(selector);
         
         if (selected.length === 0){
             return;
         }
         
+        var ul = document.createElement('ul');
+
         selected.forEach((el, i)=>{
-            let p = el.children.querySelectorAll('.descclassname');
-            let n = el.children.querySelectorAll('.descname');
-            let l = el.children.querySelectorAll('.headerlink');
+            let p = el.querySelector('.descclassname');
+            let n = el.querySelector('.descname');
+            let l = el.querySelector('.headerlink');
 
             var a = document.createElement("a");
             a.setAttribute('href', l.getAttribute('href'));
             a.setAttribute('title', 'Link to this definition');
-            a.append(p);
-            a.append(b);
+            a.append(p.cloneNode(true));
+            a.append(n.cloneNode(true));
 
             var li = document.createElement('li');
             li.append(a);
@@ -32,9 +32,9 @@
     c.style.minWidth = '300px';
     
     var ul0 = c.cloneNode(true);
-    ul0.append(document.querySelectorAll('.submodule-index'));
+    ul0.append(document.querySelector('.submodule-index'));
 
-    customIndex = document.querySelectorAll('.custom-index');
+    customIndex = document.querySelector('.custom-index');
     customIndex.replaceChildren();
     customIndex.append(ul0);
     
@@ -50,10 +50,11 @@
             var p = document.createElement('p');
             p.classList.add('rubric');
             p.textContent = e[0];
-            x.append();
+            x.append(p);
             x.append(l);
+            customIndex.append(x);
         }
-        customIndex.append(ul);
+        
     });
     
 })();
