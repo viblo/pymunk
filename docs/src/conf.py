@@ -107,6 +107,12 @@ print(f"Documentation for Pymunk {release}")
 html_theme = "alabaster"
 html_static_path = ["_static"]
 
+# Font
+html_theme_options = {
+    "font_family": '"Lucida Grande",Arial,sans-serif',
+    "head_font_family": '"Lucida Grande",Arial,sans-serif',
+}
+
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 html_logo = "_static/pymunk_logo_sphinx.png"
