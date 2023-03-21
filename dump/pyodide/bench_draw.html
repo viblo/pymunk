@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.0/full/pyodide.js"></script>
+    <style>
+        canvas {
+            background-color: lightpink;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body style="background-color: lightgray;">
+
+    <canvas id="c_pil" width="150" , height="150"></canvas>
+    <canvas id="c_canvas" width="150" , height="150"></canvas>
+    <canvas id="c_json" width="150" , height="150"></canvas>
+    <canvas id="c_js" width="150" , height="150"></canvas>
+    <br>
+    <button onclick="runPython('do_bench(draw_pil)')">Run Pil</button>
+    <button onclick="runPython('do_bench(draw_canvas)')">Run Canvas</button>
+    <button onclick="runPython('do_bench(draw_json)')">Run Json</button>
+    <button onclick="runPython('do_bench(draw_js)')">Run JS</button>
+    <input type="number" value="100" step="10">
+    <p>
+        A benchmark of different ways to draw to canvas from python.
+        Each test is run 100 times (configurable), drawing the selected number of rects,
+        circles and lines on top of each other. Frame time + resulting FPS is shown below.
+    </p>
+    <br />
+    <div>Output:</div>
+    <textarea id="output" style="width: 100%;" rows="6" disabled></textarea>
+
+    <script>
+        const output = document.getElementById("output");
+
+        function addToOutput(s) {
+            output.value += ">>>" + s + "\n";
+            output.scrollTop = output.scrollHeight;
+        }
+
+        const canvas_element = document.createElement("canvas");
+        canvas_element.width = 100;
+        canvas_element.height = 100;
+
+        function to_color(arr) {
+            return "rgba(" + arr[0] + "," + arr[1] + "," + arr[2] + "," + arr[3] + ")";
+        }
+
+        function drawJson(json, n) {
+            const ctx = canvas_element.getContext("2d");
+            const screen = document.getElementById("c_json");
+            const screen_ctx = screen.getContext("2d");
+
+            json.forEach(element => {
+                if (element.has("rect")) {
+                    let m = element.get("rect");
+                    ctx.fillStyle = to_color(m.get("fill"));
+                    ctx.fillRect(m.get("x"), m.get("y"), m.get("w"), m.get("h"));
+                }
+                else if (element.has("ellipse")) {
+                    let m = element.get("ellipse");
+                    ctx.beginPath();
+                    ctx.fillStyle = to_color(m.get("fill"));
+                    ctx.strokeStyle = to_color(m.get("outline"));
+                    let r = (m.get("x1") - m.get("x0")) / 2;
+                    ctx.arc(m.get("x0") + r, m.get("y0") + r, r, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                else if (element.has("line")) {
+                    let m = element.get("line");
+                    ctx.beginPath();
+                    ctx.lineWidth = m.get("width");
+                    ctx.strokeStyle = to_color(m.get("fill"));
+                    ctx.moveTo(m.get("x0"), m.get("y0"));
+                    ctx.lineTo(m.get("x1"), m.get("y1"));
+                    ctx.stroke();
+                    ctx.lineWidth = 1;
+                }
+            });
+            screen_ctx.drawImage(canvas_element, 10, 10);
+        }
+
+        function drawJs(n) {
+            const ctx = canvas_element.getContext("2d");
+            const screen = document.getElementById("c_js");
+            const screen_ctx = screen.getContext("2d");
+
+            for (let i = 0; i < n; i++) {
+                ctx.fillStyle = "rgba(255, 0, 255, 255)";
+                ctx.fillRect(0, 0, 100, 100);
+
+                ctx.beginPath();
+                ctx.fillStyle = "rgba(0, 255, 0, 255)";
+                ctx.strokeStyle = "rgba(0, 0, 255, 255)";
+                let x0 = 10, y0 = 20;
+                let x1 = 50, y1 = 70;
+                ctx.arc(30, 60, 25, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(x0, y0);
+                ctx.lineTo(x1, y1);
+                ctx.stroke();
+                ctx.lineWidth = 1;
+            }
+            screen_ctx.drawImage(canvas_element, 10, 10);
+            return "done"
+        }
+
+        // init Pyodide
+        async function main() {
+            output.value = "Loading Pyodide...\n";
+            let pyodide = await loadPyodide();
+            output.value += "Installing MicroPip...\n";
+            await pyodide.loadPackage("micropip");
+            const micropip = pyodide.pyimport("micropip");
+            output.value += "Installing Pillow...\n";
+            await micropip.install('Pillow');
+            output.value += "Ready!\n";
+            return pyodide;
+        }
+        let pyodideReadyPromise = main();
+
+        async function runPython(cmd) {
+            let pyodide = await pyodideReadyPromise;
+
+            try {
+                let r = await fetch("bench_draw.py");
+                let code = await r.text();
+                let output = pyodide.runPython(code + "\n" + cmd);
+                addToOutput(output);
+            } catch (err) {
+                addToOutput(err);
+            }
+        }
+    </script>
+</body>
+
+</html>
