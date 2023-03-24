@@ -11,17 +11,17 @@ jobs:
         os: [ubuntu-20.04, windows-2019, macos-11]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: true
       - name: Build wheels
-        uses: joerick/cibuildwheel@v2.11.2
+        uses: joerick/cibuildwheel@v2.12.1
         env:
           CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* cp310-* cp311-* pp39-*"
           CIBW_ARCHS_MACOS: "arm64 x86_64"
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
           CIBW_BUILD_VERBOSITY: 3
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
           path: ./wheelhouse/*.whl
