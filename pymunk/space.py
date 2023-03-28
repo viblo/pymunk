@@ -27,12 +27,12 @@ from ._chipmunk_cffi import ffi, lib
 cp = lib
 
 from ._pickle import PickleMixin, _State
+from .arbiter import _arbiter_from_dict, _arbiter_to_dict
 from .body import Body
 from .collision_handler import CollisionHandler
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shapes import Shape
 from .vec2d import Vec2d
-from .arbiter import _arbiter_from_dict, _arbiter_to_dict
 
 if TYPE_CHECKING:
     from .bb import BB
@@ -356,7 +356,7 @@ class Space(PickleMixin, object):
         """,
     )
 
-    def _get_current_time_step(self) -> int:
+    def _get_current_time_step(self) -> float:
         return cp.cpSpaceGetCurrentTimeStep(self._space)
 
     current_time_step = property(
