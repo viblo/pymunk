@@ -35,9 +35,9 @@ jobs:
           submodules: true
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11.2'
       - run: |
-          pip install pyodide-build==0.22.1
+          pip install pyodide-build==0.23.0
           echo EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version) >> $GITHUB_ENV
       - uses: mymindstorm/setup-emsdk@v12
         with:
