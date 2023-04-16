@@ -257,6 +257,14 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. de Schaetzen, Rodrigue, Alexander Botros, Robert Gash, Kevin Murrant, and Stephen L. Smith. 
+   "Real-Time Navigation for Autonomous Surface Vehicles In Ice-Covered Waters." 
+   arXiv preprint arXiv:2302.11601 (2023).
+
+#. Ansari, Abdul Fatir, Alvin Heng, Andre Lim, and Harold Soh. 
+   "Neural Continuous-Discrete State Space Models for Irregularly-Sampled Time Series." 
+   arXiv preprint arXiv:2301.11308 (2023).
+
 #. Ige, Ifeoluwatayo A., and Bolanle F. Oladejo. 
    "Text2Simulate: A Scientific Knowledge Visualization Technique for Generating Visual Simulations from Textual Knowledge." 
    International Journal of Advanced Computer Science and Applications 14, no. 2 (2023).
@@ -304,10 +312,6 @@ List of papers which has used or mentioned Pymunk:
 #. Enander, Jonas MD, Gerald E. Loeb, and Henrik Jorntell. 
    "A Model for Self-Organization of Sensorimotor Function: Spinal Interneuronal Integration." 
    Journal of Neurophysiology (2022)
-
-#. Shen, Jeremy, Erdong Xiao, Yuchen Liu, and Chen Feng. 
-   "A Deep Reinforcement Learning Environment for Particle Robot Navigation and Object Manipulation." 
-   arXiv preprint arXiv:2203.06464 (2022).
 
 #. Abi Hamid, Mustofa, Dimas Aditama, Endi Permata, Nur Kholifah, Muhammad Nurtanto, and Nuur Wachid Abdul Majid. 
    "Simulating the COVID-19 epidemic event and its prevention measures using python programming." 
