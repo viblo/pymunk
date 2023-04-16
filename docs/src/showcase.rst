@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Ige, Ifeoluwatayo A., and Bolanle F. Oladejo. 
+   "Text2Simulate: A Scientific Knowledge Visualization Technique for Generating Visual Simulations from Textual Knowledge." 
+   International Journal of Advanced Computer Science and Applications 14, no. 2 (2023).
+
 #. Alex, Janey, Jason Stillerman, Noah Fritzhand, and Tucker Paron. 
    "Agent-Based Model of Crowd Dynamics in Emergency Situations: A Focus on People With Disabilities." 
    arXiv preprint arXiv:2212.08149 (2022).
