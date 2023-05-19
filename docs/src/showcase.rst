@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Huang, Zenan, Haobo Wang, Junbo Zhao, and Nenggan Zheng. 
+   "Latent Processes Identification From Multi-View Time Series." 
+   arXiv preprint arXiv:2305.08164 (2023).
+
 #. de Schaetzen, Rodrigue, Alexander Botros, Robert Gash, Kevin Murrant, and Stephen L. Smith. 
    "Real-Time Navigation for Autonomous Surface Vehicles In Ice-Covered Waters." 
    arXiv preprint arXiv:2302.11601 (2023).
