@@ -200,7 +200,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
         def freebody(cp_body):  # type: ignore
             _logger.debug("bodyfree start %s", cp_body)
-            
+
             # remove all shapes on this body from the space
             lib.cpBodyEachShape(cp_body, lib.ext_cpBodyShapeIteratorFunc, ffi.NULL)
 
@@ -656,8 +656,14 @@ class Body(PickleMixin, TypingAttrMixing, object):
     def constraints(self) -> Set["Constraint"]:
         """Get the constraints this body is attached to.
 
-        The body only keeps a weak reference to the constraints and a
-        live body wont prevent GC of the attached constraints"""
+        It is not possible to detach a body from a constraint. The only way is
+        to delete the constraint fully by removing it from any spaces and
+        remove any other references to it. The body only keeps a weak
+        reference to the constraint, meaning that the when all other
+        references to the constraint are removed and the constraint is garbage
+        collected it will automatically be removed from this collection as
+        well.
+        """
         return set(self._constraints)
 
     @property
