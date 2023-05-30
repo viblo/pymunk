@@ -257,6 +257,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Yang, Yulong, Weihua Cao, Linwei Guo, Chao Gan, and Min Wu. 
+   "Reinforcement Learning with Reward Shaping and Hybrid Exploration in Sparse Reward Scenes." 
+   In 2023 IEEE 6th International Conference on Industrial Cyber-Physical Systems (ICPS), pp. 1-6. IEEE, 2023.
+
 #. Huang, Zenan, Haobo Wang, Junbo Zhao, and Nenggan Zheng. 
    "Latent Processes Identification From Multi-View Time Series." 
    arXiv preprint arXiv:2305.08164 (2023).
