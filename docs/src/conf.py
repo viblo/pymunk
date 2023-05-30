@@ -132,6 +132,13 @@ html_sidebars = {
     ],
 }
 
+html_js_files = [
+    (
+        "//gc.zgo.at/count.js",
+        {"async": "async", "data-goatcounter": "https://pymunk.goatcounter.com/count"},
+    )
+]
+
 # -- Other ------------------------------------------------------------------
 
 autodoc_default_options = {
