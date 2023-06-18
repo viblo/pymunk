@@ -124,9 +124,6 @@ It is (or is striving to be):
   possible to use with other libraries like Pygame and Pyglet. 
 
   
-
-
-
 Dependencies / Requirements
 ---------------------------
 

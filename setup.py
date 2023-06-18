@@ -13,7 +13,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 
-with (open("README.rst")) as f:
+with open("README.rst") as f:
     long_description = f.read()
 
 setup(
@@ -28,12 +28,6 @@ setup(
     include_package_data=True,
     license="MIT License",
     classifiers=classifiers,
-    command_options={
-        "build_sphinx": {
-            "build_dir": ("setup.py", "docs"),
-            "source_dir": ("setup.py", "docs/src"),
-        }
-    },
     python_requires=">=3.6",
     # Require >1.14.0 since that (and older) has problem with returing structs from functions.
     install_requires=["cffi >= 1.15.0"],
