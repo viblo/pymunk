@@ -1,10 +1,10 @@
 cff-version: 1.2.0
 message: "If you use this software and want to cite it, please do so as below."
 authors:
-- family-names: "Blomqvist"
-  given-names: "Victor"
+  - family-names: "Blomqvist"
+    given-names: "Victor"
 title: "Pymunk"
 abstract: "A easy-to-use pythonic rigid body 2d physics library"
-version: 6.4.0
-date-released: 2022-11-20
+version: 6.5.0
+date-released: 2023-06-20
 url: "https://pymunk.org"

@@ -2,14 +2,23 @@
 Changelog 
 =========
 
-..
-  Pymunk 6.5?
+Pymunk 6.5.0 (2023-06-23)
+-------------------------
 
-  When pickling the internal collision state will now be pickled as well, 
-  meaning that the unpickled space will behave as the original even when
-  collisions where ongoing while pickling.
+**Repeatable pickle/unpickle of simulation!**
 
-  - Pickle of internal collision state
+When pickling the internal collision state will now be pickled as well, 
+meaning that the unpickled space will behave as the original even when
+collisions where ongoing while pickling. This is useful if you want to 
+replay a simulation.
+
+Changes:
+
+- Pickle of internal collision state
+- Merged the latest upstream Chipmunk version
+- Improved type hints
+- Improved docs 
+  
 
 Pymunk 6.4.0 (2022-11-20)
 -------------------------
