@@ -22,6 +22,7 @@ recursive-include pymunk/examples *.wav
 recursive-include Chipmunk2D/src *
 recursive-include Chipmunk2D/include/chipmunk *
 include Chipmunk2D/*.txt
+recursive-include pymunk/cffi * 
 #tools
 recursive-include tools *.py
 #typing

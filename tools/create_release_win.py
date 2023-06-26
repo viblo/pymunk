@@ -17,14 +17,23 @@ def main():
     - Make sure cffi extensions included in wheel and zip!!!!
     """
     )
+
+    print(
+        """
+    > python setup.py sdist 
+        
+    """
+    )
+
     print(
         """
     Once the release is done, remember to:
     - tag code on github with version
-    - Download dists from github release and appveyor
-    - Upload files on pypi (> python -m twine upload dist/*)
-    - Update Pymunk entry on pygame.org
-    - Update Pymunk on conda-forge
+    - Download dists from github release
+    - Upload files on pypi (> python -m twine upload dist/6.5.0*) with correct verison
+    - (not needed anymore) Update Pymunk entry on pygame.org
+    - (pr will be craeted automatically when condra forge notice the new version) Update Pymunk on conda-forge
+    - Trigger docs build in readthedocs for www.pymunk.org
     - Possibly: Make release announcement at the chipmunk forum
     - Possibly: make release announcement on the pyglet list
     - Possibly: make release announcement on the pygame list
