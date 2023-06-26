@@ -18,7 +18,7 @@ the Pymunk webpage for some examples.
 
 2007 - 2023, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest Pymunk release (6.5.0), 
+This release is based on the latest Pymunk release (6.5.1), 
 using Chipmunk 7 rev 5dd7d774053145fa37f352d7a07d2f75a9bd8039.
 
 

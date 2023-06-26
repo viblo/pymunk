@@ -5,6 +5,6 @@ authors:
     given-names: "Victor"
 title: "Pymunk"
 abstract: "A easy-to-use pythonic rigid body 2d physics library"
-version: 6.5.0
-date-released: 2023-06-20
+version: 6.5.1
+date-released: 2023-06-26
 url: "https://pymunk.org"

@@ -2,6 +2,19 @@
 Changelog 
 =========
 
+Pymunk 6.5.1 (2023-06-26)
+-------------------------
+
+**Fix soruce dist**
+
+Some custom cffi c headers and source files are now included in the source 
+distributions so that Pymunk can be fully built from it.
+
+Changes:
+
+- Include pymunk custom c files in source dist zip
+
+
 Pymunk 6.5.0 (2023-06-23)
 -------------------------
 
@@ -38,6 +51,7 @@ Changes:
 - Using pyglet 1.5 is deprecated and will be removed in a future version. 
 - Moved examples into the distribution as the pyumnk.examples package. 
 - Improved type hints
+
 
 Pymunk 6.3.0 (2022-11-04)
 -------------------------
