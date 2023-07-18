@@ -17,7 +17,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.14.1
         env:
-          CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-* cp310-* cp311-* pp39-*"
+          CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* pp39-* pp310-*"
           CIBW_ARCHS_MACOS: "arm64 x86_64"
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
           CIBW_BUILD_VERBOSITY: 3
@@ -37,7 +37,7 @@ jobs:
         with:
           python-version: "3.11.2"
       - run: |
-          pip install pyodide-build==0.23.3
+          pip install pyodide-build>=0.23.3
           echo EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version) >> $GITHUB_ENV
       - uses: mymindstorm/setup-emsdk@v12
         with:
