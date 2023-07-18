@@ -5,13 +5,17 @@
 
 typedef double cpFloat;
 typedef unsigned char cpBool;
-typedef void * cpDataPointer;
+typedef void *cpDataPointer;
 typedef uintptr_t cpCollisionType;
 typedef uintptr_t cpGroup;
 typedef unsigned int cpBitmask;
 typedef unsigned int cpTimestamp;
-typedef struct cpVect{cpFloat x,y;} cpVect;
-typedef struct cpTransform {
+typedef struct cpVect
+{
+    cpFloat x, y;
+} cpVect;
+typedef struct cpTransform
+{
     cpFloat a, b, c, d, tx, ty;
 } cpTransform;
 
@@ -53,7 +57,8 @@ typedef struct cpSpace cpSpace;
 // chipmunk_structs.h
 ///////////////////////////////////////////
 
-enum cpArbiterState {
+enum cpArbiterState
+{
     // Arbiter is active and its the first collision.
     CP_ARBITER_STATE_FIRST_COLLISION,
     // Arbiter is active and its not the first collision.
@@ -67,46 +72,47 @@ enum cpArbiterState {
     CP_ARBITER_STATE_INVALIDATED,
 };
 
-struct cpArbiterThread {
+struct cpArbiterThread
+{
     struct cpArbiter *next, *prev;
 };
 
-struct cpContact {
+struct cpContact
+{
     cpVect r1, r2;
-    
+
     cpFloat nMass, tMass;
     cpFloat bounce; // TODO: look for an alternate bounce solution.
 
     cpFloat jnAcc, jtAcc, jBias;
     cpFloat bias;
-    
+
     cpHashValue hash;
 };
 
-
-struct cpArbiter {
+struct cpArbiter
+{
     cpFloat e;
     cpFloat u;
     cpVect surface_vr;
-    
+
     cpDataPointer data;
-    
+
     const cpShape *a, *b;
     cpBody *body_a, *body_b;
     struct cpArbiterThread thread_a, thread_b;
-    
+
     int count;
     struct cpContact *contacts;
     cpVect n;
-    
+
     // Regular, wildcard A and wildcard B collision handlers.
     cpCollisionHandler *handler, *handlerA, *handlerB;
     cpBool swapped;
-    
+
     cpTimestamp stamp;
     enum cpArbiterState state;
 };
-
 
 ///////////////////////////////////////////
 // cpVect.h
@@ -116,8 +122,9 @@ struct cpArbiter {
 // cbBB.h
 ///////////////////////////////////////////
 
-typedef struct cpBB{
-    cpFloat l, b, r ,t;
+typedef struct cpBB
+{
+    cpFloat l, b, r, t;
 } cpBB;
 
 ///////////////////////////////////////////
@@ -177,7 +184,8 @@ void cpArbiterGetShapes(const cpArbiter *arb, cpShape **a, cpShape **b);
 void cpArbiterGetBodies(const cpArbiter *arb, cpBody **a, cpBody **b);
 
 /// A struct that wraps up the important collision data for an arbiter.
-struct cpContactPointSet {
+struct cpContactPointSet
+{
     /// The number of contact points in the set.
     int count;
 
@@ -185,7 +193,8 @@ struct cpContactPointSet {
     cpVect normal;
 
     /// The array of contact points.
-    struct {
+    struct
+    {
         /// The position of the contact on the surface of each shape.
         cpVect pointA, pointB;
         /// Penetration distance of the two shapes. Overlapping means it will be negative.
@@ -251,7 +260,8 @@ void cpArbiterCallWildcardSeparateB(cpArbiter *arb, cpSpace *space);
 /// They are given a shape by creating collision shapes (cpShape) that point to the body.
 /// @{
 
-typedef enum cpBodyType {
+typedef enum cpBodyType
+{
     /// A dynamic body is one that is affected by gravity, forces, and collisions.
     /// This is the default body type.
     CP_BODY_TYPE_DYNAMIC,
@@ -272,16 +282,16 @@ typedef void (*cpBodyVelocityFunc)(cpBody *body, cpVect gravity, cpFloat damping
 typedef void (*cpBodyPositionFunc)(cpBody *body, cpFloat dt);
 
 /// Allocate a cpBody.
-cpBody* cpBodyAlloc(void);
+cpBody *cpBodyAlloc(void);
 /// Initialize a cpBody.
-cpBody* cpBodyInit(cpBody *body, cpFloat mass, cpFloat moment);
+cpBody *cpBodyInit(cpBody *body, cpFloat mass, cpFloat moment);
 /// Allocate and initialize a cpBody.
-cpBody* cpBodyNew(cpFloat mass, cpFloat moment);
+cpBody *cpBodyNew(cpFloat mass, cpFloat moment);
 
 /// Allocate and initialize a cpBody, and set it as a kinematic body.
-cpBody* cpBodyNewKinematic(void);
+cpBody *cpBodyNewKinematic(void);
 /// Allocate and initialize a cpBody, and set it as a static body.
-cpBody* cpBodyNewStatic(void);
+cpBody *cpBodyNewStatic(void);
 
 /// Destroy a cpBody.
 void cpBodyDestroy(cpBody *body);
@@ -308,7 +318,7 @@ cpBodyType cpBodyGetType(cpBody *body);
 void cpBodySetType(cpBody *body, cpBodyType type);
 
 /// Get the space this body is added to.
-cpSpace* cpBodyGetSpace(const cpBody *body);
+cpSpace *cpBodyGetSpace(const cpBody *body);
 
 /// Get the mass of the body.
 cpFloat cpBodyGetMass(const cpBody *body);
@@ -412,14 +422,13 @@ typedef void (*cpBodyArbiterIteratorFunc)(cpBody *body, cpArbiter *arbiter, void
 /// Call @c func once for each arbiter that is currently active on the body.
 void cpBodyEachArbiter(cpBody *body, cpBodyArbiterIteratorFunc func, void *data);
 
-
 ///////////////////////////////////////////
 // cpShape.h
 ///////////////////////////////////////////
 
-
 /// Point query info struct.
-typedef struct cpPointQueryInfo {
+typedef struct cpPointQueryInfo
+{
     /// The nearest shape, NULL if no shape was within range.
     const cpShape *shape;
     /// The closest point on the shape's surface. (in world space coordinates)
@@ -432,7 +441,8 @@ typedef struct cpPointQueryInfo {
 } cpPointQueryInfo;
 
 /// Segment query info struct.
-typedef struct cpSegmentQueryInfo {
+typedef struct cpSegmentQueryInfo
+{
     /// The shape that was hit, or NULL if no collision occured.
     const cpShape *shape;
     /// The point of impact.
@@ -444,7 +454,8 @@ typedef struct cpSegmentQueryInfo {
 } cpSegmentQueryInfo;
 
 /// Fast collision filtering type that is used to determine if two objects collide before calling collision or query callbacks.
-typedef struct cpShapeFilter {
+typedef struct cpShapeFilter
+{
     /// Two objects with the same non-zero group value do not collide.
     /// This is generally used to group objects in a composite object together to disable self collisions.
     cpGroup group;
@@ -490,10 +501,10 @@ cpBool cpShapeSegmentQuery(const cpShape *shape, cpVect a, cpVect b, cpFloat rad
 cpContactPointSet cpShapesCollide(const cpShape *a, const cpShape *b);
 
 /// The cpSpace this body is added to.
-cpSpace* cpShapeGetSpace(const cpShape *shape);
+cpSpace *cpShapeGetSpace(const cpShape *shape);
 
 /// The cpBody this shape is connected to.
-cpBody* cpShapeGetBody(const cpShape *shape);
+cpBody *cpShapeGetBody(const cpShape *shape);
 /// Set the cpBody this shape is connected to.
 /// Can only be used if the shape is not currently added to a space.
 void cpShapeSetBody(cpShape *shape, cpBody *body);
@@ -553,16 +564,15 @@ cpShapeFilter cpShapeGetFilter(const cpShape *shape);
 /// Set the collision filtering parameters of this shape.
 void cpShapeSetFilter(cpShape *shape, cpShapeFilter filter);
 
-
 /// @}
 /// @defgroup cpCircleShape cpCircleShape
 
 /// Allocate a circle shape.
-cpCircleShape* cpCircleShapeAlloc(void);
+cpCircleShape *cpCircleShapeAlloc(void);
 /// Initialize a circle shape.
-cpCircleShape* cpCircleShapeInit(cpCircleShape *circle, cpBody *body, cpFloat radius, cpVect offset);
+cpCircleShape *cpCircleShapeInit(cpCircleShape *circle, cpBody *body, cpFloat radius, cpVect offset);
 /// Allocate and initialize a circle shape.
-cpShape* cpCircleShapeNew(cpBody *body, cpFloat radius, cpVect offset);
+cpShape *cpCircleShapeNew(cpBody *body, cpFloat radius, cpVect offset);
 
 /// Get the offset of a circle shape.
 cpVect cpCircleShapeGetOffset(const cpShape *shape);
@@ -573,11 +583,11 @@ cpFloat cpCircleShapeGetRadius(const cpShape *shape);
 /// @defgroup cpSegmentShape cpSegmentShape
 
 /// Allocate a segment shape.
-cpSegmentShape* cpSegmentShapeAlloc(void);
+cpSegmentShape *cpSegmentShapeAlloc(void);
 /// Initialize a segment shape.
-cpSegmentShape* cpSegmentShapeInit(cpSegmentShape *seg, cpBody *body, cpVect a, cpVect b, cpFloat radius);
+cpSegmentShape *cpSegmentShapeInit(cpSegmentShape *seg, cpBody *body, cpVect a, cpVect b, cpFloat radius);
 /// Allocate and initialize a segment shape.
-cpShape* cpSegmentShapeNew(cpBody *body, cpVect a, cpVect b, cpFloat radius);
+cpShape *cpSegmentShapeNew(cpBody *body, cpVect a, cpVect b, cpFloat radius);
 
 /// Let Chipmunk know about the geometry of adjacent segments to avoid colliding with endcaps.
 void cpSegmentShapeSetNeighbors(cpShape *shape, cpVect prev, cpVect next);
@@ -601,28 +611,28 @@ cpFloat cpSegmentShapeGetRadius(const cpShape *shape);
 /// @{
 
 /// Allocate a polygon shape.
-cpPolyShape* cpPolyShapeAlloc(void);
+cpPolyShape *cpPolyShapeAlloc(void);
 /// Initialize a polygon shape with rounded corners.
 /// A convex hull will be created from the vertexes.
-cpPolyShape* cpPolyShapeInit(cpPolyShape *poly, cpBody *body, int count, const cpVect *verts, cpTransform transform, cpFloat radius);
+cpPolyShape *cpPolyShapeInit(cpPolyShape *poly, cpBody *body, int count, const cpVect *verts, cpTransform transform, cpFloat radius);
 /// Initialize a polygon shape with rounded corners.
 /// The vertexes must be convex with a counter-clockwise winding.
-cpPolyShape* cpPolyShapeInitRaw(cpPolyShape *poly, cpBody *body, int count, const cpVect *verts, cpFloat radius);
+cpPolyShape *cpPolyShapeInitRaw(cpPolyShape *poly, cpBody *body, int count, const cpVect *verts, cpFloat radius);
 /// Allocate and initialize a polygon shape with rounded corners.
 /// A convex hull will be created from the vertexes.
-cpShape* cpPolyShapeNew(cpBody *body, int count, const cpVect *verts, cpTransform transform, cpFloat radius);
+cpShape *cpPolyShapeNew(cpBody *body, int count, const cpVect *verts, cpTransform transform, cpFloat radius);
 /// Allocate and initialize a polygon shape with rounded corners.
 /// The vertexes must be convex with a counter-clockwise winding.
-cpShape* cpPolyShapeNewRaw(cpBody *body, int count, const cpVect *verts, cpFloat radius);
+cpShape *cpPolyShapeNewRaw(cpBody *body, int count, const cpVect *verts, cpFloat radius);
 
 /// Initialize a box shaped polygon shape with rounded corners.
-cpPolyShape* cpBoxShapeInit(cpPolyShape *poly, cpBody *body, cpFloat width, cpFloat height, cpFloat radius);
+cpPolyShape *cpBoxShapeInit(cpPolyShape *poly, cpBody *body, cpFloat width, cpFloat height, cpFloat radius);
 /// Initialize an offset box shaped polygon shape with rounded corners.
-cpPolyShape* cpBoxShapeInit2(cpPolyShape *poly, cpBody *body, cpBB box, cpFloat radius);
+cpPolyShape *cpBoxShapeInit2(cpPolyShape *poly, cpBody *body, cpBB box, cpFloat radius);
 /// Allocate and initialize a box shaped polygon shape.
-cpShape* cpBoxShapeNew(cpBody *body, cpFloat width, cpFloat height, cpFloat radius);
+cpShape *cpBoxShapeNew(cpBody *body, cpFloat width, cpFloat height, cpFloat radius);
 /// Allocate and initialize an offset box shaped polygon shape.
-cpShape* cpBoxShapeNew2(cpBody *body, cpBB box, cpFloat radius);
+cpShape *cpBoxShapeNew2(cpBody *body, cpBB box, cpFloat radius);
 
 /// Get the number of verts in a polygon shape.
 int cpPolyShapeGetCount(const cpShape *shape);
@@ -646,13 +656,13 @@ void cpConstraintDestroy(cpConstraint *constraint);
 void cpConstraintFree(cpConstraint *constraint);
 
 /// Get the cpSpace this constraint is added to.
-cpSpace* cpConstraintGetSpace(const cpConstraint *constraint);
+cpSpace *cpConstraintGetSpace(const cpConstraint *constraint);
 
 /// Get the first body the constraint is attached to.
-cpBody* cpConstraintGetBodyA(const cpConstraint *constraint);
+cpBody *cpConstraintGetBodyA(const cpConstraint *constraint);
 
 /// Get the second body the constraint is attached to.
-cpBody* cpConstraintGetBodyB(const cpConstraint *constraint);
+cpBody *cpConstraintGetBodyB(const cpConstraint *constraint);
 
 /// Get the maximum force that this constraint is allowed to use.
 cpFloat cpConstraintGetMaxForce(const cpConstraint *constraint);
@@ -702,11 +712,11 @@ cpFloat cpConstraintGetImpulse(cpConstraint *constraint);
 cpBool cpConstraintIsPinJoint(const cpConstraint *constraint);
 
 /// Allocate a pin joint.
-cpPinJoint* cpPinJointAlloc(void);
+cpPinJoint *cpPinJointAlloc(void);
 /// Initialize a pin joint.
-cpPinJoint* cpPinJointInit(cpPinJoint *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB);
+cpPinJoint *cpPinJointInit(cpPinJoint *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB);
 /// Allocate and initialize a pin joint.
-cpConstraint* cpPinJointNew(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB);
+cpConstraint *cpPinJointNew(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB);
 
 /// Get the location of the first anchor relative to the first body.
 cpVect cpPinJointGetAnchorA(const cpConstraint *constraint);
@@ -731,11 +741,11 @@ void cpPinJointSetDist(cpConstraint *constraint, cpFloat dist);
 cpBool cpConstraintIsSlideJoint(const cpConstraint *constraint);
 
 /// Allocate a slide joint.
-cpSlideJoint* cpSlideJointAlloc(void);
+cpSlideJoint *cpSlideJointAlloc(void);
 /// Initialize a slide joint.
-cpSlideJoint* cpSlideJointInit(cpSlideJoint *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB, cpFloat min, cpFloat max);
+cpSlideJoint *cpSlideJointInit(cpSlideJoint *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB, cpFloat min, cpFloat max);
 /// Allocate and initialize a slide joint.
-cpConstraint* cpSlideJointNew(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB, cpFloat min, cpFloat max);
+cpConstraint *cpSlideJointNew(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB, cpFloat min, cpFloat max);
 
 /// Get the location of the first anchor relative to the first body.
 cpVect cpSlideJointGetAnchorA(const cpConstraint *constraint);
@@ -765,13 +775,13 @@ void cpSlideJointSetMax(cpConstraint *constraint, cpFloat max);
 cpBool cpConstraintIsPivotJoint(const cpConstraint *constraint);
 
 /// Allocate a pivot joint
-cpPivotJoint* cpPivotJointAlloc(void);
+cpPivotJoint *cpPivotJointAlloc(void);
 /// Initialize a pivot joint.
-cpPivotJoint* cpPivotJointInit(cpPivotJoint *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB);
+cpPivotJoint *cpPivotJointInit(cpPivotJoint *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB);
 /// Allocate and initialize a pivot joint.
-cpConstraint* cpPivotJointNew(cpBody *a, cpBody *b, cpVect pivot);
+cpConstraint *cpPivotJointNew(cpBody *a, cpBody *b, cpVect pivot);
 /// Allocate and initialize a pivot joint with specific anchors.
-cpConstraint* cpPivotJointNew2(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB);
+cpConstraint *cpPivotJointNew2(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB);
 
 /// Get the location of the first anchor relative to the first body.
 cpVect cpPivotJointGetAnchorA(const cpConstraint *constraint);
@@ -791,11 +801,11 @@ void cpPivotJointSetAnchorB(cpConstraint *constraint, cpVect anchorB);
 cpBool cpConstraintIsGrooveJoint(const cpConstraint *constraint);
 
 /// Allocate a groove joint.
-cpGrooveJoint* cpGrooveJointAlloc(void);
+cpGrooveJoint *cpGrooveJointAlloc(void);
 /// Initialize a groove joint.
-cpGrooveJoint* cpGrooveJointInit(cpGrooveJoint *joint, cpBody *a, cpBody *b, cpVect groove_a, cpVect groove_b, cpVect anchorB);
+cpGrooveJoint *cpGrooveJointInit(cpGrooveJoint *joint, cpBody *a, cpBody *b, cpVect groove_a, cpVect groove_b, cpVect anchorB);
 /// Allocate and initialize a groove joint.
-cpConstraint* cpGrooveJointNew(cpBody *a, cpBody *b, cpVect groove_a, cpVect groove_b, cpVect anchorB);
+cpConstraint *cpGrooveJointNew(cpBody *a, cpBody *b, cpVect groove_a, cpVect groove_b, cpVect anchorB);
 
 /// Get the first endpoint of the groove relative to the first body.
 cpVect cpGrooveJointGetGrooveA(const cpConstraint *constraint);
@@ -813,7 +823,7 @@ cpVect cpGrooveJointGetAnchorB(const cpConstraint *constraint);
 void cpGrooveJointSetAnchorB(cpConstraint *constraint, cpVect anchorB);
 
 ///////////////////////////////////////////
-//cpDampedSpring.h
+// cpDampedSpring.h
 ///////////////////////////////////////////
 
 /// Check if a constraint is a slide joint.
@@ -823,11 +833,11 @@ cpBool cpConstraintIsDampedSpring(const cpConstraint *constraint);
 typedef cpFloat (*cpDampedSpringForceFunc)(cpConstraint *spring, cpFloat dist);
 
 /// Allocate a damped spring.
-cpDampedSpring* cpDampedSpringAlloc(void);
+cpDampedSpring *cpDampedSpringAlloc(void);
 /// Initialize a damped spring.
-cpDampedSpring* cpDampedSpringInit(cpDampedSpring *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB, cpFloat restLength, cpFloat stiffness, cpFloat damping);
+cpDampedSpring *cpDampedSpringInit(cpDampedSpring *joint, cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB, cpFloat restLength, cpFloat stiffness, cpFloat damping);
 /// Allocate and initialize a damped spring.
-cpConstraint* cpDampedSpringNew(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB, cpFloat restLength, cpFloat stiffness, cpFloat damping);
+cpConstraint *cpDampedSpringNew(cpBody *a, cpBody *b, cpVect anchorA, cpVect anchorB, cpFloat restLength, cpFloat stiffness, cpFloat damping);
 
 /// Get the location of the first anchor relative to the first body.
 cpVect cpDampedSpringGetAnchorA(const cpConstraint *constraint);
@@ -859,9 +869,8 @@ cpDampedSpringForceFunc cpDampedSpringGetSpringForceFunc(const cpConstraint *con
 /// Set the damping of the spring.
 void cpDampedSpringSetSpringForceFunc(cpConstraint *constraint, cpDampedSpringForceFunc springForceFunc);
 
-
 ///////////////////////////////////////////
-//cpDampedRotarySpring.h
+// cpDampedRotarySpring.h
 ///////////////////////////////////////////
 
 /// Check if a constraint is a damped rotary springs.
@@ -871,11 +880,11 @@ cpBool cpConstraintIsDampedRotarySpring(const cpConstraint *constraint);
 typedef cpFloat (*cpDampedRotarySpringTorqueFunc)(struct cpConstraint *spring, cpFloat relativeAngle);
 
 /// Allocate a damped rotary spring.
-cpDampedRotarySpring* cpDampedRotarySpringAlloc(void);
+cpDampedRotarySpring *cpDampedRotarySpringAlloc(void);
 /// Initialize a damped rotary spring.
-cpDampedRotarySpring* cpDampedRotarySpringInit(cpDampedRotarySpring *joint, cpBody *a, cpBody *b, cpFloat restAngle, cpFloat stiffness, cpFloat damping);
+cpDampedRotarySpring *cpDampedRotarySpringInit(cpDampedRotarySpring *joint, cpBody *a, cpBody *b, cpFloat restAngle, cpFloat stiffness, cpFloat damping);
 /// Allocate and initialize a damped rotary spring.
-cpConstraint* cpDampedRotarySpringNew(cpBody *a, cpBody *b, cpFloat restAngle, cpFloat stiffness, cpFloat damping);
+cpConstraint *cpDampedRotarySpringNew(cpBody *a, cpBody *b, cpFloat restAngle, cpFloat stiffness, cpFloat damping);
 
 /// Get the rest length of the spring.
 cpFloat cpDampedRotarySpringGetRestAngle(const cpConstraint *constraint);
@@ -898,18 +907,18 @@ cpDampedRotarySpringTorqueFunc cpDampedRotarySpringGetSpringTorqueFunc(const cpC
 void cpDampedRotarySpringSetSpringTorqueFunc(cpConstraint *constraint, cpDampedRotarySpringTorqueFunc springTorqueFunc);
 
 ///////////////////////////////////////////
-//cpRotaryLimitJoint.h
+// cpRotaryLimitJoint.h
 ///////////////////////////////////////////
 
 /// Check if a constraint is a damped rotary springs.
 cpBool cpConstraintIsRotaryLimitJoint(const cpConstraint *constraint);
 
 /// Allocate a damped rotary limit joint.
-cpRotaryLimitJoint* cpRotaryLimitJointAlloc(void);
+cpRotaryLimitJoint *cpRotaryLimitJointAlloc(void);
 /// Initialize a damped rotary limit joint.
-cpRotaryLimitJoint* cpRotaryLimitJointInit(cpRotaryLimitJoint *joint, cpBody *a, cpBody *b, cpFloat min, cpFloat max);
+cpRotaryLimitJoint *cpRotaryLimitJointInit(cpRotaryLimitJoint *joint, cpBody *a, cpBody *b, cpFloat min, cpFloat max);
 /// Allocate and initialize a damped rotary limit joint.
-cpConstraint* cpRotaryLimitJointNew(cpBody *a, cpBody *b, cpFloat min, cpFloat max);
+cpConstraint *cpRotaryLimitJointNew(cpBody *a, cpBody *b, cpFloat min, cpFloat max);
 
 /// Get the minimum distance the joint will maintain between the two anchors.
 cpFloat cpRotaryLimitJointGetMin(const cpConstraint *constraint);
@@ -922,18 +931,18 @@ cpFloat cpRotaryLimitJointGetMax(const cpConstraint *constraint);
 void cpRotaryLimitJointSetMax(cpConstraint *constraint, cpFloat max);
 
 ///////////////////////////////////////////
-//cpRatchetJoint.h
+// cpRatchetJoint.h
 ///////////////////////////////////////////
 
 /// Check if a constraint is a damped rotary springs.
 cpBool cpConstraintIsRatchetJoint(const cpConstraint *constraint);
 
 /// Allocate a ratchet joint.
-cpRatchetJoint* cpRatchetJointAlloc(void);
+cpRatchetJoint *cpRatchetJointAlloc(void);
 /// Initialize a ratched joint.
-cpRatchetJoint* cpRatchetJointInit(cpRatchetJoint *joint, cpBody *a, cpBody *b, cpFloat phase, cpFloat ratchet);
+cpRatchetJoint *cpRatchetJointInit(cpRatchetJoint *joint, cpBody *a, cpBody *b, cpFloat phase, cpFloat ratchet);
 /// Allocate and initialize a ratchet joint.
-cpConstraint* cpRatchetJointNew(cpBody *a, cpBody *b, cpFloat phase, cpFloat ratchet);
+cpConstraint *cpRatchetJointNew(cpBody *a, cpBody *b, cpFloat phase, cpFloat ratchet);
 
 /// Get the angle of the current ratchet tooth.
 cpFloat cpRatchetJointGetAngle(const cpConstraint *constraint);
@@ -950,20 +959,19 @@ cpFloat cpRatchetJointGetRatchet(const cpConstraint *constraint);
 /// Set the angular distance of each ratchet.
 void cpRatchetJointSetRatchet(cpConstraint *constraint, cpFloat ratchet);
 
-
 ///////////////////////////////////////////
-//cpGearJoint.h
+// cpGearJoint.h
 ///////////////////////////////////////////
 
 /// Check if a constraint is a damped rotary springs.
 cpBool cpConstraintIsGearJoint(const cpConstraint *constraint);
 
 /// Allocate a gear joint.
-cpGearJoint* cpGearJointAlloc(void);
+cpGearJoint *cpGearJointAlloc(void);
 /// Initialize a gear joint.
-cpGearJoint* cpGearJointInit(cpGearJoint *joint, cpBody *a, cpBody *b, cpFloat phase, cpFloat ratio);
+cpGearJoint *cpGearJointInit(cpGearJoint *joint, cpBody *a, cpBody *b, cpFloat phase, cpFloat ratio);
 /// Allocate and initialize a gear joint.
-cpConstraint* cpGearJointNew(cpBody *a, cpBody *b, cpFloat phase, cpFloat ratio);
+cpConstraint *cpGearJointNew(cpBody *a, cpBody *b, cpFloat phase, cpFloat ratio);
 
 /// Get the phase offset of the gears.
 cpFloat cpGearJointGetPhase(const cpConstraint *constraint);
@@ -975,9 +983,8 @@ cpFloat cpGearJointGetRatio(const cpConstraint *constraint);
 /// Set the ratio of a gear joint.
 void cpGearJointSetRatio(cpConstraint *constraint, cpFloat ratio);
 
-
 ///////////////////////////////////////////
-//cpSimpleMotor.h
+// cpSimpleMotor.h
 ///////////////////////////////////////////
 
 /// Opaque struct type for damped rotary springs.
@@ -987,20 +994,19 @@ typedef struct cpSimpleMotor cpSimpleMotor;
 cpBool cpConstraintIsSimpleMotor(const cpConstraint *constraint);
 
 /// Allocate a simple motor.
-cpSimpleMotor* cpSimpleMotorAlloc(void);
+cpSimpleMotor *cpSimpleMotorAlloc(void);
 /// initialize a simple motor.
-cpSimpleMotor* cpSimpleMotorInit(cpSimpleMotor *joint, cpBody *a, cpBody *b, cpFloat rate);
+cpSimpleMotor *cpSimpleMotorInit(cpSimpleMotor *joint, cpBody *a, cpBody *b, cpFloat rate);
 /// Allocate and initialize a simple motor.
-cpConstraint* cpSimpleMotorNew(cpBody *a, cpBody *b, cpFloat rate);
+cpConstraint *cpSimpleMotorNew(cpBody *a, cpBody *b, cpFloat rate);
 
 /// Get the rate of the motor.
 cpFloat cpSimpleMotorGetRate(const cpConstraint *constraint);
 /// Set the rate of the motor.
 void cpSimpleMotorSetRate(cpConstraint *constraint, cpFloat rate);
 
-
 ///////////////////////////////////////////
-//cpSpace.h
+// cpSpace.h
 ///////////////////////////////////////////
 
 /// Collision begin event function callback type.
@@ -1017,7 +1023,8 @@ typedef void (*cpCollisionSeparateFunc)(cpArbiter *arb, cpSpace *space, cpDataPo
 
 /// Struct that holds function callback pointers to configure custom collision handling.
 /// Collision handlers have a pair of types; when a collision occurs between two shapes that have these types, the collision handler functions are triggered.
-struct cpCollisionHandler {
+struct cpCollisionHandler
+{
     /// Collision type identifier of the first shape that this handler recognizes.
     /// In the collision handler callback, the shape with this type will be the first argument. Read only.
     const cpCollisionType typeA;
@@ -1040,23 +1047,21 @@ struct cpCollisionHandler {
 
 // TODO: Make timestep a parameter?
 
-
-//MARK: Memory and Initialization
+// MARK: Memory and Initialization
 
 /// Allocate a cpSpace.
-cpSpace* cpSpaceAlloc(void);
+cpSpace *cpSpaceAlloc(void);
 /// Initialize a cpSpace.
-cpSpace* cpSpaceInit(cpSpace *space);
+cpSpace *cpSpaceInit(cpSpace *space);
 /// Allocate and initialize a cpSpace.
-cpSpace* cpSpaceNew(void);
+cpSpace *cpSpaceNew(void);
 
 /// Destroy a cpSpace.
 void cpSpaceDestroy(cpSpace *space);
 /// Destroy and free a cpSpace.
 void cpSpaceFree(cpSpace *space);
 
-
-//MARK: Properties
+// MARK: Properties
 
 /// Number of iterations to use in the impulse solver to solve contacts and other constraints.
 int cpSpaceGetIterations(const cpSpace *space);
@@ -1110,7 +1115,7 @@ void cpSpaceSetUserData(cpSpace *space, cpDataPointer userData);
 
 /// The Space provided static body for a given cpSpace.
 /// This is merely provided for convenience and you are not required to use it.
-cpBody* cpSpaceGetStaticBody(const cpSpace *space);
+cpBody *cpSpaceGetStaticBody(const cpSpace *space);
 
 /// Returns the current (or most recent) time step used with the given space.
 /// Useful from callbacks if your time step is not a compile-time global.
@@ -1119,8 +1124,7 @@ cpFloat cpSpaceGetCurrentTimeStep(const cpSpace *space);
 /// returns true from inside a callback when objects cannot be added/removed.
 cpBool cpSpaceIsLocked(cpSpace *space);
 
-
-//MARK: Collision Handlers
+// MARK: Collision Handlers
 
 /// Create or return the existing collision handler that is called for all collisions that are not handled by a more specific collision handler.
 cpCollisionHandler *cpSpaceAddDefaultCollisionHandler(cpSpace *space);
@@ -1130,16 +1134,15 @@ cpCollisionHandler *cpSpaceAddCollisionHandler(cpSpace *space, cpCollisionType a
 /// Create or return the existing wildcard collision handler for the specified type.
 cpCollisionHandler *cpSpaceAddWildcardHandler(cpSpace *space, cpCollisionType type);
 
-
-//MARK: Add/Remove objects
+// MARK: Add/Remove objects
 
 /// Add a collision shape to the simulation.
 /// If the shape is attached to a static body, it will be added as a static shape.
-cpShape* cpSpaceAddShape(cpSpace *space, cpShape *shape);
+cpShape *cpSpaceAddShape(cpSpace *space, cpShape *shape);
 /// Add a rigid body to the simulation.
-cpBody* cpSpaceAddBody(cpSpace *space, cpBody *body);
+cpBody *cpSpaceAddBody(cpSpace *space, cpBody *body);
 /// Add a constraint to the simulation.
-cpConstraint* cpSpaceAddConstraint(cpSpace *space, cpConstraint *constraint);
+cpConstraint *cpSpaceAddConstraint(cpSpace *space, cpConstraint *constraint);
 
 /// Remove a collision shape from the simulation.
 void cpSpaceRemoveShape(cpSpace *space, cpShape *shape);
@@ -1155,7 +1158,7 @@ cpBool cpSpaceContainsBody(cpSpace *space, cpBody *body);
 /// Test if a constraint has been added to the space.
 cpBool cpSpaceContainsConstraint(cpSpace *space, cpConstraint *constraint);
 
-//MARK: Post-Step Callbacks
+// MARK: Post-Step Callbacks
 
 /// Post Step callback function type.
 typedef void (*cpPostStepFunc)(cpSpace *space, void *key, void *data);
@@ -1165,8 +1168,7 @@ typedef void (*cpPostStepFunc)(cpSpace *space, void *key, void *data);
 /// It's possible to pass @c NULL for @c func if you only want to mark @c key as being used.
 cpBool cpSpaceAddPostStepCallback(cpSpace *space, cpPostStepFunc func, void *key, void *data);
 
-
-//MARK: Queries
+// MARK: Queries
 
 // TODO: Queries and iterators should take a cpSpace parametery.
 // TODO: They should also be abortable.
@@ -1196,8 +1198,7 @@ typedef void (*cpSpaceShapeQueryFunc)(cpShape *shape, cpContactPointSet *points,
 /// Query a space for any shapes overlapping the given shape and call @c func for each shape found.
 cpBool cpSpaceShapeQuery(cpSpace *space, cpShape *shape, cpSpaceShapeQueryFunc func, void *data);
 
-
-//MARK: Iteration
+// MARK: Iteration
 
 /// Space/body iterator callback function type.
 typedef void (*cpSpaceBodyIteratorFunc)(cpBody *body, void *data);
@@ -1214,8 +1215,7 @@ typedef void (*cpSpaceConstraintIteratorFunc)(cpConstraint *constraint, void *da
 /// Call @c func for each shape in the space.
 void cpSpaceEachConstraint(cpSpace *space, cpSpaceConstraintIteratorFunc func, void *data);
 
-
-//MARK: Indexing
+// MARK: Indexing
 
 /// Update the collision detection info for the static shapes in the space.
 void cpSpaceReindexStatic(cpSpace *space);
@@ -1227,17 +1227,16 @@ void cpSpaceReindexShapesForBody(cpSpace *space, cpBody *body);
 /// Switch the space to use a spatial has as it's spatial index.
 void cpSpaceUseSpatialHash(cpSpace *space, cpFloat dim, int count);
 
-
-//MARK: Time Stepping
+// MARK: Time Stepping
 
 /// Step the space forward in time by @c dt.
 void cpSpaceStep(cpSpace *space, cpFloat dt);
 
-
-//MARK: Debug API
+// MARK: Debug API
 
 /// Color type to use with the space debug drawing API.
-typedef struct cpSpaceDebugColor {
+typedef struct cpSpaceDebugColor
+{
     float r, g, b, a;
 } cpSpaceDebugColor;
 
@@ -1254,7 +1253,8 @@ typedef void (*cpSpaceDebugDrawDotImpl)(cpFloat size, cpVect pos, cpSpaceDebugCo
 /// Callback type for a function that returns a color for a given shape. This gives you an opportunity to color shapes based on how they are used in your engine.
 typedef cpSpaceDebugColor (*cpSpaceDebugDrawColorForShapeImpl)(cpShape *shape, cpDataPointer data);
 
-typedef enum cpSpaceDebugDrawFlags {
+typedef enum cpSpaceDebugDrawFlags
+{
     CP_SPACE_DEBUG_DRAW_SHAPES = 1,
     CP_SPACE_DEBUG_DRAW_CONSTRAINTS = 2,
     CP_SPACE_DEBUG_DRAW_COLLISION_POINTS = 4,
@@ -1294,18 +1294,15 @@ typedef struct cpSpaceDebugDrawOptions
 /// Debug draw the current state of the space using the supplied drawing options.
 void cpSpaceDebugDraw(cpSpace *space, cpSpaceDebugDrawOptions *options);
 
-
 ///////////////////////////////////////////
 // chipmunk.h
 ///////////////////////////////////////////
 
 extern const char *cpVersionString;
 
-
 ///////////////////////////////////////////
 // GENERAL
 ///////////////////////////////////////////
-
 
 /// Calculate the moment of inertia for a circle.
 /// @c r1 and @c r2 are the inner and outer diameters. A solid circle has an inner diameter of 0.
@@ -1374,19 +1371,17 @@ typedef void (*cpMarchSegmentFunc)(cpVect v0, cpVect v1, void *data);
 /// The given number of samples will be taken and spread across the bounding box area using the sampling function and context.
 /// The segment function will be called for each segment detected that lies along the density contour for @c threshold.
 void cpMarchSoft(
-cpBB bb, unsigned long x_samples, unsigned long y_samples, cpFloat threshold,
-cpMarchSegmentFunc segment, void *segment_data,
-cpMarchSampleFunc sample, void *sample_data
-);
+    cpBB bb, unsigned long x_samples, unsigned long y_samples, cpFloat threshold,
+    cpMarchSegmentFunc segment, void *segment_data,
+    cpMarchSampleFunc sample, void *sample_data);
 
 /// Trace an aliased curve of an image along a particular threshold.
 /// The given number of samples will be taken and spread across the bounding box area using the sampling function and context.
 /// The segment function will be called for each segment detected that lies along the density contour for @c threshold.
 void cpMarchHard(
-cpBB bb, unsigned long x_samples, unsigned long y_samples, cpFloat threshold,
-cpMarchSegmentFunc segment, void *segment_data,
-cpMarchSampleFunc sample, void *sample_data
-);
+    cpBB bb, unsigned long x_samples, unsigned long y_samples, cpFloat threshold,
+    cpMarchSegmentFunc segment, void *segment_data,
+    cpMarchSampleFunc sample, void *sample_data);
 
 ///////////////////////////////////////////
 // cpPolyline.h
@@ -1395,7 +1390,8 @@ cpMarchSampleFunc sample, void *sample_data
 // Polylines are just arrays of vertexes.
 // They are looped if the first vertex is equal to the last.
 // cpPolyline structs are intended to be passed by value and destroyed when you are done with them.
-typedef struct cpPolyline {
+typedef struct cpPolyline
+{
     int count, capacity;
     cpVect verts[];
 } cpPolyline;
@@ -1421,9 +1417,9 @@ cpPolyline *cpPolylineSimplifyVertexes(cpPolyline *line, cpFloat tol);
 /// Get the convex hull of a polyline as a looped polyline.
 cpPolyline *cpPolylineToConvexHull(cpPolyline *line, cpFloat tol);
 
-
 /// Polyline sets are collections of polylines, generally built by cpMarchSoft() or cpMarchHard().
-typedef struct cpPolylineSet {
+typedef struct cpPolylineSet
+{
     int count, capacity;
     cpPolyline **lines;
 } cpPolylineSet;
@@ -1458,8 +1454,8 @@ void cpPolylineSetCollectSegment(cpVect v0, cpVect v1, cpPolylineSet *lines);
 
 cpPolylineSet *cpPolylineConvexDecomposition(cpPolyline *line, cpFloat tol);
 
-//#define cpPolylineConvexDecomposition_BETA cpPolylineConvexDecomposition
-//cpPolylineSet *cpPolylineConvexDecomposition_BETA(cpPolyline *line, cpFloat tol);
+// #define cpPolylineConvexDecomposition_BETA cpPolylineConvexDecomposition
+// cpPolylineSet *cpPolylineConvexDecomposition_BETA(cpPolyline *line, cpFloat tol);
 
 ///////////////////////////////////////////
 // cpBB.h
@@ -1510,14 +1506,13 @@ static inline cpVect cpBBWrapVect(const cpBB bb, const cpVect v);
 
 static inline cpBB cpBBOffset(const cpBB bb, const cpVect v);
 
-
 ///////////////////////////////////////////
 // chipmunk_private.h
 ///////////////////////////////////////////
 void cpSpaceSetStaticBody(cpSpace *space, cpBody *body);
-//cpBool cpShapeActive2(cpShape *shape);
+// cpBool cpShapeActive2(cpShape *shape);
 
 typedef void (*cpHashSetIteratorFunc)(void *elt, void *data);
 void cpHashSetEach(cpHashSet *set, cpHashSetIteratorFunc func, void *data);
 
-cpArbiter* cpArbiterInit(cpArbiter *arb, cpShape *a, cpShape *b);
+cpArbiter *cpArbiterInit(cpArbiter *arb, cpShape *a, cpShape *b);

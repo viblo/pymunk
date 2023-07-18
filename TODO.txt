@@ -2,6 +2,7 @@ v6.x
 ----
 - Think about experimental repr of Body
 - Get inspiration of examples and debug drawing from here: https://github.com/liabru/matter-js  
+- Get inspiration of examples from the chipmunk2d examples.
 - add better example benchmark for threaded solver
 - automatic test build of android apk
 - cleanup implementation of autoexample sphinx extension
@@ -30,6 +31,7 @@ v6.x
 - Use https://diataxis.fr/ method of organizing docs (tutorials, how-to, explanation, reference)
 - Make sure cffi extensions included in wheel and zip!
 - Catch error when NaN in debugdraw, suggest doublecheck mass=0. https://github.com/viblo/pymunk/issues/226
+- Make benchmark between pymunk and pybullet. 2d bullet inspiration: https://github.com/bulletphysics/bullet3/blob/2.83/examples/Planar2D/Planar2D.cpp
 
 v7+ (all potentially breaking changes)
 ---

@@ -2,8 +2,11 @@
 Showcase 
 ********
 
-This page shows some uses of Pymunk. If you also have done something using 
-Pymunk please let me know and I can add it here!
+This page shows some of the many ways Pymunk can be used. I hope you find them
+ as inspiring as I do!
+
+If you also have done something using Pymunk please let me know, and I can 
+add it here!
 
 Games
 =====
