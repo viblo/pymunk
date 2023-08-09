@@ -130,7 +130,7 @@ Dependencies / Requirements
 Basically Pymunk have been made to be as easy to install and distribute as 
 possible, usually `pip install` will take care of everything for you.
 
-- Python (Runs on CPython 3.6 and later and Pypy3)
+- Python (Runs on CPython 3.8 (might run on earlier pythons as well) and later and Pypy3)
 - Chipmunk (Prebuilt and included when using binary wheels)
 - CFFI (will be installed automatically by Pip)
 - Setuptools (should be included with Pip)
