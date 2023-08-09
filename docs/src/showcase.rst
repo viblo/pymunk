@@ -260,6 +260,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Huang, Bingling, and Yan Jin. 
+   "Social learning in self-organizing systems for complex assembly tasks." 
+   Advanced Engineering Informatics 57 (2023): 102109.
+
 #. Yang, Yulong, Weihua Cao, Linwei Guo, Chao Gan, and Min Wu. 
    "Reinforcement Learning with Reward Shaping and Hybrid Exploration in Sparse Reward Scenes." 
    In 2023 IEEE 6th International Conference on Industrial Cyber-Physical Systems (ICPS), pp. 1-6. IEEE, 2023.
