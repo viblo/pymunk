@@ -1,7 +1,7 @@
 """Showcase of flying arrows that can stick to objects in a somewhat 
 realistic looking way.
 """
-import sys
+import math
 from typing import List
 
 import pygame
@@ -146,7 +146,10 @@ def main():
         mouse_position = pymunk.pygame_util.from_pygame(
             Vec2d(*pygame.mouse.get_pos()), screen
         )
-        cannon_body.angle = (mouse_position - cannon_body.position).angle
+        cannon_body.angle = max(
+            -math.pi / 2,
+            min(0, (mouse_position - cannon_body.position).angle),
+        )
         # move the unfired arrow together with the cannon
         arrow_body.position = cannon_body.position + Vec2d(
             cannon_shape.radius + 40, 0
@@ -167,7 +170,7 @@ def main():
             # around even when fired straight up. Might not be as accurate, but
             # maybe look better.
             drag_force_magnitude = (
-                (1 - abs(dot)) * flight_speed ** 2 * drag_constant * flying_arrow.mass
+                (1 - abs(dot)) * flight_speed**2 * drag_constant * flying_arrow.mass
             )
             arrow_tail_position = flying_arrow.position + Vec2d(-50, 0).rotated(
                 flying_arrow.angle
@@ -222,4 +225,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

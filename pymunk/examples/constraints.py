@@ -210,7 +210,7 @@ def main():
                         (0, 0),
                         shape.body.world_to_local(nearest),
                     )
-                    mouse_joint.max_force = 50000
+                    mouse_joint.max_force = 7500
                     mouse_joint.error_bias = (1 - 0.15) ** 60
                     space.add(mouse_joint)
 
