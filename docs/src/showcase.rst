@@ -260,6 +260,18 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Pan, Hainan, Bailiang Chen, Kaihong Huang, Junkai Ren, Xieyuanli Chen, and Huimin Lu. 
+   "Deep Reinforcement Learning for Flipper Control of Tracked Robots." 
+   arXiv preprint arXiv:2306.10352 (2023).
+
+#. Kim, Juhyun, Víctor de Lorenzo, and Ángel Goñi‐Moreno. 
+   "Pressure‐dependent growth controls 3D architecture of Pseudomonas putida microcolonies." 
+   Environmental Microbiology Reports (2023).
+
+#. Tanaka, Koki. 
+   "Development of Granular Jamming Soft Robots From Boundary Constrained to Interconnected Systems." 
+   PhD diss., Illinois Institute of Technology, 2023.
+
 #. Huang, Bingling, and Yan Jin. 
    "Social learning in self-organizing systems for complex assembly tasks." 
    Advanced Engineering Informatics 57 (2023): 102109.
