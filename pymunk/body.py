@@ -528,11 +528,16 @@ class Body(PickleMixin, TypingAttrMixing, object):
     ) -> None:
         """Add the force force to body as if applied from the world point.
 
-        People are sometimes confused by the difference between a force and
-        an impulse. An impulse is a very large force applied over a very
+        An impulse is a very large force applied over a very
         short period of time. Some examples are a ball hitting a wall or
         cannon firing. Chipmunk treats impulses as if they occur
         instantaneously by adding directly to the velocity of an object.
+
+        Applying the force on the other hand is for things which have effect
+        over time, such as gravity or air resistance. The force is proprtional
+        to the time step (meaning it is multiplied with the dt argument to the
+        step method).
+
         Both impulses and forces are affected the mass of an object. Doubling
         the mass of the object will halve the effect.
         """
