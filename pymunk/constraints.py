@@ -66,6 +66,7 @@ __all__ = [
     "RatchetJoint",
     "GearJoint",
     "SimpleMotor",
+    "CustomConstraint",
 ]
 
 import logging
@@ -450,7 +451,7 @@ class PivotJoint(Constraint):
         b: "Body",
         *args: Union[
             Tuple[float, float], Tuple[Tuple[float, float], Tuple[float, float]]
-        ]
+        ],
     ) -> None:
         """a and b are the two bodies to connect, and pivot is the point in
         world coordinates of the pivot.
@@ -861,3 +862,34 @@ class SimpleMotor(Constraint):
     rate = property(
         _get_rate, _set_rate, doc="""The desired relative angular velocity"""
     )
+
+
+class CustomConstraint(Constraint):
+    _pre_step_func: Callable[[Constraint, float], None]
+    _apply_cached_impulse_func: Callable[[Constraint, float], None]
+    _apply_impulse_func: Callable[[Constraint, float], None]
+    _get_impulse_func: Callable[[Constraint], float]
+
+    def __init__(self, a: "Body", b: "Body") -> None:
+        _constraint = ffi.new("cpConstraint *")
+        klass = ffi.new("cpConstraintClass *")
+        klass.preStep = lib.ext_cpConstraintPreStepImpl
+        klass.applyCachedImpulse = lib.ext_cpConstraintApplyCachedImpulseImpl
+        klass.applyImpulse = lib.ext_cpConstraintApplyImpulseImpl
+        klass.getImpulse = lib.ext_cpConstraintGetImpulseImpl
+        lib.cpConstraintInit(_constraint, klass, a._body, b._body)
+
+        self._init(a, b, _constraint)
+
+    def pre_step(self, dt):
+        print(f"pre_step {self} {dt}")
+
+    def apply_cached_impulse(self, dt):
+        print(f"apply_cached_impulse {self} {dt}")
+
+    def apply_impulse(self, dt):
+        print(f"apply_impulse {self} {dt}")
+
+    def get_impulse(self):
+        print(f"get_impulse {self}")
+        return 0
