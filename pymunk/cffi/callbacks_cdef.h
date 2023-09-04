@@ -1,9 +1,9 @@
-extern "Python" {
+extern "Python"
+{
 
     // cpConstraint.h
     void ext_cpConstraintPreSolveFunc(cpConstraint *constraint, cpSpace *space);
     void ext_cpConstraintPostSolveFunc(cpConstraint *constraint, cpSpace *space);
-
 
     // cpBody.h
     void ext_cpBodyVelocityFunc(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt);
@@ -12,7 +12,6 @@ extern "Python" {
     void ext_cpBodyShapeIteratorFunc(cpBody *body, cpShape *shape, void *data);
     void ext_cpBodyConstraintIteratorFunc(cpBody *body, cpConstraint *constraint, void *data);
     void ext_cpBodyArbiterIteratorFunc(cpBody *body, cpArbiter *arbiter, void *data);
-
 
     // cpSpace.h
 
@@ -41,4 +40,9 @@ extern "Python" {
     cpFloat ext_cpMarchSampleFunc(cpVect point, void *data);
     void ext_cpMarchSegmentFunc(cpVect v0, cpVect v1, void *data);
 
+    // chipmunk_structs.h
+    void ext_cpConstraintPreStepImpl(cpConstraint *constraint, cpFloat dt);
+    void ext_cpConstraintApplyCachedImpulseImpl(cpConstraint *constraint, cpFloat dt_coef);
+    void ext_cpConstraintApplyImpulseImpl(cpConstraint *constraint, cpFloat dt);
+    cpFloat ext_cpConstraintGetImpulseImpl(cpConstraint *constraint);
 }

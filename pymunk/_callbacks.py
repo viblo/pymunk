@@ -292,6 +292,38 @@ def ext_cpConstraintPostSolveFunc(
     constraint._post_solve_func(constraint, constraint.a.space)
 
 
+# custom constraints
+
+
+@ffi.def_extern()
+def ext_cpConstraintPreStepImpl(cp_constraint: ffi.CData, dt: float) -> None:
+    print("prestep", cp_constraint, dt)
+    constraint = ffi.from_handle(lib.cpConstraintGetUserData(cp_constraint))
+    constraint.pre_step(dt)
+
+
+@ffi.def_extern()
+def ext_cpConstraintApplyCachedImpulseImpl(
+    cp_constraint: ffi.CData, dt_coef: float
+) -> None:
+    print("apply cached impulse", cp_constraint, dt_coef)
+    constraint = ffi.from_handle(lib.cpConstraintGetUserData(cp_constraint))
+    constraint.apply_cached_impulse(dt_coef)
+
+
+@ffi.def_extern()
+def ext_cpConstraintApplyImpulseImpl(cp_constraint: ffi.CData, dt: float) -> None:
+    print("apply impulse", cp_constraint, dt)
+    constraint = ffi.from_handle(lib.cpConstraintGetUserData(cp_constraint))
+    constraint.apply_impulse(dt)
+
+
+@ffi.def_extern()
+def ext_cpConstraintGetImpulseImpl(cp_constraint: ffi.CData) -> float:
+    print("get impulse", cp_constraint)
+    constraint = ffi.from_handle(lib.cpConstraintGetUserData(cp_constraint))
+    return constraint.get_impulse()
+
 
 # Pickle of Arbiters
 @ffi.def_extern()
