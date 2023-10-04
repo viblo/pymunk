@@ -32,10 +32,10 @@ templates_path = ["_templates"]
 exclude_patterns = []
 
 
-import pymunk
+# import pymunk
 
-release = pymunk.version
-print(f"Documentation for Pymunk {release}")
+# release = pymunk.version
+# print(f"Documentation for Pymunk {release}")
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -87,11 +87,10 @@ autodoc_default_options = {
     #'exclude-members': '__weakref__'
 }
 
-# To allow readthedocs.org build documentation without the chipmunk library file
 autodoc_mock_imports = [
+    "_chipmunk_cffi",  # mock to make enums like DYBNAMIC be documented properly
     "pymunk._chipmunk",
     "_cffi_backend",
-    "_chipmunk_cffi",  # mock to make enums like DYBNAMIC be documented properly
     "matplotlib",
     "matplotlib.pyplot",
     "pygame",
