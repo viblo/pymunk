@@ -27,15 +27,8 @@ extensions = [  #'sphinx.ext.autodoc',
     "aafigure.sphinxext",
 ]
 
-
 templates_path = ["_templates"]
 exclude_patterns = []
-
-
-# import pymunk
-
-# release = pymunk.version
-# print(f"Documentation for Pymunk {release}")
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -88,7 +81,7 @@ autodoc_default_options = {
 }
 
 autodoc_mock_imports = [
-    "_chipmunk_cffi",  # mock to make enums like DYBNAMIC be documented properly
+    "_chipmunk_cffi",  # mock to make enums like DYNAMIC be documented properly
     "pymunk._chipmunk",
     "_cffi_backend",
     "matplotlib",
