@@ -78,7 +78,10 @@ autodoc_default_options = {
     # "member-order": "bysource",
     # "special-members": "__init__, __add__"
     #'exclude-members': '__weakref__'
+    "exclude-members": "index, count",
 }
+
+autodoc_preserve_defaults = True
 
 autodoc_mock_imports = [
     "_chipmunk_cffi",  # mock to make enums like DYNAMIC be documented properly
