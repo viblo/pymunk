@@ -19,8 +19,10 @@ with open("README.rst") as f:
     long_description = f.read()
 
 packages = ["pymunk", "pymunk.tests", "pymunk.examples"]
+exclude_package_data = {}
 if os.getenv("PYMUNK_BUILD_SLIM"):
     packages = ["pymunk"]
+    exclude_package_data = {"pymunk.tests": ["*.*"], "pymunk.examples": ["*.*"]}
 
 setup(
     name="pymunk",
@@ -31,7 +33,9 @@ setup(
     description="Pymunk is a easy-to-use pythonic 2d physics library",
     long_description=long_description,
     packages=packages,
-    include_package_data=True,
+    # include_package_data=True,
+    package_data={"pymunk.examples": ["*.png", "*.wav"]},
+    exclude_package_data=exclude_package_data,
     license="MIT License",
     classifiers=classifiers,
     python_requires=">=3.7",
