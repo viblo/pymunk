@@ -185,31 +185,41 @@ Except for the documented API Pymunk has a couple of interesting parts. Low
 level bindings to Chipmunk, a custom documentation generation extension and a
 customized setup.py file to allow compilation of Chipmunk.
 
-The low level chipmunk bindings are located in the file 
-pymunk_extension_build.py. 
+
 
 docs/src/ext/autoexample.py
     A Sphinx extension that scans a directory and extracts the toplevel 
     docstring. Used to autogenerate the examples documentation.
 
+pymunk/_callbacks.py
+    Callbacks cannot be specified on a class, so they are all gathered here.
+
 pymunk/_chipmunk_cffi.py
-    This file only contains a call to _chipmunk_cffi_abi.py, and exists mostly
+    This file only contains a call to _cffi_backend .py, and exists mostly
     as a wrapper to be able to switch between abi and api mode of Cffi. This 
-    is currently not in use in the relased code, but is used during 
+    is currently not in use in the released code, but is used during 
     experimentation.
     
-pymunk/_chipmkunk_cffi_abi.py
-    This file contains the pure Cffi wrapping definitons. Bascially a giant 
-    string created by copy-paster from the relevant header files of Chipmunk.  
+pymunk/pymunk_extension_build.py
+    The low level Chipmunk bindings are located in this file. Contains 
+    configuration for how to build Chipmunk2D by Cffi into a pyd file.
 
 setup.py
     Except for the standard setup stuff this file also contain the custom 
     build commands to build Chipmunk from source, using a build_ext extension.
 
+pymunk/examples/*
+  Collection of examples of usages of Pymunk. Tries to showcase most common 
+  features of Pymunk.
+
 pymunk/tests/*
     Collection of (unit) tests. Does not cover all cases, but most core 
     things are there. The tests require a working chipmunk library file.
-    
+
+pymunk_cffi/*
+    Custom (c source and header) extensions to Chipmunk2D used by Pymunk.
+    Will be used when Cffi builds the pyd extension. 
+
 tools/*
     Collection of helper scripts that can be used to various development tasks
     such as generating documentation.

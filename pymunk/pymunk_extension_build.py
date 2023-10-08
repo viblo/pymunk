@@ -7,16 +7,16 @@ from cffi import FFI  # type: ignore
 
 ffibuilder = FFI()
 
-with open("pymunk/cffi/chipmunk_cdef.h", "r") as f:
+with open("pymunk_cffi/chipmunk_cdef.h", "r") as f:
     ffibuilder.cdef(f.read())
 
 # Callbacks need extra extern Python definitions
-with open("pymunk/cffi/callbacks_cdef.h", "r") as f:
+with open("pymunk_cffi/callbacks_cdef.h", "r") as f:
     ffibuilder.cdef(f.read())
 
 hasty_space_include = ""
 if platform.system() != "Windows":
-    with open("pymunk/cffi/hastyspace_cdef.h", "r") as f:
+    with open("pymunk_cffi/hastyspace_cdef.h", "r") as f:
         ffibuilder.cdef(f.read())
     hasty_space_include = """#include "chipmunk/cpHastySpace.h" """
 
@@ -47,11 +47,11 @@ if platform.system() != "Windows":
     extra_compile_args.append("-std=c99")
 # extra_compile_args.append('/Od')
 # extra_compile_args.append('/DEBUG:FULL')
-#, '/D_CHIPMUNK_FFI'],
-with open("pymunk/cffi/extensions_cdef.h", "r") as f:
+# , '/D_CHIPMUNK_FFI'],
+with open("pymunk_cffi/extensions_cdef.h", "r") as f:
     ffibuilder.cdef(f.read())
 
-with open("pymunk/cffi/extensions.c", "r") as f:
+with open("pymunk_cffi/extensions.c", "r") as f:
     custom_functions = f.read()
 
 ffibuilder.set_source(
@@ -73,9 +73,8 @@ ffibuilder.set_source(
 
         {custom_functions}
     """,
-    
     extra_compile_args=extra_compile_args,
-    #extra_link_args=['/DEBUG:FULL'],
+    # extra_link_args=['/DEBUG:FULL'],
     include_dirs=[os.path.join("Chipmunk2D", "include")],
     sources=sources,
     libraries=libraries,
