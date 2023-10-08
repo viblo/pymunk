@@ -1,20 +1,26 @@
+import os
+
 from setuptools import setup  # type: ignore
 
-# todo: add/remove/think about this list
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Programming Language :: Python",
     "Topic :: Games/Entertainment",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: pygame",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Programming Language :: Python",
     "Programming Language :: Python :: 3",
 ]
 
 with open("README.rst") as f:
     long_description = f.read()
+
+packages = ["pymunk", "pymunk.tests", "pymunk.examples"]
+if os.getenv("PYMUNK_BUILD_SLIM"):
+    packages = ["pymunk"]
 
 setup(
     name="pymunk",
@@ -24,11 +30,11 @@ setup(
     version="6.5.1",  # remember to change me for new versions!
     description="Pymunk is a easy-to-use pythonic 2d physics library",
     long_description=long_description,
-    packages=["pymunk", "pymunk.tests", "pymunk.examples"],
+    packages=packages,
     include_package_data=True,
     license="MIT License",
     classifiers=classifiers,
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     # Require >1.14.0 since that (and older) has problem with returing structs from functions.
     install_requires=["cffi >= 1.15.0"],
     cffi_modules=["pymunk/pymunk_extension_build.py:ffibuilder"],
