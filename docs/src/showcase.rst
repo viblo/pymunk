@@ -260,6 +260,14 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Almar Oliva, Eduard. 
+   "Disseny i construcció d'un robot autònom per jugar al billar." 
+   Master's thesis, Universitat Politècnica de Catalunya, 2023.
+
+#. Pan, Hainan, Xieyuanli Chen, Junkai Ren, Bailiang Chen, Kaihong Huang, Hui Zhang, and Huimin Lu.
+   "Deep Reinforcement Learning for Flipper Control of Tracked Robots in Urban Rescuing Environments." 
+   Remote Sensing 15, no. 18 (2023): 4616.
+
 #. Yang, Yulong, Weihua Cao, Linwei Guo, Chao Gan, and Min Wu. 
    "Reinforcement Learning with Reward Shaping and Hybrid Exploration in Sparse Reward Scenes." 
    In 2023 IEEE 6th International Conference on Industrial Cyber-Physical Systems (ICPS), pp. 1-6. IEEE, 2023.
@@ -579,7 +587,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2022-12-21. If something is missing or wrong, please contact 
+List last updated 2023-10-11. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
