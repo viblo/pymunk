@@ -272,7 +272,9 @@ Then to make it easy to use we want to create a python method that looks nice::
         return cp.cpBodyIsSleeping(body._body)
 
 Now we are ready with the mapping and ready to use our new method.
-    
+  
+Note that any cdef methods are not part of the public API, and as such might 
+change between minor or patch verisons of Pymunk.
 
 Weak References and free Methods
 -----------------------------------
