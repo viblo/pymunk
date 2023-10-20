@@ -27,14 +27,22 @@ def non_batched():
         positions.append(b.position.y)
 
 
+position_arr = pymunk.cp.cpVectArrayNew(0)
+angle_arr = pymunk.cp.cpFloatArrayNew(0)
+
+
 def batched():
-    arr = pymunk.ffi.new("cpVectArr *", {"num": 0})
-    arr.num = 0
-    arr.max = 0
-    pymunk.cp.cpSpaceGetBodyPositions(s._space, arr)
-    buf = pymunk.ffi.buffer(arr.arr, pymunk.ffi.sizeof("cpVect") * arr.num)
+    position_arr.num = 0
+    angle_arr.num = 0
+    pymunk.cp.cpSpaceGetBodyPositions(s._space, position_arr, angle_arr)
+    buf = pymunk.ffi.buffer(
+        position_arr.arr, pymunk.ffi.sizeof("cpVect") * position_arr.num
+    )
     mv = memoryview(buf)
     positions = list(mv.cast("d"))
+    buf = pymunk.ffi.buffer(angle_arr.arr, pymunk.ffi.sizeof("cpFloat") * angle_arr.num)
+    mv = memoryview(buf)
+    angles = list(mv.cast("d"))
 
 
 if __name__ == "__main__":
@@ -64,3 +72,6 @@ if __name__ == "__main__":
                 )
             )
         )
+
+    pymunk.cp.cpVectArrayFree(position_arr)
+    pymunk.cp.cpFloatArrayFree(angle_arr)

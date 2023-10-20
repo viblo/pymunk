@@ -114,6 +114,12 @@ struct cpArbiter
     enum cpArbiterState state;
 };
 
+struct cpArray
+{
+    int num, max;
+    void **arr;
+};
+
 ///////////////////////////////////////////
 // cpVect.h
 ///////////////////////////////////////////
@@ -1516,3 +1522,7 @@ typedef void (*cpHashSetIteratorFunc)(void *elt, void *data);
 void cpHashSetEach(cpHashSet *set, cpHashSetIteratorFunc func, void *data);
 
 cpArbiter *cpArbiterInit(cpArbiter *arb, cpShape *a, cpShape *b);
+
+cpArray *cpArrayNew(int size);
+void cpArrayPush(cpArray *arr, void *object);
+void cpArrayFree(cpArray *arr);

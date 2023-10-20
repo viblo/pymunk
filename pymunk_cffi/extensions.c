@@ -4,29 +4,98 @@
 // Functions to support efficient batch API
 //
 
-typedef struct cpVectArr cpVectArr;
+typedef struct cpVectArray cpVectArray;
+typedef struct cpFloatArray cpFloatArray;
 
-
-struct cpVectArr {
-	int num, max;
-	cpVect *arr;
+struct cpVectArray
+{
+    int num, max;
+    cpVect *arr;
 };
 
-void cpSpaceBodyIteratorFuncForPositions(cpBody *body, void *data){
-    cpVectArr *arr = (cpVectArr*)data;
+struct cpFloatArray
+{
+    int num, max;
+    cpFloat *arr;
+};
+
+cpVectArray *
+cpVectArrayNew(int size)
+{
+    cpVectArray *arr = (cpVectArray *)cpcalloc(1, sizeof(cpVectArray));
+
+    arr->num = 0;
+    arr->max = (size ? size : 4);
+    arr->arr = (void **)cpcalloc(arr->max, sizeof(void *));
+
+    return arr;
+}
+
+void cpVectArrayFree(cpVectArray *arr)
+{
+    if (arr)
+    {
+        cpfree(arr->arr);
+        arr->arr = NULL;
+
+        cpfree(arr);
+    }
+}
+
+cpFloatArray *
+cpFloatArrayNew(int size)
+{
+    cpFloatArray *arr = (cpFloatArray *)cpcalloc(1, sizeof(cpFloatArray));
+
+    arr->num = 0;
+    arr->max = (size ? size : 4);
+    arr->arr = (void **)cpcalloc(arr->max, sizeof(void *));
+
+    return arr;
+}
+
+void cpFloatArrayFree(cpFloatArray *arr)
+{
+    if (arr)
+    {
+        cpfree(arr->arr);
+        arr->arr = NULL;
+
+        cpfree(arr);
+    }
+}
+
+void cpSpaceBodyIteratorFuncForPositions(cpBody *body, void *data)
+{
+    cpVectArray *arr = (cpVectArray *)data;
     cpVect v = cpBodyGetPosition(body);
-    if (arr->num == (arr->max - 1) || arr->num == arr->max) {
-        arr->max = 3*(arr->max + 1)/2;
-        arr->arr = (cpVect*)cprealloc(arr->arr, arr->max*sizeof(cpVect));
+    if (arr->num == (arr->max - 1) || arr->num == arr->max)
+    {
+        arr->max = 3 * (arr->max + 1) / 2;
+        arr->arr = (cpVect *)cprealloc(arr->arr, arr->max * sizeof(cpVect));
     }
     arr->arr[arr->num] = v;
     arr->num++;
-    
 }
 
-void cpSpaceGetBodyPositions(cpSpace *space, cpVectArr *arr) {
-    cpSpaceEachBody(space, cpSpaceBodyIteratorFuncForPositions, arr);
-	
+void cpSpaceBodyIteratorFuncForAngles(cpBody *body, void *data)
+{
+    cpFloatArray *arr = (cpFloatArray *)data;
+    cpFloat v = cpBodyGetAngle(body);
+    if (arr->num == (arr->max - 1) || arr->num == arr->max)
+    {
+        arr->max = 3 * (arr->max + 1) / 2;
+        arr->arr = (cpVect *)cprealloc(arr->arr, arr->max * sizeof(cpFloat));
+    }
+    arr->arr[arr->num] = v;
+    arr->num++;
+}
+
+void cpSpaceGetBodyPositions(cpSpace *space, cpVectArray *positionArr, cpFloatArray *angleArr)
+{
+    // TODO: Room for optimizations here..
+    cpSpaceEachBody(space, cpSpaceBodyIteratorFuncForPositions, positionArr);
+    cpSpaceEachBody(space, cpSpaceBodyIteratorFuncForAngles, angleArr);
 }
 
 //
@@ -34,59 +103,67 @@ void cpSpaceGetBodyPositions(cpSpace *space, cpVectArr *arr) {
 //
 typedef struct cpContact cpContact;
 
-cpHashValue cpShapeGetHashID(cpShape *shape){
+cpHashValue cpShapeGetHashID(cpShape *shape)
+{
     return shape->hashid;
 }
-void cpShapeSetHashID(cpShape *shape, cpHashValue id){
+void cpShapeSetHashID(cpShape *shape, cpHashValue id)
+{
     shape->hashid = id;
 }
 
-
-cpHashValue cpSpaceGetShapeIDCounter(cpSpace *space){
+cpHashValue cpSpaceGetShapeIDCounter(cpSpace *space)
+{
     return space->shapeIDCounter;
 }
-void cpSpaceSetShapeIDCounter(cpSpace *space, cpHashValue counter){
+void cpSpaceSetShapeIDCounter(cpSpace *space, cpHashValue counter)
+{
     space->shapeIDCounter = counter;
 }
 
-cpTimestamp cpSpaceGetTimestamp(cpSpace *space) {
+cpTimestamp cpSpaceGetTimestamp(cpSpace *space)
+{
     return space->stamp;
 }
 
-void cpSpaceSetTimestamp(cpSpace *space, cpTimestamp stamp) {
+void cpSpaceSetTimestamp(cpSpace *space, cpTimestamp stamp)
+{
     space->stamp = stamp;
 }
 
-void cpSpaceSetCurrentTimeStep(cpSpace *space, cpFloat curr_dt) {
-	space->curr_dt = curr_dt;
+void cpSpaceSetCurrentTimeStep(cpSpace *space, cpFloat curr_dt)
+{
+    space->curr_dt = curr_dt;
 }
 
 typedef void (*cpArbiterIteratorFunc)(cpArbiter *arb, void *data);
 
-void cpSpaceEachCachedArbiter(cpSpace *space, cpArbiterIteratorFunc func, void *data) {
-    cpHashSetEach(space->cachedArbiters, (cpHashSetIteratorFunc) func, data);
+void cpSpaceEachCachedArbiter(cpSpace *space, cpArbiterIteratorFunc func, void *data)
+{
+    cpHashSetEach(space->cachedArbiters, (cpHashSetIteratorFunc)func, data);
 }
 
 static inline cpCollisionHandler *
 cpSpaceLookupHandler(cpSpace *space, cpCollisionType a, cpCollisionType b, cpCollisionHandler *defaultValue)
 {
-	cpCollisionType types[] = {a, b};
-	cpCollisionHandler *handler = (cpCollisionHandler *)cpHashSetFind(space->collisionHandlers, CP_HASH_PAIR(a, b), types);
-	return (handler ? handler : defaultValue);
+    cpCollisionType types[] = {a, b};
+    cpCollisionHandler *handler = (cpCollisionHandler *)cpHashSetFind(space->collisionHandlers, CP_HASH_PAIR(a, b), types);
+    return (handler ? handler : defaultValue);
 }
 
-void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb) {
+void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb)
+{
     // Need to init the contact buffer
     cpSpacePushFreshContactBuffer(space);
-    
+
     int numContacts = arb->count;
     struct cpContact *contacts = arb->contacts;
     // Restore contact values back to the space's contact buffer memory
     arb->contacts = cpContactBufferGetArray(space);
-    
-    memcpy(arb->contacts, contacts, numContacts*sizeof(struct cpContact));
+
+    memcpy(arb->contacts, contacts, numContacts * sizeof(struct cpContact));
     cpSpacePushContacts(space, numContacts);
-    
+
     // Reinsert the arbiter into the arbiter cache
     const cpShape *a = arb->a, *b = arb->b;
     const cpShape *shape_pair[] = {a, b};
@@ -95,30 +172,32 @@ void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb) {
 
     // Set handlers to their defaults
     cpCollisionType typeA = a->type, typeB = b->type;
-	cpCollisionHandler *defaultHandler = &space->defaultHandler;
-	cpCollisionHandler *handler = arb->handler = cpSpaceLookupHandler(space, typeA, typeB, defaultHandler);
-	
-	// Check if the types match, but don't swap for a default handler which use the wildcard for type A.
-	cpBool swapped = arb->swapped = (typeA != handler->typeA && handler->typeA != CP_WILDCARD_COLLISION_TYPE);
-	
-	if(handler != defaultHandler || space->usesWildcards){
-		// The order of the main handler swaps the wildcard handlers too. Uffda.
-		arb->handlerA = cpSpaceLookupHandler(space, (swapped ? typeB : typeA), CP_WILDCARD_COLLISION_TYPE, &cpCollisionHandlerDoNothing);
-		arb->handlerB = cpSpaceLookupHandler(space, (swapped ? typeA : typeB), CP_WILDCARD_COLLISION_TYPE, &cpCollisionHandlerDoNothing);
-	}
+    cpCollisionHandler *defaultHandler = &space->defaultHandler;
+    cpCollisionHandler *handler = arb->handler = cpSpaceLookupHandler(space, typeA, typeB, defaultHandler);
+
+    // Check if the types match, but don't swap for a default handler which use the wildcard for type A.
+    cpBool swapped = arb->swapped = (typeA != handler->typeA && handler->typeA != CP_WILDCARD_COLLISION_TYPE);
+
+    if (handler != defaultHandler || space->usesWildcards)
+    {
+        // The order of the main handler swaps the wildcard handlers too. Uffda.
+        arb->handlerA = cpSpaceLookupHandler(space, (swapped ? typeB : typeA), CP_WILDCARD_COLLISION_TYPE, &cpCollisionHandlerDoNothing);
+        arb->handlerB = cpSpaceLookupHandler(space, (swapped ? typeA : typeB), CP_WILDCARD_COLLISION_TYPE, &cpCollisionHandlerDoNothing);
+    }
 
     // Update the arbiter's state
     cpArrayPush(space->arbiters, arb);
-    
+
     cpfree(contacts);
 }
 
-cpArbiter *cpArbiterNew(cpShape *a, cpShape *b) {
+cpArbiter *cpArbiterNew(cpShape *a, cpShape *b)
+{
     cpArbiter *arb = (cpArbiter *)cpcalloc(1, sizeof(struct cpArbiter));
     return cpArbiterInit(arb, a, b);
 }
 
-
-cpContact *cpContactArrAlloc(int count){
+cpContact *cpContactArrAlloc(int count)
+{
     return (cpContact *)cpcalloc(count, sizeof(struct cpContact));
 }
