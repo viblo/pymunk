@@ -21,8 +21,8 @@ with open("README.rst") as f:
 packages = ["pymunk", "pymunk.tests", "pymunk.examples"]
 exclude_package_data = {}
 if os.getenv("PYMUNK_BUILD_SLIM"):
-    packages = ["pymunk"]
-    exclude_package_data = {"pymunk.tests": ["*.*"], "pymunk.examples": ["*.*"]}
+    packages = ["pymunk", "pymunk.tests"]
+    exclude_package_data = {"pymunk.examples": ["*.*"]}
 
 setup(
     name="pymunk",
