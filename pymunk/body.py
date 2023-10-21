@@ -226,9 +226,6 @@ class Body(PickleMixin, TypingAttrMixing, object):
         elif body_type == Body.STATIC:
             self._body = ffi.gc(lib.cpBodyNewStatic(), freebody)
 
-        self._position_func = None
-        self._velocity_func = None
-
         self._space: Optional[
             "Space"
         ] = None  # Weak ref to the space holding this body (if any)
@@ -420,6 +417,12 @@ class Body(PickleMixin, TypingAttrMixing, object):
     def space(self) -> Optional["Space"]:
         """Get the :py:class:`Space` that the body has been added to (or
         None)."""
+        assert hasattr(self, "_space"), (
+            "_space not set. This can mean there's a direct or indirect"
+            " circular reference between the Body and the Space. Circular"
+            " references are not supported when using pickle or copy and"
+            " might crash."
+        )
         if self._space is not None:
             return self._space._get_self()  # ugly hack because of weakref
         else:
