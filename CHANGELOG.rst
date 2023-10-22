@@ -2,10 +2,27 @@
 Changelog 
 =========
 
+Pymunk 6.5.2 (2023-10-22)
+-------------------------
+
+**Python 3.12**
+
+This is a minor release mainly for publishing wheels for CPython 3.12.
+
+Changes:
+
+- Build wheels for CPython 3.12
+- Documentation improvements
+- Added experimental env PYMUNK_BUILD_SLIM to slim down wheels for 
+  WASM/Pyodide.
+- Added assert for circular reference when pickling/copy
+- Fixed memory leak in batched api benchmark
+
+
 Pymunk 6.5.1 (2023-06-26)
 -------------------------
 
-**Fix soruce dist**
+**Fix source dist**
 
 Some custom cffi c headers and source files are now included in the source 
 distributions so that Pymunk can be fully built from it.
