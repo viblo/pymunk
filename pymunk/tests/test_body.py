@@ -309,10 +309,10 @@ class UnitTestBody(unittest.TestCase):
 
     def test_pickle_circular_ref(self) -> None:
         class X:
-            def __init__(self):
+            def __init__(self) -> None:
                 self.space = p.Space()
 
-            def f(self, b, dt):
+            def f(self, b: p.Body, dt: float) -> None:
                 pass
 
         x = X()
