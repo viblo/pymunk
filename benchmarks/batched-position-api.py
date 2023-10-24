@@ -15,16 +15,19 @@ def setup(num_bodies=10):
     for x in range(num_bodies):
         b = pymunk.Body()
         b.position = x / 5, x / 2
+        b.angle = x / 3
         s.add(b)
     s.step(1)
 
 
 def non_batched():
     positions = []
+    angles = []
     global s
     for b in s.bodies:
         positions.append(b.position.x)
         positions.append(b.position.y)
+        angles.append(b.angle)
 
 
 position_arr = pymunk.cp.cpVectArrayNew(0)

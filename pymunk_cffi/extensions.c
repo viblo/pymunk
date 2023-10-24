@@ -26,7 +26,7 @@ cpVectArrayNew(int size)
 
     arr->num = 0;
     arr->max = (size ? size : 4);
-    arr->arr = (void **)cpcalloc(arr->max, sizeof(void *));
+    arr->arr = (cpVect *)cpcalloc(arr->max, sizeof(cpVect));
 
     return arr;
 }
@@ -49,7 +49,7 @@ cpFloatArrayNew(int size)
 
     arr->num = 0;
     arr->max = (size ? size : 4);
-    arr->arr = (void **)cpcalloc(arr->max, sizeof(void *));
+    arr->arr = (cpFloat *)cpcalloc(arr->max, sizeof(cpFloat));
 
     return arr;
 }
@@ -85,7 +85,7 @@ void cpSpaceBodyIteratorFuncForAngles(cpBody *body, void *data)
     if (arr->num == (arr->max - 1) || arr->num == arr->max)
     {
         arr->max = 3 * (arr->max + 1) / 2;
-        arr->arr = (cpVect *)cprealloc(arr->arr, arr->max * sizeof(cpFloat));
+        arr->arr = (cpFloat *)cprealloc(arr->arr, arr->max * sizeof(cpFloat));
     }
     arr->arr[arr->num] = v;
     arr->num++;
