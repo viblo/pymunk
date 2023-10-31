@@ -13,6 +13,7 @@ API Reference
         :maxdepth: 1
 
         pymunk.autogeometry
+        pymunk.batch
         pymunk.constraints
         pymunk.vec2d
         pymunk.matplotlib_util    

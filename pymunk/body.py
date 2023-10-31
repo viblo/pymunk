@@ -241,19 +241,17 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
         # self._set_id()
 
-    # @property
-    # def _id(self) -> int:
-    #     """Unique id of the Body
+    @property
+    def id(self) -> int:
+        """Unique id of the Body.
 
-    #     .. note::
-    #         Experimental API. Likely to change in future major, minor or point
-    #         releases.
-    #     """
-    #     return int(ffi.cast("int", lib.cpBodyGetUserData(self._body)))
+        A copy (or pickle) of the Body will get a new id.
 
-    # def _set_id(self) -> None:
-
-    #     Body._id_counter += 1
+        .. note::
+            Experimental API. Likely to change in future major, minor or point
+            releases.
+        """
+        return int(ffi.cast("uintptr_t", lib.cpBodyGetUserData(self._body)))
 
     def __repr__(self) -> str:
         if self.body_type == Body.DYNAMIC:

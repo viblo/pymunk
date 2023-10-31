@@ -4,48 +4,92 @@
 // Functions to support efficient batch API
 //
 
-typedef struct cpVectArray cpVectArray;
-typedef struct cpFloatArray cpFloatArray;
-
-struct cpVectArray
+typedef enum pmBatchableBodyFields
 {
-    int num, max;
-    cpVect *arr;
-};
+    BODY_ID = 1 << 0,
+    POSITION = 1 << 1,
+    ANGLE = 1 << 2,
+    VELOCITY = 1 << 3,
+    ANGULAR_VELOCITY = 1 << 4,
+} pmBatchableBodyFields;
 
-struct cpFloatArray
+typedef enum pmBatchableArbiterFields
+{
+    BODY_A_ID = 1 << 0,
+    BODY_B_ID = 1 << 1,
+    TOTAL_IMPULSE = 1 << 2,
+    TOTAL_KE = 1 << 3,
+    IS_FIRST_CONTACT = 1 << 4,
+    NORMAL = 1 << 5,
+
+    CONTACT_COUNT = 1 << 6,
+
+    POINT_A_1 = 1 << 7,
+    POINT_B_1 = 1 << 8,
+    DISTANCE_1 = 1 << 9,
+
+    POINT_A_2 = 1 << 10,
+    POINT_B_2 = 1 << 11,
+    DISTANCE_2 = 1 << 12,
+} pmBatchableArbiterFields;
+
+// typedef struct pmVectArray pmVectArray;
+typedef struct pmFloatArray pmFloatArray;
+typedef struct pmIntArray pmIntArray;
+typedef struct pmBatchedData pmBatchedData;
+
+// struct pmVectArray
+// {
+//     int num, max;
+//     cpVect *arr;
+// };
+
+struct pmFloatArray
 {
     int num, max;
     cpFloat *arr;
 };
 
-cpVectArray *
-cpVectArrayNew(int size)
+struct pmIntArray
 {
-    cpVectArray *arr = (cpVectArray *)cpcalloc(1, sizeof(cpVectArray));
+    int num, max;
+    uintptr_t *arr;
+};
 
-    arr->num = 0;
-    arr->max = (size ? size : 4);
-    arr->arr = (cpVect *)cpcalloc(arr->max, sizeof(cpVect));
-
-    return arr;
-}
-
-void cpVectArrayFree(cpVectArray *arr)
+struct pmBatchedData
 {
-    if (arr)
-    {
-        cpfree(arr->arr);
-        arr->arr = NULL;
+    pmIntArray *intArray;
+    pmFloatArray *floatArray;
+    pmBatchableBodyFields fields;
+};
 
-        cpfree(arr);
-    }
-}
+// cpVectArray *
+// cpVectArrayNew(int size)
+// {
+//     cpVectArray *arr = (cpVectArray *)cpcalloc(1, sizeof(cpVectArray));
 
-cpFloatArray *
-cpFloatArrayNew(int size)
+//     arr->num = 0;
+//     arr->max = (size ? size : 4);
+//     arr->arr = (cpVect *)cpcalloc(arr->max, sizeof(cpVect));
+
+//     return arr;
+// }
+
+// void cpVectArrayFree(cpVectArray *arr)
+// {
+//     if (arr)
+//     {
+//         cpfree(arr->arr);
+//         arr->arr = NULL;
+
+//         cpfree(arr);
+//     }
+// }
+
+pmFloatArray *
+pmFloatArrayNew(int size)
 {
-    cpFloatArray *arr = (cpFloatArray *)cpcalloc(1, sizeof(cpFloatArray));
+    pmFloatArray *arr = (pmFloatArray *)cpcalloc(1, sizeof(pmFloatArray));
 
     arr->num = 0;
     arr->max = (size ? size : 4);
@@ -54,7 +98,7 @@ cpFloatArrayNew(int size)
     return arr;
 }
 
-void cpFloatArrayFree(cpFloatArray *arr)
+void pmFloatArrayFree(pmFloatArray *arr)
 {
     if (arr)
     {
@@ -65,23 +109,8 @@ void cpFloatArrayFree(cpFloatArray *arr)
     }
 }
 
-void cpSpaceBodyIteratorFuncForPositions(cpBody *body, void *data)
+void pmFloatArrayPush(pmFloatArray *arr, cpFloat v)
 {
-    cpVectArray *arr = (cpVectArray *)data;
-    cpVect v = cpBodyGetPosition(body);
-    if (arr->num == (arr->max - 1) || arr->num == arr->max)
-    {
-        arr->max = 3 * (arr->max + 1) / 2;
-        arr->arr = (cpVect *)cprealloc(arr->arr, arr->max * sizeof(cpVect));
-    }
-    arr->arr[arr->num] = v;
-    arr->num++;
-}
-
-void cpSpaceBodyIteratorFuncForAngles(cpBody *body, void *data)
-{
-    cpFloatArray *arr = (cpFloatArray *)data;
-    cpFloat v = cpBodyGetAngle(body);
     if (arr->num == (arr->max - 1) || arr->num == arr->max)
     {
         arr->max = 3 * (arr->max + 1) / 2;
@@ -91,11 +120,163 @@ void cpSpaceBodyIteratorFuncForAngles(cpBody *body, void *data)
     arr->num++;
 }
 
-void cpSpaceGetBodyPositions(cpSpace *space, cpVectArray *positionArr, cpFloatArray *angleArr)
+void pmFloatArrayPushVect(pmFloatArray *arr, cpVect v)
 {
-    // TODO: Room for optimizations here..
-    cpSpaceEachBody(space, cpSpaceBodyIteratorFuncForPositions, positionArr);
-    cpSpaceEachBody(space, cpSpaceBodyIteratorFuncForAngles, angleArr);
+    if (arr->num == (arr->max - 2) || arr->num == (arr->max - 1) || arr->num == arr->max)
+    {
+        arr->max = 3 * (arr->max + 1) / 2;
+        arr->arr = (cpFloat *)cprealloc(arr->arr, arr->max * sizeof(cpFloat));
+    }
+    arr->arr[arr->num] = v.x;
+    arr->arr[arr->num + 1] = v.y;
+    arr->num += 2;
+}
+
+pmIntArray *
+pmIntArrayNew(int size)
+{
+    pmIntArray *arr = (pmIntArray *)cpcalloc(1, sizeof(pmIntArray));
+
+    arr->num = 0;
+    arr->max = (size ? size : 4);
+    arr->arr = (uintptr_t *)cpcalloc(arr->max, sizeof(uintptr_t));
+
+    return arr;
+}
+
+void pmIntArrayFree(pmIntArray *arr)
+{
+    if (arr)
+    {
+        cpfree(arr->arr);
+        arr->arr = NULL;
+
+        cpfree(arr);
+    }
+}
+
+void pmIntArrayPush(pmIntArray *arr, uintptr_t v)
+{
+    if (arr->num == (arr->max - 1) || arr->num == arr->max)
+    {
+        arr->max = 3 * (arr->max + 1) / 2;
+        arr->arr = (uintptr_t *)cprealloc(arr->arr, arr->max * sizeof(uintptr_t));
+    }
+    arr->arr[arr->num] = v;
+    arr->num++;
+}
+
+void pmSpaceBodyIteratorFuncBatched(cpBody *body, void *data)
+{
+    pmBatchedData *d = (pmBatchedData *)data;
+
+    if (d->fields & BODY_ID)
+    {
+        pmIntArrayPush(d->intArray, (uintptr_t)cpBodyGetUserData(body));
+    }
+    if (d->fields & POSITION)
+    {
+        pmFloatArrayPushVect(d->floatArray, cpBodyGetPosition(body));
+    }
+    if (d->fields & ANGLE)
+    {
+        pmFloatArrayPush(d->floatArray, cpBodyGetAngle(body));
+    }
+    if (d->fields & VELOCITY)
+    {
+        pmFloatArrayPushVect(d->floatArray, cpBodyGetVelocity(body));
+    }
+    if (d->fields & ANGULAR_VELOCITY)
+    {
+        pmFloatArrayPush(d->floatArray, cpBodyGetAngularVelocity(body));
+    }
+}
+
+void pmSpaceArbiterIteratorFuncBatched(cpArbiter *arbiter, void *data)
+{
+    pmBatchedData *d = (pmBatchedData *)data;
+
+    if (d->fields & (BODY_A_ID | BODY_B_ID))
+    {
+        cpBody *a;
+        cpBody *b;
+        cpArbiterGetBodies(arbiter, &a, &b);
+
+        if (d->fields & BODY_A_ID)
+        {
+            pmIntArrayPush(d->intArray, (uintptr_t)cpBodyGetUserData(a));
+        }
+        if (d->fields & BODY_B_ID)
+        {
+            pmIntArrayPush(d->intArray, (uintptr_t)cpBodyGetUserData(b));
+        }
+    }
+
+    if (d->fields & TOTAL_IMPULSE)
+    {
+        pmFloatArrayPushVect(d->floatArray, cpArbiterTotalImpulse(arbiter));
+    }
+    if (d->fields & TOTAL_KE)
+    {
+        pmFloatArrayPush(d->floatArray, cpArbiterTotalKE(arbiter));
+    }
+    if (d->fields & IS_FIRST_CONTACT)
+    {
+        pmIntArrayPush(d->intArray, cpArbiterIsFirstContact(arbiter));
+    }
+    if (d->fields & NORMAL)
+    {
+        pmFloatArrayPushVect(d->floatArray, cpArbiterGetNormal(arbiter));
+    }
+    if (d->fields & CONTACT_COUNT)
+    {
+        pmIntArrayPush(d->intArray, cpArbiterGetCount(arbiter));
+    }
+    if (d->fields & POINT_A_1)
+    {
+        pmFloatArrayPushVect(d->floatArray, cpArbiterGetPointA(arbiter, 0));
+    }
+    if (d->fields & POINT_B_1)
+    {
+        pmFloatArrayPushVect(d->floatArray, cpArbiterGetPointB(arbiter, 0));
+    }
+    if (d->fields & DISTANCE_1)
+    {
+        pmFloatArrayPush(d->floatArray, cpArbiterGetDepth(arbiter, 0));
+    }
+    if (d->fields & POINT_A_2)
+    {
+        if (cpArbiterGetCount(arbiter) == 2)
+        {
+            pmFloatArrayPushVect(d->floatArray, cpArbiterGetPointA(arbiter, 1));
+        }
+        else
+        {
+            pmFloatArrayPushVect(d->floatArray, cpv(0, 0));
+        }
+    }
+    if (d->fields & POINT_B_2)
+    {
+        if (cpArbiterGetCount(arbiter) == 2)
+        {
+            pmFloatArrayPushVect(d->floatArray, cpArbiterGetPointB(arbiter, 1));
+        }
+        else
+        {
+            pmFloatArrayPushVect(d->floatArray, cpv(0, 0));
+        }
+    }
+    if (d->fields & DISTANCE_2)
+    {
+        if (cpArbiterGetCount(arbiter) == 2)
+        {
+            pmFloatArrayPush(d->floatArray, cpArbiterGetDepth(arbiter, 1));
+        }
+        else
+        {
+            pmFloatArrayPush(d->floatArray, 0);
+        }
+    }
 }
 
 //

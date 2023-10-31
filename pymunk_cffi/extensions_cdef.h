@@ -2,27 +2,69 @@
 // Functions to support efficient batch API
 //
 
-typedef struct cpVectArray cpVectArray;
-typedef struct cpFloatArray cpFloatArray;
-
-struct cpVectArray
+typedef enum pmBatchableBodyFields
 {
-	int num, max;
-	cpVect *arr;
-};
+	BODY_ID = 1 << 0,
+	POSITION = 1 << 1,
+	ANGLE = 1 << 2,
+	VELOCITY = 1 << 3,
+	ANGULAR_VELOCITY = 1 << 4,
+} pmBatchableBodyFields;
 
-struct cpFloatArray
+typedef enum pmBatchableArbiterFields
+{
+	BODY_A_ID = 1 << 0,
+	BODY_B_ID = 1 << 1,
+	TOTAL_IMPULSE = 1 << 2,
+	TOTAL_KE = 1 << 3,
+	IS_FIRST_CONTACT = 1 << 4,
+	NORMAL = 1 << 5,
+
+	CONTACT_COUNT = 1 << 6,
+
+	POINT_A_1 = 1 << 7,
+	POINT_B_1 = 1 << 8,
+	DISTANCE_1 = 1 << 9,
+
+	POINT_A_2 = 1 << 10,
+	POINT_B_2 = 1 << 11,
+	DISTANCE_2 = 1 << 12,
+} pmBatchableArbiterFields;
+
+typedef struct pmFloatArray pmFloatArray;
+typedef struct pmIntArray pmIntArray;
+typedef struct pmBatchedData pmBatchedData;
+
+struct pmFloatArray
 {
 	int num, max;
 	cpFloat *arr;
 };
 
-cpVectArray *cpVectArrayNew(int size);
-cpFloatArray *cpFloatArrayNew(int size);
-void cpVectArrayFree(cpVectArray *arr);
-void cpFloatArrayFree(cpFloatArray *arr);
+struct pmIntArray
+{
+	int num, max;
+	uintptr_t *arr;
+};
 
-void cpSpaceGetBodyPositions(cpSpace *space, cpVectArray *positionArr, cpFloatArray *angleArr);
+struct pmBatchedData
+{
+	pmIntArray *intArray;
+	pmFloatArray *floatArray;
+	pmBatchableBodyFields fields;
+};
+
+pmFloatArray *pmFloatArrayNew(int size);
+void pmFloatArrayFree(pmFloatArray *arr);
+void pmFloatArrayPush(pmFloatArray *arr, cpFloat v);
+void pmFloatArrayPushVect(pmFloatArray *arr, cpVect v);
+
+pmIntArray *pmIntArrayNew(int size);
+void pmIntArrayFree(pmIntArray *arr);
+void pmIntArrayPush(pmIntArray *arr, uintptr_t v);
+
+void pmSpaceBodyIteratorFuncBatched(cpBody *body, void *data);
+void pmSpaceArbiterIteratorFuncBatched(cpArbiter *arbiter, void *data);
 
 //
 // Functions to support pickle of arbiters the space has cached
