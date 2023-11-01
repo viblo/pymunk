@@ -11,8 +11,8 @@ The full code of all benchmarks are available under the `benchmarks
 Note that the the benchmarks are not yet updated for Pymunk 6.0, but tests 
 look promising.
 
-Micro benchmarks
-----------------
+Get and Callbacks
+-----------------
 
 In order to measure the overhead created by Pymunk in the most common cases I 
 have created two micro benchmarks. They should show the speed of the actual 
@@ -21,7 +21,7 @@ difference different wrapping methods does.
 
 The most common thing a typical program using Pymunk does is to read out the 
 position and angle from a Pymunk object. Usually this is done each frame for 
-every object in the simulation, so this is a important factor in how fast 
+every object in the simulation, so this is an important factor in how fast 
 something will be.
 
 Given this our first test is::
@@ -30,7 +30,7 @@ Given this our first test is::
 
 (see `pymunk-get.py`)
 
-Running it is simple, for example like this for pymunk 4.0::
+Running it is simple, for example like this for Pymunk 4.0::
 
     > python -m pip install pymunk==4.0
     > python pymunk-get.py
@@ -48,7 +48,7 @@ using a callback, for example as a collision handler or a position function::
 Results:
 ########
 
-Tests run on a HP G1 1040 laptop with a Intel i7-4600U. Laptop runs Windows, 
+Tests run on an HP G1 1040 laptop with a Intel i7-4600U. Laptop runs Windows, 
 and the tests were run inside a VirtualBox VM running 64bit Debian. The CPython
 tests uses CPython from Conda, while the Pypy tests used a
 manually downloaded Pypy. CPython 2.7 is using Cffi 1.7, the other tests 
@@ -90,13 +90,79 @@ The speed increase between 5.0 and 5.1 happened because the Vec2d class and how
 its handled internally in Pymunk was changed to improve performance.
 
 
+Batch API 
+---------
+
+Pymunk 6.6.0 introduces a new experimental batch API to retrieve body and 
+collision data efficiently in batches optimized to be processed further 
+efficiently, for example with NumPy.
+
+In order to test this there's a new benchmark which compares fetching position 
+and angle (data that almost every user of the batch API will use) normally and 
+with the new API. The benchmark runs with different amount of bodies, and 
+scales number of iterations to complete in reasonable time. 
+
+(see `pymunk-batch-api.py`)
+
+The benchmark were run using an internal pre-release of Pymunk 6.6.0 running 
+on Windows using CPython 3.11 and Pypy 3.10-v7.3.12 on a ThinkPad X1 Carbon 7 
+gen.
+
+Results:
+########
+
+Below we can see that using the Batch API is faster already at 5 bodies in a 
+space, and it handles high amounts of bodies about 40x faster than the normal
+non-batch API if you use CPython. With Pypy the improvements are much more 
+modest.
+
+======  ==========  =========  ===========  ==========
+Bodies  Normal API  Batch API  Normal Pypy  Batch Pypy
+======  ==========  =========  ===========  ==========
+1       2.2s        4.2s       0.4s         0.5s
+5       2.0s        0.8s       0.3s         0.3s
+10      2.1s        0.4s       0.3s         0.2s
+100     2.2s        0.09s      0.3s         0.2s
+1000    2.3s        0.05s      0.3s         0.2s
+10000   n/a         0.04s      n/a          0.2s
+50000   n/a         0.06s      n/a          0.2s
+100000  n/a         0.07s      n/a          0.2s
+======  ==========  =========  ===========  ==========
+
+The resulting times are the time to get the position and angle data 1000000 
+times divided by the number of bodies.
+
+From this we can see that if there's only 1 body, then using the normal API
+is twice as fast as the batch API if CPython is used. However, already at 5 
+bodies the Batch API is (more than) twice as fast as the normal API. This was 
+better than expected, and shows the potential. 
+
+For higher amounts of bodies its clear that the runtime for normal API scales 
+more or less linearly, which means that the overhead to get a single body is 
+constant regardless of number of bodies. For the batch API, we can see that 
+there's a high overhead from the batch, and its first when we reach about 
+1000 bodies that it starts to scale like the normal API with a more or less 
+constant overhead per body. We can also see that there's a slight increase in 
+per body times, maybe because of the bigger array needed to collect the 
+results, or some other overhead within Chipmunk. 
+
+On the other hand, for Pypy the result is much less exciting. Pypy using the 
+normal API is already very fast, as shown by the `Pymunk-Get` benchmark, and 
+using the batch API provides only a modest improvement. 
+
+
 Compared to Other Physics Libraries
 -----------------------------------
+
+.. note:: 
+    Cymunk (and also pybox2d) seems to be unmaintained at the present (2023).
+
 
 Cymunk
 ######
 
-`Cymunk <https://github.com/kivy/cymunk>`_ is an alternative wrapper around Chipmunk. In contrast to Pymunk it uses Cython for wrapping (Pymunk uses CFFI) 
+`Cymunk <https://github.com/kivy/cymunk>`_ is an alternative wrapper around 
+Chipmunk. In contrast to Pymunk it uses Cython for wrapping (Pymunk uses CFFI) 
 which gives it a different performance profile. However, since both are built 
 around Chipmunk the overall speed will be very similar, only when information 
 passes from/to Chipmunk will there be a difference. This is exactly the kind of 
@@ -144,7 +210,7 @@ Collision-Callback:
 ..               CPython 3.5.3  Pypy 5.8
 ===============  =============  ========
 Pymunk 5.3       3.71s          0.58s
-Pymunk 20170916  0.95s          (7.01s)
+Cymunk 20170916  0.95s          (7.01s)
 ===============  =============  ========
 
 (Cymunk results on Pypy within parentheses since Cython is well known to be 

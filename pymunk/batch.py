@@ -16,18 +16,18 @@ First create space and two bodies.
 >>> b2.position = 3,4
 >>> s.add(b2, pymunk.Circle(b2, 4))
 
-To get data out first create a BatchData holder object, which is used to reuse
+To get data out first create a Buffers holder object, which is used to reuse
 the underlying arrays between calls. Then call the batch method. Note that 
 the fields on the body to extract need to be specified explicitly.
 
->>> data = pymunk.batch.BatchedData()
+>>> data = pymunk.batch.Buffers()
 >>> pymunk.batch.get_space_bodies(
 ...     s,
 ...     pymunk.batch.BodyFields.BODY_ID | pymunk.batch.BodyFields.POSITION,
 ...     data,
 ... )
 
-The data is available in the BatchedData object as cffi buffers. One that 
+The data is available in the Buffers object as cffi buffers. One that 
 contains any int data, and one that contains floating point data. You can 
 either use it directly like here, but also pass it in to 3rd parties that 
 implements the buffer protocol like numpy arrays.
@@ -59,13 +59,12 @@ __docformat__ = "reStructuredText"
 __all__ = [
     "BodyFields",
     "ArbiterFields",
-    "BatchedData",
+    "Buffers",
     "get_space_bodies",
     "get_space_arbiters",
 ]
 
 from enum import Flag
-from typing import cast
 
 from ._chipmunk_cffi import ffi, lib
 from .space import Space
@@ -125,7 +124,7 @@ class ArbiterFields(Flag):
     """All the fields"""
 
 
-class BatchedData(object):
+class Buffers(object):
     _int_arr: ffi.CData = None
     _float_arr: ffi.CData = None
 
@@ -162,9 +161,7 @@ class BatchedData(object):
         )
 
 
-def get_space_bodies(
-    space: Space, fields: BodyFields, batched_data: BatchedData
-) -> None:
+def get_space_bodies(space: Space, fields: BodyFields, buffers: Buffers) -> None:
     """Get data for all bodies in the space.
 
     Filter out the fields you are interested in with the fields property.
@@ -173,8 +170,8 @@ def get_space_bodies(
     """
     _data = ffi.new("pmBatchedData *")
     _data.fields = fields.value
-    _data.floatArray = batched_data._float_arr
-    _data.intArray = batched_data._int_arr
+    _data.floatArray = buffers._float_arr
+    _data.intArray = buffers._int_arr
 
     lib.cpSpaceEachBody(
         space._space,
@@ -183,9 +180,7 @@ def get_space_bodies(
     )
 
 
-def get_space_arbiters(
-    space: Space, fields: ArbiterFields, batched_data: BatchedData
-) -> None:
+def get_space_arbiters(space: Space, fields: ArbiterFields, buffers: Buffers) -> None:
     """Get data for all active arbiters in the space.
 
     Filter out the fields you are interested in with the fields property.
@@ -194,8 +189,8 @@ def get_space_arbiters(
     """
     _data = ffi.new("pmBatchedData *")
     _data.fields = fields.value
-    _data.floatArray = batched_data._float_arr
-    _data.intArray = batched_data._int_arr
+    _data.floatArray = buffers._float_arr
+    _data.intArray = buffers._int_arr
 
     lib.cpSpaceEachCachedArbiter(
         space._space,
