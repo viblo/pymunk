@@ -17,6 +17,7 @@ Changes:
 
 - New pymunk.batch module with batch API.
 - Batch api benchmark
+- Batch version of colors.py example
 - Improved types
 - Improve build/packaging
 
