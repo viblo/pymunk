@@ -7,7 +7,6 @@ __docformat__ = "reStructuredText"
 
 import math
 import random
-import os.path
 from typing import List
 
 import pyglet
@@ -16,13 +15,14 @@ import pymunk
 from pymunk import Vec2d
 
 window = pyglet.window.Window(width=600, height=600)
+pyglet.gl.glClearColor(0, 0, 0, 1.0)
 
 fps_display = pyglet.window.FPSDisplay(window)
 
 logo_img = pyglet.resource.image("pymunk_logo_googlecode.png")
 logo_img.anchor_x = logo_img.width / 2
 logo_img.anchor_y = logo_img.height / 2
-logos: List[pymunk.Shape] = []
+logos: List[pyglet.sprite.Sprite] = []
 batch = pyglet.graphics.Batch()
 
 ### Physics stuff
@@ -71,7 +71,6 @@ def on_draw():
 
     # debug draw
     for logo_sprite in logos:
-
         ps = logo_sprite.shape.get_vertices()
         ps = [p.rotated(logo_sprite.body.angle) + logo_sprite.body.position for p in ps]
         assert len(ps) == 3
