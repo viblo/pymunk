@@ -16,18 +16,18 @@ First create space and two bodies.
 >>> b2.position = 3,4
 >>> s.add(b2, pymunk.Circle(b2, 4))
 
-To get data out first create a Buffers holder object, which is used to reuse
+To get data out first create a Buffer holder object, which is used to reuse
 the underlying arrays between calls. Then call the batch method. Note that 
 the fields on the body to extract need to be specified explicitly.
 
->>> data = pymunk.batch.Buffers()
+>>> data = pymunk.batch.Buffer()
 >>> pymunk.batch.get_space_bodies(
 ...     s,
 ...     pymunk.batch.BodyFields.BODY_ID | pymunk.batch.BodyFields.POSITION,
 ...     data,
 ... )
 
-The data is available in the Buffers object as cffi buffers. One that 
+The data is available in the Buffer object as cffi buffers. One that 
 contains any int data, and one that contains floating point data. You can 
 either use it directly like here, but also pass it in to 3rd parties that 
 implements the buffer protocol like numpy arrays.
@@ -42,7 +42,7 @@ to call step to run the simulation, and clear the data data buffers first so
 they can be reused:
 
 >>> s.step(1)
->>> data.soft_clear()
+>>> data.clear()
 >>> pymunk.batch.get_space_arbiters(
 ...     s,
 ...     pymunk.batch.ArbiterFields.BODY_A_ID | pymunk.batch.ArbiterFields.BODY_B_ID,
@@ -59,7 +59,7 @@ __docformat__ = "reStructuredText"
 __all__ = [
     "BodyFields",
     "ArbiterFields",
-    "Buffers",
+    "Buffer",
     "get_space_bodies",
     "get_space_arbiters",
 ]
@@ -124,7 +124,7 @@ class ArbiterFields(Flag):
     """All the fields"""
 
 
-class Buffers(object):
+class Buffer(object):
     _int_arr: ffi.CData = None
     _float_arr: ffi.CData = None
 
@@ -133,11 +133,11 @@ class Buffers(object):
         self._float_arr = lib.pmFloatArrayNew(0)
         self._int_arr = lib.pmIntArrayNew(0)
 
-    def soft_clear(self) -> None:
-        """Soft clear the internal arrays for reuse.
+    def clear(self) -> None:
+        """Mark the internal arrays empty (for reuse).
 
         It is more efficient to reuse the BatchedData object and its internal
-        arrays by callint soft_clear, than to create a new object each step.
+        arrays by calling clear, than to create a new object each step.
         """
         self._float_arr.num = 0
         self._int_arr.num = 0
@@ -161,7 +161,7 @@ class Buffers(object):
         )
 
 
-def get_space_bodies(space: Space, fields: BodyFields, buffers: Buffers) -> None:
+def get_space_bodies(space: Space, fields: BodyFields, buffers: Buffer) -> None:
     """Get data for all bodies in the space.
 
     Filter out the fields you are interested in with the fields property.
@@ -180,7 +180,7 @@ def get_space_bodies(space: Space, fields: BodyFields, buffers: Buffers) -> None
     )
 
 
-def get_space_arbiters(space: Space, fields: ArbiterFields, buffers: Buffers) -> None:
+def get_space_arbiters(space: Space, fields: ArbiterFields, buffers: Buffer) -> None:
     """Get data for all active arbiters in the space.
 
     Filter out the fields you are interested in with the fields property.

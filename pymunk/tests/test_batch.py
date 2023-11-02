@@ -8,13 +8,13 @@ class UnitTestBatch(unittest.TestCase):
     def test_empty(self) -> None:
         s = pymunk.Space()
 
-        data = pymunk.batch.Buffers()
+        data = pymunk.batch.Buffer()
         pymunk.batch.get_space_bodies(s, pymunk.batch.BodyFields.BODY_ID, data)
 
         self.assertEqual(list(memoryview(data.float_buf()).cast("d")), [])
         self.assertEqual(list(memoryview(data.int_buf()).cast("P")), [])
 
-        data = pymunk.batch.Buffers()
+        data = pymunk.batch.Buffer()
         pymunk.batch.get_space_arbiters(s, pymunk.batch.ArbiterFields.BODY_A_ID, data)
 
         self.assertEqual(list(memoryview(data.float_buf()).cast("d")), [])
@@ -37,7 +37,7 @@ class UnitTestBatch(unittest.TestCase):
         b2.angular_velocity = 15
         s.add(b2, pymunk.Circle(b2, 4))
 
-        data = pymunk.batch.Buffers()
+        data = pymunk.batch.Buffer()
 
         pymunk.batch.get_space_bodies(
             s, pymunk.batch.BodyFields.BODY_ID | pymunk.batch.BodyFields.POSITION, data
@@ -48,7 +48,7 @@ class UnitTestBatch(unittest.TestCase):
         )
         self.assertEqual(list(memoryview(data.int_buf()).cast("P")), [b1.id, b2.id])
 
-        data = pymunk.batch.Buffers()
+        data = pymunk.batch.Buffer()
         pymunk.batch.get_space_bodies(s, pymunk.batch.BodyFields.ALL, data)
 
         self.assertEqual(
@@ -79,7 +79,7 @@ class UnitTestBatch(unittest.TestCase):
 
         s.step(0.1)
 
-        data = pymunk.batch.Buffers()
+        data = pymunk.batch.Buffer()
         pymunk.batch.get_space_arbiters(
             s,
             pymunk.batch.ArbiterFields.BODY_A_ID | pymunk.batch.ArbiterFields.BODY_B_ID,
@@ -92,7 +92,7 @@ class UnitTestBatch(unittest.TestCase):
         expected_ids = sorted([b1.id, b1.id, b2.id, b2.id, b3.id, b3.id])
         self.assertSequenceEqual(actual_ids, expected_ids)
 
-        data.soft_clear()
+        data.clear()
 
         pymunk.batch.get_space_arbiters(s, pymunk.batch.ArbiterFields.ALL, data)
 
