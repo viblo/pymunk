@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2016 Victor Blomqvist
+# Copyright (c) 2007-2023 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -123,7 +123,6 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
     ) -> None:
-
         bg = pyglet.graphics.OrderedGroup(0)
         fg = pyglet.graphics.OrderedGroup(1)
 
@@ -155,7 +154,6 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
     ) -> None:
-
         c = fill_color.as_int()
         pv1 = a
         pv2 = b
@@ -183,7 +181,6 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
     ) -> None:
-
         c = fill_color.as_int()
         s = pyglet.shapes.Polygon(*verts, color=c[:3], batch=self.batch)
         self.draw_shapes.append(s)

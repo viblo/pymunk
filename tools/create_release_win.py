@@ -9,10 +9,9 @@ def main():
         """
     Remember (before running this script!): 
     - change version number in README.rst, setup.py, CITATION.cff and _version.py
-    - write entry in CHANGELOG.rst
+    - write changelog entry in CHANGELOG.rst
     - test in at least CPython 3.x and Pypy3
     - validate test results of Github Actions
-    - write changelog entry and put in changelog.rst
     - make sure all images are optimized (for example with tinypng.com)
     - generate docs before running sdist
     - Make sure cffi extensions included in wheel and zip!!!!

@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2020 Victor Blomqvist
+# Copyright (c) 2007-2023 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -191,7 +191,7 @@ class Vec2d(NamedTuple):
 
         :return: The squared length
         """
-        return self.x ** 2 + self.y ** 2
+        return self.x**2 + self.y**2
 
     @property
     def length(self) -> float:
@@ -204,7 +204,7 @@ class Vec2d(NamedTuple):
 
         :return: The length
         """
-        return math.sqrt(self.x ** 2 + self.y ** 2)
+        return math.sqrt(self.x**2 + self.y**2)
 
     def scale_to_length(self, length: float) -> "Vec2d":
         """Return a copy of this vector scaled to the given length.
@@ -394,7 +394,7 @@ class Vec2d(NamedTuple):
 
     # Extra functions, mainly for chipmunk
     def cpvrotate(self, other: Tuple[float, float]) -> "Vec2d":
-        """Uses complex multiplication to rotate this vector by the other. """
+        """Uses complex multiplication to rotate this vector by the other."""
         assert len(other) == 2
         return Vec2d(
             self.x * other[0] - self.y * other[1], self.x * other[1] + self.y * other[0]

@@ -2,6 +2,25 @@
 Changelog 
 =========
 
+Pymunk 6.6.0 (2023-11-02)
+-------------------------
+
+**Experimental Batch API**
+
+This release adds a (experimental) batch API that can be used to efficiently 
+get body properties such as positions, and collision data for all bodies /
+collisions in a space in one call. This way the overhead of calling the 
+underlying c library (Chipmunk2D) is minimized, enabling a massive speedup
+in some cases.
+
+Changes:
+
+- New pymunk.batch module with batch API.
+- Batch api benchmark
+- Improved types
+- Improve build/packaging
+
+
 Pymunk 6.5.2 (2023-10-22)
 -------------------------
 

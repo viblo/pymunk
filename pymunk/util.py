@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2016 Victor Blomqvist
+# Copyright (c) 2007-2023 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -161,7 +161,6 @@ def convex_hull(points):
     hull = [p0, points[1]]
 
     for p in points[2:]:
-
         pt1 = hull[-1]
         pt2 = hull[-2]
         l = is_left(pt2, pt1, p)
