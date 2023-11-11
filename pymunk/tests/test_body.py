@@ -270,6 +270,30 @@ class UnitTestBody(unittest.TestCase):
         self.assertTrue(s2 in b1.shapes)
         self.assertTrue(s1 not in s.static_body.shapes)
 
+    def test_body_type_update(self) -> None:
+        s = p.Space()
+        b1 = p.Body(body_type=p.Body.STATIC)
+        b1.position = 3, 4
+        b2 = p.Body(body_type=p.Body.STATIC)
+        c = p.PinJoint(b1, b2, (0, 0), (1, 1))
+        s.add(b1, b2, c)
+        s.step(1)
+
+        b1.body_type = p.Body.DYNAMIC
+
+        self.assertEqual(b1.mass, 0)
+        self.assertEqual(b1.moment, 0)
+        self.assertEqual(b1.angular_velocity, 0)
+
+        b1.mass = 1
+        b1.moment = 10
+        s.step(1)
+
+        self.assertEqual(b1.position, (3, 4))
+        self.assertAlmostEqual(b1.velocity.x, 0)
+        self.assertAlmostEqual(b1.velocity.y, 0)
+        self.assertAlmostEqual(b1.angular_velocity, 0)
+
     def test_pickle(self) -> None:
         b = p.Body(1, 2)
         b.custom = "test"
