@@ -63,29 +63,6 @@ struct pmBatchedData
     pmBatchableBodyFields fields;
 };
 
-// cpVectArray *
-// cpVectArrayNew(int size)
-// {
-//     cpVectArray *arr = (cpVectArray *)cpcalloc(1, sizeof(cpVectArray));
-
-//     arr->num = 0;
-//     arr->max = (size ? size : 4);
-//     arr->arr = (cpVect *)cpcalloc(arr->max, sizeof(cpVect));
-
-//     return arr;
-// }
-
-// void cpVectArrayFree(cpVectArray *arr)
-// {
-//     if (arr)
-//     {
-//         cpfree(arr->arr);
-//         arr->arr = NULL;
-
-//         cpfree(arr);
-//     }
-// }
-
 pmFloatArray *
 pmFloatArrayNew(int size)
 {
@@ -234,15 +211,36 @@ void pmSpaceArbiterIteratorFuncBatched(cpArbiter *arbiter, void *data)
     }
     if (d->fields & POINT_A_1)
     {
-        pmFloatArrayPushVect(d->floatArray, cpArbiterGetPointA(arbiter, 0));
+        if (cpArbiterGetCount(arbiter) > 0)
+        {
+            pmFloatArrayPushVect(d->floatArray, cpArbiterGetPointA(arbiter, 0));
+        }
+        else
+        {
+            pmFloatArrayPushVect(d->floatArray, cpv(0, 0));
+        }
     }
     if (d->fields & POINT_B_1)
     {
-        pmFloatArrayPushVect(d->floatArray, cpArbiterGetPointB(arbiter, 0));
+        if (cpArbiterGetCount(arbiter) > 0)
+        {
+            pmFloatArrayPushVect(d->floatArray, cpArbiterGetPointB(arbiter, 0));
+        }
+        else
+        {
+            pmFloatArrayPushVect(d->floatArray, cpv(0, 0));
+        }
     }
     if (d->fields & DISTANCE_1)
     {
-        pmFloatArrayPush(d->floatArray, cpArbiterGetDepth(arbiter, 0));
+        if (cpArbiterGetCount(arbiter) > 0)
+        {
+            pmFloatArrayPush(d->floatArray, cpArbiterGetDepth(arbiter, 0));
+        }
+        else
+        {
+            pmFloatArrayPush(d->floatArray, 0);
+        }
     }
     if (d->fields & POINT_A_2)
     {

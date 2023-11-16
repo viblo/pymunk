@@ -147,3 +147,41 @@ class UnitTestBatch(unittest.TestCase):
         b1.each_arbiter(check_arb_data)
         b2.each_arbiter(check_arb_data)
         b3.each_arbiter(check_arb_data)
+
+    def test_get_arbiter_sensor(self):
+        s = pymunk.Space()
+
+        b1 = pymunk.Body(1, 1)
+        s1 = pymunk.Circle(b1, 40)
+        s.add(b1, s1)
+
+        b2 = pymunk.Body(1, 1)
+        b2.position = 1,0
+        s2 = pymunk.Poly.create_box(b2)
+        s2.sensor = True
+        s.add(b2, s2)
+
+        s.step(0.1)
+
+        data = pymunk.batch.Buffer()
+        pymunk.batch.get_space_arbiters(
+            s,
+            pymunk.batch.ArbiterFields.BODY_A_ID 
+            | pymunk.batch.ArbiterFields.BODY_B_ID
+            | pymunk.batch.ArbiterFields.CONTACT_COUNT
+            | pymunk.batch.ArbiterFields.DISTANCE_1
+            | pymunk.batch.ArbiterFields.DISTANCE_2
+            | pymunk.batch.ArbiterFields.POINT_A_1
+            | pymunk.batch.ArbiterFields.POINT_A_2
+            | pymunk.batch.ArbiterFields.POINT_B_1
+            | pymunk.batch.ArbiterFields.POINT_B_2,
+            data,
+        )
+
+        
+        self.assertEqual(list(memoryview(data.int_buf()).cast("P")), [b1.id, b2.id, 0])
+
+        self.assertEqual(
+            list(memoryview(data.float_buf()).cast("d")),
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        )

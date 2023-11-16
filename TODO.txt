@@ -38,9 +38,17 @@ v6.x
 v7+ (all potentially breaking changes)
 ---
 - Think about split between pymunk.util and pymunk modules
+
+
+Chipmunk improvements
+---------------------
 - Investigate the SPOOK solver, which could be much more stable than what is currently used. (but probably very difficult to switch to). https://github.com/viblo/pymunk/issues/216
 - Investigate "Affine Body Dynamics Fast, Stable & Intersection-free Simulation of Stiff Materials"
-
+- optimize step function:
+  - streamline build - benchmark
+  - https://www.microsoft.com/en-us/research/wp-content/uploads/2016/12/ccds.pdf
+- collision detection:
+  - r-tree https://www.sebastiansylvan.com/post/r-trees--adapting-out-of-core-techniques-to-modern-memory-architectures/
 
 Typing a existing project - learnings
 -------------------------------------
