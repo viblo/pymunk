@@ -2,6 +2,9 @@
 Changelog 
 =========
 
+.. 
+  Fix for 2 static bodies that are changed to dynamic and are attached to constraints
+
 Pymunk 6.6.0 (2023-11-02)
 -------------------------
 
@@ -17,6 +20,7 @@ Changes:
 
 - New pymunk.batch module with batch API.
 - Batch api benchmark
+- Batch version of colors.py example
 - Improved types
 - Improve build/packaging
 

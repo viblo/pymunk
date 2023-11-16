@@ -20,6 +20,8 @@ def main():
 
     print(
         """
+    > git tag X.Y.Z
+    > git push --tags
     > python setup.py sdist 
         
     """
@@ -30,7 +32,7 @@ def main():
     Once the release is done, remember to:
     - tag code on github with version
     - Download dists from github release
-    - Upload files on pypi (> python -m twine upload dist/6.5.0*) with correct version
+    - Upload files on pypi (> python -m twine upload dist/pymunk-6.5.0*) with correct version
     - (not needed anymore) Update Pymunk entry on pygame.org
     - (pr will be craeted automatically when condra forge notice the new version) Update Pymunk on conda-forge
     - Trigger docs build in readthedocs for www.pymunk.org

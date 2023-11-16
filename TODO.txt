@@ -34,6 +34,7 @@ v6.x
 - Remove support for Python 3.7 (check https://pypistats.org/packages/pymunk first)
 - After a couple of versions / time passed, re-evaluate if batch api should be separate or merged in to space.
 - Think about the copyright notice in some files. Keep / put everywere / remove?
+- Constraint private accumulated over previous time step properties are not saved when pickle. 
 
 v7+ (all potentially breaking changes)
 ---
