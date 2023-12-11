@@ -260,6 +260,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+#. Li, Shiqian, Kewen Wu, Chi Zhang, and Yixin Zhu. 
+   "I-PHYRE: Interactive Physical Reasoning." 
+   arXiv preprint arXiv:2312.03009 (2023).
+
 #. Almar Oliva, Eduard. 
    "Disseny i construcció d'un robot autònom per jugar al billar." 
    Master's thesis, Universitat Politècnica de Catalunya, 2023.
