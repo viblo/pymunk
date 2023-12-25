@@ -259,6 +259,21 @@ Papers / Science
 Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
+# Liu, Ziang, Genggeng Zhou, Jeff He, Tobia Marcucci, Li Fei-Fei, Jiajun Wu, and Yunzhu Li. 
+  "Model-Based Control with Sparse Neural Dynamics." 
+  arXiv preprint arXiv:2312.12791 (2023).
+
+# Yuan, Jianya, Mengxue Han, Hongjian Wang, Bo Zhong, Wei Gao, and Dan Yu. 
+  "AUV Collision Avoidance Planning Method Based on Deep Deterministic Policy Gradient." 
+  Journal of Marine Science and Engineering 11, no. 12 (2023): 2258.
+
+# Renna, Luca. 
+  "Deep Reinforcement Learning for 2D Physics-Based Object Manipulation in Clutter." 
+  arXiv preprint arXiv:2312.04570 (2023).
+
+# Sosa, Felix, Samuel J. Gershman, and Tomer D. Ullman. 
+  "Blending simulation and abstraction for physical reasoning."
+   (2023).
 
 #. Li, Shiqian, Kewen Wu, Chi Zhang, and Yixin Zhu. 
    "I-PHYRE: Interactive Physical Reasoning." 
