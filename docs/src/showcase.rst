@@ -259,6 +259,11 @@ Papers / Science
 Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
+
+# Pan, Hainan, Bailiang Chen, Kaihong Huang, Junkai Ren, Chuang Cheng, Huimin Lu, and Hui Zhang. 
+  "Flipper Control Method for Tracked Robot Based on Deep Reinforcement Learning." 
+  Journal of System Simulation 36, no. 2 (2024): 405.
+
 # Liu, Ziang, Genggeng Zhou, Jeff He, Tobia Marcucci, Li Fei-Fei, Jiajun Wu, and Yunzhu Li. 
   "Model-Based Control with Sparse Neural Dynamics." 
   arXiv preprint arXiv:2312.12791 (2023).
