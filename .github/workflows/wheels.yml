@@ -11,7 +11,7 @@ jobs:
         os: [ubuntu-20.04, windows-2019, macos-11]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -39,7 +39,7 @@ jobs:
           retention-days: 7
 
       - name: Upload sdist artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if:
           ${{ github.ref == 'refs/heads/master' && matrix.os == 'windows-2019'}}
         with:
@@ -50,22 +50,22 @@ jobs:
     name: Build wheels for wasm / emscripten
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11.2"
       - run: |
           pip install pyodide-build>=0.23.3
           echo EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version) >> $GITHUB_ENV
-      - uses: mymindstorm/setup-emsdk@v12
+      - uses: mymindstorm/setup-emsdk@v14
         with:
           version: ${{ env.EMSCRIPTEN_VERSION }}
       - run: pyodide build
         env:
           PYMUNK_BUILD_SLIM: 1
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
           path: ./dist/*.whl
