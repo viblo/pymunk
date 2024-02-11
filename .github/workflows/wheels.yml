@@ -44,6 +44,7 @@ jobs:
         if:
           ${{ github.ref == 'refs/heads/master' && matrix.os == 'windows-2019'}}
         with:
+          name: sdist-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./dist/*.tar.gz
           retention-days: 7
 
