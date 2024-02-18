@@ -260,6 +260,30 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+# Pan, Hainan, Bailiang Chen, Kaihong Huang, Junkai Ren, Chuang Cheng, Huimin Lu, and Hui Zhang. 
+  "Flipper Control Method for Tracked Robot Based on Deep Reinforcement Learning." 
+  Journal of System Simulation 36, no. 2 (2024): 405.
+
+# Liu, Ziang, Genggeng Zhou, Jeff He, Tobia Marcucci, Li Fei-Fei, Jiajun Wu, and Yunzhu Li. 
+  "Model-Based Control with Sparse Neural Dynamics." 
+  arXiv preprint arXiv:2312.12791 (2023).
+
+# Yuan, Jianya, Mengxue Han, Hongjian Wang, Bo Zhong, Wei Gao, and Dan Yu. 
+  "AUV Collision Avoidance Planning Method Based on Deep Deterministic Policy Gradient." 
+  Journal of Marine Science and Engineering 11, no. 12 (2023): 2258.
+
+# Renna, Luca. 
+  "Deep Reinforcement Learning for 2D Physics-Based Object Manipulation in Clutter." 
+  arXiv preprint arXiv:2312.04570 (2023).
+
+# Sosa, Felix, Samuel J. Gershman, and Tomer D. Ullman. 
+  "Blending simulation and abstraction for physical reasoning."
+   (2023).
+
+#. Li, Shiqian, Kewen Wu, Chi Zhang, and Yixin Zhu. 
+   "I-PHYRE: Interactive Physical Reasoning." 
+   arXiv preprint arXiv:2312.03009 (2023).
+
 #. Almar Oliva, Eduard. 
    "Disseny i construcció d'un robot autònom per jugar al billar." 
    Master's thesis, Universitat Politècnica de Catalunya, 2023.
@@ -587,7 +611,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2023-10-11. If something is missing or wrong, please contact 
+List last updated 2023-12-25. If something is missing or wrong, please contact 
 me!
 
 .. (list made using "Chicago" style citation)
