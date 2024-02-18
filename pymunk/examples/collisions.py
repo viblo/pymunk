@@ -45,6 +45,15 @@ def pre_solve(arbiter: pymunk.Arbiter, space, data):
         pygame.draw.circle(screen, pygame.Color("darkred"), p.point_b, 5, 1)
         pygame.draw.aaline(screen, pygame.Color("yellow"), p.point_a, p.point_b)
 
+        screen.blit(
+            data["font"].render(
+                f"distance {p.distance:.2f}",
+                True,
+                pygame.Color("black"),
+            ),
+            (p.point_a.interpolate_to(p.point_b, 0.5)),
+        )
+
     return True
 
 
