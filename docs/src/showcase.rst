@@ -260,6 +260,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+# Wu, Tailin, Takashi Maruyama, Long Wei, Tao Zhang, Yilun Du, Gianluca Iaccarino, and Jure Leskovec. 
+  "Compositional Generative Inverse Design." 
+  arXiv preprint arXiv:2401.13171 (2024).
+
 # Hernandez Cano, Leonardo. 
   "Using source code to solve control problems." 
   PhD diss., Massachusetts Institute of Technology, 2024.
