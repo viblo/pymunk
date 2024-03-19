@@ -260,6 +260,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+# Hernandez Cano, Leonardo. 
+  "Using source code to solve control problems." 
+  PhD diss., Massachusetts Institute of Technology, 2024.
+
 # Pan, Hainan, Bailiang Chen, Kaihong Huang, Junkai Ren, Chuang Cheng, Huimin Lu, and Hui Zhang. 
   "Flipper Control Method for Tracked Robot Based on Deep Reinforcement Learning." 
   Journal of System Simulation 36, no. 2 (2024): 405.
