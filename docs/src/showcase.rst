@@ -260,6 +260,10 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+# Memery, Sean, Mirella Lapata, and Kartic Subr. 
+  "SimLM: Can Language Models Infer Parameters of Physical Systems?." 
+  arXiv preprint arXiv:2312.14215 (2023).
+
 # Wu, Tailin, Takashi Maruyama, Long Wei, Tao Zhang, Yilun Du, Gianluca Iaccarino, and Jure Leskovec. 
   "Compositional Generative Inverse Design." 
   arXiv preprint arXiv:2401.13171 (2024).
