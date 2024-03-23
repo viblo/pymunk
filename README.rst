@@ -25,7 +25,7 @@ using Chipmunk 7 rev 2e8d4104b7e2380d1a73f5363a931b3eb3de8d07.
 Installation
 ------------
 
-In the normal case pymunk can be installed from PyPI with pip::
+In the normal case Pymunk can be installed from PyPI with pip::
 
     > pip install pymunk
 
@@ -63,7 +63,7 @@ Quick code example::
 
 This will print (to console) the state of the simulation. For more visual, 
 detailed and advanced examples, take a look at the included demos.  
-They are included in the pymunk install, in the pymunk.examples subpackage. 
+They are included in the Pymunk install, in the pymunk.examples subpackage. 
 They can be run directly. To list the examples::
 
     > python -m pymunk.examples -l
@@ -88,12 +88,13 @@ Contact & Support
     You can email me directly at vb@viblo.se
 
 **Issue Tracker**
-    Please use the issue tracker at github to report any issues you find. This 
+    Please use the issue tracker at Github to report any issues you find. This 
     is also the place for feature requests:
     https://github.com/viblo/pymunk/issues
     
 Regardless of the method you use I will try to answer your questions as soon 
-as I see them. (And if you ask on SO other people might help as well!)
+as I see them. (And if you ask on Stackoverflow other people might help as 
+well!)
 
 
 Documentation
@@ -152,5 +153,5 @@ Older Pythons
 - Support for Python 3.6 was dropped with Pymunk 6.5.2.
 
 If you use any of these legacy versions of Python, please use an older 
-Pymunk version. (It might work on newer Pymunks as well, but its not tested 
+Pymunk version. (It might work on newer Pymunks as well, but it's not tested, 
 and no wheels are built.)

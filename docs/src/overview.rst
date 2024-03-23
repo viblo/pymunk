@@ -313,5 +313,5 @@ with the main difference being that Pymunk is used from Python while Chipmunk is
 a C-library.
 
 For the backstory of why Pymunk exists there's a short post about the 
-background and history including a screenshot of the first game made with Pymunk on my own website, at 
-https://www.viblo.se/projects/pymunk/ 
+background and history including a screenshot of the first game made with 
+Pymunk on my own website, at https://www.viblo.se/projects/pymunk/ 
