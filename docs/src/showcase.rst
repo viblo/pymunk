@@ -121,7 +121,7 @@ Non-Games
         A very cool blog post (and video) explaining how to combine computer 
         vision and a little physics to create a simple environment for 
         Augmented Reality. In the blog Amirabbas Asadi shows how OpenCV, 
-        Mediapipe and Pymunk can be combined to make a app where simulated 
+        Mediapipe and Pymunk can be combined to make an app where simulated 
         balls bounce on the hand of the user.
 
     * - .. image:: _static/galtonBoard.png
@@ -132,7 +132,7 @@ Non-Games
         The quincunx (also known as a Galton board) created in Pymunk.
         
         This is a Galton Board simulation programmed to run in three modes, 
-        with medium sized balls, small balls and large balls. A bit of 
+        with medium-sized balls, small balls and large balls. A bit of 
         randomness had to be added to the ball elasticity and initialization 
         positions, to aid with proper interaction with objects.
         
@@ -151,7 +151,7 @@ Non-Games
         :subscript:`made by Nav. Retrieved 2020-08-20`
 
         Legged robot first using Differential Evolution to navigate terrain 
-        and then learning to recognise the world via perception from its 
+        and then learning to recognize the world via perception from its 
         senses.
 
     * - .. image:: _static/ambient-chimes.png
@@ -160,7 +160,7 @@ Non-Games
         :subscript:`made by Jan Abraham.Retrieved 2019-11-17`
 
         An ambient piano chord produced by the simulation of a bouncing ball. 
-        The calculations were carried out using pymunk library.
+        The calculations were carried out using Pymunk library.
         Tuning: Kirnberger III
 
     * - .. image:: _static/aimoveneat.png
@@ -188,7 +188,7 @@ Non-Games
         height and wheel radius, to find a variety of configurations among 
         which few are successful in helping the car cross the track. 
 
-        Source code available at github at https://github.com/nav9/evolutionaryCarRace
+        Source code available at Github at https://github.com/nav9/evolutionaryCarRace
 
     * - .. image:: _static/virtuaplant.png
       - `VirtuaPlant <https://wroot.org/projects/virtuaplant/>`_

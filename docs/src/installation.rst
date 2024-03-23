@@ -5,7 +5,7 @@ Installation
 .. _installation:
 
 .. tip::
-    You will find the latest released version at pypi:  
+    You will find the latest released version at Pypi: 
     https://pypi.python.org/pypi/pymunk
 
 
@@ -26,7 +26,7 @@ the tests::
     > python -m pymunk.tests -f test
 
 Sometimes on more uncommon platforms you will need to have a GCC-compatible 
-c-compiler installed to install pymunk in case no prebuilt wheel exist. 
+c-compiler installed to install Pymunk in case no prebuilt wheel exist. 
 
 On OSX you can install one with::
 
@@ -42,7 +42,7 @@ Examples & Documentation
 ========================
 
 The examples are included in the wheel. Note that some requires additional 
-libraries such as pygame or pyglet. To list the available examples run::
+libraries such as Pygame or Pyglet. To list the available examples run::
 
     > python -m pymunk.examples -l
 
@@ -85,15 +85,15 @@ Termux
 `Termux <https://termux.com/>`_ is an Android terminal emulator and Linux 
 environment app that works directly with no rooting or setup required. 
 
-There are no binary wheels of pymunk for Termux/Android, or for its dependency 
-cffi, so you will need to install a couple of packages first, before pymunk can 
+There are no binary wheels of Pymunk for Termux/Android, or for its dependency 
+CFFI, so you will need to install a couple of packages first, before Pymunk can 
 be installed.
 
 1. Install python and other needed dependencies (run inside Termux)::
 
     $ pkg install python python-dev clang libffi-dev
 
-2. Install pymunk with pip::
+2. Install Pymunk with pip::
 
     $ pip install pymunk 
 
@@ -112,8 +112,8 @@ and then go to the source folder. Then install in pip editable mode::
     > python -m pip install -e .
 
 Note that this requires a suitable c compiler, e.g. Visual Studio on Windows. 
-Once installed you should be able to to import pymunk just as any other 
-installed library. pymunk should also work just fine with virtualenv in case 
+Once installed you should be able to import pymunk just as any other 
+installed library. Pymunk should also work just fine with virtualenv in case 
 you want it installed in a contained environment.
 
 Remember that if you update Chipmunk (the c code), you will have to recompile 
