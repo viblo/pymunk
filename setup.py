@@ -30,7 +30,7 @@ setup(
     author="Victor Blomqvist",
     author_email="vb@viblo.se",
     version="6.6.0",  # remember to change me for new versions!
-    description="Pymunk is a easy-to-use pythonic 2d physics library",
+    description="Pymunk is a easy-to-use pythonic 2D physics library",
     long_description=long_description,
     packages=packages,
     # include_package_data=True,
