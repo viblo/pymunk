@@ -24,7 +24,7 @@ import pymunk
 import pymunk.batch
 import pymunk.pygame_util
 
-random.seed(5)  # Feel free to adjust, this is just to make each run equal
+random.seed(1)
 
 gravityStrength = 5.0e6
 planet_radius = 3
@@ -99,21 +99,15 @@ def add_planet(space):
     circle.mass = 1
     circle.friction = 0.7
     circle.elasticity = 0
-    body.color = (
-        random.randint(1, 255),
-        random.randint(1, 255),
-        random.randint(1, 255),
-    )
-    # box.color = pygame.Color("white")
     space.add(body, circle)
 
 
 pygame.init()
 screen = pygame.display.set_mode(screen_size)
 clock = pygame.time.Clock()
+font = pygame.font.Font(None, 20)
 
 space = pymunk.Space()
-draw_options = pymunk.pygame_util.DrawOptions(screen)
 
 for x in range(starting_planets):
     add_planet(space)
@@ -151,7 +145,6 @@ while True:
 
     screen.fill(pygame.Color("black"))
 
-    positions = None
     if use_batch_draw or use_batch_update:
         # Reuse the position / velocity buffer for both drawing and calculating velocity
         draw_buffer.clear()
@@ -181,12 +174,16 @@ while True:
         )
 
     space.step(dt)
+
+    help = "Press a to add planets, d to toggle batched drawing and u to toggle batched updates."
     draw_mode = "batch" if use_batch_draw else "loop"
     update_mode = "batch" if use_batch_update else "callback"
     status = (
         f"Planets: {len(space.bodies)}. Draw mode: {draw_mode}. Update: {update_mode}"
     )
-    help = "Press a to add planets, d to toggle batched drawing and u to toggle batched updates."
+
+    screen.blit(font.render(status, True, pygame.Color("orange")), (5, 25))
+    screen.blit(font.render(help, True, pygame.Color("orange")), (5, 5))
 
     pygame.display.flip()
     clock.tick(1 / dt)
