@@ -74,6 +74,7 @@ __all__ = [
 ]
 
 from enum import Flag
+from typing import Any
 
 from ._chipmunk_cffi import ffi, lib
 from .space import Space
@@ -167,7 +168,7 @@ class Buffer(object):
             self._float_arr.arr, ffi.sizeof("cpFloat") * self._float_arr.num
         )
 
-    def set_float_buf(self, buffer) -> None:
+    def set_float_buf(self, buffer: Any) -> None:
         """Set the floating point internal data to the supplied buffer.
 
         buffer should be an array of floats, implmenting the buffer/memoryview
@@ -192,7 +193,7 @@ class Buffer(object):
             self._int_arr.arr, ffi.sizeof("uintptr_t") * self._int_arr.num
         )
 
-    def set_int_buf(self, buffer) -> None:
+    def set_int_buf(self, buffer: Any) -> None:
         """Set the integer internal data to the supplied buffer.
 
         buffer should be an array of ints, implmenting the buffer/memoryview

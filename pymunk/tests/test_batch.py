@@ -8,7 +8,6 @@ import pymunk.batch
 class UnitTestBatch(unittest.TestCase):
 
     def test_buffer(self) -> None:
-        print()
         b = pymunk.batch.Buffer()
         arr = array.array("d", [1.2, 3.4])
         b.set_float_buf(arr)
@@ -161,27 +160,6 @@ class UnitTestBatch(unittest.TestCase):
 
         self.assertEqual(list(memoryview(data.float_buf()).cast("d")), v)
 
-    def test_set_get_bodies(self) -> None:
-        s = pymunk.Space()
-
-        b1 = pymunk.Body(1, 1)
-        s.add(b1, pymunk.Circle(b1, 4))
-
-        b2 = pymunk.Body(1, 1)
-        s.add(b2, pymunk.Circle(b2, 4))
-
-        data = pymunk.batch.Buffer()
-        angle_arr = array.array("d", [3, 4, 5, 6, 7, 8])
-        data.set_float_buf(angle_arr)
-        pymunk.batch.set_space_bodies(
-            s, pymunk.batch.BodyFields.POSITION | pymunk.batch.BodyFields.ANGLE, data
-        )
-
-        data = pymunk.batch.Buffer()
-        pymunk.batch.get_space_bodies(
-            s, pymunk.batch.BodyFields.POSITION | pymunk.batch.BodyFields.ANGLE, data
-        )
-
     def test_get_arbiters(self) -> None:
         s = pymunk.Space()
 
@@ -275,7 +253,7 @@ class UnitTestBatch(unittest.TestCase):
         b2.each_arbiter(check_arb_data)
         b3.each_arbiter(check_arb_data)
 
-    def test_get_arbiter_sensor(self):
+    def test_get_arbiter_sensor(self) -> None:
         s = pymunk.Space()
 
         b1 = pymunk.Body(1, 1)
