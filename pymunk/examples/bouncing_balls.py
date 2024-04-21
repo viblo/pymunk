@@ -2,7 +2,6 @@
 two segment shapes. Not interactive.
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 # Python imports

@@ -3,13 +3,12 @@ how you would do it in a real game instead of the simple line drawings used
 by the other examples. 
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import math
+import os.path
 import random
 from typing import List
-import os.path
 
 import pygame
 

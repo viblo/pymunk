@@ -149,14 +149,10 @@ class UnitTestBatch(unittest.TestCase):
         ]
         arr = array.array("d", v)
         data.set_float_buf(arr)
-        pymunk.batch.set_space_bodies(
-            s, pymunk.batch.BodyFields.ALL ^ pymunk.batch.BodyFields.BODY_ID, data
-        )
+        pymunk.batch.set_space_bodies(s, pymunk.batch.BodyFields.ALL, data)
 
         data = pymunk.batch.Buffer()
-        pymunk.batch.get_space_bodies(
-            s, pymunk.batch.BodyFields.ALL ^ pymunk.batch.BodyFields.BODY_ID, data
-        )
+        pymunk.batch.get_space_bodies(s, pymunk.batch.BodyFields.ALL, data)
 
         self.assertEqual(list(memoryview(data.float_buf()).cast("d")), v)
 

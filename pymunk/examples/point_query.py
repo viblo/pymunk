@@ -2,7 +2,6 @@
 mouse pointer.
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import random

@@ -3,7 +3,6 @@
 It is possible to grab one of the crossings with the mouse
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import pyglet
@@ -37,13 +36,13 @@ for x in range(0, 101):
     scale = window.height / 2.0 / 6.0 * 0.5
 
     dist += 1 / 18.0
-    dist = dist ** 1.005
+    dist = dist**1.005
 
     offset = 0.0
     offset = [0.0, -0.80, -1.0, -0.80][((x * 18) % 360) // 18 % 4]
     offset = 0.8 + offset
 
-    offset *= dist ** 2.8 / 100.0
+    offset *= dist**2.8 / 100.0
 
     v = v.scale_to_length(scale * (dist + offset))
 

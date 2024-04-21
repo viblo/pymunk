@@ -142,6 +142,7 @@ possible, usually `pip install` will take care of everything for you.
 * Pyglet (optional, you need it to run the Pyglet based demos)
 * Matplotlib & Jupyter Notebook (optional, you need it to run the Matplotlib 
   based demos)
+* Numpy (optional, you need to it run a few demos)
 * Sphinx & aafigure & sphinx_autodoc_typehints (optional, you need it to build 
   documentation)
 

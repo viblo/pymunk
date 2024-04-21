@@ -1,4 +1,3 @@
-__version__ = "$Id$"
 __docformat__ = "reStructuredText"
 
 from typing import TYPE_CHECKING, Any, Callable, Dict, Optional

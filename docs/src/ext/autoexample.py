@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-# Copyright (c) 2007-2023 Victor Blomqvist
+# Copyright (c) 2007-2024 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,6 @@ Typical use (copied from pymunk examples)::
 
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import ast

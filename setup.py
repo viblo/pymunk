@@ -43,7 +43,15 @@ setup(
     install_requires=["cffi >= 1.15.0"],
     cffi_modules=["pymunk/pymunk_extension_build.py:ffibuilder"],
     extras_require={
-        "dev": ["pyglet < 2.0.0", "pygame", "sphinx", "aafigure", "wheel", "matplotlib"]
+        "dev": [
+            "pyglet < 2.0.0",
+            "pygame",
+            "sphinx",
+            "aafigure",
+            "wheel",
+            "matplotlib",
+            "numpy",
+        ]
     },
     test_suite="pymunk.tests",
 )
