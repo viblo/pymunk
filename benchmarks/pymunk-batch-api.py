@@ -28,11 +28,11 @@ def non_batched() -> None:
     _ = res
 
 
-buffers = pymunk.batch.Buffers()
+buffers = pymunk.batch.Buffer()
 
 
 def batched():
-    buffers.soft_clear()
+    buffers.clear()
     pymunk.batch.get_space_bodies(
         space, pymunk.batch.BodyFields.POSITION | pymunk.batch.BodyFields.ANGLE, buffers
     )

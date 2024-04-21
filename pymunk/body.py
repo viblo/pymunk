@@ -226,13 +226,13 @@ class Body(PickleMixin, TypingAttrMixing, object):
         elif body_type == Body.STATIC:
             self._body = ffi.gc(lib.cpBodyNewStatic(), freebody)
 
-        self._space: Optional[
-            "Space"
-        ] = None  # Weak ref to the space holding this body (if any)
+        self._space: Optional["Space"] = (
+            None  # Weak ref to the space holding this body (if any)
+        )
 
-        self._constraints: WeakSet[
-            "Constraint"
-        ] = WeakSet()  # weak refs to any constraints attached
+        self._constraints: WeakSet["Constraint"] = (
+            WeakSet()
+        )  # weak refs to any constraints attached
         self._shapes: WeakSet["Shape"] = WeakSet()  # weak refs to any shapes attached
 
         d = ffi.new_handle(self)
@@ -427,8 +427,13 @@ class Body(PickleMixin, TypingAttrMixing, object):
             return None
 
     def _set_velocity_func(self, func: _VelocityFunc) -> None:
-        self._velocity_func = func
-        lib.cpBodySetVelocityUpdateFunc(self._body, lib.ext_cpBodyVelocityFunc)
+        if func == Body.update_velocity:
+            lib.cpBodySetVelocityUpdateFunc(
+                self._body, ffi.addressof(lib, "cpBodyUpdateVelocity")
+            )
+        else:
+            self._velocity_func = func
+            lib.cpBodySetVelocityUpdateFunc(self._body, lib.ext_cpBodyVelocityFunc)
 
     velocity_func = property(
         fset=_set_velocity_func,
@@ -476,9 +481,14 @@ class Body(PickleMixin, TypingAttrMixing, object):
         """,
     )
 
-    def _set_position_func(self, func: Callable[["Body", float], None]) -> None:
-        self._position_func = func
-        lib.cpBodySetPositionUpdateFunc(self._body, lib.ext_cpBodyPositionFunc)
+    def _set_position_func(self, func: _PositionFunc) -> None:
+        if func == Body.update_position:
+            lib.cpBodySetPositionUpdateFunc(
+                self._body, ffi.addressof(lib, "cpBodyUpdatePosition")
+            )
+        else:
+            self._position_func = func
+            lib.cpBodySetPositionUpdateFunc(self._body, lib.ext_cpBodyPositionFunc)
 
     position_func = property(
         fset=_set_position_func,

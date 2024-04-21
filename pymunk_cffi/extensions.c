@@ -11,6 +11,8 @@ typedef enum pmBatchableBodyFields
     ANGLE = 1 << 2,
     VELOCITY = 1 << 3,
     ANGULAR_VELOCITY = 1 << 4,
+    FORCE = 1 << 5,
+    TORQUE = 1 << 6,
 } pmBatchableBodyFields;
 
 typedef enum pmBatchableArbiterFields
@@ -97,6 +99,14 @@ void pmFloatArrayPush(pmFloatArray *arr, cpFloat v)
     arr->num++;
 }
 
+cpFloat
+pmFloatArrayPop(pmFloatArray *arr)
+{
+    cpFloat value = (cpFloat)arr->arr[arr->num];
+    arr->num++;	
+	return value;
+}
+
 void pmFloatArrayPushVect(pmFloatArray *arr, cpVect v)
 {
     if (arr->num == (arr->max - 2) || arr->num == (arr->max - 1) || arr->num == arr->max)
@@ -107,6 +117,14 @@ void pmFloatArrayPushVect(pmFloatArray *arr, cpVect v)
     arr->arr[arr->num] = v.x;
     arr->arr[arr->num + 1] = v.y;
     arr->num += 2;
+}
+
+cpVect
+pmFloatArrayPopVect(pmFloatArray *arr)
+{
+    cpVect value = cpv((cpFloat)arr->arr[arr->num], (cpFloat)arr->arr[arr->num+1]);
+	arr->num += 2;			
+	return value;
 }
 
 pmIntArray *
@@ -143,7 +161,15 @@ void pmIntArrayPush(pmIntArray *arr, uintptr_t v)
     arr->num++;
 }
 
-void pmSpaceBodyIteratorFuncBatched(cpBody *body, void *data)
+uintptr_t
+pmIntArrayPop(pmIntArray *arr)
+{	
+	uintptr_t value = (uintptr_t)arr->arr[arr->num];
+	arr->num++;
+	return value;
+}
+
+void pmSpaceBodyGetIteratorFuncBatched(cpBody *body, void *data)
 {
     pmBatchedData *d = (pmBatchedData *)data;
 
@@ -166,6 +192,48 @@ void pmSpaceBodyIteratorFuncBatched(cpBody *body, void *data)
     if (d->fields & ANGULAR_VELOCITY)
     {
         pmFloatArrayPush(d->floatArray, cpBodyGetAngularVelocity(body));
+    }
+    if (d->fields & FORCE)
+    {
+        pmFloatArrayPushVect(d->floatArray, cpBodyGetForce(body));
+    }
+    if (d->fields & TORQUE)
+    {
+        pmFloatArrayPush(d->floatArray, cpBodyGetTorque(body));
+    }
+}
+
+void pmSpaceBodySetIteratorFuncBatched(cpBody *body, void *data)
+{
+    pmBatchedData *d = (pmBatchedData *)data;
+
+    if (d->fields & BODY_ID)
+    {
+        // Ignored. Not possible to set Body ID
+    }
+    if (d->fields & POSITION)
+    {
+        cpBodySetPosition(body, pmFloatArrayPopVect(d->floatArray));
+    }
+    if (d->fields & ANGLE)
+    {
+        cpBodySetAngle(body, pmFloatArrayPop(d->floatArray));
+    }
+    if (d->fields & VELOCITY)
+    {
+        cpBodySetVelocity(body, pmFloatArrayPopVect(d->floatArray));
+    }
+    if (d->fields & ANGULAR_VELOCITY)
+    {
+        cpBodySetAngularVelocity(body, pmFloatArrayPop(d->floatArray));
+    }
+    if (d->fields & FORCE)
+    {
+        cpBodySetForce(body, pmFloatArrayPopVect(d->floatArray));
+    }
+    if (d->fields & TORQUE)
+    {
+        cpBodySetTorque(body, pmFloatArrayPop(d->floatArray));
     }
 }
 

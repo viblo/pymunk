@@ -9,6 +9,8 @@ typedef enum pmBatchableBodyFields
 	ANGLE = 1 << 2,
 	VELOCITY = 1 << 3,
 	ANGULAR_VELOCITY = 1 << 4,
+	FORCE = 1 << 5,
+    TORQUE = 1 << 6,
 } pmBatchableBodyFields;
 
 typedef enum pmBatchableArbiterFields
@@ -57,13 +59,17 @@ struct pmBatchedData
 pmFloatArray *pmFloatArrayNew(int size);
 void pmFloatArrayFree(pmFloatArray *arr);
 void pmFloatArrayPush(pmFloatArray *arr, cpFloat v);
+cpFloat pmFloatArrayPop(pmFloatArray *arr);
 void pmFloatArrayPushVect(pmFloatArray *arr, cpVect v);
+cpVect pmFloatArrayPopVect(pmFloatArray *arr);
 
 pmIntArray *pmIntArrayNew(int size);
 void pmIntArrayFree(pmIntArray *arr);
 void pmIntArrayPush(pmIntArray *arr, uintptr_t v);
+uintptr_t pmIntArrayPop(pmIntArray *arr);
 
-void pmSpaceBodyIteratorFuncBatched(cpBody *body, void *data);
+void pmSpaceBodyGetIteratorFuncBatched(cpBody *body, void *data);
+void pmSpaceBodySetIteratorFuncBatched(cpBody *body, void *data);
 void pmSpaceArbiterIteratorFuncBatched(cpArbiter *arbiter, void *data);
 
 //

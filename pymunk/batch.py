@@ -1,9 +1,13 @@
-"""The batch module contain functions to efficiently get batched space data. 
+"""The batch module contain functions to efficiently get and set space data in
+   a batch insteaf of one by one. 
 
 .. note:: 
     This module is highly experimental and will likely change in future Pymunk 
     verisons including major, minor and patch verisons! 
 
+
+To get data out
+===============
 
 First create space and two bodies.
 
@@ -53,7 +57,12 @@ True
 >>> list(memoryview(data.float_buf()).cast("d"))
 []
 
+
+### To set data
+
+
 """
+
 __docformat__ = "reStructuredText"
 
 __all__ = [
@@ -82,8 +91,11 @@ class BodyFields(Flag):
     VELOCITY = lib.VELOCITY
     """:py:attr:`pymunk.Body.velocity`. X and Y stored in float_buf."""
     ANGULAR_VELOCITY = lib.ANGULAR_VELOCITY
-    """:py:attr:`pymunk.Body.angular_velocity`. X and Y stored in float_buf"""
-
+    """:py:attr:`pymunk.Body.angular_velocity`. Value stored in float_buf"""
+    FORCE = lib.FORCE
+    """:py:attr:`pymunk.Body.force`. X and Y stored in float_buf."""
+    TORQUE = lib.TORQUE
+    """:py:attr:`pymunk.Body.torque`. Value stored in float_buf"""
     ALL = 0xFFFF
     """All the fields"""
 
@@ -133,6 +145,10 @@ class Buffer(object):
         self._float_arr = lib.pmFloatArrayNew(0)
         self._int_arr = lib.pmIntArrayNew(0)
 
+        self._int_buf = None
+
+        self._float_buf = None
+
     def clear(self) -> None:
         """Mark the internal arrays empty (for reuse).
 
@@ -151,6 +167,22 @@ class Buffer(object):
             self._float_arr.arr, ffi.sizeof("cpFloat") * self._float_arr.num
         )
 
+    def set_float_buf(self, buffer) -> None:
+        """Set the floating point internal data to the supplied buffer.
+
+        buffer should be an array of floats, implmenting the buffer/memoryview
+        interface like a numpy array or array.array.
+
+        (From Python 3.12 the buffer argument will be typed as
+        collections.abc.Buffer)
+
+        """
+        self._float_buf = buffer
+        arr = ffi.from_buffer("cpFloat[]", buffer)
+        self._float_arr.arr = arr
+        self._float_arr.max = len(arr)
+        self._float_arr.num = len(arr)
+
     def int_buf(self) -> ffi.buffer:
         """Return a CFFI buffer object of the integer data in the internal
         array.
@@ -159,6 +191,21 @@ class Buffer(object):
         return ffi.buffer(
             self._int_arr.arr, ffi.sizeof("uintptr_t") * self._int_arr.num
         )
+
+    def set_int_buf(self, buffer) -> None:
+        """Set the integer internal data to the supplied buffer.
+
+        buffer should be an array of ints, implmenting the buffer/memoryview
+        interface like a numpy array or array.array.
+
+        (From Python 3.12 the buffer argument will be typed as
+        collections.abc.Buffer)
+        """
+        self._int_buf = buffer
+        arr = ffi.from_buffer("uintptr_t[]", buffer)
+        self._int_arr.arr = arr
+        self._int_arr.max = len(arr)
+        self._int_arr.num = len(arr)
 
 
 def get_space_bodies(space: Space, fields: BodyFields, buffers: Buffer) -> None:
@@ -175,9 +222,36 @@ def get_space_bodies(space: Space, fields: BodyFields, buffers: Buffer) -> None:
 
     lib.cpSpaceEachBody(
         space._space,
-        ffi.addressof(lib, "pmSpaceBodyIteratorFuncBatched"),
+        ffi.addressof(lib, "pmSpaceBodyGetIteratorFuncBatched"),
         _data,
     )
+
+
+def set_space_bodies(space: Space, fields: BodyFields, buffers: Buffer) -> None:
+    """Set data for all bodies in the space.
+
+    Filter out the fields you want to set with the fields property.
+
+    The data to update is passed in the batched_data buffers.
+
+    Note that BODY_ID is not possible to set, if BODY_ID is set it will read the value from the buffer, but not do the update.
+    """
+    _data = ffi.new("pmBatchedData *")
+    _data.fields = fields.value
+    _data.floatArray = buffers._float_arr
+    _data.intArray = buffers._int_arr
+
+    # To iterate from the beginning of the array, num should start at 0
+    orig_float_num = buffers._float_arr.num
+    buffers._float_arr.num = 0
+
+    lib.cpSpaceEachBody(
+        space._space,
+        ffi.addressof(lib, "pmSpaceBodySetIteratorFuncBatched"),
+        _data,
+    )
+
+    buffers._float_arr.num = orig_float_num
 
 
 def get_space_arbiters(space: Space, fields: ArbiterFields, buffers: Buffer) -> None:
