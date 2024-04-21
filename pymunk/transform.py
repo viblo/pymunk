@@ -50,14 +50,12 @@ class Transform(NamedTuple):
     ty: float = 0
 
     @overload
-    def __matmul__(self, other: Tuple[float, float]) -> Vec2d:
-        ...
+    def __matmul__(self, other: Tuple[float, float]) -> Vec2d: ...
 
     @overload
     def __matmul__(
         self, other: Tuple[float, float, float, float, float, float]
-    ) -> "Transform":
-        ...
+    ) -> "Transform": ...
 
     def __matmul__(
         self,
@@ -65,7 +63,6 @@ class Transform(NamedTuple):
             Tuple[float, float], Tuple[float, float, float, float, float, float]
         ],
     ) -> Union[Vec2d, "Transform"]:
-
         """Multiply this transform with a Transform, Vec2d or Tuple of size 2
         or 6.
 
@@ -102,12 +99,12 @@ class Transform(NamedTuple):
 
         if len(other) == 2:
             assert len(other) == 2
-            x, y = cast(Tuple[float, float], other)
+            x, y = other
             return Vec2d(
                 self.a * x + self.c * y + self.tx, self.b * x + self.d * y + self.ty
             )
         else:
-            a, b, c, d, tx, ty = cast(Tuple[float, float, float, float, float, float], other)
+            a, b, c, d, tx, ty = other
             return Transform(
                 a=self.a * a + self.c * b + self.tx * 0,
                 b=self.b * a + self.d * b + self.ty * 0,
