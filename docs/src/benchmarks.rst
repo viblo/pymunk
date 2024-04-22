@@ -97,37 +97,63 @@ Pymunk 6.6.0 introduces a new experimental batch API to retrieve body and
 collision data efficiently in batches optimized to be processed further 
 efficiently, for example with NumPy.
 
+With Pymunk 6.7.0 the batch API were expanded to also allow setting of body 
+properties like position, angle and velocity.
+
 In order to test this there's a new benchmark which compares fetching position 
 and angle (data that almost every user of the batch API will use) normally and 
-with the new API. The benchmark runs with different amount of bodies, and 
-scales number of iterations to complete in reasonable time. 
+with the new API. It also does the same but reversed, setting the position and 
+angle. The benchmark runs with different amount of bodies, and scales number of 
+iterations to complete in reasonable time. 
 
 (see `pymunk-batch-api.py`)
 
-The benchmark were run using an internal pre-release of Pymunk 6.6.0 running 
-on Windows using CPython 3.11 and Pypy 3.10-v7.3.12 on a ThinkPad X1 Carbon 7 
+The benchmark were run using an internal pre-release of Pymunk 6.7.0 running 
+on Windows using CPython 3.11 and Pypy 3.10-v7.3.15 on a ThinkPad X1 Carbon 7 
 gen.
 
 Results:
 ########
 
 Below we can see that using the Batch API is faster already at 5 bodies in a 
-space, and it handles high amounts of bodies about 40x faster than the normal
+space, and it handles high amounts of bodies 30x-40x faster than the normal
 non-batch API if you use CPython. With Pypy the improvements are much more 
-modest.
+modest, especially for the Batch Get API. The Set API on Pypy stills shows a 
+nice improvement.
 
-======  ==========  =========  ===========  ==========
-Bodies  Normal API  Batch API  Normal Pypy  Batch Pypy
-======  ==========  =========  ===========  ==========
-1       2.2s        4.2s       0.4s         0.5s
-5       2.0s        0.8s       0.3s         0.3s
-10      2.1s        0.4s       0.3s         0.2s
-100     2.2s        0.09s      0.3s         0.2s
-1000    2.3s        0.05s      0.3s         0.2s
-10000   n/a         0.04s      n/a          0.2s
-50000   n/a         0.06s      n/a          0.2s
-100000  n/a         0.07s      n/a          0.2s
-======  ==========  =========  ===========  ==========
+
+Get API Results
++++++++++++++++
+
+======  ======  =====  ===========  ==========  
+Bodies  Normal  Batch  Normal Pypy  Batch Pypy
+======  ======  =====  ===========  ==========
+1       2.26    4.02   0.37         0.60    
+5       2.08    0.82   0.33         0.30
+10      2.12    0.42   0.30         0.26
+100     2.09    0.09   0.29         0.20
+1000    n/a     0.04   n/a          0.19
+10000   n/a     0.05   n/a          0.20
+50000   n/a     0.06   n/a          0.22
+100000  n/a     0.07   n/a          0.22
+======  ======  =====  ===========  ==========
+
+Set API Results
++++++++++++++++
+
+======  ======  =====  ===========  ==========
+Bodies  Normal  Batch  Normal Pypy  Batch Pypy
+======  ======  =====  ===========  ==========
+1       1.93    3.45   0.34         0.23   
+5       1.70    0.75   0.29         0.09
+10      1.64    0.39   0.29         0.07
+100     1.61    0.10   0.32         0.06
+1000    n/a     0.06   n/a          0.05
+10000   n/a     0.05   n/a          0.06
+50000   n/a     0.10   n/a          0.11
+100000  n/a     0.11   n/a          0.11
+======  ======  =====  ===========  ==========
+
 
 The resulting times are the time to get the position and angle data 1000000 
 times divided by the number of bodies.
@@ -146,9 +172,10 @@ constant overhead per body. We can also see that there's a slight increase in
 per body times, maybe because of the bigger array needed to collect the 
 results, or some other overhead within Chipmunk. 
 
-On the other hand, for Pypy the result is much less exciting. Pypy using the 
-normal API is already very fast, as shown by the `Pymunk-Get` benchmark, and 
-using the batch API provides only a modest improvement. 
+On the other hand, for Pypy the result is much less exciting, but still 
+interesting. Pypy using the normal API is already very fast, as shown by the 
+`Pymunk-Get` benchmark. From the results we can see that it's a nice 
+improvement for Set API, while Get API is much more modest. 
 
 
 Compared to Other Physics Libraries
