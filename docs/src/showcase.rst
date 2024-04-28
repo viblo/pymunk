@@ -261,43 +261,43 @@ Pymunk has been used or referenced in a number of scientific papers.
 List of papers which has used or mentioned Pymunk:
 .. (list made using "Chicago" style citation)
 
-# Ai, Bo, Stephen Tian, Haochen Shi, Yixuan Wang, Cheston Tan, Yunzhu Li, and Jiajun Wu. 
+#. Ai, Bo, Stephen Tian, Haochen Shi, Yixuan Wang, Cheston Tan, Yunzhu Li, and Jiajun Wu. 
   "RoboPack: Learning Tactile-Informed Dynamics Models for Dense Packing." 
   In ICRA 2024 Workshop on 3D Visual Representations for Robot Manipulation.
 
-# Balaban, Halely, and Tomer Ullman. 
+#. Balaban, Halely, and Tomer Ullman. 
   "The capacity limits of tracking in the imagination." 
   (2024).
 
-# Memery, Sean, Mirella Lapata, and Kartic Subr. 
+#. Memery, Sean, Mirella Lapata, and Kartic Subr. 
   "SimLM: Can Language Models Infer Parameters of Physical Systems?." 
   arXiv preprint arXiv:2312.14215 (2023).
 
-# Wu, Tailin, Takashi Maruyama, Long Wei, Tao Zhang, Yilun Du, Gianluca Iaccarino, and Jure Leskovec. 
+#. Wu, Tailin, Takashi Maruyama, Long Wei, Tao Zhang, Yilun Du, Gianluca Iaccarino, and Jure Leskovec. 
   "Compositional Generative Inverse Design." 
   arXiv preprint arXiv:2401.13171 (2024).
 
-# Hernandez Cano, Leonardo. 
+#. Hernandez Cano, Leonardo. 
   "Using source code to solve control problems." 
   PhD diss., Massachusetts Institute of Technology, 2024.
 
-# Pan, Hainan, Bailiang Chen, Kaihong Huang, Junkai Ren, Chuang Cheng, Huimin Lu, and Hui Zhang. 
+#. Pan, Hainan, Bailiang Chen, Kaihong Huang, Junkai Ren, Chuang Cheng, Huimin Lu, and Hui Zhang. 
   "Flipper Control Method for Tracked Robot Based on Deep Reinforcement Learning." 
   Journal of System Simulation 36, no. 2 (2024): 405.
 
-# Liu, Ziang, Genggeng Zhou, Jeff He, Tobia Marcucci, Li Fei-Fei, Jiajun Wu, and Yunzhu Li. 
+#. Liu, Ziang, Genggeng Zhou, Jeff He, Tobia Marcucci, Li Fei-Fei, Jiajun Wu, and Yunzhu Li. 
   "Model-Based Control with Sparse Neural Dynamics." 
   arXiv preprint arXiv:2312.12791 (2023).
 
-# Yuan, Jianya, Mengxue Han, Hongjian Wang, Bo Zhong, Wei Gao, and Dan Yu. 
+#. Yuan, Jianya, Mengxue Han, Hongjian Wang, Bo Zhong, Wei Gao, and Dan Yu. 
   "AUV Collision Avoidance Planning Method Based on Deep Deterministic Policy Gradient." 
   Journal of Marine Science and Engineering 11, no. 12 (2023): 2258.
 
-# Renna, Luca. 
+#. Renna, Luca. 
   "Deep Reinforcement Learning for 2D Physics-Based Object Manipulation in Clutter." 
   arXiv preprint arXiv:2312.04570 (2023).
 
-# Sosa, Felix, Samuel J. Gershman, and Tomer D. Ullman. 
+#. Sosa, Felix, Samuel J. Gershman, and Tomer D. Ullman. 
   "Blending simulation and abstraction for physical reasoning."
    (2023).
 
