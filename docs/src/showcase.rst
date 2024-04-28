@@ -250,7 +250,7 @@ Non-Games
         
         A project that trains a virtual car to how to move an object around a 
         screen (drive itself) without running into obstacles using a type of 
-        reinforcement learning called Q-Learning.         
+        reinforcement learning called Q-Learning.
     
 
 Papers / Science
@@ -259,6 +259,15 @@ Papers / Science
 Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
+.. (list made using "Chicago" style citation)
+
+# Ai, Bo, Stephen Tian, Haochen Shi, Yixuan Wang, Cheston Tan, Yunzhu Li, and Jiajun Wu. 
+  "RoboPack: Learning Tactile-Informed Dynamics Models for Dense Packing." 
+  In ICRA 2024 Workshop on 3D Visual Representations for Robot Manipulation.
+
+# Balaban, Halely, and Tomer Ullman. 
+  "The capacity limits of tracking in the imagination." 
+  (2024).
 
 # Memery, Sean, Mirella Lapata, and Kartic Subr. 
   "SimLM: Can Language Models Infer Parameters of Physical Systems?." 
@@ -623,10 +632,10 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2023-12-25. If something is missing or wrong, please contact 
+List last updated 2024-04-28. If something is missing or wrong, please contact 
 me!
 
-.. (list made using "Chicago" style citation)
+
 
 Cite Pymunk
 -----------
