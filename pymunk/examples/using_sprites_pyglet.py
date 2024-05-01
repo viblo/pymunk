@@ -2,7 +2,6 @@
 that it uses pyglet instead of pygame to showcase sprite drawing. 
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import math

@@ -5,6 +5,28 @@ Changelog
 .. 
   Fix for 2 static bodies that are changed to dynamic and are attached to constraints
 
+Pymunk 6.7.0 (2024-05-01)
+-------------------------
+
+**Batch API can set body properties**
+
+This release expands the experimental Batch API introduced in Pymunk 6.6.0. 
+It now comes with functions to efficiently set properties on the body such as 
+velocity. Similar to the previous API the new API reduces overhead of the 
+Python / C bridge, but also makes it very easy to use for example Numpy to 
+perform calculations over many bodies. The existing planet.py demo has been 
+updated to showcase the new Batch API and easily toggle between batch / no 
+batch to see the difference in performance.
+
+Changes:
+
+- Add set body function to pymunk.batch 
+- Fix crash with sensor shapes in pymunk.batch
+- Improved types
+- New interactive example to show collisions
+- Fix constraints of bodies that change type
+
+
 Pymunk 6.6.0 (2023-11-02)
 -------------------------
 
