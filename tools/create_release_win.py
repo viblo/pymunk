@@ -21,9 +21,8 @@ def main():
     print(
         """
     > git tag X.Y.Z
-    > git push --tags
-    > python setup.py sdist 
-        
+    > git push && git push --tags
+            
     """
     )
 

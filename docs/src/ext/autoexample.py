@@ -42,7 +42,7 @@ import os
 from typing import Any, List, Optional
 
 import sphinx.application
-from docutils import nodes, statemachine, utils
+from docutils import statemachine, utils
 from docutils.parsers.rst import Directive, directives
 
 
@@ -196,7 +196,6 @@ class AutoExampleDirective(Directive):
         path = os.path.normpath(os.path.join(source_dir, path))
 
         path = utils.relative_path(None, path)
-        path = nodes.reprunicode(path)
         img_folder = None
         img_folder_os = None
         if "image_folder" in self.options:
