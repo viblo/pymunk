@@ -34,13 +34,13 @@ v6.x
 - Remove support for Python 3.7 (check https://pypistats.org/packages/pymunk first)
 - After a couple of versions / time passed, re-evaluate if batch api should be separate or merged in to space.
 - Think about the copyright notice in some files. Keep / put everywere / remove?
-- Constraint private accumulated over previou s time step properties are not saved when pickle. 
+- Constraint private accumulated over previous time step properties are not saved when pickle. 
 - Add a test to check that version property is correctly set matching setup.py (and readme?)
 
 v7+ (all potentially breaking changes)
 ---
 - Think about split between pymunk.util and pymunk modules
-
+- remake Body.each_arbiter into a arbiters list for a more pythonic interface.
 
 Chipmunk improvements
 ---------------------
