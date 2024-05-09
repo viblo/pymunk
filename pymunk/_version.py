@@ -36,5 +36,5 @@ version = "6.7.0"
 
 chipmunk_version = "%s-%s" % (
     ffi.string(cp.cpVersionString).decode("utf-8"),
-    "5dd7d774053145fa37f352d7a07d2f75a9bd8039",
+    "7a29dcfa49931f26632f3019582f289ba811a2b9",
 )
