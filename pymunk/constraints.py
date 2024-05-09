@@ -683,6 +683,7 @@ class DampedSpring(Constraint):
         return lib.defaultSpringForce(spring._constraint, dist)
 
     def _set_force_func(self, func: _ForceFunc) -> None:
+        self._force_func = func
         if func == DampedSpring.spring_force:
             lib.cpDampedSpringSetSpringForceFunc(
                 self._constraint,
@@ -691,7 +692,6 @@ class DampedSpring(Constraint):
                 ),
             )
         else:
-            self._force_func = func
             lib.cpDampedSpringSetSpringForceFunc(
                 self._constraint, lib.ext_cpDampedSpringForceFunc
             )
@@ -702,6 +702,8 @@ class DampedSpring(Constraint):
         
         The force callback function is called each time step and is used to
         calculate the force of the spring (exclusing any damping).
+
+        Defaults to :py:func:`DampedSpring.spring_force`
         """,
     )
 
@@ -775,7 +777,20 @@ class DampedRotarySpring(Constraint):
         """Default damped rotary spring torque function."""
         return lib.defaultSpringTorque(spring._constraint, relative_angle)
 
-    def _set_torque_func(self, func: _TorqueFunc) -> None:
+    @property
+    def torque_func(self) -> _TorqueFunc:
+        """The torque callback function.
+
+        The torque callback function is called each time step and is used to
+        calculate the torque of the spring (exclusing any damping).
+
+        Defaults to :py:func:`DampedRotarySpring.spring_torque`
+        """
+        raise AttributeError("unreadable attribute 'torque_func'")
+
+    @torque_func.setter
+    def torque_func(self, func: _TorqueFunc) -> None:
+        self._torque_func = func
         if func == DampedRotarySpring.spring_torque:
             lib.cpDampedRotarySpringSetSpringTorqueFunc(
                 self._constraint,
@@ -785,19 +800,9 @@ class DampedRotarySpring(Constraint):
                 ),
             )
         else:
-            self._torque_func = func
             lib.cpDampedRotarySpringSetSpringTorqueFunc(
                 self._constraint, lib.ext_cpDampedRotarySpringTorqueFunc
             )
-
-    torque_func = property(
-        fset=_set_torque_func,
-        doc="""The torque callback function. 
-        
-        The torque callback function is called each time step and is used to
-        calculate the torque of the spring (exclusing any damping).
-        """,
-    )
 
 
 class RotaryLimitJoint(Constraint):
