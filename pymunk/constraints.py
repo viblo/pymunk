@@ -82,6 +82,9 @@ from .vec2d import Vec2d
 
 _logger = logging.getLogger(__name__)
 
+_TorqueFunc = Callable[["DampedRotarySpring", float], float]
+_ForceFunc = Callable[["DampedSpring", float], float]
+
 
 class Constraint(PickleMixin, TypingAttrMixing, object):
     """Base class of all constraints.
@@ -582,6 +585,8 @@ class DampedSpring(Constraint):
         "damping",
     ]
 
+    _pickle_attrs_skip = Constraint._pickle_attrs_skip + ["_force_func"]
+
     def __init__(
         self,
         a: "Body",
@@ -672,6 +677,34 @@ class DampedSpring(Constraint):
         doc="""How soft to make the damping of the spring.""",
     )
 
+    @staticmethod
+    def spring_force(spring: "DampedSpring", dist: float) -> float:
+        """Default damped spring force function."""
+        return lib.defaultSpringForce(spring._constraint, dist)
+
+    def _set_force_func(self, func: _ForceFunc) -> None:
+        if func == DampedSpring.spring_force:
+            lib.cpDampedSpringSetSpringForceFunc(
+                self._constraint,
+                ffi.cast(
+                    "cpDampedSpringForceFunc", ffi.addressof(lib, "defaultSpringForce")
+                ),
+            )
+        else:
+            self._force_func = func
+            lib.cpDampedSpringSetSpringForceFunc(
+                self._constraint, lib.ext_cpDampedSpringForceFunc
+            )
+
+    force_func = property(
+        fset=_set_force_func,
+        doc="""The force callback function. 
+        
+        The force callback function is called each time step and is used to
+        calculate the force of the spring (exclusing any damping).
+        """,
+    )
+
 
 class DampedRotarySpring(Constraint):
     """DampedRotarySpring works like the DammpedSpring but in a angular fashion."""
@@ -681,6 +714,10 @@ class DampedRotarySpring(Constraint):
         "stiffness",
         "damping",
     ]
+
+    _pickle_attrs_skip = Constraint._pickle_attrs_skip + ["_torque_func"]
+
+    _torque_func: Optional[_TorqueFunc] = None
 
     def __init__(
         self, a: "Body", b: "Body", rest_angle: float, stiffness: float, damping: float
@@ -731,6 +768,35 @@ class DampedRotarySpring(Constraint):
         _get_damping,
         _set_damping,
         doc="""How soft to make the damping of the spring.""",
+    )
+
+    @staticmethod
+    def spring_torque(spring: "DampedRotarySpring", relative_angle: float) -> float:
+        """Default damped rotary spring torque function."""
+        return lib.defaultSpringTorque(spring._constraint, relative_angle)
+
+    def _set_torque_func(self, func: _TorqueFunc) -> None:
+        if func == DampedRotarySpring.spring_torque:
+            lib.cpDampedRotarySpringSetSpringTorqueFunc(
+                self._constraint,
+                ffi.cast(
+                    "cpDampedRotarySpringTorqueFunc",
+                    ffi.addressof(lib, "defaultSpringTorque"),
+                ),
+            )
+        else:
+            self._torque_func = func
+            lib.cpDampedRotarySpringSetSpringTorqueFunc(
+                self._constraint, lib.ext_cpDampedRotarySpringTorqueFunc
+            )
+
+    torque_func = property(
+        fset=_set_torque_func,
+        doc="""The torque callback function. 
+        
+        The torque callback function is called each time step and is used to
+        calculate the torque of the spring (exclusing any damping).
+        """,
     )
 
 

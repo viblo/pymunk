@@ -448,3 +448,11 @@ cpContact *cpContactArrAlloc(int count)
 {
     return (cpContact *)cpcalloc(count, sizeof(struct cpContact));
 }
+
+cpFloat defaultSpringForce(cpDampedSpring *spring, cpFloat dist){
+	return (spring->restLength - dist)*spring->stiffness;
+}
+
+cpFloat defaultSpringTorque(cpDampedRotarySpring *spring, cpFloat relativeAngle){
+	return (relativeAngle - spring->restAngle)*spring->stiffness;
+}

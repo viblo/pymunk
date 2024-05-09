@@ -292,6 +292,19 @@ def ext_cpConstraintPostSolveFunc(
     constraint._post_solve_func(constraint, constraint.a.space)
 
 
+@ffi.def_extern()
+def ext_cpDampedSpringForceFunc(cp_constraint: ffi.CData, dist: float) -> float:
+    constraint = ffi.from_handle(lib.cpConstraintGetUserData(cp_constraint))
+    return constraint._force_func(constraint, dist)
+
+
+@ffi.def_extern()
+def ext_cpDampedRotarySpringTorqueFunc(
+    cp_constraint: ffi.CData, relative_angle: float
+) -> float:
+    constraint = ffi.from_handle(lib.cpConstraintGetUserData(cp_constraint))
+    return constraint._torque_func(constraint, relative_angle)
+
 
 # Pickle of Arbiters
 @ffi.def_extern()

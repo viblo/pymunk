@@ -3,6 +3,8 @@ extern "Python" {
     // cpConstraint.h
     void ext_cpConstraintPreSolveFunc(cpConstraint *constraint, cpSpace *space);
     void ext_cpConstraintPostSolveFunc(cpConstraint *constraint, cpSpace *space);
+    cpFloat ext_cpDampedSpringForceFunc(cpConstraint *constraint, cpFloat dist);
+    cpFloat ext_cpDampedRotarySpringTorqueFunc(cpConstraint *constraint, cpFloat relative_angle);
 
 
     // cpBody.h

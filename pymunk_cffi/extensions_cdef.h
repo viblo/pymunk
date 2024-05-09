@@ -99,3 +99,7 @@ cpArbiter *cpArbiterNew(cpShape *a, cpShape *b);
 typedef struct cpContact cpContact;
 
 cpContact *cpContactArrAlloc(int count);
+
+cpFloat defaultSpringForce(cpDampedSpring *spring, cpFloat dist);
+
+cpFloat defaultSpringTorque(cpDampedRotarySpring *spring, cpFloat relativeAngle);

@@ -338,6 +338,27 @@ class UnitTestDampedSpring(unittest.TestCase):
         j.damping = 2
         self.assertEqual(j.damping, 2)
 
+    def testForceFunc(self) -> None:
+        s = p.Space()
+        a, b = p.Body(10, 10), p.Body(20, 20)
+        b.position = 0, 100
+        j = DampedSpring(a, b, (0, 0), (0, 0), 0, 1, 0)
+        s.add(a, b, j)
+
+        def f(spring: p.DampedSpring, dist: float) -> float:
+            self.assertEqual(spring, j)
+            self.assertEqual(dist, 100)
+
+            return 1
+
+        j.force_func = f
+        s.step(1)
+        self.assertEqual(j.impulse, 1)
+
+        j.force_func = DampedSpring.spring_force
+        s.step(1)
+        self.assertAlmostEqual(j.impulse, -100.15)
+
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
         j = DampedSpring(a, b, (1, 2), (3, 4), 5, 6, 7)
@@ -375,6 +396,27 @@ class UnitTestDampedRotarySpring(unittest.TestCase):
         self.assertEqual(j.damping, 1)
         j.damping = 2
         self.assertEqual(j.damping, 2)
+
+    def testTorqueFunc(self) -> None:
+        s = p.Space()
+        a, b = p.Body(10, 10), p.Body(20, 20)
+        b.angle = 2
+        j = DampedRotarySpring(a, b, 0, 10, 0)
+        s.add(a, b, j)
+
+        def f(spring: p.DampedRotarySpring, relative_angle: float) -> float:
+            self.assertEqual(spring, j)
+            self.assertEqual(relative_angle, -2)
+
+            return 1
+
+        j.torque_func = f
+        s.step(1)
+        self.assertEqual(j.impulse, 1)
+
+        j.torque_func = DampedRotarySpring.spring_torque
+        s.step(1)
+        self.assertAlmostEqual(j.impulse, -21.5)
 
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
