@@ -29,7 +29,7 @@ setup(
     url="http://www.pymunk.org",
     author="Victor Blomqvist",
     author_email="vb@viblo.se",
-    version="6.7.0",  # remember to change me for new versions!
+    version="6.8.0",  # remember to change me for new versions!
     description="Pymunk is a easy-to-use pythonic 2D physics library",
     long_description=long_description,
     packages=packages,

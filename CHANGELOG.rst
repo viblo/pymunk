@@ -2,10 +2,28 @@
 Changelog 
 =========
 
-.. 
-  Fix for 2 static bodies that are changed to dynamic and are attached to constraints
-  Updated the fork of Chipmunk2D used by Pymunk, fixing a number of issues, including maxForce on Spring constaints.
-  Added callback functions for DampedSpring and DampedRotarySpring to allow customized force/torque calculations.
+Pymunk 6.8.0 (2024-05-10)
+-------------------------
+
+**Spring improvements**
+
+This release makes the max force property on the two spring constraints work 
+as expected (previosuly it did not have any effect). It is also possible to 
+fully override the force/torque calculation of the springs with new callback.
+Appart from this a collection of fixes in the underlying Chipmunk2D library 
+has been added. Finally its now possible to create static bodies with 
+constraints between them, and then change the bodies to dynamic to "start" 
+simulation of them.
+
+Changes:
+
+- Fix for 2 static bodies that are changed to dynamic and are attached to 
+  constraints
+- Updated the fork of Chipmunk2D used by Pymunk, fixing a number of issues, 
+  including maxForce on Spring constaints.
+- Added callback functions for DampedSpring and DampedRotarySpring to allow 
+  customized force/torque calculations.
+  
   
 Pymunk 6.7.0 (2024-05-01)
 -------------------------
