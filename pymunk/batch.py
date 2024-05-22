@@ -58,7 +58,12 @@ True
 []
 
 
-### To set data
+To set data
+===========
+
+(see planet.py example)
+
+TODO
 
 
 """
