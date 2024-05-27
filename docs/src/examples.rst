@@ -25,7 +25,7 @@ Displays the same space as the pygame and pyglet draw demos, but using
 matplotlib and the notebook.
 
 Source: `examples/matplotlib_util_demo.ipynb
-<https://github.com/viblo/pymunk/blob/master/examples/matplotlib_util_demo.ipynb>`_
+<https://github.com/viblo/pymunk/blob/master/additional_examples/matplotlib_util_demo.ipynb>`_
 
 .. image:: _static/examples/matplotlib_util_demo.png
 
@@ -37,7 +37,7 @@ Compared to the draw demo this demo will output an animation of the simulated
 space.
 
 Source: `examples/newtons_cradle.ipynb
-<https://github.com/viblo/pymunk/blob/master/examples/newtons_cradle.ipynb>`_
+<https://github.com/viblo/pymunk/blob/master/additional_examples/newtons_cradle.ipynb>`_
 
 .. raw:: html
 
