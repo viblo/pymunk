@@ -13,7 +13,6 @@ def main():
     - test in at least CPython 3.x and Pypy3
     - validate test results of Github Actions
     - make sure all images are optimized (for example with tinypng.com)
-    - generate docs before running sdist
     - Make sure cffi extensions included in wheel and zip!!!!
     """
     )

@@ -25,7 +25,6 @@ jobs:
         env:
           CIBW_BUILD:
             "cp37-* cp38-* cp39-* cp310-* cp311-* cp312-* pp39-* pp310-*"
-          CIBW_ARCHS_MACOS: "arm64 x86_64"
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
           CIBW_BUILD_VERBOSITY: 3
         with:
