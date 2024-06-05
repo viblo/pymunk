@@ -2,9 +2,14 @@
 Changelog 
 =========
 
-.. next
-    Pymunk 6.9.0 (2024-xx-xx)?
-    -------------------------
+Pymunk 6.8.1 (2024-06-05)?
+-------------------------
+
+**Space lock bug fix**
+
+This is a patch version, that fixes a bug in the separate collision callback 
+which could result in hard crash if after the separate another collision 
+callback ran and that callback added or removed something from the space.
 
     Changes:
 
