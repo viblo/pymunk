@@ -217,14 +217,16 @@ def ext_cpCollisionSeparateFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
 ) -> None:
     handler = ffi.from_handle(data)
+
+    orig_locked = handler._space._locked
+    handler._space._locked = True
     try:
         # this try is needed since a separate callback will be called
         # if a colliding object is removed, regardless if its in a
-        # step or not.
-        handler._space._locked = True
+        # step or not. Meaning the unlock must succeed
         handler._separate(Arbiter(_arb, handler._space), handler._space, handler.data)
     finally:
-        handler._space._locked = False
+        handler._space._locked = orig_locked
 
 
 # body.py

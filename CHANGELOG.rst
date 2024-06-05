@@ -9,6 +9,8 @@ Changelog
     Changes:
 
     - Build/run MacOs ARM on ARM github runners. 
+    - Fix lock bug in separate callback
+    - Improve documentation
 
 
 Pymunk 6.8.0 (2024-05-10)

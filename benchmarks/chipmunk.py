@@ -206,6 +206,42 @@ class Tumbler(Benchmark):
             self.m_count += 1
 
 
+class Multifixture(Benchmark):
+    def __init__(self, size):
+        super().__init__()
+
+        s1 = pymunk.Segment(self.space.static_body, (-35, 0), (35, 0), 1)
+        s2 = pymunk.Segment(self.space.static_body, (-36, -50), (-36, 0), 1)
+        s3 = pymunk.Segment(self.space.static_body, (36, -50), (36, 0), 1)
+
+        self.space.add(s1, s2, s3)
+
+        for i in range(size):
+            b = pymunk.Body()
+            b.position = -20 + (i % 6) * 7 + i / 10, 1 + (i / 6) * 5
+            c = int(50 - i / 2)
+            for z in range(c):
+                bs = 2 / 2
+                ps = 2 * z * bs + bs
+
+                top = pymunk.Poly.create_box_bb(
+                    b,
+                    pymunk.BB(-3, -3, 3, -4),
+                )
+                left = pymunk.Poly.create_box_bb(
+                    b,
+                    pymunk.BB(-3, -3, -2, 2),
+                )
+                right = pymunk.Poly.create_box_bb(
+                    b,
+                    pymunk.BB(2, -3, 3, 2),
+                )
+                top.density = 2
+                left.density = 2
+
+                self.space.add(top, left, right, b)
+
+
 tests = [SlowExplosion, FallingSquares]
 
 screen = pygame.display.set_mode((600, 600))
@@ -218,12 +254,13 @@ draw_options.flags = draw_options.DRAW_SHAPES
 
 # FallingSquares(space, 200)
 # FallingCircles(space, 200)
+# sim = Tumbler(1000)
+sim = Multifixture(100)
 # MildN2(space, 50)
 # N2(space, 500)
 # Diagonal(space, 100)
 # SlowExplosion(space, 5000)
 
-sim = Tumbler(1000)
 
 translation = pymunk.Transform()
 scaling = 2

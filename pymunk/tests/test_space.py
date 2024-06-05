@@ -133,64 +133,6 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(s.bodies, [b])
         self.assertEqual(s.shapes, [c2])
 
-    def testAddRemoveInStep(self) -> None:
-        s = p.Space()
-
-        b1 = p.Body(1, 2)
-        c1 = p.Circle(b1, 2)
-
-        b2 = p.Body(1, 2)
-        c2 = p.Circle(b2, 2)
-
-        s.add(b1, b2, c1, c2)
-
-        b = p.Body(1, 2)
-        c = p.Circle(b, 2)
-
-        def pre_solve_add(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
-            space.add(b, c)
-            space.add(c, b)
-            self.assertTrue(b not in s.bodies)
-            self.assertTrue(c not in s.shapes)
-            return True
-
-        def pre_solve_remove(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
-            space.remove(b, c)
-            space.remove(c, b)
-            self.assertTrue(b in s.bodies)
-            self.assertTrue(c in s.shapes)
-            return True
-
-        s.add_collision_handler(0, 0).pre_solve = pre_solve_add
-
-        s.step(0.1)
-        return
-        self.assertTrue(b in s.bodies)
-        self.assertTrue(c in s.shapes)
-
-        s.add_collision_handler(0, 0).pre_solve = pre_solve_remove
-
-        s.step(0.1)
-
-        self.assertTrue(b not in s.bodies)
-        self.assertTrue(c not in s.shapes)
-
-    def testRemoveInStep(self) -> None:
-        self._setUp()
-        s = self.s
-
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
-            space.remove(*arb.shapes)
-            return True
-
-        s.add_collision_handler(0, 0).pre_solve = pre_solve
-
-        s.step(0.1)
-
-        self.assertTrue(self.s1 not in s.shapes)
-        self.assertTrue(self.s2 not in s.shapes)
-        self._tearDown()
-
     def testAddShapeAsserts(self) -> None:
         s1 = p.Space()
         s2 = p.Space()
@@ -705,6 +647,112 @@ class UnitTestSpace(unittest.TestCase):
         s.step(1)
         s.remove(c1)
 
+    def testCollisionHandlerRemoveAfterSeparate(self) -> None:
+        # In this test the separate must happen before post_solve in the same step()
+        print()
+        space = p.Space()
+
+        shape1 = p.Circle(space.static_body, 1)
+        shape1.collision_type = 1
+
+        body2 = p.Body()
+        shape2 = p.Circle(body2, 1)
+        shape2.density = 1
+        shape2.collision_type = 2
+
+        body3 = p.Body(body_type=p.Body.KINEMATIC)
+        shape3 = p.Circle(body3, 1)
+        shape3.collision_type = 3
+
+        space.add(shape1, body2, shape2, shape3, body3)
+        print("START", shape1, shape2, shape3)
+
+        def separate(arbiter: p.Arbiter, space: p.Space, data):
+            print("SEP", arbiter.shapes)
+            self.separate_occurred = True
+
+        def post_solve(arbiter: p.Arbiter, space: p.Space, data):
+            print("POST", arbiter.shapes)
+            if self.separate_occurred:
+                print("POST REMOVE", arbiter.shapes)
+                space.remove(*arbiter.shapes)
+
+        space.add_collision_handler(1, 2).post_solve = post_solve
+        space.add_collision_handler(3, 2).separate = separate
+
+        print(1)
+        self.separate_occurred = False
+        space.step(1)
+        print(2)
+        body3.position = 10, 0
+        # self.assertEqual(len(space.shapes), 3)
+
+        self.separate_occurred = False
+        space.step(1)
+        print(3)
+        space.remove(shape3)
+        # self.assertEqual(len(space.shapes), 1)
+        print(4)
+        # space.remove(shape3)
+
+    def testCollisionHandlerAddRemoveInStep(self) -> None:
+        s = p.Space()
+
+        b1 = p.Body(1, 2)
+        c1 = p.Circle(b1, 2)
+
+        b2 = p.Body(1, 2)
+        c2 = p.Circle(b2, 2)
+
+        s.add(b1, b2, c1, c2)
+
+        b = p.Body(1, 2)
+        c = p.Circle(b, 2)
+
+        def pre_solve_add(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+            space.add(b, c)
+            space.add(c, b)
+            self.assertTrue(b not in s.bodies)
+            self.assertTrue(c not in s.shapes)
+            return True
+
+        def pre_solve_remove(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+            space.remove(b, c)
+            space.remove(c, b)
+            self.assertTrue(b in s.bodies)
+            self.assertTrue(c in s.shapes)
+            return True
+
+        s.add_collision_handler(0, 0).pre_solve = pre_solve_add
+
+        s.step(0.1)
+        return
+        self.assertTrue(b in s.bodies)
+        self.assertTrue(c in s.shapes)
+
+        s.add_collision_handler(0, 0).pre_solve = pre_solve_remove
+
+        s.step(0.1)
+
+        self.assertTrue(b not in s.bodies)
+        self.assertTrue(c not in s.shapes)
+
+    def testCollisionHandlerRemoveInStep(self) -> None:
+        self._setUp()
+        s = self.s
+
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+            space.remove(*arb.shapes)
+            return True
+
+        s.add_collision_handler(0, 0).pre_solve = pre_solve
+
+        s.step(0.1)
+
+        self.assertTrue(self.s1 not in s.shapes)
+        self.assertTrue(self.s2 not in s.shapes)
+        self._tearDown()
+
     def testCollisionHandlerKeyOrder(self) -> None:
         s = p.Space()
         h1 = s.add_collision_handler(1, 2)
@@ -960,7 +1008,7 @@ class UnitTestSpace(unittest.TestCase):
 
     def testPickleCachedArbiters(self) -> None:
         s = p.Space()
-        
+
         b1 = p.Body()
         b2 = p.Body()
 
@@ -970,32 +1018,31 @@ class UnitTestSpace(unittest.TestCase):
         c1.mass = 1
         c2.mass = 1
 
-        b2.position = 1,2
-        s.add(c1,c2, b1, b2)
-        
+        b2.position = 1, 2
+        s.add(c1, c2, b1, b2)
+
         s.step(0.1)
         # print("\nOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
         s_copy = s.copy()
-        
+
         # a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
         # a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
-        
+
         # print("a1", a1)
         # print("a2", a2)
         # print("XXXX")
-        
+
         # print("s.bodies.position:")
         # print([b.position for b in s.bodies])
         # print("s_copy.bodies.position:")
         # print([b.position for b in s_copy.bodies])
-
 
         s.step(0.1)
         s_copy.step(0.1)
-        
+
         # a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
         # a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
-        
+
         # print("a1", a1)
         # print("a2", a2)
         # print("XXXX")
@@ -1009,7 +1056,7 @@ class UnitTestSpace(unittest.TestCase):
 
         # a1 = [p.arbiter._arbiter_to_dict(_arb, s) for _arb in s._get_arbiters()]
         # a2 = [p.arbiter._arbiter_to_dict(_arb, s_copy) for _arb in s_copy._get_arbiters()]
-        
+
         # print("a1", a1)
         # print("a2", a2)
         # print("XXXX")
@@ -1019,13 +1066,11 @@ class UnitTestSpace(unittest.TestCase):
         # print("s_copy.bodies.position:")
         # print([b.position for b in s_copy.bodies])
 
-        # TODO: to assert that everything is working as it should all 
+        # TODO: to assert that everything is working as it should all
         # properties on the cached the arbiters should be asserted.
-
 
         self.assertAlmostEqual(s.bodies[0].position.x, s_copy.bodies[0].position.x)
         self.assertAlmostEqual(s.bodies[0].position.y, s_copy.bodies[0].position.y)
-
 
 
 def f1(*args: Any, **kwargs: Any) -> None:
