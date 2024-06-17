@@ -647,6 +647,71 @@ class UnitTestSpace(unittest.TestCase):
         s.step(1)
         s.remove(c1)
 
+    def testRemoveInSeparate(self) -> None:
+        s = p.Space()
+        print("\n XXX start")
+
+        shape1 = p.Circle(s.static_body, 1)
+        shape1.collision_type = 1
+
+        body2 = p.Body()
+        shape2 = p.Circle(body2, 1)
+        shape2.density = 1
+        # shape1.collision_type = 2
+
+        body3 = p.Body()
+        shape3 = p.Circle(body3, 1)
+        shape3.density = 1
+        # shape1.collision_type = 3
+
+        s.add(shape1)  # , shape2, shape3, body2, body3)
+
+        def remove1(*_):
+            print("remove1")
+            s.remove(shape1)
+
+        def remove2(*_):
+            print("remove2")
+            s.remove(shape2)
+
+        # s.add_collision_handler(1, 0).separate = remove2
+        s.step(1)
+        s.add_wildcard_collision_handler(1).separate = remove1
+
+        s.remove(shape1)  # trigger separate with shape2 and shape3
+
+        # s.add(shape1)
+
+        s.step(1)
+        # self.assertNotIn(shape1, s.shapes)
+        # s.remove(shape1)
+        # s.step(1)
+
+        print(" XXX end")
+
+    @unittest.skip("Existing bug in Pymunk. TODO: Fix bug and enable test")
+    def testRemoveInSeparateWithoutStep(self) -> None:
+        s = p.Space()
+        print("\n XXX start")
+
+        shape1 = p.Circle(s.static_body, 1)
+
+        body2 = p.Body()
+        shape2 = p.Circle(body2, 1)
+        shape2.density = 1
+
+        s.add(shape1, shape2, body2)
+
+        def separate(*_):
+            pass
+
+        s.step(1)
+        s.add_wildcard_collision_handler(0).separate = separate
+
+        s.remove(shape1)
+
+        print(" XXX end")
+
     def testCollisionHandlerRemoveAfterSeparate(self) -> None:
         # In this test the separate must happen before post_solve in the same step()
         print()
