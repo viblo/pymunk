@@ -271,12 +271,27 @@ class UnitTestBody(unittest.TestCase):
         self.assertTrue(s1 not in s.static_body.shapes)
 
     def test_body_type_update(self) -> None:
+
         s = p.Space()
         b1 = p.Body(body_type=p.Body.STATIC)
         b1.position = 3, 4
         b2 = p.Body(body_type=p.Body.STATIC)
-        c = p.PinJoint(b1, b2, (0, 0), (1, 1))
-        s.add(b1, b2, c)
+
+        # Test with each type of joint
+        joints = [
+            p.DampedRotarySpring(b1, b2, 0, 10, 0.1),
+            p.DampedSpring(b1, b2, (0, 0), (1, 1), 1, 0.1, 0.1),
+            p.GearJoint(b1, b2, 1, 2),
+            p.GrooveJoint(b1, b2, (0, 0), (1, 2), (0, 0)),
+            p.PinJoint(b1, b2, (0, 0), (1, 1)),
+            p.PivotJoint(b1, b2, (0, 0), (0, 0)),
+            p.RatchetJoint(b1, b2, 0.1, 0.2),
+            p.RotaryLimitJoint(b1, b2, 0, 1),
+            p.SimpleMotor(b1, b2, 1),
+            p.SlideJoint(b1, b2, (0, 0), (0, 0), 0, 10),
+        ]
+
+        s.add(b1, b2, *joints)
         s.step(1)
 
         b1.body_type = p.Body.DYNAMIC
@@ -290,9 +305,9 @@ class UnitTestBody(unittest.TestCase):
         s.step(1)
 
         self.assertEqual(b1.position, (3, 4))
-        self.assertAlmostEqual(b1.velocity.x, 0)
-        self.assertAlmostEqual(b1.velocity.y, 0)
-        self.assertAlmostEqual(b1.angular_velocity, 0)
+        self.assertAlmostEqual(b1.velocity.x, -2.994608977)
+        self.assertAlmostEqual(b1.velocity.y, -3.992811970)
+        self.assertAlmostEqual(b1.angular_velocity, 1)
 
     def test_pickle(self) -> None:
         b = p.Body(1, 2)

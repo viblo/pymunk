@@ -19,7 +19,7 @@ the Pymunk webpage for some examples.
 2007 - 2024, Victor Blomqvist - vb@viblo.se, MIT License
 
 This release is based on the latest Pymunk release (6.8.1), 
-using Chipmunk2D 7 rev 7a29dcfa49931f26632f3019582f289ba811a2b9.
+using Chipmunk2D 7 rev dfc2fb8ca023ce6376fa2cf4a7f91c92ee08a970.
 
 
 Installation
