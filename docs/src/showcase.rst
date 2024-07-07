@@ -261,6 +261,14 @@ Pymunk has been used or referenced in a number of scientific papers.
 List of papers which has used or mentioned Pymunk:
 .. (list made using "Chicago" style citation)
 
+#. Bartók, Roland, and Bertalan Toronya. 
+   "An Agent Based Simulator on ROS for Fuzzy Behavior Description Language (FBDL)." 
+   In 2024 25th International Carpathian Control Conference (ICCC), pp. 01-06. IEEE, 2024.
+
+#. Schwartz, Jonathon, Rhys Newbury, Dana Kulic, and Hanna Kurniawati. 
+   "POSGGym: A Library for Decision-Theoretic Planning and Learning in Partially Observable, Multi-Agent Environments." 
+   (2024).
+
 #. Ai, Bo, Stephen Tian, Haochen Shi, Yixuan Wang, Cheston Tan, Yunzhu Li, and Jiajun Wu. 
    "RoboPack: Learning Tactile-Informed Dynamics Models for Dense Packing." 
    In ICRA 2024 Workshop on 3D Visual Representations for Robot Manipulation.
