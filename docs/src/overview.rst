@@ -172,9 +172,9 @@ is best for a particular program depends on the requirements.
 
 Some good articles:
 
-* http://gameprogrammingpatterns.com/game-loop.html
-* http://gafferongames.com/game-physics/fix-your-timestep/
-* http://www.koonsolo.com/news/dewitters-gameloop/
+* https://gameprogrammingpatterns.com/game-loop.html
+* https://gafferongames.com/post/fix_your_timestep/
+* https://gamedevfaqs.com/managing-consistent-game-physics-the-case-for-fixed-time-steps
 
 
 Object tunneling
