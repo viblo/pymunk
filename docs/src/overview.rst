@@ -2,6 +2,14 @@
 Overview
 ********
 
+.. note::
+  If you use IDLE you will not always see debug information from within IDLE 
+  when Pymunk crashes when critical assert fails. If your program crashes in 
+  IDLE, but you don't see any output, try running IDLE from the terminal 
+  instead. This way the debug information will show there. 
+  (IDLE can be started from a terminal with ``python -m idlelib``.)
+
+
 Basics
 ======
 
