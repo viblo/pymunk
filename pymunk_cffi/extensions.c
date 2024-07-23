@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdarg.h>
+
 #include "chipmunk/chipmunk_private.h"
 
 //
@@ -455,4 +458,33 @@ cpFloat defaultSpringForce(cpDampedSpring *spring, cpFloat dist){
 
 cpFloat defaultSpringTorque(cpDampedRotarySpring *spring, cpFloat relativeAngle){
 	return (relativeAngle - spring->restAngle)*spring->stiffness;
+}
+
+
+//
+// Functions to forward logs (printfs) to python code instead of directly printing to stderr
+//
+
+//Python side, already formatted message
+void ext_pyLog(const char *formattedMessage); 
+
+//Chipmunk side, follows existing function declaration
+void cpMessage(const char *condition, const char *file, int line, int isError, int isHardError, const char *message, ...)
+{
+   	ext_pyLog((isError ? "Aborting due to Chipmunk error: " : "Chipmunk warning: "));
+    
+    static char formattedMessage[256];
+    formattedMessage[0] = 0;
+
+    va_list vargs;
+	va_start(vargs, message); {	
+        vsnprintf(formattedMessage, sizeof(formattedMessage), message, vargs);
+		ext_pyLog(formattedMessage);
+	} va_end(vargs);
+    
+    snprintf(formattedMessage, sizeof(formattedMessage), "\tFailed condition: %s", condition);
+	ext_pyLog(formattedMessage);
+	
+    snprintf(formattedMessage, sizeof(formattedMessage), "\tSource: %s:%d", file, line);
+	ext_pyLog(formattedMessage);	
 }

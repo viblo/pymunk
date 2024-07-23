@@ -313,3 +313,9 @@ def ext_cpDampedRotarySpringTorqueFunc(
 def ext_cpArbiterIteratorFunc(_arbiter, data):  # type: ignore
     arbiters = ffi.from_handle(data)
     arbiters.append(_arbiter)
+
+
+# cpMessage / log override
+@ffi.def_extern()
+def ext_pyLog(formattedMessage):
+    _logger.error(ffi.string(formattedMessage).decode())

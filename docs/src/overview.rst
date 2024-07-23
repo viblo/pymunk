@@ -311,6 +311,22 @@ Note that the version of Pymunk used must be the same for the code saving as
 the version used when loading the saved object.
 
 
+Asserts and error handling
+==========================
+
+Pymunk uses asserts to guard against bad input, for example to guard against 
+adding the same Shape twice to a Space. Should an assert fail it can be 
+handled the normal Python way, for example with a try/catch. 
+
+There are also asserts deeper in Pymunk, in the underlying Chipmunk library. 
+These guards against both bad input that is not possible to check from the 
+Pymunk side, and against bad simulation state that can happen for various 
+reasons in the middle of the simulation. These are normally not recoverable, 
+and will result in a hard crash if failed. The problem will be logged using 
+the standard Python logging module, with the logger name "pymunk" (or a child 
+of it). 
+
+
 Additional info
 ===============
 

@@ -43,4 +43,6 @@ extern "Python" {
     cpFloat ext_cpMarchSampleFunc(cpVect point, void *data);
     void ext_cpMarchSegmentFunc(cpVect v0, cpVect v1, void *data);
 
+    // custom method for logging (override of CP_MESSAGE)
+    void ext_pyLog(const char *formattedMessage);
 }
