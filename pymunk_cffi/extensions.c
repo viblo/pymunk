@@ -466,7 +466,7 @@ cpFloat defaultSpringTorque(cpDampedRotarySpring *spring, cpFloat relativeAngle)
 //
 
 //Python side, already formatted message
-extern void ext_pyLog(const char *formattedMessage); 
+static void ext_pyLog(const char *formattedMessage); 
 
 //Chipmunk side, follows existing function declaration
 void cpMessage(const char *condition, const char *file, int line, int isError, int isHardError, const char *message, ...)
