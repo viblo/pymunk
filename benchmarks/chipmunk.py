@@ -1,9 +1,8 @@
+import argparse
+import gc
 import math
 
-import pygame
-
 import pymunk
-import pymunk.pygame_util
 
 """
 Benchmarks
@@ -23,9 +22,15 @@ Benchmarks
 
 
 class Benchmark:
+    steps = 500
+    default_size = 10
+    size_start = 10
+    size_end = 10
+    size_inc = 1
+
     def __init__(self):
         self.space = pymunk.Space()
-        self.space.gravity = 0, 10
+        self.space.gravity = 0, -10
 
     def update(self, dt):
         self.space.step(dt)
@@ -35,19 +40,26 @@ class Benchmark:
 
 
 class FallingSquares(Benchmark):
+    steps = 1300
+    default_size = 300
+    size_start = 10
+    size_end = 300
+    size_inc = 10
+
     def __init__(self, size):
         super().__init__()
-        self.space.static_body.position = 0, 10
-        ground = pymunk.Poly.create_box(self.space.static_body, (200, 20))
+
+        self.space.static_body.position = 0, -10
+        ground = pymunk.Poly.create_box(self.space.static_body, (100 * 2, 3 * 2))
         self.space.add(ground)
 
         for i in range(15):
             a = 0.5 + i / 15 * 2.5
             for j in range(size):
                 b = pymunk.Body()
-                b.position = i * 7 - 60, -2 * a * (size - j)
+                b.position = i * 7 - 30, 2 * a * (size - j)
 
-                p = pymunk.Poly.create_box(b, (a, a))
+                p = pymunk.Poly.create_box(b, (a * 2, a * 2))
                 p.density = 5
                 self.space.add(b, p)
 
@@ -374,7 +386,60 @@ class MixedStaticDynamic(Benchmark):
             self.space.add(b, shape)
 
 
-tests = [
+class BigMobile(Benchmark):
+    def __init__(self, size):
+        super().__init__()
+
+        self.max_depth = size
+        self.space.static_body.position = 0, 20
+
+        a = 0.25
+        h = pymunk.Vec2d(0, a)
+
+        root = self.add_node(self.space.static_body, pymunk.Vec2d.zero(), 0, 200.0, a)
+
+        self.space.add(pymunk.PinJoint(self.space.static_body, root, (0, 0), h))
+
+    def add_node(
+        self,
+        parent: pymunk.Body,
+        local_anchor: pymunk.Vec2d,
+        depth: int,
+        offset: float,
+        a: float,
+    ) -> pymunk.Body:
+
+        density = 20.0
+        h = pymunk.Vec2d(0, a)
+        p = parent.position + local_anchor - h
+        body = pymunk.Body()
+        body.position = p
+
+        if depth == self.max_depth:
+            shape = pymunk.Poly.create_box(body, (0.25 * a * 2, a * 2))
+            shape.density = density + p.x * 0.02
+            self.space.add(body, shape)
+            return body
+
+        bb = pymunk.BB(-offset, -0.25 * a - a, offset, 0.25 * a - a)
+        shape = pymunk.Poly.create_box_bb(body, bb)
+
+        shape.density = density
+        self.space.add(body, shape)
+
+        a1 = pymunk.Vec2d(offset, -a)
+        a2 = pymunk.Vec2d(-offset, -a)
+        body1 = self.add_node(body, a1, depth + 1, 0.5 * offset, a)
+        body2 = self.add_node(body, a2, depth + 1, 0.5 * offset, a)
+
+        self.space.add(
+            pymunk.PinJoint(body, body1, a1, h), pymunk.PinJoint(body, body2, a2, h)
+        )
+
+        return body
+
+
+benchmarks = [
     FallingSquares,
     FallingCircles,
     Tumbler,
@@ -386,65 +451,136 @@ tests = [
     MostlyStaticMultiBody,
     Diagonal,
     MixedStaticDynamic,
+    BigMobile,
     SlowExplosion,
 ]
 
 
-screen = pygame.display.set_mode((600, 600))
-clock = pygame.time.Clock()
-
-# space = pymunk.Space()
-
-draw_options = pymunk.pygame_util.DrawOptions(screen)
-draw_options.flags = draw_options.DRAW_SHAPES
-
-# FallingSquares(space, 200)
-# FallingCircles(space, 200)
-# sim = Tumbler(1000)
-# sim = Multifixture(100)
-# MildN2(space, 50)
-# N2(space, 500)
-# Diagonal(space, 100)
-# SlowExplosion(space, 5000)
-# sim = AddPair(2000)
-# sim = MostlyStaticSingleBody(50)
-# sim = MostlyStaticMultiBody(50)
-sim = MixedStaticDynamic(6000)
+import timeit
 
 
-translation = pymunk.Transform()
-scaling = 2
+def run(bench_cls, size, interactive):
+    steps = 0
+    fps = 60
+    sim = bench_cls(size)
+    gc.collect()
 
-steps = 0
+    start_time = timeit.default_timer()
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            quit()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            quit()
+    if interactive:
+        clock = pygame.time.Clock()
+        screen = pygame.display.set_mode((600, 600))
+        draw_options = pymunk.pygame_util.DrawOptions(screen)
+        draw_options.flags = draw_options.DRAW_SHAPES
 
-    keys = pygame.key.get_pressed()
-    zoom_in = int(keys[pygame.K_a])
-    zoom_out = int(keys[pygame.K_z])
-    zoom_speed = 0.1
-    scaling *= 1 + (zoom_speed * zoom_in - zoom_speed * zoom_out)
+        translation = pymunk.Transform.translation(300, 300)
+        scaling = 2
 
-    draw_options.transform = pymunk.Transform.translation(
-        300, 300
-    ) @ pymunk.Transform.scaling(scaling)
+    while steps < bench_cls.steps:
+        if interactive:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    quit()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    quit()
 
-    fps = 60.0
-    dt = 1.0 / fps
-    sim.update(dt)
-    steps += 1
+            keys = pygame.key.get_pressed()
+            left = int(keys[pygame.K_LEFT])
+            up = int(keys[pygame.K_UP])
+            down = int(keys[pygame.K_DOWN])
+            right = int(keys[pygame.K_RIGHT])
 
-    screen.fill(pygame.Color("white"))
-    sim.draw(draw_options)
-    pygame.display.flip()
+            zoom_in = int(keys[pygame.K_a])
+            zoom_out = int(keys[pygame.K_z])
+            zoom_speed = 0.1
 
-    clock.tick(fps)
-    pygame.display.set_caption(f"step {steps} fps {clock.get_fps():.2f}")
+            scaling *= 1 + (zoom_speed * zoom_in - zoom_speed * zoom_out)
+
+            translate_speed = 10 / scaling
+
+            translation = translation.translated(
+                translate_speed * left - translate_speed * right,
+                translate_speed * down - translate_speed * up,
+            )
+
+            # to zoom with center of screen as origin we need to offset with
+            # center of screen, scale, and then offset back
+            draw_options.transform = (
+                pymunk.Transform.translation(300, 300)
+                @ pymunk.Transform.scaling(scaling)
+                @ translation
+                @ pymunk.Transform.translation(-300, -300)
+            )
+
+            screen.fill(pygame.Color("white"))
+            sim.draw(draw_options)
+            pygame.display.flip()
+
+            clock.tick(fps)
+            pygame.display.set_caption(
+                f"step {steps} fps {clock.get_fps():.2f} total {timeit.default_timer()-start_time:.2f}s"
+            )
+
+        sim.update(1 / fps)
+        steps += 1
+
+    time_s = timeit.default_timer() - start_time
+    return {"Benchmark": bench_cls.__name__, "size": size, "time": time_s}
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description="Benchmark suite.")
+    benchmark_names = [benchmark.__name__ for benchmark in benchmarks]
+    parser.add_argument(
+        "-b",
+        "--benchmarks",
+        choices=benchmark_names,
+        nargs="*",
+        help="Run these benchmarks",
+        default=benchmark_names[0:1],
+    )
+    parser.add_argument(
+        "-s",
+        "--size",
+        type=int,
+        help="Size of simulation (e.g. number of items). Set to -1 to iterate the sizes",
+    )
+    parser.add_argument(
+        "-i",
+        "--interactive",
+        help="Run in interactive mode with display",
+        action="store_true",
+    )
+
+    args = parser.parse_args()
+
+    for name in args.benchmarks:
+        if args.interactive:
+            import pygame
+
+            import pymunk.pygame_util
+
+            pymunk.pygame_util.positive_y_is_up = True
+
+        bench_cls = [bench for bench in benchmarks if bench.__name__ == name][0]
+
+        if args.size == None:
+            sizes = [bench_cls.default_size]
+        elif args.size == -1:
+            sizes = range(
+                bench_cls.size_start, bench_cls.size_end + 1, bench_cls.size_inc
+            )
+        else:
+            sizes = [args.size]
+        print(
+            f"Running {bench_cls.__name__} with sizes {sizes} for {bench_cls.steps} steps."
+        )
+
+        for size in sizes:
+
+            res = run(bench_cls, size, args.interactive)
+            print(res)
 
 
 class Stacking:
