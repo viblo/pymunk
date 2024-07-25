@@ -242,12 +242,158 @@ class Multifixture(Benchmark):
                 self.space.add(top, left, right, b)
 
 
-tests = [SlowExplosion, FallingSquares]
+class AddPair(Benchmark):
+    def __init__(self, size):
+        super().__init__()
+        self.space.gravity = 0, 0
+        self.space.iterations = 50
+        minX = -9.0
+        maxX = 9.0
+        minY = 4.0
+        maxY = 6.0
+
+        for i in range(size):
+            b = pymunk.Body()
+            b.position = (
+                minX + (maxX - minX) * i / size,
+                minY + (maxY - minY) * (i % 32) / 32,
+            )
+
+            shape = pymunk.Circle(b, 0.1)
+            shape.density = 0.01
+            self.space.add(b, shape)
+
+        b = pymunk.Body()
+        b.position = -40, 5
+        shape = pymunk.Poly.create_box(b, (1.5, 1.5))
+        shape.density = 1
+
+        b.velocity = 175, 0
+        self.space.add(b, shape)
+
+
+class MostlyStaticSingleBody(Benchmark):
+    def __init__(self, size):
+        super().__init__()
+
+        a = 0.5
+
+        N = size
+        M = size
+
+        position = pymunk.Vec2d(0, 0)
+
+        for j in range(M):
+            position = pymunk.Vec2d(-N * a, position.y)
+
+            for i in range(N):
+                print(position)
+                if abs(j - i) > 3:
+
+                    shape = pymunk.Poly.create_box_bb(
+                        self.space.static_body,
+                        pymunk.BB(
+                            position.x - a,
+                            position.y - a,
+                            position.x + a,
+                            position.y + a,
+                        ),
+                    )
+                    self.space.add(shape)
+                elif i == j:
+                    b = pymunk.Body()
+                    b.position = position
+                    shape = pymunk.Circle(b, a * 2)
+                    shape.density = 1
+                    self.space.add(b, shape)
+
+                position = position + (2 * a, 0)
+            position = position - (0, 2 * a)
+
+
+class MostlyStaticMultiBody(Benchmark):
+    def __init__(self, size):
+        super().__init__()
+
+        a = 0.5
+
+        N = size
+        M = size
+
+        position = pymunk.Vec2d(0, 0)
+
+        for j in range(M):
+            position = pymunk.Vec2d(-N * a, position.y)
+
+            for i in range(N):
+                print(position)
+                if abs(j - i) > 3:
+                    b = pymunk.Body(body_type=pymunk.Body.STATIC)
+                    b.position = position
+                    shape = pymunk.Poly.create_box(b, (a * 2, a * 2))
+                    self.space.add(b, shape)
+                elif i == j:
+                    b = pymunk.Body()
+                    b.position = position
+                    shape = pymunk.Circle(b, a * 2)
+                    shape.density = 1
+                    self.space.add(b, shape)
+
+                position = position + (2 * a, 0)
+            position = position - (0, 2 * a)
+
+
+class MixedStaticDynamic(Benchmark):
+    def __init__(self, size):
+        super().__init__()
+
+        N = 150
+        M = 150
+        cntr = pymunk.Vec2d(M / 2, N / 2)
+        a = 0.5
+
+        for j in range(M):
+            for i in range(N):
+                pos = pymunk.Vec2d(i, j)
+
+                if (pos - cntr).dot(pos - cntr) > 67 * 67:
+                    shape = pymunk.Circle(self.space.static_body, a, pos)
+                    self.space.add(shape)
+
+        for i in range(size):
+            s = i / size
+
+            pos = pymunk.Vec2d(
+                math.cos(s * 30) * (s * 50 + 10), math.sin(s * 30) * (s * 50 + 10)
+            )
+            b = pymunk.Body()
+            b.position = pos + cntr
+            b.velocity = pos
+            shape = pymunk.Circle(b, a)
+            shape.density = 0.5
+            self.space.add(b, shape)
+
+
+tests = [
+    FallingSquares,
+    FallingCircles,
+    Tumbler,
+    AddPair,
+    MildN2,
+    N2,
+    Multifixture,
+    MostlyStaticSingleBody,
+    MostlyStaticMultiBody,
+    Diagonal,
+    MixedStaticDynamic,
+    SlowExplosion,
+]
+
 
 screen = pygame.display.set_mode((600, 600))
 clock = pygame.time.Clock()
 
-space = pymunk.Space()
+# space = pymunk.Space()
 
 draw_options = pymunk.pygame_util.DrawOptions(screen)
 draw_options.flags = draw_options.DRAW_SHAPES
@@ -255,11 +401,15 @@ draw_options.flags = draw_options.DRAW_SHAPES
 # FallingSquares(space, 200)
 # FallingCircles(space, 200)
 # sim = Tumbler(1000)
-sim = Multifixture(100)
+# sim = Multifixture(100)
 # MildN2(space, 50)
 # N2(space, 500)
 # Diagonal(space, 100)
 # SlowExplosion(space, 5000)
+# sim = AddPair(2000)
+# sim = MostlyStaticSingleBody(50)
+# sim = MostlyStaticMultiBody(50)
+sim = MixedStaticDynamic(6000)
 
 
 translation = pymunk.Transform()

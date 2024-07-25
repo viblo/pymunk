@@ -2,6 +2,13 @@
 Changelog 
 =========
 
+..
+  Pymunk x.x.x
+  ------------
+  Changes:
+  - Fixed issue with SlideJoint when changing body_type.
+  - Log Chipmunk level erros with logging module
+
 Pymunk 6.8.1 (2024-06-05)
 -------------------------
 

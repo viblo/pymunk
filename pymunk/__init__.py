@@ -30,6 +30,12 @@ Homepage: http://www.pymunk.org
 This is the main containing module of Pymunk. It contains among other things
 the very central Space, Body and Shape classes.
 
+Pymunk uses the standard logging module to log helpful information. It does 
+that under the "pymunk" name. If you do not do anything setup, it will print
+WARNING and higher messages to stderr. (Note that you most likely do not want 
+to set logLevel to DEBUG, since Pymunk might log a lot of debug level 
+messages mostly useful during development of Pymunk itself.)
+
 """
 
 __docformat__ = "reStructuredText"
@@ -69,10 +75,6 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-import logging
-
-logging.getLogger(__name__).addHandler(logging.NullHandler())
-# logging.basicConfig(level=0)
 
 from . import _version
 from .arbiter import Arbiter
@@ -88,6 +90,10 @@ from .space import Space
 from .space_debug_draw_options import SpaceDebugDrawOptions
 from .transform import Transform
 from .vec2d import Vec2d
+
+# import logging
+# logging.getLogger(__name__).addHandler(logging.NullHandler())
+# logging.basicConfig(level=0)
 
 version: str = _version.version
 """The release version of this pymunk installation.

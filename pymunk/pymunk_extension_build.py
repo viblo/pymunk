@@ -78,6 +78,7 @@ ffibuilder.set_source(
     include_dirs=[os.path.join("Chipmunk2D", "include")],
     sources=sources,
     libraries=libraries,
+    define_macros=[("CP_OVERRIDE_MESSAGE", None)],
 )
 
 if __name__ == "__main__":
