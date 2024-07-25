@@ -54,18 +54,48 @@ __docformat__ = "reStructuredText"
 import math
 import numbers
 import operator
-from typing import NamedTuple, Tuple
+from typing import Tuple
 
 __all__ = ["Vec2d"]
 
 
-class Vec2d(NamedTuple):
+class Vec2d(object):
     """2d vector class, supports vector and scalar operators, and also
     provides some high level functions.
     """
 
-    x: float
-    y: float
+    def __init__(self, x: float = 0, y: float = 0):
+        self.x = x
+        self.y = y
+
+    # Array operations
+    def __getitem__(self, key):
+        """Return self[key]."""
+        assert key in (0, 1)
+
+        return self.x if key == 0 else self.y
+            
+    def __setitem__(self, key, value):
+        """Set self[key] to value."""
+        assert key in (0, 1)
+
+        if key == 0:
+            self.x = value
+        elif key == 1:
+            self.y = value
+
+    def __len__(self) -> 2:
+        """Return len(self)."""
+        return 2
+
+    def __iter__(self):
+        """Implement iter(self)."""
+        yield self.x
+        yield self.y
+
+    def __reversed__(self) -> "Vec2d":
+        """Return a reverse iterator over the vector."""
+        return Vec2d(self.y, self.x)
 
     # String representaion (for debugging)
     def __repr__(self) -> str:
