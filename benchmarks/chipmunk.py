@@ -3,9 +3,18 @@ import csv
 import gc
 import io
 import math
+import os
 
 import pymunk
 
+try:
+    import pygame
+
+    import pymunk.pygame_util
+
+    pymunk.pygame_util.positive_y_is_up = True
+except:
+    pass
 """
 Benchmarks
 
@@ -232,9 +241,6 @@ class N2(Benchmark):
             self.space.add(b, c)
 
 
-import random
-
-
 class Multifixture(Benchmark):
     steps = 500
     default_size = 100
@@ -244,7 +250,6 @@ class Multifixture(Benchmark):
 
     def __init__(self, size):
         super().__init__()
-        random.seed(1)
         s1 = pymunk.Segment(self.space.static_body, (-35, 0), (35, 0), 1)
         s2 = pymunk.Segment(self.space.static_body, (-36, 50), (-36, 0), 1)
         s3 = pymunk.Segment(self.space.static_body, (36, 50), (36, 0), 1)
@@ -526,6 +531,20 @@ class SlowExplosion(Benchmark):
             self.space.add(b, c)
 
 
+class Stacking:
+
+    def __init__(self):
+        self.space = pymunk.Space()
+
+        s = pymunk.Segment(self.space.static_body, (0, 500), (500, 500), 5)
+
+    def update(self, dt):
+        pass
+
+    def draw(self):
+        pass
+
+
 benchmarks = [
     FallingSquares,
     FallingCircles,
@@ -615,6 +634,18 @@ def run(bench_cls, size, interactive):
         sim.update(1 / fps)
         steps += 1
 
+    if not interactive and False:  # temp disabled until end state is nice to look at.
+        try:
+            os.environ["SDL_VIDEODRIVER"] = "dummy"
+            surface = pygame.Surface((600, 600))
+            draw_options = pymunk.pygame_util.DrawOptions(surface)
+            draw_options.flags = draw_options.DRAW_SHAPES
+            surface.fill(pygame.Color("white"))
+            sim.draw(draw_options)
+            pygame.image.save(surface, f"{bench_cls.__name__}_{size}.png")
+        except Exception as e:
+            print("Could not save screenshot", e)
+
     time_s = timeit.default_timer() - start_time
     return {"benchmark": bench_cls.__name__, "size": size, "time": time_s}
 
@@ -629,7 +660,7 @@ if __name__ == "__main__":
         choices=benchmark_names,
         nargs="*",
         help="Run these benchmarks",
-        default=benchmark_names[0:1],
+        default=benchmark_names,
     )
     parser.add_argument(
         "-s",
@@ -650,12 +681,6 @@ if __name__ == "__main__":
     writer = csv.DictWriter(csv_output, fieldnames=["benchmark", "size", "time"])
     writer.writeheader()
     for name in args.benchmarks:
-        if args.interactive:
-            import pygame
-
-            import pymunk.pygame_util
-
-            pymunk.pygame_util.positive_y_is_up = True
 
         bench_cls = [bench for bench in benchmarks if bench.__name__ == name][0]
 
@@ -679,17 +704,3 @@ if __name__ == "__main__":
     print("DONE!")
     print("Full Result:")
     print(csv_output.getvalue())
-
-
-class Stacking:
-
-    def __init__(self):
-        self.space = pymunk.Space()
-
-        s = pymunk.Segment(self.space.static_body, (0, 500), (500, 500), 5)
-
-    def update(self, dt):
-        pass
-
-    def draw(self):
-        pass
