@@ -1,5 +1,7 @@
 import argparse
+import csv
 import gc
+import io
 import math
 
 import pymunk
@@ -65,127 +67,35 @@ class FallingSquares(Benchmark):
 
 
 class FallingCircles(Benchmark):
+    steps = 1300
+    default_size = 300
+    size_start = 10
+    size_end = 300
+    size_inc = 10
+
     def __init__(self, size):
         super().__init__()
-        self.space.static_body.position = 0, 10
-        ground = pymunk.Poly.create_box(self.space.static_body, (200, 20))
+        self.space.static_body.position = 0, -10
+        ground = pymunk.Poly.create_box(self.space.static_body, (100 * 2, 3 * 2))
         self.space.add(ground)
 
         for i in range(15):
             a = 0.5 + i / 15 * 2.5
             for j in range(size):
                 b = pymunk.Body()
-                b.position = i * 7 + j * 0.25 - 60, -2 * a * (size - j)
+                b.position = i * 7 + j * 0.25 - 100, 2 * a * (size - j)
                 c = pymunk.Circle(b, a / 2)
                 c.density = 5
                 self.space.add(b, c)
 
 
-class SlowExplosion(Benchmark):
-    def __init__(self, size):
-        super().__init__()
-        self.space.gravity = 0, 0
-
-        for i in range(size):
-            b = pymunk.Body()
-            c = pymunk.Circle(b, 0.5)
-            c.density = 0.5
-            s = i * 30 / size
-            x = math.cos(s * 30) * (s * 30 + 5)
-            y = math.sin(s * 30) * (s * 30 + 5)
-            b.position = pymunk.Vec2d(x, y)
-            b.velocity = 0.2 * b.position
-            self.space.add(b, c)
-
-
-class MildN2(Benchmark):
-    def __init__(self, size):
-        super().__init__()
-        ground = pymunk.Segment(self.space.static_body, (-50, 0), (50, 0), 1)
-        self.space.add(ground)
-
-        # table
-        for i in range(size):
-            b = pymunk.Body()
-            b.position = -5, -1
-
-            top = pymunk.Poly.create_box_bb(
-                b,
-                pymunk.BB(-3, -3, 3, -4),
-            )
-            left = pymunk.Poly.create_box_bb(
-                b,
-                pymunk.BB(-3, -3, -2, 2),
-            )
-            right = pymunk.Poly.create_box_bb(
-                b,
-                pymunk.BB(2, -3, 3, 2),
-            )
-            top.density = 2
-            left.density = 2
-
-            self.space.add(top, left, right, b)
-
-        # triangle
-        for i in range(size):
-            b = pymunk.Body()
-            b.position = 15, -1
-            left = pymunk.Poly(b, [(-2, 0), (1, -2), (0, -4)])
-            left.density = 3
-
-            right = pymunk.Poly(b, [(2, 0), (-1, -2), (0, -4)])
-            right.density = 3
-
-            self.space.add(b, left, right)
-
-
-class N2(Benchmark):
-    def __init__(self, size):
-        super().__init__()
-        # ground = pymunk.Segment(space.static_body, (-50, 0), (50, 0), 1)
-        # space.add(ground)
-
-        for i in range(size):
-            b = pymunk.Body()
-            b.position = (i * 0.01, -i * 0.01)
-            c = pymunk.Circle(b, 1)
-            c.density = 1
-            self.space.add(b, c)
-
-
-class Diagonal(Benchmark):
-    def __init__(self, size):
-        super().__init__()
-
-        a = 0.5
-        N = size
-        M = size / 2
-        position = pymunk.Vec2d(0, 0)
-        for j in range(int(M)):
-            position = pymunk.Vec2d(-N * a * 3, position.y)
-
-            for i in range(N):
-                b = pymunk.Body(body_type=pymunk.Body.STATIC)
-                # (float hx, float hy, const b2Vec2 &center, float angle)
-
-                b.position = position
-                b.angle = math.pi / 4
-                s = pymunk.Poly.create_box(b, (a, ((3 * j + 1) * a)))
-                self.space.add(b, s)
-                position = position + ((8 * a), 0)
-            position = position - (0, 8 * a)
-
-        for i in range(3000):
-            b = pymunk.Body()
-            b.position = (i / 15) * 2 - 75, -(i % 15 * 2) - 50
-
-            c = pymunk.Circle(b, 0.5)
-            c.density = 1
-
-            self.space.add(b, c)
-
-
 class Tumbler(Benchmark):
+    steps = 1500
+    default_size = 1000
+    size_start = 50
+    size_end = 1000
+    size_inc = 50
+
     def __init__(self, size):
         super().__init__()
 
@@ -203,8 +113,8 @@ class Tumbler(Benchmark):
         s3.density = 5
         s4.density = 5
 
-        j1 = pymunk.constraints.SimpleMotor(self.space.static_body, b, 1)
-        j2 = pymunk.constraints.PinJoint(self.space.static_body, b, (0, 0), (0, 0))
+        j1 = pymunk.constraints.SimpleMotor(self.space.static_body, b, 0.05 * math.pi)
+        j2 = pymunk.constraints.PinJoint(self.space.static_body, b, (0, 10), (0, 0))
         self.space.add(b, s1, s2, s3, s4, j1, j2)
 
     def update(self, dt):
@@ -212,53 +122,22 @@ class Tumbler(Benchmark):
         if self.m_count < self.e_count:
             b = pymunk.Body()
             b.position = 0, 10
-            s = pymunk.Poly.create_box(b, (0.125, 0.125))
+            s = pymunk.Poly.create_box(b, (0.125 * 2, 0.125 * 2))
             s.density = 1
             self.space.add(b, s)
             self.m_count += 1
 
 
-class Multifixture(Benchmark):
-    def __init__(self, size):
-        super().__init__()
-
-        s1 = pymunk.Segment(self.space.static_body, (-35, 0), (35, 0), 1)
-        s2 = pymunk.Segment(self.space.static_body, (-36, -50), (-36, 0), 1)
-        s3 = pymunk.Segment(self.space.static_body, (36, -50), (36, 0), 1)
-
-        self.space.add(s1, s2, s3)
-
-        for i in range(size):
-            b = pymunk.Body()
-            b.position = -20 + (i % 6) * 7 + i / 10, 1 + (i / 6) * 5
-            c = int(50 - i / 2)
-            for z in range(c):
-                bs = 2 / 2
-                ps = 2 * z * bs + bs
-
-                top = pymunk.Poly.create_box_bb(
-                    b,
-                    pymunk.BB(-3, -3, 3, -4),
-                )
-                left = pymunk.Poly.create_box_bb(
-                    b,
-                    pymunk.BB(-3, -3, -2, 2),
-                )
-                right = pymunk.Poly.create_box_bb(
-                    b,
-                    pymunk.BB(2, -3, 3, 2),
-                )
-                top.density = 2
-                left.density = 2
-
-                self.space.add(top, left, right, b)
-
-
 class AddPair(Benchmark):
+    steps = 1000
+    default_size = 2000
+    size_start = 100
+    size_end = 2500
+    size_inc = 100
+
     def __init__(self, size):
         super().__init__()
         self.space.gravity = 0, 0
-        self.space.iterations = 50
         minX = -9.0
         maxX = 9.0
         minY = 4.0
@@ -277,19 +156,141 @@ class AddPair(Benchmark):
 
         b = pymunk.Body()
         b.position = -40, 5
-        shape = pymunk.Poly.create_box(b, (1.5, 1.5))
+        shape = pymunk.Poly.create_box(b, (1.5 * 2, 1.5 * 2))
         shape.density = 1
 
         b.velocity = 175, 0
         self.space.add(b, shape)
 
+    def update(self, dt):
+        for x in range(4):
+            self.space.step(dt / 4)
+
+
+class MildN2(Benchmark):
+    steps = 100
+    default_size = 200
+    size_start = 10
+    size_end = 200
+    size_inc = 10
+
+    def __init__(self, size):
+        super().__init__()
+        ground = pymunk.Segment(self.space.static_body, (-50, 0), (50, 0), 1)
+        self.space.add(ground)
+
+        # table
+        for i in range(size):
+            b = pymunk.Body()
+            b.position = -5, -1
+
+            top = pymunk.Poly.create_box_bb(
+                b,
+                pymunk.BB(-3, 3, 3, 4),
+            )
+            left = pymunk.Poly.create_box_bb(
+                b,
+                pymunk.BB(-3, 4, -2, 0),
+            )
+            right = pymunk.Poly.create_box_bb(
+                b,
+                pymunk.BB(2, 4, 3, 0),
+            )
+            top.density = 2
+            left.density = 2
+
+            self.space.add(top, left, right, b)
+
+        # triangle
+        for i in range(size):
+            b = pymunk.Body()
+            b.position = 15, 1
+            left = pymunk.Poly(b, [(-2, 0), (1, 2), (0, 4)])
+            left.density = 2
+
+            right = pymunk.Poly(b, [(2, 0), (-1, 2), (0, 4)])
+            right.density = 2
+
+            self.space.add(b, left, right)
+
+
+class N2(Benchmark):
+    steps = 100
+    default_size = 750
+    size_start = 25
+    size_end = 750
+    size_inc = 25
+
+    def __init__(self, size):
+        super().__init__()
+
+        for i in range(size):
+            b = pymunk.Body()
+            b.position = (i * 0.01, -i * 0.01)
+            c = pymunk.Circle(b, 1)
+            c.density = 1
+            self.space.add(b, c)
+
+
+import random
+
+
+class Multifixture(Benchmark):
+    steps = 500
+    default_size = 100
+    size_start = 5
+    size_end = 100
+    size_inc = 5
+
+    def __init__(self, size):
+        super().__init__()
+        random.seed(1)
+        s1 = pymunk.Segment(self.space.static_body, (-35, 0), (35, 0), 1)
+        s2 = pymunk.Segment(self.space.static_body, (-36, 50), (-36, 0), 1)
+        s3 = pymunk.Segment(self.space.static_body, (36, 50), (36, 0), 1)
+
+        self.space.add(s1, s2, s3)
+
+        for i in range(size):
+            b = pymunk.Body()
+            b.position = -20 + (i % 6) * 7 + i / 10, 1 + (i / 6) * 5
+            self.space.add(b)
+            c = 50 - i // 2
+            for z in range(c):
+
+                bs = 2 / c
+                ps = 2 * z * bs + bs
+
+                top = pymunk.Poly.create_box_bb(
+                    b,
+                    pymunk.BB(-bs + ps - 2, 3, bs + ps - 2, 4),
+                )
+                left = pymunk.Poly.create_box_bb(
+                    b,
+                    pymunk.BB(-2, bs + ps, -1, -bs + ps),
+                )
+                right = pymunk.Poly.create_box_bb(
+                    b,
+                    pymunk.BB(1, bs + ps, 2, -bs + ps),
+                )
+                top.density = 2 / c
+                left.density = 2 / c
+
+                self.space.add(top, left, right)
+
 
 class MostlyStaticSingleBody(Benchmark):
+    steps = 400
+    default_size = 200
+    size_start = 10
+    size_end = 200
+    size_inc = 5
+
     def __init__(self, size):
         super().__init__()
 
         a = 0.5
-
+        self.space.static_body.position = (0, -a)
         N = size
         M = size
 
@@ -299,7 +300,6 @@ class MostlyStaticSingleBody(Benchmark):
             position = pymunk.Vec2d(-N * a, position.y)
 
             for i in range(N):
-                print(position)
                 if abs(j - i) > 3:
 
                     shape = pymunk.Poly.create_box_bb(
@@ -319,11 +319,17 @@ class MostlyStaticSingleBody(Benchmark):
                     shape.density = 1
                     self.space.add(b, shape)
 
-                position = position + (2 * a, 0)
-            position = position - (0, 2 * a)
+                position += (2 * a, 0)
+            position -= (0, 2 * a)
 
 
 class MostlyStaticMultiBody(Benchmark):
+    steps = 400
+    default_size = 200
+    size_start = 10
+    size_end = 200
+    size_inc = 5
+
     def __init__(self, size):
         super().__init__()
 
@@ -338,7 +344,7 @@ class MostlyStaticMultiBody(Benchmark):
             position = pymunk.Vec2d(-N * a, position.y)
 
             for i in range(N):
-                print(position)
+
                 if abs(j - i) > 3:
                     b = pymunk.Body(body_type=pymunk.Body.STATIC)
                     b.position = position
@@ -351,11 +357,55 @@ class MostlyStaticMultiBody(Benchmark):
                     shape.density = 1
                     self.space.add(b, shape)
 
-                position = position + (2 * a, 0)
-            position = position - (0, 2 * a)
+                position += (2 * a, 0)
+            position -= (0, 2 * a)
+
+
+class Diagonal(Benchmark):
+    steps = 1000
+    default_size = 50
+    size_start = 2
+    size_end = 50
+    size_inc = 2
+
+    def __init__(self, size):
+        super().__init__()
+
+        a = 0.5
+        N = size
+        M = size / 2
+        position = pymunk.Vec2d(0, 0)
+        for j in range(int(M)):
+            position = pymunk.Vec2d(-N * a, position.y)
+
+            for i in range(N):
+                b = pymunk.Body(body_type=pymunk.Body.STATIC)
+                # (float hx, float hy, const b2Vec2 &center, float angle)
+
+                b.position = position
+                b.angle = math.pi / 4
+                s = pymunk.Poly.create_box(b, (a, ((3 * j + 1) * a)))
+                self.space.add(b, s)
+                position += ((8 * a), 0)
+            position -= (0, 8 * a)
+
+        for i in range(3000):
+            b = pymunk.Body()
+            b.position = (i / 15) * 2 - 75, (i % 15 * 2) + 50
+
+            c = pymunk.Circle(b, 0.5)
+            c.density = 1
+
+            self.space.add(b, c)
 
 
 class MixedStaticDynamic(Benchmark):
+    steps = 400
+    default_size = 6000
+    size_start = 100
+    size_end = 6000
+    size_inc = 100
+
     def __init__(self, size):
         super().__init__()
 
@@ -387,6 +437,12 @@ class MixedStaticDynamic(Benchmark):
 
 
 class BigMobile(Benchmark):
+    steps = 1000
+    default_size = 11
+    size_start = 1
+    size_end = 11
+    size_inc = 1
+
     def __init__(self, size):
         super().__init__()
 
@@ -414,29 +470,60 @@ class BigMobile(Benchmark):
         p = parent.position + local_anchor - h
         body = pymunk.Body()
         body.position = p
+        shape = pymunk.Poly.create_box(body, (0.25 * a * 2, a * 2))
+        shape.density = density + p.x * 0.02
+        self.space.add(body, shape)
 
         if depth == self.max_depth:
-            shape = pymunk.Poly.create_box(body, (0.25 * a * 2, a * 2))
-            shape.density = density + p.x * 0.02
-            self.space.add(body, shape)
+
             return body
 
         bb = pymunk.BB(-offset, -0.25 * a - a, offset, 0.25 * a - a)
         shape = pymunk.Poly.create_box_bb(body, bb)
 
         shape.density = density
-        self.space.add(body, shape)
+        self.space.add(shape)
 
         a1 = pymunk.Vec2d(offset, -a)
         a2 = pymunk.Vec2d(-offset, -a)
         body1 = self.add_node(body, a1, depth + 1, 0.5 * offset, a)
         body2 = self.add_node(body, a2, depth + 1, 0.5 * offset, a)
 
-        self.space.add(
-            pymunk.PinJoint(body, body1, a1, h), pymunk.PinJoint(body, body2, a2, h)
-        )
+        j1 = pymunk.PinJoint(body, body1, a1, h)
+        j2 = pymunk.PinJoint(body, body2, a2, h)
+        j1.collide_bodies = False
+        j2.collide_bodies = False
+
+        self.space.add(j1, j2)
 
         return body
+
+
+class SlowExplosion(Benchmark):
+    steps = 1000
+    default_size = 6000
+    size_start = 100
+    size_end = 6000
+    size_inc = 100
+
+    def __init__(self, size):
+        super().__init__()
+        self.space.gravity = 0, 0
+
+        for i in range(size):
+            s = i * 30 / size
+            pos = pymunk.Vec2d(
+                math.cos(s * 30) * (s * 30 + 5), math.sin(s * 30) * (s * 30 + 5)
+            )
+
+            b = pymunk.Body()
+            b.position = pos
+            b.velocity = 0.2 * b.position
+
+            c = pymunk.Circle(b, 0.5)
+            c.density = 0.5
+
+            self.space.add(b, c)
 
 
 benchmarks = [
@@ -471,10 +558,11 @@ def run(bench_cls, size, interactive):
         clock = pygame.time.Clock()
         screen = pygame.display.set_mode((600, 600))
         draw_options = pymunk.pygame_util.DrawOptions(screen)
-        draw_options.flags = draw_options.DRAW_SHAPES
+        draw_options.flags = draw_options.DRAW_SHAPES  # | draw_options.DRAW_CONSTRAINTS
 
         translation = pymunk.Transform.translation(300, 300)
         scaling = 2
+        draw_shapes = True
 
     while steps < bench_cls.steps:
         if interactive:
@@ -483,6 +571,8 @@ def run(bench_cls, size, interactive):
                     quit()
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     quit()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+                    draw_shapes = not draw_shapes
 
             keys = pygame.key.get_pressed()
             left = int(keys[pygame.K_LEFT])
@@ -513,7 +603,8 @@ def run(bench_cls, size, interactive):
             )
 
             screen.fill(pygame.Color("white"))
-            sim.draw(draw_options)
+            if draw_shapes:
+                sim.draw(draw_options)
             pygame.display.flip()
 
             clock.tick(fps)
@@ -525,7 +616,7 @@ def run(bench_cls, size, interactive):
         steps += 1
 
     time_s = timeit.default_timer() - start_time
-    return {"Benchmark": bench_cls.__name__, "size": size, "time": time_s}
+    return {"benchmark": bench_cls.__name__, "size": size, "time": time_s}
 
 
 if __name__ == "__main__":
@@ -555,6 +646,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    csv_output = io.StringIO()
+    writer = csv.DictWriter(csv_output, fieldnames=["benchmark", "size", "time"])
+    writer.writeheader()
     for name in args.benchmarks:
         if args.interactive:
             import pygame
@@ -581,6 +675,10 @@ if __name__ == "__main__":
 
             res = run(bench_cls, size, args.interactive)
             print(res)
+            writer.writerow(res)
+    print("DONE!")
+    print("Full Result:")
+    print(csv_output.getvalue())
 
 
 class Stacking:
