@@ -1,3 +1,56 @@
+"""
+A suite of benchmarks that tests various simulation setups. Each benchmark is 
+designed to stress Pymunk and the underlying Chipmunk2D engine in different
+ways.
+
+They meant to measure changes from optimizations made to Pymunk and/or 
+Chipmunk, e.g. how did performance change between Pymunk version X and Pymunk 
+version Y. The absolute time by itself of a test does not really say that 
+much. One test can not be compared to another test.
+
+Note that running the full suite of benchmarks is very heavy and 
+timeconsuming.
+
+Below is an overview of the various benchmarks. These ones were ported over 
+from the `box2d-optimized <https://github.com/mtsamis/box2d-optimized>_ fork 
+of Box2D, which proposed multuple improvements to the Box2D engine. All credit
+to their creator(s).
+
+- Falling squares: A scene with stacked squares of varying sizes falling against a ground body.
+- Falling circles: The same scene as above but with circles.
+- Tumbler: Adds new bodies in each step inside a rotating object (See Tumbler in the Box2D testbed).
+- Add pair: A object that moves very fast hits a big group of resting circles in a zero-gravity world.
+- mild n^2: Spawns a number of composite objects (tables and spaceships as found in one Box2D testbed) one on top of each other, creating a degenerate simulation. Stress test for the broad-phase.
+- n^2: A simpler version of the above. A high number of circles being on top of another, offset only by a small delta, creating an initial 'circle explosion' byu the solver.
+- Multi-fixture: A scene that creates multiple table objects with greatly varying fixture counts.
+- Mostly static (single body): A huge static square made from a high number of small static square fixtures with only very few dynamic bodies that exist in a diagonal corridor inside the big box.
+- Mostly static (multi body): The same scene as above but all the small squares are individual bodies with a single fixture.
+- Diagonal: A benchmark with some dynamic bodies falling through a lot of static bodies that are shaped like diagonal lines. Stress test for contact count.
+- Mixed static/dynamic: A casual scene with both static and dynamic bodies, polygons and circles, some movement and collisions.
+- Big mobile: A structure resembling Box2D's 'balanced mobile' scene but much larger. A lot of joints and bodies.
+- Slow explosion: A 'calm' scene with a high number of bodies moving slowly and without collisions in a zero gravity world.
+
+Note that its not possible to directly compare the values to the Box2D 
+implementation, unless the simulation state is also reviewed first to match. 
+E.g. Pymunk (or Box2D) can be more stable or accurate, which also needs to be 
+taken into consideration when comparing the two.
+
+..
+    It is possible more are added in the future.
+        
+    # Higher is better tests (stability/accuracy) tests
+
+    - Stack boxes and see how tall until fall down
+    - Newtons pendulum
+
+    # Perf tests
+
+    - Big body with high velocity hit group of circle in zero gravity. 1000? bodies
+
+    - Slow explosion
+
+"""
+
 import argparse
 import csv
 import gc
@@ -15,21 +68,6 @@ try:
     pymunk.pygame_util.positive_y_is_up = True
 except:
     pass
-"""
-Benchmarks
-
-# Higher is better tests (stability/accuracy) tests
-
-- Stack boxes and see how tall until fall down
-- Newtons pendulum
-
-# Perf tests
-
-- Big body with high velocity hit group of circle in zero gravity. 1000? bodies
-
-- Slow explosion
-
-"""
 
 
 class Benchmark:
@@ -568,10 +606,12 @@ import timeit
 def run(bench_cls, size, interactive):
     steps = 0
     fps = 60
-    sim = bench_cls(size)
+
     gc.collect()
 
-    start_time = timeit.default_timer()
+    init_start_time = timeit.default_timer()
+    sim = bench_cls(size)
+    sim_start_time = timeit.default_timer()
 
     if interactive:
         clock = pygame.time.Clock()
@@ -628,7 +668,7 @@ def run(bench_cls, size, interactive):
 
             clock.tick(fps)
             pygame.display.set_caption(
-                f"step {steps} fps {clock.get_fps():.2f} total {timeit.default_timer()-start_time:.2f}s"
+                f"step {steps} fps {clock.get_fps():.2f} total {timeit.default_timer()-sim_start_time:.2f}s"
             )
 
         sim.update(1 / fps)
@@ -645,9 +685,13 @@ def run(bench_cls, size, interactive):
             pygame.image.save(surface, f"{bench_cls.__name__}_{size}.png")
         except Exception as e:
             print("Could not save screenshot", e)
-
-    time_s = timeit.default_timer() - start_time
-    return {"benchmark": bench_cls.__name__, "size": size, "time": time_s}
+    end_time = timeit.default_timer()
+    return {
+        "benchmark": bench_cls.__name__,
+        "size": size,
+        "init_time": sim_start_time - init_start_time,
+        "run_time": end_time - sim_start_time,
+    }
 
 
 if __name__ == "__main__":
@@ -678,7 +722,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     csv_output = io.StringIO()
-    writer = csv.DictWriter(csv_output, fieldnames=["benchmark", "size", "time"])
+    writer = csv.DictWriter(
+        csv_output, fieldnames=["benchmark", "size", "init_time", "run_time"]
+    )
     writer.writeheader()
     for name in args.benchmarks:
 
@@ -690,12 +736,16 @@ if __name__ == "__main__":
             sizes = range(
                 bench_cls.size_start, bench_cls.size_end + 1, bench_cls.size_inc
             )
+            sizes = range(
+                bench_cls.size_start,
+                bench_cls.size_end + 1,
+                (bench_cls.size_end + 1 - bench_cls.size_start) // 11,
+            )
         else:
             sizes = [args.size]
         print(
             f"Running {bench_cls.__name__} with sizes {sizes} for {bench_cls.steps} steps."
         )
-
         for size in sizes:
 
             res = run(bench_cls, size, args.interactive)
