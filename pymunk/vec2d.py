@@ -314,7 +314,7 @@ class Vec2d(NamedTuple):
     def get_dist_sqrd(self, other: Tuple[float, float]) -> float:
         """The squared distance between the vector and other vector
         It is more efficent to use this method than to call get_distance()
-        first and then do a sqrt() on the result.
+        first and then do a square() on the result.
 
         :return: The squared distance
         """
@@ -341,6 +341,10 @@ class Vec2d(NamedTuple):
         return self.x * other[1] - self.y * other[0]
 
     def interpolate_to(self, other: Tuple[float, float], range: float) -> "Vec2d":
+        """Vector interpolation between the current vector and another vector.
+
+        :return: The interpolated vector
+        """
         assert len(other) == 2
         return Vec2d(
             self.x + (other[0] - self.x) * range, self.y + (other[1] - self.y) * range
@@ -349,6 +353,10 @@ class Vec2d(NamedTuple):
     def convert_to_basis(
         self, x_vector: Tuple[float, float], y_vector: Tuple[float, float]
     ) -> "Vec2d":
+        """Converts the vector to a new basis defined by the given x and y vectors.
+
+        :return: Vec2d: The vector converted to the new basis.
+        """
         assert len(x_vector) == 2
         assert len(y_vector) == 2
         x = self.dot(x_vector) / Vec2d(*x_vector).get_length_sqrd()
