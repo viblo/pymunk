@@ -286,9 +286,17 @@ class Vec2d(NamedTuple):
         return Vec2d(0, 0), 0
 
     def perpendicular(self) -> "Vec2d":
+        """Get a vertical vector rotated 90 degrees counterclockwise from the original vector.
+
+        :return: A new vector perpendicular to this vector.
+        """
         return Vec2d(-self.y, self.x)
 
     def perpendicular_normal(self) -> "Vec2d":
+        """Get a vertical normalized vector rotated 90 degrees counterclockwise from the original vector.
+
+        :return: A new normalized vector perpendicular to this vector.
+        """
         length = self.length
         if length != 0:
             return Vec2d(-self.y / length, self.x / length)
@@ -314,7 +322,7 @@ class Vec2d(NamedTuple):
     def get_dist_sqrd(self, other: Tuple[float, float]) -> float:
         """The squared distance between the vector and other vector
         It is more efficent to use this method than to call get_distance()
-        first and then do a sqrt() on the result.
+        first and then do a square() on the result.
 
         :return: The squared distance
         """
@@ -322,7 +330,10 @@ class Vec2d(NamedTuple):
         return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
 
     def projection(self, other: Tuple[float, float]) -> "Vec2d":
-        """Project this vector on top of other vector"""
+        """Project this vector on top of other vector
+
+        :return: The projected vector
+        """
         assert len(other) == 2
         other_length_sqrd = other[0] * other[0] + other[1] * other[1]
         if other_length_sqrd == 0.0:
@@ -341,6 +352,10 @@ class Vec2d(NamedTuple):
         return self.x * other[1] - self.y * other[0]
 
     def interpolate_to(self, other: Tuple[float, float], range: float) -> "Vec2d":
+        """Vector interpolation between the current vector and another vector.
+
+        :return: The interpolated vector
+        """
         assert len(other) == 2
         return Vec2d(
             self.x + (other[0] - self.x) * range, self.y + (other[1] - self.y) * range
@@ -349,6 +364,10 @@ class Vec2d(NamedTuple):
     def convert_to_basis(
         self, x_vector: Tuple[float, float], y_vector: Tuple[float, float]
     ) -> "Vec2d":
+        """Converts the vector to a new basis defined by the given x and y vectors.
+
+        :return: Vec2d: The vector converted to the new basis.
+        """
         assert len(x_vector) == 2
         assert len(y_vector) == 2
         x = self.dot(x_vector) / Vec2d(*x_vector).get_length_sqrd()
