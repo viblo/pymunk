@@ -286,6 +286,7 @@ Papers / Science
 Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
+
 .. (list made using "Chicago" style citation)
 
 #. Bartók, Roland, and Bertalan Toronya. 
