@@ -24,11 +24,11 @@ Games
         <https://en.wikipedia.org/wiki/Suika_Game>`_ in Python / 
         Pymunk. Combine fruits to make bigger fruits.
 
-        Make sure to not miss the second part when Ole-Batting adds proper 
-        sprites to the game! On YouTube `here <https://youtu.be/_4kstHyPtSk>_`
+        Make sure to not miss the second part where Ole-Batting adds proper 
+        sprites to the game! On `YouTube <https://youtu.be/_4kstHyPtSk>`_.
         
-        Source code of both part 1 and 2 on on 
-        `Github <https://github.com/Ole-Batting/suika>`_
+        Source code of both part 1 and 2 on 
+        `Github <https://github.com/Ole-Batting/suika>`_.
 
     * - .. image:: _static/pykart-1.1.png
       - `PyKart - build and drive your vehicles <https://valdotorium.itch.io/pykart>`_
