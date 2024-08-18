@@ -5,8 +5,9 @@ Showcase
 This page shows some of the many ways Pymunk can be used. I hope you find them
 as inspiring as I do!
 
-If you also have done something using Pymunk please let me know, and I can 
-add it here!
+This is not a complete list of everything made with Pymunk, just some of the 
+creations I have found online. If you also have done something using Pymunk 
+please let me know, and I can add it here!
 
 Games
 =====
@@ -15,7 +16,7 @@ Games
     :widths: 40 60
 
     * - .. image:: _static/suika-in-python.jpg
-      - `Suika i Python <https://youtu.be/In0EvhenzeQ>`_
+      - `Suika in Python <https://youtu.be/In0EvhenzeQ>`_
 
         :subscript:`made by Ole-Batting. Retrieved 2024-08-18`
 
@@ -38,7 +39,7 @@ Games
         generated landscapes with physics! 
 
         This game comes both as a download, but also as a web version 
-        playable directly in the browser.
+        playable directly in the browser and full source code on Github.
 
     * - .. image:: _static/guide-the-ball.png
       - `Guide The Ball <https://github.com/francisA88/Guide-The-Ball-1>`_
