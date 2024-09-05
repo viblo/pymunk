@@ -289,6 +289,10 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Kozhevnikov, V. A., and V. I. Renni-Likhachevskiy. 
+   "Simulation of Galton's board experiments." 
+   ISJ Theoretical & Applied Science, 07 (135) (2024): 14-22.
+
 #. Bartók, Roland, and Bertalan Toronya. 
    "An Agent Based Simulator on ROS for Fuzzy Behavior Description Language (FBDL)." 
    In 2024 25th International Carpathian Control Conference (ICCC), pp. 01-06. IEEE, 2024.
@@ -668,7 +672,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2024-08-18. If something is missing or wrong, please contact 
+List last updated 2024-09-05. If something is missing or wrong, please contact 
 me!
 
 
