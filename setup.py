@@ -24,6 +24,7 @@ if os.getenv("PYMUNK_BUILD_SLIM"):
     packages = ["pymunk", "pymunk.tests"]
     exclude_package_data = {"pymunk.examples": ["*.*"]}
 
+
 setup(
     name="pymunk",
     url="http://www.pymunk.org",
