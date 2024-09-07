@@ -31,11 +31,11 @@ warn_return_any = false
 disallow_untyped_decorators = false
 
 exclude = [
-    '^pymunk\examples\.*$', # exclude examples from type checking
+    '^pymunk/examples/.*$', # exclude examples from type checking
 ]
 
 
-[mypy-pymunk.util]
+[tool.mypy-pymunk.util]
 # This is not typed
 disallow_untyped_defs = false
 check_untyped_defs = false
