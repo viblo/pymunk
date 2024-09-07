@@ -2,42 +2,40 @@
 requires = ["setuptools", "wheel", "cffi >= 1.15.0"]
 build-backend = "setuptools.build_meta"
 
-
 [tool.isort]
 multi_line_output = 3
-include_trailing_comma = True
+include_trailing_comma = true
 force_grid_wrap = 0
-use_parentheses = True
-ensure_newline_before_comments = True
+use_parentheses = true
+ensure_newline_before_comments = true
 line_length = 88
 
-
 [tool.mypy]
-disallow_untyped_defs = True
-strict_equality = True
-warn_unused_configs = True
-disallow_any_generics = True
-warn_redundant_casts = True
-disallow_subclassing_any = True
-disallow_untyped_calls = True
-disallow_incomplete_defs = True
-no_implicit_optional = True
-no_implicit_reexport = True
-check_untyped_defs = True
-warn_unused_ignores = True
+disallow_untyped_defs = true
+strict_equality = true
+warn_unused_configs = true
+disallow_any_generics = true
+warn_redundant_casts = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_incomplete_defs = true
+no_implicit_optional = true
+no_implicit_reexport = true
+check_untyped_defs = true
+warn_unused_ignores = true
 
 # Because many values are returned directly from CFFI/Chipmunk (and are therefore Any)
-warn_return_any = False 
+warn_return_any = false
 
 # Because decorators are mostly from CFFI used for callbacks (and therefor untyped)
-disallow_untyped_decorators = False
+disallow_untyped_decorators = false
 
 exclude = [
-        '^pymunk\examples\.*$',    # exclude examples from type checking
+    '^pymunk\examples\.*$', # exclude examples from type checking
 ]
 
 
 [mypy-pymunk.util]
 # This is not typed
-disallow_untyped_defs = False
-check_untyped_defs = False
+disallow_untyped_defs = false
+check_untyped_defs = false
