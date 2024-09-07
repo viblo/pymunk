@@ -317,5 +317,5 @@ def ext_cpArbiterIteratorFunc(_arbiter, data):  # type: ignore
 
 # cpMessage / log override
 @ffi.def_extern()
-def ext_pyLog(formattedMessage):
+def ext_pyLog(formattedMessage):  # type: ignore
     _logger.error(ffi.string(formattedMessage).decode())

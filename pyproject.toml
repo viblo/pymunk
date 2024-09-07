@@ -35,7 +35,8 @@ exclude = [
 ]
 
 
-[tool.mypy-pymunk.util]
+[[tool.mypy.overrides]]
+module = "pymunk.util"
 # This is not typed
 disallow_untyped_defs = false
 check_untyped_defs = false
