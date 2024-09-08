@@ -1,6 +1,52 @@
 [build-system]
-requires = ["setuptools", "wheel", "cffi >= 1.15.0"]
+requires = ["setuptools", "wheel", "cffi >= 1.17.1"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "pymunk"
+version = "6.8.1" # remember to change me for new versions!
+# Require cffi >1.14.0 since that (and older) has problem with returing structs from functions.
+# Require cffi >= 1.17.1 since older cant work with latest setuptools version
+dependencies = ["cffi >= 1.17.1"]
+authors = [{ name = "Victor Blomqvist", email = "vb@viblo.se" }]
+readme = "README.rst"
+description = "Pymunk is a easy-to-use pythonic 2D physics library"
+keywords = ["pygame", "2d", "physics", "rigid body"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Games/Entertainment",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: pygame",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+requires-python = ">=3.7"
+[project.optional-dependencies]
+dev = [
+    "pyglet < 2.0.0",
+    "pygame",
+    "sphinx",
+    "aafigure",
+    "wheel",
+    "matplotlib",
+    "numpy",
+]
+[project.urls]
+Homepage = "https://www.pymunk.org"
+Documentation = "https://www.pymunk.org"
+Repository = "https://github.com/viblo/pymunk.git"
+Issues = "https://github.com/viblo/viblo/issues"
+Changelog = "https://github.com/viblo/pymunk/blob/master/CHANGELOG.rst"
+
+[tool.setuptools.package-data]
+"pymunk.examples" = ["*.png", "*.wav"]
+
+[tool.setuptools.exclude-package-data]
+
 
 [tool.isort]
 multi_line_output = 3
