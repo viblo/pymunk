@@ -6,8 +6,13 @@ Changelog
   Pymunk x.x.x
   ------------
   Changes:
+  - Removed support for Python 3.7 (since latest cffi does not provide wheels 
+    for it).
   - Fixed issue with SlideJoint when changing body_type.
   - Log Chipmunk level erros with logging module
+  - Build wheels for Python 3.13
+  - Modernized the build setup to rely on pyproject.toml for more settings.
+  - Almost completed a new benchmark suite mostly ported over from Box2d.
 
 Pymunk 6.8.1 (2024-06-05)
 -------------------------
