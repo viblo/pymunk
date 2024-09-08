@@ -25,6 +25,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 requires-python = ">=3.7"
+
 [project.optional-dependencies]
 dev = [
     "pyglet < 2.0.0",
