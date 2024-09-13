@@ -1,6 +1,6 @@
 import os
 
-from setuptools import setup  # type: ignore
+from setuptools import setup
 
 packages = ["pymunk", "pymunk.tests", "pymunk.examples"]
 exclude_package_data = {}

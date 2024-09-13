@@ -702,7 +702,7 @@ class UnitTestSpace(unittest.TestCase):
 
         s.add(shape1, shape2, body2)
 
-        def separate(*_):
+        def separate(*_: Any) -> None:
             pass
 
         s.step(1)
@@ -732,11 +732,11 @@ class UnitTestSpace(unittest.TestCase):
         space.add(shape1, body2, shape2, shape3, body3)
         print("START", shape1, shape2, shape3)
 
-        def separate(arbiter: p.Arbiter, space: p.Space, data):
+        def separate(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
             print("SEP", arbiter.shapes)
             self.separate_occurred = True
 
-        def post_solve(arbiter: p.Arbiter, space: p.Space, data):
+        def post_solve(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
             print("POST", arbiter.shapes)
             if self.separate_occurred:
                 print("POST REMOVE", arbiter.shapes)

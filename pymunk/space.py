@@ -99,7 +99,7 @@ class Space(PickleMixin, object):
             cp_space = cp.cpSpaceNew()
             freefunc = cp.cpSpaceFree
 
-        def spacefree(cp_space):  # type: ignore
+        def spacefree(cp_space: ffi.CData) -> None:
             _logger.debug("spacefree start %s", cp_space)
 
             cp_shapes: List[Shape] = []
@@ -716,7 +716,7 @@ class Space(PickleMixin, object):
         if key in self._post_step_callbacks:
             return False
 
-        def f(x):  # type: ignore
+        def f(x: "Space") -> None:
             callback_function(self, key, *args, **kwargs)
 
         self._post_step_callbacks[key] = f

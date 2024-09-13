@@ -72,7 +72,7 @@ class Vec2d(NamedTuple):
         return "Vec2d(%s, %s)" % (self.x, self.y)
 
     # Addition
-    def __add__(self, other: Tuple[float, float]) -> "Vec2d":  # type: ignore
+    def __add__(self, other: Tuple[float, float]) -> "Vec2d":  # type: ignore[override]
         """Add a Vec2d with another Vec2d or Tuple of size 2
 
         >>> Vec2d(3,4) + Vec2d(1,2)

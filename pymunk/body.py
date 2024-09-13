@@ -198,7 +198,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
         """
 
-        def freebody(cp_body):  # type: ignore
+        def freebody(cp_body: ffi.CData) -> None:
             _logger.debug("bodyfree start %s", cp_body)
 
             # remove all shapes on this body from the space
@@ -641,7 +641,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         self,
         func: Callable[..., None],  # TODO: Fix me once PEP 612 is ready
         *args: Any,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         """Run func on each of the arbiters on this body.
 

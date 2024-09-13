@@ -14,7 +14,13 @@ _logger = logging.getLogger(__name__)
 
 
 @ffi.def_extern()
-def ext_cpSpacePointQueryFunc(_shape, point, distance, gradient, data):  # type: ignore
+def ext_cpSpacePointQueryFunc(
+    _shape: ffi.CData,
+    point: ffi.CData,
+    distance: float,
+    gradient: ffi.CData,
+    data: ffi.CData,
+) -> None:
     self, query_hits = ffi.from_handle(data)
     shape = self._get_shape(_shape)
     p = PointQueryInfo(
@@ -24,7 +30,13 @@ def ext_cpSpacePointQueryFunc(_shape, point, distance, gradient, data):  # type:
 
 
 @ffi.def_extern()
-def ext_cpSpaceSegmentQueryFunc(_shape, point, normal, alpha, data):  # type: ignore
+def ext_cpSpaceSegmentQueryFunc(
+    _shape: ffi.CData,
+    point: ffi.CData,
+    normal: ffi.CData,
+    alpha: float,
+    data: ffi.CData,
+) -> None:
     self, query_hits = ffi.from_handle(data)
     shape = self._get_shape(_shape)
     p = SegmentQueryInfo(
@@ -34,7 +46,7 @@ def ext_cpSpaceSegmentQueryFunc(_shape, point, normal, alpha, data):  # type: ig
 
 
 @ffi.def_extern()
-def ext_cpSpaceBBQueryFunc(_shape, data):  # type: ignore
+def ext_cpSpaceBBQueryFunc(_shape: ffi.CData, data: ffi.CData) -> None:
     self, query_hits = ffi.from_handle(data)
     shape = self._get_shape(_shape)
     assert shape is not None
@@ -42,7 +54,9 @@ def ext_cpSpaceBBQueryFunc(_shape, data):  # type: ignore
 
 
 @ffi.def_extern()
-def ext_cpSpaceShapeQueryFunc(_shape, _points, data):  # type: ignore
+def ext_cpSpaceShapeQueryFunc(
+    _shape: ffi.CData, _points: ffi.CData, data: ffi.CData
+) -> None:
     self, query_hits = ffi.from_handle(data)
     found_shape = self._get_shape(_shape)
     point_set = ContactPointSet._from_cp(_points)
@@ -54,19 +68,21 @@ def ext_cpSpaceShapeQueryFunc(_shape, _points, data):  # type: ignore
 
 
 @ffi.def_extern()
-def ext_cpSpaceShapeIteratorFunc(cp_shape, data):  # type: ignore
+def ext_cpSpaceShapeIteratorFunc(cp_shape: ffi.CData, data: ffi.CData) -> None:
     cp_shapes = ffi.from_handle(data)
     cp_shapes.append(cp_shape)
 
 
 @ffi.def_extern()
-def ext_cpSpaceConstraintIteratorFunc(cp_constraint, data):  # type: ignore
+def ext_cpSpaceConstraintIteratorFunc(
+    cp_constraint: ffi.CData, data: ffi.CData
+) -> None:
     cp_constraints = ffi.from_handle(data)
     cp_constraints.append(cp_constraint)
 
 
 @ffi.def_extern()
-def ext_cpSpaceBodyIteratorFunc(cp_body, data):  # type:ignore
+def ext_cpSpaceBodyIteratorFunc(cp_body: ffi.CData, data: ffi.CData) -> None:
     cp_bodys = ffi.from_handle(data)
     cp_bodys.append(cp_body)
 
@@ -75,7 +91,14 @@ def ext_cpSpaceBodyIteratorFunc(cp_body, data):  # type:ignore
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawCircleImpl(pos, angle, radius, outline_color, fill_color, data):  # type: ignore
+def ext_cpSpaceDebugDrawCircleImpl(
+    pos: ffi.CData,
+    angle: float,
+    radius: float,
+    outline_color: ffi.CData,
+    fill_color: ffi.CData,
+    data: ffi.CData,
+) -> None:
     options, _ = ffi.from_handle(data)
     options.draw_circle(
         Vec2d(pos.x, pos.y),
@@ -87,7 +110,9 @@ def ext_cpSpaceDebugDrawCircleImpl(pos, angle, radius, outline_color, fill_color
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawSegmentImpl(a, b, color, data):  # type: ignore
+def ext_cpSpaceDebugDrawSegmentImpl(
+    a: ffi.CData, b: ffi.CData, color: ffi.CData, data: ffi.CData
+) -> None:
     # sometimes a and/or b can be nan. For example if both endpoints
     # of a spring is at the same position. In those cases skip calling
     # the drawing method.
@@ -102,7 +127,14 @@ def ext_cpSpaceDebugDrawSegmentImpl(a, b, color, data):  # type: ignore
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawFatSegmentImpl(a, b, radius, outline_color, fill_color, data):  # type: ignore
+def ext_cpSpaceDebugDrawFatSegmentImpl(
+    a: ffi.CData,
+    b: ffi.CData,
+    radius: float,
+    outline_color: ffi.CData,
+    fill_color: ffi.CData,
+    data: ffi.CData,
+) -> None:
     options, _ = ffi.from_handle(data)
     options.draw_fat_segment(
         Vec2d(a.x, a.y),
@@ -114,7 +146,14 @@ def ext_cpSpaceDebugDrawFatSegmentImpl(a, b, radius, outline_color, fill_color, 
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawPolygonImpl(count, verts, radius, outline_color, fill_color, data):  # type: ignore
+def ext_cpSpaceDebugDrawPolygonImpl(
+    count: int,
+    verts: ffi.CData,
+    radius: float,
+    outline_color: ffi.CData,
+    fill_color: ffi.CData,
+    data: ffi.CData,
+) -> None:
     options, _ = ffi.from_handle(data)
     vs = []
     for i in range(count):
@@ -123,13 +162,15 @@ def ext_cpSpaceDebugDrawPolygonImpl(count, verts, radius, outline_color, fill_co
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawDotImpl(size, pos, color, data):  # type: ignore
+def ext_cpSpaceDebugDrawDotImpl(
+    size: float, pos: ffi.CData, color: ffi.CData, data: ffi.CData
+) -> None:
     options, _ = ffi.from_handle(data)
     options.draw_dot(size, Vec2d(pos.x, pos.y), options._c(color))
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawColorForShapeImpl(_shape, data):  # type: ignore
+def ext_cpSpaceDebugDrawColorForShapeImpl(_shape: ffi.CData, data: ffi.CData) -> None:
     options, space = ffi.from_handle(data)
     shape = space._get_shape(_shape)
     return options.color_for_shape(shape)

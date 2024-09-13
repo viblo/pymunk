@@ -58,7 +58,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         if body is not None:
             body._shapes.add(self)
 
-        def shapefree(cp_shape):  # type: ignore
+        def shapefree(cp_shape: ffi.CData) -> None:
             _logger.debug("shapefree start %s", cp_shape)
             cp_space = cp.cpShapeGetSpace(cp_shape)
             if cp_space != ffi.NULL:
