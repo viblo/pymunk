@@ -31,7 +31,6 @@ v6.x
 - Make sure cffi extensions included in wheel and zip!
 - Catch error when NaN in debugdraw, suggest doublecheck mass=0. https://github.com/viblo/pymunk/issues/226
 - Make benchmark between pymunk and pybullet. 2d bullet inspiration: https://github.com/bulletphysics/bullet3/blob/2.83/examples/Planar2D/Planar2D.cpp
-- Remove support for Python 3.7 (check https://pypistats.org/packages/pymunk first)
 - After a couple of versions / time passed, re-evaluate if batch api should be separate or merged in to space.
 - Think about the copyright notice in some files. Keep / put everywere / remove?
 - Constraint private accumulated over previous time step properties are not saved when pickle. 
