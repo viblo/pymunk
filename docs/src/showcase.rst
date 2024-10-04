@@ -289,6 +289,14 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Casablanca, Ernesto, Zengjie Zhang, Gregorio Marchesini, Sofie Haesaert, Dimos V. Dimarogonas, and Sadegh Soudjani. 
+   "SymAware: A Software Development Framework for Trustworthy Multi-Agent Systems with Situational Awareness." 
+   arXiv preprint arXiv:2409.14833 (2024).
+
+#. Oh, Nayoung, Moonkyeong Jung, and Daehyung Park. 
+   "DiSPo: Diffusion-SSM based Policy Learning for Coarse-to-Fine Action Discretization." 
+   arXiv preprint arXiv:2409.14719 (2024).
+
 #. Kozhevnikov, V. A., and V. I. Renni-Likhachevskiy. 
    "Simulation of Galton's board experiments." 
    ISJ Theoretical & Applied Science, 07 (135) (2024): 14-22.
