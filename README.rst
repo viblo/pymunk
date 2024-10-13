@@ -152,7 +152,7 @@ Older Pythons
 
 - Support for Python 2 (and Python 3.0 - 3.5) was dropped with Pymunk 6.0.
 - Support for Python 3.6 was dropped with Pymunk 6.5.2.
-- Support for Python 3.7 was dropped with Pymunk 6.8.2
+- Support for Python 3.7 was dropped with Pymunk 6.9.0
 
 If you use any of these legacy versions of Python, please use an older 
 Pymunk version. (It might work on newer Pymunks as well, but it's not tested, 
