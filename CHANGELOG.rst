@@ -2,17 +2,33 @@
 Changelog 
 =========
 
-..
-  Pymunk x.x.x
-  ------------
-  Changes:
-  - Removed support for Python 3.7 (since latest cffi does not provide wheels 
-    for it).
-  - Fixed issue with SlideJoint when changing body_type.
-  - Log Chipmunk level erros with logging module
-  - Build wheels for Python 3.13
-  - Modernized the build setup to rely on pyproject.toml for more settings.
-  - Almost completed a new benchmark suite mostly ported over from Box2d.
+
+Pymunk 6.9.0 (2024-10-13)
+-------------------------
+
+**Python 3.13**
+
+This is a minor update to Pymunk with wheels for CPython 3.13. In addition,
+with this release Pymunk no longer officialy support Python 3.7, since its not
+supported anymore, and CFFI, which Pymunk uses, no longer provides wheels for 
+it. In addition, Pypy is somewhat broken until they release a version with 
+latest CFFI. Details on the Pypy issue here:
+https://github.com/pypy/pypy/issues/5027 Expect Pymunk to publish wheels again 
+once a Pypy with the fix has been released.
+
+Changes:
+
+- Removed support for Python 3.7 (since latest cffi does not provide wheels 
+  for it).
+- Fixed issue with SlideJoint when changing body_type.
+- Log Chipmunk level erros with logging module
+- Build wheels for Python 3.13
+- Modernized the build setup to rely on pyproject.toml for more settings.
+- Almost completed a new benchmark suite mostly ported over from Box2d.
+- Minor improvements to types
+- No pre-built wheels for Pypy since the shipped versions comes with a CFFI 
+  that doesnt support latest setuptools. 
+
 
 Pymunk 6.8.1 (2024-06-05)
 -------------------------
@@ -23,11 +39,11 @@ This is a patch version, that fixes a bug in the separate collision callback
 which could result in hard crash if after the separate another collision 
 callback ran and that callback added or removed something from the space.
 
-    Changes:
+Changes:
 
-    - Build/run MacOs ARM on ARM github runners. 
-    - Fix lock bug in separate callback
-    - Improve documentation
+- Build/run MacOs ARM on ARM github runners. 
+- Fix lock bug in separate callback
+- Improve documentation
 
 
 Pymunk 6.8.0 (2024-05-10)
