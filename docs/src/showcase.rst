@@ -289,6 +289,18 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Parashar, Anjali, Kunal Garg, Joseph Zhang, and Chuchu Fan. 
+   "Failure Prediction from Few Expert Demonstrations." 
+   In NeurIPS 2024 Workshop on Bayesian Decision-making and Uncertainty.
+
+#. Parashar, Anjali, Kunal Garg, Joseph Zhang, and Chuchu Fan. 
+   "Failure Prediction from Limited Hardware Demonstrations." 
+   arXiv preprint arXiv:2410.09249 (2024).
+
+#. Bunn, Tristan, Craig Anslow, and Karsten Lundqvist. 
+   "Towards a Python 3 processing IDE for teaching creative programming." 
+   Multimedia Tools and Applications (2024): 1-14.
+
 #. Casablanca, Ernesto, Zengjie Zhang, Gregorio Marchesini, Sofie Haesaert, Dimos V. Dimarogonas, and Sadegh Soudjani. 
    "SymAware: A Software Development Framework for Trustworthy Multi-Agent Systems with Situational Awareness." 
    arXiv preprint arXiv:2409.14833 (2024).
@@ -680,7 +692,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2024-09-05. If something is missing or wrong, please contact 
+List last updated 2024-10-20. If something is missing or wrong, please contact 
 me!
 
 
