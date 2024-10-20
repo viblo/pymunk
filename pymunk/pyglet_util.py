@@ -125,7 +125,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         cc = pos + Vec2d(radius, 0).rotated(angle)
         color = outline_color.as_int()
         l = pyglet.shapes.Line(
-            pos.x, pos.y, cc.x, cc.y, thickness=1, color=color, batch=self.batch, group=fg
+            pos.x, pos.y, cc.x, cc.y, width=1, color=color, batch=self.batch, group=fg
         )
         self.draw_shapes.append(l)
 
