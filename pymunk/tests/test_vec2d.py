@@ -32,6 +32,10 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertEqual(list(v), [3, 5])
         self.assertEqual(tuple(v), (3, 5))
 
+        v = Vec2d.from_polar(3, 2)
+        self.assertEqual(v.length, 3)
+        self.assertEqual(v.angle, 2)
+
     def testMath(self) -> None:
         v = Vec2d(111, 222)
         self.assertEqual(v + Vec2d(1, 2), Vec2d(112, 224))
@@ -66,8 +70,6 @@ class UnitTestVec2d(unittest.TestCase):
         self.assertEqual(length, 0)
         with self.assertRaises(AttributeError):
             v.length = 5  # type: ignore
-        v2 = Vec2d(10, -2)
-        self.assertEqual(v.get_distance(v2), (v - v2).length)
 
     def testAnglesDegrees(self) -> None:
         v = Vec2d(0, 3)
@@ -108,21 +110,6 @@ class UnitTestVec2d(unittest.TestCase):
         )  # Allow a little more error than usual (floats..)
         v2 = v2.rotated(v2.get_angle_between(v))
         self.assertAlmostEqual(v.get_angle_between(v2), 0)
-
-    def testHighLevel(self) -> None:
-        basis0 = Vec2d(5.0, 0)
-        basis1 = Vec2d(0, 0.5)
-        v = Vec2d(10, 1)
-        self.assertEqual(v.convert_to_basis(basis0, basis1), (2, 2))
-        self.assertEqual(v.projection(basis0), (10, 0))
-        self.assertEqual(v.projection(Vec2d(0, 0)), (0, 0))
-        self.assertEqual(v.projection((0, 0)), (0, 0))
-        self.assertEqual(basis0.dot(basis1), 0)
-
-    def testCross(self) -> None:
-        lhs = Vec2d(1, 0.5)
-        rhs = Vec2d(4, 6)
-        self.assertEqual(lhs.cross(rhs), 4)
 
     def testComparison(self) -> None:
         int_vec = Vec2d(3, -2)

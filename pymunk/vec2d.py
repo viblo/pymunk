@@ -304,9 +304,12 @@ class Vec2d(NamedTuple):
 
     def dot(self, other: Tuple[float, float]) -> float:
         """The dot product between the vector and other vector
-            v1.dot(v2) -> v1.x*v2.x + v1.y*v2.y
+        v1.dot(v2) -> v1.x*v2.x + v1.y*v2.y
 
-        :return: The dot product
+        >>> Vec2d(5, 0).dot((0, 5))
+        0.0
+        >>> Vec2d(1, 2).dot((3, 4))
+        11.0
         """
         assert len(other) == 2
         return float(self.x * other[0] + self.y * other[1])
@@ -314,7 +317,11 @@ class Vec2d(NamedTuple):
     def get_distance(self, other: Tuple[float, float]) -> float:
         """The distance between the vector and other vector
 
-        :return: The distance
+        >>> Vec2d(0, 2).get_distance((0, -3))
+        5.0
+        >>> a, b = Vec2d(3, 2), Vec2d(4,3)
+        >>> a.get_distance(b) == (a - b).length == (b - a).length
+        True
         """
         assert len(other) == 2
         return math.sqrt((self.x - other[0]) ** 2 + (self.y - other[1]) ** 2)
@@ -324,7 +331,12 @@ class Vec2d(NamedTuple):
         It is more efficent to use this method than to call get_distance()
         first and then do a square() on the result.
 
-        :return: The squared distance
+        >>> Vec2d(1, 0).get_dist_sqrd((1,10))
+        100
+        >>> Vec2d(1, 2).get_dist_sqrd((10, 11))
+        162
+        >>> Vec2d(1, 2).get_distance((10, 11))**2
+        162.0
         """
         assert len(other) == 2
         return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
@@ -332,7 +344,12 @@ class Vec2d(NamedTuple):
     def projection(self, other: Tuple[float, float]) -> "Vec2d":
         """Project this vector on top of other vector
 
-        :return: The projected vector
+        >>> Vec2d(10, 1).projection((5.0, 0))
+        Vec2d(10.0, 0.0)
+        >>> Vec2d(10, 1).projection((10, 5))
+        Vec2d(8.4, 4.2)
+        >>> Vec2d(10, 1).projection((0, 0))
+        Vec2d(0, 0)
         """
         assert len(other) == 2
         other_length_sqrd = other[0] * other[0] + other[1] * other[1]
@@ -344,9 +361,10 @@ class Vec2d(NamedTuple):
 
     def cross(self, other: Tuple[float, float]) -> float:
         """The cross product between the vector and other vector
-            v1.cross(v2) -> v1.x*v2.y - v1.y*v2.x
+        v1.cross(v2) -> v1.x*v2.y - v1.y*v2.x
 
-        :return: The cross product
+        >>> Vec2d(1, 0.5).cross((4, 6))
+        4.0
         """
         assert len(other) == 2
         return self.x * other[1] - self.y * other[0]
@@ -354,7 +372,8 @@ class Vec2d(NamedTuple):
     def interpolate_to(self, other: Tuple[float, float], range: float) -> "Vec2d":
         """Vector interpolation between the current vector and another vector.
 
-        :return: The interpolated vector
+        >>> Vec2d(10,20).interpolate_to((20,-20), 0.1)
+        Vec2d(11.0, 16.0)
         """
         assert len(other) == 2
         return Vec2d(
@@ -366,7 +385,8 @@ class Vec2d(NamedTuple):
     ) -> "Vec2d":
         """Converts the vector to a new basis defined by the given x and y vectors.
 
-        :return: Vec2d: The vector converted to the new basis.
+        >>> Vec2d(10, 1).convert_to_basis((5, 0), (0, 0.5))
+        Vec2d(2.0, 2.0)
         """
         assert len(x_vector) == 2
         assert len(y_vector) == 2
@@ -410,6 +430,20 @@ class Vec2d(NamedTuple):
         Vec2d(1, 1)
         """
         return Vec2d(1, 1)
+
+    @staticmethod
+    def from_polar(length: float, angle: float) -> "Vec2d":
+        """Create a new Vec2d from a length and an angle (in radians).
+
+        >>> Vec2d.from_polar(2, 0)
+        Vec2d(2.0, 0.0)
+        >>> Vec2d(2, 0).rotated(0.5) == Vec2d.from_polar(2, 0.5)
+        True
+        >>> v = Vec2d.from_polar(2, 0.5)
+        >>> v.length, v.angle
+        (2.0, 0.5)
+        """
+        return Vec2d(math.cos(angle) * length, math.sin(angle) * length)
 
     # Extra functions, mainly for chipmunk
     def cpvrotate(self, other: Tuple[float, float]) -> "Vec2d":

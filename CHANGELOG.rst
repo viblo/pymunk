@@ -3,6 +3,11 @@ Changelog
 =========
 
 
+.. Pymunk 6.10.0??
+    Changes:
+    - Added from_polars() static method to Vec2d to easily create Vec2ds from polar coordinates.
+    - Improved docs (of Vec2d)
+
 Pymunk 6.9.0 (2024-10-13)
 -------------------------
 
