@@ -62,12 +62,6 @@ class UnitTestVec2d(unittest.TestCase):
         v = Vec2d(3, 4)
         self.assertTrue(v.length == 5)
         self.assertTrue(v.get_length_sqrd() == 25)
-        normalized, length = v.normalized_and_length()
-        self.assertEqual(normalized, Vec2d(0.6, 0.8))
-        self.assertEqual(length, 5)
-        normalized, length = Vec2d(0, 0).normalized_and_length()
-        self.assertEqual(normalized, Vec2d(0, 0))
-        self.assertEqual(length, 0)
         with self.assertRaises(AttributeError):
             v.length = 5  # type: ignore
 

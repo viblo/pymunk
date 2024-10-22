@@ -237,20 +237,37 @@ class Vec2d(NamedTuple):
 
     @property
     def angle(self) -> float:
-        """The angle (in radians) of the vector"""
+        """The angle (in radians) of the vector
+
+        >>> '%.2f' % Vec2d(-1, 0).angle
+        '3.14'
+        >>> Vec2d(0, 0).angle
+        0
+        """
         if self.get_length_sqrd() == 0:
             return 0
         return math.atan2(self.y, self.x)
 
     @property
     def angle_degrees(self) -> float:
-        """Gets the angle (in degrees) of a vector"""
+        """Gets the angle (in degrees) of a vector
+
+        >>> Vec2d(0, 1).angle_degrees
+        90.0
+        >>> Vec2d(0, 0).angle_degrees
+        0.0
+        """
         return math.degrees(self.angle)
 
     def get_angle_between(self, other: Tuple[float, float]) -> float:
         """Get the angle between the vector and the other in radians
 
-        :return: The angle
+        >>> '%.2f' % Vec2d(3, 0).get_angle_between(Vec2d(-1, 0))
+        '3.14'
+        >>> Vec2d(3, 0).get_angle_between(Vec2d(0, 0))
+        0.0
+        >>> Vec2d(0, 0).get_angle_between(Vec2d(0, 0))
+        0.0
         """
         assert len(other) == 2
         cross = self.x * other[1] - self.y * other[0]
@@ -260,7 +277,12 @@ class Vec2d(NamedTuple):
     def get_angle_degrees_between(self, other: "Vec2d") -> float:
         """Get the angle between the vector and the other in degrees
 
-        :return: The angle (in degrees)
+        >>> Vec2d(3, 0).get_angle_degrees_between(Vec2d(-1, 0))
+        180.0
+        >>> Vec2d(3, 0).get_angle_degrees_between(Vec2d(0, 0))
+        0.0
+        >>> Vec2d(0, 0).get_angle_degrees_between(Vec2d(0, 0))
+        0.0
         """
         return math.degrees(self.get_angle_between(other))
 
@@ -268,7 +290,12 @@ class Vec2d(NamedTuple):
         """Get a normalized copy of the vector
         Note: This function will return 0 if the length of the vector is 0.
 
-        :return: A normalized vector
+        >>> Vec2d(3, 0).normalized()
+        Vec2d(1.0, 0.0)
+        >>> Vec2d(3, 4).normalized()
+        Vec2d(0.6, 0.8)
+        >>> Vec2d(0, 0).normalized()
+        Vec2d(0, 0)
         """
         length = self.length
         if length != 0:
@@ -278,7 +305,12 @@ class Vec2d(NamedTuple):
     def normalized_and_length(self) -> Tuple["Vec2d", float]:
         """Normalize the vector and return its length before the normalization
 
-        :return: The length before the normalization
+        >>> Vec2d(3, 0).normalized_and_length()
+        (Vec2d(1.0, 0.0), 3.0)
+        >>> Vec2d(3, 4).normalized_and_length()
+        (Vec2d(0.6, 0.8), 5.0)
+        >>> Vec2d(0, 0).normalized_and_length()
+        (Vec2d(0, 0), 0)
         """
         length = self.length
         if length != 0:
@@ -288,14 +320,24 @@ class Vec2d(NamedTuple):
     def perpendicular(self) -> "Vec2d":
         """Get a vertical vector rotated 90 degrees counterclockwise from the original vector.
 
-        :return: A new vector perpendicular to this vector.
+        >>> Vec2d(1, 2).perpendicular()
+        Vec2d(-2, 1)
         """
         return Vec2d(-self.y, self.x)
 
     def perpendicular_normal(self) -> "Vec2d":
         """Get a vertical normalized vector rotated 90 degrees counterclockwise from the original vector.
 
-        :return: A new normalized vector perpendicular to this vector.
+        >>> Vec2d(1, 0).perpendicular_normal()
+        Vec2d(0.0, 1.0)
+        >>> Vec2d(2, 0).perpendicular_normal()
+        Vec2d(0.0, 1.0)
+        >>> Vec2d(1, 1).perpendicular_normal().angle_degrees
+        135.0
+        >>> Vec2d(1, 1).angle_degrees + 90
+        135.0
+        >>> Vec2d(0, 0).perpendicular_normal()
+        Vec2d(0, 0)
         """
         length = self.length
         if length != 0:
@@ -361,6 +403,7 @@ class Vec2d(NamedTuple):
 
     def cross(self, other: Tuple[float, float]) -> float:
         """The cross product between the vector and other vector
+
         v1.cross(v2) -> v1.x*v2.y - v1.y*v2.x
 
         >>> Vec2d(1, 0.5).cross((4, 6))
