@@ -24,8 +24,63 @@
 """This module contain the Vec2d class that is used in all of pymunk when a
 vector is needed.
 
+It is easy to create Vec2ds::
+
+    >>> from pymunk.vec2d import Vec2d
+    >>> Vec2d(1, 2)
+    Vec2d(1, 2)
+    >>> xy = (1, 2)
+    >>> Vec2d(*xy)
+    Vec2d(1, 2)
+    >>> '%.2f, %.2f' % Vec2d.from_polar(3, math.pi/4)
+    '2.12, 2.12'
+
+You can index into Vec2ds with both positional and attribute access::
+
+    >>> v = Vec2d(1, 2)
+    >>> v.x, v.y
+    (1, 2)
+    >>> v[0], v[1]
+    (1, 2)
+
+Vec2ds can be converted to lists or tuples, and they are of length 2::
+
+    >>> list(Vec2d(1, 2))
+    [1, 2]
+    >>> tuple(Vec2d(1, 2))
+    (1, 2)
+    >>> len(Vec2d(1, 2))
+    2
+
+The Vec2d supports many common opertions, for example addition and 
+multiplication::
+
+    >>> Vec2d(7.3, 4.2) + Vec2d(1, 2)
+    Vec2d(8.3, 6.2)
+    >>> Vec2d(7.3, 4.2) * 2
+    Vec2d(14.6, 8.4)
+
+Vec2ds are immutable, meaning you cannot update them. But you can replace 
+them::
+
+    >>> v = Vec2d(1, 2)
+    >>> v.x = 4
+    Traceback (most recent call last):
+    ...
+    AttributeError: can't set attribute
+    >>> v += (3, 4)
+    >>> v
+    Vec2d(4, 6)
+
+Vec2ds can be compared::
+
+    >>> Vec2d(7.3, 4.2) == Vec2d(7.3, 4.2)
+    True
+    >>> Vec2d(7.3, 4.2) == Vec2d(0, 0)
+    False
+
 The Vec2d class is used almost everywhere in pymunk for 2d coordinates and
-vectors, for example to define gravity vector in a space. However, pymunk is
+vectors, for example to define gravity vector in a space. However, Pymunk is
 smart enough to convert tuples or tuple like objects to Vec2ds so you usually
 do not need to explicitly do conversions if you happen to have a tuple::
 
@@ -33,20 +88,19 @@ do not need to explicitly do conversions if you happen to have a tuple::
     >>> space = pymunk.Space()
     >>> space.gravity
     Vec2d(0.0, 0.0)
-    >>> space.gravity = 3,5
+    >>> space.gravity = 3, 5
     >>> space.gravity
     Vec2d(3.0, 5.0)
-    >>> space.gravity += 2,6
+    >>> space.gravity += 2, 6
     >>> space.gravity
     Vec2d(5.0, 11.0)
 
-More examples::
+Finally, Vec2ds can be pickled and unpickled::
 
-    >>> from pymunk.vec2d import Vec2d
-    >>> Vec2d(7.3, 4.2)
-    Vec2d(7.3, 4.2)
-    >>> Vec2d(7.3, 4.2) + Vec2d(1, 2)
-    Vec2d(8.3, 6.2)
+    >>> import pickle
+    >>> data = pickle.dumps(Vec2d(5, 0.3))
+    >>> pickle.loads(data)
+    Vec2d(5, 0.3)
 
 """
 __docformat__ = "reStructuredText"
@@ -67,17 +121,21 @@ class Vec2d(NamedTuple):
     x: float
     y: float
 
-    # String representaion (for debugging)
     def __repr__(self) -> str:
+        """String representaion of Vec2d (for debugging)
+
+        >>> repr(Vec2d(1, 2.3))
+        'Vec2d(1, 2.3)'
+        """
         return "Vec2d(%s, %s)" % (self.x, self.y)
 
     # Addition
     def __add__(self, other: Tuple[float, float]) -> "Vec2d":  # type: ignore[override]
         """Add a Vec2d with another Vec2d or Tuple of size 2
 
-        >>> Vec2d(3,4) + Vec2d(1,2)
+        >>> Vec2d(3, 4) + Vec2d(1, 2)
         Vec2d(4, 6)
-        >>> Vec2d(3,4) + (1,2)
+        >>> Vec2d(3, 4) + (1, 2)
         Vec2d(4, 6)
         """
         assert (
@@ -89,7 +147,7 @@ class Vec2d(NamedTuple):
     def __radd__(self, other: Tuple[float, float]) -> "Vec2d":
         """Add a Tuple of size 2 with a Vec2d
 
-        >>> (1,2) + Vec2d(3,4)
+        >>> (1, 2) + Vec2d(3, 4)
         Vec2d(4, 6)
         """
         return self.__add__(other)
@@ -98,9 +156,9 @@ class Vec2d(NamedTuple):
     def __sub__(self, other: Tuple[float, float]) -> "Vec2d":
         """Subtract a Vec2d with another Vec2d or Tuple of size 2
 
-        >>> Vec2d(3,4) - Vec2d(1,2)
+        >>> Vec2d(3, 4) - Vec2d(1, 2)
         Vec2d(2, 2)
-        >>> Vec2d(3,4) - (1,2)
+        >>> Vec2d(3, 4) - (1, 2)
         Vec2d(2, 2)
         """
         return Vec2d(self.x - other[0], self.y - other[1])
@@ -108,7 +166,7 @@ class Vec2d(NamedTuple):
     def __rsub__(self, other: Tuple[float, float]) -> "Vec2d":
         """Subtract a Tuple of size 2 with a Vec2d
 
-        >>> (1,2) - Vec2d(3,4)
+        >>> (1, 2) - Vec2d(3, 4)
         Vec2d(-2, -2)
         """
         assert (
@@ -120,7 +178,7 @@ class Vec2d(NamedTuple):
     def __mul__(self, other: float) -> "Vec2d":  # type: ignore[override]
         """Multiply with a float
 
-        >>> Vec2d(3,6) * 2.5
+        >>> Vec2d(3, 6) * 2.5
         Vec2d(7.5, 15.0)
         """
         assert isinstance(other, numbers.Real)
@@ -129,7 +187,7 @@ class Vec2d(NamedTuple):
     def __rmul__(self, other: float) -> "Vec2d":  # type: ignore[override]
         """Multiply a float with a Vec2d
 
-        >>> 2.5 * Vec2d(3,6)
+        >>> 2.5 * Vec2d(3, 6)
         Vec2d(7.5, 15.0)
         """
         return self.__mul__(other)
@@ -138,8 +196,10 @@ class Vec2d(NamedTuple):
     def __floordiv__(self, other: float) -> "Vec2d":
         """Floor division by a float (also known as integer division)
 
-        >>> Vec2d(3,6) // 2.0
+        >>> Vec2d(3 ,6) // 2.0
         Vec2d(1.0, 3.0)
+        >>> Vec2d(0, 0) // 2.0
+        Vec2d(0.0, 0.0)
         """
         assert isinstance(other, numbers.Real)
         return Vec2d(self.x // other, self.y // other)
@@ -147,8 +207,10 @@ class Vec2d(NamedTuple):
     def __truediv__(self, other: float) -> "Vec2d":
         """Division by a float
 
-        >>> Vec2d(3,6) / 2.0
+        >>> Vec2d(3, 6) / 2.0
         Vec2d(1.5, 3.0)
+        >>> Vec2d(0,0) / 2.0
+        Vec2d(0.0, 0.0)
         """
         assert isinstance(other, numbers.Real)
         return Vec2d(self.x / other, self.y / other)
@@ -157,15 +219,17 @@ class Vec2d(NamedTuple):
     def __neg__(self) -> "Vec2d":
         """Return the negated version of the Vec2d
 
-        >>> -Vec2d(1,-2)
+        >>> -Vec2d(1, -2)
         Vec2d(-1, 2)
+        >>> -Vec2d(0, 0)
+        Vec2d(0, 0)
         """
         return Vec2d(operator.neg(self.x), operator.neg(self.y))
 
     def __pos__(self) -> "Vec2d":
         """Return the unary pos of the Vec2d.
 
-        >>> +Vec2d(1,-2)
+        >>> +Vec2d(1, -2)
         Vec2d(1, -2)
         """
         return Vec2d(operator.pos(self.x), operator.pos(self.y))
@@ -175,6 +239,8 @@ class Vec2d(NamedTuple):
 
         >>> abs(Vec2d(3,4))
         5.0
+        >>> abs(Vec2d(3, 4)) == Vec2d(3, 4).length
+        True
         """
         return self.length
 
@@ -185,11 +251,11 @@ class Vec2d(NamedTuple):
         instead of first calling get_length() or access .length and then do a
         x**2.
 
-        >>> v = Vec2d(3,4)
+        >>> v = Vec2d(3, 4)
         >>> v.get_length_sqrd() == v.length**2
         True
-
-        :return: The squared length
+        >>> Vec2d(0, 0).get_length_sqrd()
+        0
         """
         return self.x**2 + self.y**2
 
@@ -201,16 +267,20 @@ class Vec2d(NamedTuple):
         10.0
         >>> '%.2f' % Vec2d(10, 20).length
         '22.36'
-
-        :return: The length
+        >>> Vec2d(0, 0).length
+        0.0
         """
         return math.sqrt(self.x**2 + self.y**2)
 
     def scale_to_length(self, length: float) -> "Vec2d":
         """Return a copy of this vector scaled to the given length.
 
+        >>> Vec2d(1, 0).scale_to_length(10)
+        Vec2d(10.0, 0.0)
         >>> '%.2f, %.2f' % Vec2d(10, 20).scale_to_length(20)
         '8.94, 17.89'
+        >>> Vec2d(1, 0).scale_to_length(0)
+        Vec2d(0.0, 0.0)
         """
         old_length = self.length
         return Vec2d(self.x * length / old_length, self.y * length / old_length)
@@ -219,7 +289,10 @@ class Vec2d(NamedTuple):
         """Create and return a new vector by rotating this vector by
         angle_radians radians.
 
-        :return: Rotated vector
+        >>> '%.2f' % Vec2d(2,0).rotated(math.pi).angle
+        '3.14'
+        >>> Vec2d(0,0).rotated(1)
+        Vec2d(0.0, 0.0)
         """
         cos = math.cos(angle_radians)
         sin = math.sin(angle_radians)
@@ -231,7 +304,10 @@ class Vec2d(NamedTuple):
         """Create and return a new vector by rotating this vector by
         angle_degrees degrees.
 
-        :return: Rotade vector
+        >>> Vec2d(2,0).rotated_degrees(90.0).angle_degrees
+        90.0
+        >>> Vec2d(0, 0).rotated_degrees(90.0)
+        Vec2d(0.0, 0.0)
         """
         return self.rotated(math.radians(angle_degrees))
 

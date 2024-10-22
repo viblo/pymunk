@@ -135,7 +135,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
         pygame.draw.circle(self.surface, fill_color.as_int(), p, round(radius), 0)
 
-        circle_edge = pos + Vec2d(radius, 0).rotated(angle)
+        circle_edge = pos + Vec2d.from_polar(radius, angle)
         p2 = to_pygame(circle_edge, self.surface)
         line_r = 2 if radius > 20 else 1
         pygame.draw.lines(self.surface, outline_color.as_int(), False, [p, p2], line_r)

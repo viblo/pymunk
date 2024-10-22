@@ -35,7 +35,7 @@ __docformat__ = "reStructuredText"
 import math
 from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Type
 
-import pyglet  # type:ignore
+import pyglet
 
 import pymunk
 from pymunk.space_debug_draw_options import SpaceDebugColor
@@ -122,7 +122,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
             pos.x, pos.y, radius, color=color, batch=self.batch, group=bg
         )
         self.draw_shapes.append(c)
-        cc = pos + Vec2d(radius, 0).rotated(angle)
+        cc = pos + Vec2d.from_polar(radius, angle)
         color = outline_color.as_int()
         l = pyglet.shapes.Line(
             pos.x, pos.y, cc.x, cc.y, width=1, color=color, batch=self.batch, group=fg

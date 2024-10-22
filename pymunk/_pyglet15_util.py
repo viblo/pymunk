@@ -132,7 +132,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         )
         c.opacity = color[3]
         self.draw_shapes.append(c)
-        cc = pos + Vec2d(radius, 0).rotated(angle)
+        cc = pos + Vec2d.from_polar(radius, angle)
         c = outline_color.as_int()
         l = pyglet.shapes.Line(
             pos.x, pos.y, cc.x, cc.y, width=1, color=c[:3], batch=self.batch, group=fg

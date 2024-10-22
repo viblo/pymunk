@@ -69,7 +69,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         )
         self.ax.add_patch(p)
 
-        circle_edge = pos + Vec2d(radius, 0).rotated(angle)
+        circle_edge = pos + Vec2d.from_polar(radius, angle)
         line = plt.Line2D(
             [pos.x, circle_edge.x],
             [pos.y, circle_edge.y],
