@@ -108,16 +108,65 @@ class UnitTestBugs(unittest.TestCase):
         b3.position = -9, 0
 
         space.add(b1, c1, b2, c2, b3, c3)
+        print("\nc1", c1)
 
         def remove_first(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
+            print("SEP 1", arbiter.shapes)
+            print("  space.shapes", space.shapes)
+            print("  space._remove_later", space._remove_later)
             first_shape = arbiter.shapes[0]
             if c1 in space.shapes:
                 space.remove(c1)
+                print("  space.shapes", space.shapes)
+                print("  space._remove_later", space._remove_later)
+            print("SEP done")
             # space.add_post_step_callback(space.remove, first_shape, first_shape.body)
-            space.remove(c1)
+            # space.remove(c1)
 
         space.add_collision_handler(2, 0).separate = remove_first
-
+        print(1)
         space.step(1.0 / 60)
+        print(2)
         b2.position = 22, 0
         space.step(1.0 / 60)
+        print(3)
+
+    def testX(self) -> None:
+        space = p.Space()
+
+        b1 = p.Body()
+        c1 = p.Circle(b1, 10)
+        c1.collision_type = 2
+
+        b2 = p.Body()
+        c2 = p.Circle(b2, 10)
+
+        b3 = p.Body()
+        c3 = p.Circle(b3, 10)
+
+        # b1.position = 0, 0
+        # b2.position = 9, 0
+        # b3.position = -9, 0
+
+        space.add(b1, c1, b2, c2, b3, c3)
+        print("\nc1", c1)
+
+        def separate(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
+            print("SEP 1", arbiter.shapes)
+            print("  space.shapes", space.shapes)
+            print("  space._remove_later", space._remove_later)
+            if c1 in space.shapes:
+                space.remove(c1)
+                print("  space.shapes", space.shapes)
+                print("  space._remove_later", space._remove_later)
+            print("SEP done")
+            # space.add_post_step_callback(space.remove, first_shape, first_shape.body)
+            # space.remove(c1)
+
+        space.add_collision_handler(2, 0).separate = separate
+        print(1)
+        space.step(1)
+        print(2)
+        b2.position = 22, 0
+        space.step(1)
+        print(3)
