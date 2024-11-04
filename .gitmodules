@@ -1,3 +1,3 @@
 [submodule "Chipmunk2D"]
 	path = Chipmunk2D
-	url = git@github.com:viblo/Chipmunk2D.git
+	url = https://github.com/imMadsen/Chipmunk2D
