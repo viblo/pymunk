@@ -73,11 +73,11 @@ class Vec2d(NamedTuple):
 
     # Addition
     def __add__(self, other: Tuple[float, float]) -> "Vec2d":  # type: ignore[override]
-        """Add a Vec2d with another Vec2d or Tuple of size 2
+        """Add a Vec2d with another Vec2d or Tuple of size 2.
 
-        >>> Vec2d(3,4) + Vec2d(1,2)
+        >>> Vec2d(3, 4) + Vec2d(1, 2)
         Vec2d(4, 6)
-        >>> Vec2d(3,4) + (1,2)
+        >>> Vec2d(3, 4) + (1, 2)
         Vec2d(4, 6)
         """
         assert (
@@ -87,28 +87,28 @@ class Vec2d(NamedTuple):
         return Vec2d(self.x + other[0], self.y + other[1])
 
     def __radd__(self, other: Tuple[float, float]) -> "Vec2d":
-        """Add a Tuple of size 2 with a Vec2d
+        """Add a Tuple of size 2 with a Vec2d.
 
-        >>> (1,2) + Vec2d(3,4)
+        >>> (1, 2) + Vec2d(3, 4)
         Vec2d(4, 6)
         """
         return self.__add__(other)
 
     # Subtraction
     def __sub__(self, other: Tuple[float, float]) -> "Vec2d":
-        """Subtract a Vec2d with another Vec2d or Tuple of size 2
+        """Subtract a Vec2d with another Vec2d or Tuple of size 2.
 
-        >>> Vec2d(3,4) - Vec2d(1,2)
+        >>> Vec2d(3, 4) - Vec2d(1, 2)
         Vec2d(2, 2)
-        >>> Vec2d(3,4) - (1,2)
+        >>> Vec2d(3, 4) - (1, 2)
         Vec2d(2, 2)
         """
         return Vec2d(self.x - other[0], self.y - other[1])
 
     def __rsub__(self, other: Tuple[float, float]) -> "Vec2d":
-        """Subtract a Tuple of size 2 with a Vec2d
+        """Subtract a Tuple of size 2 with a Vec2d.
 
-        >>> (1,2) - Vec2d(3,4)
+        >>> (1, 2) - Vec2d(3, 4)
         Vec2d(-2, -2)
         """
         assert (
@@ -118,36 +118,36 @@ class Vec2d(NamedTuple):
 
     # Multiplication
     def __mul__(self, other: float) -> "Vec2d":  # type: ignore[override]
-        """Multiply with a float
+        """Multiply a Vec2d with a float.
 
-        >>> Vec2d(3,6) * 2.5
+        >>> Vec2d(3, 6) * 2.5
         Vec2d(7.5, 15.0)
         """
         assert isinstance(other, numbers.Real)
         return Vec2d(self.x * other, self.y * other)
 
     def __rmul__(self, other: float) -> "Vec2d":  # type: ignore[override]
-        """Multiply a float with a Vec2d
+        """Multiply a float with a Vec2d.
 
-        >>> 2.5 * Vec2d(3,6)
+        >>> 2.5 * Vec2d(3, 6)
         Vec2d(7.5, 15.0)
         """
         return self.__mul__(other)
 
     # Division
     def __floordiv__(self, other: float) -> "Vec2d":
-        """Floor division by a float (also known as integer division)
+        """Floor division by a float (also known as integer division).
 
-        >>> Vec2d(3,6) // 2.0
+        >>> Vec2d(3, 6) // 2.0
         Vec2d(1.0, 3.0)
         """
         assert isinstance(other, numbers.Real)
         return Vec2d(self.x // other, self.y // other)
 
     def __truediv__(self, other: float) -> "Vec2d":
-        """Division by a float
+        """Division by a float.
 
-        >>> Vec2d(3,6) / 2.0
+        >>> Vec2d(3, 6) / 2.0
         Vec2d(1.5, 3.0)
         """
         assert isinstance(other, numbers.Real)
@@ -155,9 +155,9 @@ class Vec2d(NamedTuple):
 
     # Unary operations
     def __neg__(self) -> "Vec2d":
-        """Return the negated version of the Vec2d
+        """Return the negated version of the Vec2d.
 
-        >>> -Vec2d(1,-2)
+        >>> -Vec2d(1, -2)
         Vec2d(-1, 2)
         """
         return Vec2d(operator.neg(self.x), operator.neg(self.y))
@@ -165,15 +165,15 @@ class Vec2d(NamedTuple):
     def __pos__(self) -> "Vec2d":
         """Return the unary pos of the Vec2d.
 
-        >>> +Vec2d(1,-2)
+        >>> +Vec2d(1, -2)
         Vec2d(1, -2)
         """
         return Vec2d(operator.pos(self.x), operator.pos(self.y))
 
     def __abs__(self) -> float:
-        """Return the length of the Vec2d
+        """Return the length of the Vec2d.
 
-        >>> abs(Vec2d(3,4))
+        >>> abs(Vec2d(3, 4))
         5.0
         """
         return self.length
@@ -181,11 +181,11 @@ class Vec2d(NamedTuple):
     # vectory functions
     def get_length_sqrd(self) -> float:
         """Get the squared length of the vector.
-        If the squared length is enough it is more efficient to use this method
+        If the squared length is enough, it is more efficient to use this method
         instead of first calling get_length() or access .length and then do a
         x**2.
 
-        >>> v = Vec2d(3,4)
+        >>> v = Vec2d(3, 4)
         >>> v.get_length_sqrd() == v.length**2
         True
 
@@ -231,13 +231,13 @@ class Vec2d(NamedTuple):
         """Create and return a new vector by rotating this vector by
         angle_degrees degrees.
 
-        :return: Rotade vector
+        :return: Rotated vector
         """
         return self.rotated(math.radians(angle_degrees))
 
     @property
     def angle(self) -> float:
-        """The angle (in radians) of the vector
+        """The angle (in radians) of the vector.
 
         >>> '%.2f' % Vec2d(-1, 0).angle
         '3.14'
@@ -250,7 +250,7 @@ class Vec2d(NamedTuple):
 
     @property
     def angle_degrees(self) -> float:
-        """Gets the angle (in degrees) of a vector
+        """Get the angle (in degrees) of a vector.
 
         >>> Vec2d(0, 1).angle_degrees
         90.0
@@ -260,7 +260,7 @@ class Vec2d(NamedTuple):
         return math.degrees(self.angle)
 
     def get_angle_between(self, other: Tuple[float, float]) -> float:
-        """Get the angle between the vector and the other in radians
+        """Get the angle between the vector and the other in radians.
 
         >>> '%.2f' % Vec2d(3, 0).get_angle_between(Vec2d(-1, 0))
         '3.14'
@@ -275,7 +275,7 @@ class Vec2d(NamedTuple):
         return math.atan2(cross, dot)
 
     def get_angle_degrees_between(self, other: "Vec2d") -> float:
-        """Get the angle between the vector and the other in degrees
+        """Get the angle between the vector and the other in degrees.
 
         >>> Vec2d(3, 0).get_angle_degrees_between(Vec2d(-1, 0))
         180.0
@@ -287,7 +287,7 @@ class Vec2d(NamedTuple):
         return math.degrees(self.get_angle_between(other))
 
     def normalized(self) -> "Vec2d":
-        """Get a normalized copy of the vector
+        """Get a normalized copy of the vector.
         Note: This function will return 0 if the length of the vector is 0.
 
         >>> Vec2d(3, 0).normalized()
@@ -303,7 +303,7 @@ class Vec2d(NamedTuple):
         return Vec2d(0, 0)
 
     def normalized_and_length(self) -> Tuple["Vec2d", float]:
-        """Normalize the vector and return its length before the normalization
+        """Normalize the vector and return its length before the normalization.
 
         >>> Vec2d(3, 0).normalized_and_length()
         (Vec2d(1.0, 0.0), 3.0)
@@ -345,7 +345,7 @@ class Vec2d(NamedTuple):
         return Vec2d(self.x, self.y)
 
     def dot(self, other: Tuple[float, float]) -> float:
-        """The dot product between the vector and other vector
+        """The dot product between the vector and other vector.
         v1.dot(v2) -> v1.x*v2.x + v1.y*v2.y
 
         >>> Vec2d(5, 0).dot((0, 5))
@@ -357,7 +357,7 @@ class Vec2d(NamedTuple):
         return float(self.x * other[0] + self.y * other[1])
 
     def get_distance(self, other: Tuple[float, float]) -> float:
-        """The distance between the vector and other vector
+        """The distance between the vector and other vector.
 
         >>> Vec2d(0, 2).get_distance((0, -3))
         5.0
@@ -369,11 +369,11 @@ class Vec2d(NamedTuple):
         return math.sqrt((self.x - other[0]) ** 2 + (self.y - other[1]) ** 2)
 
     def get_dist_sqrd(self, other: Tuple[float, float]) -> float:
-        """The squared distance between the vector and other vector
+        """The squared distance between the vector and other vector.
         It is more efficent to use this method than to call get_distance()
         first and then do a square() on the result.
 
-        >>> Vec2d(1, 0).get_dist_sqrd((1,10))
+        >>> Vec2d(1, 0).get_dist_sqrd((1, 10))
         100
         >>> Vec2d(1, 2).get_dist_sqrd((10, 11))
         162
@@ -384,7 +384,7 @@ class Vec2d(NamedTuple):
         return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
 
     def projection(self, other: Tuple[float, float]) -> "Vec2d":
-        """Project this vector on top of other vector
+        """Project this vector on top of other vector.
 
         >>> Vec2d(10, 1).projection((5.0, 0))
         Vec2d(10.0, 0.0)
@@ -397,12 +397,13 @@ class Vec2d(NamedTuple):
         other_length_sqrd = other[0] * other[0] + other[1] * other[1]
         if other_length_sqrd == 0.0:
             return Vec2d(0, 0)
-        projected_length_times_other_length = self.dot(other)
-        new_length = projected_length_times_other_length / other_length_sqrd
+        # projected_length_times_other_length = self.dot(other)
+        # new_length = projected_length_times_other_length / other_length_sqrd
+        new_length = self.dot(other) / other_length_sqrd
         return Vec2d(other[0] * new_length, other[1] * new_length)
 
     def cross(self, other: Tuple[float, float]) -> float:
-        """The cross product between the vector and other vector
+        """The cross product between the vector and the other.
 
         v1.cross(v2) -> v1.x*v2.y - v1.y*v2.x
 
@@ -426,7 +427,7 @@ class Vec2d(NamedTuple):
     def convert_to_basis(
         self, x_vector: Tuple[float, float], y_vector: Tuple[float, float]
     ) -> "Vec2d":
-        """Converts the vector to a new basis defined by the given x and y vectors.
+        """Convert the vector to a new basis defined by the given x and y vectors.
 
         >>> Vec2d(10, 1).convert_to_basis((5, 0), (0, 0.5))
         Vec2d(2.0, 2.0)
@@ -440,7 +441,7 @@ class Vec2d(NamedTuple):
     @property
     def int_tuple(self) -> Tuple[int, int]:
         """The x and y values of this vector as a tuple of ints.
-        Uses round() to round to closest int.
+        Use `round()` to round to closest int.
 
         >>> Vec2d(0.9, 2.4).int_tuple
         (1, 2)
@@ -458,7 +459,7 @@ class Vec2d(NamedTuple):
 
     @staticmethod
     def unit() -> "Vec2d":
-        """A unit vector pointing up
+        """A unit vector pointing up.
 
         >>> Vec2d.unit()
         Vec2d(0, 1)
@@ -467,7 +468,7 @@ class Vec2d(NamedTuple):
 
     @staticmethod
     def ones() -> "Vec2d":
-        """A vector where both x and y is 1
+        """A vector where both x and y is 1.
 
         >>> Vec2d.ones()
         Vec2d(1, 1)
@@ -490,14 +491,14 @@ class Vec2d(NamedTuple):
 
     # Extra functions, mainly for chipmunk
     def cpvrotate(self, other: Tuple[float, float]) -> "Vec2d":
-        """Uses complex multiplication to rotate this vector by the other."""
+        """Use complex multiplication to rotate this vector by the other."""
         assert len(other) == 2
         return Vec2d(
             self.x * other[0] - self.y * other[1], self.x * other[1] + self.y * other[0]
         )
 
     def cpvunrotate(self, other: Tuple[float, float]) -> "Vec2d":
-        """The inverse of cpvrotate"""
+        """The inverse of cpvrotate."""
         assert len(other) == 2
         return Vec2d(
             self.x * other[0] + self.y * other[1], self.y * other[0] - self.x * other[1]
