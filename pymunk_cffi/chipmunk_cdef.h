@@ -1233,11 +1233,11 @@ void cpSpaceReindexShapesForBody(cpSpace *space, cpBody *body);
 /// Switch the space to use a spatial has as it's spatial index.
 void cpSpaceUseSpatialHash(cpSpace *space, cpFloat dim, int count);
 
-// MARK: P7 (Crowd Crushing)
+//MARK: P7 (Crowd Crushing)
 
-int cpSpaceGetSpatialHashTotalCells(cpSpace * space);
+void cpSpaceGetSpatialHashIndices(cpSpace *space, int *hash_indices, int l, int r, int b, int t);
 
-void cpSpaceGetSpatialHashObjectCounts(cpSpace * space, int *cell_counts);
+void cpSpaceGetSpatialHashObjectCounts(cpSpace *space, int *cell_counts, int *hash_indices, int hash_indices_len);
 
 // MARK: Time Stepping
 

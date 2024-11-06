@@ -554,11 +554,19 @@ class Space(PickleMixin, object):
         """
         cp.cpSpaceUseSpatialHash(self._space, dim, count)
 
-    def get_space_hash_objects_per_cell(self) -> List:
-        cell_counts = ffi.new(f'int[{cp.cpSpaceGetSpatialHashTotalCells(self._space)}]')
-        cp.cpSpaceGetSpatialHashObjectCounts(self._space, cell_counts)
-        return cell_counts
 
+    def get_space_hash_indicies(self, hash_indicies_len, l, r, b, t) -> List:
+        hash_indicies = ffi.new(f'int[{hash_indicies_len}]')
+        cp.cpSpaceGetSpatialHashIndices(self._space, hash_indicies, l, r, b, t)
+        return hash_indicies
+
+    def create_space_hash_objects_count(self, hash_indicies_len) -> List:
+        hash_indicies = ffi.new(f'int[{hash_indicies_len}]')
+        return hash_indicies
+    
+    def get_space_hash_objects_count(self, cell_counts, hash_indicies, hash_indicies_len) -> None:
+        cp.cpSpaceGetSpatialHashObjectCounts(self._space, cell_counts, hash_indicies, hash_indicies_len)
+    
     def step(self, dt: float) -> None:
         """Update the space for the given time step.
 
