@@ -564,7 +564,7 @@ class Segment(Shape):
 
 
 class Poly(Shape):
-    """A convex polygon shape
+    """A convex polygon shape.
 
     Slowest, but most flexible collision shape.
     """
