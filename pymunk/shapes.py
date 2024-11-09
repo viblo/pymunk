@@ -582,7 +582,7 @@ class Poly(Shape):
         that concave ones will be converted to a convex hull using the Quickhull
         algorithm.
 
-        Add a small radius will bevel the corners and can significantly
+        Adding a small radius will bevel the corners and can significantly
         reduce problems where the poly gets stuck on seams in your geometry.
 
         It is legal to send in None as body argument to indicate that this
