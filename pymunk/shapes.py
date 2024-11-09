@@ -579,7 +579,8 @@ class Poly(Shape):
         """Create a polygon.
 
         A convex hull will be calculated from the vertexes automatically. Note
-        that concave ones will be converted to a convex hull.
+        that concave ones will be converted to a convex hull using the Quickhull
+        algorithm.
 
         Add a small radius will bevel the corners and can significantly
         reduce problems where the poly gets stuck on seams in your geometry.
