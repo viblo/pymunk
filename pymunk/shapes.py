@@ -24,11 +24,11 @@ _logger = logging.getLogger(__name__)
 class Shape(PickleMixin, TypingAttrMixing, object):
     """Base class for all the shapes.
 
-    You usually dont want to create instances of this class directly but use
+    You usually don't want to create instances of this class directly but use
     one of the specialized shapes instead (:py:class:`Circle`,
     :py:class:`Poly` or :py:class:`Segment`).
 
-    All the shapes can be copied and pickled. If you copy/pickle a shape the
+    All the shapes can be copied and pickled. If you copy/pickle a shape, the
     body (if any) will also be copied.
     """
 
@@ -79,7 +79,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
 
     @property
     def _id(self) -> int:
-        """Unique id of the Shape
+        """Unique id of the Shape.
 
         .. note::
             Experimental API. Likely to change in future major, minor orpoint
@@ -102,8 +102,8 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         _set_mass,
         doc="""The mass of this shape.
 
-        This is useful when you let Pymunk calculate the total mass and inertia 
-        of a body from the shapes attached to it. (Instead of setting the body 
+        This is useful when you let Pymunk calculate the total mass and inertia
+        of a body from the shapes attached to it. (Instead of setting the body
         mass and inertia directly)
         """,
     )
@@ -118,9 +118,9 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         _get_density,
         _set_density,
         doc="""The density of this shape.
-        
-        This is useful when you let Pymunk calculate the total mass and inertia 
-        of a body from the shapes attached to it. (Instead of setting the body 
+
+        This is useful when you let Pymunk calculate the total mass and inertia
+        of a body from the shapes attached to it. (Instead of setting the body
         mass and inertia directly)
         """,
     )
@@ -168,7 +168,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         _set_collision_type,
         doc="""User defined collision type for the shape.
 
-        See :py:meth:`Space.add_collision_handler` function for more 
+        See :py:meth:`Space.add_collision_handler` function for more
         information on when to use this property.
         """,
     )
@@ -295,7 +295,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         return BB(_bb.l, _bb.b, _bb.r, _bb.t)
 
     def cache_bb(self) -> BB:
-        """Update and returns the bounding box of this shape"""
+        """Update and returns the bounding box of this shape."""
         _bb = cp.cpShapeCacheBB(self._shape)
         return BB(_bb.l, _bb.b, _bb.r, _bb.t)
 
@@ -391,7 +391,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         cp.cpShapeSetHashID(self._shape, v)
 
     def __getstate__(self) -> _State:
-        """Return the state of this object
+        """Return the state of this object.
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
@@ -407,9 +407,9 @@ class Shape(PickleMixin, TypingAttrMixing, object):
 
 
 class Circle(Shape):
-    """A circle shape defined by a radius
+    """A circle shape defined by a radius.
 
-    This is the fastest and simplest collision shape
+    This is the fastest and simplest collision shape.
     """
 
     _pickle_attrs_init = Shape._pickle_attrs_init + ["radius", "offset"]
@@ -445,7 +445,7 @@ class Circle(Shape):
 
     @property
     def radius(self) -> float:
-        """The Radius of the circle"""
+        """The Radius of the circle."""
         return cp.cpCircleShapeGetRadius(self._shape)
 
     def unsafe_set_offset(self, o: Tuple[float, float]) -> None:
@@ -468,7 +468,7 @@ class Circle(Shape):
 
 
 class Segment(Shape):
-    """A line segment shape between two points
+    """A line segment shape between two points.
 
     Meant mainly as a static shape. Can be beveled in order to give them a
     thickness.
@@ -483,7 +483,7 @@ class Segment(Shape):
         b: Tuple[float, float],
         radius: float,
     ) -> None:
-        """Create a Segment
+        """Create a Segment.
 
         It is legal to send in None as body argument to indicate that this
         shape is not attached to a body. However, you must attach it to a body
@@ -516,7 +516,7 @@ class Segment(Shape):
     def unsafe_set_endpoints(
         self, a: Tuple[float, float], b: Tuple[float, float]
     ) -> None:
-        """Set the two endpoints for this segment
+        """Set the two endpoints for this segment.
 
         .. note::
             This change is only picked up as a change to the position
@@ -535,7 +535,7 @@ class Segment(Shape):
         return Vec2d(v.x, v.y)
 
     def unsafe_set_radius(self, r: float) -> None:
-        """Set the radius of the segment
+        """Set the radius of the segment.
 
         .. note::
             This change is only picked up as a change to the position
@@ -547,7 +547,7 @@ class Segment(Shape):
 
     @property
     def radius(self) -> float:
-        """The radius/thickness of the segment"""
+        """The radius/thickness of the segment."""
         return cp.cpSegmentShapeGetRadius(self._shape)
 
     def set_neighbors(
@@ -564,7 +564,7 @@ class Segment(Shape):
 
 
 class Poly(Shape):
-    """A convex polygon shape
+    """A convex polygon shape.
 
     Slowest, but most flexible collision shape.
     """
@@ -578,14 +578,16 @@ class Poly(Shape):
     ) -> None:
         """Create a polygon.
 
-        A convex hull will be calculated from the vertexes automatically.
+        A convex hull will be calculated from the vertexes automatically. Note
+        that concave ones will be converted to a convex hull using the Quickhull
+        algorithm.
 
         Adding a small radius will bevel the corners and can significantly
         reduce problems where the poly gets stuck on seams in your geometry.
 
         It is legal to send in None as body argument to indicate that this
         shape is not attached to a body. However, you must attach it to a body
-        before adding the shape to a space or used for a space shape query.
+        before adding the shape to a space or using for a space shape query.
 
         .. note::
             Make sure to put the vertices around (0,0) or the shape might
@@ -615,8 +617,8 @@ class Poly(Shape):
 
         :param Body body: The body to attach the poly to
         :param [(float,float)] vertices: Define a convex hull of the polygon
-            with a counterclockwise winding.
-        :param Transform transform: Transform will be applied to every vertex.
+            with a counterclockwise winding
+        :param Transform transform: Transform will be applied to every vertex
         :param float radius: Set the radius of the poly shape
 
         """
@@ -652,10 +654,10 @@ class Poly(Shape):
     def create_box(
         body: Optional["Body"], size: Tuple[float, float] = (10, 10), radius: float = 0
     ) -> "Poly":
-        """Convenience function to create a box given a width and height.
+        """Convenience function to create a box with given width and height.
 
         The boxes will always be centered at the center of gravity of the
-        body you are attaching them to.  If you want to create an off-center
+        body you are attaching them to. If you want to create an off-center
         box, you will need to use the normal constructor Poly(...).
 
         Adding a small radius will bevel the corners and can significantly
@@ -680,7 +682,7 @@ class Poly(Shape):
         """Convenience function to create a box shape from a :py:class:`BB`.
 
         The boxes will always be centered at the center of gravity of the
-        body you are attaching them to.  If you want to create an off-center
+        body you are attaching them to. If you want to create an off-center
         box, you will need to use the normal constructor Poly(..).
 
         Adding a small radius will bevel the corners and can significantly
@@ -700,7 +702,7 @@ class Poly(Shape):
         return self
 
     def get_vertices(self) -> List[Vec2d]:
-        """Get the vertices in local coordinates for the polygon
+        """Get the vertices in local coordinates for the polygon.
 
         If you need the vertices in world coordinates then the vertices can be
         transformed by adding the body position and each vertex rotated by the
@@ -722,8 +724,8 @@ class Poly(Shape):
         :rtype: [:py:class:`Vec2d`]
         """
         verts = []
-        l = cp.cpPolyShapeGetCount(self._shape)
-        for i in range(l):
+        lines = cp.cpPolyShapeGetCount(self._shape)
+        for i in range(lines):
             v = cp.cpPolyShapeGetVert(self._shape, i)
             verts.append(Vec2d(v.x, v.y))
         return verts
@@ -748,7 +750,7 @@ class Poly(Shape):
         cp.cpPolyShapeSetVerts(self._shape, len(vertices), vertices, transform)
 
     def __getstate__(self) -> _State:
-        """Return the state of this object
+        """Return the state of this object.
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
