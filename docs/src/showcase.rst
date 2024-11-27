@@ -240,10 +240,9 @@ I teach AI to move with using NEAT
 .. figure:: _static/aimoveneat.png
    :target: https://youtu.be/ipWIH1g9DSw
 
-Recently I learned Pymunk 2d physics library.
-It is very cool so with that I made 2d Humanoid for my AI.
-Today I'm going to teach AI to move forward with NEAT.
-NEAT is a genetic algorithm for the generation of evolving artificial 
+Recently I learned Pymunk 2d physics library. It is very cool so with that I 
+made 2d Humanoid for my AI. Today I'm going to teach AI to move forward with 
+NEAT. NEAT is a genetic algorithm for the generation of evolving artificial 
 neural networks. Results are quite weird but it will be fun. Have fun!
 
 
@@ -254,12 +253,12 @@ Car Configuration with Differential Evolotion
 .. figure:: _static/carconf.png
    :target: https://youtu.be/7ok4ESgrKg0
 
-Among the simplest AI algorithms: Differential Evolution. Brought to 
-life with Pymunk and Pygame. Each car has an objective of reaching the 
-end of the track, but has only 15 seconds to do so. They explore the 
-multidimensional search space of vehicle speed, chassis width, chassis 
-height and wheel radius, to find a variety of configurations among 
-which few are successful in helping the car cross the track. 
+Among the simplest AI algorithms: Differential Evolution. Brought to life with 
+Pymunk and Pygame. Each car has an objective of reaching the end of the track, 
+but has only 15 seconds to do so. They explore the multidimensional search 
+space of vehicle speed, chassis width, chassis height and wheel radius, to 
+find a variety of configurations among which few are successful in helping the 
+car cross the track. 
 
 Source code available at GitHub at https://github.com/nav9/evolutionaryCarRace
 
@@ -271,12 +270,12 @@ VirtuaPlant
 .. figure:: _static/virtuaplant.png
    :target: https://wroot.org/projects/virtuaplant/
 
-VirtuaPlant is an Industrial Control Systems simulator which adds a 
-"similar to real-world control logic" to the basic "read/write tags" 
-feature of most PLC simulators. Paired with a game library and 2d 
-physics engine, VirtuaPlant is able to present a GUI simulating the 
-"world view" behind the control system allowing the user to have a 
-vision of the would-be actions behind the control systems.
+VirtuaPlant is an Industrial Control Systems simulator which adds a "similar 
+to real-world control logic" to the basic "read/write tags" feature of most 
+PLC simulators. Paired with a game library and 2d physics engine, VirtuaPlant 
+is able to present a GUI simulating the "world view" behind the control system
+allowing the user to have a vision of the would-be actions behind the control 
+systems.
 
 
 The Python Arcade Library
@@ -286,9 +285,9 @@ The Python Arcade Library
 .. figure:: _static/arcade-library.png
    :target: http://arcade.academy/examples/index.html
 
-Arcade is an easy-to-learn Python library for creating 2D video games. 
-It is not directly tied to Pymunk, but includes a number of examples 
-and helper classes to use Pymunk physics from an Arcade application.
+Arcade is an easy-to-learn Python library for creating 2D video games. It is 
+not directly tied to Pymunk, but includes a number of examples and helper 
+classes to use Pymunk physics from an Arcade application.
 
 
 billiARds - A Game of Augmented Reality Pool 
@@ -298,10 +297,10 @@ billiARds - A Game of Augmented Reality Pool
 .. figure:: _static/billiARds.png
    :target: https://youtu.be/5ft3SDvuhgw
 
-Alex built billiARds for his 15-112 (Fundamentals of Programming and 
-Computer Science) term project at Carnegie Mellon University.
-Made in Python3 using OpenCV, Pygame, and Pymunk. Users can simply use 
-a pool cue stick and run the program on any ordinary surface.
+Alex built billiARds for his 15-112 (Fundamentals of Programming and Computer
+Science) term project at Carnegie Mellon University. Made in Python3 using 
+OpenCV, Pygame, and Pymunk. Users can simply use a pool cue stick and run the 
+program on any ordinary surface.
 
 
 pyPhysicsSandbox
@@ -311,9 +310,9 @@ pyPhysicsSandbox
 .. figure:: _static/pyphysicssandbox.png
    :target: https://github.com/jshaffstall/PyPhysicsSandbox
 
-pyPhysicsSandbox is a simple wrapper around Pymunk that makes it easy 
-to write code to explore 2D physics simulations. It's intended for use 
-in introductory programming classrooms. 
+pyPhysicsSandbox is a simple wrapper around Pymunk that makes it easy to write 
+code to explore 2D physics simulations. It's intended for use in introductory 
+programming classrooms. 
 
 
 Carrom Simulation
@@ -323,11 +322,10 @@ Carrom Simulation
 .. figure:: _static/carrom-rl.png
    :target: https://github.com/samiranrl/Carrom_rl 
 
-An open source Carrom Simulator interface for testing 
-intelligent/learning agents. It provides an interface that allows 
-you to design agents that that play Carrom. It is built in python, 
-using Pygame + Pymunk. This is the course project for 
-CS 747 - Foundations of Intelligent and Learning Agents, taught by 
+An open source Carrom Simulator interface for testing intelligent/learning 
+agents. It provides an interface that allows you to design agents that that
+play Carrom. It is built in python, using Pygame + Pymunk. This is the course 
+project for CS 747 - Foundations of Intelligent and Learning Agents, taught by 
 Prof. Shivaram Kalyanakrishnan at IIT Bombay.
 
 
@@ -338,9 +336,9 @@ Self Driving Car
 .. figure:: _static/reinforcement-learning-car.png
    :target: https://github.com/harvitronix/reinforcement-learning-car
 
-A project that trains a virtual car to how to move an object around a 
-screen (drive itself) without running into obstacles using a type of 
-reinforcement learning called Q-Learning.
+A project that trains a virtual car to how to move an object around a screen 
+(drive itself) without running into obstacles using a type of reinforcement 
+learning called Q-Learning.
     
 
 Papers / Science
@@ -763,7 +761,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2024-10-20. If something is missing or wrong, please contact 
+List last updated 2024-11-28. If something is missing or wrong, please contact 
 me!
 
 
