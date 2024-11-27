@@ -12,272 +12,335 @@ please let me know, and I can add it here!
 Games
 =====
 
-.. list-table:: 
-    :widths: 40 60
+Suika in Python
+---------------
+:sup:`made by Ole-Batting. Retrieved 2024-08-18`
 
-    * - .. image:: _static/suika-in-python.jpg
-      - `Suika in Python <https://youtu.be/In0EvhenzeQ>`_
+.. figure:: _static/suika-in-python.jpg
+   :target: https://youtu.be/In0EvhenzeQ
 
-        :subscript:`made by Ole-Batting. Retrieved 2024-08-18`
+A reimplementation of the `Suika Game 
+<https://en.wikipedia.org/wiki/Suika_Game>`_ in Python / Pymunk. Combine 
+fruits to make bigger fruits. Make sure to not miss the second part where 
+Ole-Batting adds proper sprites to the game! On 
+`YouTube <https://youtu.be/_4kstHyPtSk>`_. Source code of both part 1 and 2 on 
+`Github <https://github.com/Ole-Batting/suika>`_.
 
-        A reimplementation of the `Suika Game 
-        <https://en.wikipedia.org/wiki/Suika_Game>`_ in Python / 
-        Pymunk. Combine fruits to make bigger fruits.
 
-        Make sure to not miss the second part where Ole-Batting adds proper 
-        sprites to the game! On `YouTube <https://youtu.be/_4kstHyPtSk>`_.
-        
-        Source code of both part 1 and 2 on 
-        `Github <https://github.com/Ole-Batting/suika>`_.
+PyKart - build and drive your vehicles
+--------------------------------------
+:sup:`made by Valdotorium. Retrieved 2024-08-18`
 
-    * - .. image:: _static/pykart-1.1.png
-      - `PyKart - build and drive your vehicles <https://valdotorium.itch.io/pykart>`_
+.. figure:: _static/pykart-1.1.png
+   :target: https://valdotorium.itch.io/pykart
 
-        :subscript:`made by Valdotorium. Retrieved 2024-08-18`
+A driving game in which players can drive the vehicles they built in generated 
+landscapes with physics! This game comes both as a download, but also as a web 
+version playable directly in the browser and full source code on GitHub.
 
-        A driving game in which players can drive the vehicles they built in 
-        generated landscapes with physics! 
 
-        This game comes both as a download, but also as a web version 
-        playable directly in the browser and full source code on Github.
+Guide The Ball
+--------------
+:sup:`made by Francis Ali. Retrieved 2020-03-30`
 
-    * - .. image:: _static/guide-the-ball.png
-      - `Guide The Ball <https://github.com/francisA88/Guide-The-Ball-1>`_
+.. figure:: _static/guide-the-ball.png
+   :target: https://github.com/francisA88/Guide-The-Ball-1
 
-        :subscript:`made by Francis Ali. Retrieved 2020-03-30`
+A game combining Pymunk with Kivy that runs on Android mobiles! In Guide The 
+Ball the task is to guide a ball through 19 exciting and challenging levels!
 
-        A game combining Pymunk with Kivy that runs on Android mobiles!
 
-        In Guide The Ball the task is to guide a ball through 19 
-        exciting and challenging levels!
+My Sincerest Apologies
+----------------------
+:sup:`made by The Larry and Dan show (mauve, larry). Retrieved 2018-10-25`
 
-    * - .. image:: _static/My_Sincerest_Apologies.png
-      - `My Sincerest Apologies <https://pyweek.org/e/wasabi24/>`_
-      
-        :subscript:`made by The Larry and Dan show (mauve, larry). Retrieved 
-        2018-10-25`
+.. figure:: _static/My_Sincerest_Apologies.png
+   :target: https://pyweek.org/e/wasabi24/
 
-        **Winner of PyWeek 24** (Overall Team Entry)
-        
-        A game of fun, shooting, and "I'm sorry to put you through this".
+**Winner of PyWeek 24** (Overall Team Entry)
+   
+A game of fun, shooting, and "I'm sorry to put you through this".
 
-        A fabricator robot on Mars was supposed to make a bunch of robots! 
-        But it got lazy and made robots that could make other robots. And 
-        it made them smarter than they should have been. Now they've all 
-        gone off and hidden away behind various tanks and computers. 
-        
-        Happily, he knew how to construct *you*, a simple fighting robot. 
-        It's your job to clean out each area!
-        
-        See Daniel Popes teardown `here <http://mauveweb.co.uk/posts/2018/03/my-sincerest-apologies-teardown.html>`_
-        for additional details
+A fabricator robot on Mars was supposed to make a bunch of robots! But it got 
+lazy and made robots that could make other robots. And it made them smarter 
+than they should have been. Now they've all gone off and hidden away behind 
+various tanks and computers. Happily, he knew how to construct *you*, a simple 
+fighting robot. It's your job to clean out each area!
 
-    * - .. image:: _static/beneath-the-ice.png
-      - `Beneath the Ice <https://pyweek.org/e/chimera22/>`_
+See Daniel Popes teardown `here 
+<http://mauveweb.co.uk/posts/2018/03/my-sincerest-apologies-teardown.html>`_
+for additional details
 
-        :subscript:`made by Team Chimera (mit-mit, Lucid Design Ar). Retrieved 
-        2016-09-25`
 
-        **Winner of PyWeek 22** (Overall Team Entry)
+Beneath the Ice
+---------------
+:sup:`made by Team Chimera (mit-mit, Lucid Design Ar). Retrieved 
+2016-09-25`
 
-        Beneath the Ice is a submarine exploration game and puzzle solving 
-        adventure! Uncover a mysterious pariah who can't let you discover his 
-        secrets, who can't let you in! Team Chimera take 3!  
+.. figure:: _static/beneath-the-ice.png
+   :target: https://pyweek.org/e/chimera22/
 
-    * - .. image:: _static/invisipin.png
-      - `Invisipin <https://pyweek.org/e/Tee-py20/>`_  
-        
-        :subscript:`made by Tee. Retrieved 2016-01-25`
+**Winner of PyWeek 22** (Overall Team Entry)
 
-        **Winner of PyWeek 20** (Overall Individual Entry)
-        
-        A pachinko-like puzzle game. Play some balls and watch their movement 
-        carefully (i.e. collect data) to reconstruct the board!
+Beneath the Ice is a submarine exploration game and puzzle solving adventure! 
+Uncover a mysterious pariah who can't let you discover his secrets, who can't 
+let you in! Team Chimera take 3!  
 
-    * - .. image:: _static/angry-birds-python.png
-      - `Angry Birds in Python <https://github.com/estevaofon/angry-birds-python>`_
 
-        :subscript:`made by Estevao Fonseca. Retrieved 2016-10-30`
+Invisipin
+---------
+:sup:`made by Tee. Retrieved 2016-01-25`
 
-        Angry Birds game written in python using pygame and pymunk 
+.. figure:: _static/invisipin.png
+   :target: https://pyweek.org/e/Tee-py20/
 
-    * - .. image:: _static/SubTerrex.png
-      - `SubTerrex <http://www.pygame.org/project-SubTerrex-2389-.html>`_  
-        
-        :subscript:`made by Paul Paterson. Retrieved 2016-01-25`
+**Winner of PyWeek 20** (Overall Individual Entry)
+   
+A Pachinko-like puzzle game. Play some balls and watch their movement carefully
+(i.e. collect data) to reconstruct the board!
 
-        A cave exploration game where you explore caves by descending into them 
-        on ropes.
+
+Angry Birds in Python
+---------------------
+:sup:`made by Estevao Fonseca. Retrieved 2016-10-30`
+
+.. figure:: _static/angry-birds-python.png
+   :target: https://github.com/estevaofon/angry-birds-python
+
+Angry Birds game written in python using Pygame and Pymunk!
+
+
+SubTerrex
+---------
+:sup:`made by Paul Paterson. Retrieved 2016-01-25`
+
+.. figure:: _static/SubTerrex.png
+   :target: http://www.pygame.org/project-SubTerrex-2389-.html
+
+A cave exploration game where you explore caves by descending into them on 
+ropes.
+
 
 Non-Games
 =========
 
-.. list-table::
-    :widths: 40 60 
+AUTO-IceNav
+-----------
+:sup:`made by de Schaetzen, Rodrigue and Botros, Alexander and Zhong, Ninghan 
+and Murrant, Kevin and Gash. Retrieved 2024-11-27`
 
-    * - .. image:: _static/bouncingballs-beatuifulpatterns.png
-      - `Bouncing Balls, Beautiful Patterns <https://youtu.be/nDhOGsBj1fA>`_
+.. figure:: _static/auto-icenav.jpg
+   :target: https://github.com/rdesc/AUTO-IceNav
 
-        :subscript:`made by Alessandro Giusti. Retrieved 2022-01-25`
-
-        Satisfying simulations of bouncing balls obeying physical laws; for 
-        a fleeting moment during the simulation, the balls pass through a 
-        beautiful regular arrangement.
-
-        Each sequence is obtained by joining two simulations, both starting 
-        from the time in which the balls are arranged regularly. One 
-        simulates forward in time, one backwards.
+Ice conditions often require ships to reduce speed and deviate from their main 
+course to avoid damage to the ship. In addition, broken ice fields are 
+becoming the dominant ice conditions encountered in the Arctic, where the 
+effects of collisions with ice are highly dependent on where contact occurs and
+on the particular features of the ice floes. AUTO-IceNav is a framework for 
+the autonomous navigation of ships operating in ice floe fields. 
 
 
-    * - .. image:: _static/manim-physics.png
-      - `manim-physics <https://github.com/Matheart/manim-physics>`_
+Bouncing Balls, Beautiful Patterns
+----------------------------------
+:sup:`made by Alessandro Giusti. Retrieved 2022-01-25`
 
-        :subscript:`made by pdcxs, Matheart & Iced-Tea3. Retrieved 2021-07-05`
+.. figure:: _static/bouncingballs-beatuifulpatterns.png
+   :target: https://youtu.be/nDhOGsBj1fA
 
-        This is a 2D physics simulation plugin that allows you to generate 
-        complicated scenes in various branches of Physics such as rigid 
-        mechanics, electromagnetism, wave etc.
+Satisfying simulations of bouncing balls obeying physical laws; for a fleeting 
+moment during the simulation, the balls pass through a beautiful regular 
+arrangement.
 
-    * - .. image:: _static/ar-physics.jpg
-      - `Computer Vision and Phyiscs <https://amirabbasasadi.github.io/vision/python/2021/06/03/having-fun-with-computer-vision-and-physics.html>`_
+Each sequence is obtained by joining two simulations, both starting from the 
+time in which the balls are arranged regularly. One simulates forward in time, 
+one backwards.
 
-        :subscript:`made by Amirabbas Asadi. Retrieved 2021-06-25`
 
-        Just playing with OpenCV + a hand tracking model + a physics engine :)
+Manim Physics
+-------------
+:sup:`made by pdcxs, Matheart & Iced-Tea3. Retrieved 2021-07-05`
 
-        A very cool blog post (and video) explaining how to combine computer 
-        vision and a little physics to create a simple environment for 
-        Augmented Reality. In the blog Amirabbas Asadi shows how OpenCV, 
-        Mediapipe and Pymunk can be combined to make an app where simulated 
-        balls bounce on the hand of the user.
+.. figure:: _static/manim-physics.png
+   :target: https://github.com/Matheart/manim-physics
 
-    * - .. image:: _static/galtonBoard.png
-      - `Galton Board <https://github.com/nav9/GaltonBoard>`_
+This is a 2D physics simulation plugin for `Manim 
+<https://www.manim.community/>`_ that allows you to generate complicated scenes
+in various branches of Physics such as rigid mechanics, electromagnetism, wave 
+etc.
 
-        :subscript:`made by Nav. Retrieved 2021-05-17`
 
-        The quincunx (also known as a Galton board) created in Pymunk.
-        
-        This is a Galton Board simulation programmed to run in three modes, 
-        with medium-sized balls, small balls and large balls. A bit of 
-        randomness had to be added to the ball elasticity and initialization 
-        positions, to aid with proper interaction with objects.
-        
-    * - .. image:: _static/PySimpleGUI.png
-      - `PySimpleGUI Desktop Demo <https://github.com/PySimpleGUI/PySimpleGUI>`_
+Computer Vision and Phyiscs
+---------------------------
+:sup:`made by Amirabbas Asadi. Retrieved 2021-06-25`
 
-        :subscript:`made by PySimpleGUI/Mike. Retrieved 2020-10-13`
+.. figure:: _static/ar-physics.jpg
+   :target: https://amirabbasasadi.github.io/vision/python/2021/06/03/having-fun-with-computer-vision-and-physics.html
 
-        Demo of using PySimpleGUI together with Pymunk to create bouncing
-        balls directly on the desktop, thanks to a transparent container 
-        window.
+Just playing with OpenCV + a hand tracking model + a physics engine :)
 
-    * - .. image:: _static/legged_robot.png
-      - `Legged robot using differential evolution and perception <https://www.youtube.com/watch?v=n-OCy6ToLsU&feature=youtu.be>`_
+A very cool blog post (and video) explaining how to combine computer 
+vision and a little physics to create a simple environment for 
+Augmented Reality. In the blog Amirabbas Asadi shows how OpenCV, 
+Mediapipe and Pymunk can be combined to make an app where simulated 
+balls bounce on the hand of the user.
 
-        :subscript:`made by Nav. Retrieved 2020-08-20`
 
-        Legged robot first using Differential Evolution to navigate terrain 
-        and then learning to recognize the world via perception from its 
-        senses.
+Galton Board
+------------
+:sup:`made by Nav. Retrieved 2021-05-17`
 
-    * - .. image:: _static/ambient-chimes.png
-      - `Simulation of ambient chimes | Circle in a hexagon <https://youtu.be/7MRJS8ZV9VA>`_
+.. figure:: _static/galtonBoard.png
+   :target: https://github.com/nav9/GaltonBoard
 
-        :subscript:`made by Jan Abraham.Retrieved 2019-11-17`
+The quincunx (also known as a Galton board) created in Pymunk.
 
-        An ambient piano chord produced by the simulation of a bouncing ball. 
-        The calculations were carried out using Pymunk library.
-        Tuning: Kirnberger III
+This is a Galton Board simulation programmed to run in three modes, with 
+medium-sized balls, small balls and large balls. A bit of randomness had to be
+added to the ball elasticity and initialization positions, to aid with proper 
+interaction with objects.
 
-    * - .. image:: _static/aimoveneat.png
-      - `I teach AI to move with using NEAT <https://youtu.be/ipWIH1g9DSw>`_
 
-        :subscript:`made by Cheesy AI. Retrieved 2019-11-17`
+PySimpleGUI Desktop Demo
+------------------------
+:sup:`made by PySimpleGUI/Mike. Retrieved 2020-10-13`
 
-        Recently I learned Pymunk 2d physics library.
-        It is very cool so with that I made 2d Humanoid for my AI.
-        Today I'm going to teach AI to move forward with NEAT.
-        NEAT is a genetic algorithm for the generation of evolving artificial 
-        neural networks.
-        Results are quite weird but it will be fun.
-        Have fun!
+.. figure:: _static/PySimpleGUI.png
+   :target: https://github.com/PySimpleGUI/PySimpleGUI
 
-    * - .. image:: _static/carconf.png
-      - `Car Configuration with Differential Evolotion <https://youtu.be/7ok4ESgrKg0>`_
+Demo of using PySimpleGUI together with Pymunk to create bouncing balls 
+directly on the desktop, thanks to a transparent container window.
 
-        :subscript:`made by Nav. Retrieved 2019-05-05`
 
-        Among the simplest AI algorithms: Differential Evolution. Brought to 
-        life with Pymunk and Pygame. Each car has an objective of reaching the 
-        end of the track, but has only 15 seconds to do so. They explore the 
-        multidimensional search space of vehicle speed, chassis width, chassis 
-        height and wheel radius, to find a variety of configurations among 
-        which few are successful in helping the car cross the track. 
+Legged robot using differential evolution and perception
+--------------------------------------------------------
+:sup:`made by Nav. Retrieved 2020-08-20`
 
-        Source code available at Github at https://github.com/nav9/evolutionaryCarRace
+.. figure:: _static/legged_robot.png
+   :target: https://www.youtube.com/watch?v=n-OCy6ToLsU&feature=youtu.be
 
-    * - .. image:: _static/virtuaplant.png
-      - `VirtuaPlant <https://wroot.org/projects/virtuaplant/>`_
+Legged robot first using Differential Evolution to navigate terrain and then 
+learning to recognize the world via perception from its senses.
 
-        :subscript:`made by Jan Seidl. Retrieved 2018-06-13`
 
-        VirtuaPlant is a Industrial Control Systems simulator which adds a 
-        "similar to real-world control logic" to the basic "read/write tags" 
-        feature of most PLC simulators. Paired with a game library and 2d 
-        physics engine, VirtuaPlant is able to present a GUI simulating the 
-        "world view" behind the control system allowing the user to have a 
-        vision of the would-be actions behind the control systems.
+Simulation of ambient chimes | Circle in a hexagon 
+--------------------------------------------------
+:sup:`made by Jan Abraham.Retrieved 2019-11-17`
 
-    * - .. image:: _static/arcade-library.png
-      - `The Python Arcade Library <http://arcade.academy/examples/index.html>`_
+.. figure:: _static/ambient-chimes.png
+   :target: https://youtu.be/7MRJS8ZV9VA
 
-        :subscript:`made by Paul. Retrieved 2018-03-05`
+An ambient piano chord produced by the simulation of a bouncing ball. The 
+calculations were carried out using Pymunk library. Tuning: Kirnberger III
 
-        Arcade is an easy-to-learn Python library for creating 2D video games. 
-        It is not directly tied to Pymunk, but includes a number of examples 
-        and helper classes to use Pymunk physics from a Arcade application.
-        
-    * - .. image:: _static/billiARds.png
-      - `billiARds  A Game of Augmented Reality Pool 
-        <https://youtu.be/5ft3SDvuhgw>`_
 
-        :subscript:`made by Alex Baikovitz. Retrieved 2017-05-21`
+I teach AI to move with using NEAT
+----------------------------------
+:sup:`made by Cheesy AI. Retrieved 2019-11-17`
 
-        Alex built billiARds for his 15-112 (Fundamentals of Programming and 
-        Computer Science) term project at Carnegie Mellon University.
-        Made in Python3 using OpenCV, Pygame, and Pymunk. Users can simply use 
-        a pool cue stick and run the program on any ordinary surface.
+.. figure:: _static/aimoveneat.png
+   :target: https://youtu.be/ipWIH1g9DSw
 
-    * - .. image:: _static/pyphysicssandbox.png
-      - `pyPhysicsSandbox <https://github.com/jshaffstall/PyPhysicsSandbox>`_
+Recently I learned Pymunk 2d physics library.
+It is very cool so with that I made 2d Humanoid for my AI.
+Today I'm going to teach AI to move forward with NEAT.
+NEAT is a genetic algorithm for the generation of evolving artificial 
+neural networks. Results are quite weird but it will be fun. Have fun!
 
-        :subscript:`made by Jay Shaffstall. Retrieved 2017-01-01`
 
-        pyPhysicsSandbox is a simple wrapper around Pymunk that makes it easy 
-        to write code to explore 2D physics simulations. It's intended for use 
-        in introductory programming classrooms. 
+Car Configuration with Differential Evolotion
+---------------------------------------------
+:sup:`made by Nav. Retrieved 2019-05-05`
 
-    * - .. image:: _static/carrom-rl.png
-      - `Carrom Simulation <https://github.com/samiranrl/Carrom_rl>`_ 
-    
-        :subscript:`made by Samiran Roy. Retrieved 2016-10-27`
+.. figure:: _static/carconf.png
+   :target: https://youtu.be/7ok4ESgrKg0
 
-        An open source Carrom Simulator interface for testing 
-        intelligent/learning agents. It provides an interface that allows 
-        you to design agents that that play carrom. It is built in python, 
-        using pygame + pymunk. This is the course project for 
-        CS 747 - Foundations of Intelligent and Learning Agents, taught by 
-        Prof. Shivaram Kalyanakrishnan at IIT Bombay.
+Among the simplest AI algorithms: Differential Evolution. Brought to 
+life with Pymunk and Pygame. Each car has an objective of reaching the 
+end of the track, but has only 15 seconds to do so. They explore the 
+multidimensional search space of vehicle speed, chassis width, chassis 
+height and wheel radius, to find a variety of configurations among 
+which few are successful in helping the car cross the track. 
 
-    * - .. image:: _static/reinforcement-learning-car.png
-      - `Self Driving Car <https://github.com/harvitronix/reinforcement-learning-car>`_
-        
-        :subscript:`made by Matt Harvey. Retrieved 2016-08-07`
-        
-        A project that trains a virtual car to how to move an object around a 
-        screen (drive itself) without running into obstacles using a type of 
-        reinforcement learning called Q-Learning.
+Source code available at GitHub at https://github.com/nav9/evolutionaryCarRace
+
+
+VirtuaPlant
+-----------
+:sup:`made by Jan Seidl. Retrieved 2018-06-13`
+
+.. figure:: _static/virtuaplant.png
+   :target: https://wroot.org/projects/virtuaplant/
+
+VirtuaPlant is an Industrial Control Systems simulator which adds a 
+"similar to real-world control logic" to the basic "read/write tags" 
+feature of most PLC simulators. Paired with a game library and 2d 
+physics engine, VirtuaPlant is able to present a GUI simulating the 
+"world view" behind the control system allowing the user to have a 
+vision of the would-be actions behind the control systems.
+
+
+The Python Arcade Library
+-------------------------
+:sup:`made by Paul. Retrieved 2018-03-05`
+
+.. figure:: _static/arcade-library.png
+   :target: http://arcade.academy/examples/index.html
+
+Arcade is an easy-to-learn Python library for creating 2D video games. 
+It is not directly tied to Pymunk, but includes a number of examples 
+and helper classes to use Pymunk physics from an Arcade application.
+
+
+billiARds - A Game of Augmented Reality Pool 
+--------------------------------------------
+:sup:`made by Alex Baikovitz. Retrieved 2017-05-21`
+
+.. figure:: _static/billiARds.png
+   :target: https://youtu.be/5ft3SDvuhgw
+
+Alex built billiARds for his 15-112 (Fundamentals of Programming and 
+Computer Science) term project at Carnegie Mellon University.
+Made in Python3 using OpenCV, Pygame, and Pymunk. Users can simply use 
+a pool cue stick and run the program on any ordinary surface.
+
+
+pyPhysicsSandbox
+----------------
+:sup:`made by Jay Shaffstall. Retrieved 2017-01-01`
+
+.. figure:: _static/pyphysicssandbox.png
+   :target: https://github.com/jshaffstall/PyPhysicsSandbox
+
+pyPhysicsSandbox is a simple wrapper around Pymunk that makes it easy 
+to write code to explore 2D physics simulations. It's intended for use 
+in introductory programming classrooms. 
+
+
+Carrom Simulation
+-----------------
+:sup:`made by Samiran Roy. Retrieved 2016-10-27`
+
+.. figure:: _static/carrom-rl.png
+   :target: https://github.com/samiranrl/Carrom_rl 
+
+An open source Carrom Simulator interface for testing 
+intelligent/learning agents. It provides an interface that allows 
+you to design agents that that play Carrom. It is built in python, 
+using Pygame + Pymunk. This is the course project for 
+CS 747 - Foundations of Intelligent and Learning Agents, taught by 
+Prof. Shivaram Kalyanakrishnan at IIT Bombay.
+
+
+Self Driving Car
+----------------
+:sup:`made by Matt Harvey. Retrieved 2016-08-07`
+
+.. figure:: _static/reinforcement-learning-car.png
+   :target: https://github.com/harvitronix/reinforcement-learning-car
+
+A project that trains a virtual car to how to move an object around a 
+screen (drive itself) without running into obstacles using a type of 
+reinforcement learning called Q-Learning.
     
 
 Papers / Science
@@ -288,6 +351,14 @@ Pymunk has been used or referenced in a number of scientific papers.
 List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
+
+#. Zhong, Ninghan, Alessandro Potenza, and Stephen L. Smith. 
+   "Autonomous Navigation in Ice-Covered Waters with Learned Predictions on Ship-Ice Interactions." 
+   arXiv preprint arXiv:2409.11326 (2024).
+
+#. Shen, Keyi, Jiangwei Yu, Huan Zhang, and Yunzhu Li. 
+   "BaB-ND: Long-Horizon Motion Planning with Branch-and-Bound and Neural Dynamics." 
+   In 2nd CoRL Workshop on Learning Effective Abstractions for Planning.
 
 #. Parashar, Anjali, Kunal Garg, Joseph Zhang, and Chuchu Fan. 
    "Failure Prediction from Few Expert Demonstrations." 
