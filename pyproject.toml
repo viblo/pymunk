@@ -1,5 +1,10 @@
 [build-system]
-requires = ["setuptools", "wheel", "cffi >= 1.17.1"]
+requires = [
+    "setuptools",
+    "wheel",
+    "cffi >= 1.17.1; platform_system != 'Emscripten'",
+    "cffi > 1.14.0; platform_system == 'Emscripten'",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +12,10 @@ name = "pymunk"
 version = "6.9.0" # remember to change me for new versions!
 # Require cffi >1.14.0 since that (and older) has problem with returing structs from functions.
 # Require cffi >= 1.17.1 since older cant work with latest setuptools version
-dependencies = ["cffi >= 1.17.1"]
+dependencies = [
+    "cffi >= 1.17.1; platform_system != 'Emscripten'",
+    "cffi > 1.14.0; platform_system == 'Emscripten'",
+]
 authors = [{ name = "Victor Blomqvist", email = "vb@viblo.se" }]
 readme = "README.rst"
 description = "Pymunk is a easy-to-use pythonic 2D physics library"
