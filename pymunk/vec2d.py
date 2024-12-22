@@ -21,8 +21,8 @@
 # SOFTWARE.
 # ----------------------------------------------------------------------------
 
-"""This module contain the Vec2d class that is used in all of pymunk when a
-vector is needed.
+"""This module contains the Vec2d class that is used in all of Pymunk when a
+2d vector is needed.
 
 It is easy to create Vec2ds::
 

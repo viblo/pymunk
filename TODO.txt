@@ -35,6 +35,7 @@ v6.x
 - Think about the copyright notice in some files. Keep / put everywere / remove?
 - Constraint private accumulated over previous time step properties are not saved when pickle. 
 - Add a test to check that version property is correctly set matching setup.py (and readme?)
+- Make space step size default 1/60, and/or make it possible to set on the space instead of pasing in to step function to make api easier to use "right"
 
 v7+ (all potentially breaking changes)
 ---

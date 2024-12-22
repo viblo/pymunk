@@ -3,10 +3,23 @@ Changelog
 =========
 
 
-.. Pymunk 6.10.0??
-    Changes:
-    - Added from_polars() static method to Vec2d to easily create Vec2ds from polar coordinates.
-    - Improved docs (of Vec2d)
+Pymunk 6.10.0 (2024-12-22)
+--------------------------
+
+**Pyodode/pyscript fixes**
+
+This is a minor update to Pymunk that make the Pyodide wheels working again. 
+It also introduces tests in the build to prevent similar issues in the future.
+
+Changes:
+
+- Added from_polars() static method to Vec2d to easily create Vec2ds from 
+  polar coordinates.
+- Improved docs (of Vec2d)
+- Relax CFFI version requirement for pyodide to let it work even before 
+  Pyodide updates CFFI.
+- Test pyodide wheels when built.
+
 
 Pymunk 6.9.0 (2024-10-13)
 -------------------------
@@ -14,7 +27,7 @@ Pymunk 6.9.0 (2024-10-13)
 **Python 3.13**
 
 This is a minor update to Pymunk with wheels for CPython 3.13. In addition,
-with this release Pymunk no longer officialy support Python 3.7, since its not
+with this release Pymunk no longer officially support Python 3.7, since its not
 supported anymore, and CFFI, which Pymunk uses, no longer provides wheels for 
 it. In addition, Pypy is somewhat broken until they release a version with 
 latest CFFI. Details on the Pypy issue here:
