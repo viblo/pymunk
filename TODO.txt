@@ -1,3 +1,16 @@
+Intro
+-----
+This TODO file should be seen as a braindump/notebook for viblo. Its content 
+are random ideas/thoughts/notes. 
+
+Most of it is quickly written down thoughts to not forget about things, but 
+they might not be thought through. It should not be seen as a formal roadmap, 
+things in here might be totally outdated or not desired. Its still contained
+in the pymunk repo to keep things in the open.
+
+If you want to make a request for something, please create a issue on the 
+Pymunk issue tracker, and not a change to this file. 
+
 v6.x
 ----
 - Think about experimental repr of Body
