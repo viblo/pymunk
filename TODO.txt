@@ -9,7 +9,9 @@ things in here might be totally outdated or not desired. Its still contained
 in the pymunk repo to keep things in the open.
 
 If you want to make a request for something, please create a issue on the 
-Pymunk issue tracker, and not a change to this file. 
+Pymunk issue tracker, and not a change to this file. Im also happy to discuss
+the topics in this file, if someone show interest in some specific thing its 
+more likely it will happen.
 
 v6.x
 ----
