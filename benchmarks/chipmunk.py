@@ -60,15 +60,6 @@ import os
 
 import pymunk
 
-try:
-    import pygame
-
-    import pymunk.pygame_util
-
-    pymunk.pygame_util.positive_y_is_up = True
-except:
-    pass
-
 
 class Benchmark:
     steps = 500
@@ -176,7 +167,7 @@ class Tumbler(Benchmark):
 
 
 class AddPair(Benchmark):
-    steps = 1000
+    steps = 3000
     default_size = 2000
     size_start = 100
     size_end = 2500
@@ -614,6 +605,12 @@ def run(bench_cls, size, interactive):
     sim_start_time = timeit.default_timer()
 
     if interactive:
+        import pygame
+
+        import pymunk.pygame_util
+
+        pymunk.pygame_util.positive_y_is_up = True
+
         clock = pygame.time.Clock()
         screen = pygame.display.set_mode((600, 600))
         draw_options = pymunk.pygame_util.DrawOptions(screen)
@@ -671,7 +668,7 @@ def run(bench_cls, size, interactive):
                 f"step {steps} fps {clock.get_fps():.2f} total {timeit.default_timer()-sim_start_time:.2f}s"
             )
 
-        sim.update(1 / fps)
+        sim.update(1 / fps / 50)
         steps += 1
 
     if not interactive and False:  # temp disabled until end state is nice to look at.
@@ -710,7 +707,8 @@ if __name__ == "__main__":
         "-s",
         "--size",
         type=int,
-        help="Size of simulation (e.g. number of items). Set to -1 to iterate the sizes",
+        help="""Size of simulation (e.g. number of items). If not set uses a default size. 
+        Set to -1 to iterate the sizes""",
     )
     parser.add_argument(
         "-i",
@@ -723,7 +721,7 @@ if __name__ == "__main__":
 
     csv_output = io.StringIO()
     writer = csv.DictWriter(
-        csv_output, fieldnames=["benchmark", "size", "init_time", "run_time"]
+        csv_output, fieldnames=["version", "benchmark", "size", "init_time", "run_time"]
     )
     writer.writeheader()
     for name in args.benchmarks:
@@ -750,6 +748,7 @@ if __name__ == "__main__":
 
             res = run(bench_cls, size, args.interactive)
             print(res)
+            res["version"] = pymunk.version
             writer.writerow(res)
     print("DONE!")
     print("Full Result:")
