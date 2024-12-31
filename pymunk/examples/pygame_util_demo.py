@@ -31,7 +31,6 @@ def main():
 
     options = pymunk.pygame_util.DrawOptions(screen)
     space.debug_draw(options)
-    # pymunk.pygame_util.draw(screen, space)
 
     # Info
     color = pygame.Color("black")
