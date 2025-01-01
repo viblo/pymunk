@@ -67,6 +67,9 @@ class Benchmark:
     size_start = 10
     size_end = 10
     size_inc = 1
+    screenshot_transform = pymunk.Transform(
+        a=2.0, b=0.0, c=0.0, d=2.0, tx=300.0, ty=340.0
+    )
 
     def __init__(self):
         self.space = pymunk.Space()
@@ -85,6 +88,9 @@ class FallingSquares(Benchmark):
     size_start = 10
     size_end = 300
     size_inc = 10
+    screenshot_transform = pymunk.Transform(
+        a=1.25, b=0.0, c=0.0, d=1.25, tx=300.0, ty=45
+    )
 
     def __init__(self, size):
         super().__init__()
@@ -110,6 +116,9 @@ class FallingCircles(Benchmark):
     size_start = 10
     size_end = 300
     size_inc = 10
+    screenshot_transform = pymunk.Transform(
+        a=1.25, b=0.0, c=0.0, d=1.25, tx=300.0, ty=45
+    )
 
     def __init__(self, size):
         super().__init__()
@@ -133,6 +142,7 @@ class Tumbler(Benchmark):
     size_start = 50
     size_end = 1000
     size_inc = 50
+    screenshot_transform = pymunk.Transform(a=16, b=0.0, c=0.0, d=16, tx=300, ty=135)
 
     def __init__(self, size):
         super().__init__()
@@ -167,19 +177,20 @@ class Tumbler(Benchmark):
 
 
 class AddPair(Benchmark):
-    steps = 3000
+    steps = 1000
     default_size = 2000
     size_start = 100
     size_end = 2500
     size_inc = 100
+    screenshot_transform = pymunk.Transform(a=4, d=4, tx=-300, ty=300)
 
     def __init__(self, size):
         super().__init__()
         self.space.gravity = 0, 0
-        minX = -9.0
-        maxX = 9.0
-        minY = 4.0
-        maxY = 6.0
+        minX = -9.0 / 10
+        maxX = 9.0 / 10
+        minY = 4.0 / 10
+        maxY = 6.0 / 10
 
         for i in range(size):
             b = pymunk.Body()
@@ -188,20 +199,20 @@ class AddPair(Benchmark):
                 minY + (maxY - minY) * (i % 32) / 32,
             )
 
-            shape = pymunk.Circle(b, 0.1)
-            shape.density = 0.01
+            shape = pymunk.Circle(b, 0.1 / 10)
+            shape.density = 0.01 / 10
             self.space.add(b, shape)
 
         b = pymunk.Body()
-        b.position = -40, 5
-        shape = pymunk.Poly.create_box(b, (1.5 * 2, 1.5 * 2))
-        shape.density = 1
+        b.position = -40 / 10, 5 / 10
+        shape = pymunk.Poly.create_box(b, (1.5 * 2 / 10, 1.5 * 2 / 10))
+        shape.density = 1 / 10
 
-        b.velocity = 175, 0
+        b.velocity = 175 / 10, 0
         self.space.add(b, shape)
 
     def update(self, dt):
-        for x in range(4):
+        for _ in range(4):
             self.space.step(dt / 4)
 
 
@@ -211,6 +222,7 @@ class MildN2(Benchmark):
     size_start = 10
     size_end = 200
     size_inc = 10
+    screenshot_transform = pymunk.Transform(a=3.5, b=0.0, c=0.0, d=3.5, tx=300, ty=115)
 
     def __init__(self, size):
         super().__init__()
@@ -258,6 +270,7 @@ class N2(Benchmark):
     size_start = 25
     size_end = 750
     size_inc = 25
+    screenshot_transform = pymunk.Transform(a=7, b=0.0, c=0.0, d=7, tx=270, ty=350)
 
     def __init__(self, size):
         super().__init__()
@@ -276,6 +289,7 @@ class Multifixture(Benchmark):
     size_start = 5
     size_end = 100
     size_inc = 5
+    screenshot_transform = pymunk.Transform(a=4.2, b=0.0, c=0.0, d=4.2, tx=300, ty=90)
 
     def __init__(self, size):
         super().__init__()
@@ -651,6 +665,13 @@ def run(bench_cls, size, interactive):
 
             # to zoom with center of screen as origin we need to offset with
             # center of screen, scale, and then offset back
+            t = (
+                pymunk.Transform.translation(300, 300)
+                @ pymunk.Transform.scaling(scaling)
+                @ translation
+                @ pymunk.Transform.translation(-300, -300)
+            )
+            print(t)
             draw_options.transform = (
                 pymunk.Transform.translation(300, 300)
                 @ pymunk.Transform.scaling(scaling)
@@ -665,23 +686,35 @@ def run(bench_cls, size, interactive):
 
             clock.tick(fps)
             pygame.display.set_caption(
-                f"step {steps} fps {clock.get_fps():.2f} total {timeit.default_timer()-sim_start_time:.2f}s"
+                f"step {steps}/{bench_cls.steps} fps {clock.get_fps():.2f} total {timeit.default_timer()-sim_start_time:.2f}s"
             )
 
-        sim.update(1 / fps / 50)
+        sim.update(1 / fps)
         steps += 1
 
-    if not interactive and False:  # temp disabled until end state is nice to look at.
-        try:
-            os.environ["SDL_VIDEODRIVER"] = "dummy"
-            surface = pygame.Surface((600, 600))
-            draw_options = pymunk.pygame_util.DrawOptions(surface)
-            draw_options.flags = draw_options.DRAW_SHAPES
-            surface.fill(pygame.Color("white"))
-            sim.draw(draw_options)
-            pygame.image.save(surface, f"{bench_cls.__name__}_{size}.png")
-        except Exception as e:
-            print("Could not save screenshot", e)
+        if (
+            not interactive and steps == bench_cls.steps / 2
+        ):  # temp disabled until end state is nice to look at.
+            try:
+                import pygame
+
+                import pymunk.pygame_util
+
+                pymunk.pygame_util.positive_y_is_up = True
+
+                os.environ["SDL_VIDEODRIVER"] = "dummy"
+                surface = pygame.Surface((600, 600))
+                draw_options = pymunk.pygame_util.DrawOptions(surface)
+                draw_options.flags = draw_options.DRAW_SHAPES
+                draw_options.transform = sim.screenshot_transform
+                surface.fill(pygame.Color("white"))
+                sim.draw(draw_options)
+                file_name = f"{bench_cls.__name__}_{size}.png"
+                pygame.image.save(surface, file_name)
+                print(f"Saved screenshot as {file_name}")
+            except Exception as e:
+                print("Could not save screenshot:", e)
+                raise e
     end_time = timeit.default_timer()
     return {
         "benchmark": bench_cls.__name__,
@@ -730,6 +763,7 @@ if __name__ == "__main__":
 
         if args.size == None:
             sizes = [bench_cls.default_size]
+            print(f"Using default size {sizes[0]}. Use -s 1 to run all sizes")
         elif args.size == -1:
             sizes = range(
                 bench_cls.size_start, bench_cls.size_end + 1, bench_cls.size_inc
