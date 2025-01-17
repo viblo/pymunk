@@ -70,7 +70,7 @@ They can be run directly. To list the examples::
 
 And to run one of them::
 
-    > python -m pymunk.examples.breakout
+    > python -m pymunk.examples.index_video
 
 
 Contact & Support
