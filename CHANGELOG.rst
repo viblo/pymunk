@@ -2,6 +2,10 @@
 Changelog 
 =========
 
+.. Pymunk 6.11.0???
+  Changes:
+  - Support pyglet 2.1.x (this means Pyglet 2.0.x wont work )
+  - Added back Pypy wheels with a workaround since it takes such a long for new Pypy version to come out.
 
 Pymunk 6.10.0 (2024-12-22)
 --------------------------
