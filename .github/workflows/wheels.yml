@@ -24,8 +24,8 @@ jobs:
         uses: pypa/cibuildwheel@v2.22.0
         env:
           CIBW_BUILD:
-            # "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-* pp39-* pp310-*"
-            "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-*"
+            "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-* pp39-* pp310-*"
+            # "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-*"
           CIBW_TEST_COMMAND: "python -m pymunk.tests"
           # CIBW_BUILD_VERBOSITY: 3
         with:

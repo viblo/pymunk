@@ -23,11 +23,17 @@ def load_tests(
                 skip = True
         if skip:
             continue
-        tests.addTests(doctest.DocTestSuite("pymunk." + modname))
+        tests.addTests(
+            # Exception details are different in Pypy, so they need ot be ignored.
+            doctest.DocTestSuite(
+                "pymunk." + modname, optionflags=doctest.IGNORE_EXCEPTION_DETAIL
+            )
+        )
 
-        # except Exception as e:
-        #    print("Skipping " + modname, e)
-    tests.addTests(doctest.DocTestSuite(pymunk))
+    tests.addTests(
+        # Exception details are different in Pypy, so they need ot be ignored.
+        doctest.DocTestSuite(pymunk, optionflags=doctest.IGNORE_EXCEPTION_DETAIL)
+    )
     return tests
 
 
