@@ -2,10 +2,23 @@
 Changelog 
 =========
 
-.. Pymunk 6.11.0???
-  Changes:
-  - Support pyglet 2.1.x (this means Pyglet 2.0.x wont work )
-  - Added back Pypy wheels with a workaround since it takes such a long for new Pypy version to come out.
+.. Pymunk 6.12?????
+   Changes....
+
+Pymunk 6.11.0 (2025-01-18)
+--------------------------
+
+**Debug draw for Pyglet 2.1**
+
+This is a minor update to Pymunk that update the pyglet debug draw code to 
+work with the newly released Pyglet 2.1. Note that this means Pyglet 2.0.x 
+does not work anymore. The release also adds back pre-built wheels for Pypy 
+with a workaround until Pypy make a new release.
+
+Changes:
+  - Support pyglet 2.1.x (this means Pyglet 2.0.x wont work)
+  - Readded Pypy pre-built wheels
+
 
 Pymunk 6.10.0 (2024-12-22)
 --------------------------
