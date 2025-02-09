@@ -65,7 +65,7 @@ def run_tests(filter: str = "", with_dependencies: List[str] = []) -> bool:
         )
     except:
         pass
-    print("")
+    print()
 
     def list_of_tests_gen(s: Any) -> Iterator[Any]:
         for test in s:
