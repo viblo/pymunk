@@ -619,6 +619,12 @@ class Body(PickleMixin, TypingAttrMixing, object):
         return bool(lib.cpBodyIsSleeping(self._body))
 
     def _set_type(self, body_type: _BodyType) -> None:
+        if body_type != Body.DYNAMIC:
+            for c in self.constraints:
+                assert (c.a != self and c.b.body_type == Body.DYNAMIC) or (
+                    c.b != self and c.a.body_type == Body.DYNAMIC
+                ), "Cannot set a non-dynamic body type when Body is connected to a constraint {c} with a non-dynamic other body."
+
         lib.cpBodySetType(self._body, body_type)
 
     def _get_type(self) -> _BodyType:

@@ -138,9 +138,9 @@ class Space(PickleMixin, object):
 
         self._space = ffi.gc(cp_space, spacefree)
 
-        self._handlers: Dict[
-            Any, CollisionHandler
-        ] = {}  # To prevent the gc to collect the callbacks.
+        self._handlers: Dict[Any, CollisionHandler] = (
+            {}
+        )  # To prevent the gc to collect the callbacks.
 
         self._post_step_callbacks: Dict[Any, Callable[["Space"], None]] = {}
         self._removed_shapes: Dict[int, Shape] = {}
@@ -449,6 +449,11 @@ class Space(PickleMixin, object):
     def _add_constraint(self, constraint: "Constraint") -> None:
         """Adds a constraint to the space"""
         assert constraint not in self._constraints, "Constraint already added to space."
+
+        assert (
+            constraint.a.body_type == Body.DYNAMIC
+            or constraint.b.body_type == Body.DYNAMIC
+        ), "At leasts one of a constraint's bodies must be DYNAMIC."
 
         self._constraints[constraint] = None
         cp.cpSpaceAddConstraint(self._space, constraint._constraint)
