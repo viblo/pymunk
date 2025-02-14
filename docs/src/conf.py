@@ -10,7 +10,7 @@ import sys
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "Pymunk"
-copyright = "2013-2022, Victor Blomqvist"
+copyright = "2013-2025, Victor Blomqvist"
 author = "Victor Blomqvist"
 
 # -- General configuration ---------------------------------------------------

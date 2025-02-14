@@ -138,7 +138,7 @@ possible, usually `pip install` will take care of everything for you.
 
 * GCC and friends (optional, you need it to compile Pymunk from source. On 
   windows Visual Studio is required to compile)
-* Pygame (optional, you need it to run the Pygame based demos)
+* Pygame or Pygame-CE (optional, you need it to run the Pygame based demos)
 * Pyglet (optional, you need it to run the Pyglet based demos)
 * Matplotlib & Jupyter Notebook (optional, you need it to run the Matplotlib 
   based demos)
