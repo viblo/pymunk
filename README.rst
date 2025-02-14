@@ -18,7 +18,7 @@ the Pymunk webpage for some examples.
 
 2007 - 2025, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest Pymunk release (6.11.0), 
+This release is based on the latest Pymunk release (6.11.1), 
 using Chipmunk2D 7 rev dfc2fb8ca023ce6376fa2cf4a7f91c92ee08a970.
 
 
@@ -138,7 +138,7 @@ possible, usually `pip install` will take care of everything for you.
 
 * GCC and friends (optional, you need it to compile Pymunk from source. On 
   windows Visual Studio is required to compile)
-* Pygame (optional, you need it to run the Pygame based demos)
+* Pygame or Pygame-CE (optional, you need it to run the Pygame based demos)
 * Pyglet (optional, you need it to run the Pyglet based demos)
 * Matplotlib & Jupyter Notebook (optional, you need it to run the Matplotlib 
   based demos)

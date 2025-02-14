@@ -1,6 +1,5 @@
 __docformat__ = "reStructuredText"
 
-import logging
 from typing import TYPE_CHECKING, List, Optional, Sequence, Tuple
 
 if TYPE_CHECKING:
@@ -17,8 +16,6 @@ from .query_info import PointQueryInfo, SegmentQueryInfo
 from .shape_filter import ShapeFilter
 from .transform import Transform
 from .vec2d import Vec2d
-
-_logger = logging.getLogger(__name__)
 
 
 class Shape(PickleMixin, TypingAttrMixing, object):
@@ -59,19 +56,13 @@ class Shape(PickleMixin, TypingAttrMixing, object):
             body._shapes.add(self)
 
         def shapefree(cp_shape: ffi.CData) -> None:
-            _logger.debug("shapefree start %s", cp_shape)
             cp_space = cp.cpShapeGetSpace(cp_shape)
             if cp_space != ffi.NULL:
-                _logger.debug("shapefree remove from space %s %s", cp_space, cp_shape)
                 cp.cpSpaceRemoveShape(cp_space, cp_shape)
 
-            _logger.debug("shapefree get body %s", cp_shape)
             cp_body = cp.cpShapeGetBody(cp_shape)
             if cp_body != ffi.NULL:
-                _logger.debug("shapefree set body %s", cp_shape)
-                # print(cp.cpShapeActive2(cp_shape))
                 cp.cpShapeSetBody(cp_shape, ffi.NULL)
-            _logger.debug("shapefree free %s", cp_shape)
             cp.cpShapeFree(cp_shape)
 
         self._shape = ffi.gc(_shape, shapefree)

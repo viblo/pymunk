@@ -68,7 +68,6 @@ __all__ = [
     "SimpleMotor",
 ]
 
-import logging
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Union
 
 if TYPE_CHECKING:
@@ -79,8 +78,6 @@ from ._chipmunk_cffi import ffi, lib
 from ._pickle import PickleMixin
 from ._typing_attr import TypingAttrMixing
 from .vec2d import Vec2d
-
-_logger = logging.getLogger(__name__)
 
 _TorqueFunc = Callable[["DampedRotarySpring", float], float]
 _ForceFunc = Callable[["DampedSpring", float], float]
@@ -114,7 +111,6 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
             if cp_space != ffi.NULL:
                 lib.cpSpaceRemoveConstraint(cp_space, cp_constraint)
 
-            _logger.debug("constraintfree %s", cp_constraint)
             lib.cpConstraintFree(cp_constraint)
 
         self._constraint = ffi.gc(_constraint, constraintfree)
@@ -453,7 +449,7 @@ class PivotJoint(Constraint):
         b: "Body",
         *args: Union[
             Tuple[float, float], Tuple[Tuple[float, float], Tuple[float, float]]
-        ]
+        ],
     ) -> None:
         """a and b are the two bodies to connect, and pivot is the point in
         world coordinates of the pivot.

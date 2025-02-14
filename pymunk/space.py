@@ -1,6 +1,5 @@
 __docformat__ = "reStructuredText"
 
-import logging
 import platform
 import weakref
 from typing import (
@@ -38,8 +37,6 @@ if TYPE_CHECKING:
     from .bb import BB
 
 _AddableObjects = Union[Body, Shape, Constraint]
-
-_logger = logging.getLogger(__name__)
 
 
 class Space(PickleMixin, object):
@@ -100,15 +97,12 @@ class Space(PickleMixin, object):
             freefunc = cp.cpSpaceFree
 
         def spacefree(cp_space: ffi.CData) -> None:
-            _logger.debug("spacefree start %s", cp_space)
-
             cp_shapes: List[Shape] = []
             cp_shapes_h = ffi.new_handle(cp_shapes)
             cp.cpSpaceEachShape(cp_space, lib.ext_cpSpaceShapeIteratorFunc, cp_shapes_h)
 
             for cp_shape in cp_shapes:
                 cp_space = lib.cpShapeGetSpace(cp_shape)
-                _logger.debug("spacefree remove shape %s %s", cp_space, cp_shape)
 
                 lib.cpSpaceRemoveShape(cp_space, cp_shape)
                 lib.cpShapeSetBody(cp_shape, ffi.NULL)
@@ -120,9 +114,6 @@ class Space(PickleMixin, object):
             )
             for cp_constraint in cp_constraints:
                 cp_space = lib.cpConstraintGetSpace(cp_constraint)
-                _logger.debug(
-                    "spacefree remove constraint %s %s", cp_space, cp_constraint
-                )
                 lib.cpSpaceRemoveConstraint(cp_space, cp_constraint)
 
             cp_bodys: List[Body] = []
@@ -130,10 +121,8 @@ class Space(PickleMixin, object):
             cp.cpSpaceEachBody(cp_space, lib.ext_cpSpaceBodyIteratorFunc, cp_bodys_h)
             for cp_body in cp_bodys:
                 cp_space = lib.cpBodyGetSpace(cp_body)
-                _logger.debug("spacefree remove body %s %s", cp_space, cp_body)
                 lib.cpSpaceRemoveBody(cp_space, cp_body)
 
-            _logger.debug("spacefree free %s", cp_space)
             freefunc(cp_space)
 
         self._space = ffi.gc(cp_space, spacefree)

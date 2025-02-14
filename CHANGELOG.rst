@@ -5,21 +5,30 @@ Changelog
    Breaking: At least one of the two bodies attached to constraint/join must be dynamic. 
 
 
-.. Pymunk 6.12?????
-   Changes....
+Pymunk 6.11.1 (2025-02-09)
+--------------------------
+
+**Python 3.13 GC issue fix**
+
+This is a patch update to Pymunk that removes debug logging. This should an 
+issue with GC on Python 3.13.
+
+Changes:
+ - Remove debug logging
+
 
 Pymunk 6.11.0 (2025-01-18)
 --------------------------
 
 **Debug draw for Pyglet 2.1**
 
-This is a minor update to Pymunk that update the pyglet debug draw code to 
+This is a minor update to Pymunk that update the Pyglet debug draw code to 
 work with the newly released Pyglet 2.1. Note that this means Pyglet 2.0.x 
 does not work anymore. The release also adds back pre-built wheels for Pypy 
 with a workaround until Pypy make a new release.
 
 Changes:
-  - Support pyglet 2.1.x (this means Pyglet 2.0.x wont work)
+  - Support Pyglet 2.1.x (this means Pyglet 2.0.x wont work)
   - Readded Pypy pre-built wheels
 
 

@@ -214,7 +214,6 @@ class UnitTestBatch(unittest.TestCase):
                 # When using each_arbiter a mirror of each arbiter will be
                 # returned as well. These we ignore.
                 return
-            # print(a_id, b_id, idx, arb.total_impulse)
             # Assert int values
             self.assertEqual(arb.is_first_contact, ints[idx * 4 + 2])
             self.assertEqual(len(arb.contact_point_set.points), ints[idx * 4 + 3])

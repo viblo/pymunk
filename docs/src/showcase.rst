@@ -350,6 +350,18 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Liu, Daochang, Junyu Zhang, Anh-Dung Dinh, Eunbyung Park, Shichao Zhang, and Chang Xu. 
+   "Generative Physical AI in Vision: A Survey." 
+   arXiv preprint arXiv:2501.10928 (2025).
+
+#. Liu, Shaowei, Zhongzheng Ren, Saurabh Gupta, and Shenlong Wang. 
+   "Physgen: Rigid-body physics-grounded image-to-video generation." 
+   In European Conference on Computer Vision, pp. 360-378. Springer, Cham, 2025.
+
+#. Gu, Feida, Hongrui Sang, Yanmin Zhou, Jiajun Ma, Rong Jiang, Zhipeng Wang, and Bin He. 
+   "Learning Graph Dynamics with Interaction Effects Propagation for Deformable Linear Objects Shape Control." 
+   IEEE Transactions on Automation Science and Engineering (2025).
+
 #. Zhong, Ninghan, Alessandro Potenza, and Stephen L. Smith. 
    "Autonomous Navigation in Ice-Covered Waters with Learned Predictions on Ship-Ice Interactions." 
    arXiv preprint arXiv:2409.11326 (2024).
@@ -426,9 +438,9 @@ List of papers which has used or mentioned Pymunk:
    "Deep Reinforcement Learning for 2D Physics-Based Object Manipulation in Clutter." 
    arXiv preprint arXiv:2312.04570 (2023).
 
-#. Sosa, Felix, Samuel J. Gershman, and Tomer D. Ullman. 
-   "Blending simulation and abstraction for physical reasoning."
-   (2023).
+#. Sosa, Felix A., Samuel J. Gershman, and Tomer D. Ullman. 
+   "Blending simulation and abstraction for physical reasoning." 
+   Cognition 254 (2025): 105995..
 
 #. Li, Shiqian, Kewen Wu, Chi Zhang, and Yixin Zhu. 
    "I-PHYRE: Interactive Physical Reasoning." 
@@ -761,7 +773,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2024-11-28. If something is missing or wrong, please contact 
+List last updated 2025-01-26. If something is missing or wrong, please contact 
 me!
 
 

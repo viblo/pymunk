@@ -32,7 +32,7 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-version = "6.11.0"
+version = "6.11.1"
 
 chipmunk_version = "%s-%s" % (
     ffi.string(cp.cpVersionString).decode("utf-8"),

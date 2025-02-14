@@ -1,6 +1,5 @@
 __docformat__ = "reStructuredText"
 
-import logging
 from typing import (  # Literal,
     TYPE_CHECKING,
     Any,
@@ -30,8 +29,6 @@ _BodyType = int
 # ]
 _PositionFunc = Callable[["Body", float], None]
 _VelocityFunc = Callable[["Body", Vec2d, float, float], None]
-
-_logger = logging.getLogger(__name__)
 
 
 class Body(PickleMixin, TypingAttrMixing, object):
@@ -199,8 +196,6 @@ class Body(PickleMixin, TypingAttrMixing, object):
         """
 
         def freebody(cp_body: ffi.CData) -> None:
-            _logger.debug("bodyfree start %s", cp_body)
-
             # remove all shapes on this body from the space
             lib.cpBodyEachShape(cp_body, lib.ext_cpBodyShapeIteratorFunc, ffi.NULL)
 
@@ -210,13 +205,9 @@ class Body(PickleMixin, TypingAttrMixing, object):
             )
 
             cp_space = lib.cpBodyGetSpace(cp_body)
-            _logger.debug("bodyfree space %s", cp_space)
             # print(cp_space, cp_space == ffi.NULL)
             if cp_space != ffi.NULL:
-                _logger.debug("bodyfree space remove body %s %s", cp_space, cp_body)
                 lib.cpSpaceRemoveBody(cp_space, cp_body)
-
-            _logger.debug("bodyfree free %s", cp_body)
             lib.cpBodyFree(cp_body)
 
         if body_type == Body.DYNAMIC:
