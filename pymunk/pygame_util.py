@@ -22,7 +22,7 @@
 # ----------------------------------------------------------------------------
 
 """This submodule contains helper functions to help with quick prototyping 
-using pymunk together with pygame.
+using pymunk together with pygame or pygame-ce.
 
 Intended to help with debugging and prototyping, not for actual production use
 in a full application. The methods contained in this module is opinionated 
@@ -76,6 +76,8 @@ When False::
 class DrawOptions(pymunk.SpaceDebugDrawOptions):
     def __init__(self, surface: pygame.Surface) -> None:
         """Draw a pymunk.Space on a pygame.Surface object.
+
+        This class should work both with Pygame and Pygame-CE.
 
         Typical usage::
 
