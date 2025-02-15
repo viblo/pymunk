@@ -170,6 +170,35 @@ class UnitTestConstraint(unittest.TestCase):
 
         j2 = j.copy()
 
+    def test_body_types(self) -> None:
+        supported = [
+            (p.Body.DYNAMIC, p.Body.DYNAMIC),
+            (p.Body.DYNAMIC, p.Body.KINEMATIC),
+            (p.Body.DYNAMIC, p.Body.STATIC),
+            (p.Body.KINEMATIC, p.Body.DYNAMIC),
+            (p.Body.STATIC, p.Body.DYNAMIC),
+        ]
+        non_supported = [
+            (p.Body.KINEMATIC, p.Body.KINEMATIC),
+            (p.Body.KINEMATIC, p.Body.STATIC),
+            (p.Body.STATIC, p.Body.KINEMATIC),
+            (p.Body.STATIC, p.Body.STATIC),
+        ]
+
+        for type1, type2 in supported:
+            a, b = p.Body(4, 5, body_type=type1), p.Body(10, 10, body_type=type2)
+            _ = PivotJoint(a, b, (1, 2))
+
+            for type3, type4 in non_supported:
+                with self.assertRaises(AssertionError):
+                    a.body_type = type3
+                    a.body_type = type4
+
+        for type1, type2 in non_supported:
+            a, b = p.Body(4, 5, body_type=type1), p.Body(10, 10, body_type=type2)
+            with self.assertRaises(AssertionError):
+                _ = PivotJoint(a, b, (1, 2))
+
 
 class UnitTestPinJoint(unittest.TestCase):
     def testAnchor(self) -> None:
