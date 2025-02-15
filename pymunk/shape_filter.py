@@ -107,3 +107,45 @@ class ShapeFilter(NamedTuple):
     @staticmethod
     def ALL_CATEGORIES() -> int:
         return 0xFFFFFFFF
+
+    def rejects_collision(self, other: "ShapeFilter") -> bool:
+        """Return true if this ShapeFilter would reject collisions with other ShapeFilter.
+
+        Two ShapeFilters reject the collision if:
+
+        * They are in the same non-zero group, or
+        * The category doesnt match the mask of the other shape filter
+
+        See the class documentation for a complete explanation of usecases.
+
+        Groups::
+
+            >>> ShapeFilter().rejects_collision(ShapeFilter())
+            False
+            >>> ShapeFilter(group=1).rejects_collision(ShapeFilter())
+            False
+            >>> ShapeFilter(group=1).rejects_collision(ShapeFilter(group=1))
+            True
+
+
+            >>> default = ShapeFilter()
+            >>> default.rejects_collision(default)
+            False
+            >>> f1 = ShapeFilter(categories=0b11, mask=0b11)
+            >>> f2 = ShapeFilter(categories=0b01, mask=0b11)
+            >>> f3 = ShapeFilter(categories=0b01, mask=0b10)
+            >>> f1.rejects_collision(f2)
+            False
+            >>> f1.rejects_collision(f3)
+            False
+            >>> f2.rejects_collision(f3)
+            True
+        """
+
+        return (
+            # they are in the same non-zero group
+            (self.group != 0 and self.group == other.group)
+            # One of the category/mask combinations fails.
+            or (self.categories & other.mask) == 0
+            or (other.categories & self.mask) == 0
+        )

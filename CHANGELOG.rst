@@ -2,7 +2,7 @@
 Changelog 
 =========
 .. Pymunk 7.0.0
-   Breaking: At least one of the two bodies attached to constraint/join must be dynamic. 
+   Breaking: At least one of the two bodies attached to constraint/joint must be dynamic. 
 
 
 Pymunk 6.11.1 (2025-02-09)
