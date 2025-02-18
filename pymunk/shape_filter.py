@@ -122,11 +122,13 @@ class ShapeFilter(NamedTuple):
 
             >>> ShapeFilter().rejects_collision(ShapeFilter())
             False
-            >>> ShapeFilter(group=1).rejects_collision(ShapeFilter())
+            >>> ShapeFilter(group=1).rejects_collision(ShapeFilter(group=2))
             False
             >>> ShapeFilter(group=1).rejects_collision(ShapeFilter(group=1))
             True
 
+
+        Categories and Masks::
 
             >>> default = ShapeFilter()
             >>> default.rejects_collision(default)
