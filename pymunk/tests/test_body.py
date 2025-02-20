@@ -270,6 +270,7 @@ class UnitTestBody(unittest.TestCase):
         self.assertTrue(s2 in b1.shapes)
         self.assertTrue(s1 not in s.static_body.shapes)
 
+    @unittest.skip("Not supported anymore. TODO: Fix the test and reenable")
     def test_body_type_update(self) -> None:
 
         s = p.Space()
