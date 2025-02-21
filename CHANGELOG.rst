@@ -3,6 +3,9 @@ Changelog
 =========
 .. Pymunk 7.0.0
    Breaking: At least one of the two bodies attached to constraint/joint must be dynamic. 
+   New feature: ShapeFilter.rejects_collision() method
+   New feature: Vec2d supports bool to test if zero. (bool(Vec2d(2,3) == True)
+   Optimized Vec2d.angle and Vec2d.angle_degrees
 
 
 Pymunk 6.11.1 (2025-02-09)

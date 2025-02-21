@@ -330,10 +330,8 @@ class Vec2d(NamedTuple):
         >>> '%.2f' % Vec2d(-1, 0).angle
         '3.14'
         >>> Vec2d(0, 0).angle
-        0
+        0.0
         """
-        if self.get_length_sqrd() == 0:
-            return 0
         return math.atan2(self.y, self.x)
 
     @property
@@ -383,12 +381,12 @@ class Vec2d(NamedTuple):
         >>> Vec2d(3, 4).normalized()
         Vec2d(0.6, 0.8)
         >>> Vec2d(0, 0).normalized()
-        Vec2d(0, 0)
+        Vec2d(0.0, 0.0)
         """
         length = self.length
         if length != 0:
             return self / length
-        return Vec2d(0, 0)
+        return Vec2d(0.0, 0.0)
 
     def normalized_and_length(self) -> Tuple["Vec2d", float]:
         """Normalize the vector and return its length before the normalization.
@@ -398,12 +396,12 @@ class Vec2d(NamedTuple):
         >>> Vec2d(3, 4).normalized_and_length()
         (Vec2d(0.6, 0.8), 5.0)
         >>> Vec2d(0, 0).normalized_and_length()
-        (Vec2d(0, 0), 0)
+        (Vec2d(0.0, 0.0), 0.0)
         """
         length = self.length
         if length != 0:
             return self / length, length
-        return Vec2d(0, 0), 0
+        return Vec2d(0.0, 0.0), 0.0
 
     def perpendicular(self) -> "Vec2d":
         """Get a vertical vector rotated 90 degrees counterclockwise from the original vector.
@@ -479,12 +477,12 @@ class Vec2d(NamedTuple):
         >>> Vec2d(10, 1).projection((10, 5))
         Vec2d(8.4, 4.2)
         >>> Vec2d(10, 1).projection((0, 0))
-        Vec2d(0, 0)
+        Vec2d(0.0, 0.0)
         """
         assert len(other) == 2
         other_length_sqrd = other[0] * other[0] + other[1] * other[1]
         if other_length_sqrd == 0.0:
-            return Vec2d(0, 0)
+            return Vec2d(0.0, 0.0)
         # projected_length_times_other_length = self.dot(other)
         # new_length = projected_length_times_other_length / other_length_sqrd
         new_length = self.dot(other) / other_length_sqrd
@@ -541,27 +539,27 @@ class Vec2d(NamedTuple):
         """A vector of zero length.
 
         >>> Vec2d.zero()
-        Vec2d(0, 0)
+        Vec2d(0.0, 0.0)
         """
-        return Vec2d(0, 0)
+        return Vec2d(0.0, 0.0)
 
     @staticmethod
     def unit() -> "Vec2d":
         """A unit vector pointing up.
 
         >>> Vec2d.unit()
-        Vec2d(0, 1)
+        Vec2d(0.0, 1.0)
         """
-        return Vec2d(0, 1)
+        return Vec2d(0.0, 1.0)
 
     @staticmethod
     def ones() -> "Vec2d":
         """A vector where both x and y is 1.
 
         >>> Vec2d.ones()
-        Vec2d(1, 1)
+        Vec2d(1.0, 1.0)
         """
-        return Vec2d(1, 1)
+        return Vec2d(1.0, 1.0)
 
     @staticmethod
     def from_polar(length: float, angle: float) -> "Vec2d":
