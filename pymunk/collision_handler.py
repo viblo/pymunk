@@ -72,7 +72,7 @@ class CollisionHandler(object):
         """
         return self._data
 
-    def _set_begin(self, func: Callable[[Arbiter, "Space", Any], bool]) -> None:
+    def _set_begin(self, func: _CollisionCallbackBool) -> None:
         self._begin = func
         self._handler.beginFunc = lib.ext_cpCollisionBeginFunc
 
@@ -98,7 +98,7 @@ class CollisionHandler(object):
         self._pre_solve = func
         self._handler.preSolveFunc = lib.ext_cpCollisionPreSolveFunc
 
-    def _get_pre_solve(self) -> Optional[Callable[[Arbiter, "Space", Any], bool]]:
+    def _get_pre_solve(self) -> Optional[_CollisionCallbackBool]:
         return self._pre_solve
 
     pre_solve = property(

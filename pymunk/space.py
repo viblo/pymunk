@@ -187,16 +187,9 @@ class Space(PickleMixin, object):
             # assert self._static_body is not None
         return self._static_body
 
-    def _set_iterations(self, value: int) -> None:
-        cp.cpSpaceSetIterations(self._space, value)
-
-    def _get_iterations(self) -> int:
-        return cp.cpSpaceGetIterations(self._space)
-
-    iterations = property(
-        _get_iterations,
-        _set_iterations,
-        doc="""Iterations allow you to control the accuracy of the solver.
+    @property
+    def iterations(self) -> int:
+        """Iterations allow you to control the accuracy of the solver.
 
         Defaults to 10.
 
@@ -212,8 +205,12 @@ class Space(PickleMixin, object):
         the number of iterations lets you balance between CPU usage and the
         accuracy of the physics. Pymunk's default of 10 iterations is
         sufficient for most simple games.
-        """,
-    )
+        """
+        return cp.cpSpaceGetIterations(self._space)
+
+    @iterations.setter
+    def iterations(self, value: int) -> None:
+        cp.cpSpaceSetIterations(self._space, value)
 
     def _set_gravity(self, gravity_vector: Tuple[float, float]) -> None:
         assert len(gravity_vector) == 2
@@ -234,81 +231,62 @@ class Space(PickleMixin, object):
         """,
     )
 
-    def _set_damping(self, damping: float) -> None:
-        cp.cpSpaceSetDamping(self._space, damping)
-
-    def _get_damping(self) -> float:
-        return cp.cpSpaceGetDamping(self._space)
-
-    damping = property(
-        _get_damping,
-        _set_damping,
-        doc="""Amount of simple damping to apply to the space.
+    @property
+    def damping(self) -> float:
+        """Amount of simple damping to apply to the space.
 
         A value of 0.9 means that each body will lose 10% of its velocity per
         second. Defaults to 1. Like gravity, it can be overridden on a per
         body basis.
-        """,
-    )
+        """
+        return cp.cpSpaceGetDamping(self._space)
 
-    def _set_idle_speed_threshold(self, idle_speed_threshold: float) -> None:
-        cp.cpSpaceSetIdleSpeedThreshold(self._space, idle_speed_threshold)
+    @damping.setter
+    def damping(self, damping: float) -> None:
+        cp.cpSpaceSetDamping(self._space, damping)
 
-    def _get_idle_speed_threshold(self) -> float:
-        return cp.cpSpaceGetIdleSpeedThreshold(self._space)
-
-    idle_speed_threshold = property(
-        _get_idle_speed_threshold,
-        _set_idle_speed_threshold,
-        doc="""Speed threshold for a body to be considered idle.
+    @property
+    def idle_speed_threshold(self) -> float:
+        """Speed threshold for a body to be considered idle.
 
         The default value of 0 means the space estimates a good threshold
         based on gravity.
-        """,
-    )
+        """
+        return cp.cpSpaceGetIdleSpeedThreshold(self._space)
 
-    def _set_sleep_time_threshold(self, sleep_time_threshold: float) -> None:
-        cp.cpSpaceSetSleepTimeThreshold(self._space, sleep_time_threshold)
+    @idle_speed_threshold.setter
+    def idle_speed_threshold(self, idle_speed_threshold: float) -> None:
+        cp.cpSpaceSetIdleSpeedThreshold(self._space, idle_speed_threshold)
 
-    def _get_sleep_time_threshold(self) -> float:
-        return cp.cpSpaceGetSleepTimeThreshold(self._space)
-
-    sleep_time_threshold = property(
-        _get_sleep_time_threshold,
-        _set_sleep_time_threshold,
-        doc="""Time a group of bodies must remain idle in order to fall
+    @property
+    def sleep_time_threshold(self) -> float:
+        """Time a group of bodies must remain idle in order to fall
         asleep.
 
         The default value of `inf` disables the sleeping algorithm.
-        """,
-    )
+        """
+        return cp.cpSpaceGetSleepTimeThreshold(self._space)
 
-    def _set_collision_slop(self, collision_slop: float) -> None:
-        cp.cpSpaceSetCollisionSlop(self._space, collision_slop)
+    @sleep_time_threshold.setter
+    def sleep_time_threshold(self, sleep_time_threshold: float) -> None:
+        cp.cpSpaceSetSleepTimeThreshold(self._space, sleep_time_threshold)
 
-    def _get_collision_slop(self) -> float:
-        return cp.cpSpaceGetCollisionSlop(self._space)
-
-    collision_slop = property(
-        _get_collision_slop,
-        _set_collision_slop,
-        doc="""Amount of overlap between shapes that is allowed.
+    @property
+    def collision_slop(self) -> float:
+        """Amount of overlap between shapes that is allowed.
 
         To improve stability, set this as high as you can without noticeable
         overlapping. It defaults to 0.1.
-        """,
-    )
+        """
+        return cp.cpSpaceGetCollisionSlop(self._space)
 
-    def _set_collision_bias(self, collision_bias: float) -> None:
-        cp.cpSpaceSetCollisionBias(self._space, collision_bias)
+    @collision_slop.setter
+    def collision_slop(self, collision_slop: float) -> None:
+        cp.cpSpaceSetCollisionSlop(self._space, collision_slop)
 
-    def _get_collision_bias(self) -> float:
-        return cp.cpSpaceGetCollisionBias(self._space)
-
-    collision_bias = property(
-        _get_collision_bias,
-        _set_collision_bias,
-        doc="""Determines how fast overlapping shapes are pushed apart.
+    @property
+    def collision_bias(self) -> float:
+        """Determines how fast overlapping shapes are pushed apart.
 
         Pymunk allows fast moving objects to overlap, then fixes the overlap
         over time. Overlapping objects are unavoidable even if swept
@@ -322,19 +300,16 @@ class Space(PickleMixin, object):
 
         ..Note::
             Very very few games will need to change this value.
-        """,
-    )
+        """
+        return cp.cpSpaceGetCollisionBias(self._space)
 
-    def _set_collision_persistence(self, collision_persistence: float) -> None:
-        cp.cpSpaceSetCollisionPersistence(self._space, collision_persistence)
+    @collision_bias.setter
+    def collision_bias(self, collision_bias: float) -> None:
+        cp.cpSpaceSetCollisionBias(self._space, collision_bias)
 
-    def _get_collision_persistence(self) -> float:
-        return cp.cpSpaceGetCollisionPersistence(self._space)
-
-    collision_persistence = property(
-        _get_collision_persistence,
-        _set_collision_persistence,
-        doc="""The number of frames the space keeps collision solutions
+    @property
+    def collision_persistence(self) -> float:
+        """The number of frames the space keeps collision solutions
         around for.
 
         Helps prevent jittering contacts from getting worse. This defaults
@@ -342,19 +317,20 @@ class Space(PickleMixin, object):
 
         ..Note::
             Very very few games will need to change this value.
-        """,
-    )
+        """
+        return cp.cpSpaceGetCollisionPersistence(self._space)
 
-    def _get_current_time_step(self) -> float:
-        return cp.cpSpaceGetCurrentTimeStep(self._space)
+    @collision_persistence.setter
+    def collision_persistence(self, collision_persistence: float) -> None:
+        cp.cpSpaceSetCollisionPersistence(self._space, collision_persistence)
 
-    current_time_step = property(
-        _get_current_time_step,
-        doc="""Retrieves the current (if you are in a callback from
+    @property
+    def current_time_step(self) -> float:
+        """Retrieves the current (if you are in a callback from
         Space.step()) or most recent (outside of a Space.step() call)
         timestep.
-        """,
-    )
+        """
+        return cp.cpSpaceGetCurrentTimeStep(self._space)
 
     def add(self, *objs: _AddableObjects) -> None:
         """Add one or many shapes, bodies or constraints (joints) to the space

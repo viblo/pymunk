@@ -98,16 +98,9 @@ class SpaceDebugDrawOptions(object):
             | SpaceDebugDrawOptions.DRAW_COLLISION_POINTS
         )
 
-    def _get_shape_outline_color(self) -> SpaceDebugColor:
-        return self._c(self._options.shapeOutlineColor)
-
-    def _set_shape_outline_color(self, c: SpaceDebugColor) -> None:
-        self._options.shapeOutlineColor = c
-
-    shape_outline_color = property(
-        _get_shape_outline_color,
-        _set_shape_outline_color,
-        doc="""The outline color of shapes.
+    @property
+    def shape_outline_color(self) -> SpaceDebugColor:
+        """The outline color of shapes.
         
         Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).
 
@@ -124,22 +117,19 @@ class SpaceDebugDrawOptions(object):
         >>> s.debug_draw(options)
         draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
 
-        """,
-    )
+        """
+        return self._c(self._options.shapeOutlineColor)
 
-    def _get_constraint_color(self) -> SpaceDebugColor:
-        return self._c(self._options.constraintColor)
+    @shape_outline_color.setter
+    def shape_outline_color(self, c: SpaceDebugColor) -> None:
+        self._options.shapeOutlineColor = c
 
-    def _set_constraint_color(self, c: SpaceDebugColor) -> None:
-        self._options.constraintColor = c
-
-    constraint_color = property(
-        _get_constraint_color,
-        _set_constraint_color,
-        doc="""The color of constraints.
+    @property
+    def constraint_color(self) -> SpaceDebugColor:
+        """The color of constraints.
 
         Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).
-        
+
         Example:
 
         >>> import pymunk
@@ -156,19 +146,16 @@ class SpaceDebugDrawOptions(object):
         draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0))
         draw_dot (5.0, Vec2d(0.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0))
 
-        """,
-    )
+        """
+        return self._c(self._options.constraintColor)
 
-    def _get_collision_point_color(self) -> SpaceDebugColor:
-        return self._c(self._options.collisionPointColor)
+    @constraint_color.setter
+    def constraint_color(self, c: SpaceDebugColor) -> None:
+        self._options.constraintColor = c
 
-    def _set_collision_point_color(self, c: SpaceDebugColor) -> None:
-        self._options.collisionPointColor = c
-
-    collision_point_color = property(
-        _get_collision_point_color,
-        _set_collision_point_color,
-        doc="""The color of collisions.
+    @property
+    def collision_point_color(self) -> SpaceDebugColor:
+        """The color of collisions.
 
         Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).
         
@@ -191,8 +178,12 @@ class SpaceDebugDrawOptions(object):
         draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0))
         draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
         draw_segment (Vec2d(8.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=10.0, g=20.0, b=30.0, a=40.0))
-        """,
-    )
+        """
+        return self._c(self._options.collisionPointColor)
+
+    @collision_point_color.setter
+    def collision_point_color(self, c: SpaceDebugColor) -> None:
+        self._options.collisionPointColor = c
 
     def __enter__(self) -> None:
         pass
@@ -208,16 +199,9 @@ class SpaceDebugDrawOptions(object):
     def _c(self, color: ffi.CData) -> SpaceDebugColor:
         return SpaceDebugColor(color.r, color.g, color.b, color.a)
 
-    def _get_flags(self) -> _DrawFlags:
-        return self._options.flags
-
-    def _set_flags(self, f: _DrawFlags) -> None:
-        self._options.flags = f
-
-    flags = property(
-        _get_flags,
-        _set_flags,
-        doc="""Bit flags which of shapes, joints and collisions should be drawn.
+    @property
+    def flags(self) -> _DrawFlags:
+        """Bit flags which of shapes, joints and collisions should be drawn.
 
         By default all 3 flags are set, meaning shapes, joints and collisions 
         will be drawn.
@@ -235,7 +219,7 @@ class SpaceDebugDrawOptions(object):
         >>> s.add(pymunk.Circle(s.static_body, 3))
         >>> s.step(0.01)
         >>> options = pymunk.SpaceDebugDrawOptions() 
-        
+
         >>> # Only draw the shapes, nothing else:
         >>> options.flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES
         >>> s.debug_draw(options) 
@@ -249,21 +233,17 @@ class SpaceDebugDrawOptions(object):
         draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0))
         draw_circle (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
         draw_segment (Vec2d(1.0, 0.0), Vec2d(-8.0, 0.0), SpaceDebugColor(r=231.0, g=76.0, b=60.0, a=255.0))
-        
-        """,
-    )
 
-    def _get_transform(self) -> Transform:
-        t = self._options.transform
-        return Transform(t.a, t.b, t.c, t.d, t.tx, t.ty)
+        """
+        return self._options.flags
 
-    def _set_transform(self, t: Transform) -> None:
-        self._options.transform = t
+    @flags.setter
+    def flags(self, f: _DrawFlags) -> None:
+        self._options.flags = f
 
-    transform = property(
-        _get_transform,
-        _set_transform,
-        doc="""The transform is applied before drawing, e.g for scaling or 
+    @property
+    def transform(self) -> Transform:
+        """The transform is applied before drawing, e.g for scaling or 
         translation.
 
         Example: 
@@ -281,13 +261,18 @@ class SpaceDebugDrawOptions(object):
         >>> options.transform = pymunk.Transform.translation(2,3)
         >>> s.debug_draw(options)
         draw_circle (Vec2d(2.0, 3.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
-        
+
         .. Note::
             Not all tranformations are supported by the debug drawing logic. 
             Uniform scaling and translation are supported, but not rotation,
             linear stretching or shearing. 
-        """,
-    )
+        """
+        t = self._options.transform
+        return Transform(t.a, t.b, t.c, t.d, t.tx, t.ty)
+
+    @transform.setter
+    def transform(self, t: Transform) -> None:
+        self._options.transform = t
 
     def draw_circle(
         self,

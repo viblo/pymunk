@@ -252,30 +252,28 @@ class Body(PickleMixin, TypingAttrMixing, object):
         else:
             return "Body(Body.STATIC)"
 
-    def _set_mass(self, mass: float) -> None:
-        lib.cpBodySetMass(self._body, mass)
-
-    def _get_mass(self) -> float:
+    @property
+    def mass(self) -> float:
+        """Mass of the body."""
         return lib.cpBodyGetMass(self._body)
 
-    mass = property(_get_mass, _set_mass, doc="""Mass of the body.""")
+    @mass.setter
+    def mass(self, mass: float) -> None:
+        lib.cpBodySetMass(self._body, mass)
 
-    def _set_moment(self, moment: float) -> None:
-        lib.cpBodySetMoment(self._body, moment)
-
-    def _get_moment(self) -> float:
-        return lib.cpBodyGetMoment(self._body)
-
-    moment = property(
-        _get_moment,
-        _set_moment,
-        doc="""Moment of inertia (MoI or sometimes just moment) of the body.
+    @property
+    def moment(self) -> float:
+        """Moment of inertia (MoI or sometimes just moment) of the body.
 
         The moment is like the rotational mass of a body.
-        """,
-    )
+        """
+        return lib.cpBodyGetMoment(self._body)
 
-    def _set_position(self, pos: Union[Vec2d, Tuple[float, float]]) -> None:
+    @moment.setter
+    def moment(self, moment: float) -> None:
+        lib.cpBodySetMoment(self._body, moment)
+
+    def _set_position(self, pos: Tuple[float, float]) -> None:
         assert len(pos) == 2
         lib.cpBodySetPosition(self._body, pos)
 
@@ -344,16 +342,9 @@ class Body(PickleMixin, TypingAttrMixing, object):
         force applied manually from the apply force functions.""",
     )
 
-    def _set_angle(self, angle: float) -> None:
-        lib.cpBodySetAngle(self._body, angle)
-
-    def _get_angle(self) -> float:
-        return lib.cpBodyGetAngle(self._body)
-
-    angle = property(
-        _get_angle,
-        _set_angle,
-        doc="""Rotation of the body in radians.
+    @property
+    def angle(self) -> float:
+        """Rotation of the body in radians.
 
         When changing the rotation you may also want to call
         :py:func:`Space.reindex_shapes_for_body` to update the collision 
@@ -365,42 +356,38 @@ class Body(PickleMixin, TypingAttrMixing, object):
             If you get small/no changes to the angle when for example a
             ball is "rolling" down a slope it might be because the Circle shape
             attached to the body or the slope shape does not have any friction
-            set.""",
-    )
+            set."""
+        return lib.cpBodyGetAngle(self._body)
 
-    def _set_angular_velocity(self, w: float) -> None:
-        lib.cpBodySetAngularVelocity(self._body, w)
+    @angle.setter
+    def angle(self, angle: float) -> None:
+        lib.cpBodySetAngle(self._body, angle)
 
-    def _get_angular_velocity(self) -> float:
+    @property
+    def angular_velocity(self) -> float:
+        """The angular velocity of the body in radians per second."""
         return lib.cpBodyGetAngularVelocity(self._body)
 
-    angular_velocity = property(
-        _get_angular_velocity,
-        _set_angular_velocity,
-        doc="""The angular velocity of the body in radians per second.""",
-    )
+    @angular_velocity.setter
+    def angular_velocity(self, w: float) -> None:
+        lib.cpBodySetAngularVelocity(self._body, w)
 
-    def _set_torque(self, t: float) -> None:
-        lib.cpBodySetTorque(self._body, t)
+    @property
+    def torque(self) -> float:
+        """The torque applied to the body.
 
-    def _get_torque(self) -> float:
+        This value is reset for every time step."""
         return lib.cpBodyGetTorque(self._body)
 
-    torque = property(
-        _get_torque,
-        _set_torque,
-        doc="""The torque applied to the body.
+    @torque.setter
+    def torque(self, t: float) -> None:
+        lib.cpBodySetTorque(self._body, t)
 
-        This value is reset for every time step.""",
-    )
-
-    def _get_rotation_vector(self) -> Vec2d:
+    @property
+    def rotation_vector(self) -> Vec2d:
+        """The rotation vector for the body."""
         v = lib.cpBodyGetRotation(self._body)
         return Vec2d(v.x, v.y)
-
-    rotation_vector = property(
-        _get_rotation_vector, doc="""The rotation vector for the body."""
-    )
 
     @property
     def space(self) -> Optional["Space"]:
@@ -609,7 +596,20 @@ class Body(PickleMixin, TypingAttrMixing, object):
         """Returns true if the body is sleeping."""
         return bool(lib.cpBodyIsSleeping(self._body))
 
-    def _set_type(self, body_type: _BodyType) -> None:
+    @property
+    def body_type(self) -> _BodyType:
+        """The type of a body (:py:const:`Body.DYNAMIC`, 
+        :py:const:`Body.KINEMATIC` or :py:const:`Body.STATIC`).
+
+        When changing an body to a dynamic body, the mass and moment of
+        inertia are recalculated from the shapes added to the body. Custom
+        calculated moments of inertia are not preserved when changing types.
+        This function cannot be called directly in a collision callback.
+        """
+        return lib.cpBodyGetType(self._body)
+
+    @body_type.setter
+    def body_type(self, body_type: _BodyType) -> None:
         if body_type != Body.DYNAMIC:
             for c in self.constraints:
                 assert (c.a != self and c.b.body_type == Body.DYNAMIC) or (
@@ -617,22 +617,6 @@ class Body(PickleMixin, TypingAttrMixing, object):
                 ), "Cannot set a non-dynamic body type when Body is connected to a constraint {c} with a non-dynamic other body."
 
         lib.cpBodySetType(self._body, body_type)
-
-    def _get_type(self) -> _BodyType:
-        return lib.cpBodyGetType(self._body)
-
-    body_type = property(
-        _get_type,
-        _set_type,
-        doc="""The type of a body (:py:const:`Body.DYNAMIC`, 
-        :py:const:`Body.KINEMATIC` or :py:const:`Body.STATIC`).
-
-        When changing an body to a dynamic body, the mass and moment of
-        inertia are recalculated from the shapes added to the body. Custom
-        calculated moments of inertia are not preserved when changing types.
-        This function cannot be called directly in a collision callback.
-        """,
-    )
 
     def each_arbiter(
         self,
