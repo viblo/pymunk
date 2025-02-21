@@ -244,6 +244,18 @@ class Vec2d(NamedTuple):
         """
         return self.length
 
+    def __bool__(self) -> bool:
+        """Return true if both x and y are nonzero.
+
+        >>> bool(Vec2d(1, 0))
+        True
+        >>> bool(Vec2d(-1, -2))
+        True
+        >>> bool(Vec2d(0, 0))
+        False
+        """
+        return self.x != 0 or self.y != 0
+
     # vectory functions
     def get_length_sqrd(self) -> float:
         """Get the squared length of the vector.
