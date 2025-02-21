@@ -287,12 +287,19 @@ class Vec2d(NamedTuple):
     def scale_to_length(self, length: float) -> "Vec2d":
         """Return a copy of this vector scaled to the given length.
 
+        Note that a zero length Vec2d cannot be scaled but will raise an
+        exception.
+
         >>> Vec2d(1, 0).scale_to_length(10)
         Vec2d(10.0, 0.0)
         >>> '%.2f, %.2f' % Vec2d(10, 20).scale_to_length(20)
         '8.94, 17.89'
         >>> Vec2d(1, 0).scale_to_length(0)
         Vec2d(0.0, 0.0)
+        >>> Vec2d(0, 0).scale_to_length(1)
+        Traceback (most recent call last):
+        ...
+        ZeroDivisionError: float division by zero
         """
         old_length = self.length
         return Vec2d(self.x * length / old_length, self.y * length / old_length)
@@ -374,7 +381,7 @@ class Vec2d(NamedTuple):
 
     def normalized(self) -> "Vec2d":
         """Get a normalized copy of the vector.
-        Note: This function will return 0 if the length of the vector is 0.
+        Note: This function will return a Vec2d(0.0, 0.0) if the length of the vector is 0.
 
         >>> Vec2d(3, 0).normalized()
         Vec2d(1.0, 0.0)
