@@ -40,7 +40,7 @@ def planet_gravity(body, gravity, damping, dt):
     # distance, and directed toward the origin. The central planet is assumed
     # to be massive enough that it affects the satellites but not vice versa.
     p = body.position
-    sq_dist = p.get_dist_sqrd(center)
+    sq_dist = p.get_distance_squared(center)
     g = (p - center) * -gravityStrength / (sq_dist * math.sqrt(sq_dist))
 
     # body.velocity += g * dt # setting velocity directly like would be slower

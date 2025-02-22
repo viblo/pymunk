@@ -484,10 +484,28 @@ class Vec2d(NamedTuple):
         assert len(other) == 2
         return math.sqrt((self.x - other[0]) ** 2 + (self.y - other[1]) ** 2)
 
+    def get_distance_squared(self, other: Tuple[float, float]) -> float:
+        """The squared distance between the vector and other vector.
+        It is more efficent to use this method than to call get_distance()
+        first and then do a square() on the result.
+
+        >>> Vec2d(1, 0).get_distance_squared((1, 10))
+        100
+        >>> Vec2d(1, 2).get_distance_squared((10, 11))
+        162
+        >>> Vec2d(1, 2).get_distance((10, 11))**2
+        162.0
+        """
+        assert len(other) == 2
+        return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
+
     def get_dist_sqrd(self, other: Tuple[float, float]) -> float:
         """The squared distance between the vector and other vector.
         It is more efficent to use this method than to call get_distance()
         first and then do a square() on the result.
+
+        .. deprecated:: 7.0.0
+            Please use :py:func:`get_distance_squared` instead.
 
         >>> Vec2d(1, 0).get_dist_sqrd((1, 10))
         100
@@ -496,6 +514,11 @@ class Vec2d(NamedTuple):
         >>> Vec2d(1, 2).get_distance((10, 11))**2
         162.0
         """
+        warnings.warn(
+            "get_dist_sqrd() is deprecated. Use get_distance_squared() instead.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
         assert len(other) == 2
         return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
 

@@ -5,7 +5,7 @@ Changelog
    Breaking: At least one of the two bodies attached to constraint/joint must be dynamic. 
    New feature: Vec2d supports bool to test if zero. (bool(Vec2d(2,3) == True) Note this is a breaking change.
    Added Vec2d.length_squared, and depreacted Vec2d.get_length_sqrd()
-
+   Added Vec2d.get_distance_squared(), and deprecated Vec2d.get_dist_sqrd()
    
    New feature: ShapeFilter.rejects_collision()
    New feature: Added Vec2d.polar_tuple
