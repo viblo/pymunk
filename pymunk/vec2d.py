@@ -108,6 +108,7 @@ __docformat__ = "reStructuredText"
 import math
 import numbers
 import operator
+import warnings
 from typing import NamedTuple, Tuple
 
 __all__ = ["Vec2d"]
@@ -256,12 +257,29 @@ class Vec2d(NamedTuple):
         """
         return self.x != 0 or self.y != 0
 
+    @property
+    def length_squared(self) -> float:
+        """Get the squared length of the vector.
+        If the squared length is enough, it is more efficient to use this method
+        instead of first access .length and then do a x**2.
+
+        >>> v = Vec2d(3, 4)
+        >>> v.length_squared == v.length**2
+        True
+        >>> Vec2d(0, 0).length_squared
+        0
+        """
+        return self.x**2 + self.y**2
+
     # vectory functions
+
     def get_length_sqrd(self) -> float:
         """Get the squared length of the vector.
         If the squared length is enough, it is more efficient to use this method
-        instead of first calling get_length() or access .length and then do a
-        x**2.
+        instead of first accessing .length and then do a x**2.
+
+        .. deprecated:: 7.0.0
+            Please use :py:attr:`length_squared` instead.
 
         >>> v = Vec2d(3, 4)
         >>> v.get_length_sqrd() == v.length**2
@@ -269,6 +287,11 @@ class Vec2d(NamedTuple):
         >>> Vec2d(0, 0).get_length_sqrd()
         0
         """
+        warnings.warn(
+            "Vec2d.get_length_sqrd() is deprecated. Use Vec2d.length_squared instead.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
         return self.x**2 + self.y**2
 
     @property
@@ -527,14 +550,14 @@ class Vec2d(NamedTuple):
         """
         assert len(x_vector) == 2
         assert len(y_vector) == 2
-        x = self.dot(x_vector) / Vec2d(*x_vector).get_length_sqrd()
-        y = self.dot(y_vector) / Vec2d(*y_vector).get_length_sqrd()
+        x = self.dot(x_vector) / Vec2d(*x_vector).length_squared
+        y = self.dot(y_vector) / Vec2d(*y_vector).length_squared
         return Vec2d(x, y)
 
     @property
     def int_tuple(self) -> Tuple[int, int]:
         """The x and y values of this vector as a tuple of ints.
-        Use `round()` to round to closest int.
+        Uses `round()` to round to closest int.
 
         >>> Vec2d(0.9, 2.4).int_tuple
         (1, 2)
