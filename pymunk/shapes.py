@@ -82,39 +82,33 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         cp.cpShapeSetUserData(self._shape, ffi.cast("cpDataPointer", Shape._id_counter))
         Shape._id_counter += 1
 
-    def _get_mass(self) -> float:
+    @property
+    def mass(self) -> float:
+        """The mass of this shape.
+
+        This is useful when you let Pymunk calculate the total mass and inertia
+        of a body from the shapes attached to it. (Instead of setting the body
+        mass and inertia directly)
+        """
         return cp.cpShapeGetMass(self._shape)
 
-    def _set_mass(self, mass: float) -> None:
+    @mass.setter
+    def mass(self, mass: float) -> None:
         cp.cpShapeSetMass(self._shape, mass)
 
-    mass = property(
-        _get_mass,
-        _set_mass,
-        doc="""The mass of this shape.
+    @property
+    def density(self) -> float:
+        """The density of this shape.
 
         This is useful when you let Pymunk calculate the total mass and inertia
         of a body from the shapes attached to it. (Instead of setting the body
         mass and inertia directly)
-        """,
-    )
-
-    def _get_density(self) -> float:
+        """
         return cp.cpShapeGetDensity(self._shape)
 
-    def _set_density(self, density: float) -> None:
+    @density.setter
+    def density(self, density: float) -> None:
         cp.cpShapeSetDensity(self._shape, density)
-
-    density = property(
-        _get_density,
-        _set_density,
-        doc="""The density of this shape.
-
-        This is useful when you let Pymunk calculate the total mass and inertia
-        of a body from the shapes attached to it. (Instead of setting the body
-        mass and inertia directly)
-        """,
-    )
 
     @property
     def moment(self) -> float:
@@ -132,79 +126,60 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         v = cp.cpShapeGetCenterOfGravity(self._shape)
         return Vec2d(v.x, v.y)
 
-    def _get_sensor(self) -> bool:
-        return bool(cp.cpShapeGetSensor(self._shape))
-
-    def _set_sensor(self, is_sensor: bool) -> None:
-        cp.cpShapeSetSensor(self._shape, is_sensor)
-
-    sensor = property(
-        _get_sensor,
-        _set_sensor,
-        doc="""A boolean value if this shape is a sensor or not.
+    @property
+    def sensor(self) -> bool:
+        """A boolean value if this shape is a sensor or not.
 
         Sensors only call collision callbacks, and never generate real
         collisions.
-        """,
-    )
+        """
+        return bool(cp.cpShapeGetSensor(self._shape))
 
-    def _get_collision_type(self) -> int:
-        return cp.cpShapeGetCollisionType(self._shape)
+    @sensor.setter
+    def sensor(self, is_sensor: bool) -> None:
+        cp.cpShapeSetSensor(self._shape, is_sensor)
 
-    def _set_collision_type(self, t: int) -> None:
-        cp.cpShapeSetCollisionType(self._shape, t)
-
-    collision_type = property(
-        _get_collision_type,
-        _set_collision_type,
-        doc="""User defined collision type for the shape.
+    @property
+    def collision_type(self) -> int:
+        """User defined collision type for the shape.
 
         See :py:meth:`Space.add_collision_handler` function for more
         information on when to use this property.
-        """,
-    )
+        """
+        return cp.cpShapeGetCollisionType(self._shape)
 
-    def _get_filter(self) -> ShapeFilter:
+    @collision_type.setter
+    def collision_type(self, t: int) -> None:
+        cp.cpShapeSetCollisionType(self._shape, t)
+
+    @property
+    def filter(self) -> ShapeFilter:
+        """Set the collision :py:class:`ShapeFilter` for this shape.
+        """
         f = cp.cpShapeGetFilter(self._shape)
         return ShapeFilter(f.group, f.categories, f.mask)
 
-    def _set_filter(self, f: ShapeFilter) -> None:
+    @filter.setter
+    def filter(self, f: ShapeFilter) -> None:
         cp.cpShapeSetFilter(self._shape, f)
 
-    filter = property(
-        _get_filter,
-        _set_filter,
-        doc="""Set the collision :py:class:`ShapeFilter` for this shape.
-        """,
-    )
-
-    def _get_elasticity(self) -> float:
-        return cp.cpShapeGetElasticity(self._shape)
-
-    def _set_elasticity(self, e: float) -> None:
-        cp.cpShapeSetElasticity(self._shape, e)
-
-    elasticity = property(
-        _get_elasticity,
-        _set_elasticity,
-        doc="""Elasticity of the shape.
+    @property
+    def elasticity(self) -> float:
+        """Elasticity of the shape.
 
         A value of 0.0 gives no bounce, while a value of 1.0 will give a
         'perfect' bounce. However due to inaccuracies in the simulation
         using 1.0 or greater is not recommended.
-        """,
-    )
+        """
+        return cp.cpShapeGetElasticity(self._shape)
 
-    def _get_friction(self) -> float:
-        return cp.cpShapeGetFriction(self._shape)
+    @elasticity.setter
+    def elasticity(self, e: float) -> None:
+        cp.cpShapeSetElasticity(self._shape, e)
 
-    def _set_friction(self, u: float) -> None:
-        cp.cpShapeSetFriction(self._shape, u)
-
-    friction = property(
-        _get_friction,
-        _set_friction,
-        doc="""Friction coefficient.
+    @property
+    def friction(self) -> float:
+        """Friction coefficient.
 
         Pymunk uses the Coulomb friction model, a value of 0.0 is
         frictionless.
@@ -234,14 +209,18 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         Teflon (PTFE)   Teflon  0.04
         Wood            Wood    0.4
         ==============  ======  ========
-        """,
-    )
+        """
+        return cp.cpShapeGetFriction(self._shape)
+
+    @friction.setter
+    def friction(self, u: float) -> None:
+        cp.cpShapeSetFriction(self._shape, u)
 
     def _get_surface_velocity(self) -> Vec2d:
         v = cp.cpShapeGetSurfaceVelocity(self._shape)
         return Vec2d(v.x, v.y)
 
-    def _set_surface_velocity(self, surface_v: Vec2d) -> None:
+    def _set_surface_velocity(self, surface_v: Tuple[float, float]) -> None:
         assert len(surface_v) == 2
         cp.cpShapeSetSurfaceVelocity(self._shape, surface_v)
 
@@ -256,10 +235,14 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         """,
     )
 
-    def _get_body(self) -> Optional["Body"]:
+    @property
+    def body(self) -> Optional["Body"]:
+        """The body this shape is attached to. Can be set to None to
+        indicate that this shape doesnt belong to a body."""
         return self._body
 
-    def _set_body(self, body: Optional["Body"]) -> None:
+    @body.setter
+    def body(self, body: Optional["Body"]) -> None:
         if self._body is not None:
             self._body._shapes.remove(self)
         body_body = ffi.NULL if body is None else body._body
@@ -267,13 +250,6 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         if body is not None:
             body._shapes.add(self)
         self._body = body
-
-    body = property(
-        _get_body,
-        _set_body,
-        doc="""The body this shape is attached to. Can be set to None to
-        indicate that this shape doesnt belong to a body.""",
-    )
 
     def update(self, transform: Transform) -> BB:
         """Update, cache and return the bounding box of a shape with an
@@ -492,17 +468,17 @@ class Segment(Shape):
         _shape = cp.cpSegmentShapeNew(body_body, a, b, radius)
         self._init(body, _shape)
 
-    def _get_a(self) -> Vec2d:
+    @property
+    def a(self) -> Vec2d:
+        """The first of the two endpoints for this segment"""
         v = cp.cpSegmentShapeGetA(self._shape)
         return Vec2d(v.x, v.y)
 
-    a = property(_get_a, doc="""The first of the two endpoints for this segment""")
-
-    def _get_b(self) -> Vec2d:
+    @property
+    def b(self) -> Vec2d:
+        """The second of the two endpoints for this segment"""
         v = cp.cpSegmentShapeGetB(self._shape)
         return Vec2d(v.x, v.y)
-
-    b = property(_get_b, doc="""The second of the two endpoints for this segment""")
 
     def unsafe_set_endpoints(
         self, a: Tuple[float, float], b: Tuple[float, float]
