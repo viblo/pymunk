@@ -564,6 +564,22 @@ class Vec2d(NamedTuple):
         """
         return round(self.x), round(self.y)
 
+    @property
+    def polar_tuple(self) -> Tuple[float, float]:
+        """Return this vector as polar coordinates (length, angle)
+
+        See Vec2d.from_polar() for the inverse.
+
+        >>> Vec2d(2, 0).polar_tuple
+        (2.0, 0.0)
+        >>> Vec2d(2, 0).rotated(0.5).polar_tuple
+        (2.0, 0.5)
+        >>> Vec2d.from_polar(2, 0.5).polar_tuple
+        (2.0, 0.5)
+
+        """
+        return self.length, self.angle
+
     @staticmethod
     def zero() -> "Vec2d":
         """A vector of zero length.
@@ -594,6 +610,8 @@ class Vec2d(NamedTuple):
     @staticmethod
     def from_polar(length: float, angle: float) -> "Vec2d":
         """Create a new Vec2d from a length and an angle (in radians).
+
+        See Vec2d.polar_tuple for the inverse.
 
         >>> Vec2d.from_polar(2, 0)
         Vec2d(2.0, 0.0)

@@ -8,8 +8,10 @@ Changelog
 
    
    New feature: ShapeFilter.rejects_collision()
+   New feature: Added Vec2d.polar_tuple
    Optimized Vec2d.angle and Vec2d.angle_degrees
    Improved vec2d documentation 
+   
    
    Extra thanks for aetle for a number of suggestions for improvements in this pymunk release
 
