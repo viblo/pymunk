@@ -9,7 +9,7 @@ Changelog
    
    New feature: ShapeFilter.rejects_collision()
    New feature: Added Vec2d.polar_tuple
-   Optimized Vec2d.angle and Vec2d.angle_degrees
+   Optimized Vec2d.angle and Vec2d.angle_degrees (note that the optimized versions treat 0 length vectors with x and/or y equal to -0 slightly differently.)
    Improved vec2d documentation 
    
    

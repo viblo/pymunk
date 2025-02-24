@@ -357,6 +357,8 @@ class Vec2d(NamedTuple):
     def angle(self) -> float:
         """The angle (in radians) of the vector.
 
+        Angle calculated with atan2(y, x).
+
         >>> '%.2f' % Vec2d(-1, 0).angle
         '3.14'
         >>> Vec2d(0, 0).angle
