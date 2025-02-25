@@ -154,8 +154,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
 
     @property
     def filter(self) -> ShapeFilter:
-        """Set the collision :py:class:`ShapeFilter` for this shape.
-        """
+        """Set the collision :py:class:`ShapeFilter` for this shape."""
         f = cp.cpShapeGetFilter(self._shape)
         return ShapeFilter(f.group, f.categories, f.mask)
 
@@ -547,7 +546,11 @@ class Poly(Shape):
 
         A convex hull will be calculated from the vertexes automatically. Note
         that concave ones will be converted to a convex hull using the Quickhull
-        algorithm.
+        algorithm::
+
+            >>> poly = Poly(None, [(-1,0), (0, -0.5), (1, 0), (0,-1)])
+            >>> poly.get_vertices()
+            [Vec2d(-1.0, 0.0), Vec2d(0.0, -1.0), Vec2d(1.0, 0.0)]
 
         Adding a small radius will bevel the corners and can significantly
         reduce problems where the poly gets stuck on seams in your geometry.
@@ -562,23 +565,21 @@ class Poly(Shape):
 
             Either directly place the vertices like the below example:
 
-            >>> import pymunk
             >>> w, h = 10, 20
             >>> vs = [(-w/2,-h/2), (w/2,-h/2), (w/2,h/2), (-w/2,h/2)]
-            >>> poly_good = pymunk.Poly(None, vs)
+            >>> poly_good = Poly(None, vs)
             >>> print(poly_good.center_of_gravity)
             Vec2d(0.0, 0.0)
 
             Or use a transform to move them:
 
-            >>> import pymunk
             >>> width, height = 10, 20
             >>> vs = [(0, 0), (width, 0), (width, height), (0, height)]
-            >>> poly_bad = pymunk.Poly(None, vs)
+            >>> poly_bad = Poly(None, vs)
             >>> print(poly_bad.center_of_gravity)
             Vec2d(5.0, 10.0)
-            >>> t = pymunk.Transform(tx=-width/2, ty=-height/2)
-            >>> poly_good = pymunk.Poly(None, vs, transform=t)
+            >>> t = Transform(tx=-width/2, ty=-height/2)
+            >>> poly_good = Poly(None, vs, transform=t)
             >>> print(poly_good.center_of_gravity)
             Vec2d(0.0, 0.0)
 
