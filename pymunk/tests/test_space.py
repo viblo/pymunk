@@ -73,7 +73,7 @@ class UnitTestSpace(unittest.TestCase):
         s.step(0.1)
         self.assertEqual(s.current_time_step, 0.1)
 
-        self.assertTrue(s.static_body != None)
+        self.assertTrue(s.static_body is not None)
         self.assertEqual(s.static_body.body_type, p.Body.STATIC)
 
         self.assertEqual(s.threads, 1)
@@ -196,7 +196,7 @@ class UnitTestSpace(unittest.TestCase):
             s1.filter = f1
             hit = s.point_query_nearest((0, 0), 0, f2)
             self.assertEqual(
-                hit != None,
+                hit is not None,
                 test["hit"],
                 "Got {}!=None, expected {} for test: {}".format(hit, test["hit"], test),
             )
@@ -647,6 +647,29 @@ class UnitTestSpace(unittest.TestCase):
         s.step(1)
         s.remove(c1)
 
+    def testCollisionHandlerDefaultCallbacks(self) -> None:
+        s = p.Space()
+
+        b1 = p.Body(1, 1)
+        c1 = p.Circle(b1, 10)
+        b1.position = 9, 11
+
+        b2 = p.Body(body_type=p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        b2.position = 0, 0
+
+        s.add(b1, c1, b2, c2)
+        s.gravity = 0, -100
+
+        h = s.add_default_collision_handler()
+        h.begin = h.always_collide
+        h.pre_solve = h.always_collide
+        h.post_solve = h.do_nothing
+        h.separate = h.do_nothing
+
+        for _ in range(10):
+            s.step(0.1)
+
     @unittest.skip("Existing bug in Pymunk. TODO: Fix bug and enable test")
     def testRemoveInSeparate(self) -> None:
         s = p.Space()
@@ -1057,26 +1080,26 @@ class UnitTestSpace(unittest.TestCase):
         # Assert collision handlers
         h2 = s2.add_default_collision_handler()
         self.assertIsNotNone(h2.begin)
-        self.assertIsNone(h2.pre_solve)
-        self.assertIsNone(h2.post_solve)
-        self.assertIsNone(h2.separate)
+        self.assertEqual(h2.pre_solve, p.CollisionHandler.always_collide)
+        self.assertEqual(h2.post_solve, p.CollisionHandler.do_nothing)
+        self.assertEqual(h2.separate, p.CollisionHandler.do_nothing)
 
         h2 = s2.add_wildcard_collision_handler(1)
-        self.assertIsNone(h2.begin)
+        self.assertEqual(h2.begin, p.CollisionHandler.always_collide)
         self.assertIsNotNone(h2.pre_solve)
-        self.assertIsNone(h2.post_solve)
-        self.assertIsNone(h2.separate)
+        self.assertEqual(h2.post_solve, p.CollisionHandler.do_nothing)
+        self.assertEqual(h2.separate, p.CollisionHandler.do_nothing)
 
         h2 = s2.add_collision_handler(1, 2)
-        self.assertIsNone(h2.begin)
-        self.assertIsNone(h2.pre_solve)
+        self.assertEqual(h2.begin, p.CollisionHandler.always_collide)
+        self.assertEqual(h2.pre_solve, p.CollisionHandler.always_collide)
         self.assertIsNotNone(h2.post_solve)
-        self.assertIsNone(h2.separate)
+        self.assertEqual(h2.separate, p.CollisionHandler.do_nothing)
 
         h2 = s2.add_collision_handler(3, 4)
-        self.assertIsNone(h2.begin)
-        self.assertIsNone(h2.pre_solve)
-        self.assertIsNone(h2.post_solve)
+        self.assertEqual(h2.begin, p.CollisionHandler.always_collide)
+        self.assertEqual(h2.pre_solve, p.CollisionHandler.always_collide)
+        self.assertEqual(h2.post_solve, p.CollisionHandler.do_nothing)
         self.assertIsNotNone(h2.separate)
 
     def testPickleCachedArbiters(self) -> None:

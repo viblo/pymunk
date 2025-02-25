@@ -103,3 +103,6 @@ cpContact *cpContactArrAlloc(int count);
 cpFloat defaultSpringForce(cpDampedSpring *spring, cpFloat dist);
 
 cpFloat defaultSpringTorque(cpDampedRotarySpring *spring, cpFloat relativeAngle);
+
+static cpBool AlwaysCollide(cpArbiter *arb, cpSpace *space, cpDataPointer data);
+static void DoNothing(cpArbiter *arb, cpSpace *space, cpDataPointer data);

@@ -7,6 +7,9 @@ Changelog
    Added Vec2d.length_squared, and depreacted Vec2d.get_length_sqrd()
    Added Vec2d.get_distance_squared(), and deprecated Vec2d.get_dist_sqrd()
    
+   Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks.
+   If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.
+
    New feature: ShapeFilter.rejects_collision()
    New feature: Added Vec2d.polar_tuple
    Optimized Vec2d.angle and Vec2d.angle_degrees (note that the optimized versions treat 0 length vectors with x and/or y equal to -0 slightly differently.)

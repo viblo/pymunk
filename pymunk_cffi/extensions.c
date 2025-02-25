@@ -488,3 +488,6 @@ void cpMessage(const char *condition, const char *file, int line, int isError, i
     snprintf(formattedMessage, sizeof(formattedMessage), "\tSource: %s:%d", file, line);
 	ext_pyLog(formattedMessage);	
 }
+
+static cpBool AlwaysCollide(cpArbiter *arb, cpSpace *space, cpDataPointer data){return cpTrue;}
+static void DoNothing(cpArbiter *arb, cpSpace *space, cpDataPointer data){}

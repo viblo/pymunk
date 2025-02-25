@@ -201,6 +201,9 @@ class UnitTestBatch(unittest.TestCase):
         ints = memoryview(data.int_buf()).cast("P")
 
         def check_arb_data(arb: pymunk.Arbiter) -> None:
+            assert arb.shapes[0].body is not None
+            assert arb.shapes[1].body is not None
+
             a_id = arb.shapes[0].body.id
             b_id = arb.shapes[1].body.id
 

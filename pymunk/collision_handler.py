@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Any, Callable, Dict, Optional
+from typing import TYPE_CHECKING, Any, Callable, Dict
 
 if TYPE_CHECKING:
     from .space import Space
@@ -8,8 +8,8 @@ if TYPE_CHECKING:
 from ._chipmunk_cffi import ffi, lib
 from .arbiter import Arbiter
 
-_CollisionCallbackBool = Callable[[Arbiter, "Space", Any], bool]
-_CollisionCallbackNoReturn = Callable[[Arbiter, "Space", Any], None]
+_CollisionCallbackBool = Callable[[Arbiter, "Space", Dict[Any, Any]], bool]
+_CollisionCallbackNoReturn = Callable[[Arbiter, "Space", Dict[Any, Any]], None]
 
 
 class CollisionHandler(object):
@@ -42,24 +42,12 @@ class CollisionHandler(object):
         self._handler.userData = self._userData
 
         self._space = space
-        self._begin: Optional[_CollisionCallbackBool] = None
-        self._pre_solve: Optional[_CollisionCallbackBool] = None
-        self._post_solve: Optional[_CollisionCallbackNoReturn] = None
-        self._separate: Optional[_CollisionCallbackNoReturn] = None
+        self._begin: _CollisionCallbackBool = CollisionHandler.always_collide
+        self._pre_solve: _CollisionCallbackBool = CollisionHandler.always_collide
+        self._post_solve: _CollisionCallbackNoReturn = CollisionHandler.do_nothing
+        self._separate: _CollisionCallbackNoReturn = CollisionHandler.do_nothing
 
         self._data: Dict[Any, Any] = {}
-
-    def _reset(self) -> None:
-        def allways_collide(arb: Arbiter, space: "Space", data: Any) -> bool:
-            return True
-
-        def do_nothing(arb: Arbiter, space: "Space", data: Any) -> None:
-            return
-
-        self.begin = allways_collide
-        self.pre_solve = allways_collide
-        self.post_solve = do_nothing
-        self.separate = do_nothing
 
     @property
     def data(self) -> Dict[Any, Any]:
@@ -72,17 +60,9 @@ class CollisionHandler(object):
         """
         return self._data
 
-    def _set_begin(self, func: _CollisionCallbackBool) -> None:
-        self._begin = func
-        self._handler.beginFunc = lib.ext_cpCollisionBeginFunc
-
-    def _get_begin(self) -> Optional[_CollisionCallbackBool]:
-        return self._begin
-
-    begin = property(
-        _get_begin,
-        _set_begin,
-        doc="""Two shapes just started touching for the first time this step.
+    @property
+    def begin(self) -> _CollisionCallbackBool:
+        """Two shapes just started touching for the first time this step.
 
         ``func(arbiter, space, data) -> bool``
 
@@ -91,20 +71,24 @@ class CollisionHandler(object):
         false, the `pre_solve` and `post_solve` callbacks will never be run,
         but you will still recieve a separate event when the shapes stop
         overlapping.
-        """,
-    )
+        """
+        return self._begin
 
-    def _set_pre_solve(self, func: _CollisionCallbackBool) -> None:
-        self._pre_solve = func
-        self._handler.preSolveFunc = lib.ext_cpCollisionPreSolveFunc
+    @begin.setter
+    def begin(self, func: _CollisionCallbackBool) -> None:
+        assert (
+            func is not None
+        ), "To reset the begin callback, set handler.begin = CollisionHandler.always_collide"
+        self._begin = func
 
-    def _get_pre_solve(self) -> Optional[_CollisionCallbackBool]:
-        return self._pre_solve
+        if self._begin == CollisionHandler.always_collide:
+            self._handler.beginFunc = ffi.addressof(lib, "AlwaysCollide")
+        else:
+            self._handler.beginFunc = lib.ext_cpCollisionBeginFunc
 
-    pre_solve = property(
-        _get_pre_solve,
-        _set_pre_solve,
-        doc="""Two shapes are touching during this step.
+    @property
+    def pre_solve(self) -> _CollisionCallbackBool:
+        """Two shapes are touching during this step.
 
         ``func(arbiter, space, data) -> bool``
 
@@ -113,21 +97,24 @@ class CollisionHandler(object):
         override collision values using Arbiter.friction, Arbiter.elasticity
         or Arbiter.surfaceVelocity to provide custom friction, elasticity,
         or surface velocity values. See Arbiter for more info.
-        """,
-    )
+        """
+        return self._pre_solve
 
-    def _set_post_solve(self, func: _CollisionCallbackNoReturn) -> None:
+    @pre_solve.setter
+    def pre_solve(self, func: _CollisionCallbackBool) -> None:
+        assert (
+            func is not None
+        ), "To reset the pre_solve callback, set handler.pre_solve = CollisionHandler.always_collide"
+        self._pre_solve = func
 
-        self._post_solve = func
-        self._handler.postSolveFunc = lib.ext_cpCollisionPostSolveFunc
+        if self._pre_solve == CollisionHandler.always_collide:
+            self._handler.preSolveFunc = ffi.addressof(lib, "AlwaysCollide")
+        else:
+            self._handler.preSolveFunc = lib.ext_cpCollisionPreSolveFunc
 
-    def _get_post_solve(self) -> Optional[_CollisionCallbackNoReturn]:
-        return self._post_solve
-
-    post_solve = property(
-        _get_post_solve,
-        _set_post_solve,
-        doc="""Two shapes are touching and their collision response has been
+    @property
+    def post_solve(self) -> _CollisionCallbackNoReturn:
+        """Two shapes are touching and their collision response has been
         processed.
 
         ``func(arbiter, space, data)``
@@ -135,20 +122,26 @@ class CollisionHandler(object):
         You can retrieve the collision impulse or kinetic energy at this
         time if you want to use it to calculate sound volumes or damage
         amounts. See Arbiter for more info.
-        """,
-    )
+        """
+        return self._post_solve
 
-    def _set_separate(self, func: _CollisionCallbackNoReturn) -> None:
-        self._separate = func
-        self._handler.separateFunc = lib.ext_cpCollisionSeparateFunc
+    @post_solve.setter
+    def post_solve(self, func: _CollisionCallbackNoReturn) -> None:
+        assert (
+            func is not None
+        ), "To reset the post_solve callback, set handler.post_solve = CollisionHandler.do_nothing"
+        self._post_solve = func
 
-    def _get_separate(self) -> Optional[_CollisionCallbackNoReturn]:
-        return self._separate
+        if self._post_solve == CollisionHandler.do_nothing:
+            self._handler.postSolveFunc = ffi.addressof(lib, "DoNothing")
+        else:
+            self._handler.postSolveFunc = lib.ext_cpCollisionPostSolveFunc
 
-    separate = property(
-        _get_separate,
-        _set_separate,
-        doc="""Two shapes have just stopped touching for the first time this
+        self._handler.postSolveFunc = lib.ext_cpCollisionPostSolveFunc
+
+    @property
+    def separate(self) -> _CollisionCallbackNoReturn:
+        """Two shapes have just stopped touching for the first time this
         step.
 
         ``func(arbiter, space, data)``
@@ -156,5 +149,38 @@ class CollisionHandler(object):
         To ensure that begin()/separate() are always called in balanced
         pairs, it will also be called when removing a shape while its in
         contact with something or when de-allocating the space.
-        """,
-    )
+        """
+        return self._separate
+
+    @separate.setter
+    def separate(self, func: _CollisionCallbackNoReturn) -> None:
+        assert (
+            func is not None
+        ), "To reset the separate callback, set handler.separate = CollisionHandler.do_nothing"
+        self._separate = func
+
+        if self._separate == CollisionHandler.do_nothing:
+            self._handler.separateFunc = ffi.addressof(lib, "DoNothing")
+        else:
+            self._handler.separateFunc = lib.ext_cpCollisionSeparateFunc
+
+    @staticmethod
+    def do_nothing(arbiter: Arbiter, space: "Space", data: Dict[Any, Any]) -> None:
+        """The default do nothing method used for the post_solve and seprate
+        callbacks.
+
+        Note that its more efficient to set this method than to define your own
+        do nothing method.
+        """
+        return
+
+    @staticmethod
+    def always_collide(arbiter: Arbiter, space: "Space", data: Dict[Any, Any]) -> bool:
+        """The default method used for the begin and pre_solve callbacks.
+
+        It will always return True, meaning the collision should not be ignored.
+
+        Note that its more efficient to set this method than to define your own
+        return True method.
+        """
+        return True

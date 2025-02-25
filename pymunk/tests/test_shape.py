@@ -195,8 +195,9 @@ class UnitTestShape(unittest.TestCase):
         self.assertEqual(c.surface_velocity, c2.surface_velocity)
         self.assertEqual(c.density, c2.density)
         self.assertEqual(c.mass, c2.mass)
+        assert c.body is not None
         self.assertEqual(c.body.mass, c2.body.mass)
-
+        self.assertIsNotNone
         c = p.Circle(None, 1)
         c.density = 3
 
