@@ -6,6 +6,7 @@ Changelog
    New feature: Vec2d supports bool to test if zero. (bool(Vec2d(2,3) == True) Note this is a breaking change.
    Added Vec2d.length_squared, and depreacted Vec2d.get_length_sqrd()
    Added Vec2d.get_distance_squared(), and deprecated Vec2d.get_dist_sqrd()
+   A dynamic body must have non-zero mass when calling Space.step (either from Body.mass, or by setting mass or density on a Shape attached to the Body). Its not valid to set mass to 0 on a dynamic body attached to a space. 
    
    Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks.
    If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.

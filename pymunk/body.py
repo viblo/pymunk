@@ -254,11 +254,18 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
     @property
     def mass(self) -> float:
-        """Mass of the body."""
+        """Mass of the body.
+
+        Note that dynamic bodies must have mass > 0 if they are attached to a
+        Space.
+        """
         return lib.cpBodyGetMass(self._body)
 
     @mass.setter
     def mass(self, mass: float) -> None:
+        assert (
+            self._space is None or mass > 0
+        ), "Dynamic bodies must have mass > 0 if they are attached to a Space."
         lib.cpBodySetMass(self._body, mass)
 
     @property
@@ -347,9 +354,9 @@ class Body(PickleMixin, TypingAttrMixing, object):
         """Rotation of the body in radians.
 
         When changing the rotation you may also want to call
-        :py:func:`Space.reindex_shapes_for_body` to update the collision 
-        detection information for the attached shapes if plan to make any 
-        queries against the space. A body rotates around its center of gravity, 
+        :py:func:`Space.reindex_shapes_for_body` to update the collision
+        detection information for the attached shapes if plan to make any
+        queries against the space. A body rotates around its center of gravity,
         not its position.
 
         .. Note::
@@ -393,7 +400,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     def space(self) -> Optional["Space"]:
         """Get the :py:class:`Space` that the body has been added to (or
         None)."""
-        assert hasattr(self, "_space"), (
+        assert hasattr(self, "_space"), (  # TODO: When can this happen?
             "_space not set. This can mean there's a direct or indirect"
             " circular reference between the Body and the Space. Circular"
             " references are not supported when using pickle or copy and"
@@ -482,12 +489,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     @property
     def kinetic_energy(self) -> float:
         """Get the kinetic energy of a body."""
-        # todo: use ffi method
-        # return lib._cpBodyKineticEnergy(self._body)
-
-        vsq: float = self.velocity.dot(self.velocity)
-        wsq: float = self.angular_velocity * self.angular_velocity
-        return (vsq * self.mass if vsq else 0.0) + (wsq * self.moment if wsq else 0.0)
+        return lib.cpBodyKineticEnergy(self._body)
 
     @staticmethod
     def update_velocity(
@@ -598,7 +600,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
     @property
     def body_type(self) -> _BodyType:
-        """The type of a body (:py:const:`Body.DYNAMIC`, 
+        """The type of a body (:py:const:`Body.DYNAMIC`,
         :py:const:`Body.KINEMATIC` or :py:const:`Body.STATIC`).
 
         When changing an body to a dynamic body, the mass and moment of

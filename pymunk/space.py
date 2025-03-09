@@ -143,6 +143,7 @@ class Space(PickleMixin, object):
 
         self._add_later: Set[_AddableObjects] = set()
         self._remove_later: Set[_AddableObjects] = set()
+        self._bodies_to_check: Set[Body] = set()
 
     def _get_self(self) -> "Space":
         return self
@@ -409,6 +410,7 @@ class Space(PickleMixin, object):
 
         body._space = weakref.proxy(self)
         self._bodies[body] = None
+        self._bodies_to_check.add(body)
         cp.cpSpaceAddBody(self._space, body._body)
 
     def _add_constraint(self, constraint: "Constraint") -> None:
@@ -437,6 +439,8 @@ class Space(PickleMixin, object):
         """Removes a body from the space"""
         assert body in self._bodies, "body not in space, already removed?"
         body._space = None
+        if body in self._bodies_to_check:
+            self._bodies_to_check.remove(body)
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
         if cp.cpSpaceContainsBody(self._space, body._body):
             cp.cpSpaceRemoveBody(self._space, body._body)
@@ -546,6 +550,13 @@ class Space(PickleMixin, object):
 
         :param dt: Time step length
         """
+
+        for b in self._bodies_to_check:
+            assert b.body_type != Body.DYNAMIC or (
+                b.mass > 0 and b.mass < math.inf
+            ), f"Dynamic bodies must have a mass > 0 and < inf. {b} has mass {b.mass}."
+        self._bodies_to_check.clear()
+
         try:
             self._locked = True
             if self.threaded:
