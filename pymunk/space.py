@@ -660,7 +660,7 @@ class Space(PickleMixin, object):
         self,
         callback_function: Callable[
             ..., None
-        ],  # TODO: Fix me once PEP-612 is implemented
+        ],  # TODO: Fix me once PEP-612 is implemented (py 3.10)
         key: Hashable,
         *args: Any,
         **kwargs: Any,

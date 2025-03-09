@@ -171,6 +171,35 @@ class UnitTestBody(unittest.TestCase):
         b = p.Body(body_type=p.Body.STATIC)
         self.assertEqual(b.body_type, p.Body.STATIC)
 
+    def test_mass(self) -> None:
+        s = p.Space()
+        b = p.Body()
+
+        b.mass = 2
+        s.add(b)
+
+        # Cant set 0 mass on Body in Space
+        with self.assertRaises(AssertionError):
+            b.mass = 0
+
+        s.remove(b)
+        b.mass = 0
+        s.add(b)
+        # Cant add 0 mass Body to Space and run step
+        with self.assertRaises(AssertionError):
+            s.step(1)
+
+        c = p.Circle(b, 1)
+        s.add(c)
+
+        # Same with a Shape
+        with self.assertRaises(AssertionError):
+            s.step(1)
+
+        # Setting the Shape mass or density should fix it
+        c.density = 10
+        s.step(1)
+
     def test_mass_moment_from_shape(self) -> None:
         s = p.Space()
 
