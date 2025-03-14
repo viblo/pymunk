@@ -66,21 +66,8 @@ class Shape(PickleMixin, TypingAttrMixing, object):
             cp.cpShapeFree(cp_shape)
 
         self._shape = ffi.gc(_shape, shapefree)
-        self._set_id()
-
-    @property
-    def _id(self) -> int:
-        """Unique id of the Shape.
-
-        .. note::
-            Experimental API. Likely to change in future major, minor orpoint
-            releases.
-        """
-        return int(ffi.cast("int", cp.cpShapeGetUserData(self._shape)))
-
-    def _set_id(self) -> None:
-        cp.cpShapeSetUserData(self._shape, ffi.cast("cpDataPointer", Shape._id_counter))
-        Shape._id_counter += 1
+        self._h = ffi.new_handle(self)  # to prevent GC of the handle
+        cp.cpShapeSetUserData(self._shape, self._h)
 
     @property
     def mass(self) -> float:
@@ -290,8 +277,8 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         info = ffi.new("cpPointQueryInfo *")
         _ = cp.cpShapePointQuery(self._shape, p, info)
 
-        ud = int(ffi.cast("int", cp.cpShapeGetUserData(info.shape)))
-        assert ud == self._id
+        shape = ffi.from_handle(cp.cpShapeGetUserData(info.shape))
+        assert shape == self, "This is a bug in Pymunk. Please report it."
         return PointQueryInfo(
             self,
             Vec2d(info.point.x, info.point.y),
@@ -311,8 +298,8 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         info = ffi.new("cpSegmentQueryInfo *")
         r = cp.cpShapeSegmentQuery(self._shape, start, end, radius, info)
         if r:
-            ud = int(ffi.cast("int", cp.cpShapeGetUserData(info.shape)))
-            assert ud == self._id
+            shape = ffi.from_handle(cp.cpShapeGetUserData(info.shape))
+            assert shape == self, "This is a bug in Pymunk. Please report it."
             return SegmentQueryInfo(
                 self,
                 Vec2d(info.point.x, info.point.y),

@@ -132,9 +132,9 @@ class Space(PickleMixin, object):
         )  # To prevent the gc to collect the callbacks.
 
         self._post_step_callbacks: Dict[Any, Callable[["Space"], None]] = {}
-        self._removed_shapes: Dict[int, Shape] = {}
+        self._removed_shapes: Dict[Shape, None] = {}
 
-        self._shapes: Dict[int, Shape] = {}
+        self._shapes: Dict[Shape, None] = {}
         self._bodies: Dict[Body, None] = {}
         self._static_body: Optional[Body] = None
         self._constraints: Dict[Constraint, None] = {}
@@ -154,7 +154,7 @@ class Space(PickleMixin, object):
 
         (includes both static and non-static)
         """
-        return list(self._shapes.values())
+        return list(self._shapes)
 
     @property
     def bodies(self) -> List[Body]:
@@ -389,8 +389,7 @@ class Space(PickleMixin, object):
 
     def _add_shape(self, shape: "Shape") -> None:
         """Adds a shape to the space"""
-        # print("addshape", self._space, shape)
-        assert shape._id not in self._shapes, "Shape already added to space."
+        assert shape not in self._shapes, "Shape already added to space."
         assert (
             shape.space == None
         ), "Shape already added to another space. A shape can only be in one space at a time."
@@ -400,7 +399,7 @@ class Space(PickleMixin, object):
         ), "The shape's body must be added to the space before (or at the same time) as the shape."
 
         shape._space = weakref.proxy(self)
-        self._shapes[shape._id] = shape
+        self._shapes[shape] = None
         cp.cpSpaceAddShape(self._space, shape._shape)
 
     def _add_body(self, body: "Body") -> None:
@@ -427,13 +426,13 @@ class Space(PickleMixin, object):
 
     def _remove_shape(self, shape: "Shape") -> None:
         """Removes a shape from the space"""
-        assert shape._id in self._shapes, "shape not in space, already removed?"
-        self._removed_shapes[shape._id] = shape
+        assert shape in self._shapes, "shape not in space, already removed?"
+        self._removed_shapes[shape] = None
         shape._space = None
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
         if cp.cpSpaceContainsShape(self._space, shape._shape):
             cp.cpSpaceRemoveShape(self._space, shape._shape)
-        del self._shapes[shape._id]
+        del self._shapes[shape]
 
     def _remove_body(self, body: "Body") -> None:
         """Removes a body from the space"""
@@ -517,7 +516,7 @@ class Space(PickleMixin, object):
         the shape to be inserted into many cells, setting it too low will
         cause too many objects into the same hash slot.
 
-        count is the suggested minimum number of cells in the hash table. If
+        count is the minimum number of cells in the hash table. If
         there are too few cells, the spatial hash will return many false
         positives. Too many cells will be hard on the cache and waste memory.
         Setting count to ~10x the number of objects in the space is probably a
@@ -563,7 +562,7 @@ class Space(PickleMixin, object):
                 cp.cpHastySpaceStep(self._space, dt)
             else:
                 cp.cpSpaceStep(self._space, dt)
-            self._removed_shapes = {}
+            self._removed_shapes.clear()
         finally:
             self._locked = False
         self.add(*self._add_later)
@@ -575,7 +574,7 @@ class Space(PickleMixin, object):
         for key in self._post_step_callbacks:
             self._post_step_callbacks[key](self)
 
-        self._post_step_callbacks = {}
+        self._post_step_callbacks.clear()
 
     def add_collision_handler(
         self, collision_type_a: int, collision_type_b: int
@@ -745,16 +744,7 @@ class Space(PickleMixin, object):
     def _get_shape(self, _shape: Any) -> Optional[Shape]:
         if not bool(_shape):
             return None
-
-        shapeid = int(ffi.cast("int", cp.cpShapeGetUserData(_shape)))
-        # return self._shapes[hashid_private]
-
-        if shapeid in self._shapes:
-            return self._shapes[shapeid]
-        elif shapeid in self._removed_shapes:
-            return self._removed_shapes[shapeid]
-        else:
-            return None
+        return ffi.from_handle(cp.cpShapeGetUserData(_shape))
 
     def point_query_nearest(
         self, point: Tuple[float, float], max_distance: float, shape_filter: ShapeFilter
