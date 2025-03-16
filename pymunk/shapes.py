@@ -130,7 +130,9 @@ class Shape(PickleMixin, TypingAttrMixing, object):
     def collision_type(self) -> int:
         """User defined collision type for the shape.
 
-        See :py:meth:`Space.add_collision_handler` function for more
+        Defaults to 0.
+
+        See the :py:meth:`Space.add_collision_handler` function for more
         information on when to use this property.
         """
         return cp.cpShapeGetCollisionType(self._shape)
