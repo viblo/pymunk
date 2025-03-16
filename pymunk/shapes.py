@@ -1,5 +1,6 @@
 __docformat__ = "reStructuredText"
 
+import weakref
 from typing import TYPE_CHECKING, List, Optional, Sequence, Tuple
 
 if TYPE_CHECKING:
@@ -42,18 +43,19 @@ class Shape(PickleMixin, TypingAttrMixing, object):
     _pickle_attrs_skip = PickleMixin._pickle_attrs_skip + ["mass", "density"]
 
     _space = None  # Weak ref to the space holding this body (if any)
-
-    _id_counter = 1
+    _dead_ref = weakref.ref(set())
 
     def __init__(self, shape: "Shape") -> None:
         self._shape = shape
-        self._body: Optional["Body"] = shape.body
+        self._body: weakref.ref = weakref.ref(shape.body)
 
     def _init(self, body: Optional["Body"], _shape: ffi.CData) -> None:
-        self._body = body
 
         if body is not None:
-            body._shapes.add(self)
+            self._body = weakref.ref(body)
+            body._shapes[self] = None
+        else:
+            self._body = Shape._dead_ref
 
         def shapefree(cp_shape: ffi.CData) -> None:
             cp_space = cp.cpShapeGetSpace(cp_shape)
@@ -225,19 +227,25 @@ class Shape(PickleMixin, TypingAttrMixing, object):
 
     @property
     def body(self) -> Optional["Body"]:
-        """The body this shape is attached to. Can be set to None to
-        indicate that this shape doesnt belong to a body."""
-        return self._body
+        """The body this shape is attached to.
+
+        Can be set to None to indicate that this shape doesnt belong to a body.
+        The shape only holds a weakref to the Body, meaning it wont prevent it
+        from being GCed.
+        """
+        return self._body()
 
     @body.setter
     def body(self, body: Optional["Body"]) -> None:
-        if self._body is not None:
-            self._body._shapes.remove(self)
-        body_body = ffi.NULL if body is None else body._body
-        cp.cpShapeSetBody(self._shape, body_body)
+        if self.body is not None:
+            del self.body._shapes[self]
+        cp_body = ffi.NULL if body is None else body._body
+        cp.cpShapeSetBody(self._shape, cp_body)
         if body is not None:
-            body._shapes.add(self)
-        self._body = body
+            body._shapes[self] = None
+            self._body = weakref.ref(body)
+        else:
+            self._body = Shape._dead_ref
 
     def update(self, transform: Transform) -> BB:
         """Update, cache and return the bounding box of a shape with an

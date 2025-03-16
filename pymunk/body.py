@@ -224,7 +224,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         self._constraints: WeakSet["Constraint"] = (
             WeakSet()
         )  # weak refs to any constraints attached
-        self._shapes: WeakSet["Shape"] = WeakSet()  # weak refs to any shapes attached
+        self._shapes: dict["Shape", None] = {}
 
         d = ffi.new_handle(self)
         self._data_handle = d  # to prevent gc to collect the handle
@@ -660,10 +660,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
     @property
     def shapes(self) -> Set["Shape"]:
-        """Get the shapes attached to this body.
-
-        The body only keeps a weak reference to the shapes and a live
-        body wont prevent GC of the attached shapes"""
+        """Get the shapes attached to this body."""
         return set(self._shapes)
 
     def local_to_world(self, v: Tuple[float, float]) -> Vec2d:
