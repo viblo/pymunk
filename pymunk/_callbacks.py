@@ -290,8 +290,8 @@ def ext_cpBodyArbiterIteratorFunc(
     _body: ffi.CData, _arbiter: ffi.CData, data: ffi.CData
 ) -> None:
     body, func, args, kwargs = ffi.from_handle(data)
-    assert body._space is not None
-    arbiter = Arbiter(_arbiter, body._space)
+    assert body.space is not None
+    arbiter = Arbiter(_arbiter, body.space)
     func(arbiter, *args, **kwargs)
 
 

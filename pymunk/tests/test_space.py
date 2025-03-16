@@ -1168,6 +1168,24 @@ class UnitTestSpace(unittest.TestCase):
         self.assertAlmostEqual(s.bodies[0].position.x, s_copy.bodies[0].position.x)
         self.assertAlmostEqual(s.bodies[0].position.y, s_copy.bodies[0].position.y)
 
+    def testDeleteSpaceWithObjects(self) -> None:
+        s = p.Space()
+
+        b = p.Body(1)
+
+        c = p.Circle(b, 10)
+
+        j = p.PinJoint(b, s.static_body)
+
+        s.add(b, c, j)
+
+        del s
+
+        self.assertIsNone(b.space)
+        self.assertIsNone(c.space)
+        self.assertEqual(j.a, b)
+        self.assertEqual(j.b.body_type, p.Body.STATIC)
+
 
 def f1(*args: Any, **kwargs: Any) -> None:
     pass

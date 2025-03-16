@@ -1,5 +1,6 @@
 __docformat__ = "reStructuredText"
 
+import weakref
 from typing import (  # Literal,
     TYPE_CHECKING,
     Any,
@@ -106,12 +107,13 @@ class Body(PickleMixin, TypingAttrMixing, object):
         "is_sleeping",
         "_velocity_func",
         "_position_func",
+        # "_space",
     ]
 
     _position_func: Optional[_PositionFunc] = None
     _velocity_func: Optional[_VelocityFunc] = None
 
-    _id_counter = 1
+    _dead_ref = weakref.ref(set())
 
     def __init__(
         self, mass: float = 0, moment: float = 0, body_type: _BodyType = DYNAMIC
@@ -217,9 +219,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         elif body_type == Body.STATIC:
             self._body = ffi.gc(lib.cpBodyNewStatic(), freebody)
 
-        self._space: Optional["Space"] = (
-            None  # Weak ref to the space holding this body (if any)
-        )
+        self._space: weakref.ref = Body._dead_ref
 
         self._constraints: WeakSet["Constraint"] = (
             WeakSet()
@@ -264,7 +264,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     @mass.setter
     def mass(self, mass: float) -> None:
         assert (
-            self._space is None or mass > 0
+            self.space is None or mass > 0
         ), "Dynamic bodies must have mass > 0 if they are attached to a Space."
         lib.cpBodySetMass(self._body, mass)
 
@@ -400,16 +400,14 @@ class Body(PickleMixin, TypingAttrMixing, object):
     def space(self) -> Optional["Space"]:
         """Get the :py:class:`Space` that the body has been added to (or
         None)."""
-        assert hasattr(self, "_space"), (  # TODO: When can this happen?
+        # This assert is tested in test_pickle_circular_ref
+        assert hasattr(self, "_space"), (
             "_space not set. This can mean there's a direct or indirect"
             " circular reference between the Body and the Space. Circular"
             " references are not supported when using pickle or copy and"
             " might crash."
         )
-        if self._space is not None:
-            return self._space._get_self()  # ugly hack because of weakref
-        else:
-            return None
+        return self._space()
 
     def _set_velocity_func(self, func: _VelocityFunc) -> None:
         if func == Body.update_velocity:
@@ -571,7 +569,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
         Cannot be called from a callback.
         """
-        if self._space == None:
+        if self.space == None:
             raise Exception("Body not added to space")
         lib.cpBodySleep(self._body)
 
@@ -589,7 +587,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         to initialize levels and start stacks of objects in a pre-sleeping
         state.
         """
-        if self._space == None:
+        if self.space == None:
             raise Exception("Body not added to space")
         lib.cpBodySleepWithGroup(self._body, body._body)
 

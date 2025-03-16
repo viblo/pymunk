@@ -167,7 +167,7 @@ class Space(PickleMixin, object):
         return list(self._constraints)
 
     def _setup_static_body(self, static_body: Body) -> None:
-        static_body._space = weakref.proxy(self)
+        static_body._space = weakref.ref(self)
         cp.cpSpaceAddBody(self._space, static_body._body)
 
     @property
@@ -407,7 +407,7 @@ class Space(PickleMixin, object):
         assert body not in self._bodies, "Body already added to this space."
         assert body.space == None, "Body already added to another space."
 
-        body._space = weakref.proxy(self)
+        body._space = weakref.ref(self)
         self._bodies[body] = None
         self._bodies_to_check.add(body)
         cp.cpSpaceAddBody(self._space, body._body)
@@ -437,7 +437,7 @@ class Space(PickleMixin, object):
     def _remove_body(self, body: "Body") -> None:
         """Removes a body from the space"""
         assert body in self._bodies, "body not in space, already removed?"
-        body._space = None
+        body._space = body._dead_ref
         if body in self._bodies_to_check:
             self._bodies_to_check.remove(body)
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
