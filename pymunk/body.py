@@ -660,7 +660,18 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
     @property
     def shapes(self) -> Set["Shape"]:
-        """Get the shapes attached to this body."""
+        """Get the shapes attached to this body.
+
+        In case you only have a single shape attached to the body you can
+        unpack it out easily:
+
+        >>> from pymunk import Circle
+        >>> b = Body(1)
+        >>> circle = Circle(b, 2)
+        >>> [shape] = b.shapes
+        >>> shape == circle
+        True
+        """
         return set(self._shapes)
 
     def local_to_world(self, v: Tuple[float, float]) -> Vec2d:
