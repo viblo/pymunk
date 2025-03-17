@@ -1170,16 +1170,19 @@ class UnitTestSpace(unittest.TestCase):
 
     def testDeleteSpaceWithObjects(self) -> None:
         s = p.Space()
-
         b = p.Body(1)
-
         c = p.Circle(b, 10)
-
-        j = p.PinJoint(b, s.static_body)
+        static_body = s.static_body  # to stop it from GC
+        j = p.PinJoint(b, static_body)
 
         s.add(b, c, j)
 
         del s
+
+        # needed for pypy
+        import gc
+
+        gc.collect()
 
         self.assertIsNone(b.space)
         self.assertIsNone(c.space)
