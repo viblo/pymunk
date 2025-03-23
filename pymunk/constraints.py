@@ -28,7 +28,7 @@ body, or they can be more abstract like the gear joint or motors.
 
 This submodule contain all the constraints that are supported by Pymunk.
 
-All the constraints support copy and pickle from the standard library. Custom 
+All the constraints support copy and pickle from the standard library. Custom
 properties set on a constraint will also be copied/pickled.
 
 Chipmunk has a good overview of the different constraint on youtube which
@@ -101,6 +101,9 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
 
     _pre_solve_func: Optional[Callable[["Constraint", "Space"], None]] = None
     _post_solve_func: Optional[Callable[["Constraint", "Space"], None]] = None
+
+    _a: "Body"
+    _b: "Body"
 
     def __init__(self, constraint: ffi.CData) -> None:
         self._constraint = constraint
@@ -201,8 +204,8 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
 
     def activate_bodies(self) -> None:
         """Activate the bodies this constraint is attached to"""
-        self._a.activate()
-        self._b.activate()
+        self.a.activate()
+        self.b.activate()
 
     @property
     def pre_solve(self) -> Optional[Callable[["Constraint", "Space"], None]]:
@@ -268,8 +271,8 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
         ), "At least one of the two bodies attached to a constraint must be DYNAMIC."
         self._a = a
         self._b = b
-        a._constraints.add(self)
-        b._constraints.add(self)
+        a._constraints[self] = None
+        b._constraints[self] = None
 
     def __getstate__(self) -> Dict[str, List[Tuple[str, Any]]]:
         """Return the state of this object

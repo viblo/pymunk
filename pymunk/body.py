@@ -1,6 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import weakref
+from collections.abc import KeysView
 from typing import (  # Literal,
     TYPE_CHECKING,
     Any,
@@ -9,9 +10,8 @@ from typing import (  # Literal,
     Optional,
     Set,
     Tuple,
-    Union,
 )
-from weakref import WeakSet
+from weakref import WeakKeyDictionary
 
 if TYPE_CHECKING:
     from .space import Space
@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 from ._chipmunk_cffi import ffi, lib
 from ._pickle import PickleMixin, _State
 from ._typing_attr import TypingAttrMixing
+from ._weakkeysview import WeakKeysView
 from .vec2d import Vec2d
 
 _BodyType = int
@@ -113,7 +114,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     _position_func: Optional[_PositionFunc] = None
     _velocity_func: Optional[_VelocityFunc] = None
 
-    _dead_ref = weakref.ref(set())
+    _dead_ref: weakref.ref = weakref.ref(set())
 
     def __init__(
         self, mass: float = 0, moment: float = 0, body_type: _BodyType = DYNAMIC
@@ -221,9 +222,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
         self._space: weakref.ref = Body._dead_ref
 
-        self._constraints: WeakSet["Constraint"] = (
-            WeakSet()
-        )  # weak refs to any constraints attached
+        self._constraints: WeakKeyDictionary = WeakKeyDictionary()
         self._shapes: dict["Shape", None] = {}
 
         d = ffi.new_handle(self)
@@ -620,7 +619,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
     def each_arbiter(
         self,
-        func: Callable[..., None],  # TODO: Fix me once PEP 612 is ready
+        func: Callable[..., None],  # TODO: Fix me once PEP 612 is ready (Python 3.10)
         *args: Any,
         **kwargs: Any,
     ) -> None:
@@ -645,7 +644,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         lib.cpBodyEachArbiter(self._body, lib.ext_cpBodyArbiterIteratorFunc, data)
 
     @property
-    def constraints(self) -> Set["Constraint"]:
+    def constraints(self) -> KeysView["Constraint"]:
         """Get the constraints this body is attached to.
 
         It is not possible to detach a body from a constraint. The only way is
@@ -656,7 +655,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         collected it will automatically be removed from this collection as
         well.
         """
-        return set(self._constraints)
+        return WeakKeysView(self._constraints)
 
     @property
     def shapes(self) -> Set["Shape"]:

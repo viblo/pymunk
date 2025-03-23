@@ -8,6 +8,10 @@ Changelog
    Added Vec2d.get_distance_squared(), and deprecated Vec2d.get_dist_sqrd()
    A dynamic body must have non-zero mass when calling Space.step (either from Body.mass, or by setting mass or density on a Shape attached to the Body). Its not valid to set mass to 0 on a dynamic body attached to a space. 
    Deprecated matplotlib_util. If you think this is a useful module and you use it, please create an issue on the Pymunk issue track
+   Dropped support for Python 3.8
+   Changed body.constraints to return a KeysView of the Constraints attached to the body. Note that its still weak references to the Constraints. 
+   Reversed the dependency between bodies and shapes. Now the Body owns the connection, and the Shape only keeps a weak ref to the Body. That means that if you remove a Body, then any shapes not referenced anywhere else will also be removed. 
+
 
    Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks.
    If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.
@@ -20,6 +24,7 @@ Changelog
    Improved Shape documentation
    Removed unused code
    Fix issue with accessing body.space after space is deleted and GCed.
+   Build wheels for Linux ARM and Pypy 3.11
    
    Extra thanks for aetle for a number of suggestions for improvements in this pymunk release
 

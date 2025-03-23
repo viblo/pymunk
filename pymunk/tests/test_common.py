@@ -1,7 +1,10 @@
+import gc
 import unittest
+import weakref
 from typing import Any, List
 
 import pymunk as p
+from pymunk._weakkeysview import WeakKeysView
 from pymunk.vec2d import Vec2d
 
 
@@ -170,3 +173,31 @@ class UnitTestBugs(unittest.TestCase):
         b2.position = 22, 0
         space.step(1)
         # print(3)
+
+    def testWeakKeysView(self) -> None:
+        x1, x2, x3 = p.Body(1), p.Body(2), p.Body(3)
+
+        d = weakref.WeakKeyDictionary()
+
+        d[x1] = 1
+        d[x2] = 2
+
+        keys1 = WeakKeysView(d)
+        keys2 = WeakKeysView(d)
+
+        del x2
+        d[x3] = 3
+
+        iterations = 0
+        for x in keys2:
+            iterations += 1
+            del x3
+            gc.collect()
+
+        self.assertEqual(iterations, 1)
+        gc.collect()
+
+        self.assertEqual(len(d), 1)
+        self.assertEqual(list(keys1), [x1])
+        self.assertEqual(list(keys2), [x1])
+        self.assertEqual(list(d.keys()), [x1])

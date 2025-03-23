@@ -1,3 +1,4 @@
+import gc
 import pickle
 import unittest
 
@@ -198,6 +199,17 @@ class UnitTestConstraint(unittest.TestCase):
             a, b = p.Body(4, 5, body_type=type1), p.Body(10, 10, body_type=type2)
             with self.assertRaises(AssertionError):
                 _ = PivotJoint(a, b, (1, 2))
+
+    def test_delete(self) -> None:
+        a, b = p.Body(1), p.Body(2)
+        j1 = PivotJoint(a, b, (0, 0))
+        j2 = PivotJoint(a, b, (0, 0))
+
+        del j1
+        gc.collect()
+
+        self.assertListEqual(list(a.constraints), [j2])
+        self.assertListEqual(list(b.constraints), [j2])
 
 
 class UnitTestPinJoint(unittest.TestCase):
