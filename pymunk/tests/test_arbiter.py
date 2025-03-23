@@ -197,9 +197,8 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def post_solve(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+        def post_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertAlmostEqual(arb.total_ke, 43.438914027)
-            return True
 
         s.add_collision_handler(1, 2).post_solve = post_solve
 
@@ -292,10 +291,9 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.called2 = False
 
-        def separate2(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+        def separate2(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.called2 = True
             self.assertTrue(arb.is_removal)
-            return True
 
         s.add_collision_handler(1, 2).separate = separate2
         s.remove(b1, c1)

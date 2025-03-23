@@ -1,5 +1,6 @@
 __docformat__ = "reStructuredText"
 
+import math
 import platform
 import weakref
 from typing import (

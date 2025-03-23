@@ -1,7 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import weakref
-from typing import TYPE_CHECKING, List, Optional, Sequence, Tuple
+from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Tuple
 
 if TYPE_CHECKING:
     from .body import Body
@@ -43,11 +43,12 @@ class Shape(PickleMixin, TypingAttrMixing, object):
     _pickle_attrs_skip = PickleMixin._pickle_attrs_skip + ["mass", "density"]
 
     _space = None  # Weak ref to the space holding this body (if any)
-    _dead_ref = weakref.ref(set())
+    _dead_ref: weakref.ref[Any] = weakref.ref(set())
 
     def __init__(self, shape: "Shape") -> None:
         self._shape = shape
-        self._body: weakref.ref = weakref.ref(shape.body)
+        assert shape.body != None
+        self._body: weakref.ref["Body"] = weakref.ref(shape.body)
 
     def _init(self, body: Optional["Body"], _shape: ffi.CData) -> None:
 

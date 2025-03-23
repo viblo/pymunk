@@ -114,7 +114,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     _position_func: Optional[_PositionFunc] = None
     _velocity_func: Optional[_VelocityFunc] = None
 
-    _dead_ref: weakref.ref = weakref.ref(set())
+    _dead_ref: weakref.ref[Any] = weakref.ref(set())
 
     def __init__(
         self, mass: float = 0, moment: float = 0, body_type: _BodyType = DYNAMIC
@@ -220,9 +220,9 @@ class Body(PickleMixin, TypingAttrMixing, object):
         elif body_type == Body.STATIC:
             self._body = ffi.gc(lib.cpBodyNewStatic(), freebody)
 
-        self._space: weakref.ref = Body._dead_ref
+        self._space: weakref.ref["Space"] = Body._dead_ref
 
-        self._constraints: WeakKeyDictionary = WeakKeyDictionary()
+        self._constraints: WeakKeyDictionary["Constraint", None] = WeakKeyDictionary()
         self._shapes: dict["Shape", None] = {}
 
         d = ffi.new_handle(self)

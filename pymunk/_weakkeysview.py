@@ -17,9 +17,8 @@ class WeakKeysView(KeysView[KT]):
     def __len__(self) -> int:
         return len(self._weak_dict)
 
-    def __contains__(self, key: KT) -> bool:
+    def __contains__(self, key: object) -> bool:
         return key in self._weak_dict
 
     def __repr__(self) -> str:
-        # Provide a string representation of the keys view
         return f"{self.__class__.__name__}({list(self._weak_dict.keys())})"

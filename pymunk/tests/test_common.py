@@ -177,7 +177,7 @@ class UnitTestBugs(unittest.TestCase):
     def testWeakKeysView(self) -> None:
         x1, x2, x3 = p.Body(1), p.Body(2), p.Body(3)
 
-        d = weakref.WeakKeyDictionary()
+        d: weakref.WeakKeyDictionary[p.Body, int] = weakref.WeakKeyDictionary()
 
         d[x1] = 1
         d[x2] = 2
