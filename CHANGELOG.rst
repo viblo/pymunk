@@ -11,7 +11,7 @@ Changelog
    Dropped support for Python 3.8
    Changed body.constraints to return a KeysView of the Constraints attached to the body. Note that its still weak references to the Constraints. 
    Reversed the dependency between bodies and shapes. Now the Body owns the connection, and the Shape only keeps a weak ref to the Body. That means that if you remove a Body, then any shapes not referenced anywhere else will also be removed. 
-
+   Changed body.shapes to return a KeysView instead of a set of the shapes.
 
    Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks.
    If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.

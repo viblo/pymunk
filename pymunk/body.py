@@ -658,7 +658,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         return WeakKeysView(self._constraints)
 
     @property
-    def shapes(self) -> Set["Shape"]:
+    def shapes(self) -> KeysView["Shape"]:
         """Get the shapes attached to this body.
 
         In case you only have a single shape attached to the body you can
@@ -671,7 +671,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         >>> shape == circle
         True
         """
-        return set(self._shapes)
+        return self._shapes.keys()
 
     def local_to_world(self, v: Tuple[float, float]) -> Vec2d:
         """Convert body local coordinates to world space coordinates
