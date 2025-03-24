@@ -1,7 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import weakref
-from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Tuple
+from typing import TYPE_CHECKING, ClassVar, List, Optional, Sequence, Tuple
 
 if TYPE_CHECKING:
     from .body import Body
@@ -11,6 +11,7 @@ from ._chipmunk_cffi import ffi
 from ._chipmunk_cffi import lib as cp
 from ._pickle import PickleMixin, _State
 from ._typing_attr import TypingAttrMixing
+from ._util import _dead_ref
 from .bb import BB
 from .contact_point_set import ContactPointSet
 from .query_info import PointQueryInfo, SegmentQueryInfo
@@ -42,8 +43,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
     ]
     _pickle_attrs_skip = PickleMixin._pickle_attrs_skip + ["mass", "density"]
 
-    _space = None  # Weak ref to the space holding this body (if any)
-    _dead_ref: weakref.ref[Any] = weakref.ref(set())
+    _space: weakref.ref["Space"] = _dead_ref
 
     def __init__(self, shape: "Shape") -> None:
         self._shape = shape
@@ -56,7 +56,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
             self._body = weakref.ref(body)
             body._shapes[self] = None
         else:
-            self._body = Shape._dead_ref
+            self._body = _dead_ref
 
         def shapefree(cp_shape: ffi.CData) -> None:
             cp_space = cp.cpShapeGetSpace(cp_shape)
@@ -246,7 +246,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
             body._shapes[self] = None
             self._body = weakref.ref(body)
         else:
-            self._body = Shape._dead_ref
+            self._body = _dead_ref
 
     def update(self, transform: Transform) -> BB:
         """Update, cache and return the bounding box of a shape with an
@@ -338,13 +338,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         """Get the :py:class:`Space` that shape has been added to (or
         None).
         """
-        if self._space is not None:
-            try:
-                return self._space._get_self()  # ugly hack because of weakref
-            except ReferenceError:
-                return None
-        else:
-            return None
+        return self._space()
 
     @property
     def _hashid(self) -> int:

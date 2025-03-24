@@ -2,15 +2,7 @@ __docformat__ = "reStructuredText"
 
 import weakref
 from collections.abc import KeysView
-from typing import (  # Literal,
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    ClassVar,
-    Optional,
-    Set,
-    Tuple,
-)
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, Optional, Tuple  # Literal,
 from weakref import WeakKeyDictionary
 
 if TYPE_CHECKING:
@@ -21,6 +13,7 @@ if TYPE_CHECKING:
 from ._chipmunk_cffi import ffi, lib
 from ._pickle import PickleMixin, _State
 from ._typing_attr import TypingAttrMixing
+from ._util import _dead_ref
 from ._weakkeysview import WeakKeysView
 from .vec2d import Vec2d
 
@@ -113,8 +106,6 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
     _position_func: Optional[_PositionFunc] = None
     _velocity_func: Optional[_VelocityFunc] = None
-
-    _dead_ref: weakref.ref[Any] = weakref.ref(set())
 
     def __init__(
         self, mass: float = 0, moment: float = 0, body_type: _BodyType = DYNAMIC
@@ -220,8 +211,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         elif body_type == Body.STATIC:
             self._body = ffi.gc(lib.cpBodyNewStatic(), freebody)
 
-        self._space: weakref.ref["Space"] = Body._dead_ref
-
+        self._space: weakref.ref["Space"] = _dead_ref
         self._constraints: WeakKeyDictionary["Constraint", None] = WeakKeyDictionary()
         self._shapes: dict["Shape", None] = {}
 
