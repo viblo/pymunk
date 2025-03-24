@@ -1,5 +1,5 @@
 import math
-from typing import NamedTuple, Tuple, Union, cast, overload
+from typing import NamedTuple, Tuple, Union, overload
 
 from .vec2d import Vec2d
 

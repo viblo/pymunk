@@ -6,8 +6,6 @@ if TYPE_CHECKING:
     from .shapes import Shape
     from types import TracebackType
 
-import math
-
 from ._chipmunk_cffi import ffi, lib
 from .body import Body
 from .transform import Transform
@@ -101,7 +99,7 @@ class SpaceDebugDrawOptions(object):
     @property
     def shape_outline_color(self) -> SpaceDebugColor:
         """The outline color of shapes.
-        
+
         Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).
 
         Example:
@@ -158,7 +156,7 @@ class SpaceDebugDrawOptions(object):
         """The color of collisions.
 
         Should be a tuple of 4 ints between 0 and 255 (r,g,b,a).
-        
+
         Example:
 
         >>> import pymunk
@@ -203,11 +201,11 @@ class SpaceDebugDrawOptions(object):
     def flags(self) -> _DrawFlags:
         """Bit flags which of shapes, joints and collisions should be drawn.
 
-        By default all 3 flags are set, meaning shapes, joints and collisions 
+        By default all 3 flags are set, meaning shapes, joints and collisions
         will be drawn.
 
         Example using the basic text only DebugDraw implementation (normally
-        you would the desired backend instead, such as 
+        you would the desired backend instead, such as
         `pygame_util.DrawOptions` or `pyglet_util.DrawOptions`):
 
         >>> import pymunk
@@ -218,11 +216,11 @@ class SpaceDebugDrawOptions(object):
         >>> s.add(b, c)
         >>> s.add(pymunk.Circle(s.static_body, 3))
         >>> s.step(0.01)
-        >>> options = pymunk.SpaceDebugDrawOptions() 
+        >>> options = pymunk.SpaceDebugDrawOptions()
 
         >>> # Only draw the shapes, nothing else:
         >>> options.flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES
-        >>> s.debug_draw(options) 
+        >>> s.debug_draw(options)
         draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=52.0, g=152.0, b=219.0, a=255.0))
         draw_circle (Vec2d(0.0, 0.0), 0.0, 3.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
 
@@ -243,17 +241,17 @@ class SpaceDebugDrawOptions(object):
 
     @property
     def transform(self) -> Transform:
-        """The transform is applied before drawing, e.g for scaling or 
+        """The transform is applied before drawing, e.g for scaling or
         translation.
 
-        Example: 
+        Example:
 
         >>> import pymunk
         >>> s = pymunk.Space()
         >>> c = pymunk.Circle(s.static_body, 10)
         >>> s.add(c)
-        >>> options = pymunk.SpaceDebugDrawOptions() 
-        >>> s.debug_draw(options) 
+        >>> options = pymunk.SpaceDebugDrawOptions()
+        >>> s.debug_draw(options)
         draw_circle (Vec2d(0.0, 0.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
         >>> options.transform = pymunk.Transform.scaling(2)
         >>> s.debug_draw(options)
@@ -263,9 +261,9 @@ class SpaceDebugDrawOptions(object):
         draw_circle (Vec2d(2.0, 3.0), 0.0, 10.0, SpaceDebugColor(r=44.0, g=62.0, b=80.0, a=255.0), SpaceDebugColor(r=149.0, g=165.0, b=166.0, a=255.0))
 
         .. Note::
-            Not all tranformations are supported by the debug drawing logic. 
+            Not all tranformations are supported by the debug drawing logic.
             Uniform scaling and translation are supported, but not rotation,
-            linear stretching or shearing. 
+            linear stretching or shearing.
         """
         t = self._options.transform
         return Transform(t.a, t.b, t.c, t.d, t.tx, t.ty)

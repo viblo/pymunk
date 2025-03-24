@@ -25,6 +25,7 @@ Changelog
    Removed unused code
    Fix issue with accessing body.space after space is deleted and GCed.
    Build wheels for Linux ARM and Pypy 3.11
+   Minor internal refactorings for easier and cleaner code
    
    Extra thanks for aetle for a number of suggestions for improvements in this pymunk release
 
