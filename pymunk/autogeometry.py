@@ -1,4 +1,4 @@
-"""This module contain functions for automatic generation of geometry, for 
+"""This module contain functions for automatic generation of geometry, for
 example from an image.
 
 Example::
@@ -23,7 +23,7 @@ Example::
     >>> print(len(pl_set))
     2
 
-The information in segments can now be used to create geometry, for example as 
+The information in segments can now be used to create geometry, for example as
 a Pymunk Poly or Segment::
 
     >>> s = pymunk.Space()
@@ -31,11 +31,12 @@ a Pymunk Poly or Segment::
     ...     for i in range(len(poly_line) - 1):
     ...         a = poly_line[i]
     ...         b = poly_line[i + 1]
-    ...         segment = pymunk.Segment(s.static_body, a, b, 1)  
+    ...         segment = pymunk.Segment(s.static_body, a, b, 1)
     ...         s.add(segment)
 
 
 """
+
 __docformat__ = "reStructuredText"
 
 from typing import TYPE_CHECKING, Callable, List, Sequence, Tuple, Union, overload
@@ -47,7 +48,6 @@ from . import area_for_poly
 from ._chipmunk_cffi import ffi, lib
 from .vec2d import Vec2d
 
-_SegmentFunc = Callable[[Tuple[float, float], Tuple[float, float]], None]
 _SampleFunc = Callable[[Tuple[float, float]], float]
 
 _Polyline = Union[List[Tuple[float, float]], List[Vec2d]]
@@ -201,19 +201,19 @@ class PolylineSet(Sequence[List[Vec2d]]):
         return self._set.count
 
     @overload
-    def __getitem__(self, index: int) -> List[Vec2d]:
-        ...
+    def __getitem__(self, index: int) -> List[Vec2d]: ...
 
     @overload
-    def __getitem__(self, index: slice) -> "PolylineSet":
-        ...
+    def __getitem__(self, index: slice) -> "PolylineSet": ...
 
-    def __getitem__(self, key: Union[int, slice]) -> Union[List[Vec2d], "PolylineSet"]:
-        assert not isinstance(key, slice), "Slice indexing not supported"
-        if key >= self._set.count:
+    def __getitem__(
+        self, index: Union[int, slice]
+    ) -> Union[List[Vec2d], "PolylineSet"]:
+        assert not isinstance(index, slice), "Slice indexing not supported"
+        if index >= self._set.count:
             raise IndexError
         line = []
-        l = self._set.lines[key]
+        l = self._set.lines[index]
         for i in range(l.count):
             line.append(Vec2d(l.verts[i].x, l.verts[i].y))
         return line
