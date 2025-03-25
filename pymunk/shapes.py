@@ -299,8 +299,10 @@ class Shape(PickleMixin, TypingAttrMixing, object):
 
     def segment_query(
         self, start: Tuple[float, float], end: Tuple[float, float], radius: float = 0
-    ) -> SegmentQueryInfo:
+    ) -> Optional[SegmentQueryInfo]:
         """Check if the line segment from start to end intersects the shape.
+
+        Returns None if it does not intersect
 
         :rtype: :py:class:`SegmentQueryInfo`
         """
@@ -318,12 +320,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
                 info.alpha,
             )
         else:
-            return SegmentQueryInfo(
-                None,
-                Vec2d(info.point.x, info.point.y),
-                Vec2d(info.normal.x, info.normal.y),
-                info.alpha,
-            )
+            return None
 
     def shapes_collide(self, b: "Shape") -> ContactPointSet:
         """Get contact information about this shape and shape b.

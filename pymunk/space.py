@@ -772,7 +772,7 @@ class Space(PickleMixin, object):
             self._space, point, max_distance, shape_filter, info
         )
 
-        shape = shape = Shape._from_cp_shape(_shape)
+        shape = Shape._from_cp_shape(_shape)
 
         if shape != None:
             return PointQueryInfo(
@@ -857,7 +857,7 @@ class Space(PickleMixin, object):
             self._space, start, end, radius, shape_filter, info
         )
 
-        shape = shape = Shape._from_cp_shape(_shape)
+        shape = Shape._from_cp_shape(_shape)
         if shape != None:
             return SegmentQueryInfo(
                 shape,

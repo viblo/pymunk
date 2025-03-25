@@ -12,10 +12,12 @@ Changelog
    Changed body.constraints to return a KeysView of the Constraints attached to the body. Note that its still weak references to the Constraints. 
    Reversed the dependency between bodies and shapes. Now the Body owns the connection, and the Shape only keeps a weak ref to the Body. That means that if you remove a Body, then any shapes not referenced anywhere else will also be removed. 
    Changed body.shapes to return a KeysView instead of a set of the shapes.
+   Changed Space.segment_query to return None in case the query did not hit the shape.
 
    Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks.
    If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.
 
+   Changed type of PointQueryInfo.shape, SegmentQueryInfo.shape and ShapeQueryInfo.shape to not be Optional, they will always have a shape.
    New feature: ShapeFilter.rejects_collision()
    New feature: Added Vec2d.polar_tuple
    Optimized Vec2d.angle and Vec2d.angle_degrees (note that the optimized versions treat 0 length vectors with x and/or y equal to -0 slightly differently.)

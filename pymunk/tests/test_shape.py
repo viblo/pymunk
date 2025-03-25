@@ -32,15 +32,14 @@ class UnitTestShape(unittest.TestCase):
         c.cache_bb()
 
         info = c.segment_query((10, -50), (10, 50))
-        self.assertEqual(info.shape, None)
-        self.assertEqual(info.point, (10, 50))
-        self.assertEqual(info.normal, (0, 0))
-        self.assertEqual(info.alpha, 1.0)
+        self.assertEqual(info, None)
 
         info = c.segment_query((10, -50), (10, 50), 6)
+        assert info != None
         self.assertEqual(info.shape, c)
 
         info = c.segment_query((0, -50), (0, 50))
+        assert info != None
         self.assertEqual(info.shape, c)
         self.assertAlmostEqual(info.point.x, 0)
         self.assertAlmostEqual(info.point.y, -5)

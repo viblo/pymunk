@@ -22,8 +22,9 @@ def ext_cpSpacePointQueryFunc(
     gradient: ffi.CData,
     data: ffi.CData,
 ) -> None:
-    self, query_hits = ffi.from_handle(data)
+    _, query_hits = ffi.from_handle(data)
     shape = Shape._from_cp_shape(_shape)
+    assert shape != None
     p = PointQueryInfo(
         shape, Vec2d(point.x, point.y), distance, Vec2d(gradient.x, gradient.y)
     )
@@ -38,8 +39,9 @@ def ext_cpSpaceSegmentQueryFunc(
     alpha: float,
     data: ffi.CData,
 ) -> None:
-    self, query_hits = ffi.from_handle(data)
+    _, query_hits = ffi.from_handle(data)
     shape = Shape._from_cp_shape(_shape)
+    assert shape != None
     p = SegmentQueryInfo(
         shape, Vec2d(point.x, point.y), Vec2d(normal.x, normal.y), alpha
     )
@@ -58,8 +60,9 @@ def ext_cpSpaceBBQueryFunc(_shape: ffi.CData, data: ffi.CData) -> None:
 def ext_cpSpaceShapeQueryFunc(
     _shape: ffi.CData, _points: ffi.CData, data: ffi.CData
 ) -> None:
-    self, query_hits = ffi.from_handle(data)
+    _, query_hits = ffi.from_handle(data)
     found_shape = Shape._from_cp_shape(_shape)
+    assert found_shape != None
     point_set = ContactPointSet._from_cp(_points)
     info = ShapeQueryInfo(found_shape, point_set)
     query_hits.append(info)
