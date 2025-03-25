@@ -740,11 +740,6 @@ class Space(PickleMixin, object):
         )
         return query_hits
 
-    def _get_shape(self, _shape: Any) -> Optional[Shape]:
-        if not bool(_shape):
-            return None
-        return ffi.from_handle(cp.cpShapeGetUserData(_shape))
-
     def point_query_nearest(
         self, point: Tuple[float, float], max_distance: float, shape_filter: ShapeFilter
     ) -> Optional[PointQueryInfo]:
@@ -777,7 +772,7 @@ class Space(PickleMixin, object):
             self._space, point, max_distance, shape_filter, info
         )
 
-        shape = self._get_shape(_shape)
+        shape = shape = Shape._from_cp_shape(_shape)
 
         if shape != None:
             return PointQueryInfo(
@@ -862,7 +857,7 @@ class Space(PickleMixin, object):
             self._space, start, end, radius, shape_filter, info
         )
 
-        shape = self._get_shape(_shape)
+        shape = shape = Shape._from_cp_shape(_shape)
         if shape != None:
             return SegmentQueryInfo(
                 shape,

@@ -1,14 +1,14 @@
 __docformat__ = "reStructuredText"
 
 
-from typing import TYPE_CHECKING, Tuple, Dict, List, Any, Iterable, Sequence
+from typing import TYPE_CHECKING, Any, Dict, List, Sequence, Tuple
 
 if TYPE_CHECKING:
     from .space import Space
-    from .shapes import Shape
 
 from ._chipmunk_cffi import ffi, lib
 from .contact_point_set import ContactPointSet
+from .shapes import Shape
 from .vec2d import Vec2d
 
 
@@ -40,7 +40,7 @@ class Arbiter(object):
 
     @property
     def contact_point_set(self) -> ContactPointSet:
-        """Contact point sets make getting contact information from the 
+        """Contact point sets make getting contact information from the
         Arbiter simpler.
 
         Return `ContactPointSet`"""
@@ -79,18 +79,18 @@ class Arbiter(object):
 
         lib.cpArbiterGetShapes(self._arbiter, shapeA_p, shapeB_p)
 
-        a, b = self._space._get_shape(shapeA_p[0]), self._space._get_shape(shapeB_p[0])
+        a, b = Shape._from_cp_shape(shapeA_p[0]), Shape._from_cp_shape(shapeB_p[0])
         assert a is not None
         assert b is not None
         return a, b
 
     @property
     def restitution(self) -> float:
-        """The calculated restitution (elasticity) for this collision 
-        pair. 
+        """The calculated restitution (elasticity) for this collision
+        pair.
 
-        Setting the value in a pre_solve() callback will override the value 
-        calculated by the space. The default calculation multiplies the 
+        Setting the value in a pre_solve() callback will override the value
+        calculated by the space. The default calculation multiplies the
         elasticity of the two shapes together.
         """
         return lib.cpArbiterGetRestitution(self._arbiter)
@@ -101,10 +101,10 @@ class Arbiter(object):
 
     @property
     def friction(self) -> float:
-        """The calculated friction for this collision pair. 
+        """The calculated friction for this collision pair.
 
-        Setting the value in a pre_solve() callback will override the value 
-        calculated by the space. The default calculation multiplies the 
+        Setting the value in a pre_solve() callback will override the value
+        calculated by the space. The default calculation multiplies the
         friction of the two shapes together.
         """
         return lib.cpArbiterGetFriction(self._arbiter)

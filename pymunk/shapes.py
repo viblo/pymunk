@@ -348,6 +348,13 @@ class Shape(PickleMixin, TypingAttrMixing, object):
     def _hashid(self, v: int) -> None:
         cp.cpShapeSetHashID(self._shape, v)
 
+    @staticmethod
+    def _from_cp_shape(cp_shape: ffi.CData) -> Optional["Shape"]:
+        """Get Pymunk Shape from a Chipmunk Shape pointer"""
+        if not bool(cp_shape):
+            return None
+        return ffi.from_handle(cp.cpShapeGetUserData(cp_shape))
+
     def __getstate__(self) -> _State:
         """Return the state of this object.
 

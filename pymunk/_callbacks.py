@@ -6,6 +6,7 @@ from ._chipmunk_cffi import ffi, lib
 from .arbiter import Arbiter
 from .contact_point_set import ContactPointSet
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
+from .shapes import Shape
 from .vec2d import Vec2d
 
 _logger = logging.getLogger(__name__)
@@ -22,7 +23,7 @@ def ext_cpSpacePointQueryFunc(
     data: ffi.CData,
 ) -> None:
     self, query_hits = ffi.from_handle(data)
-    shape = self._get_shape(_shape)
+    shape = Shape._from_cp_shape(_shape)
     p = PointQueryInfo(
         shape, Vec2d(point.x, point.y), distance, Vec2d(gradient.x, gradient.y)
     )
@@ -38,7 +39,7 @@ def ext_cpSpaceSegmentQueryFunc(
     data: ffi.CData,
 ) -> None:
     self, query_hits = ffi.from_handle(data)
-    shape = self._get_shape(_shape)
+    shape = Shape._from_cp_shape(_shape)
     p = SegmentQueryInfo(
         shape, Vec2d(point.x, point.y), Vec2d(normal.x, normal.y), alpha
     )
@@ -47,8 +48,8 @@ def ext_cpSpaceSegmentQueryFunc(
 
 @ffi.def_extern()
 def ext_cpSpaceBBQueryFunc(_shape: ffi.CData, data: ffi.CData) -> None:
-    self, query_hits = ffi.from_handle(data)
-    shape = self._get_shape(_shape)
+    _, query_hits = ffi.from_handle(data)
+    shape = Shape._from_cp_shape(_shape)
     assert shape is not None
     query_hits.append(shape)
 
@@ -58,7 +59,7 @@ def ext_cpSpaceShapeQueryFunc(
     _shape: ffi.CData, _points: ffi.CData, data: ffi.CData
 ) -> None:
     self, query_hits = ffi.from_handle(data)
-    found_shape = self._get_shape(_shape)
+    found_shape = Shape._from_cp_shape(_shape)
     point_set = ContactPointSet._from_cp(_points)
     info = ShapeQueryInfo(found_shape, point_set)
     query_hits.append(info)
@@ -171,8 +172,8 @@ def ext_cpSpaceDebugDrawDotImpl(
 
 @ffi.def_extern()
 def ext_cpSpaceDebugDrawColorForShapeImpl(_shape: ffi.CData, data: ffi.CData) -> None:
-    options, space = ffi.from_handle(data)
-    shape = space._get_shape(_shape)
+    options, _ = ffi.from_handle(data)
+    shape = Shape._from_cp_shape(_shape)
     return options.color_for_shape(shape)
 
 
