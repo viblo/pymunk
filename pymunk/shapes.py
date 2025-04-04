@@ -63,9 +63,9 @@ class Shape(PickleMixin, TypingAttrMixing, object):
             if cp_space != ffi.NULL:
                 cp.cpSpaceRemoveShape(cp_space, cp_shape)
 
-            cp_body = cp.cpShapeGetBody(cp_shape)
-            if cp_body != ffi.NULL:
-                cp.cpShapeSetBody(cp_shape, ffi.NULL)
+            # cp_body = cp.cpShapeGetBody(cp_shape)
+            # if cp_body != ffi.NULL:
+            #     cp.cpShapeSetBody(cp_shape, ffi.NULL)
             cp.cpShapeFree(cp_shape)
 
         self._shape = ffi.gc(_shape, shapefree)
