@@ -137,7 +137,7 @@ class UnitTestArbiter(unittest.TestCase):
             self.assertAlmostEqual(p1.distance, -11)
 
             # check for length of points
-            ps2.points = []
+            ps2.points = ()
 
             def f() -> None:
                 arb.contact_point_set = ps2

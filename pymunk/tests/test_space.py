@@ -1045,10 +1045,10 @@ class UnitTestSpace(unittest.TestCase):
         s.add(j1, j2)
 
         h = s.add_default_collision_handler()
-        h.begin = f1
+        h.begin = f2
 
         h = s.add_wildcard_collision_handler(1)
-        h.pre_solve = f1
+        h.pre_solve = f2
 
         h = s.add_collision_handler(1, 2)
         h.post_solve = f1
@@ -1192,3 +1192,7 @@ class UnitTestSpace(unittest.TestCase):
 
 def f1(*args: Any, **kwargs: Any) -> None:
     pass
+
+
+def f2(*args: Any, **kwargs: Any) -> bool:
+    return True

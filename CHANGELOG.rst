@@ -12,7 +12,8 @@ Changelog
    Changed body.constraints to return a KeysView of the Constraints attached to the body. Note that its still weak references to the Constraints. 
    Reversed the dependency between bodies and shapes. Now the Body owns the connection, and the Shape only keeps a weak ref to the Body. That means that if you remove a Body, then any shapes not referenced anywhere else will also be removed. 
    Changed body.shapes to return a KeysView instead of a set of the shapes.
-   Changed Space.segment_query to return None in case the query did not hit the shape.
+   Changed Shape.segment_query to return None in case the query did not hit the shape.
+   Changed ContactPointSet.points to be a tuple and not list to make it clear its length is fixed.
 
    Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks.
    If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.
