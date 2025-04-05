@@ -300,7 +300,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.assertTrue(self.called2)
 
-    def testShapes(self) -> None:
+    def testShapesAndBodies(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -324,6 +324,8 @@ class UnitTestArbiter(unittest.TestCase):
             self.assertEqual(len(arb.shapes), 2)
             self.assertEqual(arb.shapes[0], c1)
             self.assertEqual(arb.shapes[1], c2)
+            self.assertEqual(arb.bodies[0], arb.shapes[0].body)
+            self.assertEqual(arb.bodies[1], arb.shapes[1].body)
             return True
 
         s.add_collision_handler(1, 2).pre_solve = pre_solve

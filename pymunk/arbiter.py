@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Sequence, Tuple
 
 if TYPE_CHECKING:
     from .space import Space
+    from .body import Body
 
 from ._chipmunk_cffi import ffi, lib
 from .contact_point_set import ContactPointSet
@@ -68,6 +69,24 @@ class Arbiter(object):
             raise Exception(msg)
 
         lib.cpArbiterSetContactPointSet(self._arbiter, ffi.addressof(_set))
+
+    @property
+    def bodies(self) -> Tuple["Body", "Body"]:
+        """The the bodies in the order their corresponding shapes were defined
+        in the collision handler associated with this arbiter.
+
+        This is a shorthand to get the bodes::
+
+            arb.bodies == arb.shapes[0].body, arb.shapes[1].body .
+        """
+        a, b = self.shapes
+        assert (
+            a.body != None
+        ), "Shape should have a body. Could be a bug in Pymunk, please report"
+        assert (
+            b.body != None
+        ), "Shape should have a body. Could be a bug in Pymunk, please report"
+        return a.body, b.body
 
     @property
     def shapes(self) -> Tuple["Shape", "Shape"]:

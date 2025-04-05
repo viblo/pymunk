@@ -18,6 +18,7 @@ Changelog
    Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks.
    If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.
 
+   New feature: Arbiter.bodies shorthand to ge the shapes' bodies in the Arbiter
    Changed type of PointQueryInfo.shape, SegmentQueryInfo.shape and ShapeQueryInfo.shape to not be Optional, they will always have a shape.
    New feature: ShapeFilter.rejects_collision()
    New feature: Added Vec2d.polar_tuple
