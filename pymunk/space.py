@@ -3,6 +3,7 @@ __docformat__ = "reStructuredText"
 import math
 import platform
 import weakref
+from collections.abc import KeysView
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -148,22 +149,47 @@ class Space(PickleMixin, object):
         self._bodies_to_check: Set[Body] = set()
 
     @property
-    def shapes(self) -> List[Shape]:
-        """A list of all the shapes added to this space
+    def shapes(self) -> KeysView[Shape]:
+        """The shapes added to this space returned as a KeysView.
 
-        (includes both static and non-static)
+        Since its a view that is returned it will update as shapes are added::
+
+        >>> import pymunk
+        >>> s = pymunk.Space()
+        >>> s.add(pymunk.Circle(s.static_body, 1))
+        >>> shapes_view = s.shapes
+        >>> len(shapes_view)
+        1
+        >>> s.add(pymunk.Circle(s.static_body, 2))
+        >>> len(shapes_view)
+        2
         """
-        return list(self._shapes)
+        return self._shapes.keys()
 
     @property
-    def bodies(self) -> List[Body]:
-        """A list of the bodies added to this space"""
-        return list(self._bodies)
+    def bodies(self) -> KeysView[Body]:
+        """The bodies added to this space returned as a KeysView.
+
+        This includes both static and non-static bodies added to the Space.
+
+        Since its a view that is returned it will update as bodies are added::
+
+        >>> import pymunk
+        >>> s = pymunk.Space()
+        >>> s.add(pymunk.Body())
+        >>> bodies_view = s.bodies
+        >>> len(bodies_view)
+        1
+        >>> s.add(pymunk.Body())
+        >>> len(bodies_view)
+        2
+        """
+        return self._bodies.keys()
 
     @property
-    def constraints(self) -> List[Constraint]:
-        """A list of the constraints added to this space"""
-        return list(self._constraints)
+    def constraints(self) -> KeysView[Constraint]:
+        """The constraints added to this space as a KeysView."""
+        return self._constraints.keys()
 
     def _setup_static_body(self, static_body: Body) -> None:
         static_body._space = weakref.ref(self)
@@ -968,13 +994,13 @@ class Space(PickleMixin, object):
 
         d["special"].append(("pymunk_version", _version.version))
         # bodies needs to be added to the state before their shapes.
-        d["special"].append(("bodies", self.bodies))
+        d["special"].append(("bodies", list(self.bodies)))
         if self._static_body != None:
             # print("getstate", self._static_body)
             d["special"].append(("_static_body", self._static_body))
 
-        d["special"].append(("shapes", self.shapes))
-        d["special"].append(("constraints", self.constraints))
+        d["special"].append(("shapes", list(self.shapes)))
+        d["special"].append(("constraints", list(self.constraints)))
 
         handlers = []
         for k, v in self._handlers.items():

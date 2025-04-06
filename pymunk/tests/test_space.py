@@ -102,18 +102,18 @@ class UnitTestSpace(unittest.TestCase):
     def testAddRemove(self) -> None:
         s = p.Space()
 
-        self.assertEqual(s.bodies, [])
-        self.assertEqual(s.shapes, [])
+        self.assertTrue(len(s.bodies) == 0)
+        self.assertTrue(len(s.shapes) == 0)
 
         b = p.Body(1, 2)
         s.add(b)
-        self.assertEqual(s.bodies, [b])
-        self.assertEqual(s.shapes, [])
+        self.assertEqual(list(s.bodies), [b])
+        self.assertTrue(len(s.shapes) == 0)
 
         c1 = p.Circle(b, 10)
         s.add(c1)
-        self.assertEqual(s.bodies, [b])
-        self.assertEqual(s.shapes, [c1])
+        self.assertEqual(list(s.bodies), [b])
+        self.assertEqual(list(s.shapes), [c1])
 
         c2 = p.Circle(b, 15)
         s.add(c2)
@@ -122,16 +122,16 @@ class UnitTestSpace(unittest.TestCase):
         self.assertTrue(c2 in s.shapes)
 
         s.remove(c1)
-        self.assertEqual(s.shapes, [c2])
+        self.assertEqual(list(s.shapes), [c2])
 
         s.remove(c2, b)
-        self.assertEqual(s.bodies, [])
-        self.assertEqual(s.shapes, [])
+        self.assertEqual(len(s.bodies), 0)
+        self.assertEqual(len(s.shapes), 0)
 
         # note that shape is before the body, which is something to test
         s.add(c2, b)
-        self.assertEqual(s.bodies, [b])
-        self.assertEqual(s.shapes, [c2])
+        self.assertEqual(list(s.bodies), [b])
+        self.assertEqual(list(s.shapes), [c2])
 
     def testAddShapeAsserts(self) -> None:
         s1 = p.Space()
@@ -937,7 +937,7 @@ class UnitTestSpace(unittest.TestCase):
         ch = s.add_collision_handler(0, 0).pre_solve = pre_solve
 
         s.step(0.1)
-        self.assertEqual([], s.shapes)
+        self.assertEqual(len(s.shapes), 0)
         self.assertEqual(self.calls, 1)
 
         s.step(0.1)
@@ -1164,9 +1164,10 @@ class UnitTestSpace(unittest.TestCase):
 
         # TODO: to assert that everything is working as it should all
         # properties on the cached the arbiters should be asserted.
-
-        self.assertAlmostEqual(s.bodies[0].position.x, s_copy.bodies[0].position.x)
-        self.assertAlmostEqual(s.bodies[0].position.y, s_copy.bodies[0].position.y)
+        bodies = list(s.bodies)
+        copy_bodies = list(s_copy.bodies)
+        self.assertAlmostEqual(bodies[0].position.x, copy_bodies[0].position.x)
+        self.assertAlmostEqual(bodies[0].position.y, copy_bodies[0].position.y)
 
     def testDeleteSpaceWithObjects(self) -> None:
         s = p.Space()

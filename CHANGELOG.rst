@@ -2,6 +2,8 @@
 Changelog 
 =========
 .. Pymunk 7.0.0
+   Changed Space.shapes, Space.bodies and Space.constraints to return a KeysView of instead of a list of the items. Note that this means its no longer a copy. To get the old behavior, do list(space.shapes) etc.
+
    Breaking: At least one of the two bodies attached to constraint/joint must be dynamic. 
    New feature: Vec2d supports bool to test if zero. (bool(Vec2d(2,3) == True) Note this is a breaking change.
    Added Vec2d.length_squared, and depreacted Vec2d.get_length_sqrd()
@@ -14,7 +16,7 @@ Changelog
    Changed body.shapes to return a KeysView instead of a set of the shapes.
    Changed Shape.segment_query to return None in case the query did not hit the shape.
    Changed ContactPointSet.points to be a tuple and not list to make it clear its length is fixed.
-
+   
    Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks.
    If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.
 
