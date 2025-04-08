@@ -16,7 +16,8 @@ Changelog
    Changed body.shapes to return a KeysView instead of a set of the shapes.
    Changed Shape.segment_query to return None in case the query did not hit the shape.
    Changed ContactPointSet.points to be a tuple and not list to make it clear its length is fixed.
-   
+   Switch from using Chipmunk to the new Munk2D fork of Chipmunk.
+
    Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks.
    If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.
 
