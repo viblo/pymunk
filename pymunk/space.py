@@ -152,7 +152,8 @@ class Space(PickleMixin, object):
     def shapes(self) -> KeysView[Shape]:
         """The shapes added to this space returned as a KeysView.
 
-        Since its a view that is returned it will update as shapes are added::
+        Since its a view that is returned it will update as shapes are
+        added.
 
         >>> import pymunk
         >>> s = pymunk.Space()
@@ -171,8 +172,7 @@ class Space(PickleMixin, object):
         """The bodies added to this space returned as a KeysView.
 
         This includes both static and non-static bodies added to the Space.
-
-        Since its a view that is returned it will update as bodies are added::
+        Since its a view that is returned it will update as bodies are added:
 
         >>> import pymunk
         >>> s = pymunk.Space()
