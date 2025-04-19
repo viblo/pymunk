@@ -16,19 +16,19 @@ Changes:
 Breaking changes
 
 - Changed Space.shapes, Space.bodies and Space.constraints to return a KeysView of instead of a list of the items. Note that this means the returned collection is no longer a copy. To get the old behavior, you can convert to list manually, like list(space.shapes).
-- At least one of the two bodies attached to constraint/joint must be dynamic. 
+- At least one of the two bodies attached to constraint/joint must be dynamic.  
 - Vec2d now supports bool to test if zero. (bool(Vec2d(2,3) == True) Note this is a breaking change.
-- Added Vec2d.length_squared, and depreacted Vec2d.get_length_sqrd()
+- Added Vec2d.length_squared, and deprecated Vec2d.get_length_sqrd()
 - Added Vec2d.get_distance_squared(), and deprecated Vec2d.get_dist_sqrd()
 - A dynamic body must have non-zero mass when calling Space.step (either from Body.mass, or by setting mass or density on a Shape attached to the Body). Its not valid to set mass to 0 on a dynamic body attached to a space. 
-- Deprecated matplotlib_util. If you think this is a useful module and you use it, please create an issue on the Pymunk issue track
+- Deprecated matplotlib_util. If you think this is a useful module, and you use it, please create an issue on the Pymunk issue track
 - Dropped support for Python 3.8
 - Changed body.constraints to return a KeysView of the Constraints attached to the body. Note that its still weak references to the Constraints. 
 - Reversed the dependency between bodies and shapes. Now the Body owns the connection, and the Shape only keeps a weak ref to the Body. That means that if you remove a Body, then any shapes not referenced anywhere else will also be removed. 
 - Changed body.shapes to return a KeysView instead of a set of the shapes.
 - Changed Shape.segment_query to return None in case the query did not hit the shape.
 - Changed ContactPointSet.points to be a tuple and not list to make it clear its length is fixed.
-- Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks. If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.
+- Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks.
 
 New non-breaking features
 - Switched from using Chipmunk to the new Munk2D fork of Chipmunk (see https://github.com/viblo/Munk2D for details).

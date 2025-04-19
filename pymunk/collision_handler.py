@@ -76,9 +76,6 @@ class CollisionHandler(object):
 
     @begin.setter
     def begin(self, func: _CollisionCallbackBool) -> None:
-        assert (
-            func is not None
-        ), "To reset the begin callback, set handler.begin = CollisionHandler.always_collide"
         self._begin = func
 
         if self._begin == CollisionHandler.always_collide:
@@ -102,9 +99,6 @@ class CollisionHandler(object):
 
     @pre_solve.setter
     def pre_solve(self, func: _CollisionCallbackBool) -> None:
-        assert (
-            func is not None
-        ), "To reset the pre_solve callback, set handler.pre_solve = CollisionHandler.always_collide"
         self._pre_solve = func
 
         if self._pre_solve == CollisionHandler.always_collide:
@@ -127,9 +121,6 @@ class CollisionHandler(object):
 
     @post_solve.setter
     def post_solve(self, func: _CollisionCallbackNoReturn) -> None:
-        assert (
-            func is not None
-        ), "To reset the post_solve callback, set handler.post_solve = CollisionHandler.do_nothing"
         self._post_solve = func
 
         if self._post_solve == CollisionHandler.do_nothing:
@@ -154,9 +145,6 @@ class CollisionHandler(object):
 
     @separate.setter
     def separate(self, func: _CollisionCallbackNoReturn) -> None:
-        assert (
-            func is not None
-        ), "To reset the separate callback, set handler.separate = CollisionHandler.do_nothing"
         self._separate = func
 
         if self._separate == CollisionHandler.do_nothing:
