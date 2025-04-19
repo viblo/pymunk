@@ -66,3 +66,48 @@ jobs:
         with:
           path: ./wheelhouse/*.whl
           retention-days: 7
+
+  build_ios:
+    name: Build wheels for iOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          submodules: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5.5.0
+        with:
+          python-version: "3.x"
+
+      - name: Install cibuildwheel
+        run: |
+          python -m pip install -U pip
+          # Use main branch until iOS support is released.
+          # python -m pip install cibuildwheel==3.0.0
+          python -m pip install git+https://github.com/pypa/cibuildwheel.git
+
+      - name: Build wheels
+        run: python -m cibuildwheel
+        env:
+          IPHONEOS_DEPLOYMENT_TARGET: "23.0"
+          CIBW_PLATFORM: ios
+          CIBW_ARCHS: auto
+          CIBW_BUILD_VERBOSITY: 1
+          CIBW_BEFORE_BUILD_IOS: |
+            # download wheel and pretend that it's compatible with the current platform settings
+            curl https://files.pythonhosted.org/packages/8b/f1/672d303ddf17c24fc83afd712316fda78dc6fce1cd53011b839483e1ecc8/cffi-1.17.1-cp313-cp313-macosx_11_0_arm64.whl -L -o cffi-1.17.1-py3-none-any.whl && \
+            pip install cffi-1.17.1-py3-none-any.whl && \
+            # install the rest of the dependencies
+            python -m pip install setuptools wheel
+          CIBW_BEFORE_BUILD:
+            python -m pip install setuptools wheel cffi
+          CIBW_XBUILD_TOOLS : "curl pkg-config tar"
+          CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          path: ./wheelhouse/*.whl
+          retention-days: 7
