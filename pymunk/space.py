@@ -1005,13 +1005,13 @@ class Space(PickleMixin, object):
         handlers = []
         for k, v in self._handlers.items():
             h: Dict[str, Any] = {}
-            if v._begin is not None:
+            if v._begin != CollisionHandler.always_collide:
                 h["_begin"] = v._begin
-            if v._pre_solve is not None:
+            if v._pre_solve != CollisionHandler.always_collide:
                 h["_pre_solve"] = v._pre_solve
-            if v._post_solve is not None:
+            if v._post_solve != CollisionHandler.do_nothing:
                 h["_post_solve"] = v._post_solve
-            if v._separate is not None:
+            if v._separate != CollisionHandler.do_nothing:
                 h["_separate"] = v._separate
             handlers.append((k, h))
 
