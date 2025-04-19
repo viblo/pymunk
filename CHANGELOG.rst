@@ -1,48 +1,50 @@
 =========
 Changelog 
 =========
-.. Pymunk 7.0.0 (2025-04-16?)
+Pymunk 7.0.0 (2025-04-10)
+-------------------------
 
-    **Many improvements release**
+**Many improvements, with some breaking changes!**
 
-    This is a big cleanup release with several breaking changes. If you upgrade from an older version, make sure to pay attention, especially the Space.bodies, Space.shapes and shape.constraints updates can break silently! 
+This is a big cleanup release with several breaking changes. If you upgrade from an older version, make sure to pay attention, especially the Space.bodies, Space.shapes and shape.constraints updates can break silently! 
 
-    Extra thanks for Github user aetle for a number of suggestions and feedback for this pymunk release
+Extra thanks for Github user aetle for a number of suggestions and feedback for this Pymunk release!
 
-    Changes:
 
-    Breaking changes
+Changes:
 
-    - Changed Space.shapes, Space.bodies and Space.constraints to return a KeysView of instead of a list of the items. Note that this means the returned collection is no longer a copy. To get the old behavior, do list(space.shapes) etc.
-    - At least one of the two bodies attached to constraint/joint must be dynamic. 
-    - Vec2d now supports bool to test if zero. (bool(Vec2d(2,3) == True) Note this is a breaking change.
-    - Added Vec2d.length_squared, and depreacted Vec2d.get_length_sqrd()
-    - Added Vec2d.get_distance_squared(), and deprecated Vec2d.get_dist_sqrd()
-    - A dynamic body must have non-zero mass when calling Space.step (either from Body.mass, or by setting mass or density on a Shape attached to the Body). Its not valid to set mass to 0 on a dynamic body attached to a space. 
-    - Deprecated matplotlib_util. If you think this is a useful module and you use it, please create an issue on the Pymunk issue track
-    - Dropped support for Python 3.8
-    - Changed body.constraints to return a KeysView of the Constraints attached to the body. Note that its still weak references to the Constraints. 
-    - Reversed the dependency between bodies and shapes. Now the Body owns the connection, and the Shape only keeps a weak ref to the Body. That means that if you remove a Body, then any shapes not referenced anywhere else will also be removed. 
-    - Changed body.shapes to return a KeysView instead of a set of the shapes.
-    - Changed Shape.segment_query to return None in case the query did not hit the shape.
-    - Changed ContactPointSet.points to be a tuple and not list to make it clear its length is fixed.
-    - Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks. If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.
+Breaking changes
 
-    New non-breaking features
-      - Switched from using Chipmunk to the new Munk2D fork of Chipmunk (see https://github.com/viblo/Munk2D for details).
-      - Added Arbiter.bodies shorthand to get the shapes' bodies in the Arbiter
-      - New method ShapeFilter.rejects_collision() that checks if the filter would reject a collision with another filter.
-      - New method Vec2d.polar_tuple that return the vector as polar coordinates
-      - Build and publish wheels for Linux ARM and Pypy 3.11
-      - Changed type of PointQueryInfo.shape, SegmentQueryInfo.shape and ShapeQueryInfo.shape to not be Optional, they will always have a shape.   
+- Changed Space.shapes, Space.bodies and Space.constraints to return a KeysView of instead of a list of the items. Note that this means the returned collection is no longer a copy. To get the old behavior, you can convert to list manually, like list(space.shapes).
+- At least one of the two bodies attached to constraint/joint must be dynamic. 
+- Vec2d now supports bool to test if zero. (bool(Vec2d(2,3) == True) Note this is a breaking change.
+- Added Vec2d.length_squared, and depreacted Vec2d.get_length_sqrd()
+- Added Vec2d.get_distance_squared(), and deprecated Vec2d.get_dist_sqrd()
+- A dynamic body must have non-zero mass when calling Space.step (either from Body.mass, or by setting mass or density on a Shape attached to the Body). Its not valid to set mass to 0 on a dynamic body attached to a space. 
+- Deprecated matplotlib_util. If you think this is a useful module and you use it, please create an issue on the Pymunk issue track
+- Dropped support for Python 3.8
+- Changed body.constraints to return a KeysView of the Constraints attached to the body. Note that its still weak references to the Constraints. 
+- Reversed the dependency between bodies and shapes. Now the Body owns the connection, and the Shape only keeps a weak ref to the Body. That means that if you remove a Body, then any shapes not referenced anywhere else will also be removed. 
+- Changed body.shapes to return a KeysView instead of a set of the shapes.
+- Changed Shape.segment_query to return None in case the query did not hit the shape.
+- Changed ContactPointSet.points to be a tuple and not list to make it clear its length is fixed.
+- Added default do_nothing and always_collide callback functions to the CollisionHandler, so that its clear how to reset and align with other callbacks. If in old code you did handler.begin = None, you should now instead to handler.begin = CollisionHandler.always_collide etc.
 
-    Other improvements
-     - Optimized Vec2d.angle and Vec2d.angle_degrees. Note that the optimized versions treat 0 length vectors with x and/or y equal to -0 slightly differently.
-     - Fixed issue with accessing Body.space after space is deleted and GCed.
-     - Improved documentation in many places (Vec2d, Poly, Shape and more)
-     - Internal cleanup of code
+New non-breaking features
+- Switched from using Chipmunk to the new Munk2D fork of Chipmunk (see https://github.com/viblo/Munk2D for details).
+- Added Arbiter.bodies shorthand to get the shapes' bodies in the Arbiter
+- New method ShapeFilter.rejects_collision() that checks if the filter would reject a collision with another filter.
+- New method Vec2d.polar_tuple that return the vector as polar coordinates
+- Build and publish wheels for Linux ARM and Pypy 3.11
+- Changed type of PointQueryInfo.shape, SegmentQueryInfo.shape and ShapeQueryInfo.shape to not be Optional, they will always have a shape.   
 
-    Extra thanks for aetle for a number of suggestions for improvements in this pymunk release
+Other improvements
+- Optimized Vec2d.angle and Vec2d.angle_degrees. Note that the optimized versions treat 0 length vectors with x and/or y equal to -0 slightly differently.
+- Fixed issue with accessing Body.space after space is deleted and GCed.
+- Improved documentation in many places (Vec2d, Poly, Shape and more)
+- Internal cleanup of code
+
+Extra thanks for aetle for a number of suggestions for improvements in this pymunk release
 
 
 Pymunk 6.11.1 (2025-02-09)
@@ -54,6 +56,7 @@ This is a patch update to Pymunk that removes debug logging. This should an
 issue with GC on Python 3.13.
 
 Changes:
+
  - Remove debug logging
 
 
@@ -68,8 +71,9 @@ does not work anymore. The release also adds back pre-built wheels for Pypy
 with a workaround until Pypy make a new release.
 
 Changes:
-  - Support Pyglet 2.1.x (this means Pyglet 2.0.x wont work)
-  - Readded Pypy pre-built wheels
+
+- Support Pyglet 2.1.x (this means Pyglet 2.0.x wont work)
+- Readded Pypy pre-built wheels
 
 
 Pymunk 6.10.0 (2024-12-22)

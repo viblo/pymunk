@@ -1,9 +1,9 @@
 """The batch module contain functions to efficiently get and set space data in
-   a batch insteaf of one by one. 
+   a batch instead of one by one.
 
-.. note:: 
-    This module is highly experimental and will likely change in future Pymunk 
-    verisons including major, minor and patch verisons! 
+.. note::
+    This module is highly experimental and will likely change in future Pymunk
+    verisons including major, minor and patch verisons!
 
 
 To get data out
@@ -21,7 +21,7 @@ First create space and two bodies.
 >>> s.add(b2, pymunk.Circle(b2, 4))
 
 To get data out first create a Buffer holder object, which is used to reuse
-the underlying arrays between calls. Then call the batch method. Note that 
+the underlying arrays between calls. Then call the batch method. Note that
 the fields on the body to extract need to be specified explicitly.
 
 >>> data = pymunk.batch.Buffer()
@@ -31,9 +31,9 @@ the fields on the body to extract need to be specified explicitly.
 ...     data,
 ... )
 
-The data is available in the Buffer object as cffi buffers. One that 
-contains any int data, and one that contains floating point data. You can 
-either use it directly like here, but also pass it in to 3rd parties that 
+The data is available in the Buffer object as cffi buffers. One that
+contains any int data, and one that contains floating point data. You can
+either use it directly like here, but also pass it in to 3rd parties that
 implements the buffer protocol like numpy arrays.
 
 >>> list(memoryview(data.int_buf()).cast("P")) == [b1.id, b2.id]
@@ -42,7 +42,7 @@ True
 [1.0, 2.0, 3.0, 4.0]
 
 Its also possible to get the arbiters with collision data. Note that we need
-to call step to run the simulation, and clear the data data buffers first so 
+to call step to run the simulation, and clear the data data buffers first so
 they can be reused:
 
 >>> s.step(1)
