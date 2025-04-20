@@ -21,10 +21,11 @@ authors = [{ name = "Victor Blomqvist", email = "vb@viblo.se" }]
 readme = "README.rst"
 description = "Pymunk is a easy-to-use pythonic 2D physics library"
 keywords = ["pygame", "2d", "physics", "rigid body"]
+license = "MIT"
+license-files = ["LICENSE.txt"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Games/Entertainment",
     "Topic :: Software Development :: Libraries",
