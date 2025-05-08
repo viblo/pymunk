@@ -3,13 +3,14 @@ __docformat__ = "reStructuredText"
 import math
 import platform
 import weakref
-from collections.abc import KeysView
+from collections.abc import KeysView, Mapping
 from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
     Dict,
     Hashable,
+    Iterator,
     List,
     Optional,
     Set,
@@ -40,6 +41,36 @@ if TYPE_CHECKING:
     from .bb import BB
 
 _AddableObjects = Union[Body, Shape, Constraint]
+
+
+class Handlers(Mapping[Union[None, int, Tuple[int, int]], CollisionHandler]):
+
+    def __init__(self, space: "Space") -> None:
+        self.space = space
+
+    _handlers: Dict[Union[None, int, Tuple[int, int]], CollisionHandler] = {}
+
+    def __getitem__(self, key: Union[None, int, Tuple[int, int]]) -> CollisionHandler:
+        if key in self._handlers:
+            return self._handlers[key]
+        if key == None:
+            self._handlers[None] = self.space.add_global_collision_handler()
+            return self._handlers[None]
+        elif isinstance(key, int):
+            self._handlers[key] = self.space.add_wildcard_collision_handler(key)
+            return self._handlers[key]
+        elif isinstance(key, tuple):
+            assert isinstance(key, tuple)
+            self._handlers[key] = self.space.add_collision_handler(key[0], key[1])
+            return self._handlers[key]
+        else:
+            raise ValueError()
+
+    def __len__(self) -> int:
+        return len(self._handlers)
+
+    def __iter__(self) -> Iterator[Union[None, int, Tuple[int, int]]]:
+        return iter(self._handlers)
 
 
 class Space(PickleMixin, object):
@@ -147,6 +178,8 @@ class Space(PickleMixin, object):
         self._add_later: Set[_AddableObjects] = set()
         self._remove_later: Set[_AddableObjects] = set()
         self._bodies_to_check: Set[Body] = set()
+
+        self._collision_handlers = Handlers(self)
 
     @property
     def shapes(self) -> KeysView[Shape]:
@@ -497,27 +530,24 @@ class Space(PickleMixin, object):
         """
         cp.cpSpaceReindexStatic(self._space)
 
-    def _get_threads(self) -> int:
+    @property
+    def threads(self) -> int:
+        """The number of threads to use for running the step function.
+
+        Only valid when the Space was created with threaded=True. Currently the
+        max limit is 2, setting a higher value wont have any effect. The
+        default is 1 regardless if the Space was created with threaded=True,
+        to keep determinism in the simulation. Note that Windows does not
+        support the threaded solver.
+        """
         if self.threaded:
             return int(cp.cpHastySpaceGetThreads(self._space))
         return 1
 
-    def _set_threads(self, n: int) -> None:
+    @threads.setter
+    def threads(self, n: int) -> None:
         if self.threaded:
             cp.cpHastySpaceSetThreads(self._space, n)
-
-    threads = property(
-        _get_threads,
-        _set_threads,
-        doc="""The number of threads to use for running the step function. 
-        
-        Only valid when the Space was created with threaded=True. Currently the 
-        max limit is 2, setting a higher value wont have any effect. The 
-        default is 1 regardless if the Space was created with threaded=True, 
-        to keep determinism in the simulation. Note that Windows does not 
-        support the threaded solver.
-        """,
-    )
 
     def use_spatial_hash(self, dim: float, count: int) -> None:
         """Switch the space to use a spatial hash instead of the bounding box
@@ -601,6 +631,12 @@ class Space(PickleMixin, object):
 
         self._post_step_callbacks.clear()
 
+    @property
+    def collision_handlers(
+        self,
+    ) -> Mapping[Union[None, int, Tuple[int, int]], CollisionHandler]:
+        return self.collision_handlers
+
     def add_collision_handler(
         self, collision_type_a: int, collision_type_b: int
     ) -> CollisionHandler:
@@ -663,7 +699,7 @@ class Space(PickleMixin, object):
         self._handlers[collision_type_a] = ch
         return ch
 
-    def add_default_collision_handler(self) -> CollisionHandler:
+    def add_global_collision_handler(self) -> CollisionHandler:
         """Return a reference to the default collision handler or that is
         used to process all collisions that don't have a more specific
         handler.
@@ -675,7 +711,7 @@ class Space(PickleMixin, object):
         if None in self._handlers:
             return self._handlers[None]
 
-        _h = cp.cpSpaceAddDefaultCollisionHandler(self._space)
+        _h = cp.cpSpaceAddGlobalCollisionHandler(self._space)
         h = CollisionHandler(_h, self)
         self._handlers[None] = h
         return h
@@ -1005,9 +1041,9 @@ class Space(PickleMixin, object):
         handlers = []
         for k, v in self._handlers.items():
             h: Dict[str, Any] = {}
-            if v._begin != CollisionHandler.always_collide:
+            if v._begin != CollisionHandler.do_nothing:
                 h["_begin"] = v._begin
-            if v._pre_solve != CollisionHandler.always_collide:
+            if v._pre_solve != CollisionHandler.do_nothing:
                 h["_pre_solve"] = v._pre_solve
             if v._post_solve != CollisionHandler.do_nothing:
                 h["_post_solve"] = v._post_solve
@@ -1065,7 +1101,7 @@ class Space(PickleMixin, object):
             elif k == "_handlers":
                 for k2, hd in v:
                     if k2 == None:
-                        h = self.add_default_collision_handler()
+                        h = self.add_global_collision_handler()
                     elif isinstance(k2, tuple):
                         h = self.add_collision_handler(k2[0], k2[1])
                     else:

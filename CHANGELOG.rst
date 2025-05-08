@@ -4,6 +4,8 @@ Changelog
 Pymunk 7.0.0 (2025-04-10)
 -------------------------
 
+TODO: Add note of new collision handler logic!
+
 **Many improvements, with some breaking changes!**
 
 This is a big cleanup release with several breaking changes. If you upgrade from an older version, make sure to pay attention, especially the Space.bodies, Space.shapes and shape.constraints updates can break silently! 
@@ -45,6 +47,9 @@ Other improvements
 - Internal cleanup of code
 
 Extra thanks for aetle for a number of suggestions for improvements in this pymunk release
+
+
+
 
 
 Pymunk 6.11.1 (2025-02-09)

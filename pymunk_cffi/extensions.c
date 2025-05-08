@@ -394,11 +394,11 @@ void cpSpaceEachCachedArbiter(cpSpace *space, cpArbiterIteratorFunc func, void *
 }
 
 static inline cpCollisionHandler *
-cpSpaceLookupHandler(cpSpace *space, cpCollisionType a, cpCollisionType b, cpCollisionHandler *defaultValue)
+cpSpaceLookupHandler(cpSpace *space, cpCollisionType a, cpCollisionType b)
 {
     cpCollisionType types[] = {a, b};
     cpCollisionHandler *handler = (cpCollisionHandler *)cpHashSetFind(space->collisionHandlers, CP_HASH_PAIR(a, b), types);
-    return (handler ? handler : defaultValue);
+    return (handler ? handler : &cpCollisionHandlerDoNothing);
 }
 
 void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb)
@@ -422,18 +422,14 @@ void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb)
 
     // Set handlers to their defaults
     cpCollisionType typeA = a->type, typeB = b->type;
-    cpCollisionHandler *defaultHandler = &space->defaultHandler;
-    cpCollisionHandler *handler = arb->handler = cpSpaceLookupHandler(space, typeA, typeB, defaultHandler);
+    cpCollisionHandler *handler = arb->handler = cpSpaceLookupHandler(space, typeA, typeB);
 
     // Check if the types match, but don't swap for a default handler which use the wildcard for type A.
     cpBool swapped = arb->swapped = (typeA != handler->typeA && handler->typeA != CP_WILDCARD_COLLISION_TYPE);
 
-    if (handler != defaultHandler || space->usesWildcards)
-    {
-        // The order of the main handler swaps the wildcard handlers too. Uffda.
-        arb->handlerA = cpSpaceLookupHandler(space, (swapped ? typeB : typeA), CP_WILDCARD_COLLISION_TYPE, &cpCollisionHandlerDoNothing);
-        arb->handlerB = cpSpaceLookupHandler(space, (swapped ? typeA : typeB), CP_WILDCARD_COLLISION_TYPE, &cpCollisionHandlerDoNothing);
-    }
+    // The order of the main handler swaps the wildcard handlers too. Uffda.
+    arb->handlerA = cpSpaceLookupHandler(space, (swapped ? typeB : typeA), CP_WILDCARD_COLLISION_TYPE);
+    arb->handlerB = cpSpaceLookupHandler(space, (swapped ? typeA : typeB), CP_WILDCARD_COLLISION_TYPE);
 
     // Update the arbiter's state
     cpArrayPush(space->arbiters, arb);
@@ -489,5 +485,4 @@ void cpMessage(const char *condition, const char *file, int line, int isError, i
 	ext_pyLog(formattedMessage);	
 }
 
-static cpBool AlwaysCollide(cpArbiter *arb, cpSpace *space, cpDataPointer data){return cpTrue;}
 static void DoNothing(cpArbiter *arb, cpSpace *space, cpDataPointer data){}

@@ -18,8 +18,8 @@ extern "Python" {
 
     // cpSpace.h
 
-    cpBool ext_cpCollisionBeginFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
-    cpBool ext_cpCollisionPreSolveFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
+    void ext_cpCollisionBeginFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
+    void ext_cpCollisionPreSolveFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
     void ext_cpCollisionPostSolveFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
     void ext_cpCollisionSeparateFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
 

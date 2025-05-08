@@ -40,6 +40,26 @@ class Arbiter(object):
         self._space = space
 
     @property
+    def process_collision(self) -> bool:
+        """Decides if the collision should be processed or rejected.
+
+        Set this during a begin() or pre_solve() callback to override
+        the default (True) value.
+
+        Set this to true to process the collision normally or
+        false to cause pymunk to ignore the collision entirely. If you set it to
+        false from a `begin` callback, the `pre_solve` and `post_solve` callbacks will never be run,
+        but you will still recieve a separate event when the shapes stop
+        overlapping.
+
+        """
+        return lib.cpArbiterGetProcessCollision(self._arbiter)
+
+    @process_collision.setter
+    def process_collision(self, v: bool) -> None:
+        lib.cpArbiterSetProcessCollision(self._arbiter, v)
+
+    @property
     def contact_point_set(self) -> ContactPointSet:
         """Contact point sets make getting contact information from the
         Arbiter simpler.

@@ -8,8 +8,7 @@ if TYPE_CHECKING:
 from ._chipmunk_cffi import ffi, lib
 from .arbiter import Arbiter
 
-_CollisionCallbackBool = Callable[[Arbiter, "Space", Dict[Any, Any]], bool]
-_CollisionCallbackNoReturn = Callable[[Arbiter, "Space", Dict[Any, Any]], None]
+_CollisionCallback = Callable[[Arbiter, "Space", Dict[Any, Any]], None]
 
 
 class CollisionHandler(object):
@@ -42,10 +41,10 @@ class CollisionHandler(object):
         self._handler.userData = self._userData
 
         self._space = space
-        self._begin: _CollisionCallbackBool = CollisionHandler.always_collide
-        self._pre_solve: _CollisionCallbackBool = CollisionHandler.always_collide
-        self._post_solve: _CollisionCallbackNoReturn = CollisionHandler.do_nothing
-        self._separate: _CollisionCallbackNoReturn = CollisionHandler.do_nothing
+        self._begin: _CollisionCallback = CollisionHandler.do_nothing
+        self._pre_solve: _CollisionCallback = CollisionHandler.do_nothing
+        self._post_solve: _CollisionCallback = CollisionHandler.do_nothing
+        self._separate: _CollisionCallback = CollisionHandler.do_nothing
 
         self._data: Dict[Any, Any] = {}
 
@@ -61,10 +60,10 @@ class CollisionHandler(object):
         return self._data
 
     @property
-    def begin(self) -> _CollisionCallbackBool:
+    def begin(self) -> _CollisionCallback:
         """Two shapes just started touching for the first time this step.
 
-        ``func(arbiter, space, data) -> bool``
+        ``func(arbiter, space, data)``
 
         Return true from the callback to process the collision normally or
         false to cause pymunk to ignore the collision entirely. If you return
@@ -75,22 +74,21 @@ class CollisionHandler(object):
         return self._begin
 
     @begin.setter
-    def begin(self, func: _CollisionCallbackBool) -> None:
+    def begin(self, func: _CollisionCallback) -> None:
         self._begin = func
 
-        if self._begin == CollisionHandler.always_collide:
-            self._handler.beginFunc = ffi.addressof(lib, "AlwaysCollide")
+        if self._begin == CollisionHandler.do_nothing:
+            self._handler.beginFunc = ffi.addressof(lib, "DoNothing")
         else:
             self._handler.beginFunc = lib.ext_cpCollisionBeginFunc
 
     @property
-    def pre_solve(self) -> _CollisionCallbackBool:
+    def pre_solve(self) -> _CollisionCallback:
         """Two shapes are touching during this step.
 
-        ``func(arbiter, space, data) -> bool``
+        ``func(arbiter, space, data)``
 
-        Return false from the callback to make pymunk ignore the collision
-        this step or true to process it normally. Additionally, you may
+        Additionally, you may
         override collision values using Arbiter.friction, Arbiter.elasticity
         or Arbiter.surfaceVelocity to provide custom friction, elasticity,
         or surface velocity values. See Arbiter for more info.
@@ -98,16 +96,16 @@ class CollisionHandler(object):
         return self._pre_solve
 
     @pre_solve.setter
-    def pre_solve(self, func: _CollisionCallbackBool) -> None:
+    def pre_solve(self, func: _CollisionCallback) -> None:
         self._pre_solve = func
 
-        if self._pre_solve == CollisionHandler.always_collide:
-            self._handler.preSolveFunc = ffi.addressof(lib, "AlwaysCollide")
+        if self._pre_solve == CollisionHandler.do_nothing:
+            self._handler.preSolveFunc = ffi.addressof(lib, "DoNothing")
         else:
             self._handler.preSolveFunc = lib.ext_cpCollisionPreSolveFunc
 
     @property
-    def post_solve(self) -> _CollisionCallbackNoReturn:
+    def post_solve(self) -> _CollisionCallback:
         """Two shapes are touching and their collision response has been
         processed.
 
@@ -120,7 +118,7 @@ class CollisionHandler(object):
         return self._post_solve
 
     @post_solve.setter
-    def post_solve(self, func: _CollisionCallbackNoReturn) -> None:
+    def post_solve(self, func: _CollisionCallback) -> None:
         self._post_solve = func
 
         if self._post_solve == CollisionHandler.do_nothing:
@@ -128,10 +126,8 @@ class CollisionHandler(object):
         else:
             self._handler.postSolveFunc = lib.ext_cpCollisionPostSolveFunc
 
-        self._handler.postSolveFunc = lib.ext_cpCollisionPostSolveFunc
-
     @property
-    def separate(self) -> _CollisionCallbackNoReturn:
+    def separate(self) -> _CollisionCallback:
         """Two shapes have just stopped touching for the first time this
         step.
 
@@ -144,7 +140,7 @@ class CollisionHandler(object):
         return self._separate
 
     @separate.setter
-    def separate(self, func: _CollisionCallbackNoReturn) -> None:
+    def separate(self, func: _CollisionCallback) -> None:
         self._separate = func
 
         if self._separate == CollisionHandler.do_nothing:
@@ -161,14 +157,3 @@ class CollisionHandler(object):
         do nothing method.
         """
         return
-
-    @staticmethod
-    def always_collide(arbiter: Arbiter, space: "Space", data: Dict[Any, Any]) -> bool:
-        """The default method used for the begin and pre_solve callbacks.
-
-        It will always return True, meaning the collision should not be ignored.
-
-        Note that its more efficient to set this method than to define your own
-        return True method.
-        """
-        return True

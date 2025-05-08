@@ -1,6 +1,5 @@
 import logging
 import math
-import warnings
 
 from ._chipmunk_cffi import ffi, lib
 from .arbiter import Arbiter
@@ -202,51 +201,17 @@ def ext_cpMarchSampleFunc(point: ffi.CData, data: ffi.CData) -> float:
 @ffi.def_extern()
 def ext_cpCollisionBeginFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
-) -> bool:
+) -> None:
     handler = ffi.from_handle(data)
-    x = handler._begin(Arbiter(_arb, handler._space), handler._space, handler.data)
-    if isinstance(x, bool):
-        return x
-
-    func_name = handler._begin.__code__.co_name
-    filename = handler._begin.__code__.co_filename
-    lineno = handler._begin.__code__.co_firstlineno
-
-    warnings.warn_explicit(
-        "Function '" + func_name + "' should return a bool to"
-        " indicate if the collision should be processed or not when"
-        " used as 'begin' or 'pre_solve' collision callback.",
-        UserWarning,
-        filename,
-        lineno,
-        handler._begin.__module__,
-    )
-    return True
+    handler._begin(Arbiter(_arb, handler._space), handler._space, handler.data)
 
 
 @ffi.def_extern()
 def ext_cpCollisionPreSolveFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
-) -> bool:
+) -> None:
     handler = ffi.from_handle(data)
-    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
-    if isinstance(x, bool):
-        return x
-
-    func_name = handler._pre_solve.__code__.co_name
-    filename = handler._pre_solve.__code__.co_filename
-    lineno = handler._pre_solve.__code__.co_firstlineno
-
-    warnings.warn_explicit(
-        "Function '" + func_name + "' should return a bool to"
-        " indicate if the collision should be processed or not when"
-        " used as 'begin' or 'pre_solve' collision callback.",
-        UserWarning,
-        filename,
-        lineno,
-        handler._pre_solve.__module__,
-    )
-    return True
+    handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
 
 
 @ffi.def_extern()
