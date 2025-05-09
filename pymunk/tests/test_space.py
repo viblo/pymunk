@@ -509,7 +509,7 @@ class UnitTestSpace(unittest.TestCase):
 
         self.hits = 0
 
-        def begin(arb: p.Arbiter, space: p.Space, data: Any):
+        def begin(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.hits += h.data["test"]
 
         h = s.add_collision_handler(0, 0)
@@ -532,7 +532,7 @@ class UnitTestSpace(unittest.TestCase):
 
         d = {}
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             d["shapes"] = arb.shapes
             d["space"] = space  # type: ignore
             d["test"] = data["test"]
@@ -761,13 +761,13 @@ class UnitTestSpace(unittest.TestCase):
         b = p.Body(1, 2)
         c = p.Circle(b, 2)
 
-        def pre_solve_add(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve_add(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             space.add(b, c)
             space.add(c, b)
             self.assertTrue(b not in s.bodies)
             self.assertTrue(c not in s.shapes)
 
-        def pre_solve_remove(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve_remove(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             space.remove(b, c)
             space.remove(c, b)
             self.assertTrue(b in s.bodies)
@@ -791,7 +791,7 @@ class UnitTestSpace(unittest.TestCase):
         self._setUp()
         s = self.s
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             space.remove(*arb.shapes)
 
         s.add_collision_handler(0, 0).pre_solve = pre_solve
@@ -819,7 +819,7 @@ class UnitTestSpace(unittest.TestCase):
 
         d = {}
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             d["shapes"] = arb.shapes
             d["space"] = space  # type: ignore
 
@@ -847,7 +847,7 @@ class UnitTestSpace(unittest.TestCase):
 
         d = {}
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             d["shapes"] = arb.shapes
             d["space"] = space  # type: ignore
 
@@ -879,7 +879,7 @@ class UnitTestSpace(unittest.TestCase):
                 s.remove(shape)
             test_self.calls += 1
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             # note that we dont pass on the whole arbiters object, instead
             # we take only the shapes.
             space.add_post_step_callback(callback, 0, arb.shapes, test_self=self)

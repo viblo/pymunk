@@ -23,7 +23,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertEqual(arb.restitution, 0.18)
             arb.restitution = 1
 
@@ -51,7 +51,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertEqual(arb.friction, 0.18)
             arb.friction = 1
 
@@ -79,7 +79,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertAlmostEqual(arb.surface_velocity.x, 1.38461538462)
             self.assertAlmostEqual(arb.surface_velocity.y, -0.923076923077)
 
@@ -105,7 +105,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             # check inital values
             ps: p.ContactPointSet = arb.contact_point_set
             self.assertEqual(len(ps.points), 1)
@@ -216,17 +216,15 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def pre_solve1(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+        def pre_solve1(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertTrue(arb.is_first_contact)
-            return True
 
         s.add_collision_handler(1, 2).pre_solve = pre_solve1
 
         s.step(0.1)
 
-        def pre_solve2(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+        def pre_solve2(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertFalse(arb.is_first_contact)
-            return True
 
         s.add_collision_handler(1, 2).pre_solve = pre_solve2
 
@@ -243,7 +241,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, c2)
 
-        def pre_solve1(arb: p.Arbiter, space: p.Space, data: Any):
+        def pre_solve1(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertAlmostEqual(arb.normal.x, 0.44721359)
             self.assertAlmostEqual(arb.normal.y, 0.89442719)
 
@@ -313,14 +311,13 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.called = False
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.called = True
             self.assertEqual(len(arb.shapes), 2)
             self.assertEqual(arb.shapes[0], c1)
             self.assertEqual(arb.shapes[1], c2)
             self.assertEqual(arb.bodies[0], arb.shapes[0].body)
             self.assertEqual(arb.bodies[1], arb.shapes[1].body)
-            return True
 
         s.add_collision_handler(1, 2).pre_solve = pre_solve
 

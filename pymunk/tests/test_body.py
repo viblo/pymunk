@@ -398,5 +398,5 @@ def pf(body: p.Body, dt: float) -> None:
     body.pf = True
 
 
-def vf(body: p.Body, gravity: Tuple[float, float], damping: float, dt: float) -> None:
+def vf(body: p.Body, gravity: tuple[float, float], damping: float, dt: float) -> None:
     body.vf = True

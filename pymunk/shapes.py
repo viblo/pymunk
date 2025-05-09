@@ -211,7 +211,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         v = cp.cpShapeGetSurfaceVelocity(self._shape)
         return Vec2d(v.x, v.y)
 
-    def _set_surface_velocity(self, surface_v: Tuple[float, float]) -> None:
+    def _set_surface_velocity(self, surface_v: tuple[float, float]) -> None:
         assert len(surface_v) == 2
         cp.cpShapeSetSurfaceVelocity(self._shape, surface_v)
 
@@ -276,12 +276,12 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         _bb = cp.cpShapeGetBB(self._shape)
         return BB(_bb.l, _bb.b, _bb.r, _bb.t)
 
-    def point_query(self, p: Tuple[float, float]) -> PointQueryInfo:
+    def point_query(self, p: tuple[float, float]) -> PointQueryInfo:
         """Check if the given point lies within the shape.
 
         A negative distance means the point is within the shape.
 
-        :return: Tuple of (distance, info)
+        :return: tuple of (distance, info)
         :rtype: (float, :py:class:`PointQueryInfo`)
         """
         assert len(p) == 2
@@ -298,7 +298,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
         )
 
     def segment_query(
-        self, start: Tuple[float, float], end: Tuple[float, float], radius: float = 0
+        self, start: tuple[float, float], end: tuple[float, float], radius: float = 0
     ) -> Optional[SegmentQueryInfo]:
         """Check if the line segment from start to end intersects the shape.
 
@@ -380,7 +380,7 @@ class Circle(Shape):
         self,
         body: Optional["Body"],
         radius: float,
-        offset: Tuple[float, float] = (0, 0),
+        offset: tuple[float, float] = (0, 0),
     ) -> None:
         """body is the body attach the circle to, offset is the offset from the
         body's center of gravity in body local coordinates.
@@ -410,7 +410,7 @@ class Circle(Shape):
         """The Radius of the circle."""
         return cp.cpCircleShapeGetRadius(self._shape)
 
-    def unsafe_set_offset(self, o: Tuple[float, float]) -> None:
+    def unsafe_set_offset(self, o: tuple[float, float]) -> None:
         """Unsafe set the offset of the circle.
 
         .. note::
@@ -441,8 +441,8 @@ class Segment(Shape):
     def __init__(
         self,
         body: Optional["Body"],
-        a: Tuple[float, float],
-        b: Tuple[float, float],
+        a: tuple[float, float],
+        b: tuple[float, float],
         radius: float,
     ) -> None:
         """Create a Segment.
@@ -476,7 +476,7 @@ class Segment(Shape):
         return Vec2d(v.x, v.y)
 
     def unsafe_set_endpoints(
-        self, a: Tuple[float, float], b: Tuple[float, float]
+        self, a: tuple[float, float], b: tuple[float, float]
     ) -> None:
         """Set the two endpoints for this segment.
 
@@ -513,7 +513,7 @@ class Segment(Shape):
         return cp.cpSegmentShapeGetRadius(self._shape)
 
     def set_neighbors(
-        self, prev: Tuple[float, float], next: Tuple[float, float]
+        self, prev: tuple[float, float], next: tuple[float, float]
     ) -> None:
         """When you have a number of segment shapes that are all joined
         together, things can still collide with the "cracks" between the
@@ -534,7 +534,7 @@ class Poly(Shape):
     def __init__(
         self,
         body: Optional["Body"],
-        vertices: Sequence[Tuple[float, float]],
+        vertices: Sequence[tuple[float, float]],
         transform: Optional[Transform] = None,
         radius: float = 0,
     ) -> None:
@@ -616,7 +616,7 @@ class Poly(Shape):
 
     @staticmethod
     def create_box(
-        body: Optional["Body"], size: Tuple[float, float] = (10, 10), radius: float = 0
+        body: Optional["Body"], size: tuple[float, float] = (10, 10), radius: float = 0
     ) -> "Poly":
         """Convenience function to create a box with given width and height.
 
@@ -665,7 +665,7 @@ class Poly(Shape):
 
         return self
 
-    def get_vertices(self) -> List[Vec2d]:
+    def get_vertices(self) -> list[Vec2d]:
         """Get the vertices in local coordinates for the polygon.
 
         If you need the vertices in world coordinates then the vertices can be
@@ -696,7 +696,7 @@ class Poly(Shape):
 
     def unsafe_set_vertices(
         self,
-        vertices: Sequence[Tuple[float, float]],
+        vertices: Sequence[tuple[float, float]],
         transform: Optional[Transform] = None,
     ) -> None:
         """Unsafe set the vertices of the poly.

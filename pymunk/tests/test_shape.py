@@ -298,7 +298,7 @@ class UnitTestSegment(unittest.TestCase):
 
         self.num_of_begins = 0
 
-        def begin(arb: p.Arbiter, space: p.Space, data: Any):
+        def begin(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.num_of_begins += 1
 
         s.add_global_collision_handler().begin = begin

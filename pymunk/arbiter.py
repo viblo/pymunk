@@ -245,7 +245,7 @@ def _contact_to_dict(_contact: ffi.CData) -> dict[str, Any]:
     return d
 
 
-def _contacts_from_dicts(ds: Sequence[dict[str, Any]]) -> dist[ffi.CData]:
+def _contacts_from_dicts(ds: Sequence[dict[str, Any]]) -> ffi.CData:
     _contacts = lib.cpContactArrAlloc(len(ds))
     for i in range(len(ds)):
         _contact = _contacts[i]

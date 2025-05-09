@@ -687,7 +687,7 @@ class Space(PickleMixin, object):
         self._handlers[collision_type_a] = ch
         return ch
 
-    def add_all_collision_handler(self) -> CollisionHandler:
+    def add_global_collision_handler(self) -> CollisionHandler:
         """Return a reference to the default collision handler or that is
         used to process all collisions that don't have a more specific
         handler.
