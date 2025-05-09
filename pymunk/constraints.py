@@ -68,7 +68,7 @@ __all__ = [
     "SimpleMotor",
 ]
 
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 if TYPE_CHECKING:
     from .space import Space
@@ -274,7 +274,7 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
         a._constraints[self] = None
         b._constraints[self] = None
 
-    def __getstate__(self) -> Dict[str, List[Tuple[str, Any]]]:
+    def __getstate__(self) -> dict[str, list[tuple[str, Any]]]:
         """Return the state of this object
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
@@ -287,7 +287,7 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
 
         return d
 
-    def __setstate__(self, state: Dict[str, List[Tuple[str, Any]]]) -> None:
+    def __setstate__(self, state: dict[str, list[tuple[str, Any]]]) -> None:
         """Unpack this object from a saved state.
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
@@ -314,8 +314,8 @@ class PinJoint(Constraint):
         self,
         a: "Body",
         b: "Body",
-        anchor_a: Tuple[float, float] = (0, 0),
-        anchor_b: Tuple[float, float] = (0, 0),
+        anchor_a: tuple[float, float] = (0, 0),
+        anchor_b: tuple[float, float] = (0, 0),
     ) -> None:
         """a and b are the two bodies to connect, and anchor_a and anchor_b are
         the anchor points on those bodies.
@@ -333,7 +333,7 @@ class PinJoint(Constraint):
         v = lib.cpPinJointGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: Tuple[float, float]) -> None:
+    def _set_anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPinJointSetAnchorA(self._constraint, anchor)
 
@@ -343,7 +343,7 @@ class PinJoint(Constraint):
         v = lib.cpPinJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: Tuple[float, float]) -> None:
+    def _set_anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPinJointSetAnchorB(self._constraint, anchor)
 
@@ -376,8 +376,8 @@ class SlideJoint(Constraint):
         self,
         a: "Body",
         b: "Body",
-        anchor_a: Tuple[float, float],
-        anchor_b: Tuple[float, float],
+        anchor_a: tuple[float, float],
+        anchor_b: tuple[float, float],
         min: float,
         max: float,
     ) -> None:
@@ -396,7 +396,7 @@ class SlideJoint(Constraint):
         v = lib.cpSlideJointGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: Tuple[float, float]) -> None:
+    def _set_anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpSlideJointSetAnchorA(self._constraint, anchor)
 
@@ -406,7 +406,7 @@ class SlideJoint(Constraint):
         v = lib.cpSlideJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: Tuple[float, float]) -> None:
+    def _set_anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpSlideJointSetAnchorB(self._constraint, anchor)
 
@@ -442,7 +442,7 @@ class PivotJoint(Constraint):
         a: "Body",
         b: "Body",
         *args: Union[
-            Tuple[float, float], Tuple[Tuple[float, float], Tuple[float, float]]
+            tuple[float, float], tuple[tuple[float, float], tuple[float, float]]
         ],
     ) -> None:
         """a and b are the two bodies to connect, and pivot is the point in
@@ -480,7 +480,7 @@ class PivotJoint(Constraint):
         v = lib.cpPivotJointGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: Tuple[float, float]) -> None:
+    def _set_anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPivotJointSetAnchorA(self._constraint, anchor)
 
@@ -490,7 +490,7 @@ class PivotJoint(Constraint):
         v = lib.cpPivotJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: Tuple[float, float]) -> None:
+    def _set_anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPivotJointSetAnchorB(self._constraint, anchor)
 
@@ -513,9 +513,9 @@ class GrooveJoint(Constraint):
         self,
         a: "Body",
         b: "Body",
-        groove_a: Tuple[float, float],
-        groove_b: Tuple[float, float],
-        anchor_b: Tuple[float, float],
+        groove_a: tuple[float, float],
+        groove_b: tuple[float, float],
+        anchor_b: tuple[float, float],
     ) -> None:
         """The groove goes from groove_a to groove_b on body a, and the pivot
         is attached to anchor_b on body b.
@@ -534,7 +534,7 @@ class GrooveJoint(Constraint):
         v = lib.cpGrooveJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: Tuple[float, float]) -> None:
+    def _set_anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpGrooveJointSetAnchorB(self._constraint, anchor)
 
@@ -544,7 +544,7 @@ class GrooveJoint(Constraint):
         v = lib.cpGrooveJointGetGrooveA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_groove_a(self, groove: Tuple[float, float]) -> None:
+    def _set_groove_a(self, groove: tuple[float, float]) -> None:
         assert len(groove) == 2
         lib.cpGrooveJointSetGrooveA(self._constraint, groove)
 
@@ -554,7 +554,7 @@ class GrooveJoint(Constraint):
         v = lib.cpGrooveJointGetGrooveB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_groove_b(self, groove: Tuple[float, float]) -> None:
+    def _set_groove_b(self, groove: tuple[float, float]) -> None:
         assert len(groove) == 2
         lib.cpGrooveJointSetGrooveB(self._constraint, groove)
 
@@ -581,8 +581,8 @@ class DampedSpring(Constraint):
         self,
         a: "Body",
         b: "Body",
-        anchor_a: Tuple[float, float],
-        anchor_b: Tuple[float, float],
+        anchor_a: tuple[float, float],
+        anchor_b: tuple[float, float],
         rest_length: float,
         stiffness: float,
         damping: float,
@@ -617,7 +617,7 @@ class DampedSpring(Constraint):
         v = lib.cpDampedSpringGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: Tuple[float, float]) -> None:
+    def _set_anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpDampedSpringSetAnchorA(self._constraint, anchor)
 
@@ -627,7 +627,7 @@ class DampedSpring(Constraint):
         v = lib.cpDampedSpringGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: Tuple[float, float]) -> None:
+    def _set_anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpDampedSpringSetAnchorB(self._constraint, anchor)
 

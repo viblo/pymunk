@@ -1,7 +1,7 @@
 import gc
 import unittest
 import weakref
-from typing import Any, List
+from typing import Any
 
 import pymunk as p
 from pymunk._weakkeysview import WeakKeysView
@@ -45,7 +45,7 @@ class UnitTestBugs(unittest.TestCase):
 
         _logger = logging.getLogger(__name__)
 
-        def make() -> List[Any]:
+        def make() -> list[Any]:
             s = p.Space()
             b1 = p.Body(1, 2)
             c1 = p.Circle(b1, 2)

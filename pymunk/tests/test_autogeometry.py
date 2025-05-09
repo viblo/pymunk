@@ -1,5 +1,4 @@
 import unittest
-from typing import List, Tuple
 
 import pymunk.autogeometry as a
 from pymunk.bb import BB
@@ -26,32 +25,32 @@ class UnitTestPolylineSet(unittest.TestCase):
 
 class UnitTestAutoGeometry(unittest.TestCase):
     def test_is_closed(self) -> None:
-        not_closed: List[Tuple[float, float]] = [(0, 0), (1, 1), (0, 1)]
-        closed: List[Tuple[float, float]] = [(0, 0), (1, 1), (0, 1), (0, 0)]
+        not_closed: list[tuple[float, float]] = [(0, 0), (1, 1), (0, 1)]
+        closed: list[tuple[float, float]] = [(0, 0), (1, 1), (0, 1), (0, 0)]
         self.assertFalse(a.is_closed(not_closed))
         self.assertTrue(a.is_closed(closed))
 
     def test_simplify_curves(self) -> None:
-        p1: List[Tuple[float, float]] = [(0, 0), (0, 10), (5, 11), (10, 10), (0, 10)]
+        p1: list[tuple[float, float]] = [(0, 0), (0, 10), (5, 11), (10, 10), (0, 10)]
         expected = [(0, 0), (0, 10), (10, 10), (0, 10)]
         actual = a.simplify_curves(p1, 1)
         self.assertEqual(actual, expected)
 
     def test_simplify_vertexes(self) -> None:
-        p1: List[Tuple[float, float]] = [(0, 0), (0, 10), (5, 11), (10, 10), (0, 10)]
+        p1: list[tuple[float, float]] = [(0, 0), (0, 10), (5, 11), (10, 10), (0, 10)]
         expected = [(0, 0), (0, 10), (10, 10), (0, 10)]
         actual = a.simplify_vertexes(p1, 1)
         self.assertEqual(actual, expected)
 
     def test_to_convex_hull(self) -> None:
-        p1: List[Tuple[float, float]] = [(0, 0), (0, 10), (5, 5), (10, 10), (10, 0)]
+        p1: list[tuple[float, float]] = [(0, 0), (0, 10), (5, 5), (10, 10), (10, 0)]
         expected = [(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]
         actual = a.to_convex_hull(p1, 1)
         self.assertEqual(actual, expected)
 
     def test_convex_decomposition(self) -> None:
         # TODO: Use a more complicated polygon as test case
-        p1: List[Tuple[float, float]] = [
+        p1: list[tuple[float, float]] = [
             (0, 0),
             (5, 0),
             (10, 10),
@@ -72,11 +71,11 @@ class UnitTestAutoGeometry(unittest.TestCase):
         # environments, so we cant have this assert here.
         # self.assertEqual(actual, expected)
 
-        open_poly: List[Tuple[float, float]] = [(0, 0), (10, 0), (10, 10)]
+        open_poly: list[tuple[float, float]] = [(0, 0), (10, 0), (10, 10)]
         with self.assertRaises(Exception):
             a.convex_decomposition(open_poly, 0.1)
 
-        wrong_winding: List[Tuple[float, float]] = [(0, 0), (10, 10), (10, 0), (0, 0)]
+        wrong_winding: list[tuple[float, float]] = [(0, 0), (10, 10), (10, 0), (0, 0)]
         with self.assertRaises(Exception):
             a.convex_decomposition(wrong_winding, 0.1)
 
@@ -91,7 +90,7 @@ class UnitTestAutoGeometry(unittest.TestCase):
             "  xxxxx",
         ]
 
-        def sample_func(point: Tuple[float, float]) -> float:
+        def sample_func(point: tuple[float, float]) -> float:
             x = int(point[0])
             y = int(point[1])
             if img[y][x] == "x":
@@ -134,7 +133,7 @@ class UnitTestAutoGeometry(unittest.TestCase):
             "  xxxxx",
         ]
 
-        def sample_func(point: Tuple[float, float]) -> float:
+        def sample_func(point: tuple[float, float]) -> float:
             x = int(point[0])
             y = int(point[1])
             if img[y][x] == "x":

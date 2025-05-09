@@ -4,19 +4,7 @@ import math
 import platform
 import weakref
 from collections.abc import KeysView, Mapping
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    Dict,
-    Hashable,
-    Iterator,
-    List,
-    Optional,
-    Set,
-    Tuple,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Callable, Hashable, Iterator, Optional, Union
 
 from pymunk.constraints import Constraint
 from pymunk.shape_filter import ShapeFilter
@@ -43,14 +31,14 @@ if TYPE_CHECKING:
 _AddableObjects = Union[Body, Shape, Constraint]
 
 
-class Handlers(Mapping[Union[None, int, Tuple[int, int]], CollisionHandler]):
+class Handlers(Mapping[Union[None, int, tuple[int, int]], CollisionHandler]):
 
     def __init__(self, space: "Space") -> None:
         self.space = space
 
-    _handlers: Dict[Union[None, int, Tuple[int, int]], CollisionHandler] = {}
+    _handlers: dict[Union[None, int, tuple[int, int]], CollisionHandler] = {}
 
-    def __getitem__(self, key: Union[None, int, Tuple[int, int]]) -> CollisionHandler:
+    def __getitem__(self, key: Union[None, int, tuple[int, int]]) -> CollisionHandler:
         if key in self._handlers:
             return self._handlers[key]
         if key == None:
@@ -69,7 +57,7 @@ class Handlers(Mapping[Union[None, int, Tuple[int, int]], CollisionHandler]):
     def __len__(self) -> int:
         return len(self._handlers)
 
-    def __iter__(self) -> Iterator[Union[None, int, Tuple[int, int]]]:
+    def __iter__(self) -> Iterator[Union[None, int, tuple[int, int]]]:
         return iter(self._handlers)
 
 
@@ -131,7 +119,7 @@ class Space(PickleMixin, object):
             freefunc = cp.cpSpaceFree
 
         def spacefree(cp_space: ffi.CData) -> None:
-            cp_shapes: List[Shape] = []
+            cp_shapes: list[Shape] = []
             cp_shapes_h = ffi.new_handle(cp_shapes)
             cp.cpSpaceEachShape(cp_space, lib.ext_cpSpaceShapeIteratorFunc, cp_shapes_h)
 
@@ -141,7 +129,7 @@ class Space(PickleMixin, object):
                 lib.cpSpaceRemoveShape(cp_space, cp_shape)
                 lib.cpShapeSetBody(cp_shape, ffi.NULL)
 
-            cp_constraints: List[Constraint] = []
+            cp_constraints: list[Constraint] = []
             cp_constraints_h = ffi.new_handle(cp_constraints)
             cp.cpSpaceEachConstraint(
                 cp_space, lib.ext_cpSpaceConstraintIteratorFunc, cp_constraints_h
@@ -150,7 +138,7 @@ class Space(PickleMixin, object):
                 cp_space = lib.cpConstraintGetSpace(cp_constraint)
                 lib.cpSpaceRemoveConstraint(cp_space, cp_constraint)
 
-            cp_bodys: List[Body] = []
+            cp_bodys: list[Body] = []
             cp_bodys_h = ffi.new_handle(cp_bodys)
             cp.cpSpaceEachBody(cp_space, lib.ext_cpSpaceBodyIteratorFunc, cp_bodys_h)
             for cp_body in cp_bodys:
@@ -161,23 +149,23 @@ class Space(PickleMixin, object):
 
         self._space = ffi.gc(cp_space, spacefree)
 
-        self._handlers: Dict[Any, CollisionHandler] = (
+        self._handlers: dict[Any, CollisionHandler] = (
             {}
         )  # To prevent the gc to collect the callbacks.
 
-        self._post_step_callbacks: Dict[Any, Callable[["Space"], None]] = {}
-        self._removed_shapes: Dict[Shape, None] = {}
+        self._post_step_callbacks: dict[Any, Callable[["Space"], None]] = {}
+        self._removed_shapes: dict[Shape, None] = {}
 
-        self._shapes: Dict[Shape, None] = {}
-        self._bodies: Dict[Body, None] = {}
+        self._shapes: dict[Shape, None] = {}
+        self._bodies: dict[Body, None] = {}
         self._static_body: Optional[Body] = None
-        self._constraints: Dict[Constraint, None] = {}
+        self._constraints: dict[Constraint, None] = {}
 
         self._locked = False
 
-        self._add_later: Set[_AddableObjects] = set()
-        self._remove_later: Set[_AddableObjects] = set()
-        self._bodies_to_check: Set[Body] = set()
+        self._add_later: set[_AddableObjects] = set()
+        self._remove_later: set[_AddableObjects] = set()
+        self._bodies_to_check: set[Body] = set()
 
         self._collision_handlers = Handlers(self)
 
@@ -271,7 +259,7 @@ class Space(PickleMixin, object):
     def iterations(self, value: int) -> None:
         cp.cpSpaceSetIterations(self._space, value)
 
-    def _set_gravity(self, gravity_vector: Tuple[float, float]) -> None:
+    def _set_gravity(self, gravity_vector: tuple[float, float]) -> None:
         assert len(gravity_vector) == 2
         cp.cpSpaceSetGravity(self._space, gravity_vector)
 
@@ -634,7 +622,7 @@ class Space(PickleMixin, object):
     @property
     def collision_handlers(
         self,
-    ) -> Mapping[Union[None, int, Tuple[int, int]], CollisionHandler]:
+    ) -> Mapping[Union[None, int, tuple[int, int]], CollisionHandler]:
         return self.collision_handlers
 
     def add_collision_handler(
@@ -699,7 +687,7 @@ class Space(PickleMixin, object):
         self._handlers[collision_type_a] = ch
         return ch
 
-    def add_global_collision_handler(self) -> CollisionHandler:
+    def add_all_collision_handler(self) -> CollisionHandler:
         """Return a reference to the default collision handler or that is
         used to process all collisions that don't have a more specific
         handler.
@@ -764,8 +752,8 @@ class Space(PickleMixin, object):
         return True
 
     def point_query(
-        self, point: Tuple[float, float], max_distance: float, shape_filter: ShapeFilter
-    ) -> List[PointQueryInfo]:
+        self, point: tuple[float, float], max_distance: float, shape_filter: ShapeFilter
+    ) -> list[PointQueryInfo]:
         """Query space at point for shapes within the given distance range.
 
         The filter is applied to the query and follows the same rules as the
@@ -789,7 +777,7 @@ class Space(PickleMixin, object):
         :rtype: [:py:class:`PointQueryInfo`]
         """
         assert len(point) == 2
-        query_hits: List[PointQueryInfo] = []
+        query_hits: list[PointQueryInfo] = []
         d = (self, query_hits)
         data = ffi.new_handle(d)
         cp.cpSpacePointQuery(
@@ -803,7 +791,7 @@ class Space(PickleMixin, object):
         return query_hits
 
     def point_query_nearest(
-        self, point: Tuple[float, float], max_distance: float, shape_filter: ShapeFilter
+        self, point: tuple[float, float], max_distance: float, shape_filter: ShapeFilter
     ) -> Optional[PointQueryInfo]:
         """Query space at point the nearest shape within the given distance
         range.
@@ -847,11 +835,11 @@ class Space(PickleMixin, object):
 
     def segment_query(
         self,
-        start: Tuple[float, float],
-        end: Tuple[float, float],
+        start: tuple[float, float],
+        end: tuple[float, float],
         radius: float,
         shape_filter: ShapeFilter,
-    ) -> List[SegmentQueryInfo]:
+    ) -> list[SegmentQueryInfo]:
         """Query space along the line segment from start to end with the
         given radius.
 
@@ -874,7 +862,7 @@ class Space(PickleMixin, object):
         """
         assert len(start) == 2
         assert len(end) == 2
-        query_hits: List[SegmentQueryInfo] = []
+        query_hits: list[SegmentQueryInfo] = []
 
         d = (self, query_hits)
         data = ffi.new_handle(d)
@@ -892,8 +880,8 @@ class Space(PickleMixin, object):
 
     def segment_query_first(
         self,
-        start: Tuple[float, float],
-        end: Tuple[float, float],
+        start: tuple[float, float],
+        end: tuple[float, float],
         radius: float,
         shape_filter: ShapeFilter,
     ) -> Optional[SegmentQueryInfo]:
@@ -929,7 +917,7 @@ class Space(PickleMixin, object):
             )
         return None
 
-    def bb_query(self, bb: "BB", shape_filter: ShapeFilter) -> List[Shape]:
+    def bb_query(self, bb: "BB", shape_filter: ShapeFilter) -> list[Shape]:
         """Query space to find all shapes near bb.
 
         The filter is applied to the query and follows the same rules as the
@@ -944,7 +932,7 @@ class Space(PickleMixin, object):
         :rtype: [:py:class:`Shape`]
         """
 
-        query_hits: List[Shape] = []
+        query_hits: list[Shape] = []
 
         d = (self, query_hits)
         data = ffi.new_handle(d)
@@ -954,7 +942,7 @@ class Space(PickleMixin, object):
         )
         return query_hits
 
-    def shape_query(self, shape: Shape) -> List[ShapeQueryInfo]:
+    def shape_query(self, shape: Shape) -> list[ShapeQueryInfo]:
         """Query a space for any shapes overlapping the given shape
 
         .. Note::
@@ -966,7 +954,7 @@ class Space(PickleMixin, object):
         :rtype: [:py:class:`ShapeQueryInfo`]
         """
 
-        query_hits: List[ShapeQueryInfo] = []
+        query_hits: list[ShapeQueryInfo] = []
         d = (self, query_hits)
         data = ffi.new_handle(d)
 
@@ -1014,8 +1002,8 @@ class Space(PickleMixin, object):
     #     """
     #     pass
 
-    def _get_arbiters(self) -> List[ffi.CData]:
-        _arbiters: List[ffi.CData] = []
+    def _get_arbiters(self) -> list[ffi.CData]:
+        _arbiters: list[ffi.CData] = []
         data = ffi.new_handle(_arbiters)
         cp.cpSpaceEachCachedArbiter(self._space, cp.ext_cpArbiterIteratorFunc, data)
         return _arbiters
@@ -1040,7 +1028,7 @@ class Space(PickleMixin, object):
 
         handlers = []
         for k, v in self._handlers.items():
-            h: Dict[str, Any] = {}
+            h: dict[str, Any] = {}
             if v._begin != CollisionHandler.do_nothing:
                 h["_begin"] = v._begin
             if v._pre_solve != CollisionHandler.do_nothing:

@@ -1,6 +1,5 @@
 import pickle
 import unittest
-from typing import List, Tuple
 
 import pymunk as p
 from pymunk.arbiter import Arbiter
@@ -266,9 +265,9 @@ class UnitTestBody(unittest.TestCase):
         s.add(b1, b2, c1, c2)
         s.step(1)
 
-        shapes: List[Shape] = []
+        shapes: list[Shape] = []
 
-        def f(arbiter: Arbiter, shapes: List[Shape]) -> None:
+        def f(arbiter: Arbiter, shapes: list[Shape]) -> None:
             shapes += arbiter.shapes
 
         b1.each_arbiter(f, shapes)

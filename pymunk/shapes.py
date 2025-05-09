@@ -1,7 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import weakref
-from typing import TYPE_CHECKING, List, Optional, Sequence, Tuple
+from typing import TYPE_CHECKING, Optional, Sequence
 
 if TYPE_CHECKING:
     from .body import Body

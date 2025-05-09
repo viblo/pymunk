@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ._chipmunk_cffi import ffi
@@ -50,11 +50,11 @@ class ContactPointSet(object):
     """
 
     normal: Vec2d
-    points: Tuple[ContactPoint, ...]
+    points: tuple[ContactPoint, ...]
 
     __slots__ = ("normal", "points")
 
-    def __init__(self, normal: Vec2d, points: Tuple[ContactPoint, ...]) -> None:
+    def __init__(self, normal: Vec2d, points: tuple[ContactPoint, ...]) -> None:
         self.normal = normal
         self.points = points
 

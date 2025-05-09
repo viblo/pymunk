@@ -30,10 +30,10 @@ Homepage: http://www.pymunk.org
 This is the main containing module of Pymunk. It contains among other things
 the very central Space, Body and Shape classes.
 
-Pymunk uses the standard logging module to log helpful information. It does 
+Pymunk uses the standard logging module to log helpful information. It does
 that under the "pymunk" name. If you do not do anything setup, it will print
-WARNING and higher messages to stderr. (Note that you most likely do not want 
-to set logLevel to DEBUG, since Pymunk might log a lot of debug level 
+WARNING and higher messages to stderr. (Note that you most likely do not want
+to set logLevel to DEBUG, since Pymunk might log a lot of debug level
 messages mostly useful during development of Pymunk itself.)
 
 """
@@ -68,7 +68,7 @@ __all__ = [
     "Vec2d",
 ]
 
-from typing import Sequence, Tuple, cast
+from typing import Sequence, cast
 
 from . import _chipmunk_cffi
 
@@ -119,7 +119,7 @@ def moment_for_circle(
     mass: float,
     inner_radius: float,
     outer_radius: float,
-    offset: Tuple[float, float] = (0, 0),
+    offset: tuple[float, float] = (0, 0),
 ) -> float:
     """Calculate the moment of inertia for a hollow circle
 
@@ -131,7 +131,7 @@ def moment_for_circle(
 
 
 def moment_for_segment(
-    mass: float, a: Tuple[float, float], b: Tuple[float, float], radius: float
+    mass: float, a: tuple[float, float], b: tuple[float, float], radius: float
 ) -> float:
     """Calculate the moment of inertia for a line segment
 
@@ -143,7 +143,7 @@ def moment_for_segment(
     return cp.cpMomentForSegment(mass, a, b, radius)
 
 
-def moment_for_box(mass: float, size: Tuple[float, float]) -> float:
+def moment_for_box(mass: float, size: tuple[float, float]) -> float:
     """Calculate the moment of inertia for a solid box centered on the body.
 
     size should be a tuple of (width, height)
@@ -154,8 +154,8 @@ def moment_for_box(mass: float, size: Tuple[float, float]) -> float:
 
 def moment_for_poly(
     mass: float,
-    vertices: Sequence[Tuple[float, float]],
-    offset: Tuple[float, float] = (0, 0),
+    vertices: Sequence[tuple[float, float]],
+    offset: tuple[float, float] = (0, 0),
     radius: float = 0,
 ) -> float:
     """Calculate the moment of inertia for a solid polygon shape.
@@ -174,7 +174,7 @@ def area_for_circle(inner_radius: float, outer_radius: float) -> float:
 
 
 def area_for_segment(
-    a: Tuple[float, float], b: Tuple[float, float], radius: float
+    a: tuple[float, float], b: tuple[float, float], radius: float
 ) -> float:
     """Area of a beveled segment.
 
@@ -186,7 +186,7 @@ def area_for_segment(
     return cp.cpAreaForSegment(a, b, radius)
 
 
-def area_for_poly(vertices: Sequence[Tuple[float, float]], radius: float = 0) -> float:
+def area_for_poly(vertices: Sequence[tuple[float, float]], radius: float = 0) -> float:
     """Signed area of a polygon shape.
 
     Returns a negative number for polygons with a clockwise winding.

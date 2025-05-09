@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, ClassVar, NamedTuple, Optional, Sequence, Tuple, Type
+from typing import TYPE_CHECKING, ClassVar, NamedTuple, Optional, Sequence, Type
 
 if TYPE_CHECKING:
     from .shapes import Shape
@@ -22,7 +22,7 @@ class SpaceDebugColor(NamedTuple):
     b: float
     a: float
 
-    def as_int(self) -> Tuple[int, int, int, int]:
+    def as_int(self) -> tuple[int, int, int, int]:
         """Return the color as a tuple of ints, where each value is rounded.
 
         >>> SpaceDebugColor(0, 51.1, 101.9, 255).as_int()
@@ -30,7 +30,7 @@ class SpaceDebugColor(NamedTuple):
         """
         return round(self[0]), round(self[1]), round(self[2]), round(self[3])
 
-    def as_float(self) -> Tuple[float, float, float, float]:
+    def as_float(self) -> tuple[float, float, float, float]:
         """Return the color as a tuple of floats, each value divided by 255.
 
         >>> SpaceDebugColor(0, 51, 102, 255).as_float()
@@ -58,9 +58,9 @@ class SpaceDebugDrawOptions(object):
     Use on the flags property to control if constraints should be drawn or not.
     """
 
-    DRAW_COLLISION_POINTS: ClassVar[
-        _DrawFlags
-    ] = lib.CP_SPACE_DEBUG_DRAW_COLLISION_POINTS
+    DRAW_COLLISION_POINTS: ClassVar[_DrawFlags] = (
+        lib.CP_SPACE_DEBUG_DRAW_COLLISION_POINTS
+    )
     """Draw collision points.
     
     Use on the flags property to control if collision points should be drawn or

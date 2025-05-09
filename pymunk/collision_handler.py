@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Any, Callable, Dict
+from typing import TYPE_CHECKING, Any, Callable
 
 if TYPE_CHECKING:
     from .space import Space
@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 from ._chipmunk_cffi import ffi, lib
 from .arbiter import Arbiter
 
-_CollisionCallback = Callable[[Arbiter, "Space", Dict[Any, Any]], None]
+_CollisionCallback = Callable[[Arbiter, "Space", dict[Any, Any]], None]
 
 
 class CollisionHandler(object):
@@ -46,10 +46,10 @@ class CollisionHandler(object):
         self._post_solve: _CollisionCallback = CollisionHandler.do_nothing
         self._separate: _CollisionCallback = CollisionHandler.do_nothing
 
-        self._data: Dict[Any, Any] = {}
+        self._data: dict[Any, Any] = {}
 
     @property
-    def data(self) -> Dict[Any, Any]:
+    def data(self) -> dict[Any, Any]:
         """Data property that get passed on into the
         callbacks.
 
@@ -149,7 +149,7 @@ class CollisionHandler(object):
             self._handler.separateFunc = lib.ext_cpCollisionSeparateFunc
 
     @staticmethod
-    def do_nothing(arbiter: Arbiter, space: "Space", data: Dict[Any, Any]) -> None:
+    def do_nothing(arbiter: Arbiter, space: "Space", data: dict[Any, Any]) -> None:
         """The default do nothing method used for the post_solve and seprate
         callbacks.
 

@@ -1,7 +1,7 @@
 __docformat__ = "reStructuredText"
 
 
-from typing import TYPE_CHECKING, Any, Dict, List, Sequence, Tuple
+from typing import TYPE_CHECKING, Any, Sequence
 
 if TYPE_CHECKING:
     from .space import Space
@@ -91,7 +91,7 @@ class Arbiter(object):
         lib.cpArbiterSetContactPointSet(self._arbiter, ffi.addressof(_set))
 
     @property
-    def bodies(self) -> Tuple["Body", "Body"]:
+    def bodies(self) -> tuple["Body", "Body"]:
         """The the bodies in the order their corresponding shapes were defined
         in the collision handler associated with this arbiter.
 
@@ -109,7 +109,7 @@ class Arbiter(object):
         return a.body, b.body
 
     @property
-    def shapes(self) -> Tuple["Shape", "Shape"]:
+    def shapes(self) -> tuple["Shape", "Shape"]:
         """Get the shapes in the order that they were defined in the
         collision handler associated with this arbiter
         """
@@ -156,7 +156,7 @@ class Arbiter(object):
         v = lib.cpArbiterGetSurfaceVelocity(self._arbiter)
         return Vec2d(v.x, v.y)
 
-    def _set_surface_velocity(self, velocity: Tuple[float, float]) -> None:
+    def _set_surface_velocity(self, velocity: tuple[float, float]) -> None:
         lib.cpArbiterSetSurfaceVelocity(self._arbiter, velocity)
 
     surface_velocity = property(
@@ -223,14 +223,14 @@ class Arbiter(object):
 
 def _contacts_to_dicts(
     _contacts: Sequence[ffi.CData], count: int
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     res = []
     for i in range(count):
         res.append(_contact_to_dict(_contacts[i]))
     return res
 
 
-def _contact_to_dict(_contact: ffi.CData) -> Dict[str, Any]:
+def _contact_to_dict(_contact: ffi.CData) -> dict[str, Any]:
     d = {}
     d["r1"] = _contact.r1.x, _contact.r1.y
     d["r2"] = _contact.r2.x, _contact.r2.y
@@ -245,7 +245,7 @@ def _contact_to_dict(_contact: ffi.CData) -> Dict[str, Any]:
     return d
 
 
-def _contacts_from_dicts(ds: Sequence[Dict[str, Any]]) -> List[ffi.CData]:
+def _contacts_from_dicts(ds: Sequence[dict[str, Any]]) -> dist[ffi.CData]:
     _contacts = lib.cpContactArrAlloc(len(ds))
     for i in range(len(ds)):
         _contact = _contacts[i]
@@ -265,7 +265,7 @@ def _contacts_from_dicts(ds: Sequence[Dict[str, Any]]) -> List[ffi.CData]:
     return _contacts
 
 
-def _arbiter_from_dict(d: Dict[str, Any], space: "Space") -> ffi.CData:
+def _arbiter_from_dict(d: dict[str, Any], space: "Space") -> ffi.CData:
     _arb = lib.cpArbiterNew(
         d["a"]._shape, d["b"]._shape
     )  # this will also set the bodies
@@ -285,7 +285,7 @@ def _arbiter_from_dict(d: Dict[str, Any], space: "Space") -> ffi.CData:
     return _arb
 
 
-def _arbiter_to_dict(_arbiter: ffi.CData, space: "Space") -> Dict[str, Any]:
+def _arbiter_to_dict(_arbiter: ffi.CData, space: "Space") -> dict[str, Any]:
     d = {}
     d["e"] = _arbiter.e
     d["u"] = _arbiter.u

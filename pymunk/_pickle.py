@@ -1,8 +1,8 @@
 import copy
-from typing import Any, ClassVar, Dict, List, Tuple, TypeVar
+from typing import Any, ClassVar, TypeVar
 
 T = TypeVar("T", bound="PickleMixin")
-_State = Dict[str, List[Tuple[str, Any]]]
+_State = dict[str, list[tuple[str, Any]]]
 
 
 class PickleMixin:
@@ -10,9 +10,9 @@ class PickleMixin:
     and copy.
     """
 
-    _pickle_attrs_init: ClassVar[List[str]] = []
-    _pickle_attrs_general: ClassVar[List[str]] = []
-    _pickle_attrs_skip: ClassVar[List[str]] = []
+    _pickle_attrs_init: ClassVar[list[str]] = []
+    _pickle_attrs_general: ClassVar[list[str]] = []
+    _pickle_attrs_skip: ClassVar[list[str]] = []
 
     def __getstate__(self) -> _State:
         """Return the state of this object
@@ -46,7 +46,7 @@ class PickleMixin:
         modules with this class.
         """
 
-        init_attrs: List[str] = []
+        init_attrs: list[str] = []
 
         init_args = [v for k, v in state["init"]]
         self.__init__(*init_args)  # type: ignore

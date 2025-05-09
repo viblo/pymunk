@@ -2,7 +2,7 @@ __docformat__ = "reStructuredText"
 
 import weakref
 from collections.abc import KeysView
-from typing import TYPE_CHECKING, Any, Callable, ClassVar, Optional, Tuple  # Literal,
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, Optional  # Literal,
 from weakref import WeakKeyDictionary
 
 if TYPE_CHECKING:
@@ -269,7 +269,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     def moment(self, moment: float) -> None:
         lib.cpBodySetMoment(self._body, moment)
 
-    def _set_position(self, pos: Tuple[float, float]) -> None:
+    def _set_position(self, pos: tuple[float, float]) -> None:
         assert len(pos) == 2
         lib.cpBodySetPosition(self._body, pos)
 
@@ -288,7 +288,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         queries against the space.""",
     )
 
-    def _set_center_of_gravity(self, cog: Tuple[float, float]) -> None:
+    def _set_center_of_gravity(self, cog: tuple[float, float]) -> None:
         assert len(cog) == 2
         lib.cpBodySetCenterOfGravity(self._body, cog)
 
@@ -306,7 +306,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         """,
     )
 
-    def _set_velocity(self, vel: Tuple[float, float]) -> None:
+    def _set_velocity(self, vel: tuple[float, float]) -> None:
         assert len(vel) == 2
         lib.cpBodySetVelocity(self._body, vel)
 
@@ -320,7 +320,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         doc="""Linear velocity of the center of gravity of the body.""",
     )
 
-    def _set_force(self, f: Tuple[float, float]) -> None:
+    def _set_force(self, f: tuple[float, float]) -> None:
         assert len(f) == 2
         lib.cpBodySetForce(self._body, f)
 
@@ -480,7 +480,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
     @staticmethod
     def update_velocity(
-        body: "Body", gravity: Tuple[float, float], damping: float, dt: float
+        body: "Body", gravity: tuple[float, float], damping: float, dt: float
     ) -> None:
         """Default rigid body velocity integration function.
 
@@ -502,7 +502,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         lib.cpBodyUpdatePosition(body._body, dt)
 
     def apply_force_at_world_point(
-        self, force: Tuple[float, float], point: Tuple[float, float]
+        self, force: tuple[float, float], point: tuple[float, float]
     ) -> None:
         """Add the force force to body as if applied from the world point.
 
@@ -519,7 +519,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         lib.cpBodyApplyForceAtWorldPoint(self._body, force, point)
 
     def apply_force_at_local_point(
-        self, force: Tuple[float, float], point: Tuple[float, float] = (0, 0)
+        self, force: tuple[float, float], point: tuple[float, float] = (0, 0)
     ) -> None:
         """Add the local force force to body as if applied from the body
         local point.
@@ -529,7 +529,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         lib.cpBodyApplyForceAtLocalPoint(self._body, force, point)
 
     def apply_impulse_at_world_point(
-        self, impulse: Tuple[float, float], point: Tuple[float, float]
+        self, impulse: tuple[float, float], point: tuple[float, float]
     ) -> None:
         """Add the impulse impulse to body as if applied from the world point."""
         assert len(impulse) == 2
@@ -537,7 +537,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         lib.cpBodyApplyImpulseAtWorldPoint(self._body, impulse, point)
 
     def apply_impulse_at_local_point(
-        self, impulse: Tuple[float, float], point: Tuple[float, float] = (0, 0)
+        self, impulse: tuple[float, float], point: tuple[float, float] = (0, 0)
     ) -> None:
         """Add the local impulse impulse to body as if applied from the body
         local point.
@@ -663,7 +663,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         """
         return self._shapes.keys()
 
-    def local_to_world(self, v: Tuple[float, float]) -> Vec2d:
+    def local_to_world(self, v: tuple[float, float]) -> Vec2d:
         """Convert body local coordinates to world space coordinates
 
         Many things are defined in coordinates local to a body meaning that
@@ -676,7 +676,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         v2 = lib.cpBodyLocalToWorld(self._body, v)
         return Vec2d(v2.x, v2.y)
 
-    def world_to_local(self, v: Tuple[float, float]) -> Vec2d:
+    def world_to_local(self, v: tuple[float, float]) -> Vec2d:
         """Convert world space coordinates to body local coordinates
 
         :param v: Vector in world space coordinates
@@ -685,7 +685,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         v2 = lib.cpBodyWorldToLocal(self._body, v)
         return Vec2d(v2.x, v2.y)
 
-    def velocity_at_world_point(self, point: Tuple[float, float]) -> Vec2d:
+    def velocity_at_world_point(self, point: tuple[float, float]) -> Vec2d:
         """Get the absolute velocity of the rigid body at the given world
         point
 
@@ -697,7 +697,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         v = lib.cpBodyGetVelocityAtWorldPoint(self._body, point)
         return Vec2d(v.x, v.y)
 
-    def velocity_at_local_point(self, point: Tuple[float, float]) -> Vec2d:
+    def velocity_at_local_point(self, point: tuple[float, float]) -> Vec2d:
         """Get the absolute velocity of the rigid body at the given body
         local point
         """

@@ -1,7 +1,6 @@
 import os
 import os.path
 import platform
-from typing import List
 
 from cffi import FFI  # type: ignore
 
@@ -38,7 +37,7 @@ for folder in source_folders:
         elif fn[-1] == "o":
             os.remove(fn_path)
 
-libraries: List[str] = []
+libraries: list[str] = []
 # if os == linux:
 #    libraries.append('m')
 

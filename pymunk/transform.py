@@ -1,5 +1,5 @@
 import math
-from typing import NamedTuple, Tuple, Union, overload
+from typing import NamedTuple, Union, overload
 
 from .vec2d import Vec2d
 
@@ -50,20 +50,20 @@ class Transform(NamedTuple):
     ty: float = 0
 
     @overload
-    def __matmul__(self, other: Tuple[float, float]) -> Vec2d: ...
+    def __matmul__(self, other: tuple[float, float]) -> Vec2d: ...
 
     @overload
     def __matmul__(
-        self, other: Tuple[float, float, float, float, float, float]
+        self, other: tuple[float, float, float, float, float, float]
     ) -> "Transform": ...
 
     def __matmul__(
         self,
         other: Union[
-            Tuple[float, float], Tuple[float, float, float, float, float, float]
+            tuple[float, float], tuple[float, float, float, float, float, float]
         ],
     ) -> Union[Vec2d, "Transform"]:
-        """Multiply this transform with a Transform, Vec2d or Tuple of size 2
+        """Multiply this transform with a Transform, Vec2d or tuple of size 2
         or 6.
 
 

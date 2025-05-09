@@ -1,4 +1,4 @@
-"""This example spawns (bouncing) balls randomly on a L-shape constructed of 
+"""This example spawns (bouncing) balls randomly on a L-shape constructed of
 two segment shapes. Not interactive.
 """
 
@@ -6,7 +6,6 @@ __docformat__ = "reStructuredText"
 
 # Python imports
 import random
-from typing import List
 
 # Library imports
 import pygame
@@ -44,7 +43,7 @@ class BouncyBalls(object):
         self._add_static_scenery()
 
         # Balls that exist in the world
-        self._balls: List[pymunk.Circle] = []
+        self._balls: list[pymunk.Circle] = []
 
         # Execution control and time until the next ball spawns
         self._running = True

@@ -1,12 +1,11 @@
-"""This example is a clone of the using_sprites example with the difference 
-that it uses pyglet instead of pygame to showcase sprite drawing. 
+"""This example is a clone of the using_sprites example with the difference
+that it uses pyglet instead of pygame to showcase sprite drawing.
 """
 
 __docformat__ = "reStructuredText"
 
 import math
 import random
-from typing import List
 
 import pyglet
 
@@ -21,7 +20,7 @@ fps_display = pyglet.window.FPSDisplay(window)
 logo_img = pyglet.resource.image("pymunk_logo_googlecode.png")
 logo_img.anchor_x = logo_img.width / 2
 logo_img.anchor_y = logo_img.height / 2
-logos: List[pyglet.sprite.Sprite] = []
+logos: list[pyglet.sprite.Sprite] = []
 batch = pyglet.graphics.Batch()
 
 ### Physics stuff
