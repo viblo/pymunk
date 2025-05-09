@@ -112,6 +112,7 @@ struct cpArbiter
 
     cpTimestamp stamp;
     enum cpArbiterState state;
+	cpBool processCollision;
 };
 
 struct cpArray
