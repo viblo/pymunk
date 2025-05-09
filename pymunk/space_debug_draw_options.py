@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, ClassVar, NamedTuple, Optional, Sequence, Type
+from typing import TYPE_CHECKING, ClassVar, NamedTuple, Optional, Sequence
 
 if TYPE_CHECKING:
     from .shapes import Shape
@@ -188,7 +188,7 @@ class SpaceDebugDrawOptions(object):
 
     def __exit__(
         self,
-        type: Optional[Type[BaseException]],
+        type: Optional[type[BaseException]],
         value: Optional[BaseException],
         traceback: Optional["TracebackType"],
     ) -> None:

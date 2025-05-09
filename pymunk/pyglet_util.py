@@ -33,7 +33,7 @@ drawing, but there is probably room for optimizations still).
 __docformat__ = "reStructuredText"
 
 import math
-from typing import TYPE_CHECKING, Any, Optional, Sequence, Type
+from typing import TYPE_CHECKING, Any, Optional, Sequence
 
 import pyglet
 
@@ -99,7 +99,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
     def __exit__(
         self,
-        type: Optional[Type[BaseException]],
+        type: Optional[type[BaseException]],
         value: Optional[BaseException],
         traceback: Optional["TracebackType"],
     ) -> None:

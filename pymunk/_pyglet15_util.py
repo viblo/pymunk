@@ -34,7 +34,7 @@ __docformat__ = "reStructuredText"
 
 import math
 import warnings
-from typing import TYPE_CHECKING, Any, Optional, Sequence, Type
+from typing import TYPE_CHECKING, Any, Optional, Sequence
 
 import pyglet  # type: ignore
 
@@ -108,7 +108,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
     def __exit__(
         self,
-        type: Optional[Type[BaseException]],
+        type: Optional[type[BaseException]],
         value: Optional[BaseException],
         traceback: Optional["TracebackType"],
     ) -> None:
