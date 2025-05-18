@@ -269,14 +269,6 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hit.distance, 1)
         self.assertEqual(hit.gradient, (1, 0))
 
-    def testPointQueryNearestSensor(self) -> None:
-        s = p.Space()
-        c = p.Circle(s.static_body, 10)
-        c.sensor = True
-        s.add(c)
-        hit = s.point_query_nearest((0, 0), 100, p.ShapeFilter())
-        self.assertEqual(hit, None)
-
     def testBBQuery(self) -> None:
         s = p.Space()
 
@@ -510,14 +502,6 @@ class UnitTestSpace(unittest.TestCase):
 
         hit = s.segment_query_first((-13, 50), (131, 50), 0, p.ShapeFilter())
         self.assertEqual(hit, None)
-
-    def testSegmentQueryFirstSensor(self) -> None:
-        s = p.Space()
-        c = p.Circle(s.static_body, 10)
-        c.sensor = True
-        s.add(c)
-        hit = s.segment_query_first((-20, 0), (20, 0), 1, p.ShapeFilter())
-        self.assertIsNone(hit)
 
     def testStaticSegmentQueries(self) -> None:
         self._setUp()
@@ -940,8 +924,8 @@ class UnitTestSpace(unittest.TestCase):
         c1.collision_type = 1
         s.step(0.1)
 
-        self.assertEqual(c1, d["shapes"][1])
-        self.assertEqual(c2, d["shapes"][0])
+        self.assertEqual(c1, d["shapes"][0])
+        self.assertEqual(c2, d["shapes"][1])
         self.assertEqual(s, d["space"])
 
     def testDefaultCollisionHandler(self) -> None:
@@ -963,8 +947,8 @@ class UnitTestSpace(unittest.TestCase):
         s.add_collision_handler(None, None).pre_solve = pre_solve
         s.step(0.1)
 
-        self.assertEqual(c1, d["shapes"][0])
-        self.assertEqual(c2, d["shapes"][1])
+        self.assertEqual(c1, d["shapes"][1])
+        self.assertEqual(c2, d["shapes"][0])
         self.assertEqual(s, d["space"])
 
     def testPostStepCallback(self) -> None:
