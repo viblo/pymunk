@@ -10,13 +10,14 @@ TODO: Add note of new collision handler logic!
 
 This is a big cleanup release with several breaking changes. If you upgrade from an older version, make sure to pay attention, especially the Space.bodies, Space.shapes and shape.constraints updates can break silently! 
 
-Extra thanks for Github user aetle for a number of suggestions and feedback for this Pymunk release!
+Extra thanks for Github user aatle for a number of suggestions and feedback for this Pymunk release!
 
 
 Changes:
 
 Breaking changes
 
+- Unified all Space.query methods to include sensor shapes. Previsouly the nearest methods filtered them out.
 - Changed Space.shapes, Space.bodies and Space.constraints to return a KeysView of instead of a list of the items. Note that this means the returned collection is no longer a copy. To get the old behavior, you can convert to list manually, like list(space.shapes).
 - At least one of the two bodies attached to constraint/joint must be dynamic.  
 - Vec2d now supports bool to test if zero. (bool(Vec2d(2,3) == True) Note this is a breaking change.
@@ -46,7 +47,7 @@ Other improvements
 - Improved documentation in many places (Vec2d, Poly, Shape and more)
 - Internal cleanup of code
 
-Extra thanks for aetle for a number of suggestions for improvements in this pymunk release
+Extra thanks for aatle for a number of suggestions for improvements in this Pymunk release
 
 
 

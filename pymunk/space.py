@@ -762,12 +762,10 @@ class Space(PickleMixin, object):
         the point must be a under a certain depth within a shape to be
         considered a match.
 
+        Sensor shapes are included in the result.
+
         See :py:class:`ShapeFilter` for details about how the shape_filter
         parameter can be used.
-
-        .. Note::
-            Sensor shapes are included in the result (In
-            :py:meth:`Space.point_query_nearest` they are not)
 
         :param point: Where to check for collision in the Space
         :type point: :py:class:`~vec2d.Vec2d` or (float,float)
@@ -806,8 +804,7 @@ class Space(PickleMixin, object):
         parameter can be used.
 
         .. Note::
-            Sensor shapes are not included in the result (In
-            :py:meth:`Space.point_query` they are)
+            Sensor shapes are included in the result. (Changed in Pymunk 7.0)
 
         :param point: Where to check for collision in the Space
         :type point: :py:class:`~vec2d.Vec2d` or (float,float)
@@ -849,9 +846,7 @@ class Space(PickleMixin, object):
         See :py:class:`ShapeFilter` for details about how the shape_filter
         parameter can be used.
 
-        .. Note::
-            Sensor shapes are included in the result (In
-            :py:meth:`Space.segment_query_first` they are not)
+        Sensor shapes are included in the result.
 
         :param start: Starting point
         :param end: End point
@@ -892,8 +887,7 @@ class Space(PickleMixin, object):
         collision detection.
 
         .. Note::
-            Sensor shapes are not included in the result (In
-            :py:meth:`Space.segment_query` they are)
+            Sensor shapes are included in the result. (Changed in Pymunk 7.0)
 
         See :py:class:`ShapeFilter` for details about how the shape_filter
         parameter can be used.
@@ -923,7 +917,6 @@ class Space(PickleMixin, object):
         The filter is applied to the query and follows the same rules as the
         collision detection.
 
-        .. Note::
             Sensor shapes are included in the result
 
         :param bb: Bounding box
@@ -945,7 +938,6 @@ class Space(PickleMixin, object):
     def shape_query(self, shape: Shape) -> list[ShapeQueryInfo]:
         """Query a space for any shapes overlapping the given shape
 
-        .. Note::
             Sensor shapes are included in the result
 
         :param shape: Shape to query with

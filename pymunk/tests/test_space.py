@@ -339,6 +339,42 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(hits[0].shape, c)
         self._tearDown()
 
+    def testSensorQueries(self) -> None:
+        s = p.Space()
+
+        b1 = p.Body(1, 1)
+        b1.position = 3, 0
+        s1 = p.Circle(b1, 1)
+        s1.sensor = True
+        s.add(b1, s1)
+
+        b2 = p.Body(1, 1)
+        b2.position = 6, 0
+        s2 = p.Circle(b2, 1)
+        s.add(b2, s2)
+
+        print()
+        print("Shapes", s1, s2)
+        r = s.bb_query(p.BB(0, 0, 10, 10), p.ShapeFilter())
+        assert len(r), 2
+
+        r = s.point_query((0, 0), 10, p.ShapeFilter())
+        assert len(r), 2
+
+        r = s.point_query_nearest((0, 0), 10, p.ShapeFilter())
+        assert r != None
+        self.assertEqual(r.shape, s1)
+
+        r = s.shape_query(p.Circle(p.Body(body_type=p.Body.KINEMATIC), 10))
+        assert len(r), 2
+
+        r = s.segment_query((0, 0), (10, 0), 1, p.ShapeFilter())
+        assert len(r), 2
+
+        r = s.segment_query_first((0, 0), (10, 0), 1, p.ShapeFilter())
+        assert r != None
+        self.assertEqual(r.shape, s1)
+
     def testReindexShape(self) -> None:
         s = p.Space()
 
