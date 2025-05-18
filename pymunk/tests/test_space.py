@@ -354,27 +354,25 @@ class UnitTestSpace(unittest.TestCase):
         s2 = p.Circle(b2, 1)
         s.add(b2, s2)
 
-        print()
-        print("Shapes", s1, s2)
-        r = s.bb_query(p.BB(0, 0, 10, 10), p.ShapeFilter())
-        assert len(r), 2
+        r1 = s.bb_query(p.BB(0, 0, 10, 10), p.ShapeFilter())
+        assert len(r1), 2
 
-        r = s.point_query((0, 0), 10, p.ShapeFilter())
-        assert len(r), 2
+        r2 = s.point_query((0, 0), 10, p.ShapeFilter())
+        assert len(r2), 2
 
-        r = s.point_query_nearest((0, 0), 10, p.ShapeFilter())
-        assert r != None
-        self.assertEqual(r.shape, s1)
+        r3 = s.point_query_nearest((0, 0), 10, p.ShapeFilter())
+        assert r3 != None
+        self.assertEqual(r3.shape, s1)
 
-        r = s.shape_query(p.Circle(p.Body(body_type=p.Body.KINEMATIC), 10))
-        assert len(r), 2
+        r4 = s.shape_query(p.Circle(p.Body(body_type=p.Body.KINEMATIC), 10))
+        assert len(r4), 2
 
-        r = s.segment_query((0, 0), (10, 0), 1, p.ShapeFilter())
-        assert len(r), 2
+        r5 = s.segment_query((0, 0), (10, 0), 1, p.ShapeFilter())
+        assert len(r5), 2
 
-        r = s.segment_query_first((0, 0), (10, 0), 1, p.ShapeFilter())
-        assert r != None
-        self.assertEqual(r.shape, s1)
+        r6 = s.segment_query_first((0, 0), (10, 0), 1, p.ShapeFilter())
+        assert r6 != None
+        self.assertEqual(r6.shape, s1)
 
     def testReindexShape(self) -> None:
         s = p.Space()
@@ -851,7 +849,13 @@ class UnitTestSpace(unittest.TestCase):
             space: p.Space,
             data: dict[Any, Any],
         ) -> None:
-            callback_calls.append((name, types))
+            callback_calls.append(
+                (
+                    name,
+                    types,
+                    (arb.shapes[0].collision_type, arb.shapes[1].collision_type),
+                )
+            )
 
         handler_order = [
             (1, 2),
@@ -886,26 +890,26 @@ class UnitTestSpace(unittest.TestCase):
         s.step(0.1)
 
         expected_calls = [
-            ("begin", (1, 2)),
-            ("begin", (2, 1)),
-            ("begin", (1, None)),
-            ("begin", (2, None)),
-            ("begin", (None, None)),
-            ("pre_solve", (1, 2)),
-            ("pre_solve", (2, 1)),
-            ("pre_solve", (1, None)),
-            ("pre_solve", (2, None)),
-            ("pre_solve", (None, None)),
-            ("post_solve", (1, 2)),
-            ("post_solve", (2, 1)),
-            ("post_solve", (1, None)),
-            ("post_solve", (2, None)),
-            ("post_solve", (None, None)),
-            ("separate", (1, 2)),
-            ("separate", (2, 1)),
-            ("separate", (1, None)),
-            ("separate", (2, None)),
-            ("separate", (None, None)),
+            ("begin", (1, 2), (1, 2)),
+            ("begin", (2, 1), (2, 1)),
+            ("begin", (1, None), (1, 2)),
+            ("begin", (2, None), (2, 1)),
+            ("begin", (None, None), (1, 2)),
+            ("pre_solve", (1, 2), (1, 2)),
+            ("pre_solve", (2, 1), (2, 1)),
+            ("pre_solve", (1, None), (1, 2)),
+            ("pre_solve", (2, None), (2, 1)),
+            ("pre_solve", (None, None), (1, 2)),
+            ("post_solve", (1, 2), (1, 2)),
+            ("post_solve", (2, 1), (2, 1)),
+            ("post_solve", (1, None), (1, 2)),
+            ("post_solve", (2, None), (2, 1)),
+            ("post_solve", (None, None), (1, 2)),
+            ("separate", (1, 2), (1, 2)),
+            ("separate", (2, 1), (2, 1)),
+            ("separate", (1, None), (1, 2)),
+            ("separate", (2, None), (2, 1)),
+            ("separate", (None, None), (1, 2)),
         ]
         self.assertListEqual(callback_calls, expected_calls)
 

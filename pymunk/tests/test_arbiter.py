@@ -165,8 +165,8 @@ class UnitTestArbiter(unittest.TestCase):
         self.post_solve_done = False
 
         def post_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
-            self.assertAlmostEqual(arb.total_impulse.x, 3.3936651583)
-            self.assertAlmostEqual(arb.total_impulse.y, 4.3438914027)
+            self.assertAlmostEqual(arb.total_impulse.x, -3.3936651583)
+            self.assertAlmostEqual(arb.total_impulse.y, -4.3438914027)
             self.post_solve_done = True
 
         s.add_collision_handler(1, 2).post_solve = post_solve
@@ -254,8 +254,8 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.step(0.1)
 
-        self.assertAlmostEqual(r["n"].x, -0.44721359)
-        self.assertAlmostEqual(r["n"].y, -0.89442719)
+        self.assertAlmostEqual(r["n"].x, 0.44721359)
+        self.assertAlmostEqual(r["n"].y, 0.89442719)
 
     def testIsRemoval(self) -> None:
         s = p.Space()
