@@ -301,7 +301,7 @@ class UnitTestSegment(unittest.TestCase):
         def begin(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.num_of_begins += 1
 
-        s.add_global_collision_handler().begin = begin
+        s.add_collision_handler(None, None).begin = begin
         s.step(0.1)
 
         self.assertEqual(1, self.num_of_begins)

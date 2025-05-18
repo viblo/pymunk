@@ -1,6 +1,7 @@
 from __future__ import with_statement
 
 import copy
+import functools
 import io
 import pickle
 import sys
@@ -634,7 +635,7 @@ class UnitTestSpace(unittest.TestCase):
             s.add(p.Circle(s.static_body, 2))
             s.remove(c1)
 
-        s.add_global_collision_handler().separate = separate
+        s.add_collision_handler(None, None).separate = separate
 
         s.step(1)
         s.remove(c1)
@@ -653,7 +654,7 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         s.gravity = 0, -100
 
-        h = s.add_global_collision_handler()
+        h = s.add_collision_handler(None, None)
         h.begin = h.do_nothing
         h.pre_solve = h.do_nothing
         h.post_solve = h.do_nothing
@@ -827,7 +828,7 @@ class UnitTestSpace(unittest.TestCase):
         self._setUp()
         s = self.s
 
-        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: dict[Any, Any]) -> None:
             space.remove(*arb.shapes)
 
         s.add_collision_handler(0, 0).pre_solve = pre_solve
@@ -838,12 +839,75 @@ class UnitTestSpace(unittest.TestCase):
         self.assertTrue(self.s2 not in s.shapes)
         self._tearDown()
 
-    def testCollisionHandlerKeyOrder(self) -> None:
+    def testCollisionHandlerOrder(self) -> None:
         s = p.Space()
-        h1 = s.add_collision_handler(1, 2)
-        h2 = s.add_collision_handler(2, 1)
 
-        self.assertEqual(h1, h2)
+        callback_calls = []
+
+        def callback(
+            name: str,
+            types: tuple[int, int],
+            arb: p.Arbiter,
+            space: p.Space,
+            data: dict[Any, Any],
+        ) -> None:
+            callback_calls.append((name, types))
+
+        handler_order = [
+            (1, 2),
+            (2, 1),
+            (1, None),
+            (2, None),
+            (None, None),
+        ]
+
+        for t1, t2 in handler_order:
+            h = s.add_collision_handler(t1, t2)
+            h.begin = functools.partial(callback, "begin", (t1, t2))
+            h.pre_solve = functools.partial(callback, "pre_solve", (t1, t2))
+            h.post_solve = functools.partial(callback, "post_solve", (t1, t2))
+            h.separate = functools.partial(callback, "separate", (t1, t2))
+
+        b1 = p.Body(1, 30)
+        c1 = p.Circle(b1, 10)
+        b1.position = 5, 3
+        c1.collision_type = 2
+        c1.friction = 0.5
+
+        b2 = p.Body(body_type=p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        c2.collision_type = 1
+        c2.friction = 0.8
+
+        s.add(b1, c1, b2, c2)
+
+        s.step(0.1)
+        b1.position = 100, 100
+        s.step(0.1)
+
+        expected_calls = [
+            ("begin", (1, 2)),
+            ("begin", (2, 1)),
+            ("begin", (1, None)),
+            ("begin", (2, None)),
+            ("begin", (None, None)),
+            ("pre_solve", (1, 2)),
+            ("pre_solve", (2, 1)),
+            ("pre_solve", (1, None)),
+            ("pre_solve", (2, None)),
+            ("pre_solve", (None, None)),
+            ("post_solve", (1, 2)),
+            ("post_solve", (2, 1)),
+            ("post_solve", (1, None)),
+            ("post_solve", (2, None)),
+            ("post_solve", (None, None)),
+            ("separate", (1, 2)),
+            ("separate", (2, 1)),
+            ("separate", (1, None)),
+            ("separate", (2, None)),
+            ("separate", (None, None)),
+        ]
+        self.assertListEqual(callback_calls, expected_calls)
 
     def testWildcardCollisionHandler(self) -> None:
         s = p.Space()
@@ -859,7 +923,12 @@ class UnitTestSpace(unittest.TestCase):
             d["shapes"] = arb.shapes
             d["space"] = space  # type: ignore
 
-        s.add_wildcard_collision_handler(1).pre_solve = pre_solve
+        h1 = s.add_collision_handler(1, None)
+        h2 = s.add_collision_handler(None, 1)
+
+        self.assertEqual(h1, h2)
+        h1.pre_solve = pre_solve
+
         s.step(0.1)
 
         self.assertEqual({}, d)
@@ -867,8 +936,8 @@ class UnitTestSpace(unittest.TestCase):
         c1.collision_type = 1
         s.step(0.1)
 
-        self.assertEqual(c1, d["shapes"][0])
-        self.assertEqual(c2, d["shapes"][1])
+        self.assertEqual(c1, d["shapes"][1])
+        self.assertEqual(c2, d["shapes"][0])
         self.assertEqual(s, d["space"])
 
     def testDefaultCollisionHandler(self) -> None:
@@ -887,11 +956,11 @@ class UnitTestSpace(unittest.TestCase):
             d["shapes"] = arb.shapes
             d["space"] = space  # type: ignore
 
-        s.add_global_collision_handler().pre_solve = pre_solve
+        s.add_collision_handler(None, None).pre_solve = pre_solve
         s.step(0.1)
 
-        self.assertEqual(c1, d["shapes"][1])
-        self.assertEqual(c2, d["shapes"][0])
+        self.assertEqual(c1, d["shapes"][0])
+        self.assertEqual(c2, d["shapes"][1])
         self.assertEqual(s, d["space"])
 
     def testPostStepCallback(self) -> None:
@@ -1030,10 +1099,10 @@ class UnitTestSpace(unittest.TestCase):
         j2 = PinJoint(s.static_body, b2)
         s.add(j1, j2)
 
-        h = s.add_global_collision_handler()
+        h = s.add_collision_handler(None, None)
         h.begin = f1
 
-        h = s.add_wildcard_collision_handler(1)
+        h = s.add_collision_handler(1, None)
         h.pre_solve = f1
 
         h = s.add_collision_handler(1, 2)
@@ -1064,13 +1133,13 @@ class UnitTestSpace(unittest.TestCase):
         self.assertIn(s2.static_body, ja)
 
         # Assert collision handlers
-        h2 = s2.add_global_collision_handler()
+        h2 = s2.add_collision_handler(None, None)
         self.assertIsNotNone(h2.begin)
         self.assertEqual(h2.pre_solve, p.CollisionHandler.do_nothing)
         self.assertEqual(h2.post_solve, p.CollisionHandler.do_nothing)
         self.assertEqual(h2.separate, p.CollisionHandler.do_nothing)
 
-        h2 = s2.add_wildcard_collision_handler(1)
+        h2 = s2.add_collision_handler(1, None)
         self.assertEqual(h2.begin, p.CollisionHandler.do_nothing)
         self.assertIsNotNone(h2.pre_solve)
         self.assertEqual(h2.post_solve, p.CollisionHandler.do_nothing)

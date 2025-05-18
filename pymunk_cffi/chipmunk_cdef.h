@@ -107,7 +107,7 @@ struct cpArbiter
     cpVect n;
 
     // Regular, wildcard A and wildcard B collision handlers.
-    cpCollisionHandler *handler, *handlerA, *handlerB;
+    cpCollisionHandler *handlerAB, *handlerBA, *handlerA, *handlerB;
     cpBool swapped;
 
     cpTimestamp stamp;

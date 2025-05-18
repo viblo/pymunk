@@ -107,7 +107,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             # check inital values
-            ps: p.ContactPointSet = arb.contact_point_set
+            ps = arb.contact_point_set
             self.assertEqual(len(ps.points), 1)
             self.assertAlmostEqual(ps.normal.x, 0.8574929257)
             self.assertAlmostEqual(ps.normal.y, 0.5144957554)
@@ -141,7 +141,7 @@ class UnitTestArbiter(unittest.TestCase):
 
             self.assertRaises(Exception, f)
 
-        s.add_global_collision_handler().pre_solve = pre_solve
+        s.add_collision_handler(2, 1).pre_solve = pre_solve
 
         s.step(0.1)
 
@@ -191,13 +191,16 @@ class UnitTestArbiter(unittest.TestCase):
         c2.friction = 0.8
 
         s.add(b1, c1, b2, c2)
+        r = {}
 
         def post_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
-            self.assertAlmostEqual(arb.total_ke, 43.438914027)
+            r["ke"] = arb.total_ke
 
         s.add_collision_handler(1, 2).post_solve = post_solve
 
         s.step(0.1)
+
+        self.assertAlmostEqual(r["ke"], 43.438914027)
 
     def testIsFirstContact(self) -> None:
         s = p.Space()
@@ -237,17 +240,22 @@ class UnitTestArbiter(unittest.TestCase):
         b1 = p.Body(1, 30)
         b1.position = 5, 10
         c1 = p.Circle(b1, 10)
+        c1.collision_type = 1
         c2 = p.Circle(s.static_body, 10)
+        c2.collision_type = 2
 
         s.add(b1, c1, c2)
+        r = {}
 
         def pre_solve1(arb: p.Arbiter, space: p.Space, data: Any) -> None:
-            self.assertAlmostEqual(arb.normal.x, 0.44721359)
-            self.assertAlmostEqual(arb.normal.y, 0.89442719)
+            r["n"] = Vec2d(*arb.normal)
 
-        s.add_global_collision_handler().pre_solve = pre_solve1
+        s.add_collision_handler(1, 2).pre_solve = pre_solve1
 
         s.step(0.1)
+
+        self.assertAlmostEqual(r["n"].x, -0.44721359)
+        self.assertAlmostEqual(r["n"].y, -0.89442719)
 
     def testIsRemoval(self) -> None:
         s = p.Space()

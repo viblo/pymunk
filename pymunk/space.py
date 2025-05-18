@@ -42,10 +42,10 @@ class Handlers(Mapping[Union[None, int, tuple[int, int]], CollisionHandler]):
         if key in self._handlers:
             return self._handlers[key]
         if key == None:
-            self._handlers[None] = self.space.add_global_collision_handler()
+            self._handlers[None] = self.space.add_collision_handler(None, None)
             return self._handlers[None]
         elif isinstance(key, int):
-            self._handlers[key] = self.space.add_wildcard_collision_handler(key)
+            self._handlers[key] = self.space.add_collision_handler(key, None)
             return self._handlers[key]
         elif isinstance(key, tuple):
             assert isinstance(key, tuple)
@@ -626,10 +626,12 @@ class Space(PickleMixin, object):
         return self.collision_handlers
 
     def add_collision_handler(
-        self, collision_type_a: int, collision_type_b: int
+        self, collision_type_a: Optional[int], collision_type_b: Optional[int]
     ) -> CollisionHandler:
         """Return the :py:class:`CollisionHandler` for collisions between
         objects of type collision_type_a and collision_type_b.
+
+        Use None to indicate any collision_type.
 
         Fill the desired collision callback functions, for details see the
         :py:class:`CollisionHandler` object.
@@ -645,11 +647,26 @@ class Space(PickleMixin, object):
 
         :rtype: :py:class:`CollisionHandler`
         """
-        key = min(collision_type_a, collision_type_b), max(
-            collision_type_a, collision_type_b
-        )
+        # key = min(collision_type_a, collision_type_b), max(
+        #     collision_type_a, collision_type_b
+        # )
+
+        if collision_type_a == None and collision_type_b != None:
+            collision_type_b, collision_type_a = collision_type_a, collision_type_b
+
+        key = collision_type_a, collision_type_b
         if key in self._handlers:
             return self._handlers[key]
+
+        # if collision_type_a == None and collision_type_b == None:
+        #     return self.add_global_collision_handler()
+        # CP_WILDCARD_COLLISION_TYPE
+        wildcard = int(ffi.cast("uintptr_t", ~0))
+        if collision_type_a == None:
+            collision_type_a = wildcard
+
+        if collision_type_b == None:
+            collision_type_b = wildcard
 
         h = cp.cpSpaceAddCollisionHandler(
             self._space, collision_type_a, collision_type_b
@@ -657,52 +674,6 @@ class Space(PickleMixin, object):
         ch = CollisionHandler(h, self)
         self._handlers[key] = ch
         return ch
-
-    def add_wildcard_collision_handler(self, collision_type_a: int) -> CollisionHandler:
-        """Add a wildcard collision handler for given collision type.
-
-        This handler will be used any time an object with this type collides
-        with another object, regardless of its type. A good example is a
-        projectile that should be destroyed the first time it hits anything.
-        There may be a specific collision handler and two wildcard handlers.
-        It's up to the specific handler to decide if and when to call the
-        wildcard handlers and what to do with their return values.
-
-        When a new wildcard handler is created, the callbacks will all be
-        set to builtin callbacks that perform the default behavior. (accept
-        all collisions in :py:func:`~CollisionHandler.begin` and
-        :py:func:`~CollisionHandler.pre_solve`, or do nothing for
-        :py:func:`~CollisionHandler.post_solve` and
-        :py:func:`~CollisionHandler.separate`.
-
-        :param int collision_type_a: Collision type
-        :rtype: :py:class:`CollisionHandler`
-        """
-
-        if collision_type_a in self._handlers:
-            return self._handlers[collision_type_a]
-
-        h = cp.cpSpaceAddWildcardHandler(self._space, collision_type_a)
-        ch = CollisionHandler(h, self)
-        self._handlers[collision_type_a] = ch
-        return ch
-
-    def add_global_collision_handler(self) -> CollisionHandler:
-        """Return a reference to the default collision handler or that is
-        used to process all collisions that don't have a more specific
-        handler.
-
-        The default behavior for each of the callbacks is to call
-        the wildcard handlers, ANDing their return values together if
-        applicable.
-        """
-        if None in self._handlers:
-            return self._handlers[None]
-
-        _h = cp.cpSpaceAddGlobalCollisionHandler(self._space)
-        h = CollisionHandler(_h, self)
-        self._handlers[None] = h
-        return h
 
     def add_post_step_callback(
         self,
@@ -917,7 +888,7 @@ class Space(PickleMixin, object):
         The filter is applied to the query and follows the same rules as the
         collision detection.
 
-            Sensor shapes are included in the result
+        Sensor shapes are included in the result
 
         :param bb: Bounding box
         :param shape_filter: Shape filter
@@ -938,7 +909,7 @@ class Space(PickleMixin, object):
     def shape_query(self, shape: Shape) -> list[ShapeQueryInfo]:
         """Query a space for any shapes overlapping the given shape
 
-            Sensor shapes are included in the result
+        Sensor shapes are included in the result
 
         :param shape: Shape to query with
         :type shape: :py:class:`Circle`, :py:class:`Poly` or :py:class:`Segment`
@@ -1081,11 +1052,11 @@ class Space(PickleMixin, object):
             elif k == "_handlers":
                 for k2, hd in v:
                     if k2 == None:
-                        h = self.add_global_collision_handler()
+                        h = self.add_collision_handler(None, None)
                     elif isinstance(k2, tuple):
                         h = self.add_collision_handler(k2[0], k2[1])
                     else:
-                        h = self.add_wildcard_collision_handler(k2)
+                        h = self.add_collision_handler(k2, None)
                     if "_begin" in hd:
                         h.begin = hd["_begin"]
                     if "_pre_solve" in hd:
