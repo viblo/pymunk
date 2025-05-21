@@ -1,3 +1,4 @@
+import functools
 import unittest
 from typing import Any
 
@@ -331,6 +332,101 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.step(0.1)
         self.assertTrue(self.called)
+
+    def testProcessCollision(self) -> None:
+
+        def setup():
+            s = p.Space()
+
+            b1 = p.Body(1, 30)
+            c1 = p.Circle(b1, 10)
+            b1.position = 5, 3
+            c1.collision_type = 1
+            c1.friction = 0.5
+
+            b2 = p.Body(body_type=p.Body.STATIC)
+            c2 = p.Circle(b2, 10)
+            c2.collision_type = 2
+            c2.friction = 0.8
+
+            s.add(b1, c1, b2, c2)
+            return s
+
+        def callback(
+            name: str,
+            arb: p.Arbiter,
+            space: p.Space,
+            data: dict[Any, Any],
+        ) -> None:
+            # print("callback", name)  # , arb.shapes)
+            expected_name, expected_process_collision = h.data["expected"].pop(0)
+            process_collision = h.data["process_values"].pop(0)
+            correct_call = (
+                expected_process_collision == arb.process_collision
+                and expected_name == name
+            )
+            if not correct_call:
+                print(
+                    "  Unexpected call:",
+                    expected_name,
+                    name,
+                    expected_process_collision,
+                    arb.process_collision,
+                )
+
+            h.data["result"].append(correct_call)
+            arb.process_collision = process_collision
+            # print("  arb.process_collision", process_collision)
+
+        # test matrix:
+        # ("process_collision values to set in the callbacks", [callback name, process_collision value, callback name, ...])
+        # 1: True, 0: False, _: not called.
+
+        test_matrix = [
+            ("111111", ["b", 1, "p", 1, "t", 1, "p", 1, "t", 1, "s", 1]),
+            ("111110", ["b", 1, "p", 1, "t", 1, "p", 1, "t", 1, "s", 1]),
+            ("111100", ["b", 1, "p", 1, "t", 1, "p", 1, "t", 1, "s", 0]),
+            ("11100_", ["b", 1, "p", 1, "t", 1, "p", 1, "s", 0]),
+            ("11000_", ["b", 1, "p", 1, "t", 1, "p", 0, "s", 0]),
+            ("1000__", ["b", 1, "p", 1, "p", 0, "s", 0]),
+            ("0000__", ["b", 1, "p", 0, "p", 0, "s", 0]),
+            ("011111", ["b", 1, "p", 0, "t", 1, "p", 1, "t", 1, "s", 1]),
+            ("00111_", ["b", 1, "p", 0, "p", 0, "t", 1, "s", 1]),
+            ("0001__", ["b", 1, "p", 0, "p", 0, "s", 0]),
+            ("0000__", ["b", 1, "p", 0, "p", 0, "s", 0]),
+            ("10100_", ["b", 1, "p", 1, "p", 0, "t", 1, "s", 0]),
+            ("010101", ["b", 1, "p", 0, "t", 1, "p", 0, "t", 1, "s", 0]),
+        ]
+        # print()
+        for process_values, expected_calls in test_matrix:
+            process_values = [
+                bit == "1" for bit in process_values if bit in "01"
+            ]  # will crash if bit is not 0 or 1.
+
+            expected_calls.append(None)
+            expected_calls = list(zip(expected_calls[::2], expected_calls[1::2]))
+            # print("process_values, expected calls", process_values, expected_calls)
+
+            s = setup()
+            h = s.add_collision_handler(1, 2)
+            h.data["process_values"] = process_values
+            h.data["expected"] = expected_calls
+            h.data["result"] = []
+
+            h.begin = functools.partial(callback, "b")
+            h.pre_solve = functools.partial(callback, "p")
+            h.post_solve = functools.partial(callback, "t")
+            h.separate = functools.partial(callback, "s")
+
+            s.step(0.1)
+            s.step(0.1)
+            next(iter(s.bodies)).position = 100, 100
+            s.step(0.1)
+
+            # print(h.data)
+            # print(all(h.data["result"]))
+            self.assertTrue(all(h.data["result"]))
+        # print("done")
 
 
 if __name__ == "__main__":
