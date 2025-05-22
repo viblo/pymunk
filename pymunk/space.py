@@ -13,14 +13,11 @@ from pymunk.space_debug_draw_options import SpaceDebugDrawOptions
 from . import _version
 from ._callbacks import *
 from ._chipmunk_cffi import ffi, lib
-
-cp = lib
-
 from ._pickle import PickleMixin, _State
 from ._util import _dead_ref
 from .arbiter import _arbiter_from_dict, _arbiter_to_dict
 from .body import Body
-from .collision_handler import CollisionHandler
+from .collision_handler import CollisionHandler, _CollisionCallback
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shapes import Shape
 from .vec2d import Vec2d
@@ -112,16 +109,18 @@ class Space(PickleMixin, object):
         self.threaded = threaded and platform.system() != "Windows"
 
         if self.threaded:
-            cp_space = cp.cpHastySpaceNew()
-            freefunc = cp.cpHastySpaceFree
+            cp_space = lib.cpHastySpaceNew()
+            freefunc = lib.cpHastySpaceFree
         else:
-            cp_space = cp.cpSpaceNew()
-            freefunc = cp.cpSpaceFree
+            cp_space = lib.cpSpaceNew()
+            freefunc = lib.cpSpaceFree
 
         def spacefree(cp_space: ffi.CData) -> None:
             cp_shapes: list[Shape] = []
             cp_shapes_h = ffi.new_handle(cp_shapes)
-            cp.cpSpaceEachShape(cp_space, lib.ext_cpSpaceShapeIteratorFunc, cp_shapes_h)
+            lib.cpSpaceEachShape(
+                cp_space, lib.ext_cpSpaceShapeIteratorFunc, cp_shapes_h
+            )
 
             for cp_shape in cp_shapes:
                 cp_space = lib.cpShapeGetSpace(cp_shape)
@@ -131,7 +130,7 @@ class Space(PickleMixin, object):
 
             cp_constraints: list[Constraint] = []
             cp_constraints_h = ffi.new_handle(cp_constraints)
-            cp.cpSpaceEachConstraint(
+            lib.cpSpaceEachConstraint(
                 cp_space, lib.ext_cpSpaceConstraintIteratorFunc, cp_constraints_h
             )
             for cp_constraint in cp_constraints:
@@ -140,7 +139,7 @@ class Space(PickleMixin, object):
 
             cp_bodys: list[Body] = []
             cp_bodys_h = ffi.new_handle(cp_bodys)
-            cp.cpSpaceEachBody(cp_space, lib.ext_cpSpaceBodyIteratorFunc, cp_bodys_h)
+            lib.cpSpaceEachBody(cp_space, lib.ext_cpSpaceBodyIteratorFunc, cp_bodys_h)
             for cp_body in cp_bodys:
                 cp_space = lib.cpBodyGetSpace(cp_body)
                 lib.cpSpaceRemoveBody(cp_space, cp_body)
@@ -214,7 +213,7 @@ class Space(PickleMixin, object):
 
     def _setup_static_body(self, static_body: Body) -> None:
         static_body._space = weakref.ref(self)
-        cp.cpSpaceAddBody(self._space, static_body._body)
+        lib.cpSpaceAddBody(self._space, static_body._body)
 
     @property
     def static_body(self) -> Body:
@@ -228,7 +227,7 @@ class Space(PickleMixin, object):
             self._setup_static_body(self._static_body)
             # self.add(self._static_body)
 
-            # b = cp.cpSpaceGetStaticBody(self._space)
+            # b = lib.cpSpaceGetStaticBody(self._space)
             # self._static_body = Body._init_with_body(b)
             # self._static_body._space = self
             # assert self._static_body is not None
@@ -253,18 +252,18 @@ class Space(PickleMixin, object):
         accuracy of the physics. Pymunk's default of 10 iterations is
         sufficient for most simple games.
         """
-        return cp.cpSpaceGetIterations(self._space)
+        return lib.cpSpaceGetIterations(self._space)
 
     @iterations.setter
     def iterations(self, value: int) -> None:
-        cp.cpSpaceSetIterations(self._space, value)
+        lib.cpSpaceSetIterations(self._space, value)
 
     def _set_gravity(self, gravity_vector: tuple[float, float]) -> None:
         assert len(gravity_vector) == 2
-        cp.cpSpaceSetGravity(self._space, gravity_vector)
+        lib.cpSpaceSetGravity(self._space, gravity_vector)
 
     def _get_gravity(self) -> Vec2d:
-        v = cp.cpSpaceGetGravity(self._space)
+        v = lib.cpSpaceGetGravity(self._space)
         return Vec2d(v.x, v.y)
 
     gravity = property(
@@ -286,11 +285,11 @@ class Space(PickleMixin, object):
         second. Defaults to 1. Like gravity, it can be overridden on a per
         body basis.
         """
-        return cp.cpSpaceGetDamping(self._space)
+        return lib.cpSpaceGetDamping(self._space)
 
     @damping.setter
     def damping(self, damping: float) -> None:
-        cp.cpSpaceSetDamping(self._space, damping)
+        lib.cpSpaceSetDamping(self._space, damping)
 
     @property
     def idle_speed_threshold(self) -> float:
@@ -299,11 +298,11 @@ class Space(PickleMixin, object):
         The default value of 0 means the space estimates a good threshold
         based on gravity.
         """
-        return cp.cpSpaceGetIdleSpeedThreshold(self._space)
+        return lib.cpSpaceGetIdleSpeedThreshold(self._space)
 
     @idle_speed_threshold.setter
     def idle_speed_threshold(self, idle_speed_threshold: float) -> None:
-        cp.cpSpaceSetIdleSpeedThreshold(self._space, idle_speed_threshold)
+        lib.cpSpaceSetIdleSpeedThreshold(self._space, idle_speed_threshold)
 
     @property
     def sleep_time_threshold(self) -> float:
@@ -312,11 +311,11 @@ class Space(PickleMixin, object):
 
         The default value of `inf` disables the sleeping algorithm.
         """
-        return cp.cpSpaceGetSleepTimeThreshold(self._space)
+        return lib.cpSpaceGetSleepTimeThreshold(self._space)
 
     @sleep_time_threshold.setter
     def sleep_time_threshold(self, sleep_time_threshold: float) -> None:
-        cp.cpSpaceSetSleepTimeThreshold(self._space, sleep_time_threshold)
+        lib.cpSpaceSetSleepTimeThreshold(self._space, sleep_time_threshold)
 
     @property
     def collision_slop(self) -> float:
@@ -325,11 +324,11 @@ class Space(PickleMixin, object):
         To improve stability, set this as high as you can without noticeable
         overlapping. It defaults to 0.1.
         """
-        return cp.cpSpaceGetCollisionSlop(self._space)
+        return lib.cpSpaceGetCollisionSlop(self._space)
 
     @collision_slop.setter
     def collision_slop(self, collision_slop: float) -> None:
-        cp.cpSpaceSetCollisionSlop(self._space, collision_slop)
+        lib.cpSpaceSetCollisionSlop(self._space, collision_slop)
 
     @property
     def collision_bias(self) -> float:
@@ -348,11 +347,11 @@ class Space(PickleMixin, object):
         ..Note::
             Very very few games will need to change this value.
         """
-        return cp.cpSpaceGetCollisionBias(self._space)
+        return lib.cpSpaceGetCollisionBias(self._space)
 
     @collision_bias.setter
     def collision_bias(self, collision_bias: float) -> None:
-        cp.cpSpaceSetCollisionBias(self._space, collision_bias)
+        lib.cpSpaceSetCollisionBias(self._space, collision_bias)
 
     @property
     def collision_persistence(self) -> float:
@@ -365,11 +364,11 @@ class Space(PickleMixin, object):
         ..Note::
             Very very few games will need to change this value.
         """
-        return cp.cpSpaceGetCollisionPersistence(self._space)
+        return lib.cpSpaceGetCollisionPersistence(self._space)
 
     @collision_persistence.setter
     def collision_persistence(self, collision_persistence: float) -> None:
-        cp.cpSpaceSetCollisionPersistence(self._space, collision_persistence)
+        lib.cpSpaceSetCollisionPersistence(self._space, collision_persistence)
 
     @property
     def current_time_step(self) -> float:
@@ -377,7 +376,7 @@ class Space(PickleMixin, object):
         Space.step()) or most recent (outside of a Space.step() call)
         timestep.
         """
-        return cp.cpSpaceGetCurrentTimeStep(self._space)
+        return lib.cpSpaceGetCurrentTimeStep(self._space)
 
     def add(self, *objs: _AddableObjects) -> None:
         """Add one or many shapes, bodies or constraints (joints) to the space
@@ -446,7 +445,7 @@ class Space(PickleMixin, object):
 
         shape._space = weakref.ref(self)
         self._shapes[shape] = None
-        cp.cpSpaceAddShape(self._space, shape._shape)
+        lib.cpSpaceAddShape(self._space, shape._shape)
 
     def _add_body(self, body: "Body") -> None:
         """Adds a body to the space"""
@@ -456,7 +455,7 @@ class Space(PickleMixin, object):
         body._space = weakref.ref(self)
         self._bodies[body] = None
         self._bodies_to_check.add(body)
-        cp.cpSpaceAddBody(self._space, body._body)
+        lib.cpSpaceAddBody(self._space, body._body)
 
     def _add_constraint(self, constraint: "Constraint") -> None:
         """Adds a constraint to the space"""
@@ -468,7 +467,7 @@ class Space(PickleMixin, object):
         ), "At leasts one of a constraint's bodies must be DYNAMIC."
 
         self._constraints[constraint] = None
-        cp.cpSpaceAddConstraint(self._space, constraint._constraint)
+        lib.cpSpaceAddConstraint(self._space, constraint._constraint)
 
     def _remove_shape(self, shape: "Shape") -> None:
         """Removes a shape from the space"""
@@ -476,8 +475,8 @@ class Space(PickleMixin, object):
         self._removed_shapes[shape] = None
         shape._space = _dead_ref
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
-        if cp.cpSpaceContainsShape(self._space, shape._shape):
-            cp.cpSpaceRemoveShape(self._space, shape._shape)
+        if lib.cpSpaceContainsShape(self._space, shape._shape):
+            lib.cpSpaceRemoveShape(self._space, shape._shape)
         del self._shapes[shape]
 
     def _remove_body(self, body: "Body") -> None:
@@ -487,8 +486,8 @@ class Space(PickleMixin, object):
         if body in self._bodies_to_check:
             self._bodies_to_check.remove(body)
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
-        if cp.cpSpaceContainsBody(self._space, body._body):
-            cp.cpSpaceRemoveBody(self._space, body._body)
+        if lib.cpSpaceContainsBody(self._space, body._body):
+            lib.cpSpaceRemoveBody(self._space, body._body)
         del self._bodies[body]
 
     def _remove_constraint(self, constraint: "Constraint") -> None:
@@ -498,25 +497,25 @@ class Space(PickleMixin, object):
         ), "constraint not in space, already removed?"
         # print("remove", constraint, constraint._constraint, self._constraints)
         # During GC at program exit sometimes the constraint might already be removed. Then skip this steip.
-        if cp.cpSpaceContainsConstraint(self._space, constraint._constraint):
-            cp.cpSpaceRemoveConstraint(self._space, constraint._constraint)
+        if lib.cpSpaceContainsConstraint(self._space, constraint._constraint):
+            lib.cpSpaceRemoveConstraint(self._space, constraint._constraint)
         del self._constraints[constraint]
 
     def reindex_shape(self, shape: Shape) -> None:
         """Update the collision detection data for a specific shape in the
         space.
         """
-        cp.cpSpaceReindexShape(self._space, shape._shape)
+        lib.cpSpaceReindexShape(self._space, shape._shape)
 
     def reindex_shapes_for_body(self, body: Body) -> None:
         """Reindex all the shapes for a certain body."""
-        cp.cpSpaceReindexShapesForBody(self._space, body._body)
+        lib.cpSpaceReindexShapesForBody(self._space, body._body)
 
     def reindex_static(self) -> None:
         """Update the collision detection info for the static shapes in the
         space. You only need to call this if you move one of the static shapes.
         """
-        cp.cpSpaceReindexStatic(self._space)
+        lib.cpSpaceReindexStatic(self._space)
 
     @property
     def threads(self) -> int:
@@ -529,13 +528,13 @@ class Space(PickleMixin, object):
         support the threaded solver.
         """
         if self.threaded:
-            return int(cp.cpHastySpaceGetThreads(self._space))
+            return int(lib.cpHastySpaceGetThreads(self._space))
         return 1
 
     @threads.setter
     def threads(self, n: int) -> None:
         if self.threaded:
-            cp.cpHastySpaceSetThreads(self._space, n)
+            lib.cpHastySpaceSetThreads(self._space, n)
 
     def use_spatial_hash(self, dim: float, count: int) -> None:
         """Switch the space to use a spatial hash instead of the bounding box
@@ -568,7 +567,7 @@ class Space(PickleMixin, object):
         :param dim: the size of the hash cells
         :param count: the suggested minimum number of cells in the hash table
         """
-        cp.cpSpaceUseSpatialHash(self._space, dim, count)
+        lib.cpSpaceUseSpatialHash(self._space, dim, count)
 
     def step(self, dt: float) -> None:
         """Update the space for the given time step.
@@ -602,9 +601,9 @@ class Space(PickleMixin, object):
         try:
             self._locked = True
             if self.threaded:
-                cp.cpHastySpaceStep(self._space, dt)
+                lib.cpHastySpaceStep(self._space, dt)
             else:
-                cp.cpSpaceStep(self._space, dt)
+                lib.cpSpaceStep(self._space, dt)
             self._removed_shapes.clear()
         finally:
             self._locked = False
@@ -626,7 +625,14 @@ class Space(PickleMixin, object):
         return self.collision_handlers
 
     def add_collision_handler(
-        self, collision_type_a: Optional[int], collision_type_b: Optional[int]
+        self,
+        collision_type_a: Optional[int] = None,
+        collision_type_b: Optional[int] = None,
+        begin: Optional[_CollisionCallback] = None,
+        pre_step: Optional[_CollisionCallback] = None,
+        post_step: Optional[_CollisionCallback] = None,
+        separate: Optional[_CollisionCallback] = None,
+        data: Optional[Mapping] = None,
     ) -> CollisionHandler:
         """Return the :py:class:`CollisionHandler` for collisions between
         objects of type collision_type_a and collision_type_b.
@@ -638,9 +644,11 @@ class Space(PickleMixin, object):
 
         Whenever shapes with collision types (:py:attr:`Shape.collision_type`)
         a and b collide, this handler will be used to process the collision
-        events. When a new collision handler is created, the callbacks will all be
-        set to builtin callbacks that perform the default behavior (call the
-        wildcard handlers, and accept all collisions).
+        events. If no handler is set, the default is to process collision as
+        normally.
+
+        If multiple handlers match the collision, the order will be that the
+        most specific handler is called first.
 
         :param int collision_type_a: Collision type a
         :param int collision_type_b: Collision type b
@@ -650,7 +658,6 @@ class Space(PickleMixin, object):
         # key = min(collision_type_a, collision_type_b), max(
         #     collision_type_a, collision_type_b
         # )
-
         if collision_type_a == None and collision_type_b != None:
             collision_type_b, collision_type_a = collision_type_a, collision_type_b
 
@@ -658,8 +665,6 @@ class Space(PickleMixin, object):
         if key in self._handlers:
             return self._handlers[key]
 
-        # if collision_type_a == None and collision_type_b == None:
-        #     return self.add_global_collision_handler()
         # CP_WILDCARD_COLLISION_TYPE
         wildcard = int(ffi.cast("uintptr_t", ~0))
         if collision_type_a == None:
@@ -668,7 +673,7 @@ class Space(PickleMixin, object):
         if collision_type_b == None:
             collision_type_b = wildcard
 
-        h = cp.cpSpaceAddCollisionHandler(
+        h = lib.cpSpaceAddCollisionHandler(
             self._space, collision_type_a, collision_type_b
         )
         ch = CollisionHandler(h, self)
@@ -749,12 +754,12 @@ class Space(PickleMixin, object):
         query_hits: list[PointQueryInfo] = []
         d = (self, query_hits)
         data = ffi.new_handle(d)
-        cp.cpSpacePointQuery(
+        lib.cpSpacePointQuery(
             self._space,
             point,
             max_distance,
             shape_filter,
-            cp.ext_cpSpacePointQueryFunc,
+            lib.ext_cpSpacePointQueryFunc,
             data,
         )
         return query_hits
@@ -786,7 +791,7 @@ class Space(PickleMixin, object):
         """
         assert len(point) == 2
         info = ffi.new("cpPointQueryInfo *")
-        _shape = cp.cpSpacePointQueryNearest(
+        _shape = lib.cpSpacePointQueryNearest(
             self._space, point, max_distance, shape_filter, info
         )
 
@@ -833,13 +838,13 @@ class Space(PickleMixin, object):
         d = (self, query_hits)
         data = ffi.new_handle(d)
 
-        cp.cpSpaceSegmentQuery(
+        lib.cpSpaceSegmentQuery(
             self._space,
             start,
             end,
             radius,
             shape_filter,
-            cp.ext_cpSpaceSegmentQueryFunc,
+            lib.ext_cpSpaceSegmentQueryFunc,
             data,
         )
         return query_hits
@@ -868,7 +873,7 @@ class Space(PickleMixin, object):
         assert len(start) == 2
         assert len(end) == 2
         info = ffi.new("cpSegmentQueryInfo *")
-        _shape = cp.cpSpaceSegmentQueryFirst(
+        _shape = lib.cpSpaceSegmentQueryFirst(
             self._space, start, end, radius, shape_filter, info
         )
 
@@ -901,8 +906,8 @@ class Space(PickleMixin, object):
         d = (self, query_hits)
         data = ffi.new_handle(d)
 
-        cp.cpSpaceBBQuery(
-            self._space, bb, shape_filter, cp.ext_cpSpaceBBQueryFunc, data
+        lib.cpSpaceBBQuery(
+            self._space, bb, shape_filter, lib.ext_cpSpaceBBQueryFunc, data
         )
         return query_hits
 
@@ -921,8 +926,8 @@ class Space(PickleMixin, object):
         d = (self, query_hits)
         data = ffi.new_handle(d)
 
-        cp.cpSpaceShapeQuery(
-            self._space, shape._shape, cp.ext_cpSpaceShapeQueryFunc, data
+        lib.cpSpaceShapeQuery(
+            self._space, shape._shape, lib.ext_cpSpaceShapeQueryFunc, data
         )
 
         return query_hits
@@ -951,7 +956,7 @@ class Space(PickleMixin, object):
             options._options.data = h
 
             with options:
-                cp.cpSpaceDebugDraw(self._space, options._options)
+                lib.cpSpaceDebugDraw(self._space, options._options)
         else:
             for shape in self.shapes:
                 options.draw_shape(shape)
@@ -968,7 +973,7 @@ class Space(PickleMixin, object):
     def _get_arbiters(self) -> list[ffi.CData]:
         _arbiters: list[ffi.CData] = []
         data = ffi.new_handle(_arbiters)
-        cp.cpSpaceEachCachedArbiter(self._space, cp.ext_cpArbiterIteratorFunc, data)
+        lib.cpSpaceEachCachedArbiter(self._space, lib.ext_cpArbiterIteratorFunc, data)
         return _arbiters
 
     def __getstate__(self) -> _State:
@@ -1005,11 +1010,11 @@ class Space(PickleMixin, object):
         d["special"].append(("_handlers", handlers))
 
         d["special"].append(
-            ("shapeIDCounter", cp.cpSpaceGetShapeIDCounter(self._space))
+            ("shapeIDCounter", lib.cpSpaceGetShapeIDCounter(self._space))
         )
-        d["special"].append(("stamp", cp.cpSpaceGetTimestamp(self._space)))
+        d["special"].append(("stamp", lib.cpSpaceGetTimestamp(self._space)))
         d["special"].append(
-            ("currentTimeStep", cp.cpSpaceGetCurrentTimeStep(self._space))
+            ("currentTimeStep", lib.cpSpaceGetCurrentTimeStep(self._space))
         )
 
         _arbs = self._get_arbiters()
@@ -1034,14 +1039,14 @@ class Space(PickleMixin, object):
             elif k == "bodies":
                 self.add(*v)
             elif k == "_static_body":
-                # _ = cp.cpSpaceSetStaticBody(self._space, v._body)
+                # _ = lib.cpSpaceSetStaticBody(self._space, v._body)
                 # v._space = self
                 # self._static_body = v
                 # print("setstate", v, self._static_body)
                 self._static_body = v
                 self._setup_static_body(v)
                 # self._static_body._space = weakref.proxy(self)
-                # cp.cpSpaceAddBody(self._space, v._body)
+                # lib.cpSpaceAddBody(self._space, v._body)
                 # self.add(v)
 
             elif k == "shapes":
@@ -1066,13 +1071,13 @@ class Space(PickleMixin, object):
                     if "_separate" in hd:
                         h.separate = hd["_separate"]
             elif k == "stamp":
-                cp.cpSpaceSetTimestamp(self._space, v)
+                lib.cpSpaceSetTimestamp(self._space, v)
             elif k == "shapeIDCounter":
-                cp.cpSpaceSetShapeIDCounter(self._space, v)
+                lib.cpSpaceSetShapeIDCounter(self._space, v)
             elif k == "currentTimeStep":
-                cp.cpSpaceSetCurrentTimeStep(self._space, v)
+                lib.cpSpaceSetCurrentTimeStep(self._space, v)
             elif k == "arbiters":
                 for d in v:
-                    # cp.cpSpaceTest(self._space)
+                    # lib.cpSpaceTest(self._space)
                     _arbiter = _arbiter_from_dict(d, self)
-                    cp.cpSpaceAddCachedArbiter(self._space, _arbiter)
+                    lib.cpSpaceAddCachedArbiter(self._space, _arbiter)
