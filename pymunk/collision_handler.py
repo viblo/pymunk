@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 from ._chipmunk_cffi import ffi, lib
 from .arbiter import Arbiter
 
-_CollisionCallback = Callable[[Arbiter, "Space", dict[Any, Any]], None]
+_CollisionCallback = Callable[[Arbiter, "Space"], None]
 
 
 class CollisionHandler(object):
@@ -149,7 +149,7 @@ class CollisionHandler(object):
             self._handler.separateFunc = lib.ext_cpCollisionSeparateFunc
 
     @staticmethod
-    def do_nothing(arbiter: Arbiter, space: "Space", data: dict[Any, Any]) -> None:
+    def do_nothing(arbiter: Arbiter, space: "Space") -> None:
         """The default do nothing method used for the post_solve and seprate
         callbacks.
 

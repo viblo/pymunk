@@ -28,14 +28,15 @@ if TYPE_CHECKING:
 _AddableObjects = Union[Body, Shape, Constraint]
 
 
-class Handlers(Mapping[Union[None, int, tuple[int, int]], CollisionHandler]):
+class HandlersMapping(Mapping[Union[None, int, tuple[int, int]], CollisionHandler]):
 
     def __init__(self, space: "Space") -> None:
         self.space = space
 
-    _handlers: dict[Union[None, int, tuple[int, int]], CollisionHandler] = {}
+        self._handlers: dict[Union[None, int, tuple[int, int]], CollisionHandler] = {}
 
     def __getitem__(self, key: Union[None, int, tuple[int, int]]) -> CollisionHandler:
+
         if key in self._handlers:
             return self._handlers[key]
         if key == None:
@@ -44,7 +45,7 @@ class Handlers(Mapping[Union[None, int, tuple[int, int]], CollisionHandler]):
         elif isinstance(key, int):
             self._handlers[key] = self.space.add_collision_handler(key, None)
             return self._handlers[key]
-        elif isinstance(key, tuple):
+        elif isinstance(key, tuple) and len(key) == 2:
             assert isinstance(key, tuple)
             self._handlers[key] = self.space.add_collision_handler(key[0], key[1])
             return self._handlers[key]
@@ -166,7 +167,7 @@ class Space(PickleMixin, object):
         self._remove_later: set[_AddableObjects] = set()
         self._bodies_to_check: set[Body] = set()
 
-        self._collision_handlers = Handlers(self)
+        self._collision_handlers = HandlersMapping(self)
 
     @property
     def shapes(self) -> KeysView[Shape]:
@@ -618,24 +619,16 @@ class Space(PickleMixin, object):
 
         self._post_step_callbacks.clear()
 
-    @property
-    def collision_handlers(
-        self,
-    ) -> Mapping[Union[None, int, tuple[int, int]], CollisionHandler]:
-        return self.collision_handlers
-
-    def add_collision_handler(
+    def set_collision_callbacks(
         self,
         collision_type_a: Optional[int] = None,
         collision_type_b: Optional[int] = None,
         begin: Optional[_CollisionCallback] = None,
-        pre_step: Optional[_CollisionCallback] = None,
-        post_step: Optional[_CollisionCallback] = None,
+        pre_solve: Optional[_CollisionCallback] = None,
+        post_solve: Optional[_CollisionCallback] = None,
         separate: Optional[_CollisionCallback] = None,
-        data: Optional[Mapping] = None,
-    ) -> CollisionHandler:
-        """Return the :py:class:`CollisionHandler` for collisions between
-        objects of type collision_type_a and collision_type_b.
+    ):
+        """Set callbacks that will be called during the 4 phases of collision handling.
 
         Use None to indicate any collision_type.
 
@@ -650,6 +643,9 @@ class Space(PickleMixin, object):
         If multiple handlers match the collision, the order will be that the
         most specific handler is called first.
 
+        Note that if a handler already exist for the a,b pair, that existing
+        handler will be returned.
+
         :param int collision_type_a: Collision type a
         :param int collision_type_b: Collision type b
 
@@ -662,23 +658,32 @@ class Space(PickleMixin, object):
             collision_type_b, collision_type_a = collision_type_a, collision_type_b
 
         key = collision_type_a, collision_type_b
-        if key in self._handlers:
-            return self._handlers[key]
+        if key not in self._handlers:
+            # CP_WILDCARD_COLLISION_TYPE
+            wildcard = int(ffi.cast("uintptr_t", ~0))
+            if collision_type_a == None:
+                collision_type_a = wildcard
 
-        # CP_WILDCARD_COLLISION_TYPE
-        wildcard = int(ffi.cast("uintptr_t", ~0))
-        if collision_type_a == None:
-            collision_type_a = wildcard
+            if collision_type_b == None:
+                collision_type_b = wildcard
 
-        if collision_type_b == None:
-            collision_type_b = wildcard
+            h = lib.cpSpaceAddCollisionHandler(
+                self._space, collision_type_a, collision_type_b
+            )
+            ch = CollisionHandler(h, self)
+            self._handlers[key] = ch
+        else:
+            ch = self._handlers[key]
 
-        h = lib.cpSpaceAddCollisionHandler(
-            self._space, collision_type_a, collision_type_b
-        )
-        ch = CollisionHandler(h, self)
-        self._handlers[key] = ch
-        return ch
+        if begin != None:
+            ch.begin = begin
+        if pre_solve != None:
+            ch.pre_solve = pre_solve
+        if post_solve != None:
+            ch.post_solve = post_solve
+        if separate != None:
+            ch.separate = separate
+        return
 
     def add_post_step_callback(
         self,
