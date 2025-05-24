@@ -1,7 +1,8 @@
-"""A basic playground. Most interesting function is draw a shape, basically 
-move the mouse as you want and pymunk will approximate a Poly shape from the 
+"""A basic playground. Most interesting function is draw a shape, basically
+move the mouse as you want and pymunk will approximate a Poly shape from the
 drawing.
 """
+
 __docformat__ = "reStructuredText"
 
 import pygame

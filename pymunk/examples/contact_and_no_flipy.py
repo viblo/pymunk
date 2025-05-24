@@ -1,5 +1,5 @@
-"""This example spawns (bouncing) balls randomly on a L-shape constructed of 
-two segment shapes. For each collision it draws a red circle with size 
+"""This example spawns (bouncing) balls randomly on a L-shape constructed of
+two segment shapes. For each collision it draws a red circle with size
 depending on collision strength. Not interactive.
 """
 
@@ -9,15 +9,14 @@ import sys
 import pygame
 
 import pymunk as pm
-from pymunk import Vec2d
 
 
-def draw_collision(arbiter, space, data):
+def draw_collision(arbiter, space, surface):
     for c in arbiter.contact_point_set.points:
         r = max(3, abs(c.distance * 5))
         r = int(r)
         p = tuple(map(int, c.point_a))
-        pygame.draw.circle(data["surface"], pygame.Color("red"), p, r, 0)
+        pygame.draw.circle(surface, pygame.Color("red"), p, r, 0)
 
 
 def main():
@@ -43,9 +42,7 @@ def main():
 
     ticks_to_next_ball = 10
 
-    ch = space.add_collision_handler(0, 0)
-    ch.data["surface"] = screen
-    ch.post_solve = draw_collision
+    space.set_collision_callback(0, 0, post_solve=draw_collision, data=screen)
 
     while running:
         for event in pygame.event.get():

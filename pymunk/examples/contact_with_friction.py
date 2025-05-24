@@ -1,5 +1,5 @@
-"""This example spawns (bouncing) balls randomly on a L-shape constructed of 
-two segment shapes. Displays collsion strength and rotating balls thanks to 
+"""This example spawns (bouncing) balls randomly on a L-shape constructed of
+two segment shapes. Displays collsion strength and rotating balls thanks to
 friction. Not interactive.
 """
 
@@ -10,18 +10,17 @@ import pygame
 
 import pymunk
 import pymunk.pygame_util
-from pymunk import Vec2d
 
 pymunk.pygame_util.positive_y_is_up = True
 
 
-def draw_collision(arbiter, space, data):
+def draw_collision(arbiter, space, surface):
     for c in arbiter.contact_point_set.points:
         r = max(3, abs(c.distance * 5))
         r = int(r)
 
-        p = pymunk.pygame_util.to_pygame(c.point_a, data["surface"])
-        pygame.draw.circle(data["surface"], pygame.Color("black"), p, r, 1)
+        p = pymunk.pygame_util.to_pygame(c.point_a, surface)
+        pygame.draw.circle(surface, pygame.Color("black"), p, r, 1)
 
 
 def main():
@@ -53,9 +52,7 @@ def main():
 
     ticks_to_next_ball = 10
 
-    ch = space.add_collision_handler(0, 0)
-    ch.data["surface"] = screen
-    ch.post_solve = draw_collision
+    space.set_collision_callback(0, 0, post_solve=draw_collision, data=screen)
 
     while running:
         for event in pygame.event.get():

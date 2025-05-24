@@ -24,11 +24,11 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def pre_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertEqual(arb.restitution, 0.18)
             arb.restitution = 1
 
-        s.set_collision_callbacks(1, 2, pre_solve=pre_solve)
+        s.set_collision_callback(1, 2, pre_solve=pre_solve)
 
         for x in range(10):
             s.step(0.1)
@@ -52,11 +52,11 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def pre_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertEqual(arb.friction, 0.18)
             arb.friction = 1
 
-        s.set_collision_callbacks(1, 2, pre_solve=pre_solve)
+        s.set_collision_callback(1, 2, pre_solve=pre_solve)
 
         for x in range(10):
             s.step(0.1)
@@ -80,14 +80,14 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def pre_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertAlmostEqual(arb.surface_velocity.x, 1.38461538462)
             self.assertAlmostEqual(arb.surface_velocity.y, -0.923076923077)
 
             arb.surface_velocity = (10, 10)
             # TODO: add assert check that setting surface_velocity has any effect
 
-        s.set_collision_callbacks(1, 2, pre_solve=pre_solve)
+        s.set_collision_callback(1, 2, pre_solve=pre_solve)
         for x in range(5):
             s.step(0.1)
 
@@ -106,7 +106,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def pre_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             # check inital values
             ps = arb.contact_point_set
             self.assertEqual(len(ps.points), 1)
@@ -142,7 +142,7 @@ class UnitTestArbiter(unittest.TestCase):
 
             self.assertRaises(Exception, f)
 
-        s.set_collision_callbacks(2, 1, pre_solve=pre_solve)
+        s.set_collision_callback(2, 1, pre_solve=pre_solve)
 
         s.step(0.1)
 
@@ -165,12 +165,12 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.post_solve_done = False
 
-        def post_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def post_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertAlmostEqual(arb.total_impulse.x, 3.3936651583)
             self.assertAlmostEqual(arb.total_impulse.y, 4.3438914027)
             self.post_solve_done = True
 
-        s.set_collision_callbacks(1, 2, post_solve=post_solve)
+        s.set_collision_callback(1, 2, post_solve=post_solve)
 
         s.step(0.1)
 
@@ -194,10 +194,10 @@ class UnitTestArbiter(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         r = {}
 
-        def post_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def post_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             r["ke"] = arb.total_ke
 
-        s.set_collision_callbacks(1, 2, post_solve=post_solve)
+        s.set_collision_callback(1, 2, post_solve=post_solve)
 
         s.step(0.1)
 
@@ -220,17 +220,17 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.add(b1, c1, b2, c2)
 
-        def pre_solve1(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve1(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertTrue(arb.is_first_contact)
 
-        s.set_collision_callbacks(1, 2, pre_solve=pre_solve1)
+        s.set_collision_callback(1, 2, pre_solve=pre_solve1)
 
         s.step(0.1)
 
-        def pre_solve2(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve2(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertFalse(arb.is_first_contact)
 
-        s.set_collision_callbacks(1, 2, pre_solve=pre_solve2)
+        s.set_collision_callback(1, 2, pre_solve=pre_solve2)
 
         s.step(0.1)
 
@@ -248,10 +248,10 @@ class UnitTestArbiter(unittest.TestCase):
         s.add(b1, c1, c2)
         r = {}
 
-        def pre_solve1(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve1(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             r["n"] = Vec2d(*arb.normal)
 
-        s.set_collision_callbacks(1, 2, pre_solve=pre_solve1)
+        s.set_collision_callback(1, 2, pre_solve=pre_solve1)
 
         s.step(0.1)
 
@@ -277,11 +277,11 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.called1 = False
 
-        def separate1(arb: p.Arbiter, space: p.Space) -> None:
+        def separate1(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.called1 = True
             self.assertFalse(arb.is_removal)
 
-        s.set_collision_callbacks(1, 2, separate=separate1)
+        s.set_collision_callback(1, 2, separate=separate1)
 
         for x in range(10):
             s.step(0.1)
@@ -292,11 +292,11 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.called2 = False
 
-        def separate2(arb: p.Arbiter, space: p.Space) -> None:
+        def separate2(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.called2 = True
             self.assertTrue(arb.is_removal)
 
-        s.set_collision_callbacks(1, 2, separate=separate2)
+        s.set_collision_callback(1, 2, separate=separate2)
         s.remove(b1, c1)
 
         self.assertTrue(self.called2)
@@ -320,7 +320,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.called = False
 
-        def pre_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.called = True
             self.assertEqual(len(arb.shapes), 2)
             self.assertEqual(arb.shapes[0], c1)
@@ -328,14 +328,14 @@ class UnitTestArbiter(unittest.TestCase):
             self.assertEqual(arb.bodies[0], arb.shapes[0].body)
             self.assertEqual(arb.bodies[1], arb.shapes[1].body)
 
-        s.set_collision_callbacks(1, 2, post_solve=pre_solve)
+        s.set_collision_callback(1, 2, post_solve=pre_solve)
 
         s.step(0.1)
         self.assertTrue(self.called)
 
     def testProcessCollision(self) -> None:
 
-        def setup():
+        def setup() -> p.Space:
             s = p.Space()
 
             b1 = p.Body(1, 30)
@@ -359,8 +359,8 @@ class UnitTestArbiter(unittest.TestCase):
             data: dict[Any, Any],
         ) -> None:
             # print("callback", name)  # , arb.shapes)
-            expected_name, expected_process_collision = h.data["expected"].pop(0)
-            process_collision = h.data["process_values"].pop(0)
+            expected_name, expected_process_collision = data["expected"].pop(0)
+            process_collision = data["process_values"].pop(0)
             correct_call = (
                 expected_process_collision == arb.process_collision
                 and expected_name == name
@@ -374,7 +374,7 @@ class UnitTestArbiter(unittest.TestCase):
                     arb.process_collision,
                 )
 
-            h.data["result"].append(correct_call)
+            data["result"].append(correct_call)
             arb.process_collision = process_collision
             # print("  arb.process_collision", process_collision)
 
@@ -398,9 +398,9 @@ class UnitTestArbiter(unittest.TestCase):
             ("010101", ["b", 1, "p", 0, "t", 1, "p", 0, "t", 1, "s", 0]),
         ]
         # print()
-        for process_values, expected_calls in test_matrix:
+        for process_values_str, expected_calls in test_matrix:
             process_values = [
-                bit == "1" for bit in process_values if bit in "01"
+                bit == "1" for bit in process_values_str if bit in "01"
             ]  # will crash if bit is not 0 or 1.
 
             expected_calls.append(None)
@@ -408,15 +408,19 @@ class UnitTestArbiter(unittest.TestCase):
             # print("process_values, expected calls", process_values, expected_calls)
 
             s = setup()
-            h = s.set_collision_callbacks(1, 2)
-            h.data["process_values"] = process_values
-            h.data["expected"] = expected_calls
-            h.data["result"] = []
-
-            begin = functools.partial(callback, "b")
-            pre_solve = functools.partial(callback, "p")
-            post_solve = functools.partial(callback, "t")
-            separate = functools.partial(callback, "s")
+            hdata = {}
+            hdata["process_values"] = process_values
+            hdata["expected"] = expected_calls
+            hdata["result"] = []
+            s.set_collision_callback(
+                1,
+                2,
+                begin=functools.partial(callback, "b"),
+                pre_solve=functools.partial(callback, "p"),
+                post_solve=functools.partial(callback, "t"),
+                separate=functools.partial(callback, "s"),
+                data=hdata,
+            )
 
             s.step(0.1)
             s.step(0.1)
@@ -425,7 +429,7 @@ class UnitTestArbiter(unittest.TestCase):
 
             # print(h.data)
             # print(all(h.data["result"]))
-            self.assertTrue(all(h.data["result"]))
+            self.assertTrue(all(hdata["result"]))
         # print("done")
 
 

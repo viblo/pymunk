@@ -1,6 +1,7 @@
-"""This is an example on how the autogeometry can be used for deformable 
+"""This is an example on how the autogeometry can be used for deformable
 terrain.
 """
+
 __docformat__ = "reStructuredText"
 
 import sys
@@ -29,7 +30,7 @@ def draw_helptext(screen):
 
 
 def generate_geometry(surface, space):
-    for s in space.shapes:
+    for s in list(space.shapes):
         if hasattr(s, "generated") and s.generated:
             space.remove(s)
 
@@ -79,9 +80,9 @@ def main():
     def pre_solve(arb, space, data):
         s = arb.shapes[0]
         space.remove(s.body, s)
-        return False
+        arb.process_collision = False
 
-    space.add_collision_handler(0, 1).pre_solve = pre_solve
+    space.set_collision_callback(0, 1, pre_solve=pre_solve)
 
     terrain_surface = pygame.Surface((600, 600))
     terrain_surface.fill(pygame.Color("white"))

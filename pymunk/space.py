@@ -3,8 +3,8 @@ __docformat__ = "reStructuredText"
 import math
 import platform
 import weakref
-from collections.abc import KeysView, Mapping
-from typing import TYPE_CHECKING, Any, Callable, Hashable, Iterator, Optional, Union
+from collections.abc import KeysView
+from typing import TYPE_CHECKING, Any, Callable, Hashable, Optional, Union
 
 from pymunk.constraints import Constraint
 from pymunk.shape_filter import ShapeFilter
@@ -13,11 +13,11 @@ from pymunk.space_debug_draw_options import SpaceDebugDrawOptions
 from . import _version
 from ._callbacks import *
 from ._chipmunk_cffi import ffi, lib
+from ._collision_handler import CollisionHandler, _CollisionCallback
 from ._pickle import PickleMixin, _State
 from ._util import _dead_ref
-from .arbiter import _arbiter_from_dict, _arbiter_to_dict
+from .arbiter import Arbiter, _arbiter_from_dict, _arbiter_to_dict
 from .body import Body
-from .collision_handler import CollisionHandler, _CollisionCallback
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shapes import Shape
 from .vec2d import Vec2d
@@ -26,37 +26,6 @@ if TYPE_CHECKING:
     from .bb import BB
 
 _AddableObjects = Union[Body, Shape, Constraint]
-
-
-class HandlersMapping(Mapping[Union[None, int, tuple[int, int]], CollisionHandler]):
-
-    def __init__(self, space: "Space") -> None:
-        self.space = space
-
-        self._handlers: dict[Union[None, int, tuple[int, int]], CollisionHandler] = {}
-
-    def __getitem__(self, key: Union[None, int, tuple[int, int]]) -> CollisionHandler:
-
-        if key in self._handlers:
-            return self._handlers[key]
-        if key == None:
-            self._handlers[None] = self.space.add_collision_handler(None, None)
-            return self._handlers[None]
-        elif isinstance(key, int):
-            self._handlers[key] = self.space.add_collision_handler(key, None)
-            return self._handlers[key]
-        elif isinstance(key, tuple) and len(key) == 2:
-            assert isinstance(key, tuple)
-            self._handlers[key] = self.space.add_collision_handler(key[0], key[1])
-            return self._handlers[key]
-        else:
-            raise ValueError()
-
-    def __len__(self) -> int:
-        return len(self._handlers)
-
-    def __iter__(self) -> Iterator[Union[None, int, tuple[int, int]]]:
-        return iter(self._handlers)
 
 
 class Space(PickleMixin, object):
@@ -166,8 +135,6 @@ class Space(PickleMixin, object):
         self._add_later: set[_AddableObjects] = set()
         self._remove_later: set[_AddableObjects] = set()
         self._bodies_to_check: set[Body] = set()
-
-        self._collision_handlers = HandlersMapping(self)
 
     @property
     def shapes(self) -> KeysView[Shape]:
@@ -619,7 +586,7 @@ class Space(PickleMixin, object):
 
         self._post_step_callbacks.clear()
 
-    def set_collision_callbacks(
+    def set_collision_callback(
         self,
         collision_type_a: Optional[int] = None,
         collision_type_b: Optional[int] = None,
@@ -627,7 +594,8 @@ class Space(PickleMixin, object):
         pre_solve: Optional[_CollisionCallback] = None,
         post_solve: Optional[_CollisionCallback] = None,
         separate: Optional[_CollisionCallback] = None,
-    ):
+        data: Any = None,
+    ) -> None:
         """Set callbacks that will be called during the 4 phases of collision handling.
 
         Use None to indicate any collision_type.
@@ -675,14 +643,36 @@ class Space(PickleMixin, object):
         else:
             ch = self._handlers[key]
 
-        if begin != None:
+        if begin == Space.do_nothing:
+            ch.begin = None
+        elif begin != None:
             ch.begin = begin
-        if pre_solve != None:
+            ch.data["begin"] = data
+        if pre_solve == Space.do_nothing:
+            ch.pre_solve = None
+        elif pre_solve != None:
             ch.pre_solve = pre_solve
-        if post_solve != None:
+            ch.data["pre_solve"] = data
+        if post_solve == Space.do_nothing:
+            ch.post_solve = None
+        elif post_solve != None:
             ch.post_solve = post_solve
-        if separate != None:
+            ch.data["post_solve"] = data
+        if separate == Space.do_nothing:
+            ch.separate = None
+        elif separate != None:
             ch.separate = separate
+            ch.data["separate"] = data
+        return
+
+    @staticmethod
+    def do_nothing(arbiter: Arbiter, space: "Space", data: Any) -> None:
+        """The default do nothing method used for the collision callbacks.
+
+        Can be used to reset a collsion callback to its original do nothing
+        function. Note that its more efficient to use this method than to
+        define your own do nothing method.
+        """
         return
 
     def add_post_step_callback(
@@ -1002,13 +992,13 @@ class Space(PickleMixin, object):
         handlers = []
         for k, v in self._handlers.items():
             h: dict[str, Any] = {}
-            if v._begin != CollisionHandler.do_nothing:
+            if v._begin != Space.do_nothing:
                 h["_begin"] = v._begin
-            if v._pre_solve != CollisionHandler.do_nothing:
+            if v._pre_solve != Space.do_nothing:
                 h["_pre_solve"] = v._pre_solve
-            if v._post_solve != CollisionHandler.do_nothing:
+            if v._post_solve != Space.do_nothing:
                 h["_post_solve"] = v._post_solve
-            if v._separate != CollisionHandler.do_nothing:
+            if v._separate != Space.do_nothing:
                 h["_separate"] = v._separate
             handlers.append((k, h))
 
@@ -1061,20 +1051,43 @@ class Space(PickleMixin, object):
                 self.add(*v)
             elif k == "_handlers":
                 for k2, hd in v:
-                    if k2 == None:
-                        h = self.add_collision_handler(None, None)
-                    elif isinstance(k2, tuple):
-                        h = self.add_collision_handler(k2[0], k2[1])
-                    else:
-                        h = self.add_collision_handler(k2, None)
+                    begin = pre_solve = post_solve = separate = None
                     if "_begin" in hd:
-                        h.begin = hd["_begin"]
+                        begin = hd["_begin"]
                     if "_pre_solve" in hd:
-                        h.pre_solve = hd["_pre_solve"]
+                        pre_solve = hd["_pre_solve"]
                     if "_post_solve" in hd:
-                        h.post_solve = hd["_post_solve"]
+                        post_solve = hd["_post_solve"]
                     if "_separate" in hd:
-                        h.separate = hd["_separate"]
+                        separate = hd["_separate"]
+                    if k2 == None:
+                        self.set_collision_callback(
+                            None,
+                            None,
+                            begin=begin,
+                            pre_solve=pre_solve,
+                            post_solve=post_solve,
+                            separate=separate,
+                        )
+                    elif isinstance(k2, tuple):
+                        self.set_collision_callback(
+                            k2[0],
+                            k2[1],
+                            begin=begin,
+                            pre_solve=pre_solve,
+                            post_solve=post_solve,
+                            separate=separate,
+                        )
+                    else:
+                        self.set_collision_callback(
+                            k2,
+                            None,
+                            begin=begin,
+                            pre_solve=pre_solve,
+                            post_solve=post_solve,
+                            separate=separate,
+                        )
+
             elif k == "stamp":
                 lib.cpSpaceSetTimestamp(self._space, v)
             elif k == "shapeIDCounter":

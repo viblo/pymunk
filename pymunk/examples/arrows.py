@@ -49,7 +49,7 @@ def post_solve_arrow_hit(arbiter, space, data):
             arrow_body,
             other_body,
             position,
-            data["flying_arrows"],
+            data,
         )
 
 
@@ -98,9 +98,9 @@ def main():
     space.add(arrow_body, arrow_shape)
 
     flying_arrows: list[pymunk.Body] = []
-    handler = space.add_collision_handler(0, 1)
-    handler.data["flying_arrows"] = flying_arrows
-    handler.post_solve = post_solve_arrow_hit
+    space.set_collision_callback(
+        0, 1, post_solve=post_solve_arrow_hit, data=flying_arrows
+    )
 
     start_time = 0
     while running:

@@ -7,7 +7,7 @@ import pickle
 import sys
 import unittest
 import warnings
-from typing import Any, Callable, Sequence, cast
+from typing import Any, Callable, Optional, Sequence, cast
 
 import pymunk as p
 from pymunk import *
@@ -528,10 +528,10 @@ class UnitTestSpace(unittest.TestCase):
 
         self.hits = 0
 
-        def begin(arb: p.Arbiter, space: p.Space) -> None:
+        def begin(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.hits += 1
 
-        s.set_collision_callbacks(0, 0, begin=begin)
+        s.set_collision_callback(0, 0, begin=begin)
 
         for x in range(10):
             s.step(0.1)
@@ -549,14 +549,14 @@ class UnitTestSpace(unittest.TestCase):
 
         d = {}
 
-        def pre_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             d["shapes"] = arb.shapes
             d["space"] = space  # type: ignore
             d["test"] = data["test"]
 
-        h = s.set_collision_callbacks(0, 1)
-        h.data["test"] = 1
-        h.pre_solve = pre_solve
+        data = {"test": 1}
+        s.set_collision_callback(0, 1, pre_solve=pre_solve, data=data)
+
         s.step(0.1)
         self.assertEqual(c1, d["shapes"][1])
         self.assertEqual(c2, d["shapes"][0])
@@ -567,10 +567,10 @@ class UnitTestSpace(unittest.TestCase):
         self._setUp()
         self.hit = 0
 
-        def post_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def post_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.hit += 1
 
-        self.s.set_collision_callbacks(0, 0, post_solve=post_solve)
+        self.s.set_collision_callback(0, 0, post_solve=post_solve)
         self.s.step(0.1)
         self.assertEqual(self.hit, 1)
         self._tearDown()
@@ -591,10 +591,10 @@ class UnitTestSpace(unittest.TestCase):
 
         self.separated = False
 
-        def separate(arb: p.Arbiter, space: p.Space) -> None:
+        def separate(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.separated = True
 
-        s.set_collision_callbacks(0, 0, separate=separate)
+        s.set_collision_callback(0, 0, separate=separate)
 
         for x in range(10):
             s.step(0.1)
@@ -613,7 +613,7 @@ class UnitTestSpace(unittest.TestCase):
             s.add(p.Circle(s.static_body, 2))
             s.remove(c1)
 
-        s.set_collision_callbacks(separate=separate)
+        s.set_collision_callback(separate=separate)
 
         s.step(1)
         s.remove(c1)
@@ -632,11 +632,14 @@ class UnitTestSpace(unittest.TestCase):
         s.add(b1, c1, b2, c2)
         s.gravity = 0, -100
 
-        h = s.set_collision_callbacks(None, None)
-        h.begin = h.do_nothing
-        h.pre_solve = h.do_nothing
-        h.post_solve = h.do_nothing
-        h.separate = h.do_nothing
+        s.set_collision_callback(
+            None,
+            None,
+            begin=Space.do_nothing,
+            pre_solve=Space.do_nothing,
+            post_solve=Space.do_nothing,
+            separate=Space.do_nothing,
+        )
 
         for _ in range(10):
             s.step(0.1)
@@ -669,15 +672,15 @@ class UnitTestSpace(unittest.TestCase):
             print("remove2")
             s.remove(shape2)
 
-        # s.set_collision_callbacks(1, 0).separate = remove2
-        s.set_collision_callbacks(1, 0, separate=remove1)
+        # s.set_collision_callback(1, 0).separate = remove2
+        s.set_collision_callback(1, 0, separate=remove1)
 
         s.step(0.001)
 
         # trigger separate with shape2 and shape3, shape1 will be removed 2x
         s.remove(shape1)
 
-        s.set_collision_callbacks(1, 0, separate=remove2)
+        s.set_collision_callback(1, 0, separate=remove2)
         s.add(shape1)
 
         s.step(1)
@@ -707,7 +710,7 @@ class UnitTestSpace(unittest.TestCase):
             pass
 
         s.step(1)
-        s.set_collision_callbacks(0, separate=separate)
+        s.set_collision_callback(0, separate=separate)
 
         s.remove(shape1)
 
@@ -734,18 +737,18 @@ class UnitTestSpace(unittest.TestCase):
         space.add(shape1, body2, shape2, shape3, body3)
         print("START", shape1, shape2, shape3)
 
-        def separate(arbiter: p.Arbiter, space: p.Space) -> None:
+        def separate(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
             print("SEP", arbiter.shapes)
             self.separate_occurred = True
 
-        def post_solve(arbiter: p.Arbiter, space: p.Space) -> None:
+        def post_solve(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
             print("POST", arbiter.shapes)
             if self.separate_occurred:
                 print("POST REMOVE", arbiter.shapes)
                 space.remove(*arbiter.shapes)
 
-        space.set_collision_callbacks(1, 2, post_solve=post_solve)
-        space.set_collision_callbacks(3, 2, separate=separate)
+        space.set_collision_callback(1, 2, post_solve=post_solve)
+        space.set_collision_callback(3, 2, separate=separate)
 
         print(1)
         self.separate_occurred = False
@@ -776,26 +779,26 @@ class UnitTestSpace(unittest.TestCase):
         b = p.Body(1, 2)
         c = p.Circle(b, 2)
 
-        def pre_solve_add(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve_add(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             space.add(b, c)
             space.add(c, b)
             self.assertTrue(b not in s.bodies)
             self.assertTrue(c not in s.shapes)
 
-        def pre_solve_remove(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve_remove(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             space.remove(b, c)
             space.remove(c, b)
             self.assertTrue(b in s.bodies)
             self.assertTrue(c in s.shapes)
 
-        s.set_collision_callbacks(0, 0, pre_solve=pre_solve_add)
+        s.set_collision_callback(0, 0, pre_solve=pre_solve_add)
 
         s.step(0.1)
         return
         self.assertTrue(b in s.bodies)
         self.assertTrue(c in s.shapes)
 
-        s.set_collision_callbacks(0, 0).pre_solve = pre_solve_remove
+        s.set_collision_callback(0, 0).pre_solve = pre_solve_remove
 
         s.step(0.1)
 
@@ -806,10 +809,10 @@ class UnitTestSpace(unittest.TestCase):
         self._setUp()
         s = self.s
 
-        def pre_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             space.remove(*arb.shapes)
 
-        s.set_collision_callbacks(0, 0, pre_solve=pre_solve)
+        s.set_collision_callback(0, 0, pre_solve=pre_solve)
 
         s.step(0.1)
 
@@ -824,7 +827,7 @@ class UnitTestSpace(unittest.TestCase):
 
         def callback(
             name: str,
-            types: tuple[int, int],
+            types: tuple[Optional[int], Optional[int]],
             arb: p.Arbiter,
             space: p.Space,
             data: dict[Any, Any],
@@ -846,11 +849,14 @@ class UnitTestSpace(unittest.TestCase):
         ]
 
         for t1, t2 in handler_order:
-            h = s.set_collision_callbacks(t1, t2)
-            h.begin = functools.partial(callback, "begin", (t1, t2))
-            h.pre_solve = functools.partial(callback, "pre_solve", (t1, t2))
-            h.post_solve = functools.partial(callback, "post_solve", (t1, t2))
-            h.separate = functools.partial(callback, "separate", (t1, t2))
+            s.set_collision_callback(
+                t1,
+                t2,
+                begin=functools.partial(callback, "begin", (t1, t2)),
+                pre_solve=functools.partial(callback, "pre_solve", (t1, t2)),
+                post_solve=functools.partial(callback, "post_solve", (t1, t2)),
+                separate=functools.partial(callback, "separate", (t1, t2)),
+            )
 
         b1 = p.Body(1, 30)
         c1 = p.Circle(b1, 10)
@@ -903,12 +909,12 @@ class UnitTestSpace(unittest.TestCase):
 
         d = {}
 
-        def pre_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             d["shapes"] = arb.shapes
             d["space"] = space  # type: ignore
 
-        s.set_collision_callbacks(1, None, pre_solve=pre_solve)
-        s.set_collision_callbacks(None, 1, pre_solve=pre_solve)
+        s.set_collision_callback(1, None, pre_solve=pre_solve)
+        s.set_collision_callback(None, 1, pre_solve=pre_solve)
 
         s.step(0.1)
 
@@ -933,11 +939,11 @@ class UnitTestSpace(unittest.TestCase):
 
         d = {}
 
-        def pre_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             d["shapes"] = arb.shapes
             d["space"] = space  # type: ignore
 
-        s.set_collision_callbacks(pre_solve=pre_solve)
+        s.set_collision_callback(pre_solve=pre_solve)
         s.step(0.1)
 
         self.assertEqual(c1, d["shapes"][1])
@@ -965,12 +971,12 @@ class UnitTestSpace(unittest.TestCase):
                 s.remove(shape)
             test_self.calls += 1
 
-        def pre_solve(arb: p.Arbiter, space: p.Space) -> None:
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             # note that we dont pass on the whole arbiters object, instead
             # we take only the shapes.
             space.add_post_step_callback(callback, 0, arb.shapes, test_self=self)
 
-        s.set_collision_callbacks(0, 0, pre_solve=pre_solve)
+        s.set_collision_callback(0, 0, pre_solve=pre_solve)
 
         s.step(0.1)
         self.assertEqual(len(s.shapes), 0)
@@ -1080,13 +1086,13 @@ class UnitTestSpace(unittest.TestCase):
         j2 = PinJoint(s.static_body, b2)
         s.add(j1, j2)
 
-        s.set_collision_callbacks(begin=f1)
+        s.set_collision_callback(begin=f1)
 
-        s.set_collision_callbacks(1, pre_solve=f1)
+        s.set_collision_callback(1, pre_solve=f1)
 
-        s.set_collision_callbacks(1, 2, post_solve=f1)
+        s.set_collision_callback(1, 2, post_solve=f1)
 
-        s.set_collision_callbacks(3, 4, separate=f1)
+        s.set_collision_callback(3, 4, separate=f1)
 
         s2 = copy_func(s)
 
@@ -1110,28 +1116,28 @@ class UnitTestSpace(unittest.TestCase):
         self.assertIn(s2.static_body, ja)
 
         # Assert collision handlers
-        h2 = s2.set_collision_callbacks(None, None)
+        h2 = s2._handlers[(None, None)]
         self.assertIsNotNone(h2.begin)
-        self.assertEqual(h2.pre_solve, p.CollisionHandler.do_nothing)
-        self.assertEqual(h2.post_solve, p.CollisionHandler.do_nothing)
-        self.assertEqual(h2.separate, p.CollisionHandler.do_nothing)
+        self.assertEqual(h2.pre_solve, p.Space.do_nothing)
+        self.assertEqual(h2.post_solve, p.Space.do_nothing)
+        self.assertEqual(h2.separate, p.Space.do_nothing)
 
-        h2 = s2.set_collision_callbacks(1, None)
-        self.assertEqual(h2.begin, p.CollisionHandler.do_nothing)
+        h2 = s2._handlers[(1, None)]
+        self.assertEqual(h2.begin, p.Space.do_nothing)
         self.assertIsNotNone(h2.pre_solve)
-        self.assertEqual(h2.post_solve, p.CollisionHandler.do_nothing)
-        self.assertEqual(h2.separate, p.CollisionHandler.do_nothing)
+        self.assertEqual(h2.post_solve, p.Space.do_nothing)
+        self.assertEqual(h2.separate, p.Space.do_nothing)
 
-        h2 = s2.set_collision_callbacks(1, 2)
-        self.assertEqual(h2.begin, p.CollisionHandler.do_nothing)
-        self.assertEqual(h2.pre_solve, p.CollisionHandler.do_nothing)
+        h2 = s2._handlers[(1, 2)]
+        self.assertEqual(h2.begin, p.Space.do_nothing)
+        self.assertEqual(h2.pre_solve, p.Space.do_nothing)
         self.assertIsNotNone(h2.post_solve)
-        self.assertEqual(h2.separate, p.CollisionHandler.do_nothing)
+        self.assertEqual(h2.separate, p.Space.do_nothing)
 
-        h2 = s2.set_collision_callbacks(3, 4)
-        self.assertEqual(h2.begin, p.CollisionHandler.do_nothing)
-        self.assertEqual(h2.pre_solve, p.CollisionHandler.do_nothing)
-        self.assertEqual(h2.post_solve, p.CollisionHandler.do_nothing)
+        h2 = s2._handlers[(3, 4)]
+        self.assertEqual(h2.begin, p.Space.do_nothing)
+        self.assertEqual(h2.pre_solve, p.Space.do_nothing)
+        self.assertEqual(h2.post_solve, p.Space.do_nothing)
         self.assertIsNotNone(h2.separate)
 
     def testPickleCachedArbiters(self) -> None:

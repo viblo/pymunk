@@ -203,7 +203,7 @@ def ext_cpCollisionBeginFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
 ) -> None:
     handler = ffi.from_handle(data)
-    handler._begin(Arbiter(_arb, handler._space), handler._space)
+    handler._begin(Arbiter(_arb, handler._space), handler._space, handler.data["begin"])
 
 
 @ffi.def_extern()
@@ -211,7 +211,9 @@ def ext_cpCollisionPreSolveFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
 ) -> None:
     handler = ffi.from_handle(data)
-    handler._pre_solve(Arbiter(_arb, handler._space), handler._space)
+    handler._pre_solve(
+        Arbiter(_arb, handler._space), handler._space, handler.data["pre_solve"]
+    )
 
 
 @ffi.def_extern()
@@ -219,7 +221,9 @@ def ext_cpCollisionPostSolveFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
 ) -> None:
     handler = ffi.from_handle(data)
-    handler._post_solve(Arbiter(_arb, handler._space), handler._space)
+    handler._post_solve(
+        Arbiter(_arb, handler._space), handler._space, handler.data["post_solve"]
+    )
 
 
 @ffi.def_extern()
@@ -234,7 +238,9 @@ def ext_cpCollisionSeparateFunc(
         # this try is needed since a separate callback will be called
         # if a colliding object is removed, regardless if its in a
         # step or not. Meaning the unlock must succeed
-        handler._separate(Arbiter(_arb, handler._space), handler._space)
+        handler._separate(
+            Arbiter(_arb, handler._space), handler._space, handler.data["separate"]
+        )
     finally:
         handler._space._locked = orig_locked
 

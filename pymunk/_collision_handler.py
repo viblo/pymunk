@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any, Callable, Optional
 
 if TYPE_CHECKING:
     from .space import Space
@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 from ._chipmunk_cffi import ffi, lib
 from .arbiter import Arbiter
 
-_CollisionCallback = Callable[[Arbiter, "Space"], None]
+_CollisionCallback = Callable[[Arbiter, "Space", Any], None]
 
 
 class CollisionHandler(object):
@@ -41,10 +41,10 @@ class CollisionHandler(object):
         self._handler.userData = self._userData
 
         self._space = space
-        self._begin: _CollisionCallback = CollisionHandler.do_nothing
-        self._pre_solve: _CollisionCallback = CollisionHandler.do_nothing
-        self._post_solve: _CollisionCallback = CollisionHandler.do_nothing
-        self._separate: _CollisionCallback = CollisionHandler.do_nothing
+        self._begin: Optional[_CollisionCallback] = None
+        self._pre_solve: Optional[_CollisionCallback] = None
+        self._post_solve: Optional[_CollisionCallback] = None
+        self._separate: Optional[_CollisionCallback] = None
 
         self._data: dict[Any, Any] = {}
 
@@ -60,7 +60,7 @@ class CollisionHandler(object):
         return self._data
 
     @property
-    def begin(self) -> _CollisionCallback:
+    def begin(self) -> Optional[_CollisionCallback]:
         """Two shapes just started touching for the first time this step.
 
         ``func(arbiter, space, data)``
@@ -74,16 +74,16 @@ class CollisionHandler(object):
         return self._begin
 
     @begin.setter
-    def begin(self, func: _CollisionCallback) -> None:
+    def begin(self, func: Optional[_CollisionCallback]) -> None:
         self._begin = func
 
-        if self._begin == CollisionHandler.do_nothing:
+        if self._begin == None:
             self._handler.beginFunc = ffi.addressof(lib, "DoNothing")
         else:
             self._handler.beginFunc = lib.ext_cpCollisionBeginFunc
 
     @property
-    def pre_solve(self) -> _CollisionCallback:
+    def pre_solve(self) -> Optional[_CollisionCallback]:
         """Two shapes are touching during this step.
 
         ``func(arbiter, space, data)``
@@ -96,16 +96,16 @@ class CollisionHandler(object):
         return self._pre_solve
 
     @pre_solve.setter
-    def pre_solve(self, func: _CollisionCallback) -> None:
+    def pre_solve(self, func: Optional[_CollisionCallback]) -> None:
         self._pre_solve = func
 
-        if self._pre_solve == CollisionHandler.do_nothing:
+        if self._pre_solve == None:
             self._handler.preSolveFunc = ffi.addressof(lib, "DoNothing")
         else:
             self._handler.preSolveFunc = lib.ext_cpCollisionPreSolveFunc
 
     @property
-    def post_solve(self) -> _CollisionCallback:
+    def post_solve(self) -> Optional[_CollisionCallback]:
         """Two shapes are touching and their collision response has been
         processed.
 
@@ -118,16 +118,16 @@ class CollisionHandler(object):
         return self._post_solve
 
     @post_solve.setter
-    def post_solve(self, func: _CollisionCallback) -> None:
+    def post_solve(self, func: Optional[_CollisionCallback]) -> None:
         self._post_solve = func
 
-        if self._post_solve == CollisionHandler.do_nothing:
+        if self._post_solve == None:
             self._handler.postSolveFunc = ffi.addressof(lib, "DoNothing")
         else:
             self._handler.postSolveFunc = lib.ext_cpCollisionPostSolveFunc
 
     @property
-    def separate(self) -> _CollisionCallback:
+    def separate(self) -> Optional[_CollisionCallback]:
         """Two shapes have just stopped touching for the first time this
         step.
 
@@ -140,20 +140,10 @@ class CollisionHandler(object):
         return self._separate
 
     @separate.setter
-    def separate(self, func: _CollisionCallback) -> None:
+    def separate(self, func: Optional[_CollisionCallback]) -> None:
         self._separate = func
 
-        if self._separate == CollisionHandler.do_nothing:
+        if self._separate == None:
             self._handler.separateFunc = ffi.addressof(lib, "DoNothing")
         else:
             self._handler.separateFunc = lib.ext_cpCollisionSeparateFunc
-
-    @staticmethod
-    def do_nothing(arbiter: Arbiter, space: "Space") -> None:
-        """The default do nothing method used for the post_solve and seprate
-        callbacks.
-
-        Note that its more efficient to set this method than to define your own
-        do nothing method.
-        """
-        return
