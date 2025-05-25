@@ -408,7 +408,7 @@ class UnitTestArbiter(unittest.TestCase):
             # print("process_values, expected calls", process_values, expected_calls)
 
             s = setup()
-            hdata = {}
+            hdata: dict[str, Any] = {}
             hdata["process_values"] = process_values
             hdata["expected"] = expected_calls
             hdata["result"] = []

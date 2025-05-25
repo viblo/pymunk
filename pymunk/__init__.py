@@ -67,7 +67,7 @@ __all__ = [
     "Vec2d",
 ]
 
-from typing import Sequence, cast
+from typing import Any, Sequence, cast
 
 from . import _chipmunk_cffi
 
@@ -193,7 +193,7 @@ def area_for_poly(vertices: Sequence[tuple[float, float]], radius: float = 0) ->
     return cp.cpAreaForPoly(len(vs), vs, radius)
 
 
-def empty_callback(*args, **kwargs) -> None:
+def empty_callback(*args: Any, **kwargs: Any) -> None:
     """A default empty callback.
 
     Can be used to reset a collsion callback to its original empty
