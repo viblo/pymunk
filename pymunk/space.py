@@ -596,28 +596,48 @@ class Space(PickleMixin, object):
         separate: Optional[_CollisionCallback] = None,
         data: Any = None,
     ) -> None:
-        """Set callbacks that will be called during the 4 phases of collision handling.
-
-        Use None to indicate any collision_type.
-
-        Fill the desired collision callback functions, for details see the
-        :py:class:`CollisionHandler` object.
+        """Set callbacks that will be called during the 4 phases of collision
+        handling.
 
         Whenever shapes with collision types (:py:attr:`Shape.collision_type`)
-        a and b collide, this handler will be used to process the collision
-        events. If no handler is set, the default is to process collision as
+        a and b collide, the callback will be used to process the collision
+        events. If no callback is set, the default is to process collision
         normally.
 
-        If multiple handlers match the collision, the order will be that the
+        Its possible to pass in None for one or both of the collision types.
+        None matches any collision type on a Shape.
+
+        If you call this multiple times with the same combination of
+        collision_type_a and collision_type_b, then the last call will
+        overwrite the earlier.
+
+        If multiple callbacks match the collision, the order will be that the
         most specific handler is called first.
 
-        Note that if a handler already exist for the a,b pair, that existing
-        handler will be returned.
+        Callback phases:
 
-        :param int collision_type_a: Collision type a
-        :param int collision_type_b: Collision type b
+            - **begin**: Two shapes just started touching for the first time
+              this step.
+            - **pre_solve**: Two shapes are touching during this step, before
+              collision resolution. You may override collision values using
+              Arbiter.friction, Arbiter.elasticity or Arbiter.surfaceVelocity
+              to provide custom friction, elasticity, or surface velocity
+              values. See Arbiter for more info.
+            - **post_solve**: Two shapes are touching and their collision response
+              has been processed. You can retrieve the collision impulse or
+              kinetic energy at this time if you want to use it to calculate
+              sound volumes or damage amounts. See Arbiter for more info.
+            - **separate**: Two shapes have just stopped touching for the
+              first time this step. To ensure that begin()/separate() are
+              always called in balanced pairs, it will also be called when
+              removing a shape while its in contact with something or when
+              de-allocating the space.
 
-        :rtype: :py:class:`CollisionHandler`
+        From each callback you can set process_collision on the Arbiter,
+        which decides if the collision should be processed or not.
+
+        data will be passed in to the callback function unchanged.
+
         """
         # key = min(collision_type_a, collision_type_b), max(
         #     collision_type_a, collision_type_b

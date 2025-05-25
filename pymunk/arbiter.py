@@ -43,14 +43,17 @@ class Arbiter(object):
     def process_collision(self) -> bool:
         """Decides if the collision should be processed or rejected.
 
-        Set this during a begin() or pre_solve() callback to override
-        the default (True) value.
+        Set this during a `begin()` or `pre_solve()` callback to override
+        the default (`True`) value.
 
-        Set this to true to process the collision normally or
-        false to cause pymunk to ignore the collision entirely. If you set it to
-        false from a `begin` callback, the `pre_solve` and `post_solve` callbacks will never be run,
-        but you will still recieve a separate event when the shapes stop
-        overlapping.
+        Set this to `true` to process the collision normally or
+        `false` to cause Pymunk to ignore the collision entirely. Note that
+        while `post_solve` might be skipped if this is `false`, `separate`
+        will always be called when the shapes stop overlapping.
+
+        .. note::
+            No collision will be processed for a sensor Shape, or a Shape
+            attached to a STATIC or KINEMATIC Body.
 
         """
         return lib.cpArbiterGetProcessCollision(self._arbiter)
