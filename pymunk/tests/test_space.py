@@ -1118,26 +1118,26 @@ class UnitTestSpace(unittest.TestCase):
         # Assert collision handlers
         h2 = s2._handlers[(None, None)]
         self.assertIsNotNone(h2.begin)
-        self.assertEqual(h2.pre_solve, p.empty_callback)
-        self.assertEqual(h2.post_solve, p.empty_callback)
-        self.assertEqual(h2.separate, p.empty_callback)
+        self.assertEqual(h2.pre_solve, None)
+        self.assertEqual(h2.post_solve, None)
+        self.assertEqual(h2.separate, None)
 
         h2 = s2._handlers[(1, None)]
-        self.assertEqual(h2.begin, p.empty_callback)
+        self.assertEqual(h2.begin, None)
         self.assertIsNotNone(h2.pre_solve)
-        self.assertEqual(h2.post_solve, p.empty_callback)
-        self.assertEqual(h2.separate, p.empty_callback)
+        self.assertEqual(h2.post_solve, None)
+        self.assertEqual(h2.separate, None)
 
         h2 = s2._handlers[(1, 2)]
-        self.assertEqual(h2.begin, p.empty_callback)
-        self.assertEqual(h2.pre_solve, p.empty_callback)
+        self.assertEqual(h2.begin, None)
+        self.assertEqual(h2.pre_solve, None)
         self.assertIsNotNone(h2.post_solve)
-        self.assertEqual(h2.separate, p.empty_callback)
+        self.assertEqual(h2.separate, None)
 
         h2 = s2._handlers[(3, 4)]
-        self.assertEqual(h2.begin, p.empty_callback)
-        self.assertEqual(h2.pre_solve, p.empty_callback)
-        self.assertEqual(h2.post_solve, p.empty_callback)
+        self.assertEqual(h2.begin, None)
+        self.assertEqual(h2.pre_solve, None)
+        self.assertEqual(h2.post_solve, None)
         self.assertIsNotNone(h2.separate)
 
     def testPickleCachedArbiters(self) -> None:
