@@ -52,7 +52,7 @@ def main():
 
     ticks_to_next_ball = 10
 
-    space.set_collision_callback(0, 0, post_solve=draw_collision, data=screen)
+    space.on_collision(0, 0, post_solve=draw_collision, data=screen)
 
     while running:
         for event in pygame.event.get():

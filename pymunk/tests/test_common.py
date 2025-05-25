@@ -126,7 +126,7 @@ class UnitTestBugs(unittest.TestCase):
             # space.add_post_step_callback(space.remove, first_shape, first_shape.body)
             # space.remove(c1)
 
-        space.set_collision_callback(2, 0, separate=remove_first)
+        space.on_collision(2, 0, separate=remove_first)
         # print(1)
         space.step(1.0 / 60)
         # print(2)
@@ -166,7 +166,7 @@ class UnitTestBugs(unittest.TestCase):
             # space.add_post_step_callback(space.remove, first_shape, first_shape.body)
             # space.remove(c1)
 
-        space.set_collision_callback(2, 0, separate=separate)
+        space.on_collision(2, 0, separate=separate)
         # print(1)
         space.step(1)
         # print(2)

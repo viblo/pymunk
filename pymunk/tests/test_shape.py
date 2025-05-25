@@ -301,7 +301,7 @@ class UnitTestSegment(unittest.TestCase):
         def begin(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.num_of_begins += 1
 
-        s.set_collision_callback(begin=begin)
+        s.on_collision(begin=begin)
         s.step(0.1)
 
         self.assertEqual(1, self.num_of_begins)

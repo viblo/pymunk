@@ -98,9 +98,7 @@ def main():
     space.add(arrow_body, arrow_shape)
 
     flying_arrows: list[pymunk.Body] = []
-    space.set_collision_callback(
-        0, 1, post_solve=post_solve_arrow_hit, data=flying_arrows
-    )
+    space.on_collision(0, 1, post_solve=post_solve_arrow_hit, data=flying_arrows)
 
     start_time = 0
     while running:

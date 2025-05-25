@@ -139,7 +139,7 @@ def main():
         else:
             arbiter.process_collision = False
 
-    space.set_collision_callback(1, 2, begin=passthrough_handler)
+    space.on_collision(1, 2, begin=passthrough_handler)
 
     # player
     body = pymunk.Body(5, float("inf"))

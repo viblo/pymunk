@@ -76,7 +76,7 @@ def setup_level(space, player_body):
         brick_shape = arbiter.shapes[0]
         space.remove(brick_shape, brick_shape.body)
 
-    space.set_collision_callback(
+    space.on_collision(
         collision_types["brick"], collision_types["ball"], separate=remove_brick
     )
 
@@ -116,7 +116,7 @@ def main():
         ball_shape = arbiter.shapes[0]
         space.remove(ball_shape, ball_shape.body)
 
-    space.set_collision_callback(
+    space.on_collision(
         collision_types["ball"], collision_types["bottom"], begin=remove_first
     )
 
@@ -143,7 +143,7 @@ def main():
             set_.points[0].distance = 0
         arbiter.contact_point_set = set_
 
-    space.set_collision_callback(
+    space.on_collision(
         collision_types["player"], collision_types["ball"], pre_solve=pre_solve
     )
 

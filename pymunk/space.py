@@ -586,7 +586,7 @@ class Space(PickleMixin, object):
 
         self._post_step_callbacks.clear()
 
-    def set_collision_callback(
+    def on_collision(
         self,
         collision_type_a: Optional[int] = None,
         collision_type_b: Optional[int] = None,
@@ -643,36 +643,29 @@ class Space(PickleMixin, object):
         else:
             ch = self._handlers[key]
 
-        if begin == Space.do_nothing:
+        # to avoid circular dep
+        from . import empty_callback
+
+        if begin == empty_callback:
             ch.begin = None
         elif begin != None:
             ch.begin = begin
             ch.data["begin"] = data
-        if pre_solve == Space.do_nothing:
+        if pre_solve == empty_callback:
             ch.pre_solve = None
         elif pre_solve != None:
             ch.pre_solve = pre_solve
             ch.data["pre_solve"] = data
-        if post_solve == Space.do_nothing:
+        if post_solve == empty_callback:
             ch.post_solve = None
         elif post_solve != None:
             ch.post_solve = post_solve
             ch.data["post_solve"] = data
-        if separate == Space.do_nothing:
+        if separate == empty_callback:
             ch.separate = None
         elif separate != None:
             ch.separate = separate
             ch.data["separate"] = data
-        return
-
-    @staticmethod
-    def do_nothing(arbiter: Arbiter, space: "Space", data: Any) -> None:
-        """The default do nothing method used for the collision callbacks.
-
-        Can be used to reset a collsion callback to its original do nothing
-        function. Note that its more efficient to use this method than to
-        define your own do nothing method.
-        """
         return
 
     def add_post_step_callback(
@@ -989,16 +982,19 @@ class Space(PickleMixin, object):
         d["special"].append(("shapes", list(self.shapes)))
         d["special"].append(("constraints", list(self.constraints)))
 
+        # to avoid circular dep
+        from . import empty_callback
+
         handlers = []
         for k, v in self._handlers.items():
             h: dict[str, Any] = {}
-            if v._begin != Space.do_nothing:
+            if v._begin != empty_callback:
                 h["_begin"] = v._begin
-            if v._pre_solve != Space.do_nothing:
+            if v._pre_solve != empty_callback:
                 h["_pre_solve"] = v._pre_solve
-            if v._post_solve != Space.do_nothing:
+            if v._post_solve != empty_callback:
                 h["_post_solve"] = v._post_solve
-            if v._separate != Space.do_nothing:
+            if v._separate != empty_callback:
                 h["_separate"] = v._separate
             handlers.append((k, h))
 
@@ -1061,7 +1057,7 @@ class Space(PickleMixin, object):
                     if "_separate" in hd:
                         separate = hd["_separate"]
                     if k2 == None:
-                        self.set_collision_callback(
+                        self.on_collision(
                             None,
                             None,
                             begin=begin,
@@ -1070,7 +1066,7 @@ class Space(PickleMixin, object):
                             separate=separate,
                         )
                     elif isinstance(k2, tuple):
-                        self.set_collision_callback(
+                        self.on_collision(
                             k2[0],
                             k2[1],
                             begin=begin,
@@ -1079,7 +1075,7 @@ class Space(PickleMixin, object):
                             separate=separate,
                         )
                     else:
-                        self.set_collision_callback(
+                        self.on_collision(
                             k2,
                             None,
                             begin=begin,

@@ -109,7 +109,7 @@ def main():
     space.add(shapes[selected_shape_idx])
 
     data = {}
-    h = space.set_collision_callback(
+    h = space.on_collision(
         0,
         1,
         begin=begin,

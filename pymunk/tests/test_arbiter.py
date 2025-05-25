@@ -28,7 +28,7 @@ class UnitTestArbiter(unittest.TestCase):
             self.assertEqual(arb.restitution, 0.18)
             arb.restitution = 1
 
-        s.set_collision_callback(1, 2, pre_solve=pre_solve)
+        s.on_collision(1, 2, pre_solve=pre_solve)
 
         for x in range(10):
             s.step(0.1)
@@ -56,7 +56,7 @@ class UnitTestArbiter(unittest.TestCase):
             self.assertEqual(arb.friction, 0.18)
             arb.friction = 1
 
-        s.set_collision_callback(1, 2, pre_solve=pre_solve)
+        s.on_collision(1, 2, pre_solve=pre_solve)
 
         for x in range(10):
             s.step(0.1)
@@ -87,7 +87,7 @@ class UnitTestArbiter(unittest.TestCase):
             arb.surface_velocity = (10, 10)
             # TODO: add assert check that setting surface_velocity has any effect
 
-        s.set_collision_callback(1, 2, pre_solve=pre_solve)
+        s.on_collision(1, 2, pre_solve=pre_solve)
         for x in range(5):
             s.step(0.1)
 
@@ -142,7 +142,7 @@ class UnitTestArbiter(unittest.TestCase):
 
             self.assertRaises(Exception, f)
 
-        s.set_collision_callback(2, 1, pre_solve=pre_solve)
+        s.on_collision(2, 1, pre_solve=pre_solve)
 
         s.step(0.1)
 
@@ -170,7 +170,7 @@ class UnitTestArbiter(unittest.TestCase):
             self.assertAlmostEqual(arb.total_impulse.y, 4.3438914027)
             self.post_solve_done = True
 
-        s.set_collision_callback(1, 2, post_solve=post_solve)
+        s.on_collision(1, 2, post_solve=post_solve)
 
         s.step(0.1)
 
@@ -197,7 +197,7 @@ class UnitTestArbiter(unittest.TestCase):
         def post_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             r["ke"] = arb.total_ke
 
-        s.set_collision_callback(1, 2, post_solve=post_solve)
+        s.on_collision(1, 2, post_solve=post_solve)
 
         s.step(0.1)
 
@@ -223,14 +223,14 @@ class UnitTestArbiter(unittest.TestCase):
         def pre_solve1(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertTrue(arb.is_first_contact)
 
-        s.set_collision_callback(1, 2, pre_solve=pre_solve1)
+        s.on_collision(1, 2, pre_solve=pre_solve1)
 
         s.step(0.1)
 
         def pre_solve2(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.assertFalse(arb.is_first_contact)
 
-        s.set_collision_callback(1, 2, pre_solve=pre_solve2)
+        s.on_collision(1, 2, pre_solve=pre_solve2)
 
         s.step(0.1)
 
@@ -251,7 +251,7 @@ class UnitTestArbiter(unittest.TestCase):
         def pre_solve1(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             r["n"] = Vec2d(*arb.normal)
 
-        s.set_collision_callback(1, 2, pre_solve=pre_solve1)
+        s.on_collision(1, 2, pre_solve=pre_solve1)
 
         s.step(0.1)
 
@@ -281,7 +281,7 @@ class UnitTestArbiter(unittest.TestCase):
             self.called1 = True
             self.assertFalse(arb.is_removal)
 
-        s.set_collision_callback(1, 2, separate=separate1)
+        s.on_collision(1, 2, separate=separate1)
 
         for x in range(10):
             s.step(0.1)
@@ -296,7 +296,7 @@ class UnitTestArbiter(unittest.TestCase):
             self.called2 = True
             self.assertTrue(arb.is_removal)
 
-        s.set_collision_callback(1, 2, separate=separate2)
+        s.on_collision(1, 2, separate=separate2)
         s.remove(b1, c1)
 
         self.assertTrue(self.called2)
@@ -328,7 +328,7 @@ class UnitTestArbiter(unittest.TestCase):
             self.assertEqual(arb.bodies[0], arb.shapes[0].body)
             self.assertEqual(arb.bodies[1], arb.shapes[1].body)
 
-        s.set_collision_callback(1, 2, post_solve=pre_solve)
+        s.on_collision(1, 2, post_solve=pre_solve)
 
         s.step(0.1)
         self.assertTrue(self.called)
@@ -412,7 +412,7 @@ class UnitTestArbiter(unittest.TestCase):
             hdata["process_values"] = process_values
             hdata["expected"] = expected_calls
             hdata["result"] = []
-            s.set_collision_callback(
+            s.on_collision(
                 1,
                 2,
                 begin=functools.partial(callback, "b"),

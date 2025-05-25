@@ -82,7 +82,7 @@ def main():
         space.remove(s.body, s)
         arb.process_collision = False
 
-    space.set_collision_callback(0, 1, pre_solve=pre_solve)
+    space.on_collision(0, 1, pre_solve=pre_solve)
 
     terrain_surface = pygame.Surface((600, 600))
     terrain_surface.fill(pygame.Color("white"))
