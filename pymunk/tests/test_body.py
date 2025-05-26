@@ -181,6 +181,9 @@ class UnitTestBody(unittest.TestCase):
         with self.assertRaises(AssertionError):
             b.mass = 0
 
+        with self.assertRaises(AssertionError):
+            b.mass = float("inf")
+
         s.remove(b)
         b.mass = 0
         s.add(b)

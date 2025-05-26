@@ -605,7 +605,8 @@ class Space(PickleMixin, object):
         normally.
 
         Its possible to pass in None for one or both of the collision types.
-        None matches any collision type on a Shape.
+        None matches any collision type on a Shape. However, if
+        collision_type_a is None, then collision_type_b must also be None.
 
         If you call this multiple times with the same combination of
         collision_type_a and collision_type_b, then the last call will
@@ -642,8 +643,9 @@ class Space(PickleMixin, object):
         # key = min(collision_type_a, collision_type_b), max(
         #     collision_type_a, collision_type_b
         # )
-        if collision_type_a == None and collision_type_b != None:
-            collision_type_b, collision_type_a = collision_type_a, collision_type_b
+        assert (
+            collision_type_a != None or collision_type_b == None
+        ), "collision_type_a can not be None if collision_type_b is not None. Please swap them."
 
         key = collision_type_a, collision_type_b
         if key not in self._handlers:

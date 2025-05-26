@@ -914,7 +914,8 @@ class UnitTestSpace(unittest.TestCase):
             d["space"] = space  # type: ignore
 
         s.on_collision(1, None, pre_solve=pre_solve)
-        s.on_collision(None, 1, pre_solve=pre_solve)
+        with self.assertRaises(AssertionError):
+            s.on_collision(None, 1, pre_solve=pre_solve)
 
         s.step(0.1)
 

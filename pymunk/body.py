@@ -252,8 +252,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
     @mass.setter
     def mass(self, mass: float) -> None:
-        assert (
-            self.space is None or mass > 0
+        assert self.space is None or 0 < mass < float(
+            "inf"
         ), "Dynamic bodies must have mass > 0 if they are attached to a Space."
         lib.cpBodySetMass(self._body, mass)
 

@@ -94,6 +94,7 @@ Other improvements:
   GCed.
 - Improved documentation in many places (``Vec2d``, ``Poly``, ``Shape`` and 
   more)
+- Improved assert for ``body.mass`` sanity check.
 - Internal cleanup of code
 
 
