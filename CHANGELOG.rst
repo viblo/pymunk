@@ -1,7 +1,7 @@
 =========
 Changelog 
 =========
-Pymunk 7.0.0 (2025-04-10)
+Pymunk 7.0.0 (2025-05-26)
 -------------------------
 
 **Many improvements and breaking changes!**
