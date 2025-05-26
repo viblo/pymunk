@@ -1,5 +1,6 @@
 __docformat__ = "reStructuredText"
 
+import math
 import weakref
 from collections.abc import KeysView
 from typing import TYPE_CHECKING, Any, Callable, ClassVar, Optional  # Literal,
@@ -252,8 +253,8 @@ class Body(PickleMixin, TypingAttrMixing, object):
 
     @mass.setter
     def mass(self, mass: float) -> None:
-        assert self.space is None or 0 < mass < float(
-            "inf"
+        assert (
+            self.space is None or 0 < mass < math.inf
         ), "Dynamic bodies must have mass > 0 if they are attached to a Space."
         lib.cpBodySetMass(self._body, mass)
 
@@ -261,12 +262,17 @@ class Body(PickleMixin, TypingAttrMixing, object):
     def moment(self) -> float:
         """Moment of inertia (MoI or sometimes just moment) of the body.
 
-        The moment is like the rotational mass of a body.
+        The moment is like the rotational mass of a body. Note that it is
+        valid to set moment to float('inf'). This will make a body that cannot
+        rotate.
         """
         return lib.cpBodyGetMoment(self._body)
 
     @moment.setter
     def moment(self, moment: float) -> None:
+        assert (
+            self.space is None or moment > 0
+        ), "Dynamic bodies must have moment > 0 if they are attached to a Space"
         lib.cpBodySetMoment(self._body, moment)
 
     def _set_position(self, pos: tuple[float, float]) -> None:

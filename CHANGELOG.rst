@@ -94,7 +94,10 @@ Other improvements:
   GCed.
 - Improved documentation in many places (``Vec2d``, ``Poly``, ``Shape`` and 
   more)
-- Improved assert for ``body.mass`` sanity check.
+- Improved assert for ``body.mass`` sanity check (``0 < mass < math.inf``) for
+  dynamic bodies added to a space.
+- Improved assert for ``body.moment`` sanity check (``0 < moment``) for dynamic
+  bodies added to a space.
 - Internal cleanup of code
 
 

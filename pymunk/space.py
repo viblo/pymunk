@@ -562,8 +562,8 @@ class Space(PickleMixin, object):
 
         for b in self._bodies_to_check:
             assert b.body_type != Body.DYNAMIC or (
-                b.mass > 0 and b.mass < math.inf
-            ), f"Dynamic bodies must have a mass > 0 and < inf. {b} has mass {b.mass}."
+                b.mass > 0 and b.mass < math.inf and b.moment > 0
+            ), f"Dynamic bodies must have a mass > 0 and < inf and moment > 0. {b} has mass {b.mass}, moment {b.moment}."
         self._bodies_to_check.clear()
 
         try:

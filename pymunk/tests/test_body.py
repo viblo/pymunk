@@ -1,3 +1,4 @@
+import math
 import pickle
 import unittest
 
@@ -182,7 +183,7 @@ class UnitTestBody(unittest.TestCase):
             b.mass = 0
 
         with self.assertRaises(AssertionError):
-            b.mass = float("inf")
+            b.mass = math.inf
 
         s.remove(b)
         b.mass = 0
@@ -199,6 +200,39 @@ class UnitTestBody(unittest.TestCase):
             s.step(1)
 
         # Setting the Shape mass or density should fix it
+        c.density = 10
+        s.step(1)
+
+    def test_moment(self) -> None:
+        s = p.Space()
+        b = p.Body()
+
+        b.mass = 2
+        b.moment = 3
+        s.add(b)
+
+        # Cant set 0 moment on Body in Space
+        with self.assertRaises(AssertionError):
+            b.moment = 0
+
+        # inf moment is fine
+        b.moment = math.inf
+
+        s.remove(b)
+        b.moment = 0
+        s.add(b)
+        # Cant add 0 moment Body to Space and run step
+        with self.assertRaises(AssertionError):
+            s.step(1)
+
+        c = p.Circle(b, 1)
+        s.add(c)
+
+        # Same with a Shape
+        with self.assertRaises(AssertionError):
+            s.step(1)
+
+        # Setting the Shape density should fix it
         c.density = 10
         s.step(1)
 
