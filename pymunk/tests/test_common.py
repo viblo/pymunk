@@ -137,14 +137,14 @@ class UnitTestBugs(unittest.TestCase):
     def testX(self) -> None:
         space = p.Space()
 
-        b1 = p.Body(1)
+        b1 = p.Body(1, 1)
         c1 = p.Circle(b1, 10)
         c1.collision_type = 2
 
-        b2 = p.Body(1)
+        b2 = p.Body(1, 2)
         c2 = p.Circle(b2, 10)
 
-        b3 = p.Body(1)
+        b3 = p.Body(1, 3)
         c3 = p.Circle(b3, 10)
 
         # b1.position = 0, 0
