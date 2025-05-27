@@ -6,5 +6,5 @@ authors:
 title: "Pymunk"
 abstract: "A easy-to-use pythonic rigid body 2d physics library"
 version: 7.0.0
-date-released: 2025-02-09
+date-released: 2025-05-28
 url: "https://pymunk.org"

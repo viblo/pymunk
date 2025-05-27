@@ -1,7 +1,6 @@
 [build-system]
 requires = [
     "setuptools",
-    # "setuptools<74; platform_system=='Windows' and implementation_name=='pypy'",
     "wheel",
     "cffi >= 1.17.1; platform_system != 'Emscripten'",
     "cffi > 1.14.0; platform_system == 'Emscripten'",
