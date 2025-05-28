@@ -1,9 +1,8 @@
-"""Showcase of flying arrows that can stick to objects in a somewhat 
+"""Showcase of flying arrows that can stick to objects in a somewhat
 realistic looking way.
 """
 
 import sys
-from typing import List
 
 import pygame
 
@@ -50,7 +49,7 @@ def post_solve_arrow_hit(arbiter, space, data):
             arrow_body,
             other_body,
             position,
-            data["flying_arrows"],
+            data,
         )
 
 
@@ -71,7 +70,7 @@ def main():
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     # walls - the left-top-right walls
-    static: List[pymunk.Shape] = [
+    static: list[pymunk.Shape] = [
         pymunk.Segment(space.static_body, (50, 550), (50, 50), 5),
         pymunk.Segment(space.static_body, (50, 50), (650, 50), 5),
         pymunk.Segment(space.static_body, (650, 50), (650, 550), 5),
@@ -98,10 +97,8 @@ def main():
     arrow_body, arrow_shape = create_arrow()
     space.add(arrow_body, arrow_shape)
 
-    flying_arrows: List[pymunk.Body] = []
-    handler = space.add_collision_handler(0, 1)
-    handler.data["flying_arrows"] = flying_arrows
-    handler.post_solve = post_solve_arrow_hit
+    flying_arrows: list[pymunk.Body] = []
+    space.on_collision(0, 1, post_solve=post_solve_arrow_hit, data=flying_arrows)
 
     start_time = 0
     while running:

@@ -52,7 +52,7 @@ Vec2ds can be converted to lists or tuples, and they are of length 2::
     >>> len(Vec2d(1, 2))
     2
 
-The Vec2d supports many common opertions, for example addition and 
+The Vec2d supports many common opertions, for example addition and
 multiplication::
 
     >>> Vec2d(7.3, 4.2) + Vec2d(1, 2)
@@ -60,7 +60,7 @@ multiplication::
     >>> Vec2d(7.3, 4.2) * 2
     Vec2d(14.6, 8.4)
 
-Vec2ds are immutable, meaning you cannot update them. But you can replace 
+Vec2ds are immutable, meaning you cannot update them. But you can replace
 them::
 
     >>> v = Vec2d(1, 2)
@@ -108,7 +108,8 @@ __docformat__ = "reStructuredText"
 import math
 import numbers
 import operator
-from typing import NamedTuple, Tuple
+import warnings
+from typing import NamedTuple
 
 __all__ = ["Vec2d"]
 
@@ -130,8 +131,8 @@ class Vec2d(NamedTuple):
         return "Vec2d(%s, %s)" % (self.x, self.y)
 
     # Addition
-    def __add__(self, other: Tuple[float, float]) -> "Vec2d":  # type: ignore[override]
-        """Add a Vec2d with another Vec2d or Tuple of size 2.
+    def __add__(self, other: tuple[float, float]) -> "Vec2d":  # type: ignore[override]
+        """Add a Vec2d with another Vec2d or tuple of size 2.
 
         >>> Vec2d(3, 4) + Vec2d(1, 2)
         Vec2d(4, 6)
@@ -144,8 +145,8 @@ class Vec2d(NamedTuple):
 
         return Vec2d(self.x + other[0], self.y + other[1])
 
-    def __radd__(self, other: Tuple[float, float]) -> "Vec2d":
-        """Add a Tuple of size 2 with a Vec2d.
+    def __radd__(self, other: tuple[float, float]) -> "Vec2d":
+        """Add a tuple of size 2 with a Vec2d.
 
         >>> (1, 2) + Vec2d(3, 4)
         Vec2d(4, 6)
@@ -153,8 +154,8 @@ class Vec2d(NamedTuple):
         return self.__add__(other)
 
     # Subtraction
-    def __sub__(self, other: Tuple[float, float]) -> "Vec2d":
-        """Subtract a Vec2d with another Vec2d or Tuple of size 2.
+    def __sub__(self, other: tuple[float, float]) -> "Vec2d":
+        """Subtract a Vec2d with another Vec2d or tuple of size 2.
 
         >>> Vec2d(3, 4) - Vec2d(1, 2)
         Vec2d(2, 2)
@@ -163,8 +164,8 @@ class Vec2d(NamedTuple):
         """
         return Vec2d(self.x - other[0], self.y - other[1])
 
-    def __rsub__(self, other: Tuple[float, float]) -> "Vec2d":
-        """Subtract a Tuple of size 2 with a Vec2d.
+    def __rsub__(self, other: tuple[float, float]) -> "Vec2d":
+        """Subtract a tuple of size 2 with a Vec2d.
 
         >>> (1, 2) - Vec2d(3, 4)
         Vec2d(-2, -2)
@@ -244,12 +245,41 @@ class Vec2d(NamedTuple):
         """
         return self.length
 
+    def __bool__(self) -> bool:
+        """Return true if both x and y are nonzero.
+
+        >>> bool(Vec2d(1, 0))
+        True
+        >>> bool(Vec2d(-1, -2))
+        True
+        >>> bool(Vec2d(0, 0))
+        False
+        """
+        return self.x != 0 or self.y != 0
+
+    @property
+    def length_squared(self) -> float:
+        """Get the squared length of the vector.
+        If the squared length is enough, it is more efficient to use this method
+        instead of first access .length and then do a x**2.
+
+        >>> v = Vec2d(3, 4)
+        >>> v.length_squared == v.length**2
+        True
+        >>> Vec2d(0, 0).length_squared
+        0
+        """
+        return self.x**2 + self.y**2
+
     # vectory functions
+
     def get_length_sqrd(self) -> float:
         """Get the squared length of the vector.
         If the squared length is enough, it is more efficient to use this method
-        instead of first calling get_length() or access .length and then do a
-        x**2.
+        instead of first accessing .length and then do a x**2.
+
+        .. deprecated:: 7.0.0
+            Please use :py:attr:`length_squared` instead.
 
         >>> v = Vec2d(3, 4)
         >>> v.get_length_sqrd() == v.length**2
@@ -257,6 +287,11 @@ class Vec2d(NamedTuple):
         >>> Vec2d(0, 0).get_length_sqrd()
         0
         """
+        warnings.warn(
+            "Vec2d.get_length_sqrd() is deprecated. Use Vec2d.length_squared instead.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
         return self.x**2 + self.y**2
 
     @property
@@ -275,12 +310,19 @@ class Vec2d(NamedTuple):
     def scale_to_length(self, length: float) -> "Vec2d":
         """Return a copy of this vector scaled to the given length.
 
+        Note that a zero length Vec2d cannot be scaled but will raise an
+        exception.
+
         >>> Vec2d(1, 0).scale_to_length(10)
         Vec2d(10.0, 0.0)
         >>> '%.2f, %.2f' % Vec2d(10, 20).scale_to_length(20)
         '8.94, 17.89'
         >>> Vec2d(1, 0).scale_to_length(0)
         Vec2d(0.0, 0.0)
+        >>> Vec2d(0, 0).scale_to_length(1)
+        Traceback (most recent call last):
+        ...
+        ZeroDivisionError: float division by zero
         """
         old_length = self.length
         return Vec2d(self.x * length / old_length, self.y * length / old_length)
@@ -315,13 +357,13 @@ class Vec2d(NamedTuple):
     def angle(self) -> float:
         """The angle (in radians) of the vector.
 
+        Angle calculated with atan2(y, x).
+
         >>> '%.2f' % Vec2d(-1, 0).angle
         '3.14'
         >>> Vec2d(0, 0).angle
-        0
+        0.0
         """
-        if self.get_length_sqrd() == 0:
-            return 0
         return math.atan2(self.y, self.x)
 
     @property
@@ -335,7 +377,7 @@ class Vec2d(NamedTuple):
         """
         return math.degrees(self.angle)
 
-    def get_angle_between(self, other: Tuple[float, float]) -> float:
+    def get_angle_between(self, other: tuple[float, float]) -> float:
         """Get the angle between the vector and the other in radians.
 
         >>> '%.2f' % Vec2d(3, 0).get_angle_between(Vec2d(-1, 0))
@@ -364,21 +406,21 @@ class Vec2d(NamedTuple):
 
     def normalized(self) -> "Vec2d":
         """Get a normalized copy of the vector.
-        Note: This function will return 0 if the length of the vector is 0.
+        Note: This function will return a Vec2d(0.0, 0.0) if the length of the vector is 0.
 
         >>> Vec2d(3, 0).normalized()
         Vec2d(1.0, 0.0)
         >>> Vec2d(3, 4).normalized()
         Vec2d(0.6, 0.8)
         >>> Vec2d(0, 0).normalized()
-        Vec2d(0, 0)
+        Vec2d(0.0, 0.0)
         """
         length = self.length
         if length != 0:
             return self / length
-        return Vec2d(0, 0)
+        return Vec2d(0.0, 0.0)
 
-    def normalized_and_length(self) -> Tuple["Vec2d", float]:
+    def normalized_and_length(self) -> tuple["Vec2d", float]:
         """Normalize the vector and return its length before the normalization.
 
         >>> Vec2d(3, 0).normalized_and_length()
@@ -386,12 +428,12 @@ class Vec2d(NamedTuple):
         >>> Vec2d(3, 4).normalized_and_length()
         (Vec2d(0.6, 0.8), 5.0)
         >>> Vec2d(0, 0).normalized_and_length()
-        (Vec2d(0, 0), 0)
+        (Vec2d(0.0, 0.0), 0.0)
         """
         length = self.length
         if length != 0:
             return self / length, length
-        return Vec2d(0, 0), 0
+        return Vec2d(0.0, 0.0), 0.0
 
     def perpendicular(self) -> "Vec2d":
         """Get a vertical vector rotated 90 degrees counterclockwise from the original vector.
@@ -420,7 +462,7 @@ class Vec2d(NamedTuple):
             return Vec2d(-self.y / length, self.x / length)
         return Vec2d(self.x, self.y)
 
-    def dot(self, other: Tuple[float, float]) -> float:
+    def dot(self, other: tuple[float, float]) -> float:
         """The dot product between the vector and other vector.
         v1.dot(v2) -> v1.x*v2.x + v1.y*v2.y
 
@@ -432,7 +474,7 @@ class Vec2d(NamedTuple):
         assert len(other) == 2
         return float(self.x * other[0] + self.y * other[1])
 
-    def get_distance(self, other: Tuple[float, float]) -> float:
+    def get_distance(self, other: tuple[float, float]) -> float:
         """The distance between the vector and other vector.
 
         >>> Vec2d(0, 2).get_distance((0, -3))
@@ -444,10 +486,28 @@ class Vec2d(NamedTuple):
         assert len(other) == 2
         return math.sqrt((self.x - other[0]) ** 2 + (self.y - other[1]) ** 2)
 
-    def get_dist_sqrd(self, other: Tuple[float, float]) -> float:
+    def get_distance_squared(self, other: tuple[float, float]) -> float:
         """The squared distance between the vector and other vector.
         It is more efficent to use this method than to call get_distance()
         first and then do a square() on the result.
+
+        >>> Vec2d(1, 0).get_distance_squared((1, 10))
+        100
+        >>> Vec2d(1, 2).get_distance_squared((10, 11))
+        162
+        >>> Vec2d(1, 2).get_distance((10, 11))**2
+        162.0
+        """
+        assert len(other) == 2
+        return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
+
+    def get_dist_sqrd(self, other: tuple[float, float]) -> float:
+        """The squared distance between the vector and other vector.
+        It is more efficent to use this method than to call get_distance()
+        first and then do a square() on the result.
+
+        .. deprecated:: 7.0.0
+            Please use :py:func:`get_distance_squared` instead.
 
         >>> Vec2d(1, 0).get_dist_sqrd((1, 10))
         100
@@ -456,10 +516,15 @@ class Vec2d(NamedTuple):
         >>> Vec2d(1, 2).get_distance((10, 11))**2
         162.0
         """
+        warnings.warn(
+            "get_dist_sqrd() is deprecated. Use get_distance_squared() instead.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
         assert len(other) == 2
         return (self.x - other[0]) ** 2 + (self.y - other[1]) ** 2
 
-    def projection(self, other: Tuple[float, float]) -> "Vec2d":
+    def projection(self, other: tuple[float, float]) -> "Vec2d":
         """Project this vector on top of other vector.
 
         >>> Vec2d(10, 1).projection((5.0, 0))
@@ -467,18 +532,18 @@ class Vec2d(NamedTuple):
         >>> Vec2d(10, 1).projection((10, 5))
         Vec2d(8.4, 4.2)
         >>> Vec2d(10, 1).projection((0, 0))
-        Vec2d(0, 0)
+        Vec2d(0.0, 0.0)
         """
         assert len(other) == 2
         other_length_sqrd = other[0] * other[0] + other[1] * other[1]
         if other_length_sqrd == 0.0:
-            return Vec2d(0, 0)
+            return Vec2d(0.0, 0.0)
         # projected_length_times_other_length = self.dot(other)
         # new_length = projected_length_times_other_length / other_length_sqrd
         new_length = self.dot(other) / other_length_sqrd
         return Vec2d(other[0] * new_length, other[1] * new_length)
 
-    def cross(self, other: Tuple[float, float]) -> float:
+    def cross(self, other: tuple[float, float]) -> float:
         """The cross product between the vector and the other.
 
         v1.cross(v2) -> v1.x*v2.y - v1.y*v2.x
@@ -489,7 +554,7 @@ class Vec2d(NamedTuple):
         assert len(other) == 2
         return self.x * other[1] - self.y * other[0]
 
-    def interpolate_to(self, other: Tuple[float, float], range: float) -> "Vec2d":
+    def interpolate_to(self, other: tuple[float, float], range: float) -> "Vec2d":
         """Vector interpolation between the current vector and another vector.
 
         >>> Vec2d(10,20).interpolate_to((20,-20), 0.1)
@@ -501,7 +566,7 @@ class Vec2d(NamedTuple):
         )
 
     def convert_to_basis(
-        self, x_vector: Tuple[float, float], y_vector: Tuple[float, float]
+        self, x_vector: tuple[float, float], y_vector: tuple[float, float]
     ) -> "Vec2d":
         """Convert the vector to a new basis defined by the given x and y vectors.
 
@@ -510,50 +575,68 @@ class Vec2d(NamedTuple):
         """
         assert len(x_vector) == 2
         assert len(y_vector) == 2
-        x = self.dot(x_vector) / Vec2d(*x_vector).get_length_sqrd()
-        y = self.dot(y_vector) / Vec2d(*y_vector).get_length_sqrd()
+        x = self.dot(x_vector) / Vec2d(*x_vector).length_squared
+        y = self.dot(y_vector) / Vec2d(*y_vector).length_squared
         return Vec2d(x, y)
 
     @property
-    def int_tuple(self) -> Tuple[int, int]:
+    def int_tuple(self) -> tuple[int, int]:
         """The x and y values of this vector as a tuple of ints.
-        Use `round()` to round to closest int.
+        Uses `round()` to round to closest int.
 
         >>> Vec2d(0.9, 2.4).int_tuple
         (1, 2)
         """
         return round(self.x), round(self.y)
 
+    @property
+    def polar_tuple(self) -> tuple[float, float]:
+        """Return this vector as polar coordinates (length, angle)
+
+        See Vec2d.from_polar() for the inverse.
+
+        >>> Vec2d(2, 0).polar_tuple
+        (2.0, 0.0)
+        >>> Vec2d(2, 0).rotated(0.5).polar_tuple
+        (2.0, 0.5)
+        >>> Vec2d.from_polar(2, 0.5).polar_tuple
+        (2.0, 0.5)
+
+        """
+        return self.length, self.angle
+
     @staticmethod
     def zero() -> "Vec2d":
         """A vector of zero length.
 
         >>> Vec2d.zero()
-        Vec2d(0, 0)
+        Vec2d(0.0, 0.0)
         """
-        return Vec2d(0, 0)
+        return Vec2d(0.0, 0.0)
 
     @staticmethod
     def unit() -> "Vec2d":
         """A unit vector pointing up.
 
         >>> Vec2d.unit()
-        Vec2d(0, 1)
+        Vec2d(0.0, 1.0)
         """
-        return Vec2d(0, 1)
+        return Vec2d(0.0, 1.0)
 
     @staticmethod
     def ones() -> "Vec2d":
         """A vector where both x and y is 1.
 
         >>> Vec2d.ones()
-        Vec2d(1, 1)
+        Vec2d(1.0, 1.0)
         """
-        return Vec2d(1, 1)
+        return Vec2d(1.0, 1.0)
 
     @staticmethod
     def from_polar(length: float, angle: float) -> "Vec2d":
         """Create a new Vec2d from a length and an angle (in radians).
+
+        See Vec2d.polar_tuple for the inverse.
 
         >>> Vec2d.from_polar(2, 0)
         Vec2d(2.0, 0.0)
@@ -566,14 +649,14 @@ class Vec2d(NamedTuple):
         return Vec2d(math.cos(angle) * length, math.sin(angle) * length)
 
     # Extra functions, mainly for chipmunk
-    def cpvrotate(self, other: Tuple[float, float]) -> "Vec2d":
+    def cpvrotate(self, other: tuple[float, float]) -> "Vec2d":
         """Use complex multiplication to rotate this vector by the other."""
         assert len(other) == 2
         return Vec2d(
             self.x * other[0] - self.y * other[1], self.x * other[1] + self.y * other[0]
         )
 
-    def cpvunrotate(self, other: Tuple[float, float]) -> "Vec2d":
+    def cpvunrotate(self, other: tuple[float, float]) -> "Vec2d":
         """The inverse of cpvrotate."""
         assert len(other) == 2
         return Vec2d(

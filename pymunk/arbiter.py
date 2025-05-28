@@ -1,14 +1,15 @@
 __docformat__ = "reStructuredText"
 
 
-from typing import TYPE_CHECKING, Tuple, Dict, List, Any, Iterable, Sequence
+from typing import TYPE_CHECKING, Any, Sequence
 
 if TYPE_CHECKING:
     from .space import Space
-    from .shapes import Shape
+    from .body import Body
 
 from ._chipmunk_cffi import ffi, lib
 from .contact_point_set import ContactPointSet
+from .shapes import Shape
 from .vec2d import Vec2d
 
 
@@ -38,11 +39,40 @@ class Arbiter(object):
         self._arbiter = _arbiter
         self._space = space
 
-    def _get_contact_point_set(self) -> ContactPointSet:
+    @property
+    def process_collision(self) -> bool:
+        """Decides if the collision should be processed or rejected.
+
+        Set this during a `begin()` or `pre_solve()` callback to override
+        the default (`True`) value.
+
+        Set this to `true` to process the collision normally or
+        `false` to cause Pymunk to ignore the collision entirely. Note that
+        while `post_solve` might be skipped if this is `false`, `separate`
+        will always be called when the shapes stop overlapping.
+
+        .. note::
+            No collision will be processed for a sensor Shape, or a Shape
+            attached to a STATIC or KINEMATIC Body.
+
+        """
+        return lib.cpArbiterGetProcessCollision(self._arbiter)
+
+    @process_collision.setter
+    def process_collision(self, v: bool) -> None:
+        lib.cpArbiterSetProcessCollision(self._arbiter, v)
+
+    @property
+    def contact_point_set(self) -> ContactPointSet:
+        """Contact point sets make getting contact information from the
+        Arbiter simpler.
+
+        Return `ContactPointSet`"""
         _set = lib.cpArbiterGetContactPointSet(self._arbiter)
         return ContactPointSet._from_cp(_set)
 
-    def _set_contact_point_set(self, point_set: ContactPointSet) -> None:
+    @contact_point_set.setter
+    def contact_point_set(self, point_set: ContactPointSet) -> None:
         # This has to be done by fetching a new Chipmunk point set, update it
         # according to whats passed in and the pass that back to chipmunk due
         # to the fact that ContactPointSet doesnt contain a reference to the
@@ -63,17 +93,26 @@ class Arbiter(object):
 
         lib.cpArbiterSetContactPointSet(self._arbiter, ffi.addressof(_set))
 
-    contact_point_set = property(
-        _get_contact_point_set,
-        _set_contact_point_set,
-        doc="""Contact point sets make getting contact information from the 
-        Arbiter simpler.
-        
-        Return `ContactPointSet`""",
-    )
+    @property
+    def bodies(self) -> tuple["Body", "Body"]:
+        """The the bodies in the order their corresponding shapes were defined
+        in the collision handler associated with this arbiter.
+
+        This is a shorthand to get the bodes::
+
+            arb.bodies == arb.shapes[0].body, arb.shapes[1].body .
+        """
+        a, b = self.shapes
+        assert (
+            a.body != None
+        ), "Shape should have a body. Could be a bug in Pymunk, please report"
+        assert (
+            b.body != None
+        ), "Shape should have a body. Could be a bug in Pymunk, please report"
+        return a.body, b.body
 
     @property
-    def shapes(self) -> Tuple["Shape", "Shape"]:
+    def shapes(self) -> tuple["Shape", "Shape"]:
         """Get the shapes in the order that they were defined in the
         collision handler associated with this arbiter
         """
@@ -82,51 +121,45 @@ class Arbiter(object):
 
         lib.cpArbiterGetShapes(self._arbiter, shapeA_p, shapeB_p)
 
-        a, b = self._space._get_shape(shapeA_p[0]), self._space._get_shape(shapeB_p[0])
+        a, b = Shape._from_cp_shape(shapeA_p[0]), Shape._from_cp_shape(shapeB_p[0])
         assert a is not None
         assert b is not None
         return a, b
 
-    def _get_restitution(self) -> float:
+    @property
+    def restitution(self) -> float:
+        """The calculated restitution (elasticity) for this collision
+        pair.
+
+        Setting the value in a pre_solve() callback will override the value
+        calculated by the space. The default calculation multiplies the
+        elasticity of the two shapes together.
+        """
         return lib.cpArbiterGetRestitution(self._arbiter)
 
-    def _set_restitution(self, restitution: float) -> None:
+    @restitution.setter
+    def restitution(self, restitution: float) -> None:
         lib.cpArbiterSetRestitution(self._arbiter, restitution)
 
-    restitution = property(
-        _get_restitution,
-        _set_restitution,
-        doc="""The calculated restitution (elasticity) for this collision 
-        pair. 
-        
-        Setting the value in a pre_solve() callback will override the value 
-        calculated by the space. The default calculation multiplies the 
-        elasticity of the two shapes together.
-        """,
-    )
+    @property
+    def friction(self) -> float:
+        """The calculated friction for this collision pair.
 
-    def _get_friction(self) -> float:
+        Setting the value in a pre_solve() callback will override the value
+        calculated by the space. The default calculation multiplies the
+        friction of the two shapes together.
+        """
         return lib.cpArbiterGetFriction(self._arbiter)
 
-    def _set_friction(self, friction: float) -> None:
+    @friction.setter
+    def friction(self, friction: float) -> None:
         lib.cpArbiterSetFriction(self._arbiter, friction)
-
-    friction = property(
-        _get_friction,
-        _set_friction,
-        doc="""The calculated friction for this collision pair. 
-        
-        Setting the value in a pre_solve() callback will override the value 
-        calculated by the space. The default calculation multiplies the 
-        friction of the two shapes together.
-        """,
-    )
 
     def _get_surface_velocity(self) -> Vec2d:
         v = lib.cpArbiterGetSurfaceVelocity(self._arbiter)
         return Vec2d(v.x, v.y)
 
-    def _set_surface_velocity(self, velocity: Vec2d) -> None:
+    def _set_surface_velocity(self, velocity: tuple[float, float]) -> None:
         lib.cpArbiterSetSurfaceVelocity(self._arbiter, velocity)
 
     surface_velocity = property(
@@ -193,14 +226,14 @@ class Arbiter(object):
 
 def _contacts_to_dicts(
     _contacts: Sequence[ffi.CData], count: int
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     res = []
     for i in range(count):
         res.append(_contact_to_dict(_contacts[i]))
     return res
 
 
-def _contact_to_dict(_contact: ffi.CData) -> Dict[str, Any]:
+def _contact_to_dict(_contact: ffi.CData) -> dict[str, Any]:
     d = {}
     d["r1"] = _contact.r1.x, _contact.r1.y
     d["r2"] = _contact.r2.x, _contact.r2.y
@@ -215,7 +248,7 @@ def _contact_to_dict(_contact: ffi.CData) -> Dict[str, Any]:
     return d
 
 
-def _contacts_from_dicts(ds: Sequence[Dict[str, Any]]) -> List[ffi.CData]:
+def _contacts_from_dicts(ds: Sequence[dict[str, Any]]) -> ffi.CData:
     _contacts = lib.cpContactArrAlloc(len(ds))
     for i in range(len(ds)):
         _contact = _contacts[i]
@@ -235,7 +268,7 @@ def _contacts_from_dicts(ds: Sequence[Dict[str, Any]]) -> List[ffi.CData]:
     return _contacts
 
 
-def _arbiter_from_dict(d: Dict[str, Any], space: "Space") -> ffi.CData:
+def _arbiter_from_dict(d: dict[str, Any], space: "Space") -> ffi.CData:
     _arb = lib.cpArbiterNew(
         d["a"]._shape, d["b"]._shape
     )  # this will also set the bodies
@@ -255,7 +288,7 @@ def _arbiter_from_dict(d: Dict[str, Any], space: "Space") -> ffi.CData:
     return _arb
 
 
-def _arbiter_to_dict(_arbiter: ffi.CData, space: "Space") -> Dict[str, Any]:
+def _arbiter_to_dict(_arbiter: ffi.CData, space: "Space") -> dict[str, Any]:
     d = {}
     d["e"] = _arbiter.e
     d["u"] = _arbiter.u

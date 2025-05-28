@@ -1,13 +1,14 @@
-"""This submodule contains helper functions to help with quick prototyping 
+"""This submodule contains helper functions to help with quick prototyping
 using pymunk together with matplotlib.
 
 Intended to help with debugging and prototyping, not for actual production use
-in a full application. The methods contained in this module is opinionated 
-about your coordinate system and not very optimized. 
+in a full application. The methods contained in this module is opinionated
+about your coordinate system and not very optimized.
 """
 
 __docformat__ = "reStructuredText"
 
+import warnings
 from typing import TYPE_CHECKING, Any, Sequence
 
 import matplotlib.pyplot as plt  # type: ignore
@@ -43,11 +44,26 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
         See matplotlib_util.demo.py for a full example
 
+        .. deprecated:: 7.0.0
+            If you find this class useful, please open an issue on the pymunk
+            issue tracker at https://github.com/viblo/pymunk/issues Otherwise
+            this is likely to be completely removed in a future Pymunk version.
+
+
         :Param:
             ax: matplotlib.Axes
                 A matplotlib Axes object.
 
         """
+        warnings.warn(
+            "matplotlib_util.DrawOptions is deprecated. If you find it useful, "
+            "please open an issue on the pymunk issue tracker at "
+            "https://github.com/viblo/pymunk/issues Otherwise this is likely "
+            "to be completely removed in a future Pymunk version.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+
         super(DrawOptions, self).__init__()
 
         self.ax = ax

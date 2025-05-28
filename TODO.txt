@@ -44,7 +44,6 @@ v6.x
 - Add Canvas util module (after pyodide) 
 - Use https://diataxis.fr/ method of organizing docs (tutorials, how-to, explanation, reference)
 - Make sure cffi extensions included in wheel and zip!
-- Catch error when NaN in debugdraw, suggest doublecheck mass=0. https://github.com/viblo/pymunk/issues/226 and https://github.com/viblo/pymunk/issues/267
 - Make benchmark between pymunk and pybullet. 2d bullet inspiration: https://github.com/bulletphysics/bullet3/blob/2.83/examples/Planar2D/Planar2D.cpp
 - After a couple of versions / time passed, re-evaluate if batch api should be separate or merged in to space.
 - Think about the copyright notice in some files. Keep / put everywere / remove?
@@ -53,6 +52,10 @@ v6.x
 - Make space step size default 1/60, and/or make it possible to set on the space instead of pasing in to step function to make api easier to use "right"
 - Remove support for pyglet 1.5 in debug draw. Should be fine now that 2.x has been out for a long time. 
 - Think about if Pymunk should assert things that Chipmunk already asserts, like if a body can sleep when calling Body.sleep()?
+
+v7
+---
+- Require at least one body on constraint to be dynamic.
 
 v7+ (all potentially breaking changes)
 ---

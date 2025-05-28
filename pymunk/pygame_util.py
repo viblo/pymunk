@@ -21,12 +21,12 @@
 # SOFTWARE.
 # ----------------------------------------------------------------------------
 
-"""This submodule contains helper functions to help with quick prototyping 
-using pymunk together with pygame.
+"""This submodule contains helper functions to help with quick prototyping
+using pymunk together with pygame or pygame-ce.
 
 Intended to help with debugging and prototyping, not for actual production use
-in a full application. The methods contained in this module is opinionated 
-about your coordinate system and not in any way optimized. 
+in a full application. The methods contained in this module is opinionated
+about your coordinate system and not in any way optimized.
 """
 
 __docformat__ = "reStructuredText"
@@ -39,7 +39,7 @@ __all__ = [
     "positive_y_is_up",
 ]
 
-from typing import List, Sequence, Tuple
+from typing import Sequence
 
 import pygame
 
@@ -76,6 +76,8 @@ When False::
 class DrawOptions(pymunk.SpaceDebugDrawOptions):
     def __init__(self, surface: pygame.Surface) -> None:
         """Draw a pymunk.Space on a pygame.Surface object.
+
+        This class should work both with Pygame and Pygame-CE.
 
         Typical usage::
 
@@ -148,8 +150,8 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
     def draw_fat_segment(
         self,
-        a: Tuple[float, float],
-        b: Tuple[float, float],
+        a: tuple[float, float],
+        b: tuple[float, float],
         radius: float,
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
@@ -188,7 +190,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
     def draw_polygon(
         self,
-        verts: Sequence[Tuple[float, float]],
+        verts: Sequence[tuple[float, float]],
         radius: float,
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
@@ -204,19 +206,19 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
                 self.draw_fat_segment(a, b, radius, outline_color, outline_color)
 
     def draw_dot(
-        self, size: float, pos: Tuple[float, float], color: SpaceDebugColor
+        self, size: float, pos: tuple[float, float], color: SpaceDebugColor
     ) -> None:
         p = to_pygame(pos, self.surface)
         pygame.draw.circle(self.surface, color.as_int(), p, round(size), 0)
 
 
-def get_mouse_pos(surface: pygame.Surface) -> Tuple[int, int]:
+def get_mouse_pos(surface: pygame.Surface) -> tuple[int, int]:
     """Get position of the mouse pointer in pymunk coordinates."""
     p = pygame.mouse.get_pos()
     return from_pygame(p, surface)
 
 
-def to_pygame(p: Tuple[float, float], surface: pygame.Surface) -> Tuple[int, int]:
+def to_pygame(p: tuple[float, float], surface: pygame.Surface) -> tuple[int, int]:
     """Convenience method to convert pymunk coordinates to pygame surface
     local coordinates.
 
@@ -229,7 +231,7 @@ def to_pygame(p: Tuple[float, float], surface: pygame.Surface) -> Tuple[int, int
         return round(p[0]), round(p[1])
 
 
-def from_pygame(p: Tuple[float, float], surface: pygame.Surface) -> Tuple[int, int]:
+def from_pygame(p: tuple[float, float], surface: pygame.Surface) -> tuple[int, int]:
     """Convenience method to convert pygame surface local coordinates to
     pymunk coordinates
     """

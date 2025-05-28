@@ -1,6 +1,6 @@
-"""Very basic example of using a sprite image to draw a shape more similar 
-how you would do it in a real game instead of the simple line drawings used 
-by the other examples. 
+"""Very basic example of using a sprite image to draw a shape more similar
+how you would do it in a real game instead of the simple line drawings used
+by the other examples.
 """
 
 __docformat__ = "reStructuredText"
@@ -8,7 +8,6 @@ __docformat__ = "reStructuredText"
 import math
 import os.path
 import random
-from typing import List
 
 import pygame
 
@@ -38,7 +37,7 @@ def main():
             os.path.dirname(os.path.abspath(__file__)), "pymunk_logo_googlecode.png"
         )
     )
-    logos: List[pymunk.Shape] = []
+    logos: list[pymunk.Shape] = []
 
     ### Static line
     static_lines = [

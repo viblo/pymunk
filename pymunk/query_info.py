@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, NamedTuple, Optional
+from typing import TYPE_CHECKING, NamedTuple
 
 if TYPE_CHECKING:
     from .contact_point_set import ContactPointSet
@@ -13,8 +13,8 @@ class PointQueryInfo(NamedTuple):
     Space.
     """
 
-    shape: Optional["Shape"]
-    """The nearest shape, None if no shape was within range."""
+    shape: "Shape"
+    """The nearest shape"""
 
     point: "Vec2d"
     """The closest point on the shape's surface. (in world space
@@ -40,18 +40,14 @@ class SegmentQueryInfo(NamedTuple):
     they also return where a shape was hit and it's surface normal at the hit
     point. This object hold that information.
 
-    To test if the query hit something, check if
-    SegmentQueryInfo.shape == None or not.
-
     Segment queries are like ray casting, but because not all spatial indexes
     allow processing infinitely long ray queries it is limited to segments.
     In practice this is still very fast and you don't need to worry too much
     about the performance as long as you aren't using extremely long segments
     for your queries.
-
     """
 
-    shape: Optional["Shape"]
+    shape: "Shape"
     """Shape that was hit, or None if no collision occured"""
 
     point: "Vec2d"
@@ -69,7 +65,7 @@ class ShapeQueryInfo(NamedTuple):
     they also return where a shape was hit. This object hold that information.
     """
 
-    shape: Optional["Shape"]
+    shape: "Shape"
     """Shape that was hit, or None if no collision occured"""
 
     contact_point_set: "ContactPointSet"

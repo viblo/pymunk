@@ -2,7 +2,6 @@ import doctest
 import pkgutil
 import sys
 import unittest
-from typing import Any, List
 
 import pymunk
 
@@ -11,7 +10,7 @@ all_dependencies = ["pygame", "pyglet", "matplotlib", "_pyglet"]
 
 
 def load_tests(
-    tests: unittest.TestSuite, dependencies: List[str] = []
+    tests: unittest.TestSuite, dependencies: list[str] = []
 ) -> unittest.TestSuite:
     for importer, modname, ispkg in pkgutil.iter_modules(pymunk.__path__):
         # try:

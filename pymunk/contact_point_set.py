@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, List, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ._chipmunk_cffi import ffi
@@ -31,8 +31,6 @@ class ContactPoint(object):
         point_b: Vec2d,
         distance: float,
     ) -> None:
-        assert len(point_a) == 2
-        assert len(point_b) == 2
         self.point_a = point_a
         self.point_b = point_b
         self.distance = distance
@@ -52,12 +50,11 @@ class ContactPointSet(object):
     """
 
     normal: Vec2d
-    points: List[ContactPoint]
+    points: tuple[ContactPoint, ...]
 
     __slots__ = ("normal", "points")
 
-    def __init__(self, normal: Vec2d, points: List[ContactPoint]) -> None:
-        assert len(normal) == 2
+    def __init__(self, normal: Vec2d, points: tuple[ContactPoint, ...]) -> None:
         self.normal = normal
         self.points = points
 
@@ -68,14 +65,21 @@ class ContactPointSet(object):
     def _from_cp(cls, _points: "ffi.CData") -> "ContactPointSet":
         normal = Vec2d(_points.normal.x, _points.normal.y)
 
-        points = []
-        for i in range(_points.count):
-            _p = _points.points[i]
-            p = ContactPoint(
-                Vec2d(_p.pointA.x, _p.pointA.y),
-                Vec2d(_p.pointB.x, _p.pointB.y),
-                _p.distance,
-            )
-            points.append(p)
+        assert _points.count in (1, 2), "This is likely a bug in Pymunk, please report."
 
-        return cls(normal, points)
+        _p1 = _points.points[0]
+        p1 = ContactPoint(
+            Vec2d(_p1.pointA.x, _p1.pointA.y),
+            Vec2d(_p1.pointB.x, _p1.pointB.y),
+            _p1.distance,
+        )
+        if _points.count == 1:
+            return cls(normal, (p1,))
+
+        _p2 = _points.points[1]
+        p2 = ContactPoint(
+            Vec2d(_p2.pointA.x, _p2.pointA.y),
+            Vec2d(_p2.pointB.x, _p2.pointB.y),
+            _p2.distance,
+        )
+        return cls(normal, (p1, p2))

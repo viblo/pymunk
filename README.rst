@@ -5,8 +5,8 @@ Pymunk
 
 Pymunk is an easy-to-use pythonic 2D physics library that can be used whenever 
 you need 2D rigid body physics from Python. Perfect when you need 2D physics 
-in your game, demo or simulation! It is built on top of the very 
-capable 2D physics library `Chipmunk2D <http://chipmunk-physics.net>`_.
+in your game, demo or simulation! It is built on top of Munk2D, a fork of the 
+very capable 2D physics library `Chipmunk2D <http://chipmunk-physics.net>`_.
 
 The first version was released in 2007 and Pymunk is still actively developed 
 and maintained today, more than 15 years of active development!
@@ -18,8 +18,8 @@ the Pymunk webpage for some examples.
 
 2007 - 2025, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest Pymunk release (6.11.1), 
-using Chipmunk2D 7 rev dfc2fb8ca023ce6376fa2cf4a7f91c92ee08a970.
+This release is based on the latest Pymunk release (7.0.0), 
+using Munk2D 2.0 rev 5ef7498946f0e956f294cb3fea283626921e4128.
 
 
 Installation
@@ -152,7 +152,8 @@ Older Pythons
 
 - Support for Python 2 (and Python 3.0 - 3.5) was dropped with Pymunk 6.0.
 - Support for Python 3.6 was dropped with Pymunk 6.5.2.
-- Support for Python 3.7 was dropped with Pymunk 6.9.0
+- Support for Python 3.7 was dropped with Pymunk 6.9.0.
+- Support for Python 3.8 was dropped with Pymunk 7.0.0.
 
 If you use any of these legacy versions of Python, please use an older 
 Pymunk version. (It might work on newer Pymunks as well, but it's not tested, 

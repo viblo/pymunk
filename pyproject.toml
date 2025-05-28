@@ -1,7 +1,6 @@
 [build-system]
 requires = [
     "setuptools",
-    "setuptools<74; platform_system=='Windows' and implementation_name=='pypy'",
     "wheel",
     "cffi >= 1.17.1; platform_system != 'Emscripten'",
     "cffi > 1.14.0; platform_system == 'Emscripten'",
@@ -10,7 +9,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pymunk"
-version = "6.11.1" # remember to change me for new versions!
+version = "7.0.0" # remember to change me for new versions!
 # Require cffi >1.14.0 since that (and older) has problem with returing structs from functions.
 # Require cffi >= 1.17.1 since older cant work with latest setuptools version
 dependencies = [
@@ -21,10 +20,11 @@ authors = [{ name = "Victor Blomqvist", email = "vb@viblo.se" }]
 readme = "README.rst"
 description = "Pymunk is a easy-to-use pythonic 2D physics library"
 keywords = ["pygame", "2d", "physics", "rigid body"]
+license = "MIT"
+license-files = ["LICENSE.txt"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Games/Entertainment",
     "Topic :: Software Development :: Libraries",
@@ -33,7 +33,7 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 
 [project.optional-dependencies]
 dev = ["pyglet", "pygame", "sphinx", "aafigure", "wheel", "matplotlib", "numpy"]

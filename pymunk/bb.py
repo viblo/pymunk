@@ -1,6 +1,6 @@
 __docformat__ = "reStructuredText"
 
-from typing import NamedTuple, Tuple
+from typing import NamedTuple
 
 from . import _chipmunk_cffi
 
@@ -29,7 +29,7 @@ class BB(NamedTuple):
     top: float = 0
 
     @staticmethod
-    def newForCircle(p: Tuple[float, float], r: float) -> "BB":
+    def newForCircle(p: tuple[float, float], r: float) -> "BB":
         """Convenience constructor for making a BB fitting a circle at
         position p with radius r.
         """
@@ -42,7 +42,7 @@ class BB(NamedTuple):
         return bool(lib.cpBBIntersects(self, other))
 
     def intersects_segment(
-        self, a: Tuple[float, float], b: Tuple[float, float]
+        self, a: tuple[float, float], b: tuple[float, float]
     ) -> bool:
         """Returns true if the segment defined by endpoints a and b
         intersect this bb."""
@@ -54,7 +54,7 @@ class BB(NamedTuple):
         """Returns true if bb completley contains the other bb"""
         return bool(lib.cpBBContainsBB(self, other))
 
-    def contains_vect(self, v: Tuple[float, float]) -> bool:
+    def contains_vect(self, v: tuple[float, float]) -> bool:
         """Returns true if this bb contains the vector v"""
         assert len(v) == 2
         return bool(lib.cpBBContainsVect(self, v))
@@ -66,7 +66,7 @@ class BB(NamedTuple):
         cp_bb = lib.cpBBMerge(self, other)
         return BB(cp_bb.l, cp_bb.b, cp_bb.r, cp_bb.t)
 
-    def expand(self, v: Tuple[float, float]) -> "BB":
+    def expand(self, v: tuple[float, float]) -> "BB":
         """Return the minimal bounding box that contans both this bounding box
         and the vector v
         """
@@ -88,7 +88,7 @@ class BB(NamedTuple):
         """
         return lib.cpBBMergedArea(self, other)
 
-    def segment_query(self, a: Tuple[float, float], b: Tuple[float, float]) -> float:
+    def segment_query(self, a: tuple[float, float], b: tuple[float, float]) -> float:
         """Returns the fraction along the segment query the BB is hit.
 
         Returns infinity if it doesnt hit
@@ -97,7 +97,7 @@ class BB(NamedTuple):
         assert len(b) == 2
         return lib.cpBBSegmentQuery(self, a, b)
 
-    def clamp_vect(self, v: Tuple[float, float]) -> Vec2d:
+    def clamp_vect(self, v: tuple[float, float]) -> Vec2d:
         """Returns a copy of the vector v clamped to the bounding box"""
         assert len(v) == 2
         v2 = lib.cpBBClampVect(self, v)

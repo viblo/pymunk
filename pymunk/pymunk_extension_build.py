@@ -1,7 +1,6 @@
 import os
 import os.path
 import platform
-from typing import List
 
 from cffi import FFI  # type: ignore
 
@@ -20,7 +19,7 @@ if platform.system() != "Windows":
         ffibuilder.cdef(f.read())
     hasty_space_include = """#include "chipmunk/cpHastySpace.h" """
 
-source_folders = [os.path.join("Chipmunk2D", "src")]
+source_folders = [os.path.join("Munk2D", "src")]
 sources = []
 for folder in source_folders:
     for fn in os.listdir(folder):
@@ -38,7 +37,7 @@ for folder in source_folders:
         elif fn[-1] == "o":
             os.remove(fn_path)
 
-libraries: List[str] = []
+libraries: list[str] = []
 # if os == linux:
 #    libraries.append('m')
 
@@ -75,7 +74,7 @@ ffibuilder.set_source(
     """,
     extra_compile_args=extra_compile_args,
     # extra_link_args=['/DEBUG:FULL'],
-    include_dirs=[os.path.join("Chipmunk2D", "include")],
+    include_dirs=[os.path.join("Munk2D", "include")],
     sources=sources,
     libraries=libraries,
     define_macros=[("CP_OVERRIDE_MESSAGE", None)],

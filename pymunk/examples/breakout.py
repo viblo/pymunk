@@ -1,7 +1,7 @@
-"""Very simple breakout clone. A circle shape serves as the paddle, then 
-breakable bricks constructed of Poly-shapes. 
+"""Very simple breakout clone. A circle shape serves as the paddle, then
+breakable bricks constructed of Poly-shapes.
 
-The code showcases several pymunk concepts such as elasitcity, impulses, 
+The code showcases several pymunk concepts such as elasitcity, impulses,
 constant object speed, joints, collision handlers and post step callbacks.
 """
 
@@ -48,7 +48,7 @@ def spawn_ball(space, position, direction):
 def setup_level(space, player_body):
 
     # Remove balls and bricks
-    for s in space.shapes[:]:
+    for s in list(space.shapes):
         if s.body.body_type == pymunk.Body.DYNAMIC and s.body not in [player_body]:
             space.remove(s.body, s)
 
@@ -76,8 +76,9 @@ def setup_level(space, player_body):
         brick_shape = arbiter.shapes[0]
         space.remove(brick_shape, brick_shape.body)
 
-    h = space.add_collision_handler(collision_types["brick"], collision_types["ball"])
-    h.separate = remove_brick
+    space.on_collision(
+        collision_types["brick"], collision_types["ball"], separate=remove_brick
+    )
 
 
 def main():
@@ -114,11 +115,10 @@ def main():
     def remove_first(arbiter, space, data):
         ball_shape = arbiter.shapes[0]
         space.remove(ball_shape, ball_shape.body)
-        return True
 
-    h = space.add_collision_handler(collision_types["ball"], collision_types["bottom"])
-    h.begin = remove_first
-    space.add(bottom)
+    space.on_collision(
+        collision_types["ball"], collision_types["bottom"], begin=remove_first
+    )
 
     ### Player ship
     player_body = pymunk.Body(500, float("inf"))
@@ -142,10 +142,10 @@ def main():
             set_.normal = normal
             set_.points[0].distance = 0
         arbiter.contact_point_set = set_
-        return True
 
-    h = space.add_collision_handler(collision_types["player"], collision_types["ball"])
-    h.pre_solve = pre_solve
+    space.on_collision(
+        collision_types["player"], collision_types["ball"], pre_solve=pre_solve
+    )
 
     # restrict movement of player to a straigt line
     move_joint = pymunk.GrooveJoint(

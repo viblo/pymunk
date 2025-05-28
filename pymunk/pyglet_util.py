@@ -21,19 +21,19 @@
 # SOFTWARE.
 # ----------------------------------------------------------------------------
 
-"""This submodule contains helper functions to help with quick prototyping 
+"""This submodule contains helper functions to help with quick prototyping
 using pymunk together with pyglet.
 
 Intended to help with debugging and prototyping, not for actual production use
-in a full application. The methods contained in this module is opinionated 
-about your coordinate system and not very optimized (they use batched 
-drawing, but there is probably room for optimizations still). 
+in a full application. The methods contained in this module is opinionated
+about your coordinate system and not very optimized (they use batched
+drawing, but there is probably room for optimizations still).
 """
 
 __docformat__ = "reStructuredText"
 
 import math
-from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Type
+from typing import TYPE_CHECKING, Any, Optional, Sequence
 
 import pyglet
 
@@ -83,7 +83,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
         """
         self.new_batch = False
-        self.draw_shapes: List[Any] = []
+        self.draw_shapes: list[Any] = []
 
         if "batch" not in kwargs:
             self.new_batch = True
@@ -99,7 +99,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
     def __exit__(
         self,
-        type: Optional[Type[BaseException]],
+        type: Optional[type[BaseException]],
         value: Optional[BaseException],
         traceback: Optional["TracebackType"],
     ) -> None:

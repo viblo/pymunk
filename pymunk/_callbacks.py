@@ -1,11 +1,11 @@
 import logging
 import math
-import warnings
 
 from ._chipmunk_cffi import ffi, lib
 from .arbiter import Arbiter
 from .contact_point_set import ContactPointSet
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
+from .shapes import Shape
 from .vec2d import Vec2d
 
 _logger = logging.getLogger(__name__)
@@ -21,8 +21,9 @@ def ext_cpSpacePointQueryFunc(
     gradient: ffi.CData,
     data: ffi.CData,
 ) -> None:
-    self, query_hits = ffi.from_handle(data)
-    shape = self._get_shape(_shape)
+    _, query_hits = ffi.from_handle(data)
+    shape = Shape._from_cp_shape(_shape)
+    assert shape != None
     p = PointQueryInfo(
         shape, Vec2d(point.x, point.y), distance, Vec2d(gradient.x, gradient.y)
     )
@@ -37,8 +38,9 @@ def ext_cpSpaceSegmentQueryFunc(
     alpha: float,
     data: ffi.CData,
 ) -> None:
-    self, query_hits = ffi.from_handle(data)
-    shape = self._get_shape(_shape)
+    _, query_hits = ffi.from_handle(data)
+    shape = Shape._from_cp_shape(_shape)
+    assert shape != None
     p = SegmentQueryInfo(
         shape, Vec2d(point.x, point.y), Vec2d(normal.x, normal.y), alpha
     )
@@ -47,8 +49,8 @@ def ext_cpSpaceSegmentQueryFunc(
 
 @ffi.def_extern()
 def ext_cpSpaceBBQueryFunc(_shape: ffi.CData, data: ffi.CData) -> None:
-    self, query_hits = ffi.from_handle(data)
-    shape = self._get_shape(_shape)
+    _, query_hits = ffi.from_handle(data)
+    shape = Shape._from_cp_shape(_shape)
     assert shape is not None
     query_hits.append(shape)
 
@@ -57,8 +59,9 @@ def ext_cpSpaceBBQueryFunc(_shape: ffi.CData, data: ffi.CData) -> None:
 def ext_cpSpaceShapeQueryFunc(
     _shape: ffi.CData, _points: ffi.CData, data: ffi.CData
 ) -> None:
-    self, query_hits = ffi.from_handle(data)
-    found_shape = self._get_shape(_shape)
+    _, query_hits = ffi.from_handle(data)
+    found_shape = Shape._from_cp_shape(_shape)
+    assert found_shape != None
     point_set = ContactPointSet._from_cp(_points)
     info = ShapeQueryInfo(found_shape, point_set)
     query_hits.append(info)
@@ -171,8 +174,8 @@ def ext_cpSpaceDebugDrawDotImpl(
 
 @ffi.def_extern()
 def ext_cpSpaceDebugDrawColorForShapeImpl(_shape: ffi.CData, data: ffi.CData) -> None:
-    options, space = ffi.from_handle(data)
-    shape = space._get_shape(_shape)
+    options, _ = ffi.from_handle(data)
+    shape = Shape._from_cp_shape(_shape)
     return options.color_for_shape(shape)
 
 
@@ -198,51 +201,19 @@ def ext_cpMarchSampleFunc(point: ffi.CData, data: ffi.CData) -> float:
 @ffi.def_extern()
 def ext_cpCollisionBeginFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
-) -> bool:
+) -> None:
     handler = ffi.from_handle(data)
-    x = handler._begin(Arbiter(_arb, handler._space), handler._space, handler.data)
-    if isinstance(x, bool):
-        return x
-
-    func_name = handler._begin.__code__.co_name
-    filename = handler._begin.__code__.co_filename
-    lineno = handler._begin.__code__.co_firstlineno
-
-    warnings.warn_explicit(
-        "Function '" + func_name + "' should return a bool to"
-        " indicate if the collision should be processed or not when"
-        " used as 'begin' or 'pre_solve' collision callback.",
-        UserWarning,
-        filename,
-        lineno,
-        handler._begin.__module__,
-    )
-    return True
+    handler._begin(Arbiter(_arb, handler._space), handler._space, handler.data["begin"])
 
 
 @ffi.def_extern()
 def ext_cpCollisionPreSolveFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
-) -> bool:
+) -> None:
     handler = ffi.from_handle(data)
-    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
-    if isinstance(x, bool):
-        return x
-
-    func_name = handler._pre_solve.__code__.co_name
-    filename = handler._pre_solve.__code__.co_filename
-    lineno = handler._pre_solve.__code__.co_firstlineno
-
-    warnings.warn_explicit(
-        "Function '" + func_name + "' should return a bool to"
-        " indicate if the collision should be processed or not when"
-        " used as 'begin' or 'pre_solve' collision callback.",
-        UserWarning,
-        filename,
-        lineno,
-        handler._pre_solve.__module__,
+    handler._pre_solve(
+        Arbiter(_arb, handler._space), handler._space, handler.data["pre_solve"]
     )
-    return True
 
 
 @ffi.def_extern()
@@ -250,7 +221,9 @@ def ext_cpCollisionPostSolveFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
 ) -> None:
     handler = ffi.from_handle(data)
-    handler._post_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+    handler._post_solve(
+        Arbiter(_arb, handler._space), handler._space, handler.data["post_solve"]
+    )
 
 
 @ffi.def_extern()
@@ -265,7 +238,9 @@ def ext_cpCollisionSeparateFunc(
         # this try is needed since a separate callback will be called
         # if a colliding object is removed, regardless if its in a
         # step or not. Meaning the unlock must succeed
-        handler._separate(Arbiter(_arb, handler._space), handler._space, handler.data)
+        handler._separate(
+            Arbiter(_arb, handler._space), handler._space, handler.data["separate"]
+        )
     finally:
         handler._space._locked = orig_locked
 
@@ -290,8 +265,8 @@ def ext_cpBodyArbiterIteratorFunc(
     _body: ffi.CData, _arbiter: ffi.CData, data: ffi.CData
 ) -> None:
     body, func, args, kwargs = ffi.from_handle(data)
-    assert body._space is not None
-    arbiter = Arbiter(_arbiter, body._space)
+    assert body.space is not None
+    arbiter = Arbiter(_arbiter, body.space)
     func(arbiter, *args, **kwargs)
 
 

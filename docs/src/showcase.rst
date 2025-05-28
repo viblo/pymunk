@@ -350,6 +350,14 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Liu, Li, Qiang-hong Zhang, Meng-zi Li, Rui-tong Li, Zhiming He, Arnaud Dechesne, Barth F. Smets, and Guo-ping Sheng. 
+   "Single-cell analysis reveals antibiotic affects conjugative transfer by modulating bacterial growth rather than conjugation efficiency." 
+   Environment International (2025): 109385.
+
+#. Davison, Andrew. 
+   "Simulating Mechanical Curve Drawing using Pymunk." 
+   (2025).
+
 #. Liu, Daochang, Junyu Zhang, Anh-Dung Dinh, Eunbyung Park, Shichao Zhang, and Chang Xu. 
    "Generative Physical AI in Vision: A Survey." 
    arXiv preprint arXiv:2501.10928 (2025).

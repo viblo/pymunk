@@ -1,6 +1,6 @@
-"""This example attempts to display collision points, and the callbacks
-"""
+"""This example attempts to display collision points, and the callbacks"""
 
+import functools
 import math
 import random
 import sys
@@ -19,8 +19,6 @@ def begin(arbiter, space, data):
         "post_solve": "N/A (no post_solve for sensors)",
         "separate": 0,
     }
-
-    return True
 
 
 def pre_solve(arbiter: pymunk.Arbiter, space, data):
@@ -54,8 +52,6 @@ def pre_solve(arbiter: pymunk.Arbiter, space, data):
             (p.point_a.interpolate_to(p.point_b, 0.5)),
         )
 
-    return True
-
 
 def post_solve(arbiter, space, data):
     # Will not be called, since the shapes are kinematic sensors
@@ -64,7 +60,6 @@ def post_solve(arbiter, space, data):
 
 def separate(arbiter, space, data):
     data["log"]["separate"] += 1
-    pass
 
 
 def main():
@@ -113,14 +108,19 @@ def main():
     selected_shape_idx = 0
     space.add(shapes[selected_shape_idx])
 
-    h = space.add_collision_handler(0, 1)
-    h.data["screen"] = screen
-    h.data["log"] = {"begin": 0, "pre_solve": 0, "post_solve": 0, "separate": 0}
-    h.data["font"] = font
-    h.begin = begin
-    h.pre_solve = pre_solve
-    h.post_solve = post_solve
-    h.separate = separate
+    data = {}
+    h = space.on_collision(
+        0,
+        1,
+        begin=begin,
+        pre_solve=pre_solve,
+        post_solve=post_solve,
+        separate=separate,
+        data=data,
+    )
+    data["screen"] = screen
+    data["log"] = {"begin": 0, "pre_solve": 0, "post_solve": 0, "separate": 0}
+    data["font"] = font
 
     while True:
         for event in pygame.event.get():
@@ -155,10 +155,10 @@ def main():
         )
 
         y = 30
-        for k in h.data["log"]:
+        for k in data["log"]:
             screen.blit(
                 font.render(
-                    f"{k}: {h.data['log'][k]}",
+                    f"{k}: {data['log'][k]}",
                     True,
                     pygame.Color("black"),
                 ),
