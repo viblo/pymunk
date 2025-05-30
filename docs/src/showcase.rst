@@ -348,7 +348,25 @@ Pymunk has been used or referenced in a number of scientific papers.
 
 List of papers which has used or mentioned Pymunk:
 
+.. Articles to check
+   2025
+   An Interconnected Soft Modular Robot with Locomotive Modules and Flexible Structures Actuated Through a Single Method
+   An Adaptive Flooding Detection Framework With Blockchain Mitigation for Satellite Communications
+   TR‐Bench: Benchmarking Deep Reinforcement Learning for Flipper‐Track Robot Control
+
 .. (list made using "Chicago" style citation)
+
+#. Schiøtt, Jonas Myhre, Viktor Sebastian Petersen, and Dimitrios P. Papadopoulos. 
+   "pix2pockets: Shot Suggestions in 8-Ball Pool from a Single Image in the Wild." 
+   arXiv preprint arXiv:2504.12045 (2025).
+
+#. Zhang, Ding, Mao-Mao Liu, Hong-Juan Wang, Lin Tang, and Jian-Hua He.
+   "A New Smoothing Optimization Strategy with Global Orbit Shape Constraint." 
+   Nuclear Instruments and Methods in Physics Research Section A: Accelerators, Spectrometers, Detectors and Associated Equipment (2025): 170651.
+
+#. Zhong, Ninghan, Steven Caro, Avraiem Iskandar, Megnath Ramesh, and Stephen L. Smith. 
+   "Bench-NPIN: Benchmarking Non-prehensile Interactive Navigation." 
+   arXiv preprint arXiv:2505.12084 (2025).
 
 #. Liu, Li, Qiang-hong Zhang, Meng-zi Li, Rui-tong Li, Zhiming He, Arnaud Dechesne, Barth F. Smets, and Guo-ping Sheng. 
    "Single-cell analysis reveals antibiotic affects conjugative transfer by modulating bacterial growth rather than conjugation efficiency." 
@@ -369,6 +387,10 @@ List of papers which has used or mentioned Pymunk:
 #. Gu, Feida, Hongrui Sang, Yanmin Zhou, Jiajun Ma, Rong Jiang, Zhipeng Wang, and Bin He. 
    "Learning Graph Dynamics with Interaction Effects Propagation for Deformable Linear Objects Shape Control." 
    IEEE Transactions on Automation Science and Engineering (2025).
+
+#. Mustafa, Abdullah, Ryo Hanai, Ixchel G. Ramirez-Alpizar, Floris Erich, Ryoichi Nakajo, Yukiyasu Domae, and Tetsuya Ogata. 
+   "Visual Imitation Learning of Non-Prehensile Manipulation Tasks with Dynamics-Supervised Models." 
+   In 2024 IEEE 20th International Conference on Automation Science and Engineering (CASE), pp. 3872-3879. IEEE, 2024.
 
 #. Zhong, Ninghan, Alessandro Potenza, and Stephen L. Smith. 
    "Autonomous Navigation in Ice-Covered Waters with Learned Predictions on Ship-Ice Interactions." 
