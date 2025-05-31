@@ -2,6 +2,11 @@
 Changelog 
 =========
 
+.. NEXT
+  - Experimentally Build wheels for iOS
+  
+
+
 Pymunk 7.0.0 (2025-05-28)
 -------------------------
 
