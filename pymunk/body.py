@@ -596,7 +596,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         """The type of a body (:py:const:`Body.DYNAMIC`,
         :py:const:`Body.KINEMATIC` or :py:const:`Body.STATIC`).
 
-        When changing an body to a dynamic body, the mass and moment of
+        When changing a body to a dynamic body, the mass and moment of
         inertia are recalculated from the shapes added to the body. Custom
         calculated moments of inertia are not preserved when changing types.
         This function cannot be called directly in a collision callback.
