@@ -3,7 +3,8 @@ Changelog
 =========
 
 .. NEXT
-  - Experimentally Build wheels for iOS
+  - Experimentally Build wheels for iOS (Issue #276)
+  - Fix all(?) issues calling remove in separate callbacks (Issue #247)
   
 
 

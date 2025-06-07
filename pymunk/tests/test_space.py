@@ -601,23 +601,6 @@ class UnitTestSpace(unittest.TestCase):
 
         self.assertTrue(self.separated)
 
-    def testCollisionHandlerRemoveSeparateAdd(self) -> None:
-        s = p.Space()
-        b1 = p.Body(1, 10)
-        c1 = p.Circle(b1, 10)
-        c2 = p.Circle(s.static_body, 5)
-
-        s.add(b1, c1, c2)
-
-        def separate(*_: Any) -> None:
-            s.add(p.Circle(s.static_body, 2))
-            s.remove(c1)
-
-        s.on_collision(separate=separate)
-
-        s.step(1)
-        s.remove(c1)
-
     def testCollisionHandlerDefaultCallbacks(self) -> None:
         s = p.Space()
 
@@ -644,79 +627,66 @@ class UnitTestSpace(unittest.TestCase):
         for _ in range(10):
             s.step(0.1)
 
-    @unittest.skip("Existing bug in Pymunk. TODO: Fix bug and enable test")
-    def testRemoveInSeparate(self) -> None:
+    def testRemoveInSeparateWithinStep(self) -> None:
         s = p.Space()
-        print("\n XXX start")
 
         shape1 = p.Circle(s.static_body, 1)
         shape1.collision_type = 1
 
-        body2 = p.Body()
+        body2 = p.Body(1, 1)
         shape2 = p.Circle(body2, 1)
-        shape2.density = 1
-        # shape1.collision_type = 2
 
-        body3 = p.Body()
+        body3 = p.Body(1, 1)
         shape3 = p.Circle(body3, 1)
-        shape3.density = 1
-        # shape1.collision_type = 3
 
         s.add(shape1, shape2, body2, shape3, body3)
 
         def remove1(*_: Any) -> None:
-            print("remove1")
             s.remove(shape1)
 
         def remove2(*_: Any) -> None:
-            print("remove2")
             s.remove(shape2)
 
-        # s.on_collision(1, 0).separate = remove2
-        s.on_collision(1, 0, separate=remove1)
+        def remove3(*_: Any) -> None:
+            s.remove(shape3)
 
-        s.step(0.001)
+        s.on_collision(separate=remove1)
+        s.on_collision(1, separate=remove2)
+        s.on_collision(0, 1, separate=remove3)
 
-        # trigger separate with shape2 and shape3, shape1 will be removed 2x
-        s.remove(shape1)
-
-        s.on_collision(1, 0, separate=remove2)
-        s.add(shape1)
-
+        for _ in range(10):
         s.step(1)
-        # trigger separate with shape2 and shape3, shape1 is removed, and shape2 will be removed
-        s.remove(shape1)
+        self.assertEqual(len(s.shapes), 0)
 
-        # self.assertNotIn(shape1, s.shapes)
-        # s.remove(shape1)
-        # s.step(1)
-
-        print(" XXX end")
-
-    @unittest.skip("Existing bug in Pymunk. TODO: Fix bug and enable test")
     def testRemoveInSeparateWithoutStep(self) -> None:
         s = p.Space()
-        print("\n XXX start")
 
         shape1 = p.Circle(s.static_body, 1)
+        shape1.collision_type = 1
 
-        body2 = p.Body()
+        body2 = p.Body(1, 1)
         shape2 = p.Circle(body2, 1)
-        shape2.density = 1
 
-        s.add(shape1, shape2, body2)
+        body3 = p.Body(1, 1)
+        shape3 = p.Circle(body3, 1)
 
-        def separate(*_: Any) -> None:
-            pass
+        s.add(shape1, shape2, body2, shape3, body3)
 
-        s.step(1)
-        s.on_collision(0, separate=separate)
+        def remove2(*_: Any) -> None:
+            s.remove(shape2, body2)
 
+        def remove3(*_: Any) -> None:
+            s.remove(shape3, body3)
+
+        s.on_collision(0, separate=remove2)
+        s.on_collision(1, separate=remove3)
+
+        s.step(0.1)
+
+        self.assertEqual(len(s.shapes), 3)
         s.remove(shape1)
+        self.assertEqual(len(s.shapes), 0)
 
-        print(" XXX end")
-
-    @unittest.skip("Existing bug in Pymunk. TODO: Fix bug and enable test")
     def testCollisionHandlerRemoveAfterSeparate(self) -> None:
         # In this test the separate must happen before post_solve in the same step()
         print()
@@ -735,35 +705,24 @@ class UnitTestSpace(unittest.TestCase):
         shape3.collision_type = 3
 
         space.add(shape1, body2, shape2, shape3, body3)
-        print("START", shape1, shape2, shape3)
 
         def separate(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
-            print("SEP", arbiter.shapes)
             self.separate_occurred = True
 
         def post_solve(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
-            print("POST", arbiter.shapes)
             if self.separate_occurred:
-                print("POST REMOVE", arbiter.shapes)
                 space.remove(*arbiter.shapes)
 
         space.on_collision(1, 2, post_solve=post_solve)
         space.on_collision(3, 2, separate=separate)
 
-        print(1)
         self.separate_occurred = False
         space.step(1)
-        print(2)
         body3.position = 10, 0
-        # self.assertEqual(len(space.shapes), 3)
 
         self.separate_occurred = False
         space.step(1)
-        print(3)
         space.remove(shape3)
-        # self.assertEqual(len(space.shapes), 1)
-        print(4)
-        # space.remove(shape3)
 
     def testCollisionHandlerAddRemoveInStep(self) -> None:
         s = p.Space()
@@ -791,14 +750,13 @@ class UnitTestSpace(unittest.TestCase):
             self.assertTrue(b in s.bodies)
             self.assertTrue(c in s.shapes)
 
-        s.on_collision(0, 0, pre_solve=pre_solve_add)
+        s.on_collision(pre_solve=pre_solve_add)
 
         s.step(0.1)
-        return
         self.assertTrue(b in s.bodies)
         self.assertTrue(c in s.shapes)
 
-        s.on_collision(0, 0).pre_solve = pre_solve_remove
+        s.on_collision(pre_solve=pre_solve_remove)
 
         s.step(0.1)
 

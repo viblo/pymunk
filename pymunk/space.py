@@ -133,7 +133,7 @@ class Space(PickleMixin, object):
         self._locked = False
 
         self._add_later: set[_AddableObjects] = set()
-        self._remove_later: set[_AddableObjects] = set()
+        self._remove_later: dict[_AddableObjects, None] = dict()
         self._bodies_to_check: set[Body] = set()
 
     @property
@@ -387,9 +387,20 @@ class Space(PickleMixin, object):
             body, remove the joints and shapes attached to it.
         """
         if self._locked:
-            self._remove_later.update(objs)
+            for o in objs:
+                self._remove_later[o] = None
             return
 
+        self._remove(*objs)
+        removed = set()
+        while self._remove_later:
+            to_remove, _ = self._remove_later.popitem()
+            if to_remove not in removed:
+                self._remove(to_remove)
+                removed.add(to_remove)
+
+    def _remove(self, *objs: _AddableObjects) -> None:
+        """Unsafe internal remove, will not check space is unlocked."""
         for o in objs:
             if isinstance(o, Body):
                 self._remove_body(o)
@@ -577,9 +588,13 @@ class Space(PickleMixin, object):
             self._locked = False
         self.add(*self._add_later)
         self._add_later.clear()
-        for obj in self._remove_later:
-            self.remove(obj)
-        self._remove_later.clear()
+
+        removed = set()
+        while self._remove_later:
+            to_remove, _ = self._remove_later.popitem()
+            if to_remove not in removed:
+                removed.add(to_remove)
+                self._remove(to_remove)
 
         for key in self._post_step_callbacks:
             self._post_step_callbacks[key](self)
