@@ -377,9 +377,19 @@ class Space(PickleMixin, object):
     def remove(self, *objs: _AddableObjects) -> None:
         """Remove one or many shapes, bodies or constraints from the space
 
-        Unlike Chipmunk and earlier versions of Pymunk its now allowed to
-        remove objects even from a callback during the simulation step.
-        However, the removal will not be performed until the end of the step.
+        Unlike Chipmunk and early versions of Pymunk its allowed to
+        remove objects from a collision callback.
+
+        There are two cases, the most common is that a collision callback is
+        invoked during a Space.step() simulation step. In this case the
+        removal will happen in the end of the step(), when all callbacks have
+        been called and the collisions resolved.
+
+        A more uncommon case is when the `separate` callback is triggered by
+        calling Space.remove() outside of the step() function, and another
+        remove is called from the `seprate()` callback. In this case the
+        second removal will happen at the end of the first call to
+        Space.remove(), when all `separate` callbacks have been called.
 
         .. Note::
             When removing objects from the space, make sure you remove any
