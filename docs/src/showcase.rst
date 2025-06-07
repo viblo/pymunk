@@ -803,7 +803,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2025-01-26. If something is missing or wrong, please contact 
+List last updated 2025-06-07. If something is missing or wrong, please contact 
 me!
 
 

@@ -2,10 +2,19 @@
 Changelog 
 =========
 
-.. NEXT
-  - Experimentally Build wheels for iOS (Issue #276)
-  - Fix all(?) issues calling remove in separate callbacks (Issue #247)
-  
+Pymunk 7.0.1 (2025-06-07)
+-------------------------
+
+**Minor fixes and experimental iOS wheel!**
+
+This is a minor patch release, which adds experimental iOS wheels, minor bug
+fix and fixes the verison number that was wrong in the previous release.
+
+Changes:
+
+- Experimentally Build wheels for iOS (Issue #276)
+- Fix all(?) issues calling remove in separate callbacks (Issue #247)
+- Fixed pymunk.version version number.
 
 
 Pymunk 7.0.0 (2025-05-28)

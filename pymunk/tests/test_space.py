@@ -655,7 +655,8 @@ class UnitTestSpace(unittest.TestCase):
         s.on_collision(0, 1, separate=remove3)
 
         for _ in range(10):
-        s.step(1)
+            s.step(1)
+
         self.assertEqual(len(s.shapes), 0)
 
     def testRemoveInSeparateWithoutStep(self) -> None:
