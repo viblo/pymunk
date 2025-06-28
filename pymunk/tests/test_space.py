@@ -858,6 +858,79 @@ class UnitTestSpace(unittest.TestCase):
         ]
         self.assertListEqual(callback_calls, expected_calls)
 
+    def testSameTypeCollisionHandler(self) -> None:
+        s = p.Space()
+
+        callback_calls = []
+
+        def callback(
+            name: str,
+            types: tuple[Optional[int], Optional[int]],
+            arb: p.Arbiter,
+            space: p.Space,
+            data: dict[Any, Any],
+        ) -> None:
+            callback_calls.append(
+                (
+                    name,
+                    types,
+                    (arb.shapes[0].friction, arb.shapes[1].friction),
+                )
+            )
+
+        handler_order = [
+            (1, 1),
+            (1, None),
+            (None, None),
+        ]
+
+        for t1, t2 in handler_order:
+            s.on_collision(
+                t1,
+                t2,
+                begin=functools.partial(callback, "begin", (t1, t2)),
+                pre_solve=functools.partial(callback, "pre_solve", (t1, t2)),
+                post_solve=functools.partial(callback, "post_solve", (t1, t2)),
+                separate=functools.partial(callback, "separate", (t1, t2)),
+            )
+
+        b1 = p.Body(1, 30)
+        c1 = p.Circle(b1, 10)
+        b1.position = 5, 3
+        c1.collision_type = 1
+        c1.friction = 1
+
+        b2 = p.Body(body_type=p.Body.STATIC)
+        c2 = p.Circle(b2, 10)
+        c2.collision_type = 1
+        c2.friction = 2
+
+        s.add(b1, c1, b2, c2)
+
+        s.step(0.1)
+        b1.position = 100, 100
+        s.step(0.1)
+
+        expected_calls = [
+            ("begin", (1, 1), (2, 1)),
+            ("begin", (1, None), (2, 1)),
+            ("begin", (1, None), (1, 2)),
+            ("begin", (None, None), (2, 1)),
+            ("pre_solve", (1, 1), (2, 1)),
+            ("pre_solve", (1, None), (2, 1)),
+            ("pre_solve", (1, None), (1, 2)),
+            ("pre_solve", (None, None), (2, 1)),
+            ("post_solve", (1, 1), (2, 1)),
+            ("post_solve", (1, None), (2, 1)),
+            ("post_solve", (1, None), (1, 2)),
+            ("post_solve", (None, None), (2, 1)),
+            ("separate", (1, 1), (2, 1)),
+            ("separate", (1, None), (2, 1)),
+            ("separate", (1, None), (1, 2)),
+            ("separate", (None, None), (2, 1)),
+        ]
+        self.assertListEqual(callback_calls, expected_calls)
+
     def testWildcardCollisionHandler(self) -> None:
         s = p.Space()
         b1 = p.Body(1, 1)
