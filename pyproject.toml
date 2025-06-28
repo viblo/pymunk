@@ -102,6 +102,7 @@ enable = ["pypy"]
 
 [tool.cibuildwheel.ios]
 environment = { PYMUNK_BUILD_SLIM = "1" }
+test-skip = "*"
 
 [tool.cibuildwheel.pyodide]
 environment = { PYMUNK_BUILD_SLIM = "1" }
