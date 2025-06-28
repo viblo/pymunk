@@ -86,6 +86,8 @@ jobs:
             pip install cffi-1.17.1-py3-none-any.whl && \
             # install the rest of the dependencies
             python -m pip install setuptools wheel
+          CIBW_XBUILD_TOOLS: "curl pkg-config tar"
+          CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
 
       - uses: actions/upload-artifact@v4
         if: ${{ github.ref == 'refs/heads/master' }}
