@@ -71,7 +71,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-        submodules: true
+          submodules: true
       - run: brew upgrade cmake
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.0.0
