@@ -89,8 +89,10 @@ module = "pymunk.util"
 disallow_untyped_defs = false
 check_untyped_defs = false
 
+
 [tool.cibuildwheel]
 test-command = "python -m pymunk.tests"
+enable = ["pypy"]
 
 [tool.cibuildwheel.linux]
 
