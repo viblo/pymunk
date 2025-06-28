@@ -88,3 +88,19 @@ module = "pymunk.util"
 # This is not typed
 disallow_untyped_defs = false
 check_untyped_defs = false
+
+[tool.cibuildwheel]
+test-command = "python -m pymunk.tests"
+
+[tool.cibuildwheel.linux]
+
+[tool.cibuildwheel.macos]
+
+[tool.cibuildwheel.windows]
+
+[tool.cibuildwheel.ios]
+env = "PYMUNK_BUILD_SLIM: 1"
+
+
+[tool.cibuildwheel.pyodide]
+env = "PYMUNK_BUILD_SLIM: 1"
