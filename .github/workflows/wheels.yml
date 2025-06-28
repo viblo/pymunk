@@ -3,66 +3,67 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  build_wheels:
-    name: Build wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-14]
+  # build_wheels:
+  #   name: Build wheels on ${{ matrix.os }}
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os:
+  #         [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-14]
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
 
-      - name: Build sdist
-        run: |
-          pipx run build --sdist
-          python3 -c "import pathlib,glob;pathlib.Path('GITHUB_ENV').write_text('SDIST_PATH' + glob.glob('dist/*.tar.gz')[0])"
+  #     - name: Build sdist
+  #       run: |
+  #         pipx run build --sdist
+  #         python3 -c "import pathlib,glob;pathlib.Path('GITHUB_ENV').write_text('SDIST_PATH' + glob.glob('dist/*.tar.gz')[0])"
 
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v3.0.0
-        env:
-          CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-* pp310-* pp311-*"
-          # CIBW_TEST_COMMAND: "python -m pymunk.tests"
-          # CIBW_BUILD_VERBOSITY: 3
-        with:
-          package-dir: "$SDIST_PATH"
+  #     - name: Build wheels
+  #       uses: pypa/cibuildwheel@v3.0.0
+  #       env:
+  #         CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-* pp310-* pp311-*"
+  #         # CIBW_TEST_COMMAND: "python -m pymunk.tests"
+  #         # CIBW_BUILD_VERBOSITY: 3
+  #       with:
+  #         package-dir: "$SDIST_PATH"
 
-      - name: Upload wheel artifacts
-        uses: actions/upload-artifact@v4
-        if: ${{ github.ref == 'refs/heads/master'}}
-        with:
-          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-          path: ./wheelhouse/*.whl
-          retention-days: 7
+  #     - name: Upload wheel artifacts
+  #       uses: actions/upload-artifact@v4
+  #       if: ${{ github.ref == 'refs/heads/master'}}
+  #       with:
+  #         name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+  #         path: ./wheelhouse/*.whl
+  #         retention-days: 7
 
-      - name: Upload sdist artifact
-        uses: actions/upload-artifact@v4
-        if:
-          ${{ github.ref == 'refs/heads/master' && matrix.os ==
-          'windows-latest'}}
-        with:
-          name: sdist-${{ matrix.os }}-${{ strategy.job-index }}
-          path: ./dist/*.tar.gz
-          retention-days: 7
+  #     - name: Upload sdist artifact
+  #       uses: actions/upload-artifact@v4
+  #       if:
+  #         ${{ github.ref == 'refs/heads/master' && matrix.os ==
+  #         'windows-latest'}}
+  #       with:
+  #         name: sdist-${{ matrix.os }}-${{ strategy.job-index }}
+  #         path: ./dist/*.tar.gz
+  #         retention-days: 7
 
-  build_wasm:
-    name: Build wheels for wasm / emscripten
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-      - uses: pypa/cibuildwheel@v3.0.0
-        env:
-          CIBW_PLATFORM: pyodide
-      - uses: actions/upload-artifact@v4
-        if: ${{ github.ref == 'refs/heads/master' }}
-        with:
-          path: ./wheelhouse/*.whl
-          retention-days: 7
+  # build_wasm:
+  #   name: Build wheels for wasm / emscripten
+  #   runs-on: ubuntu-22.04
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #     - uses: pypa/cibuildwheel@v3.0.0
+  #       env:
+  #         CIBW_PLATFORM: pyodide
+  #     - uses: actions/upload-artifact@v4
+  #       if: ${{ github.ref == 'refs/heads/master' }}
+  #       with:
+  #         name: cibw-wheels-pyodide-${{ matrix.os }}-${{ strategy.job-index }}
+  #         path: ./wheelhouse/*.whl
+  #         retention-days: 7
 
   build_ios:
     name: Build wheels for iOS
@@ -72,26 +73,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-      #- run: brew upgrade cmake
+      - run: brew upgrade cmake
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.0.0
-
         env:
           CIBW_PLATFORM: ios
-          CIBW_ARCHS: auto
-          CIBW_BUILD_VERBOSITY: 1
-          CIBW_BEFORE_BUILD_IOS: |
-            # download wheel and pretend that it's compatible with the current platform settings
-            curl https://files.pythonhosted.org/packages/8b/f1/672d303ddf17c24fc83afd712316fda78dc6fce1cd53011b839483e1ecc8/cffi-1.17.1-cp313-cp313-macosx_11_0_arm64.whl -L -o cffi-1.17.1-py3-none-any.whl && \
-            pip install cffi-1.17.1-py3-none-any.whl && \
-            # install the rest of the dependencies
-            python -m pip install setuptools wheel
-          CIBW_XBUILD_TOOLS: "curl pkg-config tar"
-          CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
 
       - uses: actions/upload-artifact@v4
         if: ${{ github.ref == 'refs/heads/master' }}
