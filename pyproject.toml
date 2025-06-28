@@ -101,8 +101,7 @@ enable = ["pypy"]
 [tool.cibuildwheel.windows]
 
 [tool.cibuildwheel.ios]
-env = "PYMUNK_BUILD_SLIM: 1"
-
+environment = { PYMUNK_BUILD_SLIM = "1" }
 
 [tool.cibuildwheel.pyodide]
-env = "PYMUNK_BUILD_SLIM: 1"
+environment = { PYMUNK_BUILD_SLIM = "1" }
