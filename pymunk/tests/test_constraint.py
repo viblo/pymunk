@@ -392,7 +392,10 @@ class UnitTestDampedSpring(unittest.TestCase):
 
             return 1
 
+        self.assertEqual(j.force_func, DampedSpring.spring_force)
+
         j.force_func = f
+        self.assertEqual(f, j.force_func)
         s.step(1)
         self.assertEqual(j.impulse, 1)
 
@@ -451,7 +454,10 @@ class UnitTestDampedRotarySpring(unittest.TestCase):
 
             return 1
 
+        self.assertEqual(j.torque_func, DampedRotarySpring.spring_torque)
+
         j.torque_func = f
+        self.assertEqual(f, j.torque_func)
         s.step(1)
         self.assertEqual(j.impulse, 1)
 
