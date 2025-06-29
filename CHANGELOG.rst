@@ -2,10 +2,28 @@
 Changelog 
 =========
 
-Pymunk 7.0.2 (2025-06-28)
+Pymunk 7.1.0 (2025-06-29)
 -------------------------
 
-Handler fixes
+**Minor fix for wildcard collision handler!**
+
+This is a minor release. It contains a fix for 'wildcard' collision 
+handlers (`space.on_collision(X, None, ...)`). Now the handler will be 
+invoked twice if two shapes of the same type collide.
+
+This release also updates cibuildwheel used to build wheels, and as part of 
+the upgrade Pymunk will no longer publish wheels for 32bit Linux. 
+
+Changes:
+
+- Fixed wildcard collision handler to be called twice for collisions between 
+  two shapes of same type.
+- Allow get of `DampedSpring.force_func`
+- Allow get of `DampedRotarySpring.torque_func`
+- Rewrote some properties to use @property. Note that this means type checking
+  with mypy needs at least mypy 1.16.0.  
+- Updated to cibuildwheel 3.0 to build Pymunk. This also means Pymunk will not
+  publish wheels for 32bit Linux anymore.
 
 
 Pymunk 7.0.1 (2025-06-07)
@@ -14,7 +32,7 @@ Pymunk 7.0.1 (2025-06-07)
 **Minor fixes and experimental iOS wheel!**
 
 This is a minor patch release, which adds experimental iOS wheels, minor bug
-fix and fixes the verison number that was wrong in the previous release.
+fix and fixes the version number that was wrong in the previous release.
 
 Changes:
 
