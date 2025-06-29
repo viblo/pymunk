@@ -52,6 +52,7 @@ v6.x
 - Make space step size default 1/60, and/or make it possible to set on the space instead of pasing in to step function to make api easier to use "right"
 - Remove support for pyglet 1.5 in debug draw. Should be fine now that 2.x has been out for a long time. 
 - Think about if Pymunk should assert things that Chipmunk already asserts, like if a body can sleep when calling Body.sleep()?
+- Record video of the constraints and put on youtube (and link to that instead of the Chipmunk2d video of constraints)
 
 v7
 ---
