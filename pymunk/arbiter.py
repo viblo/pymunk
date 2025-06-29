@@ -155,28 +155,25 @@ class Arbiter(object):
     def friction(self, friction: float) -> None:
         lib.cpArbiterSetFriction(self._arbiter, friction)
 
-    def _get_surface_velocity(self) -> Vec2d:
+    @property
+    def surface_velocity(self) -> Vec2d:
+        """The calculated surface velocity for this collision pair.
+
+        Setting the value in a pre_solve() callback will override the value
+        calculated by the space. the default calculation subtracts the
+        surface velocity of the second shape from the first and then projects
+        that onto the tangent of the collision. This is so that only
+        friction is affected by default calculation. Using a custom
+        calculation, you can make something that responds like a pinball
+        bumper, or where the surface velocity is dependent on the location
+        of the contact point.
+        """
         v = lib.cpArbiterGetSurfaceVelocity(self._arbiter)
         return Vec2d(v.x, v.y)
 
-    def _set_surface_velocity(self, velocity: tuple[float, float]) -> None:
+    @surface_velocity.setter
+    def surface_velocity(self, velocity: tuple[float, float]) -> None:
         lib.cpArbiterSetSurfaceVelocity(self._arbiter, velocity)
-
-    surface_velocity = property(
-        _get_surface_velocity,
-        _set_surface_velocity,
-        doc="""The calculated surface velocity for this collision pair. 
-        
-        Setting the value in a pre_solve() callback will override the value 
-        calculated by the space. the default calculation subtracts the 
-        surface velocity of the second shape from the first and then projects 
-        that onto the tangent of the collision. This is so that only 
-        friction is affected by default calculation. Using a custom 
-        calculation, you can make something that responds like a pinball 
-        bumper, or where the surface velocity is dependent on the location 
-        of the contact point.
-        """,
-    )
 
     @property
     def total_impulse(self) -> Vec2d:

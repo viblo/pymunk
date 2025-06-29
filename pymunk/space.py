@@ -226,24 +226,21 @@ class Space(PickleMixin, object):
     def iterations(self, value: int) -> None:
         lib.cpSpaceSetIterations(self._space, value)
 
-    def _set_gravity(self, gravity_vector: tuple[float, float]) -> None:
-        assert len(gravity_vector) == 2
-        lib.cpSpaceSetGravity(self._space, gravity_vector)
-
-    def _get_gravity(self) -> Vec2d:
-        v = lib.cpSpaceGetGravity(self._space)
-        return Vec2d(v.x, v.y)
-
-    gravity = property(
-        _get_gravity,
-        _set_gravity,
-        doc="""Global gravity applied to the space.
+    @property
+    def gravity(self) -> Vec2d:
+        """Global gravity applied to the space.
 
         Defaults to (0,0). Can be overridden on a per body basis by writing
         custom integration functions and set it on the body:
         :py:meth:`pymunk.Body.velocity_func`.
-        """,
-    )
+        """
+        v = lib.cpSpaceGetGravity(self._space)
+        return Vec2d(v.x, v.y)
+
+    @gravity.setter
+    def gravity(self, gravity_vector: tuple[float, float]) -> None:
+        assert len(gravity_vector) == 2
+        lib.cpSpaceSetGravity(self._space, gravity_vector)
 
     @property
     def damping(self) -> float:

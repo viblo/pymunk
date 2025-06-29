@@ -275,74 +275,62 @@ class Body(PickleMixin, TypingAttrMixing, object):
         ), "Dynamic bodies must have moment > 0 if they are attached to a Space"
         lib.cpBodySetMoment(self._body, moment)
 
-    def _set_position(self, pos: tuple[float, float]) -> None:
-        assert len(pos) == 2
-        lib.cpBodySetPosition(self._body, pos)
+    @property
+    def position(self) -> Vec2d:
+        """Position of the body.
 
-    def _get_position(self) -> Vec2d:
+        When changing the position you may also want to call
+        :py:func:`Space.reindex_shapes_for_body` to update the collision
+        detection information for the attached shapes if plan to make any
+        queries against the space."""
         v = lib.cpBodyGetPosition(self._body)
         return Vec2d(v.x, v.y)
 
-    position = property(
-        _get_position,
-        _set_position,
-        doc="""Position of the body.
+    @position.setter
+    def position(self, pos: tuple[float, float]) -> None:
+        assert len(pos) == 2
+        lib.cpBodySetPosition(self._body, pos)
 
-        When changing the position you may also want to call
-        :py:func:`Space.reindex_shapes_for_body` to update the collision 
-        detection information for the attached shapes if plan to make any 
-        queries against the space.""",
-    )
-
-    def _set_center_of_gravity(self, cog: tuple[float, float]) -> None:
-        assert len(cog) == 2
-        lib.cpBodySetCenterOfGravity(self._body, cog)
-
-    def _get_center_of_gravity(self) -> Vec2d:
-        v = lib.cpBodyGetCenterOfGravity(self._body)
-        return Vec2d(v.x, v.y)
-
-    center_of_gravity = property(
-        _get_center_of_gravity,
-        _set_center_of_gravity,
-        doc="""Location of the center of gravity in body local coordinates.
+    @property
+    def center_of_gravity(self) -> Vec2d:
+        """Location of the center of gravity in body local coordinates.
 
         The default value is (0, 0), meaning the center of gravity is the
         same as the position of the body.
-        """,
-    )
+        """
+        v = lib.cpBodyGetCenterOfGravity(self._body)
+        return Vec2d(v.x, v.y)
 
-    def _set_velocity(self, vel: tuple[float, float]) -> None:
-        assert len(vel) == 2
-        lib.cpBodySetVelocity(self._body, vel)
+    @center_of_gravity.setter
+    def center_of_gravity(self, cog: tuple[float, float]) -> None:
+        assert len(cog) == 2
+        lib.cpBodySetCenterOfGravity(self._body, cog)
 
-    def _get_velocity(self) -> Vec2d:
+    @property
+    def velocity(self) -> Vec2d:
+        """Linear velocity of the center of gravity of the body."""
         v = lib.cpBodyGetVelocity(self._body)
         return Vec2d(v.x, v.y)
 
-    velocity = property(
-        _get_velocity,
-        _set_velocity,
-        doc="""Linear velocity of the center of gravity of the body.""",
-    )
+    @velocity.setter
+    def velocity(self, vel: tuple[float, float]) -> None:
+        assert len(vel) == 2
+        lib.cpBodySetVelocity(self._body, vel)
 
-    def _set_force(self, f: tuple[float, float]) -> None:
-        assert len(f) == 2
-        lib.cpBodySetForce(self._body, f)
+    @property
+    def force(self) -> Vec2d:
+        """Force applied to the center of gravity of the body.
 
-    def _get_force(self) -> Vec2d:
+        This value is reset for every time step. Note that this is not the
+        total of forces acting on the body (such as from collisions), but the
+        force applied manually from the apply force functions."""
         v = lib.cpBodyGetForce(self._body)
         return Vec2d(v.x, v.y)
 
-    force = property(
-        _get_force,
-        _set_force,
-        doc="""Force applied to the center of gravity of the body.
-
-        This value is reset for every time step. Note that this is not the 
-        total of forces acting on the body (such as from collisions), but the 
-        force applied manually from the apply force functions.""",
-    )
+    @force.setter
+    def force(self, f: tuple[float, float]) -> None:
+        assert len(f) == 2
+        lib.cpBodySetForce(self._body, f)
 
     @property
     def angle(self) -> float:
@@ -404,28 +392,19 @@ class Body(PickleMixin, TypingAttrMixing, object):
         )
         return self._space()
 
-    def _set_velocity_func(self, func: _VelocityFunc) -> None:
-        if func == Body.update_velocity:
-            lib.cpBodySetVelocityUpdateFunc(
-                self._body, ffi.addressof(lib, "cpBodyUpdateVelocity")
-            )
-        else:
-            self._velocity_func = func
-            lib.cpBodySetVelocityUpdateFunc(self._body, lib.ext_cpBodyVelocityFunc)
+    @property
+    def velocity_func(self) -> _VelocityFunc:
+        """The velocity callback function.
 
-    velocity_func = property(
-        fset=_set_velocity_func,
-        doc="""The velocity callback function. 
-        
-        The velocity callback function is called each time step, and can be 
+        The velocity callback function is called each time step, and can be
         used to set a body's velocity.
 
             ``func(body : Body, gravity, damping, dt)``
 
-        There are many cases when this can be useful. One example is individual 
-        gravity for some bodies, and another is to limit the velocity which is 
-        useful to prevent tunneling. 
-        
+        There are many cases when this can be useful. One example is individual
+        gravity for some bodies, and another is to limit the velocity which is
+        useful to prevent tunneling.
+
         Example of a callback that sets gravity to zero for a object.
 
         >>> import pymunk
@@ -435,7 +414,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
         >>> space.add(body)
         >>> def zero_gravity(body, gravity, damping, dt):
         ...     pymunk.Body.update_velocity(body, (0,0), damping, dt)
-        ... 
+        ...
         >>> body.velocity_func = zero_gravity
         >>> space.step(1)
         >>> space.step(1)
@@ -456,10 +435,38 @@ class Body(PickleMixin, TypingAttrMixing, object):
         ...
         >>> body.velocity_func = limit_velocity
 
-        """,
-    )
+        """
+        if self._velocity_func is None:
+            return Body.update_velocity
+        else:
+            return self._velocity_func
 
-    def _set_position_func(self, func: _PositionFunc) -> None:
+    @velocity_func.setter
+    def velocity_func(self, func: _VelocityFunc) -> None:
+        if func == Body.update_velocity:
+            lib.cpBodySetVelocityUpdateFunc(
+                self._body, ffi.addressof(lib, "cpBodyUpdateVelocity")
+            )
+        else:
+            self._velocity_func = func
+            lib.cpBodySetVelocityUpdateFunc(self._body, lib.ext_cpBodyVelocityFunc)
+
+    @property
+    def position_func(self) -> _PositionFunc:
+        """The position callback function.
+
+        The position callback function is called each time step and can be
+        used to update the body's position.
+
+            ``func(body, dt) -> None``
+        """
+        if self._position_func == None:
+            return Body.update_position
+        else:
+            return self._position_func
+
+    @position_func.setter
+    def position_func(self, func: _PositionFunc) -> None:
         if func == Body.update_position:
             lib.cpBodySetPositionUpdateFunc(
                 self._body, ffi.addressof(lib, "cpBodyUpdatePosition")
@@ -467,17 +474,6 @@ class Body(PickleMixin, TypingAttrMixing, object):
         else:
             self._position_func = func
             lib.cpBodySetPositionUpdateFunc(self._body, lib.ext_cpBodyPositionFunc)
-
-    position_func = property(
-        fset=_set_position_func,
-        doc="""The position callback function. 
-        
-        The position callback function is called each time step and can be 
-        used to update the body's position.
-
-            ``func(body, dt) -> None``
-        """,
-    )
 
     @property
     def kinetic_energy(self) -> float:

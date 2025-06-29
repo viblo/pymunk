@@ -329,25 +329,25 @@ class PinJoint(Constraint):
         _constraint = lib.cpPinJointNew(a._body, b._body, anchor_a, anchor_b)
         self._init(a, b, _constraint)
 
-    def _get_anchor_a(self) -> Vec2d:
+    @property
+    def anchor_a(self) -> Vec2d:
         v = lib.cpPinJointGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: tuple[float, float]) -> None:
+    @anchor_a.setter
+    def anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPinJointSetAnchorA(self._constraint, anchor)
 
-    anchor_a = property(_get_anchor_a, _set_anchor_a)
-
-    def _get_anchor_b(self) -> Vec2d:
+    @property
+    def anchor_b(self) -> Vec2d:
         v = lib.cpPinJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: tuple[float, float]) -> None:
+    @anchor_b.setter
+    def anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPinJointSetAnchorB(self._constraint, anchor)
-
-    anchor_b = property(_get_anchor_b, _set_anchor_b)
 
     @property
     def distance(self) -> float:
@@ -392,25 +392,25 @@ class SlideJoint(Constraint):
         )
         self._init(a, b, _constraint)
 
-    def _get_anchor_a(self) -> Vec2d:
+    @property
+    def anchor_a(self) -> Vec2d:
         v = lib.cpSlideJointGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: tuple[float, float]) -> None:
+    @anchor_a.setter
+    def anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpSlideJointSetAnchorA(self._constraint, anchor)
 
-    anchor_a = property(_get_anchor_a, _set_anchor_a)
-
-    def _get_anchor_b(self) -> Vec2d:
+    @property
+    def anchor_b(self) -> Vec2d:
         v = lib.cpSlideJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: tuple[float, float]) -> None:
+    @anchor_b.setter
+    def anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpSlideJointSetAnchorB(self._constraint, anchor)
-
-    anchor_b = property(_get_anchor_b, _set_anchor_b)
 
     @property
     def min(self) -> float:
@@ -476,25 +476,25 @@ class PivotJoint(Constraint):
 
         self._init(a, b, _constraint)
 
-    def _get_anchor_a(self) -> Vec2d:
+    @property
+    def anchor_a(self) -> Vec2d:
         v = lib.cpPivotJointGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: tuple[float, float]) -> None:
+    @anchor_a.setter
+    def anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPivotJointSetAnchorA(self._constraint, anchor)
 
-    anchor_a = property(_get_anchor_a, _set_anchor_a)
-
-    def _get_anchor_b(self) -> Vec2d:
+    @property
+    def anchor_b(self) -> Vec2d:
         v = lib.cpPivotJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: tuple[float, float]) -> None:
+    @anchor_b.setter
+    def anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPivotJointSetAnchorB(self._constraint, anchor)
-
-    anchor_b = property(_get_anchor_b, _set_anchor_b)
 
 
 class GrooveJoint(Constraint):
@@ -530,35 +530,35 @@ class GrooveJoint(Constraint):
         )
         self._init(a, b, _constraint)
 
-    def _get_anchor_b(self) -> Vec2d:
+    @property
+    def anchor_b(self) -> Vec2d:
         v = lib.cpGrooveJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: tuple[float, float]) -> None:
+    @anchor_b.setter
+    def anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpGrooveJointSetAnchorB(self._constraint, anchor)
 
-    anchor_b = property(_get_anchor_b, _set_anchor_b)
-
-    def _get_groove_a(self) -> Vec2d:
+    @property
+    def groove_a(self) -> Vec2d:
         v = lib.cpGrooveJointGetGrooveA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_groove_a(self, groove: tuple[float, float]) -> None:
+    @groove_a.setter
+    def groove_a(self, groove: tuple[float, float]) -> None:
         assert len(groove) == 2
         lib.cpGrooveJointSetGrooveA(self._constraint, groove)
 
-    groove_a = property(_get_groove_a, _set_groove_a)
-
-    def _get_groove_b(self) -> Vec2d:
+    @property
+    def groove_b(self) -> Vec2d:
         v = lib.cpGrooveJointGetGrooveB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_groove_b(self, groove: tuple[float, float]) -> None:
+    @groove_b.setter
+    def groove_b(self, groove: tuple[float, float]) -> None:
         assert len(groove) == 2
         lib.cpGrooveJointSetGrooveB(self._constraint, groove)
-
-    groove_b = property(_get_groove_b, _set_groove_b)
 
 
 class DampedSpring(Constraint):
@@ -566,6 +566,8 @@ class DampedSpring(Constraint):
 
     The spring allows you to define the rest length, stiffness and damping.
     """
+
+    _force_func: Optional[_ForceFunc] = None
 
     _pickle_attrs_init = Constraint._pickle_attrs_init + [
         "anchor_a",
@@ -613,25 +615,25 @@ class DampedSpring(Constraint):
 
         self._init(a, b, _constraint)
 
-    def _get_anchor_a(self) -> Vec2d:
+    @property
+    def anchor_a(self) -> Vec2d:
         v = lib.cpDampedSpringGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: tuple[float, float]) -> None:
+    @anchor_a.setter
+    def anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpDampedSpringSetAnchorA(self._constraint, anchor)
 
-    anchor_a = property(_get_anchor_a, _set_anchor_a)
-
-    def _get_anchor_b(self) -> Vec2d:
+    @property
+    def anchor_b(self) -> Vec2d:
         v = lib.cpDampedSpringGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: tuple[float, float]) -> None:
+    @anchor_b.setter
+    def anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpDampedSpringSetAnchorB(self._constraint, anchor)
-
-    anchor_b = property(_get_anchor_b, _set_anchor_b)
 
     @property
     def rest_length(self) -> float:
@@ -665,7 +667,22 @@ class DampedSpring(Constraint):
         """Default damped spring force function."""
         return lib.defaultSpringForce(spring._constraint, dist)
 
-    def _set_force_func(self, func: _ForceFunc) -> None:
+    @property
+    def force_func(self) -> _ForceFunc:
+        """The force callback function.
+
+        The force callback function is called each time step and is used to
+        calculate the force of the spring (exclusing any damping).
+
+        Defaults to :py:func:`DampedSpring.spring_force`
+        """
+        if self._force_func == None:
+            return DampedSpring.spring_force
+        else:
+            return self._force_func
+
+    @force_func.setter
+    def force_func(self, func: _ForceFunc) -> None:
         self._force_func = func
         if func == DampedSpring.spring_force:
             lib.cpDampedSpringSetSpringForceFunc(
@@ -678,17 +695,6 @@ class DampedSpring(Constraint):
             lib.cpDampedSpringSetSpringForceFunc(
                 self._constraint, lib.ext_cpDampedSpringForceFunc
             )
-
-    force_func = property(
-        fset=_set_force_func,
-        doc="""The force callback function. 
-        
-        The force callback function is called each time step and is used to
-        calculate the force of the spring (exclusing any damping).
-
-        Defaults to :py:func:`DampedSpring.spring_force`
-        """,
-    )
 
 
 class DampedRotarySpring(Constraint):
@@ -762,7 +768,10 @@ class DampedRotarySpring(Constraint):
 
         Defaults to :py:func:`DampedRotarySpring.spring_torque`
         """
-        raise AttributeError("unreadable attribute 'torque_func'")
+        if self._torque_func == None:
+            return DampedRotarySpring.spring_torque
+        else:
+            return self._torque_func
 
     @torque_func.setter
     def torque_func(self, func: _TorqueFunc) -> None:

@@ -207,24 +207,21 @@ class Shape(PickleMixin, TypingAttrMixing, object):
     def friction(self, u: float) -> None:
         cp.cpShapeSetFriction(self._shape, u)
 
-    def _get_surface_velocity(self) -> Vec2d:
-        v = cp.cpShapeGetSurfaceVelocity(self._shape)
-        return Vec2d(v.x, v.y)
-
-    def _set_surface_velocity(self, surface_v: tuple[float, float]) -> None:
-        assert len(surface_v) == 2
-        cp.cpShapeSetSurfaceVelocity(self._shape, surface_v)
-
-    surface_velocity = property(
-        _get_surface_velocity,
-        _set_surface_velocity,
-        doc="""The surface velocity of the object.
+    @property
+    def surface_velocity(self) -> Vec2d:
+        """The surface velocity of the object.
 
         Useful for creating conveyor belts or players that move around. This
         value is only used when calculating friction, not resolving the
         collision.
-        """,
-    )
+        """
+        v = cp.cpShapeGetSurfaceVelocity(self._shape)
+        return Vec2d(v.x, v.y)
+
+    @surface_velocity.setter
+    def surface_velocity(self, surface_v: tuple[float, float]) -> None:
+        assert len(surface_v) == 2
+        cp.cpShapeSetSurfaceVelocity(self._shape, surface_v)
 
     @property
     def body(self) -> Optional["Body"]:
