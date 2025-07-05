@@ -356,6 +356,10 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Balaban, Halely, and Tomer D. Ullman. 
+   "The capacity limits of moving objects in the imagination." 
+   Nature Communications 16, no. 1 (2025): 5899.
+
 #. Schiøtt, Jonas Myhre, Viktor Sebastian Petersen, and Dimitrios P. Papadopoulos. 
    "pix2pockets: Shot Suggestions in 8-Ball Pool from a Single Image in the Wild." 
    arXiv preprint arXiv:2504.12045 (2025).
@@ -435,10 +439,6 @@ List of papers which has used or mentioned Pymunk:
 #. Ai, Bo, Stephen Tian, Haochen Shi, Yixuan Wang, Cheston Tan, Yunzhu Li, and Jiajun Wu. 
    "RoboPack: Learning Tactile-Informed Dynamics Models for Dense Packing." 
    In ICRA 2024 Workshop on 3D Visual Representations for Robot Manipulation.
-
-#. Balaban, Halely, and Tomer Ullman. 
-   "The capacity limits of tracking in the imagination." 
-   (2024).
 
 #. Memery, Sean, Mirella Lapata, and Kartic Subr. 
    "SimLM: Can Language Models Infer Parameters of Physical Systems?." 
