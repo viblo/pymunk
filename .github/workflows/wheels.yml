@@ -24,8 +24,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.1.0
         env:
-          CIBW_BUILD:
-            "cp39-* cp310-* cp311-* cp312-* cp313-* cp314-* pp310-* pp311-*"
+          CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-* pp310-* pp311-*"
         with:
           package-dir: "$SDIST_PATH"
 
