@@ -22,7 +22,7 @@ jobs:
           python3 -c "import pathlib,glob;pathlib.Path('GITHUB_ENV').write_text('SDIST_PATH' + glob.glob('dist/*.tar.gz')[0])"
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.1.0
+        uses: pypa/cibuildwheel@v3.1.2
         env:
           CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-* pp310-* pp311-*"
         with:
@@ -53,7 +53,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
-      - uses: pypa/cibuildwheel@v3.1.0
+      - uses: pypa/cibuildwheel@v3.1.2
         env:
           CIBW_PLATFORM: pyodide
       - uses: actions/upload-artifact@v4
@@ -72,7 +72,7 @@ jobs:
         with:
           submodules: true
       - run: brew upgrade cmake
-      - uses: pypa/cibuildwheel@v3.1.0
+      - uses: pypa/cibuildwheel@v3.1.2
         env:
           CIBW_PLATFORM: ios
       - uses: actions/upload-artifact@v4
