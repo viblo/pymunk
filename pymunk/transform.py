@@ -164,6 +164,36 @@ class Transform(NamedTuple):
         """
         return self @ Transform.rotation(t)
 
+    def inverted(self):
+        """Invert this Transform and return the result
+
+        >>> t = Transform.translation(3,4).scaled(2)
+        >>> v1 = Vec2d(5, 6)
+        >>> v2 = (t @ v1)
+        >>> t.inverted() @ v2 == v1
+        True
+
+        >>> t = Transform(1,2,3,4,5,6)
+        >>> t @ t.inverted()
+        Transform(a=1.0, b=0.0, c=0.0, d=1.0, tx=0.0, ty=0.0)
+
+        >>> i = Transform.identity()
+        >>> i == i.inverted()
+        True
+        """
+        det = self.a * self.d - self.b * self.c
+        if det == 0:
+            raise ValueError("Singular transform cannot be inverted")
+
+        inv_a = self.d / det
+        inv_b = -self.b / det
+        inv_c = -self.c / det
+        inv_d = self.a / det
+        inv_tx = (self.c * self.ty - self.d * self.tx) / det
+        inv_ty = (self.b * self.tx - self.a * self.ty) / det
+
+        return Transform(inv_a, inv_b, inv_c, inv_d, inv_tx, inv_ty)
+
     @staticmethod
     def translation(x: float, y: float) -> "Transform":
         """A translation transform
