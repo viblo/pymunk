@@ -356,6 +356,10 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Zandonati, Ben, Tomás Lozano-Pérez, and Leslie Pack Kaelbling. 
+   "Rational Inverse Reasoning." 
+   arXiv preprint arXiv:2508.08983 (2025).
+
 #. Balaban, Halely, and Tomer D. Ullman. 
    "The capacity limits of moving objects in the imagination." 
    Nature Communications 16, no. 1 (2025): 5899.
