@@ -135,7 +135,7 @@ class Shape(PickleMixin, TypingAttrMixing, object):
 
         Defaults to 0.
 
-        See the :py:meth:`Space.add_collision_handler` function for more
+        See the :py:meth:`Space.on_collision` function for more
         information on when to use this property.
         """
         return cp.cpShapeGetCollisionType(self._shape)
