@@ -71,7 +71,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-      - run: brew upgrade cmake
+      - run: brew upgrade cmake --formula
       - uses: pypa/cibuildwheel@v3.1.4
         env:
           CIBW_PLATFORM: ios
