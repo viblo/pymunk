@@ -36,7 +36,7 @@ classifiers = [
 requires-python = ">=3.9"
 
 [project.optional-dependencies]
-dev = ["pyglet", "pygame", "sphinx", "aafigure", "wheel", "matplotlib", "numpy"]
+dev = ["pyglet", "pygame", "pillow", "sphinx", "aafigure", "wheel", "matplotlib", "numpy"]
 [project.urls]
 Homepage = "https://www.pymunk.org"
 Documentation = "https://www.pymunk.org"
