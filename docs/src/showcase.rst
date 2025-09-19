@@ -124,6 +124,18 @@ ropes.
 Non-Games
 =========
 
+
+2d Net/Cloth Simulation
+-----------------------
+:sup:`made by Retrieved 2025-09-19`
+
+.. figure:: _static/cloth.png
+   :target: https://youtu.be/PkF7_AFVdE0?si=bCQMAA6yGB0f8RIP
+
+Ever wanted to create a somewhat realistic 2d simulation?  Here's a beautiful 
+demonstration of it's power when combined with a GUI library like Kivy.
+
+
 FissionMunk
 -----------
 :sup:`made by Aniket Mishra. Retrieved 2025-09-17`
