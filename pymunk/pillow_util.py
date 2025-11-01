@@ -46,36 +46,24 @@ from pymunk.vec2d import Vec2d
 
 class DrawOptions(pymunk.SpaceDebugDrawOptions):
     def __init__(self, im: Image.Image) -> None:
-        """Draw a pymunk.Space on a pygame.Surface object.
-
-        This class should work both with Pygame and Pygame-CE.
+        """Draw a pymunk.Space on a pillow Image object.
 
         Typical usage::
 
         >>> import pymunk
-        >>> surface = pygame.Surface((10,10))
+        >>> from PIL import Image
+        >>> image = Image.new("RGB", (1000, 700), "white")
         >>> space = pymunk.Space()
-        >>> options = pymunk.pygame_util.DrawOptions(surface)
+        >>> options = pymunk.pillow_util.DrawOptions(image)
         >>> space.debug_draw(options)
 
         You can control the color of a shape by setting shape.color to the color
         you want it drawn in::
 
         >>> c = pymunk.Circle(None, 10)
-        >>> c.color = pygame.Color("pink")
+        >>> c.color = (255,0,0,255)
 
-        See pygame_util.demo.py for a full example
-
-
-        >>> space = pymunk.Space()
-        >>> space.gravity = (0, -1000)
-        >>> body = pymunk.Body()
-        >>> body.position = (0, 0) # will be positioned in the top left corner
-        >>> space.debug_draw(options)
-
-        >>> body = pymunk.Body()
-        >>> body.position = (0, 0)
-        >>> # Body will be position in bottom left corner
+        See pillow_util.demo.py for a full example
 
         :Parameters:
                 im : Image.Image

@@ -12,7 +12,7 @@ import pymunk.pillow_util
 
 from .shapes_for_draw_demos import fill_space
 
-img = Image.new("RGB", (1000, 700), ImageColor.getrgb("white"))
+img = Image.new("RGB", (1000, 700), "white")
 draw = ImageDraw.Draw(img)
 
 space = pymunk.Space()
