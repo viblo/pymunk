@@ -124,6 +124,32 @@ ropes.
 Non-Games
 =========
 
+
+2d Net/Cloth Simulation
+-----------------------
+:sup:`made by Retrieved 2025-09-19`
+
+.. figure:: _static/cloth.png
+   :target: https://youtu.be/PkF7_AFVdE0?si=bCQMAA6yGB0f8RIP
+
+Ever wanted to create a somewhat realistic 2d simulation?  Here's a beautiful 
+demonstration of it's power when combined with a GUI library like Kivy.
+
+
+FissionMunk
+-----------
+:sup:`made by Aniket Mishra. Retrieved 2025-09-17`
+
+.. figure:: _static/fissionmunk.png
+   :target: https://github.com/iAniket23/fissionmunk
+
+FissionMunk is a lightweight 2D physics open source python library designed to 
+simulate nuclear fission reactor mechanics. It enables users to visualize 
+interactions between neutrons and uranium atoms, providing valuable insights 
+into fission dynamics with customizable parameters, such as neutron occurrence 
+probabilities, moderators, and control rods. 
+
+
 AUTO-IceNav
 -----------
 :sup:`made by de Schaetzen, Rodrigue and Botros, Alexander and Zhong, Ninghan 
@@ -353,6 +379,8 @@ List of papers which has used or mentioned Pymunk:
    An Interconnected Soft Modular Robot with Locomotive Modules and Flexible Structures Actuated Through a Single Method
    An Adaptive Flooding Detection Framework With Blockchain Mitigation for Satellite Communications
    TR‐Bench: Benchmarking Deep Reinforcement Learning for Flipper‐Track Robot Control
+   Towards Generalist Robots: Action Reasoning and Scaling Data
+   Composing Intuitive Theories Across Domains and in Real Time
 
 .. (list made using "Chicago" style citation)
 
