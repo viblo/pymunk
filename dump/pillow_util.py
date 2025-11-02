@@ -24,6 +24,8 @@
 """This submodule contains helper functions to help with quick prototyping
 using pymunk together with Pillow/PIL.
 
+For now this is experimental. 
+
 Intended to help with debugging and prototyping, not for actual production use
 in a full application. The methods contained in this module is opinionated
 about your coordinate system and not in any way optimized.

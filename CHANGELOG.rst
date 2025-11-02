@@ -2,8 +2,19 @@
 Changelog 
 =========
 
-.. NEXT
+Pymunk 7.2.0 (2025-11-02)
+-------------------------
+
+This release provides wheels for Python 3.14. It also contains a new method
+that make it possible to get the inverse transform of a Transform.
+
+**Wheels for Python 3.14**
+
+Changes:
+
+  - Build wheels for 3.14
   - Added Tranform.inverted() to get the inverse transform.
+
 
 Pymunk 7.1.0 (2025-06-29)
 -------------------------
