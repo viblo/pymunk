@@ -1,0 +1,12 @@
+Emscripten
+aafigure
+cffi
+matplotlib
+numpy
+png
+pygame
+pyglet
+pymunk
+pythonic
+setuptools
+wav
