@@ -93,4 +93,6 @@ autodoc_mock_imports = [
     "pygame.locals",
     "pygame.color",
     "pyglet",
+    "pillow",
+    "PIL"
 ]

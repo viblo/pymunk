@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pymunk"
 version = "7.1.0" # remember to change me for new versions!
-# Require cffi >1.14.0 since that (and older) has problem with returing structs from functions.
+# Require cffi >1.14.0 since that (and older) has problem with returning structs from functions.
 # Require cffi >= 1.17.1 since older cant work with latest setuptools version
 dependencies = [
     "cffi >= 1.17.1; platform_system != 'Emscripten'",
@@ -36,7 +36,7 @@ classifiers = [
 requires-python = ">=3.9"
 
 [project.optional-dependencies]
-dev = ["pyglet", "pygame", "sphinx", "aafigure", "wheel", "matplotlib", "numpy"]
+dev = ["pyglet", "pygame", "pillow", "sphinx", "aafigure", "wheel", "matplotlib", "numpy"]
 [project.urls]
 Homepage = "https://www.pymunk.org"
 Documentation = "https://www.pymunk.org"

@@ -6,7 +6,7 @@ import unittest
 import pymunk
 
 ignores = ["pymunk_extension_build"]
-all_dependencies = ["pygame", "pyglet", "matplotlib", "_pyglet"]
+all_dependencies = ["pygame", "pyglet", "matplotlib", "_pyglet", "pillow", "PIL"]
 
 
 def load_tests(
