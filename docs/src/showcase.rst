@@ -16,7 +16,7 @@ Suika in Python
 ---------------
 :sup:`made by Ole-Batting. Retrieved 2024-08-18`
 
-.. figure:: _static/suika-in-python.jpg
+.. figure:: _static/showcase/suika-in-python.jpg
    :target: https://youtu.be/In0EvhenzeQ
 
 A reimplementation of the `Suika Game 
@@ -31,7 +31,7 @@ PyKart - build and drive your vehicles
 --------------------------------------
 :sup:`made by Valdotorium. Retrieved 2024-08-18`
 
-.. figure:: _static/pykart-1.1.png
+.. figure:: _static/showcase/pykart-1.1.png
    :target: https://valdotorium.itch.io/pykart
 
 A driving game in which players can drive the vehicles they built in generated 
@@ -43,7 +43,7 @@ Guide The Ball
 --------------
 :sup:`made by Francis Ali. Retrieved 2020-03-30`
 
-.. figure:: _static/guide-the-ball.png
+.. figure:: _static/showcase/guide-the-ball.png
    :target: https://github.com/francisA88/Guide-The-Ball-1
 
 A game combining Pymunk with Kivy that runs on Android mobiles! In Guide The 
@@ -54,7 +54,7 @@ My Sincerest Apologies
 ----------------------
 :sup:`made by The Larry and Dan show (mauve, larry). Retrieved 2018-10-25`
 
-.. figure:: _static/My_Sincerest_Apologies.png
+.. figure:: _static/showcase/My_Sincerest_Apologies.png
    :target: https://pyweek.org/e/wasabi24/
 
 **Winner of PyWeek 24** (Overall Team Entry)
@@ -77,7 +77,7 @@ Beneath the Ice
 :sup:`made by Team Chimera (mit-mit, Lucid Design Ar). Retrieved 
 2016-09-25`
 
-.. figure:: _static/beneath-the-ice.png
+.. figure:: _static/showcase/beneath-the-ice.png
    :target: https://pyweek.org/e/chimera22/
 
 **Winner of PyWeek 22** (Overall Team Entry)
@@ -91,7 +91,7 @@ Invisipin
 ---------
 :sup:`made by Tee. Retrieved 2016-01-25`
 
-.. figure:: _static/invisipin.png
+.. figure:: _static/showcase/invisipin.png
    :target: https://pyweek.org/e/Tee-py20/
 
 **Winner of PyWeek 20** (Overall Individual Entry)
@@ -104,7 +104,7 @@ Angry Birds in Python
 ---------------------
 :sup:`made by Estevao Fonseca. Retrieved 2016-10-30`
 
-.. figure:: _static/angry-birds-python.png
+.. figure:: _static/showcase/angry-birds-python.png
    :target: https://github.com/estevaofon/angry-birds-python
 
 Angry Birds game written in python using Pygame and Pymunk!
@@ -114,7 +114,7 @@ SubTerrex
 ---------
 :sup:`made by Paul Paterson. Retrieved 2016-01-25`
 
-.. figure:: _static/SubTerrex.png
+.. figure:: _static/showcase/SubTerrex.png
    :target: http://www.pygame.org/project-SubTerrex-2389-.html
 
 A cave exploration game where you explore caves by descending into them on 
@@ -129,7 +129,7 @@ Non-Games
 -----------------------
 :sup:`made by Retrieved 2025-09-19`
 
-.. figure:: _static/cloth.png
+.. figure:: _static/showcase/cloth.png
    :target: https://youtu.be/PkF7_AFVdE0?si=bCQMAA6yGB0f8RIP
 
 Ever wanted to create a somewhat realistic 2d simulation?  Here's a beautiful 
@@ -140,7 +140,7 @@ FissionMunk
 -----------
 :sup:`made by Aniket Mishra. Retrieved 2025-09-17`
 
-.. figure:: _static/fissionmunk.png
+.. figure:: _static/showcase/fissionmunk.png
    :target: https://github.com/iAniket23/fissionmunk
 
 FissionMunk is a lightweight 2D physics open source python library designed to 
@@ -155,7 +155,7 @@ AUTO-IceNav
 :sup:`made by de Schaetzen, Rodrigue and Botros, Alexander and Zhong, Ninghan 
 and Murrant, Kevin and Gash. Retrieved 2024-11-27`
 
-.. figure:: _static/auto-icenav.jpg
+.. figure:: _static/showcase/auto-icenav.jpg
    :target: https://github.com/rdesc/AUTO-IceNav
 
 Ice conditions often require ships to reduce speed and deviate from their main 
@@ -170,7 +170,7 @@ Bouncing Balls, Beautiful Patterns
 ----------------------------------
 :sup:`made by Alessandro Giusti. Retrieved 2022-01-25`
 
-.. figure:: _static/bouncingballs-beatuifulpatterns.png
+.. figure:: _static/showcase/bouncingballs-beatuifulpatterns.png
    :target: https://youtu.be/nDhOGsBj1fA
 
 Satisfying simulations of bouncing balls obeying physical laws; for a fleeting 
@@ -186,7 +186,7 @@ Manim Physics
 -------------
 :sup:`made by pdcxs, Matheart & Iced-Tea3. Retrieved 2021-07-05`
 
-.. figure:: _static/manim-physics.png
+.. figure:: _static/showcase/manim-physics.png
    :target: https://github.com/Matheart/manim-physics
 
 This is a 2D physics simulation plugin for `Manim 
@@ -199,7 +199,7 @@ Computer Vision and Phyiscs
 ---------------------------
 :sup:`made by Amirabbas Asadi. Retrieved 2021-06-25`
 
-.. figure:: _static/ar-physics.jpg
+.. figure:: _static/showcase/ar-physics.jpg
    :target: https://amirabbasasadi.github.io/vision/python/2021/06/03/having-fun-with-computer-vision-and-physics.html
 
 Just playing with OpenCV + a hand tracking model + a physics engine :)
@@ -215,7 +215,7 @@ Galton Board
 ------------
 :sup:`made by Nav. Retrieved 2021-05-17`
 
-.. figure:: _static/galtonBoard.png
+.. figure:: _static/showcase/galtonBoard.png
    :target: https://github.com/nav9/GaltonBoard
 
 The quincunx (also known as a Galton board) created in Pymunk.
@@ -230,7 +230,7 @@ PySimpleGUI Desktop Demo
 ------------------------
 :sup:`made by PySimpleGUI/Mike. Retrieved 2020-10-13`
 
-.. figure:: _static/PySimpleGUI.png
+.. figure:: _static/showcase/PySimpleGUI.png
    :target: https://github.com/PySimpleGUI/PySimpleGUI
 
 Demo of using PySimpleGUI together with Pymunk to create bouncing balls 
@@ -241,7 +241,7 @@ Legged robot using differential evolution and perception
 --------------------------------------------------------
 :sup:`made by Nav. Retrieved 2020-08-20`
 
-.. figure:: _static/legged_robot.png
+.. figure:: _static/showcase/legged_robot.png
    :target: https://www.youtube.com/watch?v=n-OCy6ToLsU&feature=youtu.be
 
 Legged robot first using Differential Evolution to navigate terrain and then 
@@ -252,7 +252,7 @@ Simulation of ambient chimes | Circle in a hexagon
 --------------------------------------------------
 :sup:`made by Jan Abraham.Retrieved 2019-11-17`
 
-.. figure:: _static/ambient-chimes.png
+.. figure:: _static/showcase/ambient-chimes.png
    :target: https://youtu.be/7MRJS8ZV9VA
 
 An ambient piano chord produced by the simulation of a bouncing ball. The 
@@ -263,7 +263,7 @@ I teach AI to move with using NEAT
 ----------------------------------
 :sup:`made by Cheesy AI. Retrieved 2019-11-17`
 
-.. figure:: _static/aimoveneat.png
+.. figure:: _static/showcase/aimoveneat.png
    :target: https://youtu.be/ipWIH1g9DSw
 
 Recently I learned Pymunk 2d physics library. It is very cool so with that I 
@@ -276,7 +276,7 @@ Car Configuration with Differential Evolotion
 ---------------------------------------------
 :sup:`made by Nav. Retrieved 2019-05-05`
 
-.. figure:: _static/carconf.png
+.. figure:: _static/showcase/carconf.png
    :target: https://youtu.be/7ok4ESgrKg0
 
 Among the simplest AI algorithms: Differential Evolution. Brought to life with 
@@ -293,7 +293,7 @@ VirtuaPlant
 -----------
 :sup:`made by Jan Seidl. Retrieved 2018-06-13`
 
-.. figure:: _static/virtuaplant.png
+.. figure:: _static/showcase/virtuaplant.png
    :target: https://wroot.org/projects/virtuaplant/
 
 VirtuaPlant is an Industrial Control Systems simulator which adds a "similar 
@@ -308,7 +308,7 @@ The Python Arcade Library
 -------------------------
 :sup:`made by Paul. Retrieved 2018-03-05`
 
-.. figure:: _static/arcade-library.png
+.. figure:: _static/showcase/arcade-library.png
    :target: http://arcade.academy/examples/index.html
 
 Arcade is an easy-to-learn Python library for creating 2D video games. It is 
@@ -320,7 +320,7 @@ billiARds - A Game of Augmented Reality Pool
 --------------------------------------------
 :sup:`made by Alex Baikovitz. Retrieved 2017-05-21`
 
-.. figure:: _static/billiARds.png
+.. figure:: _static/showcase/billiARds.png
    :target: https://youtu.be/5ft3SDvuhgw
 
 Alex built billiARds for his 15-112 (Fundamentals of Programming and Computer
@@ -333,7 +333,7 @@ pyPhysicsSandbox
 ----------------
 :sup:`made by Jay Shaffstall. Retrieved 2017-01-01`
 
-.. figure:: _static/pyphysicssandbox.png
+.. figure:: _static/showcase/pyphysicssandbox.png
    :target: https://github.com/jshaffstall/PyPhysicsSandbox
 
 pyPhysicsSandbox is a simple wrapper around Pymunk that makes it easy to write 
@@ -345,7 +345,7 @@ Carrom Simulation
 -----------------
 :sup:`made by Samiran Roy. Retrieved 2016-10-27`
 
-.. figure:: _static/carrom-rl.png
+.. figure:: _static/showcase/carrom-rl.png
    :target: https://github.com/samiranrl/Carrom_rl 
 
 An open source Carrom Simulator interface for testing intelligent/learning 
@@ -359,7 +359,7 @@ Self Driving Car
 ----------------
 :sup:`made by Matt Harvey. Retrieved 2016-08-07`
 
-.. figure:: _static/reinforcement-learning-car.png
+.. figure:: _static/showcase/reinforcement-learning-car.png
    :target: https://github.com/harvitronix/reinforcement-learning-car
 
 A project that trains a virtual car to how to move an object around a screen 
