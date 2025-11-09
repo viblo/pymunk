@@ -61,3 +61,7 @@ div.sphinxsidebar {
 div.body h2 {
     margin-top: 40px;
 }
+
+video {
+    width: 100%
+}
