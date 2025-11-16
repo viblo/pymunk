@@ -2,10 +2,335 @@
 Changelog 
 =========
 
+Pymunk 7.2.0 (2025-11-02)
+-------------------------
+
+This release provides wheels for Python 3.14. It also contains a new method
+that make it possible to get the inverse transform of a Transform.
+
+**Wheels for Python 3.14**
+
+Changes:
+
+  - Build wheels for 3.14
+  - Added Tranform.inverted() to get the inverse transform.
+
+
+Pymunk 7.1.0 (2025-06-29)
+-------------------------
+
+**Minor fix for wildcard collision handler!**
+
+This is a minor release. It contains a fix for 'wildcard' collision 
+handlers (`space.on_collision(X, None, ...)`). Now the handler will be 
+invoked twice if two shapes of the same type collide.
+
+This release also updates cibuildwheel used to build wheels, and as part of 
+the upgrade Pymunk will no longer publish wheels for 32bit Linux. 
+
+Changes:
+
+- Fixed wildcard collision handler to be called twice for collisions between 
+  two shapes of same type.
+- Allow get of `DampedSpring.force_func`
+- Allow get of `DampedRotarySpring.torque_func`
+- Rewrote some properties to use @property. Note that this means type checking
+  with mypy needs at least mypy 1.16.0.  
+- Updated to cibuildwheel 3.0 to build Pymunk. This also means Pymunk will not
+  publish wheels for 32bit Linux anymore.
+
+
+Pymunk 7.0.1 (2025-06-07)
+-------------------------
+
+**Minor fixes and experimental iOS wheel!**
+
+This is a minor patch release, which adds experimental iOS wheels, minor bug
+fix and fixes the version number that was wrong in the previous release.
+
+Changes:
+
+- Experimentally Build wheels for iOS (Issue #276)
+- Fix all(?) issues calling remove in separate callbacks (Issue #247)
+- Fixed pymunk.version version number.
+
+
+Pymunk 7.0.0 (2025-05-28)
+-------------------------
+
+**Many improvements and breaking changes!**
+
+This is a big cleanup release with several breaking changes. If you upgrade 
+from an older version, make sure to pay attention, especially the 
+``Space.bodies``, ``Space.shapes`` and ``Space.constraints`` updates can break silently! 
+
+Extra thanks for Github user aatle for a number of suggestions and feedback 
+for this Pymunk release!
+
+
+The biggest changes relates to collision handlers:
+
+- The ``begin``, ``pre_step`` and ``separate`` methods will now always be 
+  called. ``post_solve`` will continue to only be called if the collision were 
+  actually processed.
+- You no longer return a ``bool`` from ``begin`` or ``pre_step`` to control if the 
+  collision should be processed. Instead, there is a property on the ``Arbiter``, 
+  ``process_collision``, that can be set to ``False``. 
+- The ``process_collision`` property is stable but updatable, e.g if set to 
+  ``False`` in a ``begin`` callback it will be ``False`` in the ``pre_step``, 
+  which in turn can toggle it back to ``True``.
+- The ``CollisionHandler`` class itself is no longer public. The ``Space`` has 
+  a new ``on_collision()`` method that takes the callbacks as arguments without 
+  returning anything.
+
+In addition to the above (which will be easy to spot), there is also a more 
+subtle change:
+
+- ``Space.shapes``, ``Space.bodies`` and ``Space.constraints`` now return a 
+  ``KeysView``. That means that the returned collection is no longer a copy, 
+  instead if you hold a ref to it and if you for example add an object to the 
+  ``Space`` it will update. To get the old behavior, you can convert to a list 
+  manually, e.g ``list(Space.shapes)``.
+
+Additional breaking changes:
+
+- Unified all ``Space.query`` methods to include sensor shapes. Previously 
+  the nearest methods filtered them out.
+- At least one of the two bodies attached to a constraint/joint must be 
+  dynamic. 
+- ``Vec2d`` now supports ``bool`` to test if zero. (
+  ``bool(Vec2d(2,3) == True``).
+- Added ``Vec2d.length_squared``, and deprecated ``Vec2d.get_length_sqrd()``
+- Added ``Vec2d.get_distance_squared()``, and deprecated 
+  ``Vec2d.get_dist_sqrd()``
+- A dynamic body must have non-zero mass when calling ``Space.step()`` (either 
+  from ``Body.mass``, or by setting ``mass`` or ``density`` on a Shape 
+  attached to the ``Body``). It is not valid to set ``mass`` to ``0`` on a 
+  dynamic body attached to a ``Space``. 
+- Deprecated ``matplotlib_util``. If you think this is a useful module, and 
+  you use it, please create an issue on the Pymunk issue tracker at 
+  https://github.com/viblo/pymunk/issues
+- Dropped support for Python 3.8
+- Changed ``Body.constraints`` to return a ``KeysView`` of the Constraints 
+  attached to the ``Body``. Note that its still weak references to the 
+  Constraints. 
+- Reversed the dependency between bodies and shapes. Now the ``Body`` owns the 
+  connection, and the ``Shape`` only keeps a weak ref to the ``Body``. That 
+  means that if you remove a ``Body``, then any shapes not referenced 
+  anywhere else will also be removed. 
+- Changed ``Body.shapes`` to return a ``KeysView`` instead of a set of the shapes.
+- Changed ``Shape.segment_query`` to return None in case the query did not 
+  hit the shape.
+- Changed ``ContactPointSet.points`` to be a ``tuple`` and not ``list`` to 
+  make it clear its length is fixed.
+- Added default ``empty_callback``, that can be used to efficiently reset 
+  any callback to default.
+
+New non-breaking features:
+
+- Switched from using Chipmunk to the new Munk2D fork of Chipmunk (see 
+  https://github.com/viblo/Munk2D for details).
+- Added ``Arbiter.bodies`` shorthand to get the shapes' bodies in the ``Arbiter``.
+- New method ``ShapeFilter.rejects_collision()`` that checks if the filter 
+  would reject a collision with another filter.
+- New method ``Vec2d.polar_tuple`` that return the vector as polar coordinates
+- Changed type of ``PointQueryInfo.shape``, ``SegmentQueryInfo.shape`` and 
+  ``ShapeQueryInfo.shape`` to not be ``Optional``, they will always have a shape.
+- Build and publish wheels for Linux ARM and Pypy 3.11
+
+
+Other improvements:
+
+- Optimized ``Vec2d.angle`` and ``Vec2d.angle_degrees``. Note that the 
+  optimized versions treat ``0`` length vectors with ``x`` and/or ``y`` equal 
+  to ``-0`` slightly differently.
+- Fixed issue with accessing ``Body.space`` after the ``space`` is deleted and 
+  GCed.
+- Improved documentation in many places (``Vec2d``, ``Poly``, ``Shape`` and 
+  more)
+- Improved assert for ``body.mass`` sanity check (``0 < mass < math.inf``) for
+  dynamic bodies added to a space.
+- Improved assert for ``body.moment`` sanity check (``0 < moment``) for dynamic
+  bodies added to a space.
+- Internal cleanup of code
+
+
+Pymunk 6.11.1 (2025-02-09)
+--------------------------
+
+**Python 3.13 GC issue fix**
+
+This is a patch update to Pymunk that removes debug logging. This should an 
+issue with GC on Python 3.13.
+
+Changes:
+
+ - Remove debug logging
+
+
+Pymunk 6.11.0 (2025-01-18)
+--------------------------
+
+**Debug draw for Pyglet 2.1**
+
+This is a minor update to Pymunk that update the Pyglet debug draw code to 
+work with the newly released Pyglet 2.1. Note that this means Pyglet 2.0.x 
+does not work anymore. The release also adds back pre-built wheels for Pypy 
+with a workaround until Pypy make a new release.
+
+Changes:
+
+- Support Pyglet 2.1.x (this means Pyglet 2.0.x wont work)
+- Readded Pypy pre-built wheels
+
+
+Pymunk 6.10.0 (2024-12-22)
+--------------------------
+
+**Pyodode/pyscript fixes**
+
+This is a minor update to Pymunk that make the Pyodide wheels working again. 
+It also introduces tests in the build to prevent similar issues in the future.
+
+Changes:
+
+- Added from_polars() static method to Vec2d to easily create Vec2ds from 
+  polar coordinates.
+- Improved docs (of Vec2d)
+- Relax CFFI version requirement for pyodide to let it work even before 
+  Pyodide updates CFFI.
+- Test pyodide wheels when built.
+
+
+Pymunk 6.9.0 (2024-10-13)
+-------------------------
+
+**Python 3.13**
+
+This is a minor update to Pymunk with wheels for CPython 3.13. In addition,
+with this release Pymunk no longer officially support Python 3.7, since its not
+supported anymore, and CFFI, which Pymunk uses, no longer provides wheels for 
+it. In addition, Pypy is somewhat broken until they release a version with 
+latest CFFI. Details on the Pypy issue here:
+https://github.com/pypy/pypy/issues/5027 Expect Pymunk to publish wheels again 
+once a Pypy with the fix has been released.
+
+Changes:
+
+- Removed support for Python 3.7 (since latest cffi does not provide wheels 
+  for it).
+- Fixed issue with SlideJoint when changing body_type.
+- Log Chipmunk level erros with logging module
+- Build wheels for Python 3.13
+- Modernized the build setup to rely on pyproject.toml for more settings.
+- Almost completed a new benchmark suite mostly ported over from Box2d.
+- Minor improvements to types
+- No pre-built wheels for Pypy since the shipped versions comes with a CFFI 
+  that doesnt support latest setuptools. 
+
+
+Pymunk 6.8.1 (2024-06-05)
+-------------------------
+
+**Space lock bug fix**
+
+This is a patch version, that fixes a bug in the separate collision callback 
+which could result in hard crash if after the separate another collision 
+callback ran and that callback added or removed something from the space.
+
+Changes:
+
+- Build/run MacOs ARM on ARM github runners. 
+- Fix lock bug in separate callback
+- Improve documentation
+
+
+Pymunk 6.8.0 (2024-05-10)
+-------------------------
+
+**Spring improvements**
+
+This release makes the max force property on the two spring constraints work 
+as expected (previously it did not have any effect). It is also possible to 
+fully override the force/torque calculation of the springs with new callback.
+Apart from this a collection of fixes in the underlying Chipmunk2D library 
+has been added. Finally, it's now possible to create static bodies with 
+constraints between them, and then change the bodies to dynamic to "start" 
+simulation of them.
+
+Changes:
+
+- Fix for 2 static bodies that are changed to dynamic and are attached to 
+  constraints
+- Updated the fork of Chipmunk2D used by Pymunk, fixing a number of issues, 
+  including maxForce on Spring constraints.
+- Added callback functions for DampedSpring and DampedRotarySpring to allow 
+  customized force/torque calculations.
+  
+  
+Pymunk 6.7.0 (2024-05-01)
+-------------------------
+
+**Batch API can set body properties**
+
+This release expands the experimental Batch API introduced in Pymunk 6.6.0. 
+It now comes with functions to efficiently set properties on the body such as 
+velocity. Similar to the previous API the new API reduces overhead of the 
+Python / C bridge, but also makes it very easy to use for example Numpy to 
+perform calculations over many bodies. The existing planet.py demo has been 
+updated to showcase the new Batch API and easily toggle between batch / no 
+batch to see the difference in performance.
+
+Changes:
+
+- Add set body function to pymunk.batch 
+- Fix crash with sensor shapes in pymunk.batch
+- Improved types
+- New interactive example to show collisions
+- Fix constraints of bodies that change type
+
+
+Pymunk 6.6.0 (2023-11-02)
+-------------------------
+
+**Experimental Batch API**
+
+This release adds a (experimental) batch API that can be used to efficiently 
+get body properties such as positions, and collision data for all bodies /
+collisions in a space in one call. This way the overhead of calling the 
+underlying c library (Chipmunk2D) is minimized, enabling a massive speedup
+in some cases.
+
+Changes:
+
+- New pymunk.batch module with batch API.
+- Batch Api benchmark
+- Batch version of colors.py example
+- Improved types
+- Improve build/packaging
+
+
+Pymunk 6.5.2 (2023-10-22)
+-------------------------
+
+**Python 3.12**
+
+This is a minor release mainly for publishing wheels for CPython 3.12.
+
+Changes:
+
+- Build wheels for CPython 3.12
+- Documentation improvements
+- Added experimental env PYMUNK_BUILD_SLIM to slim down wheels for 
+  WASM/Pyodide.
+- Added assert for circular reference when pickling/copy
+- Fixed memory leak in batched api benchmark
+
+
 Pymunk 6.5.1 (2023-06-26)
 -------------------------
 
-**Fix soruce dist**
+**Fix source dist**
 
 Some custom cffi c headers and source files are now included in the source 
 distributions so that Pymunk can be fully built from it.

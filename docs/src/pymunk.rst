@@ -13,6 +13,7 @@ API Reference
         :maxdepth: 1
 
         pymunk.autogeometry
+        pymunk.batch
         pymunk.constraints
         pymunk.vec2d
         pymunk.matplotlib_util    
@@ -28,7 +29,7 @@ API Reference
 .. rubric:: Pymunk
 
 .. automodule:: pymunk
-    :special-members: __init__, __matmul__
+    :special-members: __init__, __matmul__, __add__,__sub__,__mul__,__floordiv__,__truediv__,__neg__,__pos__,__abs__
     
 .. raw:: html
 

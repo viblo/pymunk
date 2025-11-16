@@ -1,11 +1,11 @@
 import logging
 import math
-import warnings
 
 from ._chipmunk_cffi import ffi, lib
 from .arbiter import Arbiter
 from .contact_point_set import ContactPointSet
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
+from .shapes import Shape
 from .vec2d import Vec2d
 
 _logger = logging.getLogger(__name__)
@@ -14,9 +14,16 @@ _logger = logging.getLogger(__name__)
 
 
 @ffi.def_extern()
-def ext_cpSpacePointQueryFunc(_shape, point, distance, gradient, data):  # type: ignore
-    self, query_hits = ffi.from_handle(data)
-    shape = self._get_shape(_shape)
+def ext_cpSpacePointQueryFunc(
+    _shape: ffi.CData,
+    point: ffi.CData,
+    distance: float,
+    gradient: ffi.CData,
+    data: ffi.CData,
+) -> None:
+    _, query_hits = ffi.from_handle(data)
+    shape = Shape._from_cp_shape(_shape)
+    assert shape != None
     p = PointQueryInfo(
         shape, Vec2d(point.x, point.y), distance, Vec2d(gradient.x, gradient.y)
     )
@@ -24,9 +31,16 @@ def ext_cpSpacePointQueryFunc(_shape, point, distance, gradient, data):  # type:
 
 
 @ffi.def_extern()
-def ext_cpSpaceSegmentQueryFunc(_shape, point, normal, alpha, data):  # type: ignore
-    self, query_hits = ffi.from_handle(data)
-    shape = self._get_shape(_shape)
+def ext_cpSpaceSegmentQueryFunc(
+    _shape: ffi.CData,
+    point: ffi.CData,
+    normal: ffi.CData,
+    alpha: float,
+    data: ffi.CData,
+) -> None:
+    _, query_hits = ffi.from_handle(data)
+    shape = Shape._from_cp_shape(_shape)
+    assert shape != None
     p = SegmentQueryInfo(
         shape, Vec2d(point.x, point.y), Vec2d(normal.x, normal.y), alpha
     )
@@ -34,17 +48,20 @@ def ext_cpSpaceSegmentQueryFunc(_shape, point, normal, alpha, data):  # type: ig
 
 
 @ffi.def_extern()
-def ext_cpSpaceBBQueryFunc(_shape, data):  # type: ignore
-    self, query_hits = ffi.from_handle(data)
-    shape = self._get_shape(_shape)
+def ext_cpSpaceBBQueryFunc(_shape: ffi.CData, data: ffi.CData) -> None:
+    _, query_hits = ffi.from_handle(data)
+    shape = Shape._from_cp_shape(_shape)
     assert shape is not None
     query_hits.append(shape)
 
 
 @ffi.def_extern()
-def ext_cpSpaceShapeQueryFunc(_shape, _points, data):  # type: ignore
-    self, query_hits = ffi.from_handle(data)
-    found_shape = self._get_shape(_shape)
+def ext_cpSpaceShapeQueryFunc(
+    _shape: ffi.CData, _points: ffi.CData, data: ffi.CData
+) -> None:
+    _, query_hits = ffi.from_handle(data)
+    found_shape = Shape._from_cp_shape(_shape)
+    assert found_shape != None
     point_set = ContactPointSet._from_cp(_points)
     info = ShapeQueryInfo(found_shape, point_set)
     query_hits.append(info)
@@ -54,19 +71,21 @@ def ext_cpSpaceShapeQueryFunc(_shape, _points, data):  # type: ignore
 
 
 @ffi.def_extern()
-def ext_cpSpaceShapeIteratorFunc(cp_shape, data):  # type: ignore
+def ext_cpSpaceShapeIteratorFunc(cp_shape: ffi.CData, data: ffi.CData) -> None:
     cp_shapes = ffi.from_handle(data)
     cp_shapes.append(cp_shape)
 
 
 @ffi.def_extern()
-def ext_cpSpaceConstraintIteratorFunc(cp_constraint, data):  # type: ignore
+def ext_cpSpaceConstraintIteratorFunc(
+    cp_constraint: ffi.CData, data: ffi.CData
+) -> None:
     cp_constraints = ffi.from_handle(data)
     cp_constraints.append(cp_constraint)
 
 
 @ffi.def_extern()
-def ext_cpSpaceBodyIteratorFunc(cp_body, data):  # type:ignore
+def ext_cpSpaceBodyIteratorFunc(cp_body: ffi.CData, data: ffi.CData) -> None:
     cp_bodys = ffi.from_handle(data)
     cp_bodys.append(cp_body)
 
@@ -75,7 +94,14 @@ def ext_cpSpaceBodyIteratorFunc(cp_body, data):  # type:ignore
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawCircleImpl(pos, angle, radius, outline_color, fill_color, data):  # type: ignore
+def ext_cpSpaceDebugDrawCircleImpl(
+    pos: ffi.CData,
+    angle: float,
+    radius: float,
+    outline_color: ffi.CData,
+    fill_color: ffi.CData,
+    data: ffi.CData,
+) -> None:
     options, _ = ffi.from_handle(data)
     options.draw_circle(
         Vec2d(pos.x, pos.y),
@@ -87,7 +113,9 @@ def ext_cpSpaceDebugDrawCircleImpl(pos, angle, radius, outline_color, fill_color
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawSegmentImpl(a, b, color, data):  # type: ignore
+def ext_cpSpaceDebugDrawSegmentImpl(
+    a: ffi.CData, b: ffi.CData, color: ffi.CData, data: ffi.CData
+) -> None:
     # sometimes a and/or b can be nan. For example if both endpoints
     # of a spring is at the same position. In those cases skip calling
     # the drawing method.
@@ -102,7 +130,14 @@ def ext_cpSpaceDebugDrawSegmentImpl(a, b, color, data):  # type: ignore
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawFatSegmentImpl(a, b, radius, outline_color, fill_color, data):  # type: ignore
+def ext_cpSpaceDebugDrawFatSegmentImpl(
+    a: ffi.CData,
+    b: ffi.CData,
+    radius: float,
+    outline_color: ffi.CData,
+    fill_color: ffi.CData,
+    data: ffi.CData,
+) -> None:
     options, _ = ffi.from_handle(data)
     options.draw_fat_segment(
         Vec2d(a.x, a.y),
@@ -114,7 +149,14 @@ def ext_cpSpaceDebugDrawFatSegmentImpl(a, b, radius, outline_color, fill_color, 
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawPolygonImpl(count, verts, radius, outline_color, fill_color, data):  # type: ignore
+def ext_cpSpaceDebugDrawPolygonImpl(
+    count: int,
+    verts: ffi.CData,
+    radius: float,
+    outline_color: ffi.CData,
+    fill_color: ffi.CData,
+    data: ffi.CData,
+) -> None:
     options, _ = ffi.from_handle(data)
     vs = []
     for i in range(count):
@@ -123,15 +165,17 @@ def ext_cpSpaceDebugDrawPolygonImpl(count, verts, radius, outline_color, fill_co
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawDotImpl(size, pos, color, data):  # type: ignore
+def ext_cpSpaceDebugDrawDotImpl(
+    size: float, pos: ffi.CData, color: ffi.CData, data: ffi.CData
+) -> None:
     options, _ = ffi.from_handle(data)
     options.draw_dot(size, Vec2d(pos.x, pos.y), options._c(color))
 
 
 @ffi.def_extern()
-def ext_cpSpaceDebugDrawColorForShapeImpl(_shape, data):  # type: ignore
-    options, space = ffi.from_handle(data)
-    shape = space._get_shape(_shape)
+def ext_cpSpaceDebugDrawColorForShapeImpl(_shape: ffi.CData, data: ffi.CData) -> None:
+    options, _ = ffi.from_handle(data)
+    shape = Shape._from_cp_shape(_shape)
     return options.color_for_shape(shape)
 
 
@@ -157,51 +201,19 @@ def ext_cpMarchSampleFunc(point: ffi.CData, data: ffi.CData) -> float:
 @ffi.def_extern()
 def ext_cpCollisionBeginFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
-) -> bool:
+) -> None:
     handler = ffi.from_handle(data)
-    x = handler._begin(Arbiter(_arb, handler._space), handler._space, handler.data)
-    if isinstance(x, bool):
-        return x
-
-    func_name = handler._begin.__code__.co_name
-    filename = handler._begin.__code__.co_filename
-    lineno = handler._begin.__code__.co_firstlineno
-
-    warnings.warn_explicit(
-        "Function '" + func_name + "' should return a bool to"
-        " indicate if the collision should be processed or not when"
-        " used as 'begin' or 'pre_solve' collision callback.",
-        UserWarning,
-        filename,
-        lineno,
-        handler._begin.__module__,
-    )
-    return True
+    handler._begin(Arbiter(_arb, handler._space), handler._space, handler.data["begin"])
 
 
 @ffi.def_extern()
 def ext_cpCollisionPreSolveFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
-) -> bool:
+) -> None:
     handler = ffi.from_handle(data)
-    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
-    if isinstance(x, bool):
-        return x
-
-    func_name = handler._pre_solve.__code__.co_name
-    filename = handler._pre_solve.__code__.co_filename
-    lineno = handler._pre_solve.__code__.co_firstlineno
-
-    warnings.warn_explicit(
-        "Function '" + func_name + "' should return a bool to"
-        " indicate if the collision should be processed or not when"
-        " used as 'begin' or 'pre_solve' collision callback.",
-        UserWarning,
-        filename,
-        lineno,
-        handler._pre_solve.__module__,
+    handler._pre_solve(
+        Arbiter(_arb, handler._space), handler._space, handler.data["pre_solve"]
     )
-    return True
 
 
 @ffi.def_extern()
@@ -209,7 +221,9 @@ def ext_cpCollisionPostSolveFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
 ) -> None:
     handler = ffi.from_handle(data)
-    handler._post_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+    handler._post_solve(
+        Arbiter(_arb, handler._space), handler._space, handler.data["post_solve"]
+    )
 
 
 @ffi.def_extern()
@@ -217,14 +231,16 @@ def ext_cpCollisionSeparateFunc(
     _arb: ffi.CData, _space: ffi.CData, data: ffi.CData
 ) -> None:
     handler = ffi.from_handle(data)
+    space = handler._space
+    orig_locked = space._locked
+    space._locked = True
     try:
         # this try is needed since a separate callback will be called
         # if a colliding object is removed, regardless if its in a
-        # step or not.
-        handler._space._locked = True
-        handler._separate(Arbiter(_arb, handler._space), handler._space, handler.data)
+        # step or not. Meaning the unlock must succeed
+        handler._separate(Arbiter(_arb, space), space, handler.data["separate"])
     finally:
-        handler._space._locked = False
+        space._locked = orig_locked
 
 
 # body.py
@@ -247,8 +263,8 @@ def ext_cpBodyArbiterIteratorFunc(
     _body: ffi.CData, _arbiter: ffi.CData, data: ffi.CData
 ) -> None:
     body, func, args, kwargs = ffi.from_handle(data)
-    assert body._space is not None
-    arbiter = Arbiter(_arbiter, body._space)
+    assert body.space is not None
+    arbiter = Arbiter(_arbiter, body.space)
     func(arbiter, *args, **kwargs)
 
 
@@ -256,7 +272,6 @@ def ext_cpBodyArbiterIteratorFunc(
 def ext_cpBodyConstraintIteratorFunc(
     cp_body: ffi.CData, cp_constraint: ffi.CData, _: ffi.CData
 ) -> None:
-    _logger.debug("bodyfree remove constraint %s %s", cp_body, cp_constraint)
     cp_space = lib.cpConstraintGetSpace(cp_constraint)
     if cp_space != ffi.NULL:
         lib.cpSpaceRemoveConstraint(cp_space, cp_constraint)
@@ -266,7 +281,6 @@ def ext_cpBodyConstraintIteratorFunc(
 def ext_cpBodyShapeIteratorFunc(
     cp_body: ffi.CData, cp_shape: ffi.CData, _: ffi.CData
 ) -> None:
-    _logger.debug("bodyfree remove shape %s %s", cp_body, cp_shape)
     cp_space = lib.cpShapeGetSpace(cp_shape)
     if cp_space != ffi.NULL:
         lib.cpSpaceRemoveShape(cp_space, cp_shape)
@@ -324,9 +338,28 @@ def ext_cpConstraintGetImpulseImpl(cp_constraint: ffi.CData) -> float:
     constraint = ffi.from_handle(lib.cpConstraintGetUserData(cp_constraint))
     return constraint.get_impulse()
 
+@ffi.def_extern()
+def ext_cpDampedSpringForceFunc(cp_constraint: ffi.CData, dist: float) -> float:
+    constraint = ffi.from_handle(lib.cpConstraintGetUserData(cp_constraint))
+    return constraint._force_func(constraint, dist)
+
+
+@ffi.def_extern()
+def ext_cpDampedRotarySpringTorqueFunc(
+    cp_constraint: ffi.CData, relative_angle: float
+) -> float:
+    constraint = ffi.from_handle(lib.cpConstraintGetUserData(cp_constraint))
+    return constraint._torque_func(constraint, relative_angle)
+
 
 # Pickle of Arbiters
 @ffi.def_extern()
 def ext_cpArbiterIteratorFunc(_arbiter, data):  # type: ignore
     arbiters = ffi.from_handle(data)
     arbiters.append(_arbiter)
+
+
+# cpMessage / log override
+@ffi.def_extern()
+def ext_pyLog(formattedMessage):  # type: ignore
+    _logger.error(ffi.string(formattedMessage).decode())

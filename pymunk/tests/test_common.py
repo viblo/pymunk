@@ -1,7 +1,10 @@
+import gc
 import unittest
-from typing import Any, List
+import weakref
+from typing import Any
 
 import pymunk as p
+from pymunk._weakkeysview import WeakKeysView
 from pymunk.vec2d import Vec2d
 
 
@@ -42,7 +45,7 @@ class UnitTestBugs(unittest.TestCase):
 
         _logger = logging.getLogger(__name__)
 
-        def make() -> List[Any]:
+        def make() -> list[Any]:
             s = p.Space()
             b1 = p.Body(1, 2)
             c1 = p.Circle(b1, 2)
@@ -108,16 +111,93 @@ class UnitTestBugs(unittest.TestCase):
         b3.position = -9, 0
 
         space.add(b1, c1, b2, c2, b3, c3)
+        # print("\nc1", c1)
 
         def remove_first(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
+            # print("SEP 1", arbiter.shapes)
+            # print("  space.shapes", space.shapes)
+            # print("  space._remove_later", space._remove_later)
             first_shape = arbiter.shapes[0]
             if c1 in space.shapes:
                 space.remove(c1)
+            #     print("  space.shapes", space.shapes)
+            #     print("  space._remove_later", space._remove_later)
+            # print("SEP done")
             # space.add_post_step_callback(space.remove, first_shape, first_shape.body)
-            space.remove(c1)
+            # space.remove(c1)
 
-        space.add_collision_handler(2, 0).separate = remove_first
-
+        space.on_collision(2, 0, separate=remove_first)
+        # print(1)
         space.step(1.0 / 60)
+        # print(2)
         b2.position = 22, 0
         space.step(1.0 / 60)
+        # print(3)
+
+    def testX(self) -> None:
+        space = p.Space()
+
+        b1 = p.Body(1, 1)
+        c1 = p.Circle(b1, 10)
+        c1.collision_type = 2
+
+        b2 = p.Body(1, 2)
+        c2 = p.Circle(b2, 10)
+
+        b3 = p.Body(1, 3)
+        c3 = p.Circle(b3, 10)
+
+        # b1.position = 0, 0
+        # b2.position = 9, 0
+        # b3.position = -9, 0
+
+        space.add(b1, c1, b2, c2, b3, c3)
+        # print("\nc1", c1)
+
+        def separate(arbiter: p.Arbiter, space: p.Space, data: Any) -> None:
+            # print("SEP 1", arbiter.shapes)
+            # print("  space.shapes", space.shapes)
+            # print("  space._remove_later", space._remove_later)
+            if c1 in space.shapes:
+                space.remove(c1)
+            #     print("  space.shapes", space.shapes)
+            #     print("  space._remove_later", space._remove_later)
+            # print("SEP done")
+            # space.add_post_step_callback(space.remove, first_shape, first_shape.body)
+            # space.remove(c1)
+
+        space.on_collision(2, 0, separate=separate)
+        # print(1)
+        space.step(1)
+        # print(2)
+        b2.position = 22, 0
+        space.step(1)
+        # print(3)
+
+    def testWeakKeysView(self) -> None:
+        x1, x2, x3 = p.Body(1), p.Body(2), p.Body(3)
+
+        d: weakref.WeakKeyDictionary[p.Body, int] = weakref.WeakKeyDictionary()
+
+        d[x1] = 1
+        d[x2] = 2
+
+        keys1 = WeakKeysView(d)
+        keys2 = WeakKeysView(d)
+
+        del x2
+        d[x3] = 3
+
+        iterations = 0
+        for x in keys2:
+            iterations += 1
+            del x3
+            gc.collect()
+
+        self.assertEqual(iterations, 1)
+        gc.collect()
+
+        self.assertEqual(len(d), 1)
+        self.assertEqual(list(keys1), [x1])
+        self.assertEqual(list(keys2), [x1])
+        self.assertEqual(list(d.keys()), [x1])

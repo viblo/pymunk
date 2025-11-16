@@ -9,19 +9,19 @@ def main():
         """
     Remember (before running this script!): 
     - change version number in README.rst, setup.py, CITATION.cff and _version.py
+    - write changelog entry in CHANGELOG.rst
     - test in at least CPython 3.x and Pypy3
     - validate test results of Github Actions
-    - write changelog entry and put in changelog.rst
     - make sure all images are optimized (for example with tinypng.com)
-    - generate docs before running sdist
     - Make sure cffi extensions included in wheel and zip!!!!
     """
     )
 
     print(
         """
-    > python setup.py sdist 
-        
+    > git tag X.Y.Z
+    > git push && git push --tags
+            
     """
     )
 
@@ -30,7 +30,8 @@ def main():
     Once the release is done, remember to:
     - tag code on github with version
     - Download dists from github release
-    - Upload files on pypi (> python -m twine upload dist/6.5.0*) with correct verison
+    - Upload files on pypi (> python -m twine upload -u __token__ dist/pymunk-6.8.0*) with correct version
+    - Upload wasm on GitHub releases
     - (not needed anymore) Update Pymunk entry on pygame.org
     - (pr will be craeted automatically when condra forge notice the new version) Update Pymunk on conda-forge
     - Trigger docs build in readthedocs for www.pymunk.org

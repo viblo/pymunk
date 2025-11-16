@@ -1,9 +1,8 @@
 """
-An example of the determinism of pymunk by coloring balls according to their 
-position, and then respawning them to verify each ball ends up in the same 
+An example of the determinism of pymunk by coloring balls according to their
+position, and then respawning them to verify each ball ends up in the same
 place. Inspired by Pymunk user Nam Dao.
 """
-
 
 import random
 

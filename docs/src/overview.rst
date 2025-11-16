@@ -2,6 +2,14 @@
 Overview
 ********
 
+.. note::
+  If you use IDLE you will not always see debug information from within IDLE 
+  when Pymunk crashes when critical assert fails. If your program crashes in 
+  IDLE, but you don't see any output, try running IDLE from the terminal 
+  instead. This way the debug information will show there. 
+  (IDLE can be started from a terminal with ``python -m idlelib``.)
+
+
 Basics
 ======
 
@@ -43,31 +51,31 @@ Object shape
 What you see on the screen doesn't necessarily have to be exactly the same 
 shape as the actual physics object. Usually the shape used for collision 
 detection (and other physics simulation) is much simplified version of what is 
-drawn on the screen. Even high end AAA games separate the collision shape from 
+drawn on the screen. Even high-end AAA games separate the collision shape from 
 what is drawn on screen.
 
-There are a number of reasons why its good to separate the collision shape and 
+There are a number of reasons why it's good to separate the collision shape and 
 what is drawn.
 
 * Using simpler collision shapes are faster. So if you have a very complicated 
   object, for example a pine tree, maybe it can make sense to simplify its 
   collision shape to a triangle for performance.
-* Using a simpler collision shape make the simulation better. Lets say you have 
+* Using a simpler collision shape make the simulation better. Let's say you have 
   a floor made of stone with a small crack in the middle. If you drag a box 
   over this floor it will get stuck on the crack. But if you simplify the floor 
   to just a plane you avoid having to worry about stuff getting stuck in the 
   crack.
 * Making the collision shape smaller (or bigger) than the actual object makes 
-  gameplay better. Lets say you have a player controlled ship in a shoot-em-up 
+  gameplay better. Let's say you have a player controlled ship in a shoot-em-up 
   type game. Many times it will feel more fun to play if you make the collision 
-  shape a little bit smaller compared to what it should be based on how it 
+  shape a little smaller compared to what it should be based on how it 
   looks.
 
 You can see an example of this in the :ref:`using_sprites.py` example included 
 in Pymunk. There the physics shape is a triangle, but what is drawn is 3 boxes 
 in a pyramid with a snake on top. Another example is in the 
 :ref:`platformer.py` example, where the player is drawn as a girl in red and 
-gray. However the physics shape is just a couple of circle shapes on top of 
+gray. However, the physics shape is just a couple of circle shapes on top of 
 each other.
 
 Center of gravity
@@ -144,16 +152,16 @@ that you should use)
 Looks before realism
 --------------------
 
-How heavy is a bird in angry birds? It doest matter, its a cartoon!
+How heavy is a bird in angry birds? It doesn't matter, it's a cartoon!
 
 Together with the units another key insight when setting up your simulation is 
-to remember  that it is a simulation, and in many cases the look and feel is 
+to remember that it is a simulation, and in many cases the look and feel is 
 much more important than actual realism. So for example, if you want to model 
 a flipper game, the real power of the flipper and launchers doesn't matter at 
 all, what is important is that the game feels "right" and is fun to use for 
 your users. 
 
-Sometimes it make sense to start out with realistic units, to give you a feel 
+Sometimes it makes sense to start out with realistic units, to give you a feel 
 for how big mass should be in comparison to gravity for example. 
 
 There are exceptions to this of course, when you actually want realism over the 
@@ -172,15 +180,15 @@ is best for a particular program depends on the requirements.
 
 Some good articles:
 
-* http://gameprogrammingpatterns.com/game-loop.html
-* http://gafferongames.com/game-physics/fix-your-timestep/
-* http://www.koonsolo.com/news/dewitters-gameloop/
+* https://gameprogrammingpatterns.com/game-loop.html
+* https://gafferongames.com/post/fix_your_timestep/
+* https://gamedevfaqs.com/managing-consistent-game-physics-the-case-for-fixed-time-steps
 
 
 Object tunneling
 ================
 
-Sometimes an object can pass through another object even though its not 
+Sometimes an object can pass through another object even though it's not 
 supposed to. Usually this happens because the object is moving so fast, that 
 during a single call to space.step() the object moves from one side to the 
 other.
@@ -242,12 +250,12 @@ Unstable simulation?
 Sometimes the simulation might not behave as expected. In extreme cases it can 
 "blow up" and parts move anywhere without logic. 
 
-There a a number of things to try if this happens:
+There are a number of things to try if this happens:
 
 * Make all the bodies of similar mass. It is easier for the physics engine to 
   handle bodies with similar weight.
 
-* Dont let two objects with infinite mass touch each other.
+* Don't let two objects with infinite mass touch each other.
 
 * Make the center of gravity in the middle of shapes instead of at the edge.
 
@@ -258,7 +266,7 @@ There a a number of things to try if this happens:
 * Call the Space.step function several times with smaller dt instead of only 
   one time but with a bigger dt. (See the docs of `Space.step`)
 
-* If you use a Motor joint, make sure to set its max force. Otherwise its power
+* If you use a Motor joint, make sure to set its max force. Otherwise, its power
   will be near infinite.  
 
 * Double check that the center of gravity is at a reasonable point for all 
@@ -280,7 +288,7 @@ Various tips that can improve performance:
 * Tweak the ``Space.iterations`` property.
 * If possible let objects fall asleep with ``Space.sleep_time_threshold``.
 * Reduce usage of callback methods (like collision callbacks or custom update 
-  fuctions). These are much slower than the default built in code.
+  functions). These are much slower than the default built in code.
 
 Note that many times the actual simulation is quick enough, but reading out 
 the result after each step and manipulating the objects manually can have a 
@@ -300,14 +308,34 @@ See the :ref:`copy_and_pickle.py` example for an example on how to save, load
 and copy Pymunk objects.
 
 Note that the version of Pymunk used must be the same for the code saving as 
-the verison used when loading the saved object.
+the version used when loading the saved object.
+
+
+Asserts and error handling
+==========================
+
+Pymunk uses asserts to guard against bad input, for example to guard against 
+adding the same Shape twice to a Space. Should an assert fail it can be 
+handled the normal Python way, for example with a try/catch. 
+
+There are also asserts deeper in Pymunk, in the underlying Chipmunk library. 
+These guards against both bad input that is not possible to check from the 
+Pymunk side, and against bad simulation state that can happen for various 
+reasons in the middle of the simulation. These are normally not recoverable, 
+and will result in a hard crash if failed. The problem will be logged using 
+the standard Python logging module, with the logger name "pymunk" (or a child 
+of it). 
 
 
 Additional info
 ===============
 
 As a complement to the Pymunk docs it can be good to read the `Chipmunk docs 
-<http://chipmunk-physics.net/release/ChipmunkLatest-Docs/>`_. Its made for 
+<http://chipmunk-physics.net/release/ChipmunkLatest-Docs/>`_. It's made for 
 Chipmunk, but Pymunk is build on top of Chipmunk and share most of the concepts,
 with the main difference being that Pymunk is used from Python while Chipmunk is 
 a C-library.
+
+For the backstory of why Pymunk exists there's a short post about the 
+background and history including a screenshot of the first game made with 
+Pymunk on my own website, at https://www.viblo.se/projects/pymunk/ 

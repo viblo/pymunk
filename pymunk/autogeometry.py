@@ -1,4 +1,4 @@
-"""This module contain functions for automatic generation of geometry, for 
+"""This module contain functions for automatic generation of geometry, for
 example from an image.
 
 Example::
@@ -23,7 +23,7 @@ Example::
     >>> print(len(pl_set))
     2
 
-The information in segments can now be used to create geometry, for example as 
+The information in segments can now be used to create geometry, for example as
 a Pymunk Poly or Segment::
 
     >>> s = pymunk.Space()
@@ -31,14 +31,15 @@ a Pymunk Poly or Segment::
     ...     for i in range(len(poly_line) - 1):
     ...         a = poly_line[i]
     ...         b = poly_line[i + 1]
-    ...         segment = pymunk.Segment(s.static_body, a, b, 1)  
+    ...         segment = pymunk.Segment(s.static_body, a, b, 1)
     ...         s.add(segment)
 
 
 """
+
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Callable, List, Sequence, Tuple, Union, overload
+from typing import TYPE_CHECKING, Callable, Sequence, Union, overload
 
 if TYPE_CHECKING:
     from .bb import BB
@@ -47,12 +48,11 @@ from . import area_for_poly
 from ._chipmunk_cffi import ffi, lib
 from .vec2d import Vec2d
 
-_SegmentFunc = Callable[[Tuple[float, float], Tuple[float, float]], None]
-_SampleFunc = Callable[[Tuple[float, float]], float]
+_SampleFunc = Callable[[tuple[float, float]], float]
 
-_Polyline = Union[List[Tuple[float, float]], List[Vec2d]]
+_Polyline = Union[list[tuple[float, float]], list[Vec2d]]
 # Union is needed since List is invariant
-# and Sequence cant be used since CFFI requires a List (or Tuple)
+# and Sequence cant be used since CFFI requires a list (or tuple)
 
 
 def _to_chipmunk(polyline: _Polyline) -> ffi.CData:
@@ -64,7 +64,7 @@ def _to_chipmunk(polyline: _Polyline) -> ffi.CData:
     return _line
 
 
-def _from_polyline_set(_set: ffi.CData) -> List[List[Vec2d]]:
+def _from_polyline_set(_set: ffi.CData) -> list[list[Vec2d]]:
     lines = []
     for i in range(_set.count):
         line = []
@@ -85,7 +85,7 @@ def is_closed(polyline: _Polyline) -> bool:
     return bool(lib.cpPolylineIsClosed(_to_chipmunk(polyline)))
 
 
-def simplify_curves(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
+def simplify_curves(polyline: _Polyline, tolerance: float) -> list[Vec2d]:
     """Returns a copy of a polyline simplified by using the Douglas-Peucker
     algorithm.
 
@@ -105,7 +105,7 @@ def simplify_curves(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
     return simplified
 
 
-def simplify_vertexes(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
+def simplify_vertexes(polyline: _Polyline, tolerance: float) -> list[Vec2d]:
     """Returns a copy of a polyline simplified by discarding "flat" vertexes.
 
     This works well on straight edged or angular shapes, not as well on smooth
@@ -123,7 +123,7 @@ def simplify_vertexes(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
     return simplified
 
 
-def to_convex_hull(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
+def to_convex_hull(polyline: _Polyline, tolerance: float) -> list[Vec2d]:
     """Get the convex hull of a polyline as a looped polyline.
 
     :param polyline: Polyline to simplify.
@@ -138,7 +138,7 @@ def to_convex_hull(polyline: _Polyline, tolerance: float) -> List[Vec2d]:
     return hull
 
 
-def convex_decomposition(polyline: _Polyline, tolerance: float) -> List[List[Vec2d]]:
+def convex_decomposition(polyline: _Polyline, tolerance: float) -> list[list[Vec2d]]:
     """Get an approximate convex decomposition from a polyline.
 
     Returns a list of convex hulls that match the original shape to within
@@ -164,7 +164,7 @@ def convex_decomposition(polyline: _Polyline, tolerance: float) -> List[List[Vec
     return _from_polyline_set(_set)
 
 
-class PolylineSet(Sequence[List[Vec2d]]):
+class PolylineSet(Sequence[list[Vec2d]]):
     """A set of Polylines.
 
     Mainly intended to be used for its :py:meth:`collect_segment` function
@@ -180,7 +180,7 @@ class PolylineSet(Sequence[List[Vec2d]]):
 
         self._set = ffi.gc(lib.cpPolylineSetNew(), free)
 
-    def collect_segment(self, v0: Tuple[float, float], v1: Tuple[float, float]) -> None:
+    def collect_segment(self, v0: tuple[float, float], v1: tuple[float, float]) -> None:
         """Add a line segment to a polyline set.
 
         A segment will either start a new polyline, join two others, or add to
@@ -201,19 +201,19 @@ class PolylineSet(Sequence[List[Vec2d]]):
         return self._set.count
 
     @overload
-    def __getitem__(self, index: int) -> List[Vec2d]:
-        ...
+    def __getitem__(self, index: int) -> list[Vec2d]: ...
 
     @overload
-    def __getitem__(self, index: slice) -> "PolylineSet":
-        ...
+    def __getitem__(self, index: slice) -> "PolylineSet": ...
 
-    def __getitem__(self, key: Union[int, slice]) -> Union[List[Vec2d], "PolylineSet"]:
-        assert not isinstance(key, slice), "Slice indexing not supported"
-        if key >= self._set.count:
+    def __getitem__(
+        self, index: Union[int, slice]
+    ) -> Union[list[Vec2d], "PolylineSet"]:
+        assert not isinstance(index, slice), "Slice indexing not supported"
+        if index >= self._set.count:
             raise IndexError
         line = []
-        l = self._set.lines[key]
+        l = self._set.lines[index]
         for i in range(l.count):
             line.append(Vec2d(l.verts[i].x, l.verts[i].y))
         return line
@@ -238,7 +238,7 @@ def march_soft(
     :param sample_func: The sample function will be called for
         x_samples * y_samples spread across the bounding box area, and should
         return a float.
-    :type sample_func: ``func(point: Tuple[float, float]) -> float``
+    :type sample_func: ``func(point: tuple[float, float]) -> float``
     :return: PolylineSet with the polylines found.
     """
     pl_set = PolylineSet()
@@ -278,7 +278,7 @@ def march_hard(
     :param sample_func: The sample function will be called for
         x_samples * y_samples spread across the bounding box area, and should
         return a float.
-    :type sample_func: ``func(point: Tuple[float, float]) -> float``
+    :type sample_func: ``func(point: tuple[float, float]) -> float``
     :return: PolylineSet with the polylines found.
     """
 

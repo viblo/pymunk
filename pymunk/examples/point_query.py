@@ -1,8 +1,7 @@
-"""This example showcase point queries by highlighting the shape under the 
+"""This example showcase point queries by highlighting the shape under the
 mouse pointer.
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import random
@@ -49,13 +48,12 @@ def main():
         ticks_to_next_ball -= 1
         if ticks_to_next_ball <= 0:
             ticks_to_next_ball = 100
-            mass = 10
             radius = 25
-            inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
-            body = pymunk.Body(mass, inertia)
+            body = pymunk.Body()
             x = random.randint(115, 350)
             body.position = x, 200
-            shape = pymunk.Circle(body, radius, Vec2d(0, 0))
+            shape = pymunk.Circle(body, radius)
+            shape.density = 10
             shape.color = pygame.Color("lightgrey")
             space.add(body, shape)
             balls.append(shape)
@@ -76,13 +74,11 @@ def main():
             balls.remove(ball)
 
         mouse_pos = pymunk.pygame_util.get_mouse_pos(screen)
-
-        shape = space.point_query_nearest(
-            mouse_pos, float("inf"), pymunk.ShapeFilter()
-        ).shape
-        if shape is not None and isinstance(shape, pymunk.Circle):
-            r = shape.radius + 4
-            p = pymunk.pygame_util.to_pygame(shape.body.position, screen)
+        max_distance = 50
+        info = space.point_query_nearest(mouse_pos, max_distance, pymunk.ShapeFilter())
+        if info is not None and isinstance(info.shape, pymunk.Circle):
+            r = info.shape.radius + 4
+            p = pymunk.pygame_util.to_pygame(info.shape.body.position, screen)
             pygame.draw.circle(screen, pygame.Color("red"), p, int(r), 2)
 
         ### Update physics

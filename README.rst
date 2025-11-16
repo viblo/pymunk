@@ -3,10 +3,10 @@ Pymunk
 
 .. image::  https://raw.githubusercontent.com/viblo/pymunk/master/docs/src/_static/pymunk_logo_animation.gif
 
-Pymunk is an easy-to-use pythonic 2d physics library that can be used whenever 
-you need 2d rigid body physics from Python. Perfect when you need 2d physics 
-in your game, demo or simulation! It is built on top of the very 
-capable 2d physics library `Chipmunk <http://chipmunk-physics.net>`_.
+Pymunk is an easy-to-use pythonic 2D physics library that can be used whenever 
+you need 2D rigid body physics from Python. Perfect when you need 2D physics 
+in your game, demo or simulation! It is built on top of Munk2D, a fork of the 
+very capable 2D physics library `Chipmunk2D <http://chipmunk-physics.net>`_.
 
 The first version was released in 2007 and Pymunk is still actively developed 
 and maintained today, more than 15 years of active development!
@@ -16,16 +16,16 @@ Pymunk has been used with success in many projects, big and small. For example:
 papers and even in a self-driving car simulation! See the Showcases section on 
 the Pymunk webpage for some examples.
 
-2007 - 2023, Victor Blomqvist - vb@viblo.se, MIT License
+2007 - 2025, Victor Blomqvist - vb@viblo.se, MIT License
 
-This release is based on the latest Pymunk release (6.5.1), 
-using Chipmunk 7 rev 5dd7d774053145fa37f352d7a07d2f75a9bd8039.
+This release is based on the latest Pymunk release (7.2.0), 
+using Munk2D 2.0.1 rev ade7ed72849e60289eefb7a41e79ae6322fefaf3.
 
 
 Installation
 ------------
 
-In the normal case pymunk can be installed from PyPI with pip::
+In the normal case Pymunk can be installed from PyPI with pip::
 
     > pip install pymunk
 
@@ -63,14 +63,14 @@ Quick code example::
 
 This will print (to console) the state of the simulation. For more visual, 
 detailed and advanced examples, take a look at the included demos.  
-They are included in the pymunk install, in the pymunk.examples subpackage. 
+They are included in the Pymunk install, in the pymunk.examples subpackage. 
 They can be run directly. To list the examples::
 
     > python -m pymunk.examples -l
 
 And to run one of them::
 
-    > python -m pymunk.examples.breakout
+    > python -m pymunk.examples.index_video
 
 
 Contact & Support
@@ -88,12 +88,13 @@ Contact & Support
     You can email me directly at vb@viblo.se
 
 **Issue Tracker**
-    Please use the issue tracker at github to report any issues you find. This 
+    Please use the issue tracker at Github to report any issues you find. This 
     is also the place for feature requests:
     https://github.com/viblo/pymunk/issues
     
 Regardless of the method you use I will try to answer your questions as soon 
-as I see them. (And if you ask on SO other people might help as well!)
+as I see them. (And if you ask on Stackoverflow other people might help as 
+well!)
 
 
 Documentation
@@ -107,7 +108,7 @@ http://www.pymunk.org
 The Pymunk Vision
 -----------------
 
-    "*Make 2d physics easy to include in your game*"
+    "*Make 2D physics easy to include in your game*"
 
 It is (or is striving to be):
 
@@ -130,23 +131,31 @@ Dependencies / Requirements
 Basically Pymunk have been made to be as easy to install and distribute as 
 possible, usually `pip install` will take care of everything for you.
 
-- Python (Runs on CPython 3.6 and later and Pypy3)
+- Python (Runs on CPython 3.9 and later and Pypy3)
 - Chipmunk (Prebuilt and included when using binary wheels)
 - CFFI (will be installed automatically by Pip)
 - Setuptools (should be included with Pip)
 
 * GCC and friends (optional, you need it to compile Pymunk from source. On 
   windows Visual Studio is required to compile)
-* Pygame (optional, you need it to run the Pygame based demos)
+* Pygame or Pygame-CE (optional, you need it to run the Pygame based demos)
 * Pyglet (optional, you need it to run the Pyglet based demos)
 * Matplotlib & Jupyter Notebook (optional, you need it to run the Matplotlib 
   based demos)
+* Numpy (optional, you need to it run a few demos)
 * Sphinx & aafigure & sphinx_autodoc_typehints (optional, you need it to build 
   documentation)
 
 
-Python 2 Support
-----------------
+Older Pythons
+-------------
 
-Support for Python 2 (and Python 3.0 - 3.5) has been dropped with Pymunk 6.0. 
-If you use these legacy versions of Python, please use Pymunk 5.x.
+- Support for Python 2 (and Python 3.0 - 3.5) was dropped with Pymunk 6.0.
+- Support for Python 3.6 was dropped with Pymunk 6.5.2.
+- Support for Python 3.7 was dropped with Pymunk 6.9.0.
+- Support for Python 3.8 was dropped with Pymunk 7.0.0.
+
+If you use any of these legacy versions of Python, please use an older 
+Pymunk version. It might work on newer Pymunks as well, but it's not tested, 
+and no wheels are built.
+

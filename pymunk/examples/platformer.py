@@ -3,15 +3,15 @@
 The red girl sprite is taken from Sithjester's RMXP Resources:
 http://untamed.wild-refuge.net/rmxpresources.php?characters
 
-.. note:: The code of this example is a bit messy. If you adapt this to your 
+.. note:: The code of this example is a bit messy. If you adapt this to your
     own code you might want to structure it a bit differently.
 """
 
 __docformat__ = "reStructuredText"
 
 import math
-import sys
 import os.path
+import sys
 
 import pygame
 
@@ -133,13 +133,13 @@ def main():
     passthrough.filter = pymunk.ShapeFilter(categories=0b1000)
     space.add(passthrough)
 
-    def passthrough_handler(arbiter, space, data):
-        if arbiter.shapes[0].body.velocity.y < 0:
-            return True
+    def passthrough_handler(arbiter: pymunk.Arbiter, space: pymunk.Space, data):
+        if arbiter.bodies[0].velocity.y < 0:
+            arbiter.process_collision = True
         else:
-            return False
+            arbiter.process_collision = False
 
-    space.add_collision_handler(1, 2).begin = passthrough_handler
+    space.on_collision(1, 2, begin=passthrough_handler)
 
     # player
     body = pymunk.Body(5, float("inf"))

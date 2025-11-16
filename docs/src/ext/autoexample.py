@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-# Copyright (c) 2007-2022 Victor Blomqvist
+# Copyright (c) 2007-2025 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,6 @@ Typical use (copied from pymunk examples)::
 
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import ast
@@ -43,7 +42,7 @@ import os
 from typing import Any, List, Optional
 
 import sphinx.application
-from docutils import nodes, statemachine, utils
+from docutils import statemachine, utils
 from docutils.parsers.rst import Directive, directives
 
 
@@ -197,7 +196,6 @@ class AutoExampleDirective(Directive):
         path = os.path.normpath(os.path.join(source_dir, path))
 
         path = utils.relative_path(None, path)
-        path = nodes.reprunicode(path)
         img_folder = None
         img_folder_os = None
         if "image_folder" in self.options:

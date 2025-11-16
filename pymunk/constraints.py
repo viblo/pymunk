@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2017 Victor Blomqvist
+# Copyright (c) 2007-2024 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ body, or they can be more abstract like the gear joint or motors.
 
 This submodule contain all the constraints that are supported by Pymunk.
 
-All the constraints support copy and pickle from the standard library. Custom 
+All the constraints support copy and pickle from the standard library. Custom
 properties set on a constraint will also be copied/pickled.
 
 Chipmunk has a good overview of the different constraint on youtube which
@@ -69,19 +69,19 @@ __all__ = [
     "CustomConstraint",
 ]
 
-import logging
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 if TYPE_CHECKING:
-    from .body import Body
     from .space import Space
 
 from ._chipmunk_cffi import ffi, lib
 from ._pickle import PickleMixin
 from ._typing_attr import TypingAttrMixing
+from .body import Body
 from .vec2d import Vec2d
 
-_logger = logging.getLogger(__name__)
+_TorqueFunc = Callable[["DampedRotarySpring", float], float]
+_ForceFunc = Callable[["DampedSpring", float], float]
 
 
 class Constraint(PickleMixin, TypingAttrMixing, object):
@@ -103,6 +103,9 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
     _pre_solve_func: Optional[Callable[["Constraint", "Space"], None]] = None
     _post_solve_func: Optional[Callable[["Constraint", "Space"], None]] = None
 
+    _a: "Body"
+    _b: "Body"
+
     def __init__(self, constraint: ffi.CData) -> None:
         self._constraint = constraint
 
@@ -112,7 +115,6 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
             if cp_space != ffi.NULL:
                 lib.cpSpaceRemoveConstraint(cp_space, cp_constraint)
 
-            _logger.debug("constraintfree %s", cp_constraint)
             lib.cpConstraintFree(cp_constraint)
 
         self._constraint = ffi.gc(_constraint, constraintfree)
@@ -122,32 +124,22 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
         self._data_handle = d  # to prevent gc to collect the handle
         lib.cpConstraintSetUserData(self._constraint, d)
 
-    def _get_max_force(self) -> float:
-        return lib.cpConstraintGetMaxForce(self._constraint)
-
-    def _set_max_force(self, f: float) -> None:
-        lib.cpConstraintSetMaxForce(self._constraint, f)
-
-    max_force = property(
-        _get_max_force,
-        _set_max_force,
-        doc="""The maximum force that the constraint can use to act on the two
+    @property
+    def max_force(self) -> float:
+        """The maximum force that the constraint can use to act on the two
         bodies.
 
         Defaults to infinity
-        """,
-    )
+        """
+        return lib.cpConstraintGetMaxForce(self._constraint)
 
-    def _get_error_bias(self) -> float:
-        return lib.cpConstraintGetErrorBias(self._constraint)
+    @max_force.setter
+    def max_force(self, f: float) -> None:
+        lib.cpConstraintSetMaxForce(self._constraint, f)
 
-    def _set_error_bias(self, error_bias: float) -> None:
-        lib.cpConstraintSetErrorBias(self._constraint, error_bias)
-
-    error_bias = property(
-        _get_error_bias,
-        _set_error_bias,
-        doc="""The percentage of joint error that remains unfixed after a
+    @property
+    def error_bias(self) -> float:
+        """The percentage of joint error that remains unfixed after a
         second.
 
         This works exactly the same as the collision bias property of a space,
@@ -156,42 +148,40 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
 
         Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of
         the error every 1/60th of a second.
-        """,
-    )
+        """
+        return lib.cpConstraintGetErrorBias(self._constraint)
 
-    def _get_max_bias(self) -> float:
-        return lib.cpConstraintGetMaxBias(self._constraint)
+    @error_bias.setter
+    def error_bias(self, error_bias: float) -> None:
+        lib.cpConstraintSetErrorBias(self._constraint, error_bias)
 
-    def _set_max_bias(self, max_bias: float) -> None:
-        lib.cpConstraintSetMaxBias(self._constraint, max_bias)
-
-    max_bias = property(
-        _get_max_bias,
-        _set_max_bias,
-        doc="""The maximum speed at which the constraint can apply error
+    @property
+    def max_bias(self) -> float:
+        """The maximum speed at which the constraint can apply error
         correction.
 
         Defaults to infinity
-        """,
-    )
+        """
+        return lib.cpConstraintGetMaxBias(self._constraint)
 
-    def _get_collide_bodies(self) -> bool:
-        return lib.cpConstraintGetCollideBodies(self._constraint)
+    @max_bias.setter
+    def max_bias(self, max_bias: float) -> None:
+        lib.cpConstraintSetMaxBias(self._constraint, max_bias)
 
-    def _set_collide_bodies(self, collide_bodies: bool) -> None:
-        lib.cpConstraintSetCollideBodies(self._constraint, collide_bodies)
-
-    collide_bodies = property(
-        _get_collide_bodies,
-        _set_collide_bodies,
-        doc="""Constraints can be used for filtering collisions too.
+    @property
+    def collide_bodies(self) -> bool:
+        """Constraints can be used for filtering collisions too.
 
         When two bodies collide, Pymunk ignores the collisions if this property
         is set to False on any constraint that connects the two bodies.
         Defaults to True. This can be used to create a chain that self
         collides, but adjacent links in the chain do not collide.
-        """,
-    )
+        """
+        return lib.cpConstraintGetCollideBodies(self._constraint)
+
+    @collide_bodies.setter
+    def collide_bodies(self, collide_bodies: bool) -> None:
+        lib.cpConstraintSetCollideBodies(self._constraint, collide_bodies)
 
     @property
     def impulse(self) -> float:
@@ -215,8 +205,8 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
 
     def activate_bodies(self) -> None:
         """Activate the bodies this constraint is attached to"""
-        self._a.activate()
-        self._b.activate()
+        self.a.activate()
+        self.b.activate()
 
     @property
     def pre_solve(self) -> Optional[Callable[["Constraint", "Space"], None]]:
@@ -277,12 +267,15 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
 
     def _set_bodies(self, a: "Body", b: "Body") -> None:
         assert a is not b
+        assert (
+            a.body_type == Body.DYNAMIC or b.body_type == Body.DYNAMIC
+        ), "At least one of the two bodies attached to a constraint must be DYNAMIC."
         self._a = a
         self._b = b
-        a._constraints.add(self)
-        b._constraints.add(self)
+        a._constraints[self] = None
+        b._constraints[self] = None
 
-    def __getstate__(self) -> Dict[str, List[Tuple[str, Any]]]:
+    def __getstate__(self) -> dict[str, list[tuple[str, Any]]]:
         """Return the state of this object
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
@@ -295,7 +288,7 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
 
         return d
 
-    def __setstate__(self, state: Dict[str, List[Tuple[str, Any]]]) -> None:
+    def __setstate__(self, state: dict[str, list[tuple[str, Any]]]) -> None:
         """Unpack this object from a saved state.
 
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
@@ -322,8 +315,8 @@ class PinJoint(Constraint):
         self,
         a: "Body",
         b: "Body",
-        anchor_a: Tuple[float, float] = (0, 0),
-        anchor_b: Tuple[float, float] = (0, 0),
+        anchor_a: tuple[float, float] = (0, 0),
+        anchor_b: tuple[float, float] = (0, 0),
     ) -> None:
         """a and b are the two bodies to connect, and anchor_a and anchor_b are
         the anchor points on those bodies.
@@ -337,33 +330,33 @@ class PinJoint(Constraint):
         _constraint = lib.cpPinJointNew(a._body, b._body, anchor_a, anchor_b)
         self._init(a, b, _constraint)
 
-    def _get_anchor_a(self) -> Vec2d:
+    @property
+    def anchor_a(self) -> Vec2d:
         v = lib.cpPinJointGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: Tuple[float, float]) -> None:
+    @anchor_a.setter
+    def anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPinJointSetAnchorA(self._constraint, anchor)
 
-    anchor_a = property(_get_anchor_a, _set_anchor_a)
-
-    def _get_anchor_b(self) -> Vec2d:
+    @property
+    def anchor_b(self) -> Vec2d:
         v = lib.cpPinJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: Tuple[float, float]) -> None:
+    @anchor_b.setter
+    def anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPinJointSetAnchorB(self._constraint, anchor)
 
-    anchor_b = property(_get_anchor_b, _set_anchor_b)
-
-    def _get_distance(self) -> float:
+    @property
+    def distance(self) -> float:
         return lib.cpPinJointGetDist(self._constraint)
 
-    def _set_distance(self, distance: float) -> None:
+    @distance.setter
+    def distance(self, distance: float) -> None:
         lib.cpPinJointSetDist(self._constraint, distance)
-
-    distance = property(_get_distance, _set_distance)
 
 
 class SlideJoint(Constraint):
@@ -384,8 +377,8 @@ class SlideJoint(Constraint):
         self,
         a: "Body",
         b: "Body",
-        anchor_a: Tuple[float, float],
-        anchor_b: Tuple[float, float],
+        anchor_a: tuple[float, float],
+        anchor_b: tuple[float, float],
         min: float,
         max: float,
     ) -> None:
@@ -400,41 +393,41 @@ class SlideJoint(Constraint):
         )
         self._init(a, b, _constraint)
 
-    def _get_anchor_a(self) -> Vec2d:
+    @property
+    def anchor_a(self) -> Vec2d:
         v = lib.cpSlideJointGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: Tuple[float, float]) -> None:
+    @anchor_a.setter
+    def anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpSlideJointSetAnchorA(self._constraint, anchor)
 
-    anchor_a = property(_get_anchor_a, _set_anchor_a)
-
-    def _get_anchor_b(self) -> Vec2d:
+    @property
+    def anchor_b(self) -> Vec2d:
         v = lib.cpSlideJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: Tuple[float, float]) -> None:
+    @anchor_b.setter
+    def anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpSlideJointSetAnchorB(self._constraint, anchor)
 
-    anchor_b = property(_get_anchor_b, _set_anchor_b)
-
-    def _get_min(self) -> float:
+    @property
+    def min(self) -> float:
         return lib.cpSlideJointGetMin(self._constraint)
 
-    def _set_min(self, min: float) -> None:
+    @min.setter
+    def min(self, min: float) -> None:
         lib.cpSlideJointSetMin(self._constraint, min)
 
-    min = property(_get_min, _set_min)
-
-    def _get_max(self) -> float:
+    @property
+    def max(self) -> float:
         return lib.cpSlideJointGetMax(self._constraint)
 
-    def _set_max(self, max: float) -> None:
+    @max.setter
+    def max(self, max: float) -> None:
         lib.cpSlideJointSetMax(self._constraint, max)
-
-    max = property(_get_max, _set_max)
 
 
 class PivotJoint(Constraint):
@@ -450,7 +443,7 @@ class PivotJoint(Constraint):
         a: "Body",
         b: "Body",
         *args: Union[
-            Tuple[float, float], Tuple[Tuple[float, float], Tuple[float, float]]
+            tuple[float, float], tuple[tuple[float, float], tuple[float, float]]
         ],
     ) -> None:
         """a and b are the two bodies to connect, and pivot is the point in
@@ -484,25 +477,25 @@ class PivotJoint(Constraint):
 
         self._init(a, b, _constraint)
 
-    def _get_anchor_a(self) -> Vec2d:
+    @property
+    def anchor_a(self) -> Vec2d:
         v = lib.cpPivotJointGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: Tuple[float, float]) -> None:
+    @anchor_a.setter
+    def anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPivotJointSetAnchorA(self._constraint, anchor)
 
-    anchor_a = property(_get_anchor_a, _set_anchor_a)
-
-    def _get_anchor_b(self) -> Vec2d:
+    @property
+    def anchor_b(self) -> Vec2d:
         v = lib.cpPivotJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: Tuple[float, float]) -> None:
+    @anchor_b.setter
+    def anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpPivotJointSetAnchorB(self._constraint, anchor)
-
-    anchor_b = property(_get_anchor_b, _set_anchor_b)
 
 
 class GrooveJoint(Constraint):
@@ -521,9 +514,9 @@ class GrooveJoint(Constraint):
         self,
         a: "Body",
         b: "Body",
-        groove_a: Tuple[float, float],
-        groove_b: Tuple[float, float],
-        anchor_b: Tuple[float, float],
+        groove_a: tuple[float, float],
+        groove_b: tuple[float, float],
+        anchor_b: tuple[float, float],
     ) -> None:
         """The groove goes from groove_a to groove_b on body a, and the pivot
         is attached to anchor_b on body b.
@@ -538,35 +531,35 @@ class GrooveJoint(Constraint):
         )
         self._init(a, b, _constraint)
 
-    def _get_anchor_b(self) -> Vec2d:
+    @property
+    def anchor_b(self) -> Vec2d:
         v = lib.cpGrooveJointGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: Tuple[float, float]) -> None:
+    @anchor_b.setter
+    def anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpGrooveJointSetAnchorB(self._constraint, anchor)
 
-    anchor_b = property(_get_anchor_b, _set_anchor_b)
-
-    def _get_groove_a(self) -> Vec2d:
+    @property
+    def groove_a(self) -> Vec2d:
         v = lib.cpGrooveJointGetGrooveA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_groove_a(self, groove: Tuple[float, float]) -> None:
+    @groove_a.setter
+    def groove_a(self, groove: tuple[float, float]) -> None:
         assert len(groove) == 2
         lib.cpGrooveJointSetGrooveA(self._constraint, groove)
 
-    groove_a = property(_get_groove_a, _set_groove_a)
-
-    def _get_groove_b(self) -> Vec2d:
+    @property
+    def groove_b(self) -> Vec2d:
         v = lib.cpGrooveJointGetGrooveB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_groove_b(self, groove: Tuple[float, float]) -> None:
+    @groove_b.setter
+    def groove_b(self, groove: tuple[float, float]) -> None:
         assert len(groove) == 2
         lib.cpGrooveJointSetGrooveB(self._constraint, groove)
-
-    groove_b = property(_get_groove_b, _set_groove_b)
 
 
 class DampedSpring(Constraint):
@@ -574,6 +567,8 @@ class DampedSpring(Constraint):
 
     The spring allows you to define the rest length, stiffness and damping.
     """
+
+    _force_func: Optional[_ForceFunc] = None
 
     _pickle_attrs_init = Constraint._pickle_attrs_init + [
         "anchor_a",
@@ -583,12 +578,14 @@ class DampedSpring(Constraint):
         "damping",
     ]
 
+    _pickle_attrs_skip = Constraint._pickle_attrs_skip + ["_force_func"]
+
     def __init__(
         self,
         a: "Body",
         b: "Body",
-        anchor_a: Tuple[float, float],
-        anchor_b: Tuple[float, float],
+        anchor_a: tuple[float, float],
+        anchor_b: tuple[float, float],
         rest_length: float,
         stiffness: float,
         damping: float,
@@ -619,59 +616,86 @@ class DampedSpring(Constraint):
 
         self._init(a, b, _constraint)
 
-    def _get_anchor_a(self) -> Vec2d:
+    @property
+    def anchor_a(self) -> Vec2d:
         v = lib.cpDampedSpringGetAnchorA(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_a(self, anchor: Tuple[float, float]) -> None:
+    @anchor_a.setter
+    def anchor_a(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpDampedSpringSetAnchorA(self._constraint, anchor)
 
-    anchor_a = property(_get_anchor_a, _set_anchor_a)
-
-    def _get_anchor_b(self) -> Vec2d:
+    @property
+    def anchor_b(self) -> Vec2d:
         v = lib.cpDampedSpringGetAnchorB(self._constraint)
         return Vec2d(v.x, v.y)
 
-    def _set_anchor_b(self, anchor: Tuple[float, float]) -> None:
+    @anchor_b.setter
+    def anchor_b(self, anchor: tuple[float, float]) -> None:
         assert len(anchor) == 2
         lib.cpDampedSpringSetAnchorB(self._constraint, anchor)
 
-    anchor_b = property(_get_anchor_b, _set_anchor_b)
-
-    def _get_rest_length(self) -> float:
+    @property
+    def rest_length(self) -> float:
+        """The distance the spring wants to be."""
         return lib.cpDampedSpringGetRestLength(self._constraint)
 
-    def _set_rest_length(self, rest_length: float) -> None:
+    @rest_length.setter
+    def rest_length(self, rest_length: float) -> None:
         lib.cpDampedSpringSetRestLength(self._constraint, rest_length)
 
-    rest_length = property(
-        _get_rest_length,
-        _set_rest_length,
-        doc="""The distance the spring wants to be.""",
-    )
-
-    def _get_stiffness(self) -> float:
+    @property
+    def stiffness(self) -> float:
+        """The spring constant (Young's modulus)."""
         return lib.cpDampedSpringGetStiffness(self._constraint)
 
-    def _set_stiffness(self, stiffness: float) -> None:
+    @stiffness.setter
+    def stiffness(self, stiffness: float) -> None:
         lib.cpDampedSpringSetStiffness(self._constraint, stiffness)
 
-    stiffness = property(
-        _get_stiffness, _set_stiffness, doc="""The spring constant (Young's modulus)."""
-    )
-
-    def _get_damping(self) -> float:
+    @property
+    def damping(self) -> float:
+        """How soft to make the damping of the spring."""
         return lib.cpDampedSpringGetDamping(self._constraint)
 
-    def _set_damping(self, damping: float) -> None:
+    @damping.setter
+    def damping(self, damping: float) -> None:
         lib.cpDampedSpringSetDamping(self._constraint, damping)
 
-    damping = property(
-        _get_damping,
-        _set_damping,
-        doc="""How soft to make the damping of the spring.""",
-    )
+    @staticmethod
+    def spring_force(spring: "DampedSpring", dist: float) -> float:
+        """Default damped spring force function."""
+        return lib.defaultSpringForce(spring._constraint, dist)
+
+    @property
+    def force_func(self) -> _ForceFunc:
+        """The force callback function.
+
+        The force callback function is called each time step and is used to
+        calculate the force of the spring (exclusing any damping).
+
+        Defaults to :py:func:`DampedSpring.spring_force`
+        """
+        if self._force_func == None:
+            return DampedSpring.spring_force
+        else:
+            return self._force_func
+
+    @force_func.setter
+    def force_func(self, func: _ForceFunc) -> None:
+        self._force_func = func
+        if func == DampedSpring.spring_force:
+            lib.cpDampedSpringSetSpringForceFunc(
+                self._constraint,
+                ffi.cast(
+                    "cpDampedSpringForceFunc", ffi.addressof(lib, "defaultSpringForce")
+                ),
+            )
+        else:
+            lib.cpDampedSpringSetSpringForceFunc(
+                self._constraint, lib.ext_cpDampedSpringForceFunc
+            )
 
 
 class DampedRotarySpring(Constraint):
@@ -682,6 +706,10 @@ class DampedRotarySpring(Constraint):
         "stiffness",
         "damping",
     ]
+
+    _pickle_attrs_skip = Constraint._pickle_attrs_skip + ["_torque_func"]
+
+    _torque_func: Optional[_TorqueFunc] = None
 
     def __init__(
         self, a: "Body", b: "Body", rest_angle: float, stiffness: float, damping: float
@@ -700,39 +728,67 @@ class DampedRotarySpring(Constraint):
         )
         self._init(a, b, _constraint)
 
-    def _get_rest_angle(self) -> float:
+    @property
+    def rest_angle(self) -> float:
+        """The relative angle in radians that the bodies want to have"""
         return lib.cpDampedRotarySpringGetRestAngle(self._constraint)
 
-    def _set_rest_angle(self, rest_angle: float) -> None:
+    @rest_angle.setter
+    def rest_angle(self, rest_angle: float) -> None:
         lib.cpDampedRotarySpringSetRestAngle(self._constraint, rest_angle)
 
-    rest_angle = property(
-        _get_rest_angle,
-        _set_rest_angle,
-        doc="""The relative angle in radians that the bodies want to have""",
-    )
-
-    def _get_stiffness(self) -> float:
+    @property
+    def stiffness(self) -> float:
+        """The spring constant (Young's modulus)."""
         return lib.cpDampedRotarySpringGetStiffness(self._constraint)
 
-    def _set_stiffness(self, stiffness: float) -> None:
+    @stiffness.setter
+    def stiffness(self, stiffness: float) -> None:
         lib.cpDampedRotarySpringSetStiffness(self._constraint, stiffness)
 
-    stiffness = property(
-        _get_stiffness, _set_stiffness, doc="""The spring constant (Young's modulus)."""
-    )
-
-    def _get_damping(self) -> float:
+    @property
+    def damping(self) -> float:
+        """How soft to make the damping of the spring."""
         return lib.cpDampedRotarySpringGetDamping(self._constraint)
 
-    def _set_damping(self, damping: float) -> None:
+    @damping.setter
+    def damping(self, damping: float) -> None:
         lib.cpDampedRotarySpringSetDamping(self._constraint, damping)
 
-    damping = property(
-        _get_damping,
-        _set_damping,
-        doc="""How soft to make the damping of the spring.""",
-    )
+    @staticmethod
+    def spring_torque(spring: "DampedRotarySpring", relative_angle: float) -> float:
+        """Default damped rotary spring torque function."""
+        return lib.defaultSpringTorque(spring._constraint, relative_angle)
+
+    @property
+    def torque_func(self) -> _TorqueFunc:
+        """The torque callback function.
+
+        The torque callback function is called each time step and is used to
+        calculate the torque of the spring (exclusing any damping).
+
+        Defaults to :py:func:`DampedRotarySpring.spring_torque`
+        """
+        if self._torque_func == None:
+            return DampedRotarySpring.spring_torque
+        else:
+            return self._torque_func
+
+    @torque_func.setter
+    def torque_func(self, func: _TorqueFunc) -> None:
+        self._torque_func = func
+        if func == DampedRotarySpring.spring_torque:
+            lib.cpDampedRotarySpringSetSpringTorqueFunc(
+                self._constraint,
+                ffi.cast(
+                    "cpDampedRotarySpringTorqueFunc",
+                    ffi.addressof(lib, "defaultSpringTorque"),
+                ),
+            )
+        else:
+            lib.cpDampedRotarySpringSetSpringTorqueFunc(
+                self._constraint, lib.ext_cpDampedRotarySpringTorqueFunc
+            )
 
 
 class RotaryLimitJoint(Constraint):
@@ -750,21 +806,21 @@ class RotaryLimitJoint(Constraint):
         _constraint = lib.cpRotaryLimitJointNew(a._body, b._body, min, max)
         self._init(a, b, _constraint)
 
-    def _get_min(self) -> float:
+    @property
+    def min(self) -> float:
         return lib.cpRotaryLimitJointGetMin(self._constraint)
 
-    def _set_min(self, min: float) -> None:
+    @min.setter
+    def min(self, min: float) -> None:
         lib.cpRotaryLimitJointSetMin(self._constraint, min)
 
-    min = property(_get_min, _set_min)
-
-    def _get_max(self) -> float:
+    @property
+    def max(self) -> float:
         return lib.cpRotaryLimitJointGetMax(self._constraint)
 
-    def _set_max(self, max: float) -> None:
+    @max.setter
+    def max(self, max: float) -> None:
         lib.cpRotaryLimitJointSetMax(self._constraint, max)
-
-    max = property(_get_max, _set_max)
 
 
 class RatchetJoint(Constraint):
@@ -781,29 +837,29 @@ class RatchetJoint(Constraint):
         _constraint = lib.cpRatchetJointNew(a._body, b._body, phase, ratchet)
         self._init(a, b, _constraint)
 
-    def _get_angle(self) -> float:
+    @property
+    def angle(self) -> float:
         return lib.cpRatchetJointGetAngle(self._constraint)
 
-    def _set_angle(self, angle: float) -> None:
+    @angle.setter
+    def angle(self, angle: float) -> None:
         lib.cpRatchetJointSetAngle(self._constraint, angle)
 
-    angle = property(_get_angle, _set_angle)
-
-    def _get_phase(self) -> float:
+    @property
+    def phase(self) -> float:
         return lib.cpRatchetJointGetPhase(self._constraint)
 
-    def _set_phase(self, phase: float) -> None:
+    @phase.setter
+    def phase(self, phase: float) -> None:
         lib.cpRatchetJointSetPhase(self._constraint, phase)
 
-    phase = property(_get_phase, _set_phase)
-
-    def _get_ratchet(self) -> float:
+    @property
+    def ratchet(self) -> float:
         return lib.cpRatchetJointGetRatchet(self._constraint)
 
-    def _set_ratchet(self, ratchet: float) -> None:
+    @ratchet.setter
+    def ratchet(self, ratchet: float) -> None:
         lib.cpRatchetJointSetRatchet(self._constraint, ratchet)
-
-    ratchet = property(_get_ratchet, _set_ratchet)
 
 
 class GearJoint(Constraint):
@@ -821,21 +877,21 @@ class GearJoint(Constraint):
         _constraint = lib.cpGearJointNew(a._body, b._body, phase, ratio)
         self._init(a, b, _constraint)
 
-    def _get_phase(self) -> float:
+    @property
+    def phase(self) -> float:
         return lib.cpGearJointGetPhase(self._constraint)
 
-    def _set_phase(self, phase: float) -> None:
+    @phase.setter
+    def phase(self, phase: float) -> None:
         lib.cpGearJointSetPhase(self._constraint, phase)
 
-    phase = property(_get_phase, _set_phase)
-
-    def _get_ratio(self) -> float:
+    @property
+    def ratio(self) -> float:
         return lib.cpGearJointGetRatio(self._constraint)
 
-    def _set_ratio(self, ratio: float) -> None:
+    @ratio.setter
+    def ratio(self, ratio: float) -> None:
         lib.cpGearJointSetRatio(self._constraint, ratio)
-
-    ratio = property(_get_ratio, _set_ratio)
 
 
 class SimpleMotor(Constraint):
@@ -853,10 +909,13 @@ class SimpleMotor(Constraint):
         _constraint = lib.cpSimpleMotorNew(a._body, b._body, rate)
         self._init(a, b, _constraint)
 
-    def _get_rate(self) -> float:
+    @property
+    def rate(self) -> float:
+        """The desired relative angular velocity"""
         return lib.cpSimpleMotorGetRate(self._constraint)
 
-    def _set_rate(self, rate: float) -> None:
+    @rate.setter
+    def rate(self, rate: float) -> None:
         lib.cpSimpleMotorSetRate(self._constraint, rate)
 
     rate = property(

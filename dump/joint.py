@@ -1,7 +1,8 @@
 import pymunk
+import pymunk.CustomConstraint
 
 a, b = pymunk.Body(1, 2), pymunk.Body(1, 2)
-c = pymunk.CustomConstraint(a, b)
+c = pymunk.CustomConstraint.CustomConstraint(a, b)
 
 space = pymunk.Space()
 

@@ -1,7 +1,8 @@
-"""A basic playground. Most interesting function is draw a shape, basically 
-move the mouse as you want and pymunk will approximate a Poly shape from the 
+"""A basic playground. Most interesting function is draw a shape, basically
+move the mouse as you want and pymunk will approximate a Poly shape from the
 drawing.
 """
+
 __docformat__ = "reStructuredText"
 
 import pygame
@@ -66,7 +67,7 @@ class PhysicsDemo:
             "LMB: Create ball",
             "LMB + Shift: Create box",
             "RMB on object: Remove object",
-            "RMB(hold) + Shift: Create polygon, release to finish (we be converted to a convex hull of the points)",
+            "RMB(hold) + Shift: Create polygon, release to finish (will be converted to a convex hull of the points)",
             "RMB + Ctrl: Create wall, release to finish",
             "Space: Stop physics simulation",
             "k: Spawn a bunch of blocks",

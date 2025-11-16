@@ -4,6 +4,8 @@ extern "Python"
     // cpConstraint.h
     void ext_cpConstraintPreSolveFunc(cpConstraint *constraint, cpSpace *space);
     void ext_cpConstraintPostSolveFunc(cpConstraint *constraint, cpSpace *space);
+    cpFloat ext_cpDampedSpringForceFunc(cpConstraint *constraint, cpFloat dist);
+    cpFloat ext_cpDampedRotarySpringTorqueFunc(cpConstraint *constraint, cpFloat relative_angle);
 
     // cpBody.h
     void ext_cpBodyVelocityFunc(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt);
@@ -15,8 +17,8 @@ extern "Python"
 
     // cpSpace.h
 
-    cpBool ext_cpCollisionBeginFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
-    cpBool ext_cpCollisionPreSolveFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
+    void ext_cpCollisionBeginFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
+    void ext_cpCollisionPreSolveFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
     void ext_cpCollisionPostSolveFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
     void ext_cpCollisionSeparateFunc(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
 
@@ -45,4 +47,7 @@ extern "Python"
     void ext_cpConstraintApplyCachedImpulseImpl(cpConstraint *constraint, cpFloat dt_coef);
     void ext_cpConstraintApplyImpulseImpl(cpConstraint *constraint, cpFloat dt);
     cpFloat ext_cpConstraintGetImpulseImpl(cpConstraint *constraint);
+
+    // custom method for logging (override of CP_MESSAGE)
+    void ext_pyLog(const char *formattedMessage);
 }

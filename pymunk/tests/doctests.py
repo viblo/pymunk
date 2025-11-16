@@ -2,16 +2,15 @@ import doctest
 import pkgutil
 import sys
 import unittest
-from typing import Any, List
 
 import pymunk
 
 ignores = ["pymunk_extension_build"]
-all_dependencies = ["pygame", "pyglet", "matplotlib", "_pyglet"]
+all_dependencies = ["pygame", "pyglet", "matplotlib", "_pyglet", "pillow", "PIL"]
 
 
 def load_tests(
-    tests: unittest.TestSuite, dependencies: List[str] = []
+    tests: unittest.TestSuite, dependencies: list[str] = []
 ) -> unittest.TestSuite:
     for importer, modname, ispkg in pkgutil.iter_modules(pymunk.__path__):
         # try:
@@ -23,11 +22,17 @@ def load_tests(
                 skip = True
         if skip:
             continue
-        tests.addTests(doctest.DocTestSuite("pymunk." + modname))
+        tests.addTests(
+            # Exception details are different in Pypy, so they need ot be ignored.
+            doctest.DocTestSuite(
+                "pymunk." + modname, optionflags=doctest.IGNORE_EXCEPTION_DETAIL
+            )
+        )
 
-        # except Exception as e:
-        #    print("Skipping " + modname, e)
-    tests.addTests(doctest.DocTestSuite(pymunk))
+    tests.addTests(
+        # Exception details are different in Pypy, so they need ot be ignored.
+        doctest.DocTestSuite(pymunk, optionflags=doctest.IGNORE_EXCEPTION_DETAIL)
+    )
     return tests
 
 

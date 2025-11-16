@@ -1,6 +1,5 @@
-"""This example lets you dynamically create static walls and dynamic balls
+"""This example lets you dynamically create static walls and dynamic balls"""
 
-"""
 __docformat__ = "reStructuredText"
 
 import pygame
@@ -24,7 +23,7 @@ def mouse_coll_func(arbiter, space, data):
     """Simple callback that increases the radius of circles touching the mouse"""
     s1, s2 = arbiter.shapes
     s2.unsafe_set_radius(s2.radius + 0.15)
-    return False
+    arbiter.process_collision = False
 
 
 def main():
@@ -47,9 +46,7 @@ def main():
     mouse_shape.collision_type = COLLTYPE_MOUSE
     space.add(mouse_body, mouse_shape)
 
-    space.add_collision_handler(
-        COLLTYPE_MOUSE, COLLTYPE_BALL
-    ).pre_solve = mouse_coll_func
+    space.on_collision(COLLTYPE_MOUSE, COLLTYPE_BALL, pre_solve=mouse_coll_func)
 
     ### Static line
     line_point1 = None

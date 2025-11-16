@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2016 Victor Blomqvist
+# Copyright (c) 2007-2025 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,21 +21,21 @@
 # SOFTWARE.
 # ----------------------------------------------------------------------------
 
-"""This submodule contains helper functions to help with quick prototyping 
+"""This submodule contains helper functions to help with quick prototyping
 using pymunk together with pyglet.
 
 Intended to help with debugging and prototyping, not for actual production use
-in a full application. The methods contained in this module is opinionated 
-about your coordinate system and not very optimized (they use batched 
-drawing, but there is probably room for optimizations still). 
+in a full application. The methods contained in this module is opinionated
+about your coordinate system and not very optimized (they use batched
+drawing, but there is probably room for optimizations still).
 """
 
 __docformat__ = "reStructuredText"
 
 import math
-from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Type
+from typing import TYPE_CHECKING, Any, Optional, Sequence
 
-import pyglet  # type: ignore
+import pyglet
 
 import pymunk
 from pymunk.space_debug_draw_options import SpaceDebugColor
@@ -52,7 +52,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         Typical usage::
 
         >>> import pymunk
-        >>> import pymunk.pygame_util
+        >>> import pymunk.pyglet_util
         >>> s = pymunk.Space()
         >>> options = pymunk.pyglet_util.DrawOptions()
         >>> s.debug_draw(options)
@@ -83,7 +83,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
         """
         self.new_batch = False
-        self.draw_shapes: List[Any] = []
+        self.draw_shapes: list[Any] = []
 
         if "batch" not in kwargs:
             self.new_batch = True
@@ -99,7 +99,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
 
     def __exit__(
         self,
-        type: Optional[Type[BaseException]],
+        type: Optional[type[BaseException]],
         value: Optional[BaseException],
         traceback: Optional["TracebackType"],
     ) -> None:
@@ -114,7 +114,6 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
     ) -> None:
-
         bg = pyglet.graphics.Group(0)
         fg = pyglet.graphics.Group(1)
 
@@ -123,16 +122,25 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
             pos.x, pos.y, radius, color=color, batch=self.batch, group=bg
         )
         self.draw_shapes.append(c)
-        cc = pos + Vec2d(radius, 0).rotated(angle)
-        c = outline_color.as_int()
+        cc = pos + Vec2d.from_polar(radius, angle)
+        color = outline_color.as_int()
         l = pyglet.shapes.Line(
-            pos.x, pos.y, cc.x, cc.y, width=1, color=c, batch=self.batch, group=fg
+            pos.x,
+            pos.y,
+            cc.x,
+            cc.y,
+            thickness=1,
+            color=color,
+            batch=self.batch,
+            group=fg,
         )
         self.draw_shapes.append(l)
 
     def draw_segment(self, a: Vec2d, b: Vec2d, color: SpaceDebugColor) -> None:
         c = color.as_int()
-        l = pyglet.shapes.Line(a.x, a.y, b.x, b.y, width=1, color=c, batch=self.batch)
+        l = pyglet.shapes.Line(
+            a.x, a.y, b.x, b.y, thickness=1, color=c, batch=self.batch
+        )
         self.draw_shapes.append(l)
 
     def draw_fat_segment(
@@ -143,7 +151,6 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
     ) -> None:
-
         c = fill_color.as_int()
         pv1 = a
         pv2 = b
@@ -173,7 +180,6 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         outline_color: SpaceDebugColor,
         fill_color: SpaceDebugColor,
     ) -> None:
-
         vs = [(v.x, v.y) for v in verts]
 
         c = fill_color.as_int()

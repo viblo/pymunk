@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2020 Victor Blomqvist
+# Copyright (c) 2007-2025 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 # ----------------------------------------------------------------------------
 
 """
-Internal module used to make it possible to import the pymunk verison number 
+Internal module used to make it possible to import the pymunk verison number
 from more places than __init__.
 
 """
@@ -32,9 +32,9 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-version = "6.5.1"
+version = "7.2.0"
 
 chipmunk_version = "%s-%s" % (
     ffi.string(cp.cpVersionString).decode("utf-8"),
-    "5dd7d774053145fa37f352d7a07d2f75a9bd8039",
+    "ade7ed72849e60289eefb7a41e79ae6322fefaf3",
 )

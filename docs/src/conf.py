@@ -10,76 +10,12 @@ import sys
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "Pymunk"
-copyright = "2013-2022, Victor Blomqvist"
+copyright = "2013-2025, Victor Blomqvist"
 author = "Victor Blomqvist"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-
-# To allow readthedocs.org build documentation without the chipmunk library file
-
-
-class Mock(object):
-    # __package__ = 'pymunk._chipmunk_cffi_abi'
-    def __init__(self, *args, **kwargs):
-        # print("init", args, kwargs)
-        pass
-
-    def __call__(self, *args, **kwargs):
-        # print("call", args, kwargs)
-        return Mock()
-
-    @classmethod
-    def __getattr__(cls, name):
-        # print("getattr", cls, name)
-        if name in ("__file__", "__path__"):
-            return "/dev/null"
-        elif name[0] == name[0].upper():
-            return type(name, (), {})
-        else:
-            return Mock()
-
-
-MOCK_MODULES = [
-    # 'pymunk._chipmunk_cffi',
-    #'pymunk._chipmunk_cffi_abi',
-    #'_chipmunk_cffi',
-    #'_chipmunk_cffi_abi',
-    #'._chipmunk_cffi','_chipmunk_cffi',
-    "pymunk._chipmunk",
-    "_cffi_backend",
-    "matplotlib",
-    "matplotlib.pyplot",
-    "pygame",
-    "pygame.locals",
-    "pygame.color",
-    "pyglet",
-]
-
-
-class MockFinder(object):
-    def find_module(self, fullname, path=None):
-        # if "cffi" in fullname:
-        #    print("CFFI!!!", fullname, path)
-        if fullname in MOCK_MODULES:
-            # print("fm: fullname", fullname, self)
-            return self
-        return None
-
-    def load_module(self, fullname):
-        if fullname in sys.modules:
-            return sys.modules[fullname]
-        # print("lm: fullname", fullname, self)
-        return Mock()
-
-
-# sys.meta_path.insert(0, MockFinder())
-
-# print(sys.meta_path)
-
-for m in MOCK_MODULES:
-    sys.modules[m] = Mock()
 
 sys.path.append(os.path.abspath("."))
 sys.path.append(os.path.abspath("../.."))
@@ -91,15 +27,8 @@ extensions = [  #'sphinx.ext.autodoc',
     "aafigure.sphinxext",
 ]
 
-
 templates_path = ["_templates"]
 exclude_patterns = []
-
-
-import pymunk
-
-release = pymunk.version
-print(f"Documentation for Pymunk {release}")
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -149,4 +78,21 @@ autodoc_default_options = {
     # "member-order": "bysource",
     # "special-members": "__init__, __add__"
     #'exclude-members': '__weakref__'
+    "exclude-members": "index, count",
 }
+
+autodoc_preserve_defaults = True
+
+autodoc_mock_imports = [
+    "_chipmunk_cffi",  # mock to make enums like DYNAMIC be documented properly
+    "pymunk._chipmunk",
+    "_cffi_backend",
+    "matplotlib",
+    "matplotlib.pyplot",
+    "pygame",
+    "pygame.locals",
+    "pygame.color",
+    "pyglet",
+    "pillow",
+    "PIL"
+]

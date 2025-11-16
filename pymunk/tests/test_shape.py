@@ -6,10 +6,6 @@ import pymunk as p
 
 
 class UnitTestShape(unittest.TestCase):
-    def testId(self) -> None:
-        c = p.Circle(None, 4)
-        self.assertGreater(c._id, 0)
-
     def testPointQuery(self) -> None:
         b = p.Body(10, 10)
         c = p.Circle(b, 5)
@@ -36,15 +32,14 @@ class UnitTestShape(unittest.TestCase):
         c.cache_bb()
 
         info = c.segment_query((10, -50), (10, 50))
-        self.assertEqual(info.shape, None)
-        self.assertEqual(info.point, (10, 50))
-        self.assertEqual(info.normal, (0, 0))
-        self.assertEqual(info.alpha, 1.0)
+        self.assertEqual(info, None)
 
         info = c.segment_query((10, -50), (10, 50), 6)
+        assert info != None
         self.assertEqual(info.shape, c)
 
         info = c.segment_query((0, -50), (0, 50))
+        assert info != None
         self.assertEqual(info.shape, c)
         self.assertAlmostEqual(info.point.x, 0)
         self.assertAlmostEqual(info.point.y, -5)
@@ -195,8 +190,9 @@ class UnitTestShape(unittest.TestCase):
         self.assertEqual(c.surface_velocity, c2.surface_velocity)
         self.assertEqual(c.density, c2.density)
         self.assertEqual(c.mass, c2.mass)
+        assert c.body is not None
         self.assertEqual(c.body.mass, c2.body.mass)
-
+        self.assertIsNotNone
         c = p.Circle(None, 1)
         c.density = 3
 
@@ -302,11 +298,10 @@ class UnitTestSegment(unittest.TestCase):
 
         self.num_of_begins = 0
 
-        def begin(arb: p.Arbiter, space: p.Space, data: Any) -> bool:
+        def begin(arb: p.Arbiter, space: p.Space, data: Any) -> None:
             self.num_of_begins += 1
-            return True
 
-        s.add_default_collision_handler().begin = begin
+        s.on_collision(begin=begin)
         s.step(0.1)
 
         self.assertEqual(1, self.num_of_begins)

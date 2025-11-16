@@ -1,8 +1,8 @@
-"""Showcase of flying arrows that can stick to objects in a somewhat 
+"""Showcase of flying arrows that can stick to objects in a somewhat
 realistic looking way.
 """
+
 import sys
-from typing import List
 
 import pygame
 
@@ -49,7 +49,7 @@ def post_solve_arrow_hit(arbiter, space, data):
             arrow_body,
             other_body,
             position,
-            data["flying_arrows"],
+            data,
         )
 
 
@@ -70,7 +70,7 @@ def main():
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     # walls - the left-top-right walls
-    static: List[pymunk.Shape] = [
+    static: list[pymunk.Shape] = [
         pymunk.Segment(space.static_body, (50, 550), (50, 50), 5),
         pymunk.Segment(space.static_body, (50, 50), (650, 50), 5),
         pymunk.Segment(space.static_body, (650, 50), (650, 550), 5),
@@ -97,10 +97,8 @@ def main():
     arrow_body, arrow_shape = create_arrow()
     space.add(arrow_body, arrow_shape)
 
-    flying_arrows: List[pymunk.Body] = []
-    handler = space.add_collision_handler(0, 1)
-    handler.data["flying_arrows"] = flying_arrows
-    handler.post_solve = post_solve_arrow_hit
+    flying_arrows: list[pymunk.Body] = []
+    space.on_collision(0, 1, post_solve=post_solve_arrow_hit, data=flying_arrows)
 
     start_time = 0
     while running:
@@ -120,8 +118,7 @@ def main():
 
                 diff = end_time - start_time
                 power = max(min(diff, 1000), 10) * 13.5
-                impulse = power * Vec2d(1, 0)
-                impulse = impulse.rotated(arrow_body.angle)
+                impulse = Vec2d.from_polar(power, arrow_body.angle)
                 arrow_body.body_type = pymunk.Body.DYNAMIC
                 arrow_body.apply_impulse_at_world_point(impulse, arrow_body.position)
 
@@ -148,16 +145,16 @@ def main():
         )
         cannon_body.angle = (mouse_position - cannon_body.position).angle
         # move the unfired arrow together with the cannon
-        arrow_body.position = cannon_body.position + Vec2d(
-            cannon_shape.radius + 40, 0
-        ).rotated(cannon_body.angle)
+        arrow_body.position = cannon_body.position + Vec2d.from_polar(
+            cannon_shape.radius + 40, cannon_body.angle
+        )
         arrow_body.angle = cannon_body.angle
         # print(arrow_body.angle)
 
         for flying_arrow in flying_arrows:
             drag_constant = 0.0002
 
-            pointing_direction = Vec2d(1, 0).rotated(flying_arrow.angle)
+            pointing_direction = Vec2d.from_polar(1, flying_arrow.angle)
             # print(pointing_direction.angle, flying_arrow.angle)
             flight_direction = Vec2d(*flying_arrow.velocity)
             flight_direction, flight_speed = flight_direction.normalized_and_length()
@@ -167,10 +164,10 @@ def main():
             # around even when fired straight up. Might not be as accurate, but
             # maybe look better.
             drag_force_magnitude = (
-                (1 - abs(dot)) * flight_speed ** 2 * drag_constant * flying_arrow.mass
+                (1 - abs(dot)) * flight_speed**2 * drag_constant * flying_arrow.mass
             )
-            arrow_tail_position = flying_arrow.position + Vec2d(-50, 0).rotated(
-                flying_arrow.angle
+            arrow_tail_position = flying_arrow.position + Vec2d.from_polar(
+                -50, flying_arrow.angle
             )
             flying_arrow.apply_impulse_at_world_point(
                 drag_force_magnitude * -flight_direction, arrow_tail_position

@@ -1,7 +1,6 @@
 """This example showcase an arrow pointing or aiming towards the cursor.
 """
 
-__version__ = "$Id:$"
 __docformat__ = "reStructuredText"
 
 import sys

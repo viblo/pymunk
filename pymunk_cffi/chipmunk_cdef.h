@@ -54,6 +54,74 @@ typedef struct cpArbiter cpArbiter;
 typedef struct cpSpace cpSpace;
 
 ///////////////////////////////////////////
+// chipmunk_structs.h
+///////////////////////////////////////////
+
+enum cpArbiterState
+{
+    // Arbiter is active and its the first collision.
+    CP_ARBITER_STATE_FIRST_COLLISION,
+    // Arbiter is active and its not the first collision.
+    CP_ARBITER_STATE_NORMAL,
+    // Collision has been explicitly ignored.
+    // Can be set/unset from begin or preStep callback functions.
+    CP_ARBITER_STATE_IGNORE,
+    // Collison is no longer active. A space will cache an arbiter for up to cpSpace.collisionPersistence more steps.
+    CP_ARBITER_STATE_CACHED,
+    // Collison arbiter is invalid because one of the shapes was removed.
+    CP_ARBITER_STATE_INVALIDATED,
+};
+
+struct cpArbiterThread
+{
+    struct cpArbiter *next, *prev;
+};
+
+struct cpContact
+{
+    cpVect r1, r2;
+
+    cpFloat nMass, tMass;
+    cpFloat bounce; // TODO: look for an alternate bounce solution.
+
+    cpFloat jnAcc, jtAcc, jBias;
+    cpFloat bias;
+
+    cpHashValue hash;
+};
+
+struct cpArbiter
+{
+    cpFloat e;
+    cpFloat u;
+    cpVect surface_vr;
+
+    cpDataPointer data;
+
+    const cpShape *a, *b;
+    cpBody *body_a, *body_b;
+    struct cpArbiterThread thread_a, thread_b;
+
+    int count;
+    struct cpContact *contacts;
+    cpVect n;
+
+    // Regular, wildcard A and wildcard B collision handlers.
+    cpCollisionHandler *handlerAB, *handlerBA, *handlerA, *handlerB;
+    cpBool swapped;
+
+    cpTimestamp stamp;
+    enum cpArbiterState state;
+    cpBool processCollision;
+};
+
+struct cpArray
+{
+    int num, max;
+    void **arr;
+};
+
+///////////////////////////////////////////
 // cpVect.h
 ///////////////////////////////////////////
 
@@ -108,9 +176,15 @@ cpVect cpArbiterTotalImpulse(const cpArbiter *arb);
 /// This function should only be called from a post-solve, post-step or cpBodyEachArbiter callback.
 cpFloat cpArbiterTotalKE(const cpArbiter *arb);
 
-/// Mark a collision pair to be ignored until the two objects separate.
-/// Pre-solve and post-solve callbacks will not be called, but the separate callback will be called.
-cpBool cpArbiterIgnore(cpArbiter *arb);
+/// Return if the collision was set to be ignored by cpArbiterSetProcessCollision earlier.
+/// Note that the collision can be ignored for different reasons, even when this is true.
+cpBool cpArbiterGetProcessCollision(const cpArbiter *arb);
+/// Set processCollision to false to not process the collision.
+/// Setting this to false from a begin callback causes the collision to be ignored until
+/// the the separate callback is called when the objects stop colliding.
+/// Returning false from a pre-step callback causes the collision to be ignored until the next step.
+/// It should not be called from post-solve or separate callbacks.
+void cpArbiterSetProcessCollision(cpArbiter *arb, cpBool processCollision);
 
 /// Return the colliding shapes involved for this arbiter.
 /// The order of their cpSpace.collision_type values will match
@@ -164,30 +238,6 @@ cpVect cpArbiterGetPointA(const cpArbiter *arb, int i);
 cpVect cpArbiterGetPointB(const cpArbiter *arb, int i);
 /// Get the depth of the @c ith contact point.
 cpFloat cpArbiterGetDepth(const cpArbiter *arb, int i);
-
-/// If you want a custom callback to invoke the wildcard callback for the first collision type, you must call this function explicitly.
-/// You must decide how to handle the wildcard's return value since it may disagree with the other wildcard handler's return value or your own.
-cpBool cpArbiterCallWildcardBeginA(cpArbiter *arb, cpSpace *space);
-/// If you want a custom callback to invoke the wildcard callback for the second collision type, you must call this function explicitly.
-/// You must decide how to handle the wildcard's return value since it may disagree with the other wildcard handler's return value or your own.
-cpBool cpArbiterCallWildcardBeginB(cpArbiter *arb, cpSpace *space);
-
-/// If you want a custom callback to invoke the wildcard callback for the first collision type, you must call this function explicitly.
-/// You must decide how to handle the wildcard's return value since it may disagree with the other wildcard handler's return value or your own.
-cpBool cpArbiterCallWildcardPreSolveA(cpArbiter *arb, cpSpace *space);
-/// If you want a custom callback to invoke the wildcard callback for the second collision type, you must call this function explicitly.
-/// You must decide how to handle the wildcard's return value since it may disagree with the other wildcard handler's return value or your own.
-cpBool cpArbiterCallWildcardPreSolveB(cpArbiter *arb, cpSpace *space);
-
-/// If you want a custom callback to invoke the wildcard callback for the first collision type, you must call this function explicitly.
-void cpArbiterCallWildcardPostSolveA(cpArbiter *arb, cpSpace *space);
-/// If you want a custom callback to invoke the wildcard callback for the second collision type, you must call this function explicitly.
-void cpArbiterCallWildcardPostSolveB(cpArbiter *arb, cpSpace *space);
-
-/// If you want a custom callback to invoke the wildcard callback for the first collision type, you must call this function explicitly.
-void cpArbiterCallWildcardSeparateA(cpArbiter *arb, cpSpace *space);
-/// If you want a custom callback to invoke the wildcard callback for the second collision type, you must call this function explicitly.
-void cpArbiterCallWildcardSeparateB(cpArbiter *arb, cpSpace *space);
 
 ///////////////////////////////////////////
 // cpBody.h
@@ -951,10 +1001,10 @@ void cpSimpleMotorSetRate(cpConstraint *constraint, cpFloat rate);
 /// Collision begin event function callback type.
 /// Returning false from a begin callback causes the collision to be ignored until
 /// the the separate callback is called when the objects stop colliding.
-typedef cpBool (*cpCollisionBeginFunc)(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
+typedef void (*cpCollisionBeginFunc)(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
 /// Collision pre-solve event function callback type.
 /// Returning false from a pre-step callback causes the collision to be ignored until the next step.
-typedef cpBool (*cpCollisionPreSolveFunc)(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
+typedef void (*cpCollisionPreSolveFunc)(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
 /// Collision post-solve event function callback type.
 typedef void (*cpCollisionPostSolveFunc)(cpArbiter *arb, cpSpace *space, cpDataPointer userData);
 /// Collision separate event function callback type.
@@ -1065,10 +1115,9 @@ cpBool cpSpaceIsLocked(cpSpace *space);
 
 // MARK: Collision Handlers
 
-/// Create or return the existing collision handler that is called for all collisions that are not handled by a more specific collision handler.
-cpCollisionHandler *cpSpaceAddDefaultCollisionHandler(cpSpace *space);
+/// Create or return the existing collision handler that is called for all collisions
+cpCollisionHandler *cpSpaceAddGlobalCollisionHandler(cpSpace *space);
 /// Create or return the existing collision handler for the specified pair of collision types.
-/// If wildcard handlers are used with either of the collision types, it's the responibility of the custom handler to invoke the wildcard handlers.
 cpCollisionHandler *cpSpaceAddCollisionHandler(cpSpace *space, cpCollisionType a, cpCollisionType b);
 /// Create or return the existing wildcard collision handler for the specified type.
 cpCollisionHandler *cpSpaceAddWildcardHandler(cpSpace *space, cpCollisionType type);
@@ -1552,3 +1601,6 @@ struct cpConstraint
 
     cpDataPointer userData;
 };
+cpArray *cpArrayNew(int size);
+void cpArrayPush(cpArray *arr, void *object);
+void cpArrayFree(cpArray *arr);

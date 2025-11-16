@@ -1,3 +1,18 @@
+Intro
+-----
+This TODO file should be seen as a braindump/notebook for viblo. Its content 
+are random ideas/thoughts/notes. 
+
+Most of it is quickly written down thoughts to not forget about things, but 
+they might not be thought through. It should not be seen as a formal roadmap, 
+things in here might be totally outdated or not desired. Its still contained
+in the pymunk repo to keep things in the open.
+
+If you want to make a request for something, please create a issue on the 
+Pymunk issue tracker, and not a change to this file. Im also happy to discuss
+the topics in this file, if someone show interest in some specific thing its 
+more likely it will happen.
+
 v6.x
 ----
 - Think about experimental repr of Body
@@ -22,22 +37,41 @@ v6.x
 - Add TKInter util module
 - Update demos to not use positive_y_is_up hack except in a single case.
 - Write something about the usage of logging.debug logs somewhere.
-- Made docstrings appear in documentation for class & instance variables like Body.DYNAMIC
 - Update benchmark
 - Make benchmark that compares different pymunk and python versions easily
 - Update get_vertices doc to use body.local_to_world shorthand to conv.
-- Package pymunk for Pyodide
 - Add Canvas util module (after pyodide) 
 - Use https://diataxis.fr/ method of organizing docs (tutorials, how-to, explanation, reference)
 - Make sure cffi extensions included in wheel and zip!
-- Catch error when NaN in debugdraw, suggest doublecheck mass=0. https://github.com/viblo/pymunk/issues/226
 - Make benchmark between pymunk and pybullet. 2d bullet inspiration: https://github.com/bulletphysics/bullet3/blob/2.83/examples/Planar2D/Planar2D.cpp
+- After a couple of versions / time passed, re-evaluate if batch api should be separate or merged in to space.
+- Think about the copyright notice in some files. Keep / put everywere / remove?
+- Constraint private accumulated over previous time step properties are not saved when pickle. 
+- Add a test to check that version property is correctly set matching setup.py (and readme?)
+- Make space step size default 1/60, and/or make it possible to set on the space instead of pasing in to step function to make api easier to use "right"
+- Remove support for pyglet 1.5 in debug draw. Should be fine now that 2.x has been out for a long time. 
+- Think about if Pymunk should assert things that Chipmunk already asserts, like if a body can sleep when calling Body.sleep()?
+- Record video of the constraints and put on youtube (and link to that instead of the Chipmunk2d video of constraints)
+
+v7
+---
+- Require at least one body on constraint to be dynamic.
 
 v7+ (all potentially breaking changes)
 ---
 - Think about split between pymunk.util and pymunk modules
+- remake Body.each_arbiter into a arbiters list for a more pythonic interface.
+
+Chipmunk improvements
+---------------------
 - Investigate the SPOOK solver, which could be much more stable than what is currently used. (but probably very difficult to switch to). https://github.com/viblo/pymunk/issues/216
 - Investigate "Affine Body Dynamics Fast, Stable & Intersection-free Simulation of Stiff Materials"
+- optimize step function:
+  - streamline build - benchmark
+  - https://www.microsoft.com/en-us/research/wp-content/uploads/2016/12/ccds.pdf
+- collision detection:
+  - r-tree https://www.sebastiansylvan.com/post/r-trees--adapting-out-of-core-techniques-to-modern-memory-architectures/
+- ideas from https://github.com/mtsamis/box2d-optimized
 
 
 Typing a existing project - learnings

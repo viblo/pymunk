@@ -19,10 +19,10 @@ prune additional_examples/dist
 recursive-include pymunk/examples *.png
 recursive-include pymunk/examples *.wav
 #chipmunk src
-recursive-include Chipmunk2D/src *
-recursive-include Chipmunk2D/include/chipmunk *
-include Chipmunk2D/*.txt
-recursive-include pymunk/cffi * 
+recursive-include Munk2D/src *
+recursive-include Munk2D/include/chipmunk *
+include Munk2D/*.txt
+recursive-include pymunk_cffi * 
 #tools
 recursive-include tools *.py
 #typing

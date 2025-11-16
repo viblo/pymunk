@@ -1,3 +1,4 @@
+import gc
 import pickle
 import unittest
 
@@ -170,6 +171,46 @@ class UnitTestConstraint(unittest.TestCase):
 
         j2 = j.copy()
 
+    def test_body_types(self) -> None:
+        supported = [
+            (p.Body.DYNAMIC, p.Body.DYNAMIC),
+            (p.Body.DYNAMIC, p.Body.KINEMATIC),
+            (p.Body.DYNAMIC, p.Body.STATIC),
+            (p.Body.KINEMATIC, p.Body.DYNAMIC),
+            (p.Body.STATIC, p.Body.DYNAMIC),
+        ]
+        non_supported = [
+            (p.Body.KINEMATIC, p.Body.KINEMATIC),
+            (p.Body.KINEMATIC, p.Body.STATIC),
+            (p.Body.STATIC, p.Body.KINEMATIC),
+            (p.Body.STATIC, p.Body.STATIC),
+        ]
+
+        for type1, type2 in supported:
+            a, b = p.Body(4, 5, body_type=type1), p.Body(10, 10, body_type=type2)
+            _ = PivotJoint(a, b, (1, 2))
+
+            for type3, type4 in non_supported:
+                with self.assertRaises(AssertionError):
+                    a.body_type = type3
+                    a.body_type = type4
+
+        for type1, type2 in non_supported:
+            a, b = p.Body(4, 5, body_type=type1), p.Body(10, 10, body_type=type2)
+            with self.assertRaises(AssertionError):
+                _ = PivotJoint(a, b, (1, 2))
+
+    def test_delete(self) -> None:
+        a, b = p.Body(1), p.Body(2)
+        j1 = PivotJoint(a, b, (0, 0))
+        j2 = PivotJoint(a, b, (0, 0))
+
+        del j1
+        gc.collect()
+
+        self.assertListEqual(list(a.constraints), [j2])
+        self.assertListEqual(list(b.constraints), [j2])
+
 
 class UnitTestPinJoint(unittest.TestCase):
     def testAnchor(self) -> None:
@@ -338,6 +379,30 @@ class UnitTestDampedSpring(unittest.TestCase):
         j.damping = 2
         self.assertEqual(j.damping, 2)
 
+    def testForceFunc(self) -> None:
+        s = p.Space()
+        a, b = p.Body(10, 10), p.Body(20, 20)
+        b.position = 0, 100
+        j = DampedSpring(a, b, (0, 0), (0, 0), 0, 1, 0)
+        s.add(a, b, j)
+
+        def f(spring: p.DampedSpring, dist: float) -> float:
+            self.assertEqual(spring, j)
+            self.assertEqual(dist, 100)
+
+            return 1
+
+        self.assertEqual(j.force_func, DampedSpring.spring_force)
+
+        j.force_func = f
+        self.assertEqual(f, j.force_func)
+        s.step(1)
+        self.assertEqual(j.impulse, 1)
+
+        j.force_func = DampedSpring.spring_force
+        s.step(1)
+        self.assertAlmostEqual(j.impulse, -100.15)
+
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
         j = DampedSpring(a, b, (1, 2), (3, 4), 5, 6, 7)
@@ -375,6 +440,30 @@ class UnitTestDampedRotarySpring(unittest.TestCase):
         self.assertEqual(j.damping, 1)
         j.damping = 2
         self.assertEqual(j.damping, 2)
+
+    def testTorqueFunc(self) -> None:
+        s = p.Space()
+        a, b = p.Body(10, 10), p.Body(20, 20)
+        b.angle = 2
+        j = DampedRotarySpring(a, b, 0, 10, 0)
+        s.add(a, b, j)
+
+        def f(spring: p.DampedRotarySpring, relative_angle: float) -> float:
+            self.assertEqual(spring, j)
+            self.assertEqual(relative_angle, -2)
+
+            return 1
+
+        self.assertEqual(j.torque_func, DampedRotarySpring.spring_torque)
+
+        j.torque_func = f
+        self.assertEqual(f, j.torque_func)
+        s.step(1)
+        self.assertEqual(j.impulse, 1)
+
+        j.torque_func = DampedRotarySpring.spring_torque
+        s.step(1)
+        self.assertAlmostEqual(j.impulse, -21.5)
 
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
