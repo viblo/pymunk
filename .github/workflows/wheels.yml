@@ -36,11 +36,11 @@ jobs:
 
       - name: Upload wheel artifacts
         uses: actions/upload-artifact@v4
-        if: ${{ github.ref == 'refs/heads/master'}}
+        if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/jacc' }}
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
-          retention-days: 7
+          retention-days: 21
 
       - name: Upload sdist artifact
         uses: actions/upload-artifact@v4
