@@ -106,8 +106,8 @@ cpFloat
 pmFloatArrayPop(pmFloatArray *arr)
 {
     cpFloat value = (cpFloat)arr->arr[arr->num];
-    arr->num++;	
-	return value;
+    arr->num++;
+    return value;
 }
 
 void pmFloatArrayPushVect(pmFloatArray *arr, cpVect v)
@@ -125,9 +125,9 @@ void pmFloatArrayPushVect(pmFloatArray *arr, cpVect v)
 cpVect
 pmFloatArrayPopVect(pmFloatArray *arr)
 {
-    cpVect value = cpv((cpFloat)arr->arr[arr->num], (cpFloat)arr->arr[arr->num+1]);
-	arr->num += 2;			
-	return value;
+    cpVect value = cpv((cpFloat)arr->arr[arr->num], (cpFloat)arr->arr[arr->num + 1]);
+    arr->num += 2;
+    return value;
 }
 
 pmIntArray *
@@ -166,10 +166,10 @@ void pmIntArrayPush(pmIntArray *arr, uintptr_t v)
 
 uintptr_t
 pmIntArrayPop(pmIntArray *arr)
-{	
-	uintptr_t value = (uintptr_t)arr->arr[arr->num];
-	arr->num++;
-	return value;
+{
+    uintptr_t value = (uintptr_t)arr->arr[arr->num];
+    arr->num++;
+    return value;
 }
 
 void pmSpaceBodyGetIteratorFuncBatched(cpBody *body, void *data)
@@ -422,25 +422,28 @@ void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb)
 
     // Set handlers to their defaults
     cpCollisionType typeA = a->type, typeB = b->type;
-    //cpCollisionHandler *handler = arb->handler = cpSpaceLookupHandler(space, typeA, typeB);
-	arb->handlerAB = cpSpaceLookupHandler(space, typeA, typeB);
-	arb->handlerA = cpSpaceLookupHandler(space, typeA, CP_WILDCARD_COLLISION_TYPE);
+    // cpCollisionHandler *handler = arb->handler = cpSpaceLookupHandler(space, typeA, typeB);
+    arb->handlerAB = cpSpaceLookupHandler(space, typeA, typeB);
+    arb->handlerA = cpSpaceLookupHandler(space, typeA, CP_WILDCARD_COLLISION_TYPE);
 
-	if (typeA != typeB){
-		arb->handlerBA = cpSpaceLookupHandler(space, typeB, typeA);
-		arb->handlerB = cpSpaceLookupHandler(space, typeB, CP_WILDCARD_COLLISION_TYPE);
-	} else{
-		arb->handlerBA = &cpCollisionHandlerDoNothing;
-		arb->handlerB = &cpCollisionHandlerDoNothing;
-	}
-	arb->swapped = (typeA != arb->handlerAB->typeA);
+    if (typeA != typeB)
+    {
+        arb->handlerBA = cpSpaceLookupHandler(space, typeB, typeA);
+        arb->handlerB = cpSpaceLookupHandler(space, typeB, CP_WILDCARD_COLLISION_TYPE);
+    }
+    else
+    {
+        arb->handlerBA = &cpCollisionHandlerDoNothing;
+        arb->handlerB = &cpCollisionHandlerDoNothing;
+    }
+    arb->swapped = (typeA != arb->handlerAB->typeA);
 
     // Check if the types match, but don't swap for a default handler which use the wildcard for type A.
-    //cpBool swapped = arb->swapped = (typeA != handler->typeA && handler->typeA != CP_WILDCARD_COLLISION_TYPE);
+    // cpBool swapped = arb->swapped = (typeA != handler->typeA && handler->typeA != CP_WILDCARD_COLLISION_TYPE);
 
     // The order of the main handler swaps the wildcard handlers too. Uffda.
-    //arb->handlerA = cpSpaceLookupHandler(space, (swapped ? typeB : typeA), CP_WILDCARD_COLLISION_TYPE);
-    //arb->handlerB = cpSpaceLookupHandler(space, (swapped ? typeA : typeB), CP_WILDCARD_COLLISION_TYPE);
+    // arb->handlerA = cpSpaceLookupHandler(space, (swapped ? typeB : typeA), CP_WILDCARD_COLLISION_TYPE);
+    // arb->handlerB = cpSpaceLookupHandler(space, (swapped ? typeA : typeB), CP_WILDCARD_COLLISION_TYPE);
 
     // Update the arbiter's state
     cpArrayPush(space->arbiters, arb);
@@ -459,41 +462,100 @@ cpContact *cpContactArrAlloc(int count)
     return (cpContact *)cpcalloc(count, sizeof(struct cpContact));
 }
 
-cpFloat defaultSpringForce(cpDampedSpring *spring, cpFloat dist){
-	return (spring->restLength - dist)*spring->stiffness;
+cpFloat defaultSpringForce(cpDampedSpring *spring, cpFloat dist)
+{
+    return (spring->restLength - dist) * spring->stiffness;
 }
 
-cpFloat defaultSpringTorque(cpDampedRotarySpring *spring, cpFloat relativeAngle){
-	return (relativeAngle - spring->restAngle)*spring->stiffness;
+cpFloat defaultSpringTorque(cpDampedRotarySpring *spring, cpFloat relativeAngle)
+{
+    return (relativeAngle - spring->restAngle) * spring->stiffness;
 }
-
 
 //
 // Functions to forward logs (printfs) to python code instead of directly printing to stderr
 //
 
-//Python side, already formatted message
-static void ext_pyLog(const char *formattedMessage); 
+// Python side, already formatted message
+static void ext_pyLog(const char *formattedMessage);
 
-//Chipmunk side, follows existing function declaration
+// Chipmunk side, follows existing function declaration
 void cpMessage(const char *condition, const char *file, int line, int isError, int isHardError, const char *message, ...)
 {
-   	ext_pyLog((isError ? "Aborting due to Chipmunk error: " : "Chipmunk warning: "));
-    
+    ext_pyLog((isError ? "Aborting due to Chipmunk error: " : "Chipmunk warning: "));
+
     static char formattedMessage[256];
     formattedMessage[0] = 0;
 
     va_list vargs;
-	va_start(vargs, message); {	
+    va_start(vargs, message);
+    {
         vsnprintf(formattedMessage, sizeof(formattedMessage), message, vargs);
-		ext_pyLog(formattedMessage);
-	} va_end(vargs);
-    
+        ext_pyLog(formattedMessage);
+    }
+    va_end(vargs);
+
     snprintf(formattedMessage, sizeof(formattedMessage), "\tFailed condition: %s", condition);
-	ext_pyLog(formattedMessage);
-	
+    ext_pyLog(formattedMessage);
+
     snprintf(formattedMessage, sizeof(formattedMessage), "\tSource: %s:%d", file, line);
-	ext_pyLog(formattedMessage);	
+    ext_pyLog(formattedMessage);
 }
 
-static void DoNothing(cpArbiter *arb, cpSpace *space, cpDataPointer data){}
+static void DoNothing(cpArbiter *arb, cpSpace *space, cpDataPointer data) {}
+
+cpFloat
+cpPinJointGetImpulse(const cpConstraint *constraint)
+{
+    cpAssertHard(cpConstraintIsPinJoint(constraint), "Constraint is not a pin joint.");
+    return ((cpPinJoint *)constraint)->jnAcc;
+}
+
+cpFloat
+cpSlideJointGetImpulse(const cpConstraint *constraint)
+{
+    cpAssertHard(cpConstraintIsSlideJoint(constraint), "Constraint is not a slide joint.");
+    return ((cpSlideJoint *)constraint)->jnAcc;
+}
+
+cpVect
+cpPivotJointGetImpulse(const cpConstraint *constraint)
+{
+    cpAssertHard(cpConstraintIsPivotJoint(constraint), "Constraint is not a pivot joint.");
+    return ((cpPivotJoint *)constraint)->jAcc;
+}
+
+cpVect
+cpGrooveJointGetImpulse(const cpConstraint *constraint)
+{
+    cpAssertHard(cpConstraintIsGrooveJoint(constraint), "Constraint is not a groove joint.");
+    return ((cpGrooveJoint *)constraint)->jAcc;
+}
+
+cpFloat
+cpRotaryLimitJointGetImpulse(const cpConstraint *constraint)
+{
+    cpAssertHard(cpConstraintIsRotaryLimitJoint(constraint), "Constraint is not a rotary limit joint.");
+    return ((cpRotaryLimitJoint *)constraint)->jAcc;
+}
+
+cpFloat
+cpRatchetJointGetImpulse(const cpConstraint *constraint)
+{
+    cpAssertHard(cpConstraintIsRatchetJoint(constraint), "Constraint is not a ratchet joint.");
+    return ((cpRatchetJoint *)constraint)->jAcc;
+}
+
+cpFloat
+cpGearJointGetImpulse(const cpConstraint *constraint)
+{
+    cpAssertHard(cpConstraintIsGearJoint(constraint), "Constraint is not a gear joint.");
+    return ((cpGearJoint *)constraint)->jAcc;
+}
+
+cpFloat
+cpSimpleMotorGetImpulse(const cpConstraint *constraint)
+{
+    cpAssertHard(cpConstraintIsSimpleMotor(constraint), "Constraint is not a simple motor.");
+    return ((cpSimpleMotor *)constraint)->jAcc;
+}

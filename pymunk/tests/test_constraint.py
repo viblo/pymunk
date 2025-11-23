@@ -223,12 +223,30 @@ class UnitTestPinJoint(unittest.TestCase):
         self.assertEqual(j.anchor_a, (5, 6))
         self.assertEqual(j.anchor_b, (7, 8))
 
-    def testDistane(self) -> None:
+    def testDistance(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
         j = PinJoint(a, b, (0, 0), (10, 0))
         self.assertEqual(j.distance, 10)
         j.distance = 20
         self.assertEqual(j.distance, 20)
+
+    def testImpulse(self) -> None:
+        a, b = p.Body(10, 10), p.Body(10, 10)
+        a.position = 0, 10
+        j = PinJoint(a, b, (0, 0), (0, 0))
+        s = p.Space()
+        s.add(a, b, j)
+        s.step(0.1)
+        self.assertEqual(j.impulse_signed, 0)
+        self.assertEqual(j.impulse, 0)
+        a.position = 0, 0
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse_signed, 2343, 0)
+        self.assertAlmostEqual(j.impulse, 2343,0)
+        a.position = 0, 20
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse_signed, -234, 0)
+        self.assertAlmostEqual(j.impulse, 234, 0)
 
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
@@ -269,6 +287,26 @@ class UnitTestSlideJoint(unittest.TestCase):
         j.max = 2
         self.assertEqual(j.max, 2)
 
+    def testImpulse(self) -> None:
+        a, b = p.Body(10, 10), p.Body(10, 10)
+        a.position = 0, 20
+        j = SlideJoint(a, b, (0, 0), (0, 0), 20, 30)
+        s = p.Space()
+        s.add(a, b, j)
+        s.step(0.1)
+        self.assertEqual(j.impulse_signed, 0)
+        self.assertEqual(j.impulse, 0)
+        a.position = 0, 40
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse_signed, -234, 0)
+        self.assertAlmostEqual(j.impulse, 234,0)
+        # TODO: FIX ME when SlideJoint jnAcc is fixed.
+        # a.position = 0,0
+        # s.step(0.1)
+        # self.assertAlmostEqual(j.impulse_signed, 234, 0)
+        # self.assertAlmostEqual(j.impulse, 234, 0)
+
+
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
         j = SlideJoint(a, b, (1, 2), (3, 4), 5, 6)
@@ -302,6 +340,20 @@ class UnitTestPivotJoint(unittest.TestCase):
         self.assertEqual(j.anchor_a, (5, 6))
         self.assertEqual(j.anchor_b, (7, 8))
 
+    def testImpulse(self) -> None:
+        a, b = p.Body(10, 10), p.Body(10, 10)
+        a.position = 0, 10
+        j = PivotJoint(a, b, (10,0))
+        s = p.Space()
+        s.add(a, b, j)
+        s.step(0.1)
+        almostEqualVector(self, j.impulse_vector, p.Vec2d(0,0), 0)
+        self.assertEqual(j.impulse, 0)
+        a.position = 0, 0
+        s.step(0.1)
+        almostEqualVector(self, j.impulse_vector, p.Vec2d(4,-5), 0)
+        self.assertAlmostEqual(j.impulse, 6,0)
+
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
         j = PivotJoint(a, b, (1, 2), (3, 4))
@@ -332,6 +384,22 @@ class UnitTestGrooveJoint(unittest.TestCase):
         j.groove_b = (7, 8)
         self.assertEqual(j.groove_a, (5, 6))
         self.assertEqual(j.groove_b, (7, 8))
+
+    def testImpulse(self) -> None:
+        a, b = p.Body(10, 10), p.Body(10, 10)
+        a.position = 0, 2.5
+        b.position = 0, 2.5
+        j = GrooveJoint(a, b, (0,0), (10, 0), (0,0))
+        s = p.Space()
+        s.add(a, b, j)
+        almostEqualVector(self, j.impulse_vector, p.Vec2d(0,0))
+        self.assertAlmostEqual(j.impulse, 0)
+        
+        a.position = 0, 0
+        s.step(0.1)
+        almostEqualVector(self, j.impulse_vector, p.Vec2d(0, -59), 0)
+        self.assertAlmostEqual(j.impulse, 59,0)
+
 
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
@@ -403,6 +471,20 @@ class UnitTestDampedSpring(unittest.TestCase):
         s.step(1)
         self.assertAlmostEqual(j.impulse, -100.15)
 
+    def testImpulse(self) -> None:
+        a, b = p.Body(10, 10), p.Body(10, 10)
+        a.position = 0, 0
+        b.position = 0, 10
+        j = DampedSpring(a, b, (0,0), (0,0), 10, 9, 0.01)
+        s = p.Space()
+        s.add(a, b, j)
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 0)
+        b.position = 0,25
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, -13.497300269982)
+
+
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
         j = DampedSpring(a, b, (1, 2), (3, 4), 5, 6, 7)
@@ -464,6 +546,18 @@ class UnitTestDampedRotarySpring(unittest.TestCase):
         j.torque_func = DampedRotarySpring.spring_torque
         s.step(1)
         self.assertAlmostEqual(j.impulse, -21.5)
+    
+    def testImpulse(self) -> None:
+        a, b = p.Body(10, 10), p.Body(10, 10)
+        a.angle = 1
+        j = DampedRotarySpring(a, b, 1, 9, 0.01)
+        s = p.Space()
+        s.add(a, b, j)
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 0)
+        a.angle = 2
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 0.89982001)
 
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
@@ -493,6 +587,19 @@ class UnitTestRotaryLimitJoint(unittest.TestCase):
         self.assertEqual(j.max, 1)
         j.max = 2
         self.assertEqual(j.max, 2)
+
+    def testImpulse(self) -> None:
+        a, b = p.Body(10, 10), p.Body(10, 10)
+        j = RotaryLimitJoint(a, b, 0, 1)
+        s = p.Space()
+        s.add(a, b, j)
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 0)
+        self.assertAlmostEqual(j.impulse_signed, 0)
+        a.angle = 2
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 46.855908447)
+        self.assertAlmostEqual(j.impulse_signed, 46.855908447)
 
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
@@ -529,6 +636,19 @@ class UnitTestRatchetJoint(unittest.TestCase):
         j.ratchet = 2
         self.assertEqual(j.ratchet, 2)
 
+    def testImpulse(self) -> None:
+        a, b = p.Body(10, 10), p.Body(10, 10)
+        j = RatchetJoint(a, b, 0.1, 0.1)
+        s = p.Space()
+        s.add(a, b, j)
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 0)
+        self.assertAlmostEqual(j.impulse_signed, 0)
+        a.angle = 2
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 46.855908447)
+        self.assertAlmostEqual(j.impulse_signed, 46.855908447)
+
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
         j = RatchetJoint(a, b, 1, 2)
@@ -557,6 +677,24 @@ class UnitTestGearJoint(unittest.TestCase):
         j.ratio = 2
         self.assertEqual(j.ratio, 2)
 
+    def testImpulse(self) -> None:
+        a, b = p.Body(10, 10), p.Body(10, 10)
+        b.angle = 0.03
+        j = GearJoint(a, b, 0.1, 3)
+        s = p.Space()
+        s.add(a, b, j)
+        self.assertAlmostEqual(j.impulse, 0)
+        self.assertAlmostEqual(j.impulse_signed, 0)
+        a.angle = 2
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 28.25411279)
+        self.assertAlmostEqual(j.impulse_signed, 28.25411279)
+        a.angular_velocity = -0.1
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 9.5300055)
+        self.assertAlmostEqual(j.impulse_signed, -9.5300055)
+
+
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
         j = GearJoint(a, b, 1, 2)
@@ -570,6 +708,7 @@ class UnitTestGearJoint(unittest.TestCase):
         self.assertEqual(j.b.mass, j2.b.mass)
 
 
+
 class UnitTestSimleMotor(unittest.TestCase):
     def testSimpleMotor(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
@@ -577,6 +716,23 @@ class UnitTestSimleMotor(unittest.TestCase):
         self.assertEqual(j.rate, 0.3)
         j.rate = 0.4
         self.assertEqual(j.rate, 0.4)
+
+    def testImpulse(self) -> None:
+        a, b = p.Body(10, 10), p.Body(10, 10)
+        a.angular_velocity = .3
+        j = SimpleMotor(a, b, .3)
+        s = p.Space()
+        s.add(a, b, j)
+        self.assertAlmostEqual(j.impulse, 0)
+        self.assertAlmostEqual(j.impulse_signed, 0)
+        a.angular_velocity = 1
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 3.5)
+        self.assertAlmostEqual(j.impulse_signed, 3.5)
+        a.angular_velocity = -0.1
+        s.step(0.1)
+        self.assertAlmostEqual(j.impulse, 3.75)
+        self.assertAlmostEqual(j.impulse_signed, -3.75)
 
     def testPickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
@@ -597,3 +753,7 @@ def pre_solve(c: Constraint, s: p.Space) -> None:
 
 def post_solve(c: Constraint, s: p.Space) -> None:
     pass
+
+def almostEqualVector(self, first:p.Vec2d, second:p.Vec2d, places:int=7) -> None:
+    self.assertAlmostEqual(first.x, second.x, places)
+    self.assertAlmostEqual(first.y, second.y, places)

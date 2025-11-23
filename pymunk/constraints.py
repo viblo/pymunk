@@ -357,6 +357,10 @@ class PinJoint(Constraint):
     def distance(self, distance: float) -> None:
         lib.cpPinJointSetDist(self._constraint, distance)
 
+    @property
+    def impulse_signed(self) -> float:
+        return lib.cpPinJointGetImpulse(self._constraint)
+
 
 class SlideJoint(Constraint):
     """SlideJoint is like a PinJoint, but have a minimum and maximum distance.
@@ -428,6 +432,14 @@ class SlideJoint(Constraint):
     def max(self, max: float) -> None:
         lib.cpSlideJointSetMax(self._constraint, max)
 
+    @property
+    def impulse_signed(self) -> float:
+        """Currently not useful, will always be -joint.impulse
+        
+        TODO: fix?
+        """
+        return lib.cpSlideJointGetImpulse(self._constraint)
+
 
 class PivotJoint(Constraint):
     """PivotJoint allow two objects to pivot about a single point.
@@ -496,6 +508,11 @@ class PivotJoint(Constraint):
         assert len(anchor) == 2
         lib.cpPivotJointSetAnchorB(self._constraint, anchor)
 
+    @property
+    def impulse_vector(self) -> Vec2d:
+        v = lib.cpPivotJointGetImpulse(self._constraint)
+        return Vec2d(v.x, v.y)
+
 
 class GrooveJoint(Constraint):
     """GrooveJoint is similar to a PivotJoint, but with a linear slide.
@@ -559,6 +576,11 @@ class GrooveJoint(Constraint):
     def groove_b(self, groove: tuple[float, float]) -> None:
         assert len(groove) == 2
         lib.cpGrooveJointSetGrooveB(self._constraint, groove)
+
+    @property
+    def impulse_vector(self) -> Vec2d:
+        v = lib.cpGrooveJointGetImpulse(self._constraint)
+        return Vec2d(v.x, v.y)
 
 
 class DampedSpring(Constraint):
@@ -821,6 +843,14 @@ class RotaryLimitJoint(Constraint):
     def max(self, max: float) -> None:
         lib.cpRotaryLimitJointSetMax(self._constraint, max)
 
+    @property
+    def impulse_signed(self) -> float:
+        """
+        TODO: Investigate if/when this can be negative
+        """
+        return lib.cpRotaryLimitJointGetImpulse(self._constraint)
+
+
 
 class RatchetJoint(Constraint):
     """RatchetJoint is a rotary ratchet, it works like a socket wrench."""
@@ -860,6 +890,10 @@ class RatchetJoint(Constraint):
     def ratchet(self, ratchet: float) -> None:
         lib.cpRatchetJointSetRatchet(self._constraint, ratchet)
 
+    @property
+    def impulse_signed(self) -> float:
+        return lib.cpRatchetJointGetImpulse(self._constraint)
+
 
 class GearJoint(Constraint):
     """GearJoint keeps the angular velocity ratio of a pair of bodies constant."""
@@ -892,6 +926,9 @@ class GearJoint(Constraint):
     def ratio(self, ratio: float) -> None:
         lib.cpGearJointSetRatio(self._constraint, ratio)
 
+    @property
+    def impulse_signed(self) -> float:
+        return lib.cpGearJointGetImpulse(self._constraint)
 
 class SimpleMotor(Constraint):
     """SimpleMotor keeps the relative angular velocity constant."""
@@ -916,3 +953,7 @@ class SimpleMotor(Constraint):
     @rate.setter
     def rate(self, rate: float) -> None:
         lib.cpSimpleMotorSetRate(self._constraint, rate)
+
+    @property
+    def impulse_signed(self) -> float:
+        return lib.cpSimpleMotorGetImpulse(self._constraint)
