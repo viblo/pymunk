@@ -136,3 +136,16 @@ before-build = [
 
 [tool.cibuildwheel.pyodide]
 environment = { PYMUNK_BUILD_SLIM = "1" }
+
+[tool.uv]
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "setup.py" },
+    # { file = "**/*.h" },
+    # { file = "**/*.c" },
+    { file = "Munk2D/**/*.c" },
+    { file = "Munk2D/**/*.h" },
+    { file = "pymunk/**/*.c" },
+    { file = "pymunk/**/*.cdef" },
+    { file = "pymunk/**/*.h" },
+]
