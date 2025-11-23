@@ -18,7 +18,7 @@ jobs:
           ]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: true
 
@@ -28,14 +28,14 @@ jobs:
           python3 -c "import pathlib,glob;pathlib.Path('GITHUB_ENV').write_text('SDIST_PATH' + glob.glob('dist/*.tar.gz')[0])"
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.2.1
+        uses: pypa/cibuildwheel@v3.3.0
         env:
           CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-* cp314-* pp311-*"
         with:
           package-dir: "$SDIST_PATH"
 
       - name: Upload wheel artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: ${{ github.ref == 'refs/heads/master'}}
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
@@ -43,7 +43,7 @@ jobs:
           retention-days: 7
 
       - name: Upload sdist artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: ${{ github.ref == 'refs/heads/master' && matrix.os ==
           'windows-latest'}}
         with:
@@ -55,13 +55,13 @@ jobs:
     name: Build wheels for wasm / emscripten
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: true
-      - uses: pypa/cibuildwheel@v3.2.1
+      - uses: pypa/cibuildwheel@v3.3.0
         env:
           CIBW_PLATFORM: pyodide
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
           name: cibw-wheels-pyodide-${{ matrix.os }}-${{ strategy.job-index }}
@@ -73,14 +73,14 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: true
       - run: brew upgrade cmake --formula
-      - uses: pypa/cibuildwheel@v3.2.1
+      - uses: pypa/cibuildwheel@v3.3.0
         env:
           CIBW_PLATFORM: ios
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
           name: cibw-wheels-ios-${{ matrix.os }}-${{ strategy.job-index }}
