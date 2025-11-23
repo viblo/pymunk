@@ -10,7 +10,7 @@ typedef enum pmBatchableBodyFields
 	VELOCITY = 1 << 3,
 	ANGULAR_VELOCITY = 1 << 4,
 	FORCE = 1 << 5,
-    TORQUE = 1 << 6,
+	TORQUE = 1 << 6,
 } pmBatchableBodyFields;
 
 typedef enum pmBatchableArbiterFields
@@ -105,3 +105,29 @@ cpFloat defaultSpringForce(cpDampedSpring *spring, cpFloat dist);
 cpFloat defaultSpringTorque(cpDampedRotarySpring *spring, cpFloat relativeAngle);
 
 static void DoNothing(cpArbiter *arb, cpSpace *space, cpDataPointer data);
+
+/// Get the last impulse applied by this PinJoint.
+cpFloat cpPinJointGetImpulse(cpConstraint *joint);
+
+/// Get the last impulse applied by this SlideJoint.
+cpFloat cpSlideJointGetImpulse(cpConstraint *joint);
+
+/// Get the last impulse applied by this PivotJoint.
+cpVect cpPivotJointGetImpulse(cpConstraint *joint);
+
+/// Get the last impulse applied by this GrooveJoint.
+cpVect cpGrooveJointGetImpulse(cpConstraint *joint);
+
+// DampedSpring and DampedRotarySpring are already covered by the common GetImpulse() function
+
+/// Get the last impulse applied by this RotaryLimitJoint.
+cpFloat cpRotaryLimitJointGetImpulse(cpConstraint *joint);
+
+/// Get the last impulse applied by this RatchetJoint.
+cpFloat cpRatchetJointGetImpulse(cpConstraint *joint);
+
+/// Get the last impulse applied by this GearJoint.
+cpFloat cpGearJointGetImpulse(cpConstraint *joint);
+
+/// Get the last impulse applied by this SimpleMotor.
+cpFloat cpSimpleMotorGetImpulse(cpConstraint *joint);
