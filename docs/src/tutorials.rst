@@ -2,9 +2,10 @@
 Tutorials
 =========
 
-Pymunk has one tutorial that show a simple simulation from start to end.
+Pymunk has tutorials that show simulations from start to end, starting with 
+basic concepts and progressing to more advanced topics.
 
-After reading it make sure to also check out the :ref:`Examples <examples>` as 
+After reading them make sure to also check out the :ref:`Examples <examples>` as 
 most of them are easy to follow and showcase many of the things you can do with 
 pymunk. Also take a look at the external tutorials. While they are not created 
 by the Pymunk creator they can still give a good start in how to use Pymunk.
@@ -14,6 +15,7 @@ by the Pymunk creator they can still give a good start in how to use Pymunk.
     :glob:
 
     tutorials/SlideAndPinJoint.rst
+    tutorials/CollisionHandlers.rst
 
 ..
     tutorials/*
