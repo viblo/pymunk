@@ -2,7 +2,8 @@
 requires = [
     "setuptools",
     "wheel",
-    "cffi >= 1.17.1; platform_system != 'Emscripten'",
+    "cffi >= 1.17.1; platform_system != 'Emscripten' and python_version < '3.13'",
+    "cffi >= 2.0.0; platform_system != 'Emscripten' and python_version >= '3.13'",
     "cffi > 1.14.0; platform_system == 'Emscripten'",
 ]
 build-backend = "setuptools.build_meta"
@@ -11,9 +12,11 @@ build-backend = "setuptools.build_meta"
 name = "pymunk"
 version = "7.2.0" # remember to change me for new versions!
 # Require cffi >1.14.0 since that (and older) has problem with returning structs from functions.
-# Require cffi >= 1.17.1 since older cant work with latest setuptools version
+# Require cffi >= 1.17.1 since older cant work with latest setuptools version.
+# Require cffi >= 2.0.0 on Python 3.13+ for free-threaded Python support.
 dependencies = [
-    "cffi >= 1.17.1; platform_system != 'Emscripten'",
+    "cffi >= 1.17.1; platform_system != 'Emscripten' and python_version < '3.13'",
+    "cffi >= 2.0.0; platform_system != 'Emscripten' and python_version >= '3.13'",
     "cffi > 1.14.0; platform_system == 'Emscripten'",
 ]
 authors = [{ name = "Victor Blomqvist", email = "vb@viblo.se" }]
@@ -101,14 +104,16 @@ check_untyped_defs = false
 
 [tool.cibuildwheel]
 test-command = "python -m pymunk.tests"
-enable = ["pypy"]
+enable = ["pypy", "cpython-freethreading"]
 build = [
     "cp39-*",
     "cp310-*",
     "cp311-*",
     "cp312-*",
     "cp313-*",
+    "cp313t-*",
     "cp314-*",
+    "cp314t-*",
     "pp311-*",
 ]
 

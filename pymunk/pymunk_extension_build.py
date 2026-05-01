@@ -1,10 +1,16 @@
 import os
 import os.path
 import platform
+import sysconfig
 
 from cffi import FFI  # type: ignore
 
 ffibuilder = FFI()
+
+set_source_kwargs: dict[str, object] = {}
+if str(sysconfig.get_config_var("Py_GIL_DISABLED")) == "1":
+    # CFFI's limited API build is not compatible with free-threaded CPython.
+    set_source_kwargs["py_limited_api"] = False
 
 with open("pymunk_cffi/chipmunk_cdef.h", "r") as f:
     ffibuilder.cdef(f.read())
@@ -78,6 +84,7 @@ ffibuilder.set_source(
     sources=sources,
     libraries=libraries,
     define_macros=[("CP_OVERRIDE_MESSAGE", None)],
+    **set_source_kwargs,
 )
 
 if __name__ == "__main__":
