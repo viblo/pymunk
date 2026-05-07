@@ -65,6 +65,7 @@ Contents
     showcase
     tutorials
     benchmarks
+    threading
     advanced
     changelog
     Downloads <https://pypi.python.org/pypi/pymunk/>
