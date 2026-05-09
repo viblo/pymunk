@@ -25,7 +25,7 @@ jobs:
       - name: Build sdist
         run: |
           pipx run build --sdist
-          python3 -c "import pathlib,glob;pathlib.Path('GITHUB_ENV').write_text('SDIST_PATH' + glob.glob('dist/*.tar.gz')[0])"
+          python3 -c "import os,pathlib,glob; pathlib.Path(os.environ['GITHUB_ENV']).write_text('SDIST_PATH=' + glob.glob('dist/*.tar.gz')[0] + '\n')"
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.1
