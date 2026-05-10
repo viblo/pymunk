@@ -164,7 +164,7 @@ class Transform(NamedTuple):
         """
         return self @ Transform.rotation(t)
 
-    def inverted(self):
+    def inverted(self) -> "Transform":
         """Invert this Transform and return the result
 
         >>> t = Transform.translation(3,4).scaled(2)
