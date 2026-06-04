@@ -384,6 +384,82 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Hu, Tianyi, Yunjia Zhang, Chu Qiao, Tingrui Zhang, and Shuguang Li. 
+   "Diatom‐Inspired 1D Immobile Robots Capable of 2D Collective Mobility." 
+   Advanced Intelligent Systems (2026): e202501506.
+
+#. Correll, Nikolaus. 
+   "Liquid Networks with Mixture Density Heads for Efficient Imitation Learning." 
+   arXiv preprint arXiv:2603.27058 (2026).
+
+#. Li, Eric, Arijit Dasgupta, Yoni Friedman, Mathieu Huot, Vikash Mansinghka, Thomas O'Connell, William T. Freeman, and Joshua B. Tenenbaum. 
+   "GenMatter: Perceiving Physical Objects with Generative Matter Models." 
+   In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 3165-3175. 2026.
+
+#. Schöttl, Peter, Joseph Kehinde Ishola, Caroline Ganzer, Maitane Ferreres Eceiza, and Gregor Bern. 
+   "HelioSliders: Novel heliostat field design approach based on collision analysis of shadow projections." 
+   Solar Energy 313 (2026): 114596.
+
+#. Huang, Yixuan, Bowen Li, Vaibhav Saxena, Yichao Liang, Utkarsh Aashu Mishra, Liang Ji, Lihan Zha et al. 
+  "KinDER: A Physical Reasoning Benchmark for Robot Learning and Planning." 
+   arXiv preprint arXiv:2604.25788 (2026).
+
+#. Xie, Tianyidan, Zhentao Huang, Mingjie Wang, Xin Huang, Jun Zhou, Minglun Gong, and Zili Yi. 
+   "PhysLayer: Language-Guided Layered Animation with Depth-Aware Physics." 
+   arXiv preprint arXiv:2604.23574 (2026).
+
+#. Narayanan, Sriram, Ziyu Jiang, Srinivasa Narasimhan, and Manmohan Chandraker. 
+   "PhyCo: Learning Controllable Physical Priors for Generative Motion." 
+   In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 41892-41902. 2026.
+
+#. Alavala, Sasidhar, Varuni Buereddy, and Ravi Prakash. 
+   "Latent Dynamics Modulation Guidance for Semantic Obstacle Avoidance in Diffusion Policies."
+   ICRA 2026 SRRA Workshop LightningTalkPoster (2026).
+
+#. Lu, Xinyi, Christos Bechlivanidis, and Tobias Gerstenberg. 
+   "Causal judgments in complex situations."
+   (2026).
+   
+#. Panayiotou, Panayiotis, and Özgür Şimşek. 
+   "Causal Discovery in Action: Learning Chain-Reaction Mechanisms from Interventions." 
+   arXiv preprint arXiv:2603.22620 (2026).
+
+#. Chen, Tony, Sam Cheyette, Kelsey Allen, Joshua Tenenbaum, and Kevin Smith. 
+   "" Just in Time" World Modeling Supports Human Planning and Reasoning." 
+   arXiv preprint arXiv:2601.14514 (2026).
+
+#. Hu, Liutao. 
+   "DMES: Information-Equivalent Evaluation Reveals the Physical Reasoning Gap Between World Models and Language Models." 
+   (2026).
+
+#. Zhao, Yang, and Gang Liu. 
+   "Reinforcement Learning in Large-Scale." 
+   In Pattern Recognition and Computer Vision: 8th Chinese Conference, PRCV 2025, Shanghai, China, October 15–18, 2025, Proceedings, Part XI, p. 211. Springer Nature, 2026.
+
+#. Shen, Keyi, and Glen Chou. 
+   "Parallel Differentiable Reachability for Learning and Planning with Certified Neural Dynamics and Controllers." 
+   arXiv preprint arXiv:2605.25346 (2026).
+
+#. Momit, Musabbir Al, Wen Jiang, Bilal Zahid Hussain, Mohammad Ammar, Sajan Bhujel, Yutian Pang, Irfan Khan, Tingjun Lei, and Jueming Hu. 
+   "Deep Q-Network With Lagrangian Relaxation for Autonomous Aircraft Landing." 
+   In AIAA SCITECH 2026 Forum, p. 1983. 2026.   
+
+#. Mei, Ziyang, Siyuan Han, Youchang Xia, Zitong Liao, Wenbo Zhou, Yang Zhao, and Gang Liu. 
+   "EVEGARS: End-to-End Vision-Based Endovascular Guidewire Autonomous Reinforcement Learning in Large-Scale Simulations from Clinical Dataset." 
+   In Chinese Conference on Pattern Recognition and Computer Vision (PRCV), pp. 211-224. Singapore: Springer Nature Singapore, 2025.
+
+#. Assumpção, Henrique, Diego Ferreira, Leandro Campos, and Fabricio Murai. 
+   "Codeevolve: An open source evolutionary coding agent for algorithm discovery and optimization." 
+   arXiv preprint arXiv:2510.14150 (2025).
+
+#. Liapis, Antonios, Maren Awiszus, Alexander Dockhorn, and Timothy Merino. 
+   "3.8 A Game in a Day." 
+   New Frontiers in AI for Game Design: 160 (2025).
+
+#. Dasgupta, Arijit. 
+   "Uncertainty-aware Joint Physical Tracking and Prediction"
+   Massachusetts Institute of Technology (2025).
+
 #. Bai, Xiangyu, He Liang, Bishoy Galoaa, Utsav Nandi, Shayda Moezzi, Yuhang He, and Sarah Ostadabbas. 
    "MoReGen: Multi-Agent Motion-Reasoning Engine for Code-based Text-to-Video Synthesis." 
    arXiv preprint arXiv:2512.04221 (2025).
