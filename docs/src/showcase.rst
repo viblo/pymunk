@@ -444,6 +444,38 @@ List of papers which has used or mentioned Pymunk:
    "Deep Q-Network With Lagrangian Relaxation for Autonomous Aircraft Landing." 
    In AIAA SCITECH 2026 Forum, p. 1983. 2026.   
 
+#. Xuhui Kang, , Sung-Wook Lee, Haolin Liu, Yuyan Wang, and Yen-Ling Kuo. 
+   "Moving Out: Physically-grounded Human-AI Collaboration." 
+   (2026). 
+
+#. Orozco, Sergio, Tushar Kusnur, Brandon May, George Konidaris, and Laura Herlant. 
+   "Learning Equivariant Neural-Augmented Object Dynamics From Few Interactions." 
+   arXiv preprint arXiv:2605.02699 (2026).
+   
+#. Wang, Chen, Chuhao Chen, Yiming Huang, Zhiyang Dou, Yuan Liu, Jiatao Gu, and Lingjie Liu. 
+   "Physctrl: Generative physics for controllable and physics-grounded video generation." 
+   Advances in Neural Information Processing Systems 38 (2026): 167907-167932.
+
+#. Nayoung Oh, Jaehyeong Jang, Moonkyeong Jung, and Daehyung Park. 
+   "Diffusion-SSM based Policy Learning for Multi-Granularity Action Prediction." 
+   In Human to Robot: Workshop on Sensorizing, Modeling, and Learning from Humans.2025.
+
+#. Beller, Ari, Yingchen Xu, Max Siegel, Satchel Grant, Alan Brown, Jan-Philipp Fränken, Joshua Tenenbaum, Scott Linderman, and Tobias Gerstenberg. 
+   "Multimodal inference through mental simulation." 
+   (2025).
+
+#. Zhong, Ninghan, Steven Caro, Megnath Ramesh, Rishi Bhatnagar, Avraiem Iskandar, and Stephen L. Smith. 
+   "Bench-Push: Benchmarking Pushing-based Navigation and Manipulation Tasks for Mobile Robots." 
+   arXiv preprint arXiv:2512.11736 (2025).
+
+#. Agmon, Eran, and Ryan K. Spangler. 
+   "Process Bigraphs and the Architecture of Compositional Systems Biology." 
+   arXiv preprint arXiv:2512.23754 (2025).
+
+#. O'Mahony, Felix, Roberto Cipolla, and Ayush Tewari. 
+   "VDAWorld: World Modelling via VLM-Directed Abstraction and Simulation." 
+   arXiv preprint arXiv:2512.11061 (2025).
+
 #. Mei, Ziyang, Siyuan Han, Youchang Xia, Zitong Liao, Wenbo Zhou, Yang Zhao, and Gang Liu. 
    "EVEGARS: End-to-End Vision-Based Endovascular Guidewire Autonomous Reinforcement Learning in Large-Scale Simulations from Clinical Dataset." 
    In Chinese Conference on Pattern Recognition and Computer Vision (PRCV), pp. 211-224. Singapore: Springer Nature Singapore, 2025.
@@ -915,7 +947,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2025-06-07. If something is missing or wrong, please contact 
+List last updated 2026-06-04. If something is missing or wrong, please contact 
 me!
 
 
