@@ -384,6 +384,10 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Gao, Baoqi, Ruize Han, Miao Wang, and Song Wang. 
+   "IMWM: Intuition Models Complement World Models for Latent Planning." 
+   arXiv preprint arXiv:2606.01626 (2026).
+
 #. Hu, Tianyi, Yunjia Zhang, Chu Qiao, Tingrui Zhang, and Shuguang Li. 
    "Diatom‐Inspired 1D Immobile Robots Capable of 2D Collective Mobility." 
    Advanced Intelligent Systems (2026): e202501506.
@@ -947,7 +951,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2026-06-04. If something is missing or wrong, please contact 
+List last updated 2026-06-08. If something is missing or wrong, please contact 
 me!
 
 
