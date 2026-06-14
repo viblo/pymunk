@@ -384,6 +384,122 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Tian, Mengze, Yiming Li, Sichao Liu, Auke Ijspeert, and Sylvain Calinon. 
+   "Spline Policy: A Structured Representation for Robot Policies." 
+   arXiv preprint arXiv:2606.07386 (2026).
+
+#. Gao, Baoqi, Ruize Han, Miao Wang, and Song Wang. 
+   "IMWM: Intuition Models Complement World Models for Latent Planning." 
+   arXiv preprint arXiv:2606.01626 (2026).
+
+#. Hu, Tianyi, Yunjia Zhang, Chu Qiao, Tingrui Zhang, and Shuguang Li. 
+   "Diatom‐Inspired 1D Immobile Robots Capable of 2D Collective Mobility." 
+   Advanced Intelligent Systems (2026): e202501506.
+
+#. Correll, Nikolaus. 
+   "Liquid Networks with Mixture Density Heads for Efficient Imitation Learning." 
+   arXiv preprint arXiv:2603.27058 (2026).
+
+#. Li, Eric, Arijit Dasgupta, Yoni Friedman, Mathieu Huot, Vikash Mansinghka, Thomas O'Connell, William T. Freeman, and Joshua B. Tenenbaum. 
+   "GenMatter: Perceiving Physical Objects with Generative Matter Models." 
+   In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 3165-3175. 2026.
+
+#. Schöttl, Peter, Joseph Kehinde Ishola, Caroline Ganzer, Maitane Ferreres Eceiza, and Gregor Bern. 
+   "HelioSliders: Novel heliostat field design approach based on collision analysis of shadow projections." 
+   Solar Energy 313 (2026): 114596.
+
+#. Huang, Yixuan, Bowen Li, Vaibhav Saxena, Yichao Liang, Utkarsh Aashu Mishra, Liang Ji, Lihan Zha et al. 
+  "KinDER: A Physical Reasoning Benchmark for Robot Learning and Planning." 
+   arXiv preprint arXiv:2604.25788 (2026).
+
+#. Xie, Tianyidan, Zhentao Huang, Mingjie Wang, Xin Huang, Jun Zhou, Minglun Gong, and Zili Yi. 
+   "PhysLayer: Language-Guided Layered Animation with Depth-Aware Physics." 
+   arXiv preprint arXiv:2604.23574 (2026).
+
+#. Narayanan, Sriram, Ziyu Jiang, Srinivasa Narasimhan, and Manmohan Chandraker. 
+   "PhyCo: Learning Controllable Physical Priors for Generative Motion." 
+   In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 41892-41902. 2026.
+
+#. Alavala, Sasidhar, Varuni Buereddy, and Ravi Prakash. 
+   "Latent Dynamics Modulation Guidance for Semantic Obstacle Avoidance in Diffusion Policies."
+   ICRA 2026 SRRA Workshop LightningTalkPoster (2026).
+
+#. Lu, Xinyi, Christos Bechlivanidis, and Tobias Gerstenberg. 
+   "Causal judgments in complex situations."
+   (2026).
+   
+#. Panayiotou, Panayiotis, and Özgür Şimşek. 
+   "Causal Discovery in Action: Learning Chain-Reaction Mechanisms from Interventions." 
+   arXiv preprint arXiv:2603.22620 (2026).
+
+#. Chen, Tony, Sam Cheyette, Kelsey Allen, Joshua Tenenbaum, and Kevin Smith. 
+   "" Just in Time" World Modeling Supports Human Planning and Reasoning." 
+   arXiv preprint arXiv:2601.14514 (2026).
+
+#. Hu, Liutao. 
+   "DMES: Information-Equivalent Evaluation Reveals the Physical Reasoning Gap Between World Models and Language Models." 
+   (2026).
+
+#. Zhao, Yang, and Gang Liu. 
+   "Reinforcement Learning in Large-Scale." 
+   In Pattern Recognition and Computer Vision: 8th Chinese Conference, PRCV 2025, Shanghai, China, October 15–18, 2025, Proceedings, Part XI, p. 211. Springer Nature, 2026.
+
+#. Shen, Keyi, and Glen Chou. 
+   "Parallel Differentiable Reachability for Learning and Planning with Certified Neural Dynamics and Controllers." 
+   arXiv preprint arXiv:2605.25346 (2026).
+
+#. Momit, Musabbir Al, Wen Jiang, Bilal Zahid Hussain, Mohammad Ammar, Sajan Bhujel, Yutian Pang, Irfan Khan, Tingjun Lei, and Jueming Hu. 
+   "Deep Q-Network With Lagrangian Relaxation for Autonomous Aircraft Landing." 
+   In AIAA SCITECH 2026 Forum, p. 1983. 2026.   
+
+#. Xuhui Kang, , Sung-Wook Lee, Haolin Liu, Yuyan Wang, and Yen-Ling Kuo. 
+   "Moving Out: Physically-grounded Human-AI Collaboration." 
+   (2026). 
+
+#. Orozco, Sergio, Tushar Kusnur, Brandon May, George Konidaris, and Laura Herlant. 
+   "Learning Equivariant Neural-Augmented Object Dynamics From Few Interactions." 
+   arXiv preprint arXiv:2605.02699 (2026).
+   
+#. Wang, Chen, Chuhao Chen, Yiming Huang, Zhiyang Dou, Yuan Liu, Jiatao Gu, and Lingjie Liu. 
+   "Physctrl: Generative physics for controllable and physics-grounded video generation." 
+   Advances in Neural Information Processing Systems 38 (2026): 167907-167932.
+
+#. Nayoung Oh, Jaehyeong Jang, Moonkyeong Jung, and Daehyung Park. 
+   "Diffusion-SSM based Policy Learning for Multi-Granularity Action Prediction." 
+   In Human to Robot: Workshop on Sensorizing, Modeling, and Learning from Humans.2025.
+
+#. Beller, Ari, Yingchen Xu, Max Siegel, Satchel Grant, Alan Brown, Jan-Philipp Fränken, Joshua Tenenbaum, Scott Linderman, and Tobias Gerstenberg. 
+   "Multimodal inference through mental simulation." 
+   (2025).
+
+#. Zhong, Ninghan, Steven Caro, Megnath Ramesh, Rishi Bhatnagar, Avraiem Iskandar, and Stephen L. Smith. 
+   "Bench-Push: Benchmarking Pushing-based Navigation and Manipulation Tasks for Mobile Robots." 
+   arXiv preprint arXiv:2512.11736 (2025).
+
+#. Agmon, Eran, and Ryan K. Spangler. 
+   "Process Bigraphs and the Architecture of Compositional Systems Biology." 
+   arXiv preprint arXiv:2512.23754 (2025).
+
+#. O'Mahony, Felix, Roberto Cipolla, and Ayush Tewari. 
+   "VDAWorld: World Modelling via VLM-Directed Abstraction and Simulation." 
+   arXiv preprint arXiv:2512.11061 (2025).
+
+#. Mei, Ziyang, Siyuan Han, Youchang Xia, Zitong Liao, Wenbo Zhou, Yang Zhao, and Gang Liu. 
+   "EVEGARS: End-to-End Vision-Based Endovascular Guidewire Autonomous Reinforcement Learning in Large-Scale Simulations from Clinical Dataset." 
+   In Chinese Conference on Pattern Recognition and Computer Vision (PRCV), pp. 211-224. Singapore: Springer Nature Singapore, 2025.
+
+#. Assumpção, Henrique, Diego Ferreira, Leandro Campos, and Fabricio Murai. 
+   "Codeevolve: An open source evolutionary coding agent for algorithm discovery and optimization." 
+   arXiv preprint arXiv:2510.14150 (2025).
+
+#. Liapis, Antonios, Maren Awiszus, Alexander Dockhorn, and Timothy Merino. 
+   "3.8 A Game in a Day." 
+   New Frontiers in AI for Game Design: 160 (2025).
+
+#. Dasgupta, Arijit. 
+   "Uncertainty-aware Joint Physical Tracking and Prediction"
+   Massachusetts Institute of Technology (2025).
+
 #. Bai, Xiangyu, He Liang, Bishoy Galoaa, Utsav Nandi, Shayda Moezzi, Yuhang He, and Sarah Ostadabbas. 
    "MoReGen: Multi-Agent Motion-Reasoning Engine for Code-based Text-to-Video Synthesis." 
    arXiv preprint arXiv:2512.04221 (2025).
@@ -839,7 +955,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2025-06-07. If something is missing or wrong, please contact 
+List last updated 2026-06-14. If something is missing or wrong, please contact 
 me!
 
 

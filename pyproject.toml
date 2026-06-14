@@ -104,7 +104,7 @@ check_untyped_defs = false
 
 [tool.cibuildwheel]
 test-command = "python -m pymunk.tests"
-enable = ["pypy", "cpython-freethreading"]
+enable = ["pypy"]
 build = [
     "cp39-*",
     "cp310-*",
