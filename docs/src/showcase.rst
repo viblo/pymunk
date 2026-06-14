@@ -384,6 +384,10 @@ List of papers which has used or mentioned Pymunk:
 
 .. (list made using "Chicago" style citation)
 
+#. Tian, Mengze, Yiming Li, Sichao Liu, Auke Ijspeert, and Sylvain Calinon. 
+   "Spline Policy: A Structured Representation for Robot Policies." 
+   arXiv preprint arXiv:2606.07386 (2026).
+
 #. Gao, Baoqi, Ruize Han, Miao Wang, and Song Wang. 
    "IMWM: Intuition Models Complement World Models for Latent Planning." 
    arXiv preprint arXiv:2606.01626 (2026).
@@ -951,7 +955,7 @@ List of papers which has used or mentioned Pymunk:
    "Dynamic Robot Path Planning Among Crowds in Emergency Situations."
 
   
-List last updated 2026-06-08. If something is missing or wrong, please contact 
+List last updated 2026-06-14. If something is missing or wrong, please contact 
 me!
 
 
