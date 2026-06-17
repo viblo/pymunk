@@ -2,13 +2,32 @@
 Changelog 
 =========
 
+Pymunk 7.3.0 (2026-06-17)
+-------------------------
+
+**Free threading and pyemscripten on pypi**
+
+This is a minor release. It contain two main features, related to packaging. 
+Pymunk now builds and publishes wheels for both free threaded CPython 3.14, 
+and for the new pyemscripten tag (PEP 783).
+
+Note that while the fre threaded build does support run in a free threaded 
+environment, Pymunk itself is not generally thread safe. See the `Threading` 
+topic in the documentation for details.
+
+Changes:
+  - Build for pyodide/pyemscripten
+  - Build for free threaded python
+  - Improved type hints and docs
+
+
 Pymunk 7.2.0 (2025-11-02)
 -------------------------
 
+**Wheels for Python 3.14**
+
 This release provides wheels for Python 3.14. It also contains a new method
 that make it possible to get the inverse transform of a Transform.
-
-**Wheels for Python 3.14**
 
 Changes:
 

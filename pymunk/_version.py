@@ -22,7 +22,7 @@
 # ----------------------------------------------------------------------------
 
 """
-Internal module used to make it possible to import the pymunk verison number
+Internal module used to make it possible to import the pymunk version number
 from more places than __init__.
 
 """
@@ -32,7 +32,7 @@ from . import _chipmunk_cffi
 cp = _chipmunk_cffi.lib
 ffi = _chipmunk_cffi.ffi
 
-version = "7.2.0"
+version = "7.3.0"
 
 chipmunk_version = "%s-%s" % (
     ffi.string(cp.cpVersionString).decode("utf-8"),

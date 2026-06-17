@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pymunk"
-version = "7.2.0" # remember to change me for new versions!
+version = "7.3.0" # Remember to change me for new versions!
 # Require cffi >1.14.0 since that (and older) has problem with returning structs from functions.
 # Require cffi >= 1.17.1 since older cant work with latest setuptools version.
 # Require cffi >= 2.0.0 on Python 3.14+ for free-threaded Python support.
