@@ -126,18 +126,18 @@ Non-Games
 
 Stickblade Arena
 ----------------
-:sup:`made by . Retrieved 2026-07-05`
+:sup:`made by Ayush Kumar (Cometbuster4969). Retrieved 2026-07-05`
 
 .. figure:: _static/showcase/stickblade_arena.png
-   :target: https://stickblade-arena.vercel.app/
+ :target: https://stickblade-arena.vercel.app/
 
-A physics-driven benchmark for LLM reasoning, creativity, and real-time 
+A physics-driven benchmark for LLM reasoning, creativity, and real-time
 decision-making - disguised as a Toribash-style stick-figure sword duel.
 
-Two large language models step into a 2D physics arena. You decide what part 
-of the weapon is sharp. They fight blind. Physics decides who actually dies. 
-You vote without knowing which model is which. Their Elo updates. Over time, 
-the leaderboard tells you which model is the most tactically creative 
+Two large language models step into a 2D physics arena. You decide what part
+of the weapon is sharp. They fight blind. Physics decides who actually dies.
+You vote without knowing which model is which. Their Elo updates. Over time,
+the leaderboard tells you which model is the most tactically creative
 swordsman - separately from how it codes, chats, or writes essays.
 
 
