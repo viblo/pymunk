@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2025 Victor Blomqvist
+# Copyright (c) 2007-2026 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -103,6 +103,7 @@ Finally, Vec2ds can be pickled and unpickled::
     Vec2d(5, 0.3)
 
 """
+
 __docformat__ = "reStructuredText"
 
 import math
@@ -139,9 +140,9 @@ class Vec2d(NamedTuple):
         >>> Vec2d(3, 4) + (1, 2)
         Vec2d(4, 6)
         """
-        assert (
-            len(other) == 2
-        ), f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+        assert len(other) == 2, (
+            f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+        )
 
         return Vec2d(self.x + other[0], self.y + other[1])
 
@@ -170,9 +171,9 @@ class Vec2d(NamedTuple):
         >>> (1, 2) - Vec2d(3, 4)
         Vec2d(-2, -2)
         """
-        assert (
-            len(other) == 2
-        ), f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+        assert len(other) == 2, (
+            f"{other} not supported. Only Vec2d and Sequence of length 2 is supported."
+        )
         return Vec2d(other[0] - self.x, other[1] - self.y)
 
     # Multiplication

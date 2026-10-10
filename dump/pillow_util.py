@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2025 Victor Blomqvist
+# Copyright (c) 2007-2026 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 """This submodule contains helper functions to help with quick prototyping
 using pymunk together with Pillow/PIL.
 
-For now this is experimental. 
+For now this is experimental.
 
 Intended to help with debugging and prototyping, not for actual production use
 in a full application. The methods contained in this module is opinionated
@@ -89,10 +89,9 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         p2 = circle_edge
         line_r = 2 if radius > 20 else 1
         self.draw.line([pos, p2], outline_color.as_int(), line_r)
-        
 
     def draw_segment(self, a: Vec2d, b: Vec2d, color: SpaceDebugColor) -> None:
-        self.draw.line([a,b], color.as_int())
+        self.draw.line([a, b], color.as_int())
 
     def draw_fat_segment(
         self,
@@ -106,8 +105,8 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         p2 = b
 
         r = round(max(1, radius * 2))
-        self.draw.line([a,b], fill_color.as_int(), r)
-        
+        self.draw.line([a, b], fill_color.as_int(), r)
+
         if r > 2:
             orthog = [abs(p2[1] - p1[1]), abs(p2[0] - p1[0])]
             if orthog[0] == 0 and orthog[1] == 0:
@@ -122,9 +121,13 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
                 (p2[0] - orthog[0], p2[1] - orthog[1]),
             ]
             self.draw.polygon(points, fill_color.as_int())
-            self.draw.circle((round(p1[0]), round(p1[1])), radius-1, fill_color.as_int())
-            self.draw.circle((round(p2[0]), round(p2[1])), radius-1, fill_color.as_int())
-            
+            self.draw.circle(
+                (round(p1[0]), round(p1[1])), radius - 1, fill_color.as_int()
+            )
+            self.draw.circle(
+                (round(p2[0]), round(p2[1])), radius - 1, fill_color.as_int()
+            )
+
     def draw_polygon(
         self,
         verts: Sequence[tuple[float, float]],
@@ -147,5 +150,3 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         self, size: float, pos: tuple[float, float], color: SpaceDebugColor
     ) -> None:
         self.draw.circle(pos, size, color.as_int(), width=0)
-
-

@@ -16,7 +16,7 @@ Pymunk has been used with success in many projects, big and small. For example:
 papers and even in a self-driving car simulation! See the Showcases section on 
 the Pymunk webpage for some examples.
 
-2007 - 2025, Victor Blomqvist - vb@viblo.se, MIT License
+2007 - 2026, Victor Blomqvist - vb@viblo.se, MIT License
 
 This release is based on the latest Pymunk release (7.3.0), 
 using Munk2D 2.0.1 rev ade7ed72849e60289eefb7a41e79ae6322fefaf3.

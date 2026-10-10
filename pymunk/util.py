@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # pymunk
-# Copyright (c) 2007-2025 Victor Blomqvist
+# Copyright (c) 2007-2026 Victor Blomqvist
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +24,11 @@
 """This submodule contains utility functions, mainly to help with polygon
 creation.
 
-.. note:: this submodule is deprectade by the autogeometry submodule. Expect it 
-to be removed in the next Pymunk release. 
+.. note:: this submodule is deprectade by the autogeometry submodule. Expect it
+to be removed in the next Pymunk release.
 
 """
+
 __docformat__ = "reStructuredText"
 
 from math import sqrt
