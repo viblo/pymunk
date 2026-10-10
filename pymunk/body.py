@@ -444,6 +444,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     @velocity_func.setter
     def velocity_func(self, func: _VelocityFunc) -> None:
         if func == Body.update_velocity:
+            self._velocity_func = None
             lib.cpBodySetVelocityUpdateFunc(
                 self._body, ffi.addressof(lib, "cpBodyUpdateVelocity")
             )
@@ -468,6 +469,7 @@ class Body(PickleMixin, TypingAttrMixing, object):
     @position_func.setter
     def position_func(self, func: _PositionFunc) -> None:
         if func == Body.update_position:
+            self._position_func = None
             lib.cpBodySetPositionUpdateFunc(
                 self._body, ffi.addressof(lib, "cpBodyUpdatePosition")
             )
