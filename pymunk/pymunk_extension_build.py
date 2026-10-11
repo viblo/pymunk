@@ -24,7 +24,7 @@ sources = []
 for folder in source_folders:
     for fn in os.listdir(folder):
         fn_path = os.path.join(folder, fn)
-        if fn[-1] == "c":
+        if fn.endswith(".c"):
             # Ignore cpHastySpace since it depends on pthread which
             # creates a dependency on libwinpthread-1.dll when built
             # with  mingw-w64 gcc.
@@ -34,7 +34,7 @@ for folder in source_folders:
             if platform.system() != "Windows" or fn != "cpHastySpace.c":
                 sources.append(fn_path)
             # sources.append(fn_path)
-        elif fn[-1] == "o":
+        elif fn.endswith(".o"):
             os.remove(fn_path)
 
 libraries: list[str] = []
