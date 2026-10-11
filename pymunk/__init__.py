@@ -42,36 +42,37 @@ __docformat__ = "reStructuredText"
 
 
 __all__ = [
-    "version",
-    "chipmunk_version",
-    "Space",
+    "BB",
+    "Arbiter",
     "Body",
-    "Shape",
     "Circle",
+    "ContactPoint",
+    "ContactPointSet",
+    "PointQueryInfo",
     "Poly",
     "Segment",
+    "SegmentQueryInfo",
+    "Shape",
+    "ShapeFilter",
+    "ShapeQueryInfo",
+    "Space",
+    "SpaceDebugDrawOptions",
+    "Transform",
+    "Vec2d",
+    "area_for_circle",
+    "area_for_poly",
+    "area_for_segment",
+    "chipmunk_version",
+    "empty_callback",
+    "moment_for_box",
     "moment_for_circle",
     "moment_for_poly",
     "moment_for_segment",
-    "moment_for_box",
-    "area_for_circle",
-    "area_for_segment",
-    "area_for_poly",
-    "empty_callback",
-    "SegmentQueryInfo",
-    "ContactPoint",
-    "ContactPointSet",
-    "Arbiter",
-    "BB",
-    "ShapeFilter",
-    "Transform",
-    "PointQueryInfo",
-    "ShapeQueryInfo",
-    "SpaceDebugDrawOptions",
-    "Vec2d",
+    "version",
 ]
 
-from typing import Any, Sequence, cast
+from collections.abc import Sequence
+from typing import Any, cast
 
 from . import _chipmunk_cffi
 
@@ -200,7 +201,7 @@ def area_for_poly(vertices: Sequence[tuple[float, float]], radius: float = 0) ->
 def empty_callback(*args: Any, **kwargs: Any) -> None:
     """A default empty callback.
 
-    Can be used to reset a collsion callback to its original empty
+    Can be used to reset a collision callback to its original empty
     function. Note that its more efficient to use this method than to
     define your own empty/do nothing method.
     """

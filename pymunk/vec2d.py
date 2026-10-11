@@ -129,7 +129,7 @@ class Vec2d(NamedTuple):
         >>> repr(Vec2d(1, 2.3))
         'Vec2d(1, 2.3)'
         """
-        return "Vec2d(%s, %s)" % (self.x, self.y)
+        return f"Vec2d({self.x}, {self.y})"
 
     # Addition
     def __add__(self, other: tuple[float, float]) -> "Vec2d":  # type: ignore[override]

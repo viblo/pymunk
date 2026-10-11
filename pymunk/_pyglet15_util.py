@@ -34,7 +34,8 @@ __docformat__ = "reStructuredText"
 
 import math
 import warnings
-from typing import TYPE_CHECKING, Any, Optional, Sequence
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, Any, Optional
 
 import pyglet  # type: ignore
 
@@ -99,7 +100,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         else:
             self.batch = kwargs["batch"]
 
-        super(DrawOptions, self).__init__()
+        super().__init__()
 
     def __enter__(self) -> None:
         self.draw_shapes = []

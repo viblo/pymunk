@@ -1,5 +1,5 @@
 from collections.abc import Iterator, KeysView
-from typing import TYPE_CHECKING, TypeVar
+from typing import TypeVar
 from weakref import WeakKeyDictionary
 
 # Can be simplified in Python 3.12, PEP 695

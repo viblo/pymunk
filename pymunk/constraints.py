@@ -52,20 +52,21 @@ Example::
 >>> s.add(c)
 
 """
+
 __docformat__ = "reStructuredText"
 
 __all__ = [
     "Constraint",
-    "PinJoint",
-    "SlideJoint",
-    "PivotJoint",
-    "GrooveJoint",
-    "DampedSpring",
     "DampedRotarySpring",
-    "RotaryLimitJoint",
-    "RatchetJoint",
+    "DampedSpring",
     "GearJoint",
+    "GrooveJoint",
+    "PinJoint",
+    "PivotJoint",
+    "RatchetJoint",
+    "RotaryLimitJoint",
     "SimpleMotor",
+    "SlideJoint",
 ]
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
@@ -266,9 +267,9 @@ class Constraint(PickleMixin, TypingAttrMixing, object):
 
     def _set_bodies(self, a: "Body", b: "Body") -> None:
         assert a is not b
-        assert (
-            a.body_type == Body.DYNAMIC or b.body_type == Body.DYNAMIC
-        ), "At least one of the two bodies attached to a constraint must be DYNAMIC."
+        assert a.body_type == Body.DYNAMIC or b.body_type == Body.DYNAMIC, (
+            "At least one of the two bodies attached to a constraint must be DYNAMIC."
+        )
         self._a = a
         self._b = b
         a._constraints[self] = None
@@ -471,7 +472,7 @@ class PivotJoint(Constraint):
             _constraint = lib.cpPivotJointNew2(a._body, b._body, args[0], args[1])
         else:
             raise Exception(
-                "You must specify either one pivot point" " or two anchor points"
+                "You must specify either one pivot point or two anchor points"
             )
 
         self._init(a, b, _constraint)

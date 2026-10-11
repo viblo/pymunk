@@ -3,8 +3,8 @@ __docformat__ = "reStructuredText"
 import math
 import platform
 import weakref
-from collections.abc import KeysView
-from typing import TYPE_CHECKING, Any, Callable, Hashable, Optional, Union
+from collections.abc import Hashable, KeysView
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 from pymunk.constraints import Constraint
 from pymunk.shape_filter import ShapeFilter
@@ -16,7 +16,7 @@ from ._chipmunk_cffi import ffi, lib
 from ._collision_handler import CollisionHandler, _CollisionCallback
 from ._pickle import PickleMixin, _State
 from ._util import _dead_ref
-from .arbiter import Arbiter, _arbiter_from_dict, _arbiter_to_dict
+from .arbiter import _arbiter_from_dict, _arbiter_to_dict
 from .body import Body
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shapes import Shape
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 _AddableObjects = Union[Body, Shape, Constraint]
 
 
-class Space(PickleMixin, object):
+class Space(PickleMixin):
     """Spaces are the basic unit of simulation. You add rigid bodies, shapes
     and joints to it and then step them all forward together through time.
 
@@ -118,9 +118,9 @@ class Space(PickleMixin, object):
 
         self._space = ffi.gc(cp_space, spacefree)
 
-        self._handlers: dict[Any, CollisionHandler] = (
-            {}
-        )  # To prevent the gc to collect the callbacks.
+        self._handlers: dict[
+            Any, CollisionHandler
+        ] = {}  # To prevent the gc to collect the callbacks.
 
         self._post_step_callbacks: dict[Any, Callable[["Space"], None]] = {}
         self._removed_shapes: dict[Shape, None] = {}
@@ -133,7 +133,7 @@ class Space(PickleMixin, object):
         self._locked = False
 
         self._add_later: set[_AddableObjects] = set()
-        self._remove_later: dict[_AddableObjects, None] = dict()
+        self._remove_later: dict[_AddableObjects, None] = {}
         self._bodies_to_check: set[Body] = set()
 
     @property
@@ -421,13 +421,13 @@ class Space(PickleMixin, object):
     def _add_shape(self, shape: "Shape") -> None:
         """Adds a shape to the space"""
         assert shape not in self._shapes, "Shape already added to space."
-        assert (
-            shape.space == None
-        ), "Shape already added to another space. A shape can only be in one space at a time."
+        assert shape.space == None, (
+            "Shape already added to another space. A shape can only be in one space at a time."
+        )
         assert shape.body != None, "The shape's body is not set."
-        assert (
-            shape.body.space == self
-        ), "The shape's body must be added to the space before (or at the same time) as the shape."
+        assert shape.body.space == self, (
+            "The shape's body must be added to the space before (or at the same time) as the shape."
+        )
 
         shape._space = weakref.ref(self)
         self._shapes[shape] = None
@@ -478,9 +478,9 @@ class Space(PickleMixin, object):
 
     def _remove_constraint(self, constraint: "Constraint") -> None:
         """Removes a constraint from the space"""
-        assert (
-            constraint in self._constraints
-        ), "constraint not in space, already removed?"
+        assert constraint in self._constraints, (
+            "constraint not in space, already removed?"
+        )
         # print("remove", constraint, constraint._constraint, self._constraints)
         # During GC at program exit sometimes the constraint might already be removed. Then skip this steip.
         if lib.cpSpaceContainsConstraint(self._space, constraint._constraint):
@@ -581,7 +581,9 @@ class Space(PickleMixin, object):
         for b in self._bodies_to_check:
             assert b.body_type != Body.DYNAMIC or (
                 b.mass > 0 and b.mass < math.inf and b.moment > 0
-            ), f"Dynamic bodies must have a mass > 0 and < inf and moment > 0. {b} has mass {b.mass}, moment {b.moment}."
+            ), (
+                f"Dynamic bodies must have a mass > 0 and < inf and moment > 0. {b} has mass {b.mass}, moment {b.moment}."
+            )
         self._bodies_to_check.clear()
 
         try:
@@ -665,9 +667,9 @@ class Space(PickleMixin, object):
         # key = min(collision_type_a, collision_type_b), max(
         #     collision_type_a, collision_type_b
         # )
-        assert (
-            collision_type_a != None or collision_type_b == None
-        ), "collision_type_a can not be None if collision_type_b is not None. Please swap them."
+        assert collision_type_a != None or collision_type_b == None, (
+            "collision_type_a can not be None if collision_type_b is not None. Please swap them."
+        )
 
         key = collision_type_a, collision_type_b
         if key not in self._handlers:
@@ -1064,13 +1066,13 @@ class Space(PickleMixin, object):
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
-        super(Space, self).__setstate__(state)
+        super().__setstate__(state)
 
         for k, v in state["special"]:
             if k == "pymunk_version":
-                assert (
-                    _version.version == v
-                ), f"Pymunk version {v} of pickled object does not match current Pymunk version {_version.version}"
+                assert _version.version == v, (
+                    f"Pymunk version {v} of pickled object does not match current Pymunk version {_version.version}"
+                )
             elif k == "bodies":
                 self.add(*v)
             elif k == "_static_body":

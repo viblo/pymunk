@@ -71,11 +71,11 @@ TODO
 __docformat__ = "reStructuredText"
 
 __all__ = [
-    "BodyFields",
     "ArbiterFields",
+    "BodyFields",
     "Buffer",
-    "get_space_bodies",
     "get_space_arbiters",
+    "get_space_bodies",
 ]
 
 from enum import Flag
@@ -142,7 +142,7 @@ class ArbiterFields(Flag):
     """All the fields"""
 
 
-class Buffer(object):
+class Buffer:
     _int_arr: ffi.CData = None
     _float_arr: ffi.CData = None
 

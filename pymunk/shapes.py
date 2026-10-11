@@ -1,7 +1,8 @@
 __docformat__ = "reStructuredText"
 
 import weakref
-from typing import TYPE_CHECKING, Optional, Sequence
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from .body import Body
@@ -20,7 +21,7 @@ from .transform import Transform
 from .vec2d import Vec2d
 
 
-class Shape(PickleMixin, TypingAttrMixing, object):
+class Shape(PickleMixin, TypingAttrMixing):
     """Base class for all the shapes.
 
     You usually don't want to create instances of this class directly but use
@@ -716,7 +717,7 @@ class Poly(Shape):
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
-        d = super(Poly, self).__getstate__()
+        d = super().__getstate__()
 
         d["init"].append(("vertices", self.get_vertices()))
         d["init"].append(("transform", None))

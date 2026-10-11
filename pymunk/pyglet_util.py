@@ -33,7 +33,8 @@ drawing, but there is probably room for optimizations still).
 __docformat__ = "reStructuredText"
 
 import math
-from typing import TYPE_CHECKING, Any, Optional, Sequence
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, Any, Optional
 
 import pyglet
 
@@ -90,7 +91,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         else:
             self.batch = kwargs["batch"]
 
-        super(DrawOptions, self).__init__()
+        super().__init__()
 
     def __enter__(self) -> None:
         self.draw_shapes = []
@@ -198,7 +199,6 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
         c = color.as_int()
         s = pyglet.shapes.Circle(pos.x, pos.y, size, color=c, batch=self.batch)
         self.draw_shapes.append(s)
-        return
 
 
 if type(pyglet).__name__ != "Mock" and pyglet.version[0] == "1":

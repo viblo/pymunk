@@ -9,16 +9,14 @@ about your coordinate system and not very optimized.
 __docformat__ = "reStructuredText"
 
 import warnings
-from typing import TYPE_CHECKING, Any, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 import matplotlib.pyplot as plt  # type: ignore
 
 import pymunk
 from pymunk.space_debug_draw_options import SpaceDebugColor
 from pymunk.vec2d import Vec2d
-
-if TYPE_CHECKING:
-    import matplotlib as mpl
 
 
 class DrawOptions(pymunk.SpaceDebugDrawOptions):
@@ -64,7 +62,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
             stacklevel=2,
         )
 
-        super(DrawOptions, self).__init__()
+        super().__init__()
 
         self.ax = ax
 

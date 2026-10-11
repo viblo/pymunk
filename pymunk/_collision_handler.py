@@ -11,7 +11,7 @@ from .arbiter import Arbiter
 _CollisionCallback = Callable[[Arbiter, "Space", Any], None]
 
 
-class CollisionHandler(object):
+class CollisionHandler:
     """A collision handler is a set of 4 function callbacks for the different
     collision events that Pymunk recognizes.
 

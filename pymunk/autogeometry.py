@@ -39,7 +39,8 @@ a Pymunk Poly or Segment::
 
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, Callable, Sequence, Union, overload
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, Callable, Union, overload
 
 if TYPE_CHECKING:
     from .bb import BB
@@ -155,9 +156,9 @@ def convex_decomposition(polyline: _Polyline, tolerance: float) -> list[list[Vec
     """
 
     assert is_closed(polyline), "Cannot decompose an open polygon."
-    assert (
-        area_for_poly(polyline) >= 0
-    ), "Winding is backwards. Try to reverse the vertices. (Are you passing a hole?)"
+    assert area_for_poly(polyline) >= 0, (
+        "Winding is backwards. Try to reverse the vertices. (Are you passing a hole?)"
+    )
 
     _line = _to_chipmunk(polyline)
     _set = lib.cpPolylineConvexDecomposition(_line, tolerance)

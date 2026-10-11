@@ -33,13 +33,13 @@ __docformat__ = "reStructuredText"
 
 __all__ = [
     "DrawOptions",
-    "get_mouse_pos",
-    "to_pygame",
     "from_pygame",
+    "get_mouse_pos",
     "positive_y_is_up",
+    "to_pygame",
 ]
 
-from typing import Sequence
+from collections.abc import Sequence
 
 import pygame
 
@@ -123,7 +123,7 @@ class DrawOptions(pymunk.SpaceDebugDrawOptions):
                     Surface that the objects will be drawn on
         """
         self.surface = surface
-        super(DrawOptions, self).__init__()
+        super().__init__()
 
     def draw_circle(
         self,

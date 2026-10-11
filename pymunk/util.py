@@ -269,7 +269,7 @@ def calc_perimeter(points):
 def _cmp_to_key(mycmp):
     "Convert a cmp= function into a key= function, useful for python 3"
 
-    class K(object):
+    class K:
         def __init__(self, obj, *args):
             self.obj = obj
 

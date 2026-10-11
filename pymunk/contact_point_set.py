@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 from .vec2d import Vec2d
 
 
-class ContactPoint(object):
+class ContactPoint:
     """Contains information about a contact point.
 
     point_a and point_b are the contact position on the surface of each shape.
@@ -23,7 +23,7 @@ class ContactPoint(object):
     point_b: Vec2d
     distance: float
 
-    __slots__ = ("point_a", "point_b", "distance")
+    __slots__ = ("distance", "point_a", "point_b")
 
     def __init__(
         self,
@@ -36,12 +36,10 @@ class ContactPoint(object):
         self.distance = distance
 
     def __repr__(self) -> str:
-        return "ContactPoint(point_a={}, point_b={}, distance={})".format(
-            self.point_a, self.point_b, self.distance
-        )
+        return f"ContactPoint(point_a={self.point_a}, point_b={self.point_b}, distance={self.distance})"
 
 
-class ContactPointSet(object):
+class ContactPointSet:
     """Contact point sets make getting contact information simpler.
 
     normal is the normal of the collision
@@ -59,7 +57,7 @@ class ContactPointSet(object):
         self.points = points
 
     def __repr__(self) -> str:
-        return "ContactPointSet(normal={}, points={})".format(self.normal, self.points)
+        return f"ContactPointSet(normal={self.normal}, points={self.points})"
 
     @classmethod
     def _from_cp(cls, _points: "ffi.CData") -> "ContactPointSet":

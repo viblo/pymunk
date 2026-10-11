@@ -1,7 +1,7 @@
 import subprocess
 
-subprocess.call(f"git submodule update --remote ../Chipmunk2D", shell=True)
-subprocess.call(f"git submodule status ../Chipmunk2D", shell=True)
+subprocess.call("git submodule update --remote ../Chipmunk2D", shell=True)
+subprocess.call("git submodule status ../Chipmunk2D", shell=True)
 
 print(
     """

@@ -1,11 +1,12 @@
 __docformat__ = "reStructuredText"
 
 
-from typing import TYPE_CHECKING, Any, Sequence
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from .space import Space
     from .body import Body
+    from .space import Space
 
 from ._chipmunk_cffi import ffi, lib
 from .contact_point_set import ContactPointSet
@@ -13,7 +14,7 @@ from .shapes import Shape
 from .vec2d import Vec2d
 
 
-class Arbiter(object):
+class Arbiter:
     """The Arbiter object encapsulates a pair of colliding shapes and all of
         the data about their collision.
 
@@ -86,9 +87,7 @@ class Arbiter(object):
                 _set.points[i].pointB = point_set.points[0].point_b
                 _set.points[i].distance = point_set.points[0].distance
         else:
-            msg = "Expected {} points, got {} points in point_set".format(
-                _set.count, len(point_set.points)
-            )
+            msg = f"Expected {_set.count} points, got {len(point_set.points)} points in point_set"
             raise Exception(msg)
 
         lib.cpArbiterSetContactPointSet(self._arbiter, ffi.addressof(_set))
@@ -103,12 +102,12 @@ class Arbiter(object):
             arb.bodies == arb.shapes[0].body, arb.shapes[1].body .
         """
         a, b = self.shapes
-        assert (
-            a.body != None
-        ), "Shape should have a body. Could be a bug in Pymunk, please report"
-        assert (
-            b.body != None
-        ), "Shape should have a body. Could be a bug in Pymunk, please report"
+        assert a.body != None, (
+            "Shape should have a body. Could be a bug in Pymunk, please report"
+        )
+        assert b.body != None, (
+            "Shape should have a body. Could be a bug in Pymunk, please report"
+        )
         return a.body, b.body
 
     @property

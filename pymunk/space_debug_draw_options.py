@@ -1,10 +1,12 @@
 __docformat__ = "reStructuredText"
 
-from typing import TYPE_CHECKING, ClassVar, NamedTuple, Optional, Sequence
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, ClassVar, NamedTuple, Optional
 
 if TYPE_CHECKING:
-    from .shapes import Shape
     from types import TracebackType
+
+    from .shapes import Shape
 
 from ._chipmunk_cffi import ffi, lib
 from .body import Body
@@ -39,7 +41,7 @@ class SpaceDebugColor(NamedTuple):
         return self[0] / 255.0, self[1] / 255.0, self[2] / 255.0, self[3] / 255.0
 
 
-class SpaceDebugDrawOptions(object):
+class SpaceDebugDrawOptions:
     """SpaceDebugDrawOptions configures debug drawing.
 
     If appropriate its usually easy to use the supplied draw implementations
