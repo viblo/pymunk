@@ -7,7 +7,7 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestArbiter(unittest.TestCase):
-    def testRestitution(self) -> None:
+    def test_restitution(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -35,7 +35,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.assertAlmostEqual(b1.position.y, 22.42170317, 6)
 
-    def testFriction(self) -> None:
+    def test_friction(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -63,7 +63,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.assertAlmostEqual(b1.position.x, 10.99450928394)
 
-    def testSurfaceVelocity(self) -> None:
+    def test_surface_velocity(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -91,7 +91,7 @@ class UnitTestArbiter(unittest.TestCase):
         for x in range(5):
             s.step(0.1)
 
-    def testContactPointSet(self) -> None:
+    def test_contact_point_set(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -146,7 +146,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.step(0.1)
 
-    def testImpulse(self) -> None:
+    def test_impulse(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -176,7 +176,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.assertTrue(self.post_solve_done)
 
-    def testTotalKE(self) -> None:
+    def test_total_ke(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -203,7 +203,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.assertAlmostEqual(r["ke"], 43.438914027)
 
-    def testIsFirstContact(self) -> None:
+    def test_is_first_contact(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -234,7 +234,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         s.step(0.1)
 
-    def testNormal(self) -> None:
+    def test_normal(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -258,7 +258,7 @@ class UnitTestArbiter(unittest.TestCase):
         self.assertAlmostEqual(r["n"].x, -0.44721359)
         self.assertAlmostEqual(r["n"].y, -0.89442719)
 
-    def testIsRemoval(self) -> None:
+    def test_is_removal(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -301,7 +301,7 @@ class UnitTestArbiter(unittest.TestCase):
 
         self.assertTrue(self.called2)
 
-    def testShapesAndBodies(self) -> None:
+    def test_shapes_and_bodies(self) -> None:
         s = p.Space()
         s.gravity = 0, -100
 
@@ -333,7 +333,7 @@ class UnitTestArbiter(unittest.TestCase):
         s.step(0.1)
         self.assertTrue(self.called)
 
-    def testProcessCollision(self) -> None:
+    def test_process_collision(self) -> None:
 
         def setup() -> p.Space:
             s = p.Space()
