@@ -39,9 +39,9 @@ class Space(PickleMixin, object):
 
     Custom properties set on the space will also be copied/pickled.
 
-    Any collision handlers will also be copied/pickled. Note that depending on
-    the pickle protocol used there are some restrictions on what functions can
-    be copied/pickled.
+    Any collision handlers will also be copied/pickled, including their data.
+    Note that depending on the pickle protocol used there are some restrictions
+    on what functions and data can be copied/pickled.
 
     Example::
 
@@ -1031,7 +1031,7 @@ class Space(PickleMixin, object):
 
         handlers = []
         for k, v in self._handlers.items():
-            h: dict[str, Any] = {}
+            h: dict[str, Any] = {"_data": v.data}
             if v._begin != empty_callback:
                 h["_begin"] = v._begin
             if v._pre_solve != empty_callback:
@@ -1127,6 +1127,9 @@ class Space(PickleMixin, object):
                             post_solve=post_solve,
                             separate=separate,
                         )
+
+                    key = k2 if isinstance(k2, tuple) else (k2, None)
+                    self._handlers[key].data.update(hd.get("_data", {}))
 
             elif k == "stamp":
                 lib.cpSpaceSetTimestamp(self._space, v)
