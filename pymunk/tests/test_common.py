@@ -9,11 +9,11 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestGeneral(unittest.TestCase):
-    def testGeneral(self) -> None:
+    def test_general(self) -> None:
         p.version
         p.chipmunk_version
 
-    def testMomentHelpers(self) -> None:
+    def test_moment_helpers(self) -> None:
         m = p.moment_for_circle(1, 2, 3, (1, 2))
         self.assertAlmostEqual(m, 11.5)
 
@@ -26,7 +26,7 @@ class UnitTestGeneral(unittest.TestCase):
         m = p.moment_for_box(1, (2, 3))
         self.assertAlmostEqual(m, 1.08333333333)
 
-    def testAreaHelpers(self) -> None:
+    def test_area_helpers(self) -> None:
         a = p.area_for_circle(1, 2)
         self.assertAlmostEqual(a, 9.4247779607)
 
@@ -38,7 +38,7 @@ class UnitTestGeneral(unittest.TestCase):
 
 
 class UnitTestBugs(unittest.TestCase):
-    def testGC(self) -> None:
+    def test_gc(self) -> None:
 
         import gc
         import logging
@@ -71,7 +71,7 @@ class UnitTestBugs(unittest.TestCase):
                     del o._body
             gc.collect()
 
-    def testManyBoxCrash(self) -> None:
+    def test_many_box_crash(self) -> None:
         space = p.Space()
         for x in [1, 2]:
             for y in range(16):
@@ -90,7 +90,7 @@ class UnitTestBugs(unittest.TestCase):
                 space.add(body, shape)
             space.step(1 / 50.0)
 
-    def testNoStaticShape(self) -> None:
+    def test_no_static_shape(self) -> None:
         space = p.Space()
 
         b1 = p.Body(1, float("inf"))
@@ -174,7 +174,7 @@ class UnitTestBugs(unittest.TestCase):
         space.step(1)
         # print(3)
 
-    def testWeakKeysView(self) -> None:
+    def test_weak_keys_view(self) -> None:
         x1, x2, x3 = p.Body(1), p.Body(2), p.Body(3)
 
         d: weakref.WeakKeyDictionary[p.Body, int] = weakref.WeakKeyDictionary()
