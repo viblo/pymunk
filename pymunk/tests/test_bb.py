@@ -6,7 +6,7 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestBB(unittest.TestCase):
-    def testCreation(self) -> None:
+    def test_creation(self) -> None:
         bb_empty = p.BB()
 
         self.assertEqual(bb_empty.left, 0)
@@ -27,7 +27,7 @@ class UnitTestBB(unittest.TestCase):
         self.assertEqual(bb_circle.right, 6)
         self.assertEqual(bb_circle.top, 6)
 
-    def testMerge(self) -> None:
+    def test_merge(self) -> None:
         bb1 = p.BB(0, 0, 10, 10)
         bb2 = p.BB(2, 0, 10, 10)
         bb3 = p.BB(10, 10, 15, 15)
@@ -35,11 +35,10 @@ class UnitTestBB(unittest.TestCase):
         self.assertEqual(bb1.merge(bb2), p.BB(0, 0, 10, 10))
         self.assertEqual(bb2.merge(bb3).merge(bb1), p.BB(0, 0, 15, 15))
 
-    def testMethods(self) -> None:
+    def test_methods(self) -> None:
         bb1 = p.BB(0, 0, 10, 10)
         bb2 = p.BB(10, 10, 20, 20)
         bb3 = p.BB(4, 4, 5, 5)
-        bb4 = p.BB(2, 0, 10, 10)
 
         v1 = Vec2d(1, 1)
         v2 = Vec2d(100, 3)
@@ -70,7 +69,7 @@ class UnitTestBB(unittest.TestCase):
 
         # self.assertEqual(bb1.wrap_vect((11,11)), (1,1))
 
-    def testPickle(self) -> None:
+    def test_pickle(self) -> None:
         x = p.BB(4, 4, 5, 5)
 
         s = pickle.dumps(x, 2)
