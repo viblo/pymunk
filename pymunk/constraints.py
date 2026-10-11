@@ -578,6 +578,8 @@ class DampedSpring(Constraint):
         "damping",
     ]
 
+    _pickle_attrs_general = Constraint._pickle_attrs_general + ["force_func"]
+
     _pickle_attrs_skip = Constraint._pickle_attrs_skip + ["_force_func"]
 
     def __init__(
@@ -706,6 +708,8 @@ class DampedRotarySpring(Constraint):
         "stiffness",
         "damping",
     ]
+
+    _pickle_attrs_general = Constraint._pickle_attrs_general + ["torque_func"]
 
     _pickle_attrs_skip = Constraint._pickle_attrs_skip + ["_torque_func"]
 
