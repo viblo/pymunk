@@ -2,6 +2,29 @@
 Changelog 
 =========
 
+Pymukn 7.3.1 (2026-10-11)
+-------------------------
+
+**Wheels for Pyhton 3.15**
+
+This release provides wheels for the recently released Python 3.15. It also 
+contains two bug fixes by Github user antonsoo (Anton Soloviev). The first 
+fixes the custom collision callback data when pickling or copying a space.
+The second ensures that restting velocity_func and position_func callbacks on 
+a Body will also clear the underlying property so that it works properly 
+with pickle/copy. 
+
+Due to issues Pymunk is now only building iOS wheels for Python 3.15, and 
+skips building wasm wheels for the Pyodide/WASM target. 
+
+Changes:
+  - Build wheels for Python 3.15
+  - Build wheels for Pypy 3.12
+  - Preserve collision callback data when pickle/copy a space
+  - Handle reset of body velocity_func and position_func properly
+  - Only build IOS wheels for Python 3.15
+  - Skip 3.15 build for Pyodide/WASM. 
+
 Pymunk 7.3.0 (2026-06-17)
 -------------------------
 
