@@ -311,6 +311,8 @@ class PinJoint(Constraint):
 
     _pickle_attrs_init = Constraint._pickle_attrs_init + ["anchor_a", "anchor_b"]
 
+    _pickle_attrs_general = Constraint._pickle_attrs_general + ["distance"]
+
     def __init__(
         self,
         a: "Body",
@@ -827,6 +829,8 @@ class RatchetJoint(Constraint):
     """RatchetJoint is a rotary ratchet, it works like a socket wrench."""
 
     _pickle_attrs_init = Constraint._pickle_attrs_init + ["phase", "ratchet"]
+
+    _pickle_attrs_general = Constraint._pickle_attrs_general + ["angle"]
 
     def __init__(self, a: "Body", b: "Body", phase: float, ratchet: float) -> None:
         """Works like a socket wrench.
