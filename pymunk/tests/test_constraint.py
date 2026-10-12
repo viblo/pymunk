@@ -432,6 +432,32 @@ class UnitTestDampedSpring(unittest.TestCase):
         self.assertEqual(j.a.mass, j2.a.mass)
         self.assertEqual(j.b.mass, j2.b.mass)
 
+    def test_copy_force_func(self) -> None:
+        a, b = p.Body(10, 10), p.Body(20, 20)
+        b.position = (3, 0)
+        j = DampedSpring(a, b, (0, 0), (0, 0), 1, 2, 0)
+        j.force_func = nonlinear_spring_force
+        for clone in (
+            j.copy,
+            lambda: copy.deepcopy(j),
+            lambda: pickle.loads(pickle.dumps(j)),
+        ):
+            with self.subTest(clone=clone):
+                j2 = clone()
+                self.assertIs(j2.force_func, nonlinear_spring_force)
+                space = p.Space()
+                space.add(j2.a, j2.b, j2)
+                space.step(0.125)
+                self.assertEqual(j2.impulse, -2)
+
+        j.force_func = DampedSpring.spring_force
+        j2 = pickle.loads(pickle.dumps(j))
+        self.assertIs(j2.force_func, DampedSpring.spring_force)
+        space = p.Space()
+        space.add(j2.a, j2.b, j2)
+        space.step(0.125)
+        self.assertEqual(j2.impulse, -0.5)
+
 
 class UnitTestDampedRotarySpring(unittest.TestCase):
     def test_rest_angle(self) -> None:
@@ -491,6 +517,32 @@ class UnitTestDampedRotarySpring(unittest.TestCase):
         self.assertEqual(j.damping, j2.damping)
         self.assertEqual(j.a.mass, j2.a.mass)
         self.assertEqual(j.b.mass, j2.b.mass)
+
+    def test_copy_torque_func(self) -> None:
+        a, b = p.Body(10, 10), p.Body(20, 20)
+        b.angle = 2
+        j = DampedRotarySpring(a, b, 0, 2, 0)
+        j.torque_func = nonlinear_spring_torque
+        for clone in (
+            j.copy,
+            lambda: copy.deepcopy(j),
+            lambda: pickle.loads(pickle.dumps(j)),
+        ):
+            with self.subTest(clone=clone):
+                j2 = clone()
+                self.assertIs(j2.torque_func, nonlinear_spring_torque)
+                space = p.Space()
+                space.add(j2.a, j2.b, j2)
+                space.step(0.125)
+                self.assertEqual(j2.impulse, -2)
+
+        j.torque_func = DampedRotarySpring.spring_torque
+        j2 = pickle.loads(pickle.dumps(j))
+        self.assertIs(j2.torque_func, DampedRotarySpring.spring_torque)
+        space = p.Space()
+        space.add(j2.a, j2.b, j2)
+        space.step(0.125)
+        self.assertEqual(j2.impulse, -0.5)
 
 
 class UnitTestRotaryLimitJoint(unittest.TestCase):
@@ -625,3 +677,11 @@ def pre_solve(c: Constraint, s: p.Space) -> None:
 
 def post_solve(c: Constraint, s: p.Space) -> None:
     pass
+
+
+def nonlinear_spring_force(spring: DampedSpring, distance: float) -> float:
+    return spring.stiffness * (spring.rest_length - distance) ** 3
+
+
+def nonlinear_spring_torque(spring: DampedRotarySpring, relative_angle: float) -> float:
+    return spring.stiffness * (relative_angle - spring.rest_angle) ** 3
