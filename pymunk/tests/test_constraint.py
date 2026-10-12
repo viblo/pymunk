@@ -1,3 +1,4 @@
+import copy
 import gc
 import pickle
 import unittest
@@ -233,6 +234,7 @@ class UnitTestPinJoint(unittest.TestCase):
     def test_pickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
         j = PinJoint(a, b, (1, 2), (3, 4))
+        j.distance = 8
 
         s = pickle.dumps(j)
         j2 = pickle.loads(s)
@@ -242,6 +244,18 @@ class UnitTestPinJoint(unittest.TestCase):
         self.assertEqual(j.distance, j2.distance)
         self.assertEqual(j.a.mass, j2.a.mass)
         self.assertEqual(j.b.mass, j2.b.mass)
+
+    def test_copy_distance(self) -> None:
+        a, b = p.Body(10, 10), p.Body(20, 20)
+        b.position = (3, 4)
+        j = PinJoint(a, b)
+        j.distance = 8
+        for clone in (j.copy, lambda: copy.deepcopy(j)):
+            with self.subTest(clone=clone):
+                j2 = clone()
+                self.assertEqual(j2.distance, 8)
+                self.assertIsNot(j2.a, a)
+                self.assertIsNot(j2.b, b)
 
 
 class UnitTestSlideJoint(unittest.TestCase):
@@ -532,14 +546,28 @@ class UnitTestRatchetJoint(unittest.TestCase):
     def test_pickle(self) -> None:
         a, b = p.Body(10, 10), p.Body(20, 20)
         j = RatchetJoint(a, b, 1, 2)
+        j.angle = 3
 
         s = pickle.dumps(j)
         j2 = pickle.loads(s)
 
+        self.assertEqual(j.angle, j2.angle)
         self.assertEqual(j.phase, j2.phase)
         self.assertEqual(j.ratchet, j2.ratchet)
         self.assertEqual(j.a.mass, j2.a.mass)
         self.assertEqual(j.b.mass, j2.b.mass)
+
+    def test_copy_angle(self) -> None:
+        a, b = p.Body(10, 10), p.Body(20, 20)
+        b.angle = 0.25
+        j = RatchetJoint(a, b, 0, 0.5)
+        j.angle = 1.5
+        for clone in (j.copy, lambda: copy.deepcopy(j)):
+            with self.subTest(clone=clone):
+                j2 = clone()
+                self.assertEqual(j2.angle, 1.5)
+                self.assertIsNot(j2.a, a)
+                self.assertIsNot(j2.b, b)
 
 
 class UnitTestGearJoint(unittest.TestCase):
