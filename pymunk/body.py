@@ -733,6 +733,10 @@ class Body(PickleMixin, TypingAttrMixing):
         """
         super().__setstate__(state)
 
+        # The center of gravity is restored after position. Rebuild the
+        # internal center-of-mass position before the next integration step.
+        self.position = self.position
+
         for k, v in state["special"]:
             if k == "is_sleeping" and v:
                 pass
