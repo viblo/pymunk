@@ -92,8 +92,8 @@ class Body(PickleMixin, TypingAttrMixing):
     _pickle_attrs_general = PickleMixin._pickle_attrs_general + [
         "force",
         "angle",
-        "position",
         "center_of_gravity",
+        "position",
         "velocity",
         "angular_velocity",
         "torque",
@@ -731,11 +731,10 @@ class Body(PickleMixin, TypingAttrMixing):
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
+        # Older saved states can still list position before center_of_gravity.
+        state = state.copy()
+        state["general"] = sorted(state["general"], key=lambda attr: attr[0] == "position")
         super().__setstate__(state)
-
-        # The center of gravity is restored after position. Rebuild the
-        # internal center-of-mass position before the next integration step.
-        self.position = self.position
 
         for k, v in state["special"]:
             if k == "is_sleeping" and v:
