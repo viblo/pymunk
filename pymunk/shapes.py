@@ -435,6 +435,7 @@ class Segment(Shape):
     """
 
     _pickle_attrs_init = Shape._pickle_attrs_init + ["a", "b", "radius"]
+    _neighbor_tangents: Optional[tuple[Vec2d, Vec2d]] = None
 
     def __init__(
         self,
@@ -521,6 +522,19 @@ class Segment(Shape):
         assert len(prev) == 2
         assert len(next) == 2
         cp.cpSegmentShapeSetNeighbors(self._shape, prev, next)
+        self._neighbor_tangents = (Vec2d(*prev) - self.a, Vec2d(*next) - self.b)
+
+    def __getstate__(self) -> _State:
+        state = super().__getstate__()
+        if self._neighbor_tangents is not None:
+            state["special"].append(("_neighbor_tangents", self._neighbor_tangents))
+        return state
+
+    def __setstate__(self, state: _State) -> None:
+        super().__setstate__(state)
+        for key, value in state["special"]:
+            if key == "_neighbor_tangents":
+                self.set_neighbors(self.a + value[0], self.b + value[1])
 
 
 class Poly(Shape):

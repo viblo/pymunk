@@ -256,6 +256,40 @@ class UnitTestCircle(unittest.TestCase):
 
 
 class UnitTestSegment(unittest.TestCase):
+    def testCopyNeighbors(self) -> None:
+        for change_endpoints in (False, True):
+            space = p.Space()
+            segment = p.Segment(space.static_body, (-10, 0), (0, 0), 0)
+            segment.set_neighbors((-20, 0), (10, 0))
+            if change_endpoints:
+                segment.unsafe_set_endpoints((-9, 0), (1, 0))
+            space.add(segment)
+            circle = p.Circle(p.Body(1, 1), 0.5)
+            circle.body.position = segment.b + (0.25, 0.3)
+            self.assertEqual(len(space.shape_query(circle)), 0)
+            for restore in (
+                lambda value: value.copy(),
+                lambda value: pickle.loads(pickle.dumps(value, 2)),
+                lambda value: pickle.loads(pickle.dumps(value, 5)),
+            ):
+                with self.subTest(change_endpoints=change_endpoints, restore=restore):
+                    restored = restore(space)
+                    self.assertEqual(len(restored.shape_query(circle)), 0)
+                    copied_segment = restore(segment)
+                    rebuilt = p.Space()
+                    assert copied_segment.body is not None
+                    rebuilt.add(copied_segment.body, copied_segment)
+                    self.assertEqual(len(rebuilt.shape_query(circle)), 0)
+
+    def testLegacySegmentState(self) -> None:
+        segment = p.Segment(None, (-10, 0), (0, 0), 0)
+        state = segment.__getstate__()
+        state["special"] = []
+        restored = p.Segment.__new__(p.Segment)
+        restored.__setstate__(state)
+        self.assertEqual(restored.a, segment.a)
+        self.assertEqual(restored.b, segment.b)
+
     def testBB(self) -> None:
         s = p.Space()
         b = p.Body(10, 10)
