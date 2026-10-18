@@ -19,7 +19,7 @@ the Pymunk webpage for some examples.
 2007 - 2026, Victor Blomqvist - vb@viblo.se, MIT License
 
 This release is based on the latest Pymunk release (7.3.1), 
-using Munk2D 2.0.1 rev ade7ed72849e60289eefb7a41e79ae6322fefaf3.
+using Munk2D 2.1.0 rev 3d2070976911b7e4b659a5365b0313f99dc98788.
 
 
 Installation
