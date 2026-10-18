@@ -13,6 +13,61 @@ from pymunk.vec2d import Vec2d
 
 
 class UnitTestBody(unittest.TestCase):
+    def test_restore_center_of_gravity_before_position_update(self) -> None:
+        for body_type in (p.Body.DYNAMIC, p.Body.KINEMATIC):
+            for restore in (
+                copy.deepcopy,
+                lambda b: pickle.loads(pickle.dumps(b, 2)),
+                lambda b: pickle.loads(pickle.dumps(b, 5)),
+            ):
+                with self.subTest(body_type=body_type, restore=restore):
+                    body = p.Body(2, 9, body_type=body_type)
+                    body.angle = 0.4
+                    body.center_of_gravity = (2, 3)
+                    body.position = (10, 11)
+                    body.velocity = (1, 2)
+                    body.angular_velocity = 0.7
+                    restored = restore(body)
+                    self.assertEqual(restored.position, body.position)
+                    p.Body.update_position(body, 0.1)
+                    p.Body.update_position(restored, 0.1)
+                    self.assertAlmostEqual(restored.position.x, body.position.x)
+                    self.assertAlmostEqual(restored.position.y, body.position.y)
+                    self.assertEqual(restored.angle, body.angle)
+                    self.assertEqual(restored.center_of_gravity, body.center_of_gravity)
+
+    def test_restore_old_center_of_gravity_attribute_order(self) -> None:
+        for body_type in (p.Body.DYNAMIC, p.Body.KINEMATIC):
+            with self.subTest(body_type=body_type):
+                body = p.Body(2, 9, body_type=body_type)
+                body.angle = 0.4
+                body.center_of_gravity = (2, 3)
+                body.position = (10, 11)
+                body.velocity = (1, 2)
+                body.angular_velocity = 0.7
+                state = body.__getstate__()
+                attrs = dict(state["general"])
+                state["general"] = [
+                    (name, attrs[name])
+                    for name in (
+                        "force",
+                        "angle",
+                        "position",
+                        "center_of_gravity",
+                        "velocity",
+                        "angular_velocity",
+                        "torque",
+                    )
+                ]
+                original_state = copy.deepcopy(state)
+                restored = p.Body.__new__(p.Body)
+                restored.__setstate__(state)
+                self.assertEqual(state, original_state)
+                p.Body.update_position(body, 0.1)
+                p.Body.update_position(restored, 0.1)
+                self.assertAlmostEqual(restored.position.x, body.position.x)
+                self.assertAlmostEqual(restored.position.y, body.position.y)
+
     def test_properties(self) -> None:
         b = p.Body(10, 100)
         self.assertEqual(b.mass, 10)
