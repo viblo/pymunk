@@ -731,9 +731,6 @@ class Body(PickleMixin, TypingAttrMixing):
         This method allows the usage of the :mod:`copy` and :mod:`pickle`
         modules with this class.
         """
-        # Older saved states can still list position before center_of_gravity.
-        state = state.copy()
-        state["general"] = sorted(state["general"], key=lambda attr: attr[0] == "position")
         super().__setstate__(state)
 
         for k, v in state["special"]:
