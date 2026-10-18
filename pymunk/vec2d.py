@@ -571,13 +571,21 @@ class Vec2d(NamedTuple):
     ) -> "Vec2d":
         """Convert the vector to a new basis defined by the given x and y vectors.
 
+        The basis vectors must be linearly independent, but need not be
+        perpendicular.
+
         >>> Vec2d(10, 1).convert_to_basis((5, 0), (0, 0.5))
         Vec2d(2.0, 2.0)
+        >>> Vec2d(32, 16).convert_to_basis((32, 16), (-32, 16))
+        Vec2d(1.0, 0.0)
+
+        :raises ZeroDivisionError: If the basis vectors are linearly dependent.
         """
         assert len(x_vector) == 2
         assert len(y_vector) == 2
-        x = self.dot(x_vector) / Vec2d(*x_vector).length_squared
-        y = self.dot(y_vector) / Vec2d(*y_vector).length_squared
+        determinant = x_vector[0] * y_vector[1] - x_vector[1] * y_vector[0]
+        x = (self.x * y_vector[1] - self.y * y_vector[0]) / determinant
+        y = (x_vector[0] * self.y - x_vector[1] * self.x) / determinant
         return Vec2d(x, y)
 
     @property
