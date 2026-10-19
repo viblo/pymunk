@@ -209,6 +209,7 @@ void pmSpaceBodyGetIteratorFuncBatched(cpBody *body, void *data)
 void pmSpaceBodySetIteratorFuncBatched(cpBody *body, void *data)
 {
     pmBatchedData *d = (pmBatchedData *)data;
+    cpVect position = cpvzero;
 
     if (d->fields & BODY_ID)
     {
@@ -216,11 +217,16 @@ void pmSpaceBodySetIteratorFuncBatched(cpBody *body, void *data)
     }
     if (d->fields & POSITION)
     {
-        cpBodySetPosition(body, pmFloatArrayPopVect(d->floatArray));
+        position = pmFloatArrayPopVect(d->floatArray);
     }
     if (d->fields & ANGLE)
     {
         cpBodySetAngle(body, pmFloatArrayPop(d->floatArray));
+    }
+    if (d->fields & POSITION)
+    {
+        // Changing angle moves the origin of bodies with an offset center of gravity.
+        cpBodySetPosition(body, position);
     }
     if (d->fields & VELOCITY)
     {

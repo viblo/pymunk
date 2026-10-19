@@ -7,6 +7,35 @@ import pymunk.batch
 
 class UnitTestBatch(unittest.TestCase):
 
+    def test_set_pose_with_offset_center_of_gravity(self) -> None:
+        fields = pymunk.batch.BodyFields
+        for selected in [fields.POSITION | fields.ANGLE, fields.ALL]:
+            with self.subTest(fields=selected):
+                space = pymunk.Space()
+                bodies = [pymunk.Body(2, 3), pymunk.Body(4, 5)]
+                for i, body in enumerate(bodies):
+                    body.center_of_gravity = (2 + i, 3 - i)
+                    body.angle = 0.5 + i
+                    body.position = (7 + i, 8 - i)
+                    body.velocity = (1 + i, 2 - i)
+                    space.add(body)
+
+                data = pymunk.batch.Buffer()
+                pymunk.batch.get_space_bodies(space, selected, data)
+                saved = bytes(data.float_buf())
+                for body in bodies:
+                    body.angle += 1
+                    body.position = (-10, -20)
+
+                pymunk.batch.set_space_bodies(space, selected, data)
+
+                for i, body in enumerate(bodies):
+                    self.assertAlmostEqual(body.position.x, 7 + i)
+                    self.assertAlmostEqual(body.position.y, 8 - i)
+                    self.assertEqual(body.angle, 0.5 + i)
+                    self.assertEqual(body.velocity, (1 + i, 2 - i))
+                self.assertEqual(bytes(data.float_buf()), saved)
+
     def test_buffer(self) -> None:
         b = pymunk.batch.Buffer()
         arr = array.array("d", [1.2, 3.4])
