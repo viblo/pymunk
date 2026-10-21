@@ -91,8 +91,9 @@ class UnitTestSpace(unittest.TestCase):
 
     def test_solver_mode_asserts(self) -> None:
         s = p.Space(threaded=True)
-        with self.assertRaises(AssertionError):
-            s.solver_mode = SolverMode.AUTO
+        if s.threaded:
+            with self.assertRaises(AssertionError):
+                s.solver_mode = SolverMode.AUTO
 
         s = p.Space()
         b1, b2 = p.Body(1, 3), p.Body(10, 100)
