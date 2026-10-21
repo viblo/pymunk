@@ -87,7 +87,6 @@ class Space(PickleMixin):
         "collision_bias",
         "collision_persistence",
         "threads",
-        "solver_mode",
     ]
 
     def __init__(self, threaded: bool = False) -> None:
@@ -1116,6 +1115,7 @@ class Space(PickleMixin):
         d["special"].append(
             ("arbiters", [_arbiter_to_dict(_arb, self) for _arb in _arbs])
         )
+        d["special"].append(("solver_mode", self.solver_mode))
         return d
 
     def __setstate__(self, state: _State) -> None:
@@ -1202,3 +1202,6 @@ class Space(PickleMixin):
                     # lib.cpSpaceTest(self._space)
                     _arbiter = _arbiter_from_dict(d, self)
                     lib.cpSpaceAddCachedArbiter(self._space, _arbiter)
+            elif k == "solver_mode":
+                if self.solver_mode != v:
+                    self.solver_mode = v
