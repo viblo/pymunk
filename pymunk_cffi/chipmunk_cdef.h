@@ -112,7 +112,7 @@ struct cpArbiter
 
     cpTimestamp stamp;
     enum cpArbiterState state;
-	cpBool processCollision;
+    cpBool processCollision;
 };
 
 struct cpArray
@@ -179,9 +179,9 @@ cpFloat cpArbiterTotalKE(const cpArbiter *arb);
 /// Return if the collision was set to be ignored by cpArbiterSetProcessCollision earlier.
 /// Note that the collision can be ignored for different reasons, even when this is true.
 cpBool cpArbiterGetProcessCollision(const cpArbiter *arb);
-/// Set processCollision to false to not process the collision. 
+/// Set processCollision to false to not process the collision.
 /// Setting this to false from a begin callback causes the collision to be ignored until
-/// the the separate callback is called when the objects stop colliding. 
+/// the the separate callback is called when the objects stop colliding.
 /// Returning false from a pre-step callback causes the collision to be ignored until the next step.
 /// It should not be called from post-solve or separate callbacks.
 void cpArbiterSetProcessCollision(cpArbiter *arb, cpBool processCollision);
@@ -1034,6 +1034,19 @@ struct cpCollisionHandler
     cpDataPointer userData;
 };
 
+/// Contact solver used by cpSpaceStep(). The original solver remains the default.
+/// The AVX2 solver uses double precision and a different contact order; trajectories
+/// may differ. It falls back to the original solver for active cpConstraints,
+/// unsuitable contact graphs, unsupported contacts or scratch allocation failure.
+/// This setting does not change the separate cpHastySpaceStep() solver.
+typedef enum cpContactSolverType
+{
+    CP_CONTACT_SOLVER_ORIGINAL = 0,
+    CP_CONTACT_SOLVER_AVX2 = 1,
+    /// Reserved, not selectable. Keeps a stable enum width and room for extensions.
+    CP_CONTACT_SOLVER_TYPE_MAX = 0x7fffffff
+} cpContactSolverType;
+
 // TODO: Make timestep a parameter?
 
 // MARK: Memory and Initialization
@@ -1055,6 +1068,16 @@ void cpSpaceFree(cpSpace *space);
 /// Number of iterations to use in the impulse solver to solve contacts and other constraints.
 int cpSpaceGetIterations(const cpSpace *space);
 void cpSpaceSetIterations(cpSpace *space, int iterations);
+
+/// Whether this build and the current CPU/OS support a contact solver.
+cpBool cpContactSolverIsAvailable(cpContactSolverType solver);
+/// Requested solver; individual steps may still use the documented fallback.
+cpContactSolverType cpSpaceGetContactSolver(const cpSpace *space);
+/// Select a solver while the space is unlocked. Returns false for an invalid or
+/// unavailable solver, a locked space, or allocation failure; leaves the previous
+/// selection unchanged. Selecting ORIGINAL releases the optional scratch storage.
+/// Does not wake sleeping bodies. The AVX2 backend is never selected automatically.
+cpBool cpSpaceSetContactSolver(cpSpace *space, cpContactSolverType solver);
 
 /// Gravity to pass to rigid bodies when integrating velocity.
 cpVect cpSpaceGetGravity(const cpSpace *space);

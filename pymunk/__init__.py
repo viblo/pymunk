@@ -55,6 +55,7 @@ __all__ = [
     "Shape",
     "ShapeFilter",
     "ShapeQueryInfo",
+    "SolverMode",
     "Space",
     "SpaceDebugDrawOptions",
     "Transform",
@@ -89,7 +90,7 @@ from .contact_point_set import ContactPoint, ContactPointSet
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
 from .shape_filter import ShapeFilter
 from .shapes import Circle, Poly, Segment, Shape
-from .space import Space
+from .space import SolverMode, Space
 from .space_debug_draw_options import SpaceDebugDrawOptions
 from .transform import Transform
 from .vec2d import Vec2d

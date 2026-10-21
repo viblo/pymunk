@@ -4,6 +4,7 @@ import math
 import platform
 import weakref
 from collections.abc import Hashable, KeysView
+from enum import Enum
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 from pymunk.constraints import Constraint
@@ -26,6 +27,30 @@ if TYPE_CHECKING:
     from .bb import BB
 
 _AddableObjects = Union[Body, Shape, Constraint]
+
+
+class SolverMode(Enum):
+    """Solver selection policy used by :class:`Space`.
+
+    See property Space.solver_mode for additional details.
+    """
+
+    DEFAULT = 1
+    """The default and original solver."""
+
+    AUTO = 2
+    """Auto will try to use an accelerated solver if available.
+    
+    The actual solver will depend on the build and CPU, and falls back to 
+    the original default solver if no matching accelerated is available.  
+
+    Accelerated solvers can result in slight different simulation result, since 
+    contacts are processed in different order compared to the default solver.
+
+    In some cases the chosen solver by AUTO mode might be slower than the 
+    default one. To prevent this, benchmark your particular setup with both 
+    solver modes. 
+    """
 
 
 class Space(PickleMixin):
@@ -62,6 +87,7 @@ class Space(PickleMixin):
         "collision_bias",
         "collision_persistence",
         "threads",
+        "solver_mode",
     ]
 
     def __init__(self, threaded: bool = False) -> None:
@@ -135,6 +161,7 @@ class Space(PickleMixin):
         self._add_later: set[_AddableObjects] = set()
         self._remove_later: dict[_AddableObjects, None] = {}
         self._bodies_to_check: set[Body] = set()
+        self._solver_mode: SolverMode = SolverMode.DEFAULT
 
     @property
     def shapes(self) -> KeysView[Shape]:
@@ -502,6 +529,37 @@ class Space(PickleMixin):
         space. You only need to call this if you move one of the static shapes.
         """
         lib.cpSpaceReindexStatic(self._space)
+
+    @property
+    def solver_mode(self) -> SolverMode:
+        """Contact solver selection policy.
+
+        Defaults to :attr:`SolverMode.DEFAULT`.
+
+        See :class:`SolverMode` for details on what the available options are
+        and their behaviour, and performance considerations.
+
+        The mode can only be changed between simulation steps while the Space
+        is unlocked and when the Space is not in threaded mode. However, there
+        is some performance overhead to switch solver, it is not advicable to
+        change too frequently.
+        """
+        return self._solver_mode
+
+    @solver_mode.setter
+    def solver_mode(self, mode: SolverMode) -> None:
+        assert not self._locked, "Solver mode can only be changed on unlocked Spaces."
+        assert not self.threaded, "Solver mode can not be changed when using threading."
+
+        solver = lib.CP_CONTACT_SOLVER_ORIGINAL
+        if mode == SolverMode.AUTO and lib.cpContactSolverIsAvailable(
+            lib.CP_CONTACT_SOLVER_AVX2
+        ):
+            solver = lib.CP_CONTACT_SOLVER_AVX2
+        if not lib.cpSpaceSetContactSolver(self._space, solver):
+            raise RuntimeError("Could not change the contact solver")
+
+        self._solver_mode = mode
 
     @property
     def threads(self) -> int:

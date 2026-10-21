@@ -1,13 +1,11 @@
-from __future__ import with_statement
-
 import copy
 import functools
 import io
 import pickle
 import sys
 import unittest
-import warnings
-from typing import Any, Callable, Optional, Sequence, cast
+from collections.abc import Sequence
+from typing import Any, Callable, Optional, cast
 
 import pymunk as p
 from pymunk import *
@@ -26,13 +24,11 @@ class UnitTestSpace(unittest.TestCase):
 
         self.s1, self.s2 = p.Circle(self.b1, 5), p.Circle(self.b2, 10)
         self.s.add(self.s1, self.s2)
-        pass
 
     def _tearDown(self) -> None:
         del self.s
         del self.b1, self.b2
         del self.s1, self.s2
-        pass
 
     def testProperties(self) -> None:
         s = p.Space()
@@ -92,6 +88,38 @@ class UnitTestSpace(unittest.TestCase):
         else:
             self.assertEqual(s.threads, 2)
         s.step(1)
+
+    def test_solver_mode_asserts(self) -> None:
+        s = p.Space(threaded=True)
+        with self.assertRaises(AssertionError):
+            s.solver_mode = SolverMode.AUTO
+
+        s = p.Space()
+        b1, b2 = p.Body(1, 3), p.Body(10, 100)
+        s1, s2 = p.Circle(b1, 5), p.Circle(b2, 10)
+        s.add(b1, b2, s1, s2)
+
+        def pre_solve(arb: p.Arbiter, space: p.Space, data: Any) -> None:
+            with self.assertRaises(AssertionError):
+                s.solver_mode = SolverMode.AUTO
+            data[1] = 1
+
+        d = {}
+        s.on_collision(0, 0, pre_solve=pre_solve, data=d)
+        s.step(1)
+        self.assertEqual(d[1], 1)
+
+    def test_solver_mode(self) -> None:
+        s = p.Space()
+        self.assertEqual(s.solver_mode, SolverMode.DEFAULT)
+        s.solver_mode = SolverMode.AUTO
+        self.assertEqual(s.solver_mode, SolverMode.AUTO)
+        from pymunk._chipmunk_cffi import lib
+
+        if lib.cpContactSolverIsAvailable(lib.CP_CONTACT_SOLVER_AVX2):
+            self.assertEqual(
+                lib.cpSpaceGetContactSolver(s._space), lib.CP_CONTACT_SOLVER_AVX2
+            )
 
     def testSpatialHash(self) -> None:
         s = p.Space()
