@@ -5,7 +5,7 @@ import pymunk as p
 
 
 class UnitTestShapeFilter(unittest.TestCase):
-    def testInit(self) -> None:
+    def test_init(self) -> None:
         f = p.ShapeFilter()
         self.assertEqual(f.group, 0)
         self.assertEqual(f.categories, 0xFFFFFFFF)
@@ -16,18 +16,18 @@ class UnitTestShapeFilter(unittest.TestCase):
         self.assertEqual(f.categories, 2)
         self.assertEqual(f.mask, 3)
 
-    def testConstants(self) -> None:
+    def test_constants(self) -> None:
         self.assertEqual(p.ShapeFilter.ALL_MASKS(), 0xFFFFFFFF)
         self.assertEqual(p.ShapeFilter.ALL_CATEGORIES(), 0xFFFFFFFF)
 
-    def testEq(self) -> None:
+    def test_eq(self) -> None:
         f1 = p.ShapeFilter(1, 2, 3)
         f2 = p.ShapeFilter(1, 2, 3)
         f3 = p.ShapeFilter(2, 3, 4)
         self.assertTrue(f1 == f2)
         self.assertTrue(f1 != f3)
 
-    def testPickle(self) -> None:
+    def test_pickle(self) -> None:
         x = p.ShapeFilter(1, 2, 3)
         s = pickle.dumps(x, 2)
         actual = pickle.loads(s)

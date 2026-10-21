@@ -6,7 +6,7 @@ import pymunk
 
 
 class UnitTestSpaceDebugDrawOptions(unittest.TestCase):
-    def testTransform(self) -> None:
+    def test_transform(self) -> None:
         options = pymunk.SpaceDebugDrawOptions()
         transform = pymunk.Transform.translation(2, 3).scaled(2)
         options.transform = transform
