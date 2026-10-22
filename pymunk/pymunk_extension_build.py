@@ -53,6 +53,12 @@ with open("pymunk_cffi/extensions_cdef.h", "r") as f:
 with open("pymunk_cffi/extensions.c", "r") as f:
     custom_functions = f.read()
 
+# TODO: Temp workaround until setuptools is fixed.
+# https://github.com/pypa/setuptools/issues/5367
+extension_options = {}
+if platform.python_implementation() == "PyPy":
+    extension_options["py_limited_api"] = False
+
 ffibuilder.set_source(
     "pymunk._chipmunk",  # name of the output C extension
     f"""
@@ -78,6 +84,7 @@ ffibuilder.set_source(
     sources=sources,
     libraries=libraries,
     define_macros=[("CP_OVERRIDE_MESSAGE", None)],
+    **extension_options,
 )
 
 if __name__ == "__main__":
