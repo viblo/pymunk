@@ -2,6 +2,8 @@
 include LICENSE.txt
 include README.rst
 include THANKS.txt
+include pymunk_build_support.py
+recursive-include tools/tests *.py
 include CHANGELOG.rst
 #docs
 recursive-include docs/src *
