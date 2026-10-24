@@ -429,17 +429,18 @@ void cpSpaceAddCachedArbiter(cpSpace *space, cpArbiter *arb)
     // Set handlers to their defaults
     cpCollisionType typeA = a->type, typeB = b->type;
     //cpCollisionHandler *handler = arb->handler = cpSpaceLookupHandler(space, typeA, typeB);
+	// The same handlers and swapped flag cpArbiterUpdate gives an arbiter.
 	arb->handlerAB = cpSpaceLookupHandler(space, typeA, typeB);
 	arb->handlerA = cpSpaceLookupHandler(space, typeA, CP_WILDCARD_COLLISION_TYPE);
 
 	if (typeA != typeB){
 		arb->handlerBA = cpSpaceLookupHandler(space, typeB, typeA);
-		arb->handlerB = cpSpaceLookupHandler(space, typeB, CP_WILDCARD_COLLISION_TYPE);
 	} else{
 		arb->handlerBA = &cpCollisionHandlerDoNothing;
-		arb->handlerB = &cpCollisionHandlerDoNothing;
 	}
-	arb->swapped = (typeA != arb->handlerAB->typeA);
+	arb->handlerB = cpSpaceLookupHandler(space, typeB, CP_WILDCARD_COLLISION_TYPE);
+	// Don't swap for the default handler, which uses the wildcard for type A.
+	arb->swapped = (typeA != arb->handlerAB->typeA && arb->handlerAB->typeA != CP_WILDCARD_COLLISION_TYPE);
 
     // Check if the types match, but don't swap for a default handler which use the wildcard for type A.
     //cpBool swapped = arb->swapped = (typeA != handler->typeA && handler->typeA != CP_WILDCARD_COLLISION_TYPE);
