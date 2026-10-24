@@ -1112,8 +1112,11 @@ class Space(PickleMixin):
         )
 
         _arbs = self._get_arbiters()
+        # One shape map for the whole save: building it per arbiter made saving
+        # a space O(arbiters x shapes).
+        shapes = {shape._shape: shape for shape in self.shapes}
         d["special"].append(
-            ("arbiters", [_arbiter_to_dict(_arb, self) for _arb in _arbs])
+            ("arbiters", [_arbiter_to_dict(_arb, shapes) for _arb in _arbs])
         )
         d["special"].append(("solver_mode", self.solver_mode))
         return d
