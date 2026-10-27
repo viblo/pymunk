@@ -148,29 +148,6 @@ place in the source folder::
 On Windows you will need to use Visual Studio matching your Python version. 
 
 
-Optional AVX2 contact solver
-===========================
-
-Source builds automatically probe the target compiler for the optional Munk2D
-AVX2 contact solver. It is compiled into supported x86-64, double-precision
-builds, but is only used at runtime when requested through ``Space.solver_mode``
-and supported by the CPU and operating system. The default solver is unchanged.
-Building the backend does not require the build machine itself to support AVX2.
-
-If the target/compiler probe fails, the extension is built without the backend.
-This includes ARM and WebAssembly targets. No build-time setting is needed.
-If the detected backend configuration changes in an existing build directory,
-the extension and its objects are rebuilt as needed.
-
-AVX2 flags are restricted to the AVX2 kernel; the rest of the extension remains
-baseline code with runtime capability checks. Do not add global ``-mavx2``,
-``-march=native`` or equivalent flags when building portable wheels.
-
-Use package build commands such as the ones above (or other setuptools/PEP 517
-frontends). Invoking ``pymunk/pymunk_extension_build.py`` directly bypasses the
-setuptools configuration for the optional backend.
-
-
 CFFI Installation
 =================
 

@@ -8,9 +8,9 @@ from unittest.mock import patch
 
 from setuptools import Distribution, Extension
 from setuptools.command.build_ext import build_ext
-from setuptools._distutils.errors import CompileError
+from setuptools.errors import CompileError
 
-support = runpy.run_path(str(Path(__file__).resolve().parents[2] / "pymunk_build_support.py"))
+support = runpy.run_path(str(Path(__file__).resolve().parents[2] / "setup.py"))
 PymunkBuildExt = support["PymunkBuildExt"]
 
 
@@ -106,6 +106,19 @@ class BuildSupportTests(unittest.TestCase):
         self.assertFalse(self.command.compiler.force)
         self.assertFalse(self.command.force)
         self.assertFalse((Path(self.tmp.name) / "pymunk-avx2-config.json").exists())
+
+    def test_real_compiler_failure_disables_backend(self):
+        # Exercise the actual compiler's exception type, not just our fake's.
+        # Private setuptools._distutils exception classes can differ from it.
+        from distutils.ccompiler import new_compiler
+        from distutils.sysconfig import customize_compiler
+
+        compiler = new_compiler()
+        customize_compiler(compiler)
+        self.command.compiler = compiler
+        probe_globals = PymunkBuildExt._probe_avx2.__globals__
+        with patch.dict(probe_globals, {"_AVX2_PROBE": "#error intentional probe failure\n"}):
+            self.assertFalse(self.command._probe_avx2(self.extension, []))
 
     def test_changed_backend_forces_rebuild(self):
         self.command.compiler.available = False
