@@ -169,9 +169,10 @@ class Buffer:
         internal array.
 
         """
-        return ffi.buffer(
-            self._float_arr.arr, ffi.sizeof("cpFloat") * self._float_arr.num
-        )
+        arr = self._float_buf
+        if arr is None:
+            arr = self._float_arr.arr
+        return ffi.buffer(arr, ffi.sizeof("cpFloat") * self._float_arr.num)
 
     def set_float_buf(self, buffer: Any) -> None:
         """Set the floating point internal data to the supplied buffer.
@@ -179,12 +180,16 @@ class Buffer:
         buffer should be an array of floats, implmenting the buffer/memoryview
         interface like a numpy array or array.array.
 
+        The storage stays exported while this Buffer or a returned view uses it.
+        Its elements can be changed, but it must not be resized. On CPython,
+        resizing is blocked until those exports are released.
+
         (From Python 3.12 the buffer argument will be typed as
         collections.abc.Buffer)
 
         """
-        self._float_buf = buffer
         arr = ffi.from_buffer("cpFloat[]", buffer)
+        self._float_buf = arr
         self._float_arr.arr = arr
         self._float_arr.max = len(arr)
         self._float_arr.num = len(arr)
@@ -194,9 +199,10 @@ class Buffer:
         array.
 
         """
-        return ffi.buffer(
-            self._int_arr.arr, ffi.sizeof("uintptr_t") * self._int_arr.num
-        )
+        arr = self._int_buf
+        if arr is None:
+            arr = self._int_arr.arr
+        return ffi.buffer(arr, ffi.sizeof("uintptr_t") * self._int_arr.num)
 
     def set_int_buf(self, buffer: Any) -> None:
         """Set the integer internal data to the supplied buffer.
@@ -204,11 +210,15 @@ class Buffer:
         buffer should be an array of ints, implmenting the buffer/memoryview
         interface like a numpy array or array.array.
 
+        The storage stays exported while this Buffer or a returned view uses it.
+        Its elements can be changed, but it must not be resized. On CPython,
+        resizing is blocked until those exports are released.
+
         (From Python 3.12 the buffer argument will be typed as
         collections.abc.Buffer)
         """
-        self._int_buf = buffer
         arr = ffi.from_buffer("uintptr_t[]", buffer)
+        self._int_buf = arr
         self._int_arr.arr = arr
         self._int_arr.max = len(arr)
         self._int_arr.num = len(arr)
