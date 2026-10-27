@@ -12,7 +12,6 @@ from setuptools.command.build_ext import build_ext
 from setuptools._distutils.errors import (
     CompileError,
     DistutilsExecError,
-    DistutilsSetupError,
 )
 
 
@@ -87,23 +86,12 @@ class PymunkBuildExt(build_ext):
         return True
 
     def build_extensions(self):
-        mode = os.environ.get("PYMUNK_AVX2", "auto").lower()
-        if mode not in ("auto", "on", "off"):
-            raise DistutilsSetupError("PYMUNK_AVX2 must be auto, on, or off")
-
         flags = _compiler_flags(self.compiler.compiler_type)
         enabled = False
         for extension in self.extensions:
             if extension.name != "pymunk._chipmunk":
                 continue
-            enabled = bool(
-                mode != "off" and flags and self._probe_avx2(extension, flags[0])
-            )
-            if mode == "on" and not enabled:
-                raise DistutilsSetupError(
-                    "PYMUNK_AVX2=on requires a compiler targeting x86-64 with "
-                    "AVX2 intrinsics and double precision; the compile probe failed"
-                )
+            enabled = bool(flags and self._probe_avx2(extension, flags[0]))
             extension.define_macros = [
                 item for item in extension.define_macros
                 if item[0] != "CP_AVX2_CONTACT_SOLVER"
@@ -119,8 +107,8 @@ class PymunkBuildExt(build_ext):
             if enabled:
                 source_flags["cpContactSolverAvx2.c"] = flags[0]
         # Distutils does not track macro/flag changes as object dependencies.
-        # Rebuilding with PYMUNK_AVX2=off must not reuse enabled-build objects
-        # (or skip linking an already existing extension), and vice versa.
+        # A changed probe result must not reuse incompatible objects or skip
+        # linking an already existing extension.
         stamp = Path(self.build_temp) / "pymunk-avx2-config.json"
         config = json.dumps({"enabled": enabled, "source_flags": source_flags}, sort_keys=True)
         changed = not stamp.exists() or stamp.read_text() != config

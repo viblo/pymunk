@@ -7,8 +7,8 @@ Unreleased
 
 Changes:
   - Enable Munk2D's optional AVX2 contact solver in supported x86-64 source
-    builds without requiring AVX2 for the rest of the extension. Add the
-    ``PYMUNK_AVX2=auto|on|off`` build setting.
+    builds without requiring AVX2 for the rest of the extension. Backend
+    availability is detected automatically from the target compiler.
 
 Pymukn 7.3.1 (2026-10-11)
 -------------------------

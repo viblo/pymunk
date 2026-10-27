@@ -1,6 +1,5 @@
 """Build-policy tests; no compiled pymunk extension is required."""
 
-import os
 from pathlib import Path
 import runpy
 import tempfile
@@ -9,7 +8,7 @@ from unittest.mock import patch
 
 from setuptools import Distribution, Extension
 from setuptools.command.build_ext import build_ext
-from setuptools._distutils.errors import CompileError, DistutilsSetupError
+from setuptools._distutils.errors import CompileError
 
 support = runpy.run_path(str(Path(__file__).resolve().parents[2] / "pymunk_build_support.py"))
 PymunkBuildExt = support["PymunkBuildExt"]
@@ -48,7 +47,7 @@ class BuildSupportTests(unittest.TestCase):
         self.command.build_temp = self.tmp.name
         self.command.compiler = FakeCompiler()
 
-    def run_build(self, mode="auto", failure=False):
+    def run_build(self, failure=False):
         def build(command):
             self.forced = (bool(command.force), bool(command.compiler.force))
             if failure:
@@ -58,9 +57,8 @@ class BuildSupportTests(unittest.TestCase):
                     extension.sources, macros=extension.define_macros,
                     extra_postargs=extension.extra_compile_args,
                 )
-        with patch.dict(os.environ, {"PYMUNK_AVX2": mode}):
-            with patch.object(build_ext, "build_extensions", build):
-                self.command.build_extensions()
+        with patch.object(build_ext, "build_extensions", build):
+            self.command.build_extensions()
 
     def flags_for(self, basename):
         for sources, options in reversed(self.command.compiler.calls):
@@ -86,25 +84,11 @@ class BuildSupportTests(unittest.TestCase):
         self.assertIn(("CP_AVX2_CONTACT_SOLVER", "0"), self.extension.define_macros)
         self.assertEqual(self.flags_for("cpContactSolverAvx2.c"), ["-O2"])
 
-    def test_off_skips_probe(self):
-        self.run_build("off")
-        self.assertFalse(hasattr(self.command.compiler, "probe"))
-        self.assertIn(("CP_AVX2_CONTACT_SOLVER", "0"), self.extension.define_macros)
-
-    def test_on_requires_successful_probe(self):
-        self.command.compiler.available = False
-        with self.assertRaisesRegex(DistutilsSetupError, "compile probe failed"):
-            self.run_build("on")
-
     def test_unknown_compiler_defaults_to_disabled(self):
         self.command.compiler.compiler_type = "unknown"
         self.run_build()
         self.assertIn(("CP_AVX2_CONTACT_SOLVER", "0"), self.extension.define_macros)
         self.assertFalse(hasattr(self.command.compiler, "probe"))
-
-    def test_invalid_mode(self):
-        with self.assertRaisesRegex(DistutilsSetupError, "auto, on, or off"):
-            self.run_build("yes")
 
     def test_msvc_flags(self):
         self.command.compiler.compiler_type = "msvc"
@@ -124,11 +108,16 @@ class BuildSupportTests(unittest.TestCase):
         self.assertFalse((Path(self.tmp.name) / "pymunk-avx2-config.json").exists())
 
     def test_changed_backend_forces_rebuild(self):
-        self.run_build("off")
+        self.command.compiler.available = False
+        self.run_build()
         self.assertEqual(self.forced, (True, True))
-        self.run_build("off")
+        self.run_build()
         self.assertEqual(self.forced, (False, False))
-        self.run_build("auto")
+        self.command.compiler.available = True
+        self.run_build()
+        self.assertEqual(self.forced, (True, True))
+        self.command.compiler.available = False
+        self.run_build()
         self.assertEqual(self.forced, (True, True))
         self.assertEqual(sum(name == "CP_AVX2_CONTACT_SOLVER"
                              for name, value in self.extension.define_macros), 1)

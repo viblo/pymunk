@@ -157,20 +157,10 @@ builds, but is only used at runtime when requested through ``Space.solver_mode``
 and supported by the CPU and operating system. The default solver is unchanged.
 Building the backend does not require the build machine itself to support AVX2.
 
-The ``PYMUNK_AVX2`` environment variable controls compilation:
-
-* ``auto`` (default): compile the backend if the target/compiler probe succeeds;
-  otherwise build without it, including for ARM and WebAssembly targets.
-* ``on``: require the backend; fail the build if the probe does not succeed.
-* ``off``: omit the backend even on supported targets.
-
-For example, on Linux or macOS::
-
-    PYMUNK_AVX2=on python -m pip install --no-cache-dir --no-binary=pymunk pymunk
-
-Set the variable using your shell's syntax on Windows. The setting applies to
-source builds, not already-built wheels. When switching it in an existing build
-directory, the extension and its objects are rebuilt as needed.
+If the target/compiler probe fails, the extension is built without the backend.
+This includes ARM and WebAssembly targets. No build-time setting is needed.
+If the detected backend configuration changes in an existing build directory,
+the extension and its objects are rebuilt as needed.
 
 AVX2 flags are restricted to the AVX2 kernel; the rest of the extension remains
 baseline code with runtime capability checks. Do not add global ``-mavx2``,

@@ -18,16 +18,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install setuptools cffi
       - run: python -m unittest discover -s tools/tests -v
-      - name: Build without AVX2
-        env:
-          PYMUNK_AVX2: "off"
-        run: python setup.py build_ext --inplace
-      - name: Verify backend disabled
-        run: python -c "from pymunk._chipmunk import lib; assert not lib.cpContactSolverIsAvailable(lib.CP_CONTACT_SOLVER_AVX2)"
-      - run: python -m unittest pymunk.tests.test_space
-      - name: Rebuild with automatic backend selection
-        env:
-          PYMUNK_AVX2: "auto"
+      - name: Build with automatic backend selection
         run: python setup.py build_ext --inplace
       - name: Verify target-based backend detection
         shell: bash
