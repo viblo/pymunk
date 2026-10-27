@@ -107,6 +107,13 @@ class BuildSupportTests(unittest.TestCase):
         self.assertFalse(self.command.force)
         self.assertFalse((Path(self.tmp.name) / "pymunk-avx2-config.json").exists())
 
+    def test_probe_avoids_long_build_tree_paths(self):
+        self.command.build_temp = str(Path(self.tmp.name) / ("nested-build/" * 25))
+        self.assertTrue(self.command._probe_avx2(self.extension, ["-mavx2"]))
+        sources, options = self.command.compiler.calls[-1]
+        self.assertNotIn(self.command.build_temp, sources[0])
+        self.assertFalse(Path(sources[0]).exists())
+
     def test_real_compiler_failure_disables_backend(self):
         # Exercise the actual compiler's exception type, not just our fake's.
         # Private setuptools._distutils exception classes can differ from it.

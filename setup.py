@@ -63,8 +63,9 @@ class PymunkBuildExt(build_ext):
         # Compile, never execute: wheels and cross builds must depend on the
         # compiler target, not the build host's CPU. A universal macOS build
         # must pass for every target slice or remain scalar-only.
-        Path(self.build_temp).mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryDirectory(prefix="avx2-probe-", dir=self.build_temp) as tmp:
+        # Keep probe paths short. Distutils repeats the source directory under
+        # output_dir, which can exceed MSVC's path limit inside a build tree.
+        with tempfile.TemporaryDirectory(prefix="pymunk-avx2-") as tmp:
             source = Path(tmp) / "pymunk_avx2_probe.c"
             source.write_text(_AVX2_PROBE)
             try:
