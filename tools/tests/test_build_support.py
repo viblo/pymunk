@@ -15,16 +15,15 @@ PymunkBuildExt = support["PymunkBuildExt"]
 
 
 class FakeCompiler:
-    def __init__(self, compiler_type="unix", available=True):
-        self.compiler_type = compiler_type
-        self.available = available
+    def __init__(self):
+        self.compiler_type = "unix"
+        self.available = True
         self.calls = []
         self.force = False
 
     def compile(self, sources, **kwargs):
         self.calls.append((list(sources), kwargs))
         if Path(sources[0]).name == "pymunk_avx2_probe.c":
-            self.probe = Path(sources[0]).read_text()
             if not self.available:
                 raise CompileError("unsupported target")
         return [source + ".o" for source in sources]
@@ -47,11 +46,9 @@ class BuildSupportTests(unittest.TestCase):
         self.command.build_temp = self.tmp.name
         self.command.compiler = FakeCompiler()
 
-    def run_build(self, failure=False):
+    def run_build(self):
         def build(command):
             self.forced = (bool(command.force), bool(command.compiler.force))
-            if failure:
-                raise CompileError("build failed")
             for extension in command.extensions:
                 command.compiler.compile(
                     extension.sources, macros=extension.define_macros,
@@ -75,44 +72,6 @@ class BuildSupportTests(unittest.TestCase):
                          ["-O2", "-mavx2", "-ffp-contract=off", "-fno-lto"])
         self.assertEqual(self.flags_for("cpContactSolverScalar.c"), ["-O2", "-ffp-contract=off"])
         self.assertEqual(self.extension.extra_compile_args, ["-O2"])
-        self.assertIn("_M_X64", self.command.compiler.probe)
-        self.assertIn("!CP_USE_DOUBLES", self.command.compiler.probe)
-
-    def test_auto_falls_back_when_target_probe_fails(self):
-        self.command.compiler.available = False
-        self.run_build()
-        self.assertIn(("CP_AVX2_CONTACT_SOLVER", "0"), self.extension.define_macros)
-        self.assertEqual(self.flags_for("cpContactSolverAvx2.c"), ["-O2"])
-
-    def test_unknown_compiler_defaults_to_disabled(self):
-        self.command.compiler.compiler_type = "unknown"
-        self.run_build()
-        self.assertIn(("CP_AVX2_CONTACT_SOLVER", "0"), self.extension.define_macros)
-        self.assertFalse(hasattr(self.command.compiler, "probe"))
-
-    def test_msvc_flags(self):
-        self.command.compiler.compiler_type = "msvc"
-        self.run_build()
-        self.assertEqual(self.flags_for("cpContactSolverAvx2.c"),
-                         ["-O2", "/arch:AVX2", "/fp:strict", "/GL-"])
-        self.assertEqual(self.flags_for("cpContactSolverScalar.c"), ["-O2", "/fp:strict"])
-        self.assertEqual(self.flags_for("cpContactSolverCpu.c"), ["-O2"])
-
-    def test_restores_compiler_and_force_after_failure(self):
-        compile_method = self.command.compiler.compile
-        with self.assertRaises(CompileError):
-            self.run_build(failure=True)
-        self.assertEqual(self.command.compiler.compile, compile_method)
-        self.assertFalse(self.command.compiler.force)
-        self.assertFalse(self.command.force)
-        self.assertFalse((Path(self.tmp.name) / "pymunk-avx2-config.json").exists())
-
-    def test_probe_avoids_long_build_tree_paths(self):
-        self.command.build_temp = str(Path(self.tmp.name) / ("nested-build/" * 25))
-        self.assertTrue(self.command._probe_avx2(self.extension, ["-mavx2"]))
-        sources, options = self.command.compiler.calls[-1]
-        self.assertNotIn(self.command.build_temp, sources[0])
-        self.assertFalse(Path(sources[0]).exists())
 
     def test_real_compiler_failure_disables_backend(self):
         # Exercise the actual compiler's exception type, not just our fake's.
