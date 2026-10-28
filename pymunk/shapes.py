@@ -1,7 +1,7 @@
 __docformat__ = "reStructuredText"
 
 import weakref
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
@@ -44,12 +44,12 @@ class Shape(PickleMixin, TypingAttrMixing):
     ]
     _pickle_attrs_skip = PickleMixin._pickle_attrs_skip + ["mass", "density"]
 
-    _space: weakref.ref["Space"] = _dead_ref
+    _space: Callable[[], Optional["Space"]] = _dead_ref
 
     def __init__(self, shape: "Shape") -> None:
         self._shape = shape
         assert shape.body != None
-        self._body: weakref.ref["Body"] = weakref.ref(shape.body)
+        self._body: Callable[[], Optional["Body"]] = weakref.ref(shape.body)
 
     def _init(self, body: Optional["Body"], _shape: ffi.CData) -> None:
 
