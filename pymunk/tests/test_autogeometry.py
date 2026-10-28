@@ -1,4 +1,6 @@
 import unittest
+from typing import Any
+from unittest.mock import patch
 
 import pymunk.autogeometry as a
 from pymunk.bb import BB
@@ -24,6 +26,89 @@ class UnitTestPolylineSet(unittest.TestCase):
 
 
 class UnitTestAutoGeometry(unittest.TestCase):
+    def _assert_result_released(
+        self, operation: str, allocator: str, conversion_error: bool
+    ) -> None:
+        native = a.lib
+        allocated: list[Any] = []
+        freed: list[Any] = []
+        is_set = operation == "convex_decomposition"
+        free_name = "cpPolylineSetFree" if is_set else "cpPolylineFree"
+        points: list[tuple[float, float]] = [
+            (0, 0),
+            (4, 0),
+            (4, 4),
+            (2, 2),
+            (0, 4),
+            (0, 0),
+        ]
+        original = points.copy()
+
+        def allocate(*args: Any) -> Any:
+            result = getattr(native, allocator)(*args)
+            allocated.append(result)
+            return result
+
+        def free(ptr: Any, *args: Any) -> None:
+            # Only native results belong to these free functions. In particular,
+            # the input allocated by ffi.new must not be freed here.
+            self.assertIn(ptr, allocated)
+            self.assertNotIn(ptr, freed)
+            if is_set:
+                self.assertEqual(args, (True,))
+            getattr(native, free_name)(ptr, *args)
+            freed.append(ptr)
+
+        try:
+            with patch.object(a, "lib", wraps=native) as calls:
+                getattr(calls, allocator).side_effect = allocate
+                getattr(calls, free_name).side_effect = free
+                if conversion_error:
+                    # Fail after one point has already been copied.
+                    count = 0
+
+                    def convert(x: float, y: float) -> Vec2d:
+                        nonlocal count
+                        count += 1
+                        if count == 2:
+                            raise ValueError("conversion interrupted")
+                        return Vec2d(x, y)
+
+                    with patch.object(a, "Vec2d", side_effect=convert):
+                        with self.assertRaisesRegex(
+                            ValueError, "conversion interrupted"
+                        ):
+                            getattr(a, operation)(points, 0.1)
+                else:
+                    actual = getattr(a, operation)(points, 0.1)
+                    self.assertEqual(points, original)
+                    self.assertIsInstance(actual[0][0] if is_set else actual[0], Vec2d)
+                self.assertEqual(len(allocated), 1)
+                self.assertEqual(freed, allocated)
+        finally:
+            # Original implementations leak their results. Keep the regression
+            # test itself leak-free even when its ownership assertion fails.
+            for ptr in allocated:
+                if ptr not in freed:
+                    if is_set:
+                        getattr(native, free_name)(ptr, True)
+                    else:
+                        getattr(native, free_name)(ptr)
+
+    def test_result_allocations_are_released(self) -> None:
+        operations = (
+            ("simplify_curves", "cpPolylineSimplifyCurves"),
+            ("simplify_vertexes", "cpPolylineSimplifyVertexes"),
+            ("to_convex_hull", "cpPolylineToConvexHull"),
+            ("convex_decomposition", "cpPolylineConvexDecomposition"),
+        )
+        for operation, allocator in operations:
+            for conversion_error in (False, True):
+                with self.subTest(
+                    operation=operation, conversion_error=conversion_error
+                ):
+                    self._assert_result_released(operation, allocator, conversion_error)
+
     def test_is_closed(self) -> None:
         not_closed: list[tuple[float, float]] = [(0, 0), (1, 1), (0, 1)]
         closed: list[tuple[float, float]] = [(0, 0), (1, 1), (0, 1), (0, 0)]
