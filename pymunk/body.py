@@ -212,7 +212,7 @@ class Body(PickleMixin, TypingAttrMixing):
         elif body_type == Body.STATIC:
             self._body = ffi.gc(lib.cpBodyNewStatic(), freebody)
 
-        self._space: weakref.ref["Space"] = _dead_ref
+        self._space: Callable[[], Optional["Space"]] = _dead_ref
         self._constraints: WeakKeyDictionary["Constraint", None] = WeakKeyDictionary()
         self._shapes: dict["Shape", None] = {}
 
