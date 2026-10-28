@@ -22,6 +22,15 @@ jobs:
         with:
           submodules: true
 
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Test build support
+        run: |
+          python -m pip install setuptools
+          python -m unittest discover -s tools/tests -v
+
       - name: Build sdist
         run: |
           pipx run build --sdist
@@ -31,6 +40,9 @@ jobs:
         uses: pypa/cibuildwheel@v4.3.1
         env:
           CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-* cp314-* cp314t-* cp315-* cp315t-* pp311-* pp312-*"
+          CIBW_TEST_COMMAND: >-
+            python -m pymunk.tests &&
+            python {project}/tools/tests/check_wheel_backend.py
         with:
           package-dir: ${{ env.SDIST_PATH }}
 
