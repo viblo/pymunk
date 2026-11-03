@@ -14,7 +14,6 @@ if TYPE_CHECKING:
 from ._chipmunk_cffi import ffi, lib
 from ._pickle import PickleMixin, _State
 from ._typing_attr import TypingAttrMixing
-from ._util import _dead_ref
 from ._weakkeysview import WeakKeysView
 from .vec2d import Vec2d
 
@@ -212,7 +211,7 @@ class Body(PickleMixin, TypingAttrMixing):
         elif body_type == Body.STATIC:
             self._body = ffi.gc(lib.cpBodyNewStatic(), freebody)
 
-        self._space: Callable[[], Optional["Space"]] = _dead_ref
+        self._space: Optional[weakref.ReferenceType["Space"]] = None
         self._constraints: WeakKeyDictionary["Constraint", None] = WeakKeyDictionary()
         self._shapes: dict["Shape", None] = {}
 
@@ -390,7 +389,8 @@ class Body(PickleMixin, TypingAttrMixing):
             " references are not supported when using pickle or copy and"
             " might crash."
         )
-        return self._space()
+        ref = self._space
+        return None if ref is None else ref()
 
     @property
     def velocity_func(self) -> _VelocityFunc:
