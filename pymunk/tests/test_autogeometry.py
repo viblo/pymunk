@@ -3,6 +3,7 @@ from typing import Any
 from unittest.mock import patch
 
 import pymunk.autogeometry as a
+from pymunk._chipmunk_cffi import lib
 from pymunk.bb import BB
 from pymunk.vec2d import Vec2d
 
@@ -29,7 +30,7 @@ class UnitTestAutoGeometry(unittest.TestCase):
     def _assert_result_released(
         self, operation: str, allocator: str, conversion_error: bool
     ) -> None:
-        native = a.lib
+        native = lib
         allocated: list[Any] = []
         freed: list[Any] = []
         is_set = operation == "convex_decomposition"
