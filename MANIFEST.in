@@ -2,6 +2,7 @@
 include LICENSE.txt
 include README.rst
 include THANKS.txt
+recursive-include tools/tests *.py
 include CHANGELOG.rst
 #docs
 recursive-include docs/src *

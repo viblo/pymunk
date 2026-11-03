@@ -1,11 +1,77 @@
 import array
+import gc
+import platform
+import struct
 import unittest
+import weakref
 
 import pymunk
 import pymunk.batch
 
+_BUFFER_TYPES = [
+    ("float", "d", "d"),
+    ("int", "Q" if struct.calcsize("P") == 8 else "I", "P"),
+]
+
 
 class UnitTestBatch(unittest.TestCase):
+
+    @unittest.skipUnless(
+        platform.python_implementation() == "CPython",
+        "CFFI only locks buffers against resizing on CPython",
+    )
+    def test_borrowed_buffers_prevent_resize(self) -> None:
+        for kind, code, cast in _BUFFER_TYPES:
+            with self.subTest(kind=kind):
+                data = pymunk.batch.Buffer()
+                source = array.array(code, [1, 2])
+                getattr(data, "set_" + kind + "_buf")(source)
+                with self.assertRaises(BufferError):
+                    source.append(3)
+                source[0] = 4
+                self.assertEqual(
+                    list(memoryview(getattr(data, kind + "_buf")()).cast(cast)),
+                    [4, 2],
+                )
+                getattr(data, "set_" + kind + "_buf")(array.array(code, [5, 6]))
+                gc.collect()
+                source.append(3)
+                self.assertEqual(list(source), [4, 2, 3])
+
+    def test_failed_buffer_replacement_keeps_source(self) -> None:
+        for kind, code, cast in _BUFFER_TYPES:
+            with self.subTest(kind=kind):
+                data = pymunk.batch.Buffer()
+                source = array.array(code, [1, 2])
+                reference = weakref.ref(source)
+                getattr(data, "set_" + kind + "_buf")(source)
+                del source
+                with self.assertRaises(TypeError):
+                    getattr(data, "set_" + kind + "_buf")(object())
+                gc.collect()
+                self.assertIsNotNone(reference())
+                self.assertEqual(
+                    list(memoryview(getattr(data, kind + "_buf")()).cast(cast)),
+                    [1, 2],
+                )
+
+    def test_buffer_views_keep_source_alive(self) -> None:
+        for kind, code, cast in _BUFFER_TYPES:
+            with self.subTest(kind=kind):
+                data = pymunk.batch.Buffer()
+                source = array.array(code, [1, 2])
+                reference = weakref.ref(source)
+                getattr(data, "set_" + kind + "_buf")(source)
+                view = getattr(data, kind + "_buf")()
+                # Feeding a view back into the buffer must retain its owner too.
+                getattr(data, "set_" + kind + "_buf")(view)
+                del data, source
+                gc.collect()
+                self.assertIsNotNone(reference())
+                self.assertEqual(list(memoryview(view).cast(cast)), [1, 2])
+                del view
+                gc.collect()
+                self.assertIsNone(reference())
 
     def test_set_pose_with_offset_center_of_gravity(self) -> None:
         fields = pymunk.batch.BodyFields

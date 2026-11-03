@@ -16,7 +16,6 @@ from ._callbacks import *
 from ._chipmunk_cffi import ffi, lib
 from ._collision_handler import CollisionHandler, _CollisionCallback
 from ._pickle import PickleMixin, _State
-from ._util import _dead_ref
 from .arbiter import _arbiter_from_dict, _arbiter_to_dict
 from .body import Body
 from .query_info import PointQueryInfo, SegmentQueryInfo, ShapeQueryInfo
@@ -485,7 +484,7 @@ class Space(PickleMixin):
         """Removes a shape from the space"""
         assert shape in self._shapes, "shape not in space, already removed?"
         self._removed_shapes[shape] = None
-        shape._space = _dead_ref
+        shape._space = None
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
         if lib.cpSpaceContainsShape(self._space, shape._shape):
             lib.cpSpaceRemoveShape(self._space, shape._shape)
@@ -494,7 +493,7 @@ class Space(PickleMixin):
     def _remove_body(self, body: "Body") -> None:
         """Removes a body from the space"""
         assert body in self._bodies, "body not in space, already removed?"
-        body._space = _dead_ref
+        body._space = None
         if body in self._bodies_to_check:
             self._bodies_to_check.remove(body)
         # During GC at program exit sometimes the shape might already be removed. Then skip this step.
