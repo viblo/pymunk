@@ -1353,6 +1353,16 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(j.b.body_type, p.Body.STATIC)
 
 
+class UnitTestSpaceCopyArbiters(unittest.TestCase):
+    def test_every_arbiter_survives_a_copy(self) -> None:
+        space = settled_pile()
+        saved = arbiters(space)
+        self.assertGreater(len(saved), 60)
+        for method in ["copy", "deepcopy", "pickle"]:
+            with self.subTest(method=method):
+                self.assertEqual(arbiters(clone(space, method)), saved)
+
+
 def f1(*args: Any, **kwargs: Any) -> None:
     pass
 
@@ -1379,3 +1389,32 @@ def make_space() -> p.Space:
     floor.collision_type = 2
     space.add(body, shape, floor)
     return space
+
+
+def settled_pile() -> p.Space:
+    """60 boxes settled on a floor: more than 60 cached arbiters."""
+    space = p.Space()
+    space.gravity = 0, -100
+    space.add(p.Segment(space.static_body, (-50, 0), (50, 0), 1))
+    for i in range(60):
+        body = p.Body(1, p.moment_for_box(1, (4, 4)))
+        body.position = -30 + (i % 15) * 4.5, 2 + (i // 15) * 4.2
+        space.add(body, p.Poly.create_box(body, (4, 4)))
+    for _ in range(60):
+        space.step(1 / 60)
+    return space
+
+
+def arbiters(space: p.Space) -> list[dict[str, Any]]:
+    """Every cached arbiter as saved, its shapes named by their index in the space."""
+    shapes = {shape._shape: shape for shape in space.shapes}
+    index = {shape: i for i, shape in enumerate(space.shapes)}
+    saved = []
+    for _arb in space._get_arbiters():
+        d = p.arbiter._arbiter_to_dict(_arb, shapes)
+        d["a"], d["b"] = index[d["a"]], index[d["b"]]
+        # swapped is set again when the arbiter is re-added to a space, so it
+        # is not compared here.
+        del d["swapped"]
+        saved.append(d)
+    return sorted(saved, key=lambda d: (d["a"], d["b"]))
