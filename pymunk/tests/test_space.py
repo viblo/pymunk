@@ -1353,6 +1353,17 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(j.b.body_type, p.Body.STATIC)
 
 
+class UnitTestSpaceCopyArbiters(unittest.TestCase):
+    def test_a_copied_arbiter_keeps_its_swapped_flag(self) -> None:
+        space = settled_pile()
+        saved = [arb.swapped for arb in space._get_arbiters()]
+        self.assertGreater(len(saved), 60)
+        for method in ["copy", "deepcopy", "pickle"]:
+            with self.subTest(method=method):
+                copied = [arb.swapped for arb in clone(space, method)._get_arbiters()]
+                self.assertEqual(sorted(copied), sorted(saved))
+
+
 def f1(*args: Any, **kwargs: Any) -> None:
     pass
 
@@ -1378,4 +1389,18 @@ def make_space() -> p.Space:
     floor = p.Circle(space.static_body, 1)
     floor.collision_type = 2
     space.add(body, shape, floor)
+    return space
+
+
+def settled_pile() -> p.Space:
+    """60 boxes settled on a floor: more than 60 cached arbiters."""
+    space = p.Space()
+    space.gravity = 0, -100
+    space.add(p.Segment(space.static_body, (-50, 0), (50, 0), 1))
+    for i in range(60):
+        body = p.Body(1, p.moment_for_box(1, (4, 4)))
+        body.position = -30 + (i % 15) * 4.5, 2 + (i // 15) * 4.2
+        space.add(body, p.Poly.create_box(body, (4, 4)))
+    for _ in range(60):
+        space.step(1 / 60)
     return space
