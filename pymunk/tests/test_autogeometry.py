@@ -25,6 +25,26 @@ class UnitTestPolylineSet(unittest.TestCase):
         self.assertEqual(len(pset), 2)
         self.assertEqual(list(pset), expected)
 
+    def test_negative_indices(self) -> None:
+        pset = a.PolylineSet()
+        pset.collect_segment((0, 0), (1, 0))
+        pset.collect_segment((3, 0), (4, 0))
+        expected = list(pset)
+        self.assertEqual(pset[-1], expected[-1])
+        self.assertEqual(pset[-2], expected[-2])
+        for index in (-3, -100, 2, 100):
+            with self.subTest(index=index):
+                with self.assertRaises(IndexError):
+                    pset[index]
+        self.assertEqual(list(reversed(pset)), list(reversed(expected)))
+
+    def test_empty_indices(self) -> None:
+        pset = a.PolylineSet()
+        for index in (-1, -100, 0, 1):
+            with self.subTest(index=index):
+                with self.assertRaises(IndexError):
+                    pset[index]
+
 
 class UnitTestAutoGeometry(unittest.TestCase):
     def _assert_result_released(

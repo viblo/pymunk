@@ -211,10 +211,13 @@ class PolylineSet(Sequence[list[Vec2d]]):
         self, index: Union[int, slice]
     ) -> Union[list[Vec2d], "PolylineSet"]:
         assert not isinstance(index, slice), "Slice indexing not supported"
-        if index >= self._set.count:
+        position = index
+        if position < 0:
+            position += self._set.count
+        if not 0 <= position < self._set.count:
             raise IndexError
         line = []
-        l = self._set.lines[index]
+        l = self._set.lines[position]
         for i in range(l.count):
             line.append(Vec2d(l.verts[i].x, l.verts[i].y))
         return line
