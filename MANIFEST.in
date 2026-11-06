@@ -25,7 +25,7 @@ recursive-include Munk2D/include/chipmunk *
 include Munk2D/*.txt
 recursive-include pymunk_cffi * 
 #tools
-recursive-include tools *.py
+recursive-include tools *.py *.mjs
 #typing
 include pymunk/py.typed
 #general excludes

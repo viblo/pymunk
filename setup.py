@@ -26,6 +26,27 @@ void pymunk_avx2_probe(double *out, const double *in) {
 """
 
 
+_EMSCRIPTEN_PROBE = """
+#ifndef __EMSCRIPTEN__
+#error This is not an Emscripten target
+#endif
+int pymunk_emscripten_target_probe;
+"""
+
+_WASM_SIMD_PROBE = """
+#include "chipmunk/chipmunk_types.h"
+#if !defined(__EMSCRIPTEN__) || !CP_USE_DOUBLES
+#error Wasm SIMD contact solving requires an Emscripten double-precision target
+#endif
+#include <wasm_simd128.h>
+void pymunk_wasm_simd_probe(double *out) {
+    v128_t value = wasm_f64x2_splat(1.0);
+    wasm_v128_store(out, wasm_f64x2_add(value, value));
+}
+"""
+_WASM_SIMD_FLAGS = ["-msimd128", "-ffp-contract=off", "-fno-lto"]
+
+
 def _compiler_flags(compiler_type):
     """Return (AVX2 flags, scalar FP flags), or None for unknown compilers."""
     if compiler_type == "msvc":
@@ -59,15 +80,15 @@ def _with_source_flags(compile_sources, source_flags):
 
 
 class PymunkBuildExt(build_ext):
-    def _probe_avx2(self, extension, flags):
+    def _probe(self, extension, code, flags):
         # Compile, never execute: wheels and cross builds must depend on the
         # compiler target, not the build host's CPU. A universal macOS build
         # must pass for every target slice or remain scalar-only.
         # Keep probe paths short. Distutils repeats the source directory under
         # output_dir, which can exceed MSVC's path limit inside a build tree.
-        with tempfile.TemporaryDirectory(prefix="pymunk-avx2-") as tmp:
-            source = Path(tmp) / "pymunk_avx2_probe.c"
-            source.write_text(_AVX2_PROBE)
+        with tempfile.TemporaryDirectory(prefix="pymunk-probe-") as tmp:
+            source = Path(tmp) / "pymunk_backend_probe.c"
+            source.write_text(code)
             try:
                 self.compiler.compile(
                     [str(source)], output_dir=tmp,
@@ -84,30 +105,49 @@ class PymunkBuildExt(build_ext):
 
     def build_extensions(self):
         flags = _compiler_flags(self.compiler.compiler_type)
-        enabled = False
+        avx2_enabled = wasm_enabled = False
+        link_args = []
         for extension in self.extensions:
             if extension.name != "pymunk._chipmunk":
                 continue
-            enabled = bool(flags and self._probe_avx2(extension, flags[0]))
+            # Probe the compiler target, not sys.platform/the host CPU: a
+            # Pyodide cross build normally runs on a native Linux host.
+            wasm_target = self._probe(extension, _EMSCRIPTEN_PROBE, [])
+            if wasm_target:
+                if self.compiler.compiler_type != "unix" or not self._probe(
+                    extension, _WASM_SIMD_PROBE, _WASM_SIMD_FLAGS
+                ):
+                    raise CompileError(
+                        "Pymunk's Emscripten build requires double precision "
+                        "and standard Wasm SIMD (-msimd128) support"
+                    )
+                wasm_enabled = True
+            else:
+                avx2_enabled = bool(flags and self._probe(extension, _AVX2_PROBE, flags[0]))
             extension.define_macros = [
                 item for item in extension.define_macros
-                if item[0] != "CP_AVX2_CONTACT_SOLVER"
-            ] + [("CP_AVX2_CONTACT_SOLVER", "1" if enabled else "0")]
+                if item[0] not in ("CP_AVX2_CONTACT_SOLVER", "CP_WASM_SIMD_CONTACT_SOLVER")
+            ] + [("CP_AVX2_CONTACT_SOLVER", "1" if avx2_enabled else "0"),
+                 ("CP_WASM_SIMD_CONTACT_SOLVER", "1" if wasm_enabled else "0")]
+            link_args.append((extension, extension.extra_link_args))
             self.announce(
-                "Munk2D AVX2 contact solver: " + ("enabled" if enabled else "disabled"),
+                "Munk2D contact solvers: AVX2 " + ("enabled" if avx2_enabled else "disabled")
+                + ", Wasm SIMD " + ("enabled" if wasm_enabled else "disabled"),
                 level=2,
             )
 
         source_flags = {}
         if flags:
             source_flags["cpContactSolverScalar.c"] = flags[1]
-            if enabled:
+            if avx2_enabled:
                 source_flags["cpContactSolverAvx2.c"] = flags[0]
+        if wasm_enabled:
+            source_flags["cpContactSolverWasm.c"] = _WASM_SIMD_FLAGS
         # Distutils does not track macro/flag changes as object dependencies.
-        # A changed probe result must not reuse incompatible objects or skip
-        # linking an already existing extension.
-        stamp = Path(self.build_temp) / "pymunk-avx2-config.json"
-        config = json.dumps({"enabled": enabled, "source_flags": source_flags}, sort_keys=True)
+        # A changed backend must not reuse incompatible objects or skip linking.
+        stamp = Path(self.build_temp) / "pymunk-contact-solver-config.json"
+        config = json.dumps({"avx2": avx2_enabled, "wasm_simd": wasm_enabled,
+                             "source_flags": source_flags}, sort_keys=True)
         changed = not stamp.exists() or stamp.read_text() != config
         original_force = self.force
         compiler_force = self.compiler.force
@@ -119,6 +159,8 @@ class PymunkBuildExt(build_ext):
 
         original_compile = self.compiler.compile
         self.compiler.compile = _with_source_flags(original_compile, source_flags)
+        for extension, args in link_args:
+            extension.extra_link_args = list(args or []) + (["-msimd128"] if wasm_enabled else [])
         try:
             super().build_extensions()
             stamp.write_text(config)
@@ -126,6 +168,8 @@ class PymunkBuildExt(build_ext):
             self.compiler.compile = original_compile
             self.force = original_force
             self.compiler.force = compiler_force
+            for extension, args in link_args:
+                extension.extra_link_args = args
 
 
 if __name__ == "__main__":

@@ -73,6 +73,25 @@ jobs:
       - uses: pypa/cibuildwheel@v4.3.1
         env:
           CIBW_PLATFORM: pyodide
+          CIBW_TEST_COMMAND: >-
+            python -m pymunk.tests &&
+            python {project}/tools/tests/check_wheel_backend.py
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - name: Install browser test tools
+        run: |
+          npm install --no-save --package-lock=false playwright@1.63.0
+          npx playwright install --with-deps chromium firefox
+      - name: Check installed wheels in Chromium and Firefox
+        run: |
+          node tools/test_pyodide_wheels.mjs wheelhouse chromium > pyodide-chromium.json
+          node tools/test_pyodide_wheels.mjs wheelhouse firefox > pyodide-firefox.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pyodide-browser-checks
+          path: pyodide-*.json
       - uses: actions/upload-artifact@v7
         if: ${{ github.ref == 'refs/heads/master' }}
         with:

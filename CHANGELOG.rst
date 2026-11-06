@@ -2,6 +2,18 @@
 Changelog 
 =========
 
+Next release
+------------
+
+Changes:
+  - Update bundled Munk2D to 2.2.0, including mixed contact/joint support in
+    the optional AVX2 contact solver and the new optional Wasm SIMD backend.
+  - Enable standard Wasm SIMD in Pyodide wheel builds and let SolverMode.AUTO
+    select it when available, after AVX2. DEFAULT remains the original solver.
+    Wheels require a SIMD-capable runtime at load time, including with DEFAULT
+    (for example Safari/iOS 16.4+); applications need no custom loader. Native
+    backend selection and the public SolverMode values are unchanged.
+
 Pymukn 7.3.1 (2026-10-11)
 -------------------------
 

@@ -117,10 +117,26 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(s.solver_mode, SolverMode.AUTO)
         from pymunk._chipmunk_cffi import lib
 
-        if lib.cpContactSolverIsAvailable(lib.CP_CONTACT_SOLVER_AVX2):
-            self.assertEqual(
-                lib.cpSpaceGetContactSolver(s._space), lib.CP_CONTACT_SOLVER_AVX2
-            )
+        expected = lib.CP_CONTACT_SOLVER_ORIGINAL
+        for backend in (lib.CP_CONTACT_SOLVER_AVX2, lib.CP_CONTACT_SOLVER_WASM_SIMD):
+            if lib.cpContactSolverIsAvailable(backend):
+                expected = backend
+                break
+        self.assertEqual(lib.cpSpaceGetContactSolver(s._space), expected)
+        s.solver_mode = SolverMode.DEFAULT
+        self.assertEqual(lib.cpSpaceGetContactSolver(s._space), lib.CP_CONTACT_SOLVER_ORIGINAL)
+
+    def test_solver_mode_copy_pickle(self) -> None:
+        from pymunk._chipmunk_cffi import lib
+
+        for mode in (SolverMode.DEFAULT, SolverMode.AUTO):
+            with self.subTest(mode=mode):
+                s = p.Space()
+                s.solver_mode = mode
+                expected = lib.cpSpaceGetContactSolver(s._space)
+                for clone in (s.copy(), pickle.loads(pickle.dumps(s))):
+                    self.assertEqual(clone.solver_mode, mode)
+                    self.assertEqual(lib.cpSpaceGetContactSolver(clone._space), expected)
 
     def testSpatialHash(self) -> None:
         s = p.Space()
