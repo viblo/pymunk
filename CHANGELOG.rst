@@ -2,6 +2,13 @@
 Changelog 
 =========
 
+Next release
+------------
+
+Changes:
+  - Update bundled Munk2D to 2.2.0, including mixed contact/joint support in
+    the optional AVX2 contact solver and the new optional Wasm SIMD backend.
+
 Pymukn 7.3.1 (2026-10-11)
 -------------------------
 
