@@ -1,7 +1,6 @@
 """Check layout metadata against native packing and scalar body/arbiter data."""
 
 import array
-import dataclasses
 import itertools
 import math
 import unittest
@@ -9,7 +8,6 @@ from typing import Any, cast
 
 import pymunk
 from pymunk import batch
-from pymunk._chipmunk_cffi import ffi
 
 
 def selections(fields: Any) -> Any:
@@ -22,49 +20,63 @@ def selections(fields: Any) -> Any:
         yield flags
 
 
+def is_integer(field: Any) -> bool:
+    return field in (
+        batch.BodyFields.BODY_ID,
+        batch.ArbiterFields.BODY_A_ID,
+        batch.ArbiterFields.BODY_B_ID,
+        batch.ArbiterFields.IS_FIRST_CONTACT,
+        batch.ArbiterFields.CONTACT_COUNT,
+    )
+
+
+def strides(layout: Any) -> tuple[int, int]:
+    return (
+        sum(size for field, (offset, size) in layout.items() if not is_integer(field)),
+        sum(size for field, (offset, size) in layout.items() if is_integer(field)),
+    )
+
+
 class UnitTestBatchLayout(unittest.TestCase):
     def test_layout_contract(self) -> None:
         F = batch.BodyFields
-        layout = batch.get_body_layout(F.POSITION | F.ANGLE | F.BODY_ID)
+        flags = F.POSITION | F.ANGLE | F.BODY_ID
+        layout = batch.get_body_layout(flags)
+        self.assertIs(type(layout), dict)
+        self.assertEqual(list(layout), [F.BODY_ID, F.ANGLE, F.POSITION])
         self.assertEqual(
-            [e.field for e in layout.fields], [F.BODY_ID, F.ANGLE, F.POSITION]
+            layout, {F.BODY_ID: (0, 1), F.ANGLE: (0, 1), F.POSITION: (1, 2)}
         )
-        self.assertEqual(layout[F.BODY_ID], batch.FieldLayout(F.BODY_ID, "int", 0, 1))
-        self.assertEqual(layout[F.ANGLE], batch.FieldLayout(F.ANGLE, "float", 0, 1))
-        self.assertEqual(
-            layout[F.POSITION], batch.FieldLayout(F.POSITION, "float", 1, 2)
-        )
-        self.assertEqual((layout.float_stride, layout.int_stride), (3, 1))
-        self.assertEqual(layout.float_itemsize, ffi.sizeof("cpFloat"))
-        self.assertEqual(layout.int_itemsize, ffi.sizeof("uintptr_t"))
-        self.assertIs(layout, batch.get_body_layout(F.POSITION | F.ANGLE | F.BODY_ID))
+        self.assertEqual(strides(layout), (3, 1))
         with self.assertRaises(KeyError):
             layout[F.VELOCITY]
         with self.assertRaises(KeyError):
-            layout[batch.ArbiterFields.BODY_A_ID]
-        with self.assertRaises(dataclasses.FrozenInstanceError):
-            setattr(layout, "float_stride", 0)
-        with self.assertRaises(dataclasses.FrozenInstanceError):
-            setattr(layout[F.POSITION], "offset", 0)
+            layout[cast(Any, batch.ArbiterFields.BODY_A_ID)]
+        # Mutable results are independent, including for repeated selections.
+        layout[F.ANGLE] = (99, 99)
+        layout.clear()
+        self.assertEqual(batch.get_body_layout(flags)[F.ANGLE], (0, 1))
+        af = batch.ArbiterFields
+        arbiter_layout = batch.get_arbiter_layout(af.ALL)
+        self.assertIs(type(arbiter_layout), dict)
+        arbiter_layout.clear()
+        self.assertEqual(batch.get_arbiter_layout(af.ALL)[af.BODY_A_ID], (0, 1))
         with self.assertRaises(TypeError):
-            batch.get_body_layout(cast(Any, batch.ArbiterFields.ALL))
+            batch.get_body_layout(cast(Any, af.ALL))
         with self.assertRaises(TypeError):
             batch.get_arbiter_layout(cast(Any, F.ALL))
         with self.assertRaises(TypeError):
             batch.get_body_layout(cast(Any, 3))
         cases: tuple[tuple[Any, Any], ...] = (
             (F, batch.get_body_layout),
-            (batch.ArbiterFields, batch.get_arbiter_layout),
+            (af, batch.get_arbiter_layout),
         )
         for enum, query in cases:
-            empty = query(enum(0))
-            self.assertEqual(empty.fields, ())
-            self.assertEqual((empty.float_stride, empty.int_stride), (0, 0))
+            self.assertEqual(query(enum(0)), {})
             all_flags = enum(0)
             for field in enum:
                 all_flags |= field
             self.assertEqual(query(enum.ALL), query(all_flags))
-        # Changing packing order must not change numeric masks.
         self.assertEqual(F.BODY_ID.value, 1)
         self.assertEqual(F.POSITION.value, 2)
         self.assertEqual(F.ANGLE.value, 4)
@@ -106,27 +118,23 @@ class UnitTestBatchLayout(unittest.TestCase):
                     batch.get_body_layout(flags), buffer, [expected[i] for i in order]
                 )
 
-    def check_records(
-        self, layout: batch.Layout, buffer: batch.Buffer, rows: Any
-    ) -> None:
+    def check_records(self, layout: Any, buffer: batch.Buffer, rows: Any) -> None:
         floats = memoryview(buffer.float_buf()).cast("d")
         ints = memoryview(buffer.int_buf()).cast("P")
-        self.assertEqual(len(floats), len(rows) * layout.float_stride)
-        self.assertEqual(len(ints), len(rows) * layout.int_stride)
+        float_stride, int_stride = strides(layout)
+        self.assertEqual(len(floats), len(rows) * float_stride)
+        self.assertEqual(len(ints), len(rows) * int_stride)
         for row, expected in enumerate(rows):
-            for entry in layout.fields:
-                values = floats if entry.buffer == "float" else ints
-                stride = (
-                    layout.float_stride
-                    if entry.buffer == "float"
-                    else layout.int_stride
-                )
-                start = row * stride + entry.offset
-                actual = list(values[start : start + entry.size])
-                wanted = expected[entry.field]
+            for field, (offset, size) in layout.items():
+                integer = is_integer(field)
+                values = ints if integer else floats
+                stride = int_stride if integer else float_stride
+                start = row * stride + offset
+                actual = list(values[start : start + size])
+                wanted = expected[field]
                 self.assertEqual(len(actual), len(wanted))
                 for value, target in zip(actual, wanted):
-                    if entry.buffer == "int":
+                    if integer:
                         self.assertEqual(value, target)
                     elif math.isnan(target):
                         # TOTAL_KE can already be NaN in scalar arbiter data.
@@ -154,14 +162,14 @@ class UnitTestBatchLayout(unittest.TestCase):
                     body.position = (0, 0)
                     space.add(body)
                 layout = batch.get_body_layout(flags)
-                values = array.array("d", [0.0] * (len(bodies) * layout.float_stride))
+                float_stride, int_stride = strides(layout)
+                values = array.array("d", [0.0] * (len(bodies) * float_stride))
                 for row in range(len(bodies)):
-                    for entry in layout.fields:
-                        if entry.buffer == "float":
-                            assert isinstance(entry.field, batch.BodyFields)
-                            start = row * layout.float_stride + entry.offset
-                            values[start : start + entry.size] = array.array(
-                                "d", targets[entry.field]
+                    for field, (offset, size) in layout.items():
+                        if field != F.BODY_ID:
+                            start = row * float_stride + offset
+                            values[start : start + size] = array.array(
+                                "d", targets[field]
                             )
                 buffer = batch.Buffer()
                 buffer.set_float_buf(values)
@@ -270,16 +278,13 @@ class UnitTestBatchLayout(unittest.TestCase):
                 ints = memoryview(full.int_buf()).cast("P")
                 for record in range(len(order) // 2):
                     row = {}
-                    for entry in layout.fields:
-                        assert isinstance(entry.field, batch.ArbiterFields)
-                        data = floats if entry.buffer == "float" else ints
-                        stride = (
-                            layout.float_stride
-                            if entry.buffer == "float"
-                            else layout.int_stride
-                        )
-                        start = record * stride + entry.offset
-                        row[entry.field] = list(data[start : start + entry.size])
+                    float_stride, int_stride = strides(layout)
+                    for field, (offset, size) in layout.items():
+                        integer = is_integer(field)
+                        data = ints if integer else floats
+                        stride = int_stride if integer else float_stride
+                        start = record * stride + offset
+                        row[field] = list(data[start : start + size])
                     self.assertEqual(row[F.CONTACT_COUNT], [0])
                     for field in (F.POINT_A_1, F.POINT_B_1, F.POINT_A_2, F.POINT_B_2):
                         self.assertEqual(row[field], [0.0, 0.0])

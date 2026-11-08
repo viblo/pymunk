@@ -10,9 +10,9 @@ Breaking changes to the experimental batch API:
     [angle, x, y] instead of [x, y, angle]. Numeric flag values are unchanged.
     Update hardcoded offsets and migrate saved raw buffers; do not mix old/new
     layouts. POSITION-only and ANGLE-only records are unchanged.
-  - Added batch.get_body_layout() and batch.get_arbiter_layout() with immutable
-    field descriptors, per-buffer element offsets/strides, component counts,
-    and native scalar sizes (Issue #323). Query layouts instead of hardcoding.
+  - Added batch.get_body_layout() and batch.get_arbiter_layout() returning dictionaries
+    mapping selected fields to (element offset, component count), separately
+    offset within each buffer (Issue #323). Query layouts instead of hardcoding.
   - Body updates now consume/apply ANGLE before POSITION, preserving poses for
     offset centers of gravity without deferring the position update.
   - Clarified that body setters ignore BODY_ID and the integer buffer; IDs do

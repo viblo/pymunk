@@ -52,11 +52,11 @@ def batched_planet_gravity(draw_buffer, dt, update_buffer):
     arr = np.frombuffer(draw_buffer.float_buf())
     position = body_layout[pymunk.batch.BodyFields.POSITION]
     velocity = body_layout[pymunk.batch.BodyFields.VELOCITY]
-    stride = body_layout.float_stride
-    p_x = arr[position.offset :: stride]
-    p_y = arr[position.offset + 1 :: stride]
-    v_x = arr[velocity.offset :: stride]
-    v_y = arr[velocity.offset + 1 :: stride]
+    stride = sum(size for offset, size in body_layout.values())
+    p_x = arr[position[0] :: stride]
+    p_y = arr[position[0] + 1 :: stride]
+    v_x = arr[velocity[0] :: stride]
+    v_y = arr[velocity[0] + 1 :: stride]
 
     sq_dist = (p_x - center.x) ** 2 + (p_y - center.y) ** 2
 
@@ -161,8 +161,10 @@ while True:
     if use_batch_draw:
         ps = list(memoryview(draw_buffer.float_buf()).cast("d"))
         position = body_layout[pymunk.batch.BodyFields.POSITION]
-        for row in range(0, len(ps), body_layout.float_stride):
-            idx = row + position.offset
+        for row in range(
+            0, len(ps), sum(size for offset, size in body_layout.values())
+        ):
+            idx = row + position[0]
             pygame.draw.circle(
                 screen, planet_color, (ps[idx], ps[idx + 1]), planet_radius
             )

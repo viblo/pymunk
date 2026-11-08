@@ -66,12 +66,13 @@ are in elements, separately for each buffer:
 
 >>> flags = BodyFields.POSITION | BodyFields.ANGLE
 >>> layout = get_body_layout(flags)
->>> layout[BodyFields.ANGLE].offset, layout[BodyFields.POSITION].offset
+>>> layout[BodyFields.ANGLE]
 (0, 1)
->>> layout.float_stride, layout.int_stride
-(3, 0)
->>> layout[BodyFields.POSITION].size
-2
+>>> layout[BodyFields.POSITION]
+(1, 2)
+>>> stride = sum(size for offset, size in layout.values())
+>>> stride
+3
 
 A float record is now [angle, x, y], not [x, y, angle]. Only selections
 containing both ANGLE and POSITION change relative ordering; flag values are
@@ -82,11 +83,11 @@ migrated; do not share raw buffers between different Pymunk versions.
 For example, build records using the queried offsets:
 
 >>> import array
->>> records = array.array("d", [0.0] * (2 * layout.float_stride))
+>>> records = array.array("d", [0.0] * (2 * stride))
 >>> for row, (angle, x, y) in enumerate(((0.5, 5, 6), (1.0, 7, 8))):
-...     base = row * layout.float_stride
-...     records[base + layout[BodyFields.ANGLE].offset] = angle
-...     p = base + layout[BodyFields.POSITION].offset
+...     base = row * stride
+...     records[base + layout[BodyFields.ANGLE][0]] = angle
+...     p = base + layout[BodyFields.POSITION][0]
 ...     records[p:p + 2] = array.array("d", [x, y])
 >>> updates = Buffer()
 >>> updates.set_float_buf(records)
@@ -94,8 +95,9 @@ For example, build records using the queried offsets:
 >>> b1.angle, tuple(b1.position), b2.angle, tuple(b2.position)
 (0.5, (5.0, 6.0), 1.0, (7.0, 8.0))
 
-The example uses doubles, as in the standard Pymunk build. Layout item sizes
-are available for consumers of other buffer formats. Record indices follow
+The example uses doubles, as in the standard Pymunk build (C type cpFloat).
+The integer buffer uses uintptr_t. For mixed selections, sum component counts
+separately for the float and integer fields to obtain each stride. Record indices follow
 native iteration order, not IDs; adding/removing bodies can change that order.
 See also the NumPy example in planet.py.
 
@@ -108,8 +110,6 @@ __all__ = [
     "ArbiterFields",
     "BodyFields",
     "Buffer",
-    "FieldLayout",
-    "Layout",
     "get_body_layout",
     "get_arbiter_layout",
     "set_space_bodies",
@@ -117,10 +117,8 @@ __all__ = [
     "get_space_bodies",
 ]
 
-from dataclasses import dataclass
 from enum import Flag
-from functools import lru_cache
-from typing import Any, Literal, Union
+from typing import Any, TypeVar
 
 from ._chipmunk_cffi import ffi, lib
 from .space import Space
@@ -183,49 +181,6 @@ class ArbiterFields(Flag):
     """All the fields"""
 
 
-@dataclass(frozen=True)
-class FieldLayout:
-    """Location of one selected field within a batch record.
-
-    ``buffer`` is ``"float"`` or ``"int"``. ``offset`` and ``size`` are in
-    scalar elements of that buffer, not bytes. Vector components are X, Y.
-    """
-
-    field: Union[BodyFields, ArbiterFields]
-    buffer: Literal["float", "int"]
-    offset: int
-    size: int
-
-
-@dataclass(frozen=True)
-class Layout:
-    """Immutable description of records in the two separate batch buffers.
-
-    ``fields`` lists the selected fields in native packing order. Each buffer
-    contains consecutive records, without padding. ``float_stride`` and
-    ``int_stride`` are elements per record; multiply by the corresponding
-    itemsize for bytes. Float elements have C type ``cpFloat``; integer
-    elements have C type ``uintptr_t`` (including IDs and boolean values).
-
-    A layout describes fields, not body/arbiter iteration order. Do not assume
-    record indices remain stable after changes to the space. Layouts and raw
-    buffers should not be assumed compatible across Pymunk versions.
-    """
-
-    fields: tuple[FieldLayout, ...]
-    float_stride: int
-    int_stride: int
-    float_itemsize: int
-    int_itemsize: int
-
-    def __getitem__(self, field: Union[BodyFields, ArbiterFields]) -> FieldLayout:
-        """Return the descriptor for one selected field, or raise KeyError."""
-        for entry in self.fields:
-            if entry.field == field:
-                return entry
-        raise KeyError(field)
-
-
 # Explicit packing order, independent of numeric flag values. Keep these
 # tables in sync with the native iterators in pymunk_cffi/extensions.c.
 _BODY_LAYOUT = (
@@ -254,55 +209,58 @@ _ARBITER_LAYOUT = (
 )
 
 
+_Fields = TypeVar("_Fields", BodyFields, ArbiterFields)
+
+
 def _make_layout(
-    fields: Union[BodyFields, ArbiterFields],
-    spec: tuple[tuple[Any, str, int], ...],
-) -> Layout:
+    fields: _Fields, spec: tuple[tuple[_Fields, str, int], ...]
+) -> dict[_Fields, tuple[int, int]]:
     offsets = {"float": 0, "int": 0}
-    entries = []
+    layout = {}
     for field, buffer, size in spec:
         if field in fields:
-            # The tables above contain only the two supported buffer names.
-            kind: Literal["float", "int"] = "float" if buffer == "float" else "int"
-            entries.append(FieldLayout(field, kind, offsets[kind], size))
-            offsets[kind] += size
-    return Layout(
-        tuple(entries),
-        offsets["float"],
-        offsets["int"],
-        ffi.sizeof("cpFloat"),
-        ffi.sizeof("uintptr_t"),
-    )
+            layout[field] = (offsets[buffer], size)
+            offsets[buffer] += size
+    return layout
 
 
-@lru_cache(maxsize=128)
-def get_body_layout(fields: BodyFields) -> Layout:
-    """Describe body records for exactly the selected flags.
+def get_body_layout(fields: BodyFields) -> dict[BodyFields, tuple[int, int]]:
+    """Return selected fields mapped to (element offset, component count).
 
-    Packing order is BODY_ID (integer buffer), then ANGLE, POSITION, VELOCITY,
-    ANGULAR_VELOCITY, FORCE, TORQUE (float buffer). Unselected fields take no
-    space. Flag numeric values do not define packing order. ``ALL`` selects
-    every supported field; ``BodyFields(0)`` gives zero strides. Reserved bits
-    are ignored, matching the native batch functions.
+    Dictionary insertion order is native packing order: BODY_ID, ANGLE,
+    POSITION, VELOCITY, ANGULAR_VELOCITY, FORCE, TORQUE. Flag numeric values
+    do not define packing order. BODY_ID uses the integer buffer; all other
+    fields use the float buffer. Offsets are relative to one record in each
+    buffer separately, in elements, not bytes. Vectors store X then Y.
+    Sum component counts separately for each buffer to obtain record strides.
 
-    The setter uses the same float layout, but ignores BODY_ID and the entire
-    integer buffer: it updates bodies in native iteration order, not by ID.
-    Query once and reuse the result; batch get/set functions do not call this.
+    Unselected fields take no space. ALL selects all supported fields; zero
+    flags return an empty dict. Reserved bits are ignored, as in native code.
+    Each call returns a fresh dict; modifying it does not change packing.
+
+    The setter uses the same float layout but ignores BODY_ID and the integer
+    buffer. Bodies are updated in native iteration order, not by ID. Layouts
+    describe fields, not record order; adding/removing bodies can change it.
+    Query once and reuse the result. Batch get/set functions do not query it.
     """
     if not isinstance(fields, BodyFields):
         raise TypeError("fields must be BodyFields")
     return _make_layout(fields, _BODY_LAYOUT)
 
 
-@lru_cache(maxsize=128)
-def get_arbiter_layout(fields: ArbiterFields) -> Layout:
-    """Describe arbiter records for exactly the selected flags.
+def get_arbiter_layout(fields: ArbiterFields) -> dict[ArbiterFields, tuple[int, int]]:
+    """Return selected fields mapped to (element offset, component count).
 
-    Fields follow the order listed in ArbiterFields, with separate offsets
-    for the integer and float buffers. ``ALL`` selects every supported field;
-    ``ArbiterFields(0)`` gives zero strides. Reserved bits are ignored, matching
-    the native batch function. Missing contacts retain their selected slots,
-    filled with zeros; consult CONTACT_COUNT to distinguish them.
+    Dictionary insertion order follows ArbiterFields declaration order.
+    BODY_A_ID, BODY_B_ID, IS_FIRST_CONTACT and CONTACT_COUNT use the integer
+    buffer; all others use the float buffer. Offsets are in elements relative
+    to one record in the corresponding buffer. Vectors store X then Y. Sum
+    component counts separately per buffer to obtain record strides.
+
+    ALL selects all supported fields; zero flags return an empty dict.
+    Reserved bits are ignored. Each call returns a fresh dict. Missing
+    contacts retain their selected slots filled with zeros; use CONTACT_COUNT
+    to distinguish them. This layout does not specify arbiter record order.
     """
     if not isinstance(fields, ArbiterFields):
         raise TypeError("fields must be ArbiterFields")
