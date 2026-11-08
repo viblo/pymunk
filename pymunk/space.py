@@ -40,8 +40,10 @@ class SolverMode(Enum):
     AUTO = 2
     """Auto will try to use an accelerated solver if available.
     
-    The actual solver will depend on the build and CPU, and falls back to 
-    the original default solver if no matching accelerated is available.  
+    The actual solver depends on the build and runtime: AVX2 when available,
+    otherwise Wasm SIMD when available, otherwise the original default solver.
+    Pyodide wheels require standard WebAssembly SIMD at module load time, even
+    when DEFAULT is selected. No application-specific loader is needed.
 
     Accelerated solvers can result in slight different simulation result, since 
     contacts are processed in different order compared to the default solver.
@@ -550,10 +552,11 @@ class Space(PickleMixin):
         assert not self.threaded, "Solver mode can not be changed when using threading."
 
         solver = lib.CP_CONTACT_SOLVER_ORIGINAL
-        if mode == SolverMode.AUTO and lib.cpContactSolverIsAvailable(
-            lib.CP_CONTACT_SOLVER_AVX2
-        ):
-            solver = lib.CP_CONTACT_SOLVER_AVX2
+        if mode == SolverMode.AUTO:
+            for accelerated in (lib.CP_CONTACT_SOLVER_AVX2, lib.CP_CONTACT_SOLVER_WASM_SIMD):
+                if lib.cpContactSolverIsAvailable(accelerated):
+                    solver = accelerated
+                    break
         if not lib.cpSpaceSetContactSolver(self._space, solver):
             raise RuntimeError("Could not change the contact solver")
 

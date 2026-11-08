@@ -19,3 +19,5 @@ pymunk/*.o
 pymunk/*.pyd
 *.whl
 .eggs/
+node_modules
+pyodide-*.json

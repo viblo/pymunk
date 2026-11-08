@@ -38,6 +38,26 @@ with::
     > sudo apt-get install build-essential
 
 
+Pyodide / WebAssembly
+======================
+
+Pymunk's Pyodide wheels include the standard 128-bit WebAssembly SIMD backend.
+Install and import Pymunk normally; no custom JavaScript feature detector, wheel
+selector or application loader is needed. To request acceleration::
+
+    space.solver_mode = pymunk.SolverMode.AUTO
+
+The default remains the original solver. AUTO selects the Wasm SIMD backend
+when available (or AVX2 on supported native builds); measure your workload,
+since acceleration is not a universal speedup.
+
+The wheel requires a SIMD-capable runtime **at module load time**, even when
+using ``SolverMode.DEFAULT``. Browser examples are Chrome/Edge 91+, Firefox 89+
+on desktop, and Safari/iOS 16.4+. Older non-SIMD browsers cannot load these
+wheels. Native wheels do not gain a WebAssembly requirement. No threads,
+SharedArrayBuffer or cross-origin isolation are required for this solver.
+
+
 Examples & Documentation
 ========================
 

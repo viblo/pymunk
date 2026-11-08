@@ -18,13 +18,21 @@ class FakeCompiler:
     def __init__(self):
         self.compiler_type = "unix"
         self.available = True
+        self.wasm_target = False
+        self.simd_available = True
         self.calls = []
         self.force = False
 
     def compile(self, sources, **kwargs):
         self.calls.append((list(sources), kwargs))
-        if Path(sources[0]).name == "pymunk_avx2_probe.c":
-            if not self.available:
+        if Path(sources[0]).name == "pymunk_backend_probe.c":
+            code = Path(sources[0]).read_text()
+            available = self.available
+            if "pymunk_emscripten_target_probe" in code:
+                available = self.wasm_target
+            elif "pymunk_wasm_simd_probe" in code:
+                available = self.simd_available
+            if not available:
                 raise CompileError("unsupported target")
         return [source + ".o" for source in sources]
 
@@ -36,7 +44,8 @@ class BuildSupportTests(unittest.TestCase):
         self.extension = Extension(
             "pymunk._chipmunk",
             sources=["src/cpSpace.c", "src/cpContactSolverCpu.c",
-                     "src/cpContactSolverAvx2.c", "src/cpContactSolverScalar.c"],
+                     "src/cpContactSolverAvx2.c", "src/cpContactSolverScalar.c",
+                     "src/cpContactSolverWasm.c"],
             define_macros=[("CP_OVERRIDE_MESSAGE", None)],
             include_dirs=["Munk2D/include"],
             extra_compile_args=["-O2"],
@@ -50,6 +59,7 @@ class BuildSupportTests(unittest.TestCase):
         def build(command):
             self.forced = (bool(command.force), bool(command.compiler.force))
             for extension in command.extensions:
+                self.link_args = list(extension.extra_link_args or [])
                 command.compiler.compile(
                     extension.sources, macros=extension.define_macros,
                     extra_postargs=extension.extra_compile_args,
@@ -82,9 +92,33 @@ class BuildSupportTests(unittest.TestCase):
         compiler = new_compiler()
         customize_compiler(compiler)
         self.command.compiler = compiler
-        probe_globals = PymunkBuildExt._probe_avx2.__globals__
-        with patch.dict(probe_globals, {"_AVX2_PROBE": "#error intentional probe failure\n"}):
-            self.assertFalse(self.command._probe_avx2(self.extension, []))
+        self.assertFalse(self.command._probe(
+            self.extension, "#error intentional probe failure\n", []
+        ))
+
+    def test_wasm_simd_is_required_and_flags_are_isolated(self):
+        self.command.compiler.wasm_target = True
+        self.extension.extra_link_args = ["-sSIDE_MODULE=2"]
+        self.run_build()
+        self.assertIn(("CP_AVX2_CONTACT_SOLVER", "0"), self.extension.define_macros)
+        self.assertIn(("CP_WASM_SIMD_CONTACT_SOLVER", "1"), self.extension.define_macros)
+        for source in ("cpSpace.c", "cpContactSolverCpu.c", "cpContactSolverAvx2.c"):
+            self.assertEqual(self.flags_for(source), ["-O2"])
+        self.assertEqual(self.flags_for("cpContactSolverWasm.c"),
+                         ["-O2", "-msimd128", "-ffp-contract=off", "-fno-lto"])
+        self.assertEqual(self.flags_for("cpContactSolverScalar.c"),
+                         ["-O2", "-ffp-contract=off"])
+        self.assertEqual(self.link_args, ["-sSIDE_MODULE=2", "-msimd128"])
+        self.assertEqual(self.extension.extra_link_args, ["-sSIDE_MODULE=2"])
+        self.assertEqual(self.extension.extra_compile_args, ["-O2"])
+
+    def test_wasm_without_simd_fails_instead_of_publishing_scalar(self):
+        self.command.compiler.wasm_target = True
+        self.command.compiler.simd_available = False
+        with self.assertRaisesRegex(CompileError, "requires.*SIMD"):
+            self.run_build()
+        self.assertFalse(any("src/cpSpace.c" in sources
+                             for sources, options in self.command.compiler.calls))
 
     def test_changed_backend_forces_rebuild(self):
         self.command.compiler.available = False
@@ -98,8 +132,19 @@ class BuildSupportTests(unittest.TestCase):
         self.command.compiler.available = False
         self.run_build()
         self.assertEqual(self.forced, (True, True))
-        self.assertEqual(sum(name == "CP_AVX2_CONTACT_SOLVER"
-                             for name, value in self.extension.define_macros), 1)
+        self.command.compiler.wasm_target = True
+        self.run_build()
+        self.assertEqual(self.forced, (True, True))
+        self.assertEqual(self.link_args, ["-msimd128"])
+        self.run_build()
+        self.assertEqual(self.forced, (False, False))
+        self.command.compiler.wasm_target = False
+        self.run_build()
+        self.assertEqual(self.forced, (True, True))
+        self.assertEqual(self.link_args, [])
+        for macro in ("CP_AVX2_CONTACT_SOLVER", "CP_WASM_SIMD_CONTACT_SOLVER"):
+            self.assertEqual(sum(name == macro
+                                 for name, value in self.extension.define_macros), 1)
 
 
 if __name__ == "__main__":
