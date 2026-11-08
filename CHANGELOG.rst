@@ -5,6 +5,19 @@ Changelog
 Next release
 ------------
 
+Breaking changes to the experimental batch API:
+  - Body float records now pack ANGLE before POSITION. Selecting both gives
+    [angle, x, y] instead of [x, y, angle]. Numeric flag values are unchanged.
+    Update hardcoded offsets and migrate saved raw buffers; do not mix old/new
+    layouts. POSITION-only and ANGLE-only records are unchanged.
+  - Added batch.get_body_layout() and batch.get_arbiter_layout() with immutable
+    field descriptors, per-buffer element offsets/strides, component counts,
+    and native scalar sizes (Issue #323). Query layouts instead of hardcoding.
+  - Body updates now consume/apply ANGLE before POSITION, preserving poses for
+    offset centers of gravity without deferring the position update.
+  - Clarified that body setters ignore BODY_ID and the integer buffer; IDs do
+    not select which body is updated.
+
 Changes:
   - Update bundled Munk2D to 2.2.0, including mixed contact/joint support in
     the optional AVX2 contact solver and the new optional Wasm SIMD backend.
