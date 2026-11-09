@@ -89,7 +89,7 @@ def main():
                 backup2 = space2.copy()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 # find all bodies with a circle shape in all spaces
-                for s in space1.shapes + space2.shapes:
+                for s in [*space1.shapes, *space2.shapes]:
                     if isinstance(s, pymunk.Circle) and s.body != None:
                         s.body.apply_impulse_at_local_point((20000, 0))
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
