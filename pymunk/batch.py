@@ -70,7 +70,7 @@ are in elements, separately for each buffer:
 (0, 1)
 >>> layout[BodyFields.POSITION]
 (1, 2)
->>> stride = sum(size for offset, size in layout.values())
+>>> stride = layout.float_stride
 >>> stride
 3
 
@@ -93,10 +93,18 @@ For example, build records using the queried offsets:
 (0.5, (5.0, 6.0), 1.0, (7.0, 8.0))
 
 The example uses doubles, as in the standard Pymunk build (C type cpFloat).
-The integer buffer uses uintptr_t. For mixed selections, sum component counts
-separately for the float and integer fields to obtain each stride. Record
-indices follow native iteration order, not IDs; adding/removing bodies can
-change that order.
+The integer buffer uses uintptr_t. Use float_stride and int_stride for the
+respective buffers, or extract individual components without calculating slices:
+
+>>> values = memoryview(records)
+>>> list(layout.component(values, BodyFields.POSITION, 0))
+[5.0, 7.0]
+>>> list(layout.component(values, BodyFields.POSITION, 1))
+[6.0, 8.0]
+
+Component indices are zero-based. These memoryview slices (and NumPy array
+slices) are views, not copies. Record indices follow native iteration order,
+not IDs; adding/removing bodies can change that order.
 See also the NumPy example in planet.py.
 
 
@@ -108,6 +116,7 @@ __all__ = [
     "ArbiterFields",
     "BodyFields",
     "Buffer",
+    "Layout",
     "get_body_layout",
     "get_arbiter_layout",
     "set_space_bodies",
@@ -116,7 +125,8 @@ __all__ = [
 ]
 
 from enum import Flag
-from typing import Any, TypeVar
+from operator import index
+from typing import Any, Union
 
 from ._chipmunk_cffi import ffi, lib
 from .space import Space
@@ -207,34 +217,101 @@ _ARBITER_LAYOUT = (
 )
 
 
-_Fields = TypeVar("_Fields", BodyFields, ArbiterFields)
+class Layout:
+    """Batch field locations and helpers for the two separate buffers.
+
+    ``fields`` maps selected flags to ``(offset, size)`` tuples. Both values
+    count scalar elements, not bytes: POSITION has size 2, ANGLE has size 1.
+    Offsets start at zero separately within each buffer's record. Dictionary
+    order is native packing order. ``layout[field]`` looks up the same tuple.
+
+    Query this class through get_body_layout() or get_arbiter_layout(). A
+    layout describes fields, not body/arbiter record order.
+    """
+
+    def __init__(
+        self,
+        fields: dict[Union[BodyFields, ArbiterFields], tuple[int, int]],
+        int_fields: frozenset[Union[BodyFields, ArbiterFields]],
+    ) -> None:
+        self.fields = fields
+        self._int_fields = int_fields
+
+    def __getitem__(self, field: Union[BodyFields, ArbiterFields]) -> tuple[int, int]:
+        """Return the field's (element offset, field size in elements)."""
+        return self.fields[field]
+
+    @property
+    def float_stride(self) -> int:
+        """Number of float elements per record (not bytes)."""
+        return sum(
+            size
+            for field, (offset, size) in self.fields.items()
+            if field not in self._int_fields
+        )
+
+    @property
+    def int_stride(self) -> int:
+        """Number of integer elements per record (not bytes)."""
+        return sum(
+            size
+            for field, (offset, size) in self.fields.items()
+            if field in self._int_fields
+        )
+
+    def component(
+        self, arr: Any, field: Union[BodyFields, ArbiterFields], component: int = 0
+    ) -> Any:
+        """Slice one component from every record, using a zero-based index.
+
+        Pass a one-dimensional scalar array from the field's buffer: floats
+        for float fields, integers for integer fields. For example, convert
+        a CFFI float buffer with np.frombuffer() or memoryview(...).cast("d").
+        Passing the raw byte buffer is not sufficient.
+
+        This uses arr[offset + component::stride], with no NumPy dependency.
+        NumPy arrays and memoryviews return views; Python lists return copies.
+        Mutating a writable view also changes its source array. A missing
+        field raises KeyError; an out-of-range component raises IndexError.
+        """
+        offset, size = self.fields[field]
+        component = index(component)
+        if not 0 <= component < size:
+            raise IndexError("component index out of range")
+        stride = self.int_stride if field in self._int_fields else self.float_stride
+        return arr[offset + component :: stride]
 
 
 def _make_layout(
-    fields: _Fields, spec: tuple[tuple[_Fields, str, int], ...]
-) -> dict[_Fields, tuple[int, int]]:
+    fields: Union[BodyFields, ArbiterFields],
+    spec: tuple[tuple[Any, str, int], ...],
+) -> Layout:
     offsets = {"float": 0, "int": 0}
     layout = {}
     for field, buffer, size in spec:
         if field in fields:
             layout[field] = (offsets[buffer], size)
             offsets[buffer] += size
-    return layout
+    return Layout(
+        layout, frozenset(field for field, buffer, size in spec if buffer == "int")
+    )
 
 
-def get_body_layout(fields: BodyFields) -> dict[BodyFields, tuple[int, int]]:
-    """Return selected fields mapped to (element offset, component count).
+def get_body_layout(fields: BodyFields) -> Layout:
+    """Return a Layout for the selected fields.
 
     Dictionary insertion order is native packing order: BODY_ID, ANGLE,
     POSITION, VELOCITY, ANGULAR_VELOCITY, FORCE, TORQUE. Flag numeric values
     do not define packing order. BODY_ID uses the integer buffer; all other
     fields use the float buffer. Offsets are relative to one record in each
     buffer separately, in elements, not bytes. Vectors store X then Y.
-    Sum component counts separately for each buffer to obtain record strides.
+    Use float_stride and int_stride for elements per record, or component()
+    to extract a scalar component across records.
 
     Unselected fields take no space. ALL selects all supported fields; zero
-    flags return an empty dict. Reserved bits are ignored, as in native code.
-    Each call returns a fresh dict; modifying it does not change packing.
+    flags give an empty fields dict and zero strides. Reserved bits are ignored, as in native code.
+    Each call returns an independent layout. Changing its fields does not
+    change native packing.
 
     The setter uses the same float layout but ignores BODY_ID and the integer
     buffer. Bodies are updated in native iteration order, not by ID. Layouts
@@ -246,17 +323,18 @@ def get_body_layout(fields: BodyFields) -> dict[BodyFields, tuple[int, int]]:
     return _make_layout(fields, _BODY_LAYOUT)
 
 
-def get_arbiter_layout(fields: ArbiterFields) -> dict[ArbiterFields, tuple[int, int]]:
-    """Return selected fields mapped to (element offset, component count).
+def get_arbiter_layout(fields: ArbiterFields) -> Layout:
+    """Return a Layout for the selected fields.
 
-    Dictionary insertion order follows ArbiterFields declaration order.
+    The fields dict follows ArbiterFields declaration order.
     BODY_A_ID, BODY_B_ID, IS_FIRST_CONTACT and CONTACT_COUNT use the integer
     buffer; all others use the float buffer. Offsets are in elements relative
     to one record in the corresponding buffer. Vectors store X then Y. Sum
-    component counts separately per buffer to obtain record strides.
+    component counts separately per buffer to obtain record strides, available
+    as float_stride and int_stride. component() slices one scalar component.
 
-    ALL selects all supported fields; zero flags return an empty dict.
-    Reserved bits are ignored. Each call returns a fresh dict. Missing
+    ALL selects all supported fields; zero flags give empty fields and zero
+    strides. Reserved bits are ignored. Each call returns a fresh layout. Missing
     contacts retain their selected slots filled with zeros; use CONTACT_COUNT
     to distinguish them. This layout does not specify arbiter record order.
     """

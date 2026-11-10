@@ -32,8 +32,14 @@ def is_integer(field: Any) -> bool:
 
 def strides(layout: Any) -> tuple[int, int]:
     return (
-        sum(size for field, (offset, size) in layout.items() if not is_integer(field)),
-        sum(size for field, (offset, size) in layout.items() if is_integer(field)),
+        sum(
+            size
+            for field, (offset, size) in layout.fields.items()
+            if not is_integer(field)
+        ),
+        sum(
+            size for field, (offset, size) in layout.fields.items() if is_integer(field)
+        ),
     )
 
 
@@ -42,10 +48,10 @@ class UnitTestBatchLayout(unittest.TestCase):
         F = batch.BodyFields
         flags = F.POSITION | F.ANGLE | F.BODY_ID
         layout = batch.get_body_layout(flags)
-        self.assertIs(type(layout), dict)
-        self.assertEqual(list(layout), [F.BODY_ID, F.ANGLE, F.POSITION])
+        self.assertIsInstance(layout, batch.Layout)
+        self.assertEqual(list(layout.fields), [F.BODY_ID, F.ANGLE, F.POSITION])
         self.assertEqual(
-            layout, {F.BODY_ID: (0, 1), F.ANGLE: (0, 1), F.POSITION: (1, 2)}
+            layout.fields, {F.BODY_ID: (0, 1), F.ANGLE: (0, 1), F.POSITION: (1, 2)}
         )
         self.assertEqual(strides(layout), (3, 1))
         with self.assertRaises(KeyError):
@@ -53,13 +59,13 @@ class UnitTestBatchLayout(unittest.TestCase):
         with self.assertRaises(KeyError):
             layout[cast(Any, batch.ArbiterFields.BODY_A_ID)]
         # Mutable results are independent, including for repeated selections.
-        layout[F.ANGLE] = (99, 99)
-        layout.clear()
+        layout.fields[F.ANGLE] = (99, 99)
+        layout.fields.clear()
         self.assertEqual(batch.get_body_layout(flags)[F.ANGLE], (0, 1))
         af = batch.ArbiterFields
         arbiter_layout = batch.get_arbiter_layout(af.ALL)
-        self.assertIs(type(arbiter_layout), dict)
-        arbiter_layout.clear()
+        self.assertIsInstance(arbiter_layout, batch.Layout)
+        arbiter_layout.fields.clear()
         self.assertEqual(batch.get_arbiter_layout(af.ALL)[af.BODY_A_ID], (0, 1))
         with self.assertRaises(TypeError):
             batch.get_body_layout(cast(Any, af.ALL))
@@ -72,14 +78,56 @@ class UnitTestBatchLayout(unittest.TestCase):
             (af, batch.get_arbiter_layout),
         )
         for enum, query in cases:
-            self.assertEqual(query(enum(0)), {})
+            self.assertEqual(query(enum(0)).fields, {})
+            self.assertEqual(
+                (query(enum(0)).float_stride, query(enum(0)).int_stride), (0, 0)
+            )
             all_flags = enum(0)
             for field in enum:
                 all_flags |= field
-            self.assertEqual(query(enum.ALL), query(all_flags))
+            self.assertEqual(query(enum.ALL).fields, query(all_flags).fields)
         self.assertEqual(F.BODY_ID.value, 1)
         self.assertEqual(F.POSITION.value, 2)
         self.assertEqual(F.ANGLE.value, 4)
+
+    def test_component_views_and_validation(self) -> None:
+        F = batch.BodyFields
+        layout = batch.get_body_layout(F.BODY_ID | F.ANGLE | F.POSITION)
+        source = array.array("d", [0.1, 10, 20, 0.2, 30, 40])
+        values = memoryview(source)
+        self.assertEqual(list(layout.component(values, F.ANGLE)), [0.1, 0.2])
+        x = layout.component(values, F.POSITION, 0)
+        y = layout.component(values, F.POSITION, 1)
+        self.assertEqual(list(x), [10, 30])
+        self.assertEqual(list(y), [20, 40])
+        x[1] = 99
+        self.assertEqual(source[4], 99)
+        self.assertEqual(list(layout.component(values[:0], F.POSITION)), [])
+        self.assertEqual(layout.component(list(source), F.POSITION, 1), [20, 40])
+        for component in (-1, 2, 100):
+            with self.assertRaises(IndexError):
+                layout.component(values, F.POSITION, component)
+        with self.assertRaises(IndexError):
+            layout.component(values, F.ANGLE, 1)
+        with self.assertRaises(TypeError):
+            layout.component(values, F.POSITION, cast(Any, 0.5))
+        with self.assertRaises(KeyError):
+            layout.component(values, F.VELOCITY)
+        ids = memoryview(array.array("I", [1, 2]))
+        self.assertEqual(list(layout.component(ids, F.BODY_ID)), [1, 2])
+
+    def test_component_integer_stride(self) -> None:
+        F = batch.ArbiterFields
+        layout = batch.get_arbiter_layout(
+            F.BODY_A_ID | F.BODY_B_ID | F.TOTAL_IMPULSE | F.CONTACT_COUNT
+        )
+        self.assertEqual((layout.float_stride, layout.int_stride), (2, 3))
+        self.assertEqual(layout.component([1, 2, 1, 3, 4, 2], F.BODY_A_ID), [1, 3])
+        self.assertEqual(layout.component([1, 2, 1, 3, 4, 2], F.BODY_B_ID), [2, 4])
+        self.assertEqual(layout.component([1, 2, 1, 3, 4, 2], F.CONTACT_COUNT), [1, 2])
+        self.assertEqual(
+            layout.component([10.0, 20.0, 30.0, 40.0], F.TOTAL_IMPULSE, 1), [20.0, 40.0]
+        )
 
     def test_body_get_all_subsets(self) -> None:
         F = batch.BodyFields
@@ -122,16 +170,24 @@ class UnitTestBatchLayout(unittest.TestCase):
         floats = memoryview(buffer.float_buf()).cast("d")
         ints = memoryview(buffer.int_buf()).cast("P")
         float_stride, int_stride = strides(layout)
+        self.assertEqual(
+            (layout.float_stride, layout.int_stride), (float_stride, int_stride)
+        )
         self.assertEqual(len(floats), len(rows) * float_stride)
         self.assertEqual(len(ints), len(rows) * int_stride)
         for row, expected in enumerate(rows):
-            for field, (offset, size) in layout.items():
+            for field, (offset, size) in layout.fields.items():
                 integer = is_integer(field)
                 values = ints if integer else floats
                 stride = int_stride if integer else float_stride
                 start = row * stride + offset
                 actual = list(values[start : start + size])
                 wanted = expected[field]
+                for component in range(size):
+                    view = layout.component(values, field, component)
+                    self.assertEqual(
+                        view.tobytes(), values[offset + component :: stride].tobytes()
+                    )
                 self.assertEqual(len(actual), len(wanted))
                 for value, target in zip(actual, wanted):
                     if integer:
@@ -165,8 +221,9 @@ class UnitTestBatchLayout(unittest.TestCase):
                 float_stride, int_stride = strides(layout)
                 values = array.array("d", [0.0] * (len(bodies) * float_stride))
                 for row in range(len(bodies)):
-                    for field, (offset, size) in layout.items():
+                    for field, (offset, size) in layout.fields.items():
                         if field != F.BODY_ID:
+                            assert isinstance(field, batch.BodyFields)
                             start = row * float_stride + offset
                             values[start : start + size] = array.array(
                                 "d", targets[field]
@@ -279,7 +336,7 @@ class UnitTestBatchLayout(unittest.TestCase):
                 for record in range(len(order) // 2):
                     row = {}
                     float_stride, int_stride = strides(layout)
-                    for field, (offset, size) in layout.items():
+                    for field, (offset, size) in layout.fields.items():
                         integer = is_integer(field)
                         data = ints if integer else floats
                         stride = int_stride if integer else float_stride

@@ -50,13 +50,10 @@ def planet_gravity(body, gravity, damping, dt):
 def batched_planet_gravity(draw_buffer, dt, update_buffer):
     # get current position and velocity
     arr = np.frombuffer(draw_buffer.float_buf())
-    position = body_layout[pymunk.batch.BodyFields.POSITION]
-    velocity = body_layout[pymunk.batch.BodyFields.VELOCITY]
-    stride = sum(size for offset, size in body_layout.values())
-    p_x = arr[position[0] :: stride]
-    p_y = arr[position[0] + 1 :: stride]
-    v_x = arr[velocity[0] :: stride]
-    v_y = arr[velocity[0] + 1 :: stride]
+    p_x = body_layout.component(arr, pymunk.batch.BodyFields.POSITION, 0)
+    p_y = body_layout.component(arr, pymunk.batch.BodyFields.POSITION, 1)
+    v_x = body_layout.component(arr, pymunk.batch.BodyFields.VELOCITY, 0)
+    v_y = body_layout.component(arr, pymunk.batch.BodyFields.VELOCITY, 1)
 
     sq_dist = (p_x - center.x) ** 2 + (p_y - center.y) ** 2
 
@@ -159,15 +156,11 @@ while True:
         )
 
     if use_batch_draw:
-        ps = list(memoryview(draw_buffer.float_buf()).cast("d"))
-        position = body_layout[pymunk.batch.BodyFields.POSITION]
-        for row in range(
-            0, len(ps), sum(size for offset, size in body_layout.values())
-        ):
-            idx = row + position[0]
-            pygame.draw.circle(
-                screen, planet_color, (ps[idx], ps[idx + 1]), planet_radius
-            )
+        ps = memoryview(draw_buffer.float_buf()).cast("d")
+        p_x = body_layout.component(ps, pymunk.batch.BodyFields.POSITION, 0)
+        p_y = body_layout.component(ps, pymunk.batch.BodyFields.POSITION, 1)
+        for position in zip(p_x, p_y):
+            pygame.draw.circle(screen, planet_color, position, planet_radius)
     else:
         for b in space.bodies:
             pygame.draw.circle(screen, planet_color, b.position, planet_radius)
