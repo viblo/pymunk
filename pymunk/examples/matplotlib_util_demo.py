@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from shapes_for_draw_demos import fill_space
+from .shapes_for_draw_demos import fill_space
 
 import pymunk
 import pymunk.matplotlib_util
