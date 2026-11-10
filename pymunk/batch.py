@@ -74,11 +74,8 @@ are in elements, separately for each buffer:
 >>> stride
 3
 
-A float record is now [angle, x, y], not [x, y, angle]. Only selections
-containing both ANGLE and POSITION change relative ordering; flag values are
-unchanged. This is a breaking format change to the experimental batch API.
-Saved raw buffers and hardcoded column indices using the old layout must be
-migrated; do not share raw buffers between different Pymunk versions.
+For this selection, each float record is [angle, x, y]. Unselected fields
+occupy no space. Packing order is independent of numeric flag values.
 
 For example, build records using the queried offsets:
 
@@ -97,8 +94,9 @@ For example, build records using the queried offsets:
 
 The example uses doubles, as in the standard Pymunk build (C type cpFloat).
 The integer buffer uses uintptr_t. For mixed selections, sum component counts
-separately for the float and integer fields to obtain each stride. Record indices follow
-native iteration order, not IDs; adding/removing bodies can change that order.
+separately for the float and integer fields to obtain each stride. Record
+indices follow native iteration order, not IDs; adding/removing bodies can
+change that order.
 See also the NumPy example in planet.py.
 
 
