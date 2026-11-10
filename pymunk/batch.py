@@ -108,11 +108,11 @@ __all__ = [
     "ArbiterFields",
     "BodyFields",
     "Buffer",
-    "get_body_layout",
     "get_arbiter_layout",
-    "set_space_bodies",
+    "get_body_layout",
     "get_space_arbiters",
     "get_space_bodies",
+    "set_space_bodies",
 ]
 
 from enum import Flag
@@ -225,15 +225,13 @@ def _make_layout(
 def get_body_layout(fields: BodyFields) -> dict[BodyFields, tuple[int, int]]:
     """Return selected fields mapped to (element offset, component count).
 
-    Dictionary insertion order is native packing order: BODY_ID, ANGLE,
-    POSITION, VELOCITY, ANGULAR_VELOCITY, FORCE, TORQUE. Flag numeric values
-    do not define packing order. BODY_ID uses the integer buffer; all other
-    fields use the float buffer. Offsets are relative to one record in each
-    buffer separately, in elements, not bytes. Vectors store X then Y.
-    Sum component counts separately for each buffer to obtain record strides.
+    Dictionary insertion order is packing order: BODY_ID, ANGLE,
+    POSITION, VELOCITY, ANGULAR_VELOCITY, FORCE, TORQUE. BODY_ID uses the
+    integer buffer; all other fields use the float buffer. Offsets are relative
+    to one record in each buffer separately. Vectors store X then Y.
 
     Unselected fields take no space. ALL selects all supported fields; zero
-    flags return an empty dict. Reserved bits are ignored, as in native code.
+    flags return an empty dict.
     Each call returns a fresh dict; modifying it does not change packing.
 
     The setter uses the same float layout but ignores BODY_ID and the integer
@@ -241,8 +239,6 @@ def get_body_layout(fields: BodyFields) -> dict[BodyFields, tuple[int, int]]:
     describe fields, not record order; adding/removing bodies can change it.
     Query once and reuse the result. Batch get/set functions do not query it.
     """
-    if not isinstance(fields, BodyFields):
-        raise TypeError("fields must be BodyFields")
     return _make_layout(fields, _BODY_LAYOUT)
 
 
@@ -252,16 +248,12 @@ def get_arbiter_layout(fields: ArbiterFields) -> dict[ArbiterFields, tuple[int, 
     Dictionary insertion order follows ArbiterFields declaration order.
     BODY_A_ID, BODY_B_ID, IS_FIRST_CONTACT and CONTACT_COUNT use the integer
     buffer; all others use the float buffer. Offsets are in elements relative
-    to one record in the corresponding buffer. Vectors store X then Y. Sum
-    component counts separately per buffer to obtain record strides.
+    to one record in the corresponding buffer. Vectors store X then Y.
 
     ALL selects all supported fields; zero flags return an empty dict.
-    Reserved bits are ignored. Each call returns a fresh dict. Missing
-    contacts retain their selected slots filled with zeros; use CONTACT_COUNT
-    to distinguish them. This layout does not specify arbiter record order.
+    Missing contacts retain their selected slots filled with zeros; use
+    CONTACT_COUNT to distinguish them.
     """
-    if not isinstance(fields, ArbiterFields):
-        raise TypeError("fields must be ArbiterFields")
     return _make_layout(fields, _ARBITER_LAYOUT)
 
 
@@ -375,8 +367,7 @@ def set_space_bodies(space: Space, fields: BodyFields, buffers: Buffer) -> None:
     The data to update is passed in the batched_data buffers.
 
     The float buffer follows :func:`get_body_layout`. BODY_ID and the integer
-    buffer are ignored; records are applied in native body iteration order,
-    not matched by ID.
+    buffer are ignored; records are applied in native body iteration order.
     """
     _data = ffi.new("pmBatchedData *")
     _data.fields = fields.value
