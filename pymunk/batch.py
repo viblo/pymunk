@@ -117,11 +117,11 @@ __all__ = [
     "BodyFields",
     "Buffer",
     "Layout",
+    "get_space_arbiters",
     "get_body_layout",
     "get_arbiter_layout",
-    "set_space_bodies",
-    "get_space_arbiters",
     "get_space_bodies",
+    "set_space_bodies",
 ]
 
 from enum import Flag
@@ -300,46 +300,36 @@ def _make_layout(
 def get_body_layout(fields: BodyFields) -> Layout:
     """Return a Layout for the selected fields.
 
-    Dictionary insertion order is native packing order: BODY_ID, ANGLE,
-    POSITION, VELOCITY, ANGULAR_VELOCITY, FORCE, TORQUE. Flag numeric values
-    do not define packing order. BODY_ID uses the integer buffer; all other
-    fields use the float buffer. Offsets are relative to one record in each
-    buffer separately, in elements, not bytes. Vectors store X then Y.
-    Use float_stride and int_stride for elements per record, or component()
-    to extract a scalar component across records.
+    The fields dict's insertion order is packing order: BODY_ID, ANGLE,
+    POSITION, VELOCITY, ANGULAR_VELOCITY, FORCE, TORQUE. BODY_ID uses the
+    integer buffer; all other fields use the float buffer. Vectors store X
+    then Y. Use float_stride and int_stride for elements per record, or
+    component() to extract one scalar component across records.
 
     Unselected fields take no space. ALL selects all supported fields; zero
-    flags give an empty fields dict and zero strides. Reserved bits are ignored, as in native code.
-    Each call returns an independent layout. Changing its fields does not
-    change native packing.
+    flags give empty fields and zero strides. Each call returns an independent
+    layout. Changing its fields does not change native packing.
 
     The setter uses the same float layout but ignores BODY_ID and the integer
-    buffer. Bodies are updated in native iteration order, not by ID. Layouts
-    describe fields, not record order; adding/removing bodies can change it.
-    Query once and reuse the result. Batch get/set functions do not query it.
+    buffer. Bodies are updated in native iteration order, not by ID.
     """
-    if not isinstance(fields, BodyFields):
-        raise TypeError("fields must be BodyFields")
     return _make_layout(fields, _BODY_LAYOUT)
 
 
 def get_arbiter_layout(fields: ArbiterFields) -> Layout:
     """Return a Layout for the selected fields.
 
-    The fields dict follows ArbiterFields declaration order.
-    BODY_A_ID, BODY_B_ID, IS_FIRST_CONTACT and CONTACT_COUNT use the integer
-    buffer; all others use the float buffer. Offsets are in elements relative
-    to one record in the corresponding buffer. Vectors store X then Y. Sum
-    component counts separately per buffer to obtain record strides, available
-    as float_stride and int_stride. component() slices one scalar component.
+    The fields dict follows ArbiterFields declaration order. BODY_A_ID,
+    BODY_B_ID, IS_FIRST_CONTACT and CONTACT_COUNT use the integer buffer;
+    all others use the float buffer. Vectors store X then Y. Use float_stride
+    and int_stride for elements per record, or component() to extract one
+    scalar component across records.
 
     ALL selects all supported fields; zero flags give empty fields and zero
-    strides. Reserved bits are ignored. Each call returns a fresh layout. Missing
-    contacts retain their selected slots filled with zeros; use CONTACT_COUNT
-    to distinguish them. This layout does not specify arbiter record order.
+    strides. Each call returns an independent layout. Missing contacts retain
+    their selected slots filled with zeros; use CONTACT_COUNT to distinguish
+    them.
     """
-    if not isinstance(fields, ArbiterFields):
-        raise TypeError("fields must be ArbiterFields")
     return _make_layout(fields, _ARBITER_LAYOUT)
 
 
@@ -453,8 +443,7 @@ def set_space_bodies(space: Space, fields: BodyFields, buffers: Buffer) -> None:
     The data to update is passed in the batched_data buffers.
 
     The float buffer follows :func:`get_body_layout`. BODY_ID and the integer
-    buffer are ignored; records are applied in native body iteration order,
-    not matched by ID.
+    buffer are ignored; records are applied in native body iteration order.
     """
     _data = ffi.new("pmBatchedData *")
     _data.fields = fields.value
