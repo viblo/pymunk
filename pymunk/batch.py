@@ -3,7 +3,7 @@
 
 .. note::
     This module is highly experimental and will likely change in future Pymunk
-    verisons including major, minor and patch verisons!
+    verisons including major, minor and patch versions!
 
 
 To get data out
@@ -92,9 +92,8 @@ For example, build records using the queried offsets:
 >>> b1.angle, tuple(b1.position), b2.angle, tuple(b2.position)
 (0.5, (5.0, 6.0), 1.0, (7.0, 8.0))
 
-The example uses doubles, as in the standard Pymunk build (C type cpFloat).
-The integer buffer uses uintptr_t. Use float_stride and int_stride for the
-respective buffers, or extract individual components without calculating slices:
+Use float_stride and int_stride for the respective buffers, or extract
+individual components without calculating slices:
 
 >>> values = memoryview(records)
 >>> list(layout.component(values, BodyFields.POSITION, 0))
@@ -104,7 +103,8 @@ respective buffers, or extract individual components without calculating slices:
 
 Component indices are zero-based. These memoryview slices (and NumPy array
 slices) are views, not copies. Record indices follow native iteration order,
-not IDs; adding/removing bodies can change that order.
+adding/removing bodies can change that order.
+
 See also the NumPy example in planet.py.
 
 
@@ -117,9 +117,9 @@ __all__ = [
     "BodyFields",
     "Buffer",
     "Layout",
-    "get_space_arbiters",
-    "get_body_layout",
     "get_arbiter_layout",
+    "get_body_layout",
+    "get_space_arbiters",
     "get_space_bodies",
     "set_space_bodies",
 ]
@@ -221,12 +221,12 @@ class Layout:
     """Batch field locations and helpers for the two separate buffers.
 
     ``fields`` maps selected flags to ``(offset, size)`` tuples. Both values
-    count scalar elements, not bytes: POSITION has size 2, ANGLE has size 1.
+    count scalar elements, i.e. POSITION has size 2 while ANGLE has size 1.
     Offsets start at zero separately within each buffer's record. Dictionary
-    order is native packing order. ``layout[field]`` looks up the same tuple.
+    order is native packing order. ``layout[field]`` looks up the specific
+    field.
 
-    Query this class through get_body_layout() or get_arbiter_layout(). A
-    layout describes fields, not body/arbiter record order.
+    Query this class through get_body_layout() or get_arbiter_layout().
     """
 
     def __init__(
@@ -243,7 +243,7 @@ class Layout:
 
     @property
     def float_stride(self) -> int:
-        """Number of float elements per record (not bytes)."""
+        """Number of float elements per record."""
         return sum(
             size
             for field, (offset, size) in self.fields.items()
@@ -252,7 +252,7 @@ class Layout:
 
     @property
     def int_stride(self) -> int:
-        """Number of integer elements per record (not bytes)."""
+        """Number of integer elements per record."""
         return sum(
             size
             for field, (offset, size) in self.fields.items()
@@ -264,12 +264,11 @@ class Layout:
     ) -> Any:
         """Slice one component from every record, using a zero-based index.
 
-        Pass a one-dimensional scalar array from the field's buffer: floats
-        for float fields, integers for integer fields. For example, convert
-        a CFFI float buffer with np.frombuffer() or memoryview(...).cast("d").
-        Passing the raw byte buffer is not sufficient.
+        The buffer object cannot be used directly as `arr`. Instead pass a
+        one-dimensional scalar array made from the field's buffer. For example,
+        a float buffer could be converted with with np.frombuffer() or
+        memoryview(...).cast("d").
 
-        This uses arr[offset + component::stride], with no NumPy dependency.
         NumPy arrays and memoryviews return views; Python lists return copies.
         Mutating a writable view also changes its source array. A missing
         field raises KeyError; an out-of-range component raises IndexError.
