@@ -100,8 +100,12 @@ class UnitTestBatchLayout(unittest.TestCase):
         y = layout.component(values, F.POSITION, 1)
         self.assertEqual(list(x), [10, 30])
         self.assertEqual(list(y), [20, 40])
-        x[1] = 99
+        # PyPy mishandles scalar writes and nonzero-start subslices of
+        # multi-byte strided memoryviews. Full-slice writes work on both VMs.
+        x[:] = memoryview(array.array("d", [10, 99]))
         self.assertEqual(source[4], 99)
+        source[4] = 98
+        self.assertEqual(x[1], 98)
         self.assertEqual(list(layout.component(values[:0], F.POSITION)), [])
         self.assertEqual(layout.component(list(source), F.POSITION, 1), [20, 40])
         for component in (-1, 2, 100):
@@ -192,10 +196,9 @@ class UnitTestBatchLayout(unittest.TestCase):
                 for value, target in zip(actual, wanted):
                     if integer:
                         self.assertEqual(value, target)
-                    elif math.isnan(target):
-                        # TOTAL_KE can already be NaN in scalar arbiter data.
-                        self.assertTrue(math.isnan(value))
                     else:
+                        self.assertTrue(math.isfinite(value))
+                        self.assertTrue(math.isfinite(target))
                         self.assertAlmostEqual(value, target, places=10)
 
     def test_body_set_all_subsets(self) -> None:
@@ -288,6 +291,8 @@ class UnitTestBatchLayout(unittest.TestCase):
                 sd = pymunk.Circle(d, 1)
                 sc.sensor = contacts == 0
             space.add(c, d, sc, sd)
+            for shape in space.shapes:
+                shape.friction = 0.5
             space.step(0.01)
             # Scalar views are mirrored by each_arbiter. Use the orientation
             # of the native cached-arbiter iteration, obtained from the IDs.
@@ -318,10 +323,19 @@ class UnitTestBatchLayout(unittest.TestCase):
                     row[fd] = [points[i].distance] if i < len(points) else [0.0]
                 snapshots[(aa.body.id, bb.body.id)] = row
 
-            a.each_arbiter(snapshot)
-            b.each_arbiter(snapshot)
-            c.each_arbiter(snapshot)
-            d.each_arbiter(snapshot)
+            callback_errors = []
+
+            def capture(arb: pymunk.Arbiter) -> None:
+                try:
+                    snapshot(arb)
+                except Exception as exc:
+                    callback_errors.append(exc)
+
+            a.each_arbiter(capture)
+            b.each_arbiter(capture)
+            c.each_arbiter(capture)
+            d.each_arbiter(capture)
+            self.assertEqual(callback_errors, [])
             ids = batch.Buffer()
             batch.get_space_arbiters(space, F.BODY_A_ID | F.BODY_B_ID, ids)
             order = list(memoryview(ids.int_buf()).cast("P"))
