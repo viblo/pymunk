@@ -1,12 +1,12 @@
 """
-Showcase of planets/satellites (small boxes) orbiting around a star. 
+Showcase of planets/satellites (small boxes) orbiting around a star.
 
-Uses a custom velocity function to manually calculate the gravity, assuming 
-the star is in the middle and is massive enough that the satellites does not 
+Uses a custom velocity function to manually calculate the gravity, assuming
+the star is in the middle and is massive enough that the satellites does not
 affect it.
 
-This is also a demonstration of the performance boost from the batch api in 
-pymunk.batch. It uses both the batch api to get positions and velocitites, 
+This is also a demonstration of the performance boost from the batch api in
+pymunk.batch. It uses both the batch api to get positions and velocitites,
 and to update the velocitites.
 
 The speedup of when both batching apis are enabled is huge!
@@ -50,11 +50,10 @@ def planet_gravity(body, gravity, damping, dt):
 def batched_planet_gravity(draw_buffer, dt, update_buffer):
     # get current position and velocity
     arr = np.frombuffer(draw_buffer.float_buf())
-    # pick every 4th item to position.x etc.
-    p_x = arr[::4]
-    p_y = arr[1::4]
-    v_x = arr[2::4]
-    v_y = arr[3::4]
+    p_x = body_layout.component(arr, pymunk.batch.BodyFields.POSITION, 0)
+    p_y = body_layout.component(arr, pymunk.batch.BodyFields.POSITION, 1)
+    v_x = body_layout.component(arr, pymunk.batch.BodyFields.VELOCITY, 0)
+    v_y = body_layout.component(arr, pymunk.batch.BodyFields.VELOCITY, 1)
 
     sq_dist = (p_x - center.x) ** 2 + (p_y - center.y) ** 2
 
@@ -116,6 +115,8 @@ use_batch_draw = False
 use_batch_update = False
 draw_buffer = pymunk.batch.Buffer()
 update_buffer = pymunk.batch.Buffer()
+body_fields = pymunk.batch.BodyFields.POSITION | pymunk.batch.BodyFields.VELOCITY
+body_layout = pymunk.batch.get_body_layout(body_fields)
 planet_color = pygame.Color("white")
 
 while True:
@@ -150,16 +151,16 @@ while True:
         draw_buffer.clear()
         pymunk.batch.get_space_bodies(
             space,
-            pymunk.batch.BodyFields.POSITION | pymunk.batch.BodyFields.VELOCITY,
+            body_fields,
             draw_buffer,
         )
 
     if use_batch_draw:
-        ps = list(memoryview(draw_buffer.float_buf()).cast("d"))
-        for idx in range(0, len(ps), 4):
-            pygame.draw.circle(
-                screen, planet_color, (ps[idx], ps[idx + 1]), planet_radius
-            )
+        ps = memoryview(draw_buffer.float_buf()).cast("d")
+        p_x = body_layout.component(ps, pymunk.batch.BodyFields.POSITION, 0)
+        p_y = body_layout.component(ps, pymunk.batch.BodyFields.POSITION, 1)
+        for position in zip(p_x, p_y):
+            pygame.draw.circle(screen, planet_color, position, planet_radius)
     else:
         for b in space.bodies:
             pygame.draw.circle(screen, planet_color, b.position, planet_radius)

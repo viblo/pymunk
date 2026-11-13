@@ -3,7 +3,7 @@
 
 .. note::
     This module is highly experimental and will likely change in future Pymunk
-    verisons including major, minor and patch verisons!
+    verisons including major, minor and patch versions!
 
 
 To get data out
@@ -58,12 +58,54 @@ True
 []
 
 
-To set data
-===========
+Layouts and setting data
+========================
 
-(see planet.py example)
+Query the layout instead of hardcoding column indices. Offsets and strides
+are in elements, separately for each buffer:
 
-TODO
+>>> flags = BodyFields.POSITION | BodyFields.ANGLE
+>>> layout = get_body_layout(flags)
+>>> layout[BodyFields.ANGLE]
+(0, 1)
+>>> layout[BodyFields.POSITION]
+(1, 2)
+>>> stride = layout.float_stride
+>>> stride
+3
+
+For this selection, each float record is [angle, x, y]. Unselected fields
+occupy no space. Packing order is independent of numeric flag values.
+
+For example, build records using the queried offsets:
+
+>>> import array
+>>> records = array.array("d", [0.0] * (2 * stride))
+>>> for row, (angle, x, y) in enumerate(((0.5, 5, 6), (1.0, 7, 8))):
+...     base = row * stride
+...     records[base + layout[BodyFields.ANGLE][0]] = angle
+...     p = base + layout[BodyFields.POSITION][0]
+...     records[p:p + 2] = array.array("d", [x, y])
+>>> updates = Buffer()
+>>> updates.set_float_buf(records)
+>>> set_space_bodies(s, flags, updates)
+>>> b1.angle, tuple(b1.position), b2.angle, tuple(b2.position)
+(0.5, (5.0, 6.0), 1.0, (7.0, 8.0))
+
+Use float_stride and int_stride for the respective buffers, or extract
+individual components without calculating slices:
+
+>>> values = memoryview(records)
+>>> list(layout.component(values, BodyFields.POSITION, 0))
+[5.0, 7.0]
+>>> list(layout.component(values, BodyFields.POSITION, 1))
+[6.0, 8.0]
+
+Component indices are zero-based. These memoryview slices (and NumPy array
+slices) are views, not copies. Record indices follow native iteration order,
+adding/removing bodies can change that order.
+
+See also the NumPy example in planet.py.
 
 
 """
@@ -74,12 +116,17 @@ __all__ = [
     "ArbiterFields",
     "BodyFields",
     "Buffer",
+    "Layout",
+    "get_arbiter_layout",
+    "get_body_layout",
     "get_space_arbiters",
     "get_space_bodies",
+    "set_space_bodies",
 ]
 
 from enum import Flag
-from typing import Any
+from operator import index
+from typing import Any, Union
 
 from ._chipmunk_cffi import ffi, lib
 from .space import Space
@@ -90,10 +137,10 @@ class BodyFields(Flag):
 
     BODY_ID = lib.BODY_ID
     """:py:attr:`pymunk.Body.id`. Value stored in int_buf."""
-    POSITION = lib.POSITION
-    """:py:attr:`pymunk.Body.position`. X and Y stored in float_buf."""
     ANGLE = lib.ANGLE
     """:py:attr:`pymunk.Body.angle`. Value stored in float_buf."""
+    POSITION = lib.POSITION
+    """:py:attr:`pymunk.Body.position`. X and Y stored in float_buf."""
     VELOCITY = lib.VELOCITY
     """:py:attr:`pymunk.Body.velocity`. X and Y stored in float_buf."""
     ANGULAR_VELOCITY = lib.ANGULAR_VELOCITY
@@ -140,6 +187,149 @@ class ArbiterFields(Flag):
     """:py:attr:`pymunk.ContactPoint.distance` of contact 2. Value stored in float_buf."""
     ALL = 0xFFFF
     """All the fields"""
+
+
+# Explicit packing order, independent of numeric flag values. Keep these
+# tables in sync with the native iterators in pymunk_cffi/extensions.c.
+_BODY_LAYOUT = (
+    (BodyFields.BODY_ID, "int", 1),
+    (BodyFields.ANGLE, "float", 1),
+    (BodyFields.POSITION, "float", 2),
+    (BodyFields.VELOCITY, "float", 2),
+    (BodyFields.ANGULAR_VELOCITY, "float", 1),
+    (BodyFields.FORCE, "float", 2),
+    (BodyFields.TORQUE, "float", 1),
+)
+_ARBITER_LAYOUT = (
+    (ArbiterFields.BODY_A_ID, "int", 1),
+    (ArbiterFields.BODY_B_ID, "int", 1),
+    (ArbiterFields.TOTAL_IMPULSE, "float", 2),
+    (ArbiterFields.TOTAL_KE, "float", 1),
+    (ArbiterFields.IS_FIRST_CONTACT, "int", 1),
+    (ArbiterFields.NORMAL, "float", 2),
+    (ArbiterFields.CONTACT_COUNT, "int", 1),
+    (ArbiterFields.POINT_A_1, "float", 2),
+    (ArbiterFields.POINT_B_1, "float", 2),
+    (ArbiterFields.DISTANCE_1, "float", 1),
+    (ArbiterFields.POINT_A_2, "float", 2),
+    (ArbiterFields.POINT_B_2, "float", 2),
+    (ArbiterFields.DISTANCE_2, "float", 1),
+)
+
+
+class Layout:
+    """Batch field locations and helpers for the two separate buffers.
+
+    ``fields`` maps selected flags to ``(offset, size)`` tuples. Both values
+    count scalar elements, i.e. POSITION has size 2 while ANGLE has size 1.
+    Offsets start at zero separately within each buffer's record. Dictionary
+    order is native packing order. ``layout[field]`` looks up the specific
+    field.
+
+    Query this class through get_body_layout() or get_arbiter_layout().
+    """
+
+    def __init__(
+        self,
+        fields: dict[Union[BodyFields, ArbiterFields], tuple[int, int]],
+        int_fields: frozenset[Union[BodyFields, ArbiterFields]],
+    ) -> None:
+        self.fields = fields
+        self._int_fields = int_fields
+
+    def __getitem__(self, field: Union[BodyFields, ArbiterFields]) -> tuple[int, int]:
+        """Return the field's (element offset, field size in elements)."""
+        return self.fields[field]
+
+    @property
+    def float_stride(self) -> int:
+        """Number of float elements per record."""
+        return sum(
+            size
+            for field, (offset, size) in self.fields.items()
+            if field not in self._int_fields
+        )
+
+    @property
+    def int_stride(self) -> int:
+        """Number of integer elements per record."""
+        return sum(
+            size
+            for field, (offset, size) in self.fields.items()
+            if field in self._int_fields
+        )
+
+    def component(
+        self, arr: Any, field: Union[BodyFields, ArbiterFields], component: int = 0
+    ) -> Any:
+        """Slice one component from every record, using a zero-based index.
+
+        The buffer object cannot be used directly as `arr`. Instead pass a
+        one-dimensional scalar array made from the field's buffer. For example,
+        a float buffer could be converted with with np.frombuffer() or
+        memoryview(...).cast("d").
+
+        NumPy arrays and memoryviews return views; Python lists return copies.
+        Mutating a writable view also changes its source array. A missing
+        field raises KeyError; an out-of-range component raises IndexError.
+        """
+        offset, size = self.fields[field]
+        component = index(component)
+        if not 0 <= component < size:
+            raise IndexError("component index out of range")
+        stride = self.int_stride if field in self._int_fields else self.float_stride
+        return arr[offset + component :: stride]
+
+
+def _make_layout(
+    fields: Union[BodyFields, ArbiterFields],
+    spec: tuple[tuple[Any, str, int], ...],
+) -> Layout:
+    offsets = {"float": 0, "int": 0}
+    layout = {}
+    for field, buffer, size in spec:
+        if field in fields:
+            layout[field] = (offsets[buffer], size)
+            offsets[buffer] += size
+    return Layout(
+        layout, frozenset(field for field, buffer, size in spec if buffer == "int")
+    )
+
+
+def get_body_layout(fields: BodyFields) -> Layout:
+    """Return a Layout for the selected fields.
+
+    The fields dict's insertion order is packing order: BODY_ID, ANGLE,
+    POSITION, VELOCITY, ANGULAR_VELOCITY, FORCE, TORQUE. BODY_ID uses the
+    integer buffer; all other fields use the float buffer. Vectors store X
+    then Y. Use float_stride and int_stride for elements per record, or
+    component() to extract one scalar component across records.
+
+    Unselected fields take no space. ALL selects all supported fields; zero
+    flags give empty fields and zero strides. Each call returns an independent
+    layout. Changing its fields does not change native packing.
+
+    The setter uses the same float layout but ignores BODY_ID and the integer
+    buffer. Bodies are updated in native iteration order, not by ID.
+    """
+    return _make_layout(fields, _BODY_LAYOUT)
+
+
+def get_arbiter_layout(fields: ArbiterFields) -> Layout:
+    """Return a Layout for the selected fields.
+
+    The fields dict follows ArbiterFields declaration order. BODY_A_ID,
+    BODY_B_ID, IS_FIRST_CONTACT and CONTACT_COUNT use the integer buffer;
+    all others use the float buffer. Vectors store X then Y. Use float_stride
+    and int_stride for elements per record, or component() to extract one
+    scalar component across records.
+
+    ALL selects all supported fields; zero flags give empty fields and zero
+    strides. Each call returns an independent layout. Missing contacts retain
+    their selected slots filled with zeros; use CONTACT_COUNT to distinguish
+    them.
+    """
+    return _make_layout(fields, _ARBITER_LAYOUT)
 
 
 class Buffer:
@@ -229,7 +419,8 @@ def get_space_bodies(space: Space, fields: BodyFields, buffers: Buffer) -> None:
 
     Filter out the fields you are interested in with the fields property.
 
-    The data is returned in the batched_data buffers.
+    The data is appended to the buffers. Call Buffer.clear() before reuse
+    unless appending is intended. See :func:`get_body_layout` for packing order.
     """
     _data = ffi.new("pmBatchedData *")
     _data.fields = fields.value
@@ -250,7 +441,8 @@ def set_space_bodies(space: Space, fields: BodyFields, buffers: Buffer) -> None:
 
     The data to update is passed in the batched_data buffers.
 
-    Note that BODY_ID is not possible to set, if BODY_ID is set it will read the value from the buffer, but not do the update.
+    The float buffer follows :func:`get_body_layout`. BODY_ID and the integer
+    buffer are ignored; records are applied in native body iteration order.
     """
     _data = ffi.new("pmBatchedData *")
     _data.fields = fields.value
@@ -275,7 +467,8 @@ def get_space_arbiters(space: Space, fields: ArbiterFields, buffers: Buffer) -> 
 
     Filter out the fields you are interested in with the fields property.
 
-    The data is returned in the batched_data buffers.
+    The data is appended to the buffers. Call Buffer.clear() before reuse
+    unless appending is intended. See :func:`get_arbiter_layout` for packing order.
     """
     _data = ffi.new("pmBatchedData *")
     _data.fields = fields.value
