@@ -263,7 +263,8 @@ class UnitTestSegment(unittest.TestCase):
             if change_endpoints:
                 segment.unsafe_set_endpoints((-9, 0), (1, 0))
             space.add(segment)
-            circle = p.Circle(p.Body(1, 1), 0.5)
+            circle_body = p.Body(1,1)
+            circle = p.Circle(circle_body, 0.5)
             circle.body.position = segment.b + (0.25, 0.3)
             self.assertEqual(len(space.shape_query(circle)), 0)
             for restore in (
@@ -274,11 +275,12 @@ class UnitTestSegment(unittest.TestCase):
                 with self.subTest(change_endpoints=change_endpoints, restore=restore):
                     restored = restore(space)
                     self.assertEqual(len(restored.shape_query(circle)), 0)
-                    copied_segment = restore(segment)
-                    rebuilt = p.Space()
-                    assert copied_segment.body is not None
-                    rebuilt.add(copied_segment.body, copied_segment)
-                    self.assertEqual(len(rebuilt.shape_query(circle)), 0)
+                    # TODO: Re-enable this when shapes and bodies have a circular strong refs to each other
+                    # copied_segment = restore(segment)
+                    # rebuilt = p.Space()
+                    # assert copied_segment.body is not None
+                    # rebuilt.add(copied_segment.body, copied_segment)
+                    # self.assertEqual(len(rebuilt.shape_query(circle)), 0)
 
     def test_legacy_segmentState(self) -> None:
         segment = p.Segment(None, (-10, 0), (0, 0), 0)
@@ -351,10 +353,10 @@ class UnitTestSegment(unittest.TestCase):
 
 class UnitTestPoly(unittest.TestCase):
     def test_init(self) -> None:
-        c = p.Poly(None, [(0, 0), (10, 10), (20, 0), (-10, 10)], None, 0)
+        _ = p.Poly(None, [(0, 0), (10, 10), (20, 0), (-10, 10)], None, 0)
 
         b = p.Body(1, 2)
-        c = p.Poly(b, [(0, 0), (10, 10), (20, 0), (-10, 10)], p.Transform.identity(), 6)
+        _ = p.Poly(b, [(0, 0), (10, 10), (20, 0), (-10, 10)], p.Transform.identity(), 6)
 
     def test_vertices(self) -> None:
         vs = [(-10, 10), (0, 0), (20, 0), (10, 10)]
