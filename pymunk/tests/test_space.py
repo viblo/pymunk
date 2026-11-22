@@ -112,7 +112,7 @@ class UnitTestSpace(unittest.TestCase):
 
     def test_solver_mode(self) -> None:
         s = p.Space()
-        self.assertEqual(s.solver_mode, SolverMode.DEFAULT)
+        self.assertEqual(s.solver_mode, SolverMode.BASELINE)
         s.solver_mode = SolverMode.AUTO
         self.assertEqual(s.solver_mode, SolverMode.AUTO)
         from pymunk._chipmunk_cffi import lib
@@ -123,13 +123,13 @@ class UnitTestSpace(unittest.TestCase):
                 expected = backend
                 break
         self.assertEqual(lib.cpSpaceGetContactSolver(s._space), expected)
-        s.solver_mode = SolverMode.DEFAULT
+        s.solver_mode = SolverMode.BASELINE
         self.assertEqual(lib.cpSpaceGetContactSolver(s._space), lib.CP_CONTACT_SOLVER_BASELINE)
 
     def test_solver_mode_copy_pickle(self) -> None:
         from pymunk._chipmunk_cffi import lib
 
-        for mode in (SolverMode.DEFAULT, SolverMode.AUTO):
+        for mode in (SolverMode.BASELINE, SolverMode.AUTO):
             with self.subTest(mode=mode):
                 s = p.Space()
                 s.solver_mode = mode

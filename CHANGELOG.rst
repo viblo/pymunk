@@ -2,36 +2,50 @@
 Changelog 
 =========
 
-Next release
-------------
-
-Breaking changes to the experimental batch API:
-  - Body float records now pack ANGLE before POSITION. Selecting both gives
-    [angle, x, y] instead of [x, y, angle]. Numeric flag values are unchanged.
-    Update hardcoded offsets and migrate saved raw buffers; do not mix old/new
-    layouts. POSITION-only and ANGLE-only records are unchanged.
-  - Added batch.get_body_layout() and batch.get_arbiter_layout() returning a Layout
-    with field-indexed (element offset, field size) tuples, separate float/int
-    strides, and component() to slice one zero-based component across records
-    (Issue #323). Query layouts instead of hardcoding.
-  - Body updates now consume/apply ANGLE before POSITION, preserving poses for
-    offset centers of gravity without deferring the position update.
-  - Clarified that body setters ignore BODY_ID and the integer buffer; IDs do
-    not select which body is updated.
-
-Changes:
-  - Update bundled Munk2D to 2.2.0, including mixed contact/joint support in
-    the optional AVX2 contact solver and the new optional Wasm SIMD backend.
-  - Enable standard Wasm SIMD in Pyodide wheel builds and let SolverMode.AUTO
-    select it when available, after AVX2. DEFAULT remains the original solver.
-    Wheels require a SIMD-capable runtime at load time, including with DEFAULT
-    (for example Safari/iOS 16.4+); applications need no custom loader. Native
-    backend selection and the public SolverMode values are unchanged.
-
-Pymukn 7.3.1 (2026-10-11)
+Pymunk 7.4.0 (2026-11-22)
 -------------------------
 
-**Wheels for Pyhton 3.15**
+**SIMD omptimizations**
+
+This release updates the underlying Munk2D library to 2.4.1, which contains
+a number of performance enchancements inlcuding SIMD in the form of AVX2 (for x64),
+NEON (for Arm inlc Apple Sillicon) and WASM SIMD (for Pyodide/web).
+
+When Space.solver_mode is set to AUTO Pymunk will try to use SIMD instructions
+suitable for the CPU running the code. BASELINE is the non-accelerated
+implementation.
+
+Benchmarks from Munk2D shows that the SIMD code can give a speedup of about
+30% for scenes that are suitable, while other scenes sees a smaller or no
+improvement. The best is to benchmark and measure your simulation.
+
+This release also contains a number of bug fixes for long standing bugs.
+most fixes contributed by Github users antonsoo, civilwarinfrance and
+wimglenn.
+
+Changes:
+  - Updated to Munk2D 2.4.1 with fixes and optimization.
+  - Added batch.get_body_layout() and batch.get_arbiter_layout() returning the
+    layout of the batch data.
+  - Updated layout of returned data for Body batch. Make sure to use the new
+    get_body_layout() method to know the layout (not hard code it).
+  - #316 Preserve pin distance and ratchet angle when copying constraints (antonsoo)
+  - #317 Preserve custom spring force and torque callbacks when copying (antonsoo)
+  - #318 Preserve off-center body position after copying (antonsoo)
+  - #319 Preserve segment neighbor tangents when copying (antonsoo)
+  - #320 Convert vectors correctly in nonorthogonal bases (antonsoo)
+  - #322 Apply batch position updates after angle changes (antonsoo)
+  - #326 Keep borrowed batch buffer exports alive (civilwarinfrance)
+  - #328 Free native autogeometry results after copying vertices (civilwarinfrance)
+  - #329 Make detached references independent of garbage collection (civilwarinfrance)
+  - #330 Handle negative PolylineSet indices safely (civilwarinfrance)
+  - #334 & #335 Fixed example code (wimglenn)
+
+
+Pymunk 7.3.1 (2026-10-11)
+-------------------------
+
+**Wheels for Python 3.15**
 
 This release provides wheels for the recently released Python 3.15. It also 
 contains two bug fixes by Github user antonsoo (Anton Soloviev). The first 
@@ -50,6 +64,7 @@ Changes:
   - Handle reset of body velocity_func and position_func properly
   - Only build IOS wheels for Python 3.15
   - Skip 3.15 build for Pyodide/WASM. 
+
 
 Pymunk 7.3.0 (2026-06-17)
 -------------------------

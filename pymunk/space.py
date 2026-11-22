@@ -34,8 +34,13 @@ class SolverMode(Enum):
     See property Space.solver_mode for additional details.
     """
 
-    DEFAULT = 1
-    """The default and original solver."""
+    BASELINE = 1
+    """The original solver.
+
+    As of Pymunk 7.4 this is the default. However, a future version of Pymunk
+    will likely switch to AUTO as the default choice, when it has shown to
+    work reliably.
+    """
 
     AUTO = 2
     """Auto will try to use an accelerated solver if available.
@@ -43,7 +48,7 @@ class SolverMode(Enum):
     The actual solver depends on the build and runtime: AVX2 when available,
     otherwise Wasm SIMD when available, otherwise the original default solver.
     Pyodide wheels require standard WebAssembly SIMD at module load time, even
-    when DEFAULT is selected. No application-specific loader is needed.
+    when BASELINE is selected. No application-specific loader is needed.
 
     Accelerated solvers can result in slight different simulation result, since
     contacts are processed in different order compared to the default solver.
@@ -161,7 +166,7 @@ class Space(PickleMixin):
         self._add_later: set[_AddableObjects] = set()
         self._remove_later: dict[_AddableObjects, None] = {}
         self._bodies_to_check: set[Body] = set()
-        self._solver_mode: SolverMode = SolverMode.DEFAULT
+        self._solver_mode: SolverMode = SolverMode.BASELINE
 
     @property
     def shapes(self) -> KeysView[Shape]:
@@ -534,7 +539,9 @@ class Space(PickleMixin):
     def solver_mode(self) -> SolverMode:
         """Contact solver selection policy.
 
-        Defaults to :attr:`SolverMode.DEFAULT`.
+        As of Pymunk 7.4.0 it defaults to :attr:`SolverMode.BASELINE`.
+        However, expect a later version to change deafult to
+        :attr:`SolverMode.AUTO`.
 
         See :class:`SolverMode` for details on what the available options are
         and their behaviour, and performance considerations.

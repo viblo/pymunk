@@ -19,7 +19,7 @@ assert pymunk.tests.run_tests(filter="test"), "Pymunk's installed test suite fai
 def post_solve(arbiter, space, data):
     data["calls"] += 1
     try:
-        space.solver_mode = pymunk.SolverMode.DEFAULT
+        space.solver_mode = pymunk.SolverMode.BASELINE
     except AssertionError:
         data["locked"] += 1
     else:
@@ -51,7 +51,7 @@ def make_joint(kind, a, b):
 
 def make_world(kind, mode):
     space = pymunk.Space()
-    assert space.solver_mode == pymunk.SolverMode.DEFAULT
+    assert space.solver_mode == pymunk.SolverMode.BASELINE
     assert lib.cpSpaceGetContactSolver(space._space) == lib.CP_CONTACT_SOLVER_BASELINE
     space.solver_mode = mode
     expected = (lib.CP_CONTACT_SOLVER_WASM_SIMD if mode == pymunk.SolverMode.AUTO
@@ -84,7 +84,7 @@ def make_world(kind, mode):
 
 callback_calls = 0
 for kind in range(10):
-    original = make_world(kind, pymunk.SolverMode.DEFAULT)
+    original = make_world(kind, pymunk.SolverMode.BASELINE)
     accelerated = make_world(kind, pymunk.SolverMode.AUTO)
     for step in range(120):
         for space, bodies, joints, data in (original, accelerated):
@@ -107,7 +107,7 @@ for clone in (space.copy(), pickle.loads(pickle.dumps(space))):
     assert clone.solver_mode == pymunk.SolverMode.AUTO
     assert lib.cpSpaceGetContactSolver(clone._space) == lib.CP_CONTACT_SOLVER_WASM_SIMD
     clone.step(1 / 60)
-space.solver_mode = pymunk.SolverMode.DEFAULT
+space.solver_mode = pymunk.SolverMode.BASELINE
 assert lib.cpSpaceGetContactSolver(space._space) == lib.CP_CONTACT_SOLVER_BASELINE
 space.solver_mode = pymunk.SolverMode.AUTO
 assert lib.cpSpaceGetContactSolver(space._space) == lib.CP_CONTACT_SOLVER_WASM_SIMD
