@@ -52,10 +52,10 @@ def make_joint(kind, a, b):
 def make_world(kind, mode):
     space = pymunk.Space()
     assert space.solver_mode == pymunk.SolverMode.DEFAULT
-    assert lib.cpSpaceGetContactSolver(space._space) == lib.CP_CONTACT_SOLVER_ORIGINAL
+    assert lib.cpSpaceGetContactSolver(space._space) == lib.CP_CONTACT_SOLVER_BASELINE
     space.solver_mode = mode
     expected = (lib.CP_CONTACT_SOLVER_WASM_SIMD if mode == pymunk.SolverMode.AUTO
-                else lib.CP_CONTACT_SOLVER_ORIGINAL)
+                else lib.CP_CONTACT_SOLVER_BASELINE)
     assert lib.cpSpaceGetContactSolver(space._space) == expected
     space.gravity = (0, -10)
     space.collision_slop = 0.005
@@ -108,7 +108,7 @@ for clone in (space.copy(), pickle.loads(pickle.dumps(space))):
     assert lib.cpSpaceGetContactSolver(clone._space) == lib.CP_CONTACT_SOLVER_WASM_SIMD
     clone.step(1 / 60)
 space.solver_mode = pymunk.SolverMode.DEFAULT
-assert lib.cpSpaceGetContactSolver(space._space) == lib.CP_CONTACT_SOLVER_ORIGINAL
+assert lib.cpSpaceGetContactSolver(space._space) == lib.CP_CONTACT_SOLVER_BASELINE
 space.solver_mode = pymunk.SolverMode.AUTO
 assert lib.cpSpaceGetContactSolver(space._space) == lib.CP_CONTACT_SOLVER_WASM_SIMD
 

@@ -39,18 +39,18 @@ class SolverMode(Enum):
 
     AUTO = 2
     """Auto will try to use an accelerated solver if available.
-    
+
     The actual solver depends on the build and runtime: AVX2 when available,
     otherwise Wasm SIMD when available, otherwise the original default solver.
     Pyodide wheels require standard WebAssembly SIMD at module load time, even
     when DEFAULT is selected. No application-specific loader is needed.
 
-    Accelerated solvers can result in slight different simulation result, since 
+    Accelerated solvers can result in slight different simulation result, since
     contacts are processed in different order compared to the default solver.
 
-    In some cases the chosen solver by AUTO mode might be slower than the 
-    default one. To prevent this, benchmark your particular setup with both 
-    solver modes. 
+    In some cases the chosen solver by AUTO mode might be slower than the
+    default one. To prevent this, benchmark your particular setup with both
+    solver modes.
     """
 
 
@@ -553,7 +553,11 @@ class Space(PickleMixin):
 
         solver = lib.CP_CONTACT_SOLVER_BASELINE
         if mode == SolverMode.AUTO:
-            for accelerated in (lib.CP_CONTACT_SOLVER_AVX2, lib.CP_CONTACT_SOLVER_WASM_SIMD, lib.CP_CONTACT_SOLVER_NEON):
+            for accelerated in (
+                lib.CP_CONTACT_SOLVER_AVX2,
+                lib.CP_CONTACT_SOLVER_WASM_SIMD,
+                lib.CP_CONTACT_SOLVER_NEON,
+            ):
                 if lib.cpContactSolverIsAvailable(accelerated):
                     solver = accelerated
                     break
