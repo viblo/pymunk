@@ -46,6 +46,19 @@ void pymunk_wasm_simd_probe(double *out) {
 """
 _WASM_SIMD_FLAGS = ["-msimd128", "-ffp-contract=off", "-fno-lto"]
 
+_NEON_PROBE = """
+#include "chipmunk/chipmunk_types.h"
+#if !defined(__aarch64__) || !CP_USE_DOUBLES
+#error NEON contact solving requires an AArch64 double-precision target
+#endif
+#include <arm_neon.h>
+void pymunk_neon_probe(double *out) {
+    float64x2_t value = vdupq_n_f64(1.0);
+    vst1q_f64(out, vaddq_f64(value, value));
+}
+"""
+_NEON_FLAGS = ["-ffp-contract=off", "-fno-lto"]
+
 
 def _compiler_flags(compiler_type):
     """Return (AVX2 flags, scalar FP flags), or None for unknown compilers."""
@@ -105,7 +118,7 @@ class PymunkBuildExt(build_ext):
 
     def build_extensions(self):
         flags = _compiler_flags(self.compiler.compiler_type)
-        avx2_enabled = wasm_enabled = False
+        avx2_enabled = wasm_enabled = neon_enabled = False
         link_args = []
         for extension in self.extensions:
             if extension.name != "pymunk._chipmunk":
@@ -124,15 +137,24 @@ class PymunkBuildExt(build_ext):
                 wasm_enabled = True
             else:
                 avx2_enabled = bool(flags and self._probe(extension, _AVX2_PROBE, flags[0]))
+                neon_enabled = (
+                    self.compiler.compiler_type == "unix"
+                    and self._probe(extension, _NEON_PROBE, [])
+                )
             extension.define_macros = [
                 item for item in extension.define_macros
-                if item[0] not in ("CP_AVX2_CONTACT_SOLVER", "CP_WASM_SIMD_CONTACT_SOLVER")
+                if item[0] not in (
+                    "CP_AVX2_CONTACT_SOLVER", "CP_WASM_SIMD_CONTACT_SOLVER",
+                    "CP_NEON_CONTACT_SOLVER",
+                )
             ] + [("CP_AVX2_CONTACT_SOLVER", "1" if avx2_enabled else "0"),
-                 ("CP_WASM_SIMD_CONTACT_SOLVER", "1" if wasm_enabled else "0")]
+                 ("CP_WASM_SIMD_CONTACT_SOLVER", "1" if wasm_enabled else "0"),
+                 ("CP_NEON_CONTACT_SOLVER", "1" if neon_enabled else "0")]
             link_args.append((extension, extension.extra_link_args))
             self.announce(
                 "Munk2D contact solvers: AVX2 " + ("enabled" if avx2_enabled else "disabled")
-                + ", Wasm SIMD " + ("enabled" if wasm_enabled else "disabled"),
+                + ", Wasm SIMD " + ("enabled" if wasm_enabled else "disabled")
+                + ", NEON " + ("enabled" if neon_enabled else "disabled"),
                 level=2,
             )
 
@@ -143,11 +165,14 @@ class PymunkBuildExt(build_ext):
                 source_flags["cpContactSolverAvx2.c"] = flags[0]
         if wasm_enabled:
             source_flags["cpContactSolverWasm.c"] = _WASM_SIMD_FLAGS
+        if neon_enabled:
+            source_flags["cpContactSolverNeon.c"] = _NEON_FLAGS
         # Distutils does not track macro/flag changes as object dependencies.
         # A changed backend must not reuse incompatible objects or skip linking.
         stamp = Path(self.build_temp) / "pymunk-contact-solver-config.json"
         config = json.dumps({"avx2": avx2_enabled, "wasm_simd": wasm_enabled,
-                             "source_flags": source_flags}, sort_keys=True)
+                             "neon": neon_enabled, "source_flags": source_flags},
+                            sort_keys=True)
         changed = not stamp.exists() or stamp.read_text() != config
         original_force = self.force
         compiler_force = self.compiler.force

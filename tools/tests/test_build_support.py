@@ -18,6 +18,8 @@ class FakeCompiler:
     def __init__(self):
         self.compiler_type = "unix"
         self.available = True
+        self.avx2_target = True
+        self.neon_target = False
         self.wasm_target = False
         self.simd_available = True
         self.calls = []
@@ -32,6 +34,10 @@ class FakeCompiler:
                 available = self.wasm_target
             elif "pymunk_wasm_simd_probe" in code:
                 available = self.simd_available
+            elif "pymunk_avx2_probe" in code:
+                available = self.available and self.avx2_target
+            elif "pymunk_neon_probe" in code:
+                available = self.available and self.neon_target
             if not available:
                 raise CompileError("unsupported target")
         return [source + ".o" for source in sources]
@@ -45,7 +51,7 @@ class BuildSupportTests(unittest.TestCase):
             "pymunk._chipmunk",
             sources=["src/cpSpace.c", "src/cpContactSolverCpu.c",
                      "src/cpContactSolverAvx2.c", "src/cpContactSolverScalar.c",
-                     "src/cpContactSolverWasm.c"],
+                     "src/cpContactSolverWasm.c", "src/cpContactSolverNeon.c"],
             define_macros=[("CP_OVERRIDE_MESSAGE", None)],
             include_dirs=["Munk2D/include"],
             extra_compile_args=["-O2"],
@@ -76,12 +82,26 @@ class BuildSupportTests(unittest.TestCase):
     def test_auto_enables_backend_and_isolates_flags(self):
         self.run_build()
         self.assertIn(("CP_AVX2_CONTACT_SOLVER", "1"), self.extension.define_macros)
+        self.assertIn(("CP_NEON_CONTACT_SOLVER", "0"), self.extension.define_macros)
         self.assertEqual(self.flags_for("cpSpace.c"), ["-O2"])
         self.assertEqual(self.flags_for("cpContactSolverCpu.c"), ["-O2"])
         self.assertEqual(self.flags_for("cpContactSolverAvx2.c"),
                          ["-O2", "-mavx2", "-ffp-contract=off", "-fno-lto"])
         self.assertEqual(self.flags_for("cpContactSolverScalar.c"), ["-O2", "-ffp-contract=off"])
         self.assertEqual(self.extension.extra_compile_args, ["-O2"])
+
+    def test_auto_enables_neon_backend_and_isolates_flags(self):
+        self.command.compiler.avx2_target = False
+        self.command.compiler.neon_target = True
+        self.run_build()
+        self.assertIn(("CP_AVX2_CONTACT_SOLVER", "0"), self.extension.define_macros)
+        self.assertIn(("CP_NEON_CONTACT_SOLVER", "1"), self.extension.define_macros)
+        self.assertEqual(self.flags_for("cpSpace.c"), ["-O2"])
+        self.assertEqual(self.flags_for("cpContactSolverCpu.c"), ["-O2"])
+        self.assertEqual(self.flags_for("cpContactSolverNeon.c"),
+                         ["-O2", "-ffp-contract=off", "-fno-lto"])
+        self.assertEqual(self.flags_for("cpContactSolverScalar.c"),
+                         ["-O2", "-ffp-contract=off"])
 
     def test_real_compiler_failure_disables_backend(self):
         # Exercise the actual compiler's exception type, not just our fake's.
@@ -102,7 +122,9 @@ class BuildSupportTests(unittest.TestCase):
         self.run_build()
         self.assertIn(("CP_AVX2_CONTACT_SOLVER", "0"), self.extension.define_macros)
         self.assertIn(("CP_WASM_SIMD_CONTACT_SOLVER", "1"), self.extension.define_macros)
-        for source in ("cpSpace.c", "cpContactSolverCpu.c", "cpContactSolverAvx2.c"):
+        self.assertIn(("CP_NEON_CONTACT_SOLVER", "0"), self.extension.define_macros)
+        for source in ("cpSpace.c", "cpContactSolverCpu.c", "cpContactSolverAvx2.c",
+                       "cpContactSolverNeon.c"):
             self.assertEqual(self.flags_for(source), ["-O2"])
         self.assertEqual(self.flags_for("cpContactSolverWasm.c"),
                          ["-O2", "-msimd128", "-ffp-contract=off", "-fno-lto"])
@@ -142,7 +164,8 @@ class BuildSupportTests(unittest.TestCase):
         self.run_build()
         self.assertEqual(self.forced, (True, True))
         self.assertEqual(self.link_args, [])
-        for macro in ("CP_AVX2_CONTACT_SOLVER", "CP_WASM_SIMD_CONTACT_SOLVER"):
+        for macro in ("CP_AVX2_CONTACT_SOLVER", "CP_WASM_SIMD_CONTACT_SOLVER",
+                      "CP_NEON_CONTACT_SOLVER"):
             self.assertEqual(sum(name == macro
                                  for name, value in self.extension.define_macros), 1)
 
