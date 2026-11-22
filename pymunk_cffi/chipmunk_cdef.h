@@ -1041,9 +1041,10 @@ struct cpCollisionHandler
 /// This setting does not change the separate cpHastySpaceStep() solver.
 typedef enum cpContactSolverType
 {
-    CP_CONTACT_SOLVER_ORIGINAL = 0,
+    CP_CONTACT_SOLVER_BASELINE = 0,
     CP_CONTACT_SOLVER_AVX2 = 1,
     CP_CONTACT_SOLVER_WASM_SIMD = 2,
+    CP_CONTACT_SOLVER_NEON = 3,
     /// Reserved, not selectable. Keeps a stable enum width and room for extensions.
     CP_CONTACT_SOLVER_TYPE_MAX = 0x7fffffff
 } cpContactSolverType;

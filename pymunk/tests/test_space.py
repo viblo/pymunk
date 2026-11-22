@@ -117,14 +117,14 @@ class UnitTestSpace(unittest.TestCase):
         self.assertEqual(s.solver_mode, SolverMode.AUTO)
         from pymunk._chipmunk_cffi import lib
 
-        expected = lib.CP_CONTACT_SOLVER_ORIGINAL
-        for backend in (lib.CP_CONTACT_SOLVER_AVX2, lib.CP_CONTACT_SOLVER_WASM_SIMD):
+        expected = lib.CP_CONTACT_SOLVER_BASELINE
+        for backend in (lib.CP_CONTACT_SOLVER_AVX2, lib.CP_CONTACT_SOLVER_WASM_SIMD, lib.CP_CONTACT_SOLVER_NEON):
             if lib.cpContactSolverIsAvailable(backend):
                 expected = backend
                 break
         self.assertEqual(lib.cpSpaceGetContactSolver(s._space), expected)
         s.solver_mode = SolverMode.DEFAULT
-        self.assertEqual(lib.cpSpaceGetContactSolver(s._space), lib.CP_CONTACT_SOLVER_ORIGINAL)
+        self.assertEqual(lib.cpSpaceGetContactSolver(s._space), lib.CP_CONTACT_SOLVER_BASELINE)
 
     def test_solver_mode_copy_pickle(self) -> None:
         from pymunk._chipmunk_cffi import lib

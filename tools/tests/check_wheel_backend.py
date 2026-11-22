@@ -31,7 +31,7 @@ if __name__ == "__main__":
         )
 
     space = pymunk.Space()
-    assert lib.cpSpaceGetContactSolver(space._space) == lib.CP_CONTACT_SOLVER_ORIGINAL
+    assert lib.cpSpaceGetContactSolver(space._space) == lib.CP_CONTACT_SOLVER_BASELINE
     space.solver_mode = pymunk.SolverMode.AUTO
     expected = (lib.CP_CONTACT_SOLVER_WASM_SIMD if wasm_expected else
                 lib.CP_CONTACT_SOLVER_AVX2 if avx2_expected else

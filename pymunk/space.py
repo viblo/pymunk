@@ -551,9 +551,9 @@ class Space(PickleMixin):
         assert not self._locked, "Solver mode can only be changed on unlocked Spaces."
         assert not self.threaded, "Solver mode can not be changed when using threading."
 
-        solver = lib.CP_CONTACT_SOLVER_ORIGINAL
+        solver = lib.CP_CONTACT_SOLVER_BASELINE
         if mode == SolverMode.AUTO:
-            for accelerated in (lib.CP_CONTACT_SOLVER_AVX2, lib.CP_CONTACT_SOLVER_WASM_SIMD):
+            for accelerated in (lib.CP_CONTACT_SOLVER_AVX2, lib.CP_CONTACT_SOLVER_WASM_SIMD, lib.CP_CONTACT_SOLVER_NEON):
                 if lib.cpContactSolverIsAvailable(accelerated):
                     solver = accelerated
                     break
