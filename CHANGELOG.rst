@@ -5,11 +5,11 @@ Changelog
 Pymunk 7.4.0 (2026-11-22)
 -------------------------
 
-**SIMD omptimizations**
+**SIMD optimizations**
 
 This release updates the underlying Munk2D library to 2.4.1, which contains
-a number of performance enchancements inlcuding SIMD in the form of AVX2 (for x64),
-NEON (for Arm inlc Apple Sillicon) and WASM SIMD (for Pyodide/web).
+a number of performance enhancements including SIMD in the form of AVX2 (for x64),
+NEON (for Arm inlc Apple Silicon) and WASM SIMD (for Pyodide/web).
 
 When Space.solver_mode is set to AUTO Pymunk will try to use SIMD instructions
 suitable for the CPU running the code. BASELINE is the non-accelerated
@@ -50,7 +50,7 @@ Pymunk 7.3.1 (2026-10-11)
 This release provides wheels for the recently released Python 3.15. It also 
 contains two bug fixes by Github user antonsoo (Anton Soloviev). The first 
 fixes the custom collision callback data when pickling or copying a space.
-The second ensures that restting velocity_func and position_func callbacks on 
+The second ensures that resetting velocity_func and position_func callbacks on
 a Body will also clear the underlying property so that it works properly 
 with pickle/copy. 
 
@@ -96,7 +96,7 @@ that make it possible to get the inverse transform of a Transform.
 Changes:
 
   - Build wheels for 3.14
-  - Added Tranform.inverted() to get the inverse transform.
+  - Added Transform.inverted() to get the inverse transform.
 
 
 Pymunk 7.1.0 (2025-06-29)
