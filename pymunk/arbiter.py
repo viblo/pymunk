@@ -1,7 +1,7 @@
 __docformat__ = "reStructuredText"
 
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -284,28 +284,22 @@ def _arbiter_from_dict(d: dict[str, Any], space: "Space") -> ffi.CData:
     return _arb
 
 
-def _arbiter_to_dict(_arbiter: ffi.CData, space: "Space") -> dict[str, Any]:
+def _arbiter_to_dict(
+    _arbiter: ffi.CData, shapes: Mapping[ffi.CData, Shape]
+) -> dict[str, Any]:
+    """Save an arbiter. *shapes* maps each cpShape pointer in the space to its
+    Shape; build it once per save, since a space can hold many arbiters."""
     d = {}
     d["e"] = _arbiter.e
     d["u"] = _arbiter.u
     d["surface_vr"] = (_arbiter.surface_vr.x, _arbiter.surface_vr.y)
 
-    cp_bodies = {}
-    cp_shapes = {}
-
-    for body in space.bodies:
-        cp_bodies[body._body] = body
-    for shape in space.shapes:
-        cp_shapes[shape._shape] = shape
-
     # cpDataPointer data;
 
-    d["a"] = cp_shapes[_arbiter.a]
-    d["b"] = cp_shapes[_arbiter.b]
+    d["a"] = shapes[_arbiter.a]
+    d["b"] = shapes[_arbiter.b]
 
-    # these are not needed, since they can be fetched from the shapes
-    # d['body_a'] = cp_bodies[_arbiter.body_a]
-    # d['body_b'] = cp_bodies[_arbiter.body_b]
+    # body_a and body_b are not needed, since they can be fetched from the shapes
 
     # struct cpArbiterThread thread_a, thread_b;
 
